@@ -54,8 +54,9 @@ namespace MsgPack.Serialization.CollectionSerializers
 		protected DictionaryMessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema schema )
 			: base( ownerContext )
 		{
-			this._keySerializer = ownerContext.GetSerializer<TKey>( schema.KeySchema );
-			this._valueSerializer = ownerContext.GetSerializer<TValue>( schema.ItemSchema );
+			var safeSchema = schema ?? PolymorphismSchema.Default;
+			this._keySerializer = ownerContext.GetSerializer<TKey>( safeSchema.KeySchema );
+			this._valueSerializer = ownerContext.GetSerializer<TValue>( safeSchema.ItemSchema );
 		}
 
 		/// <summary>

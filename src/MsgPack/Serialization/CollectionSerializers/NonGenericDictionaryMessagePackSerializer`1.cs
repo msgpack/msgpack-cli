@@ -52,8 +52,9 @@ namespace MsgPack.Serialization.CollectionSerializers
 		protected NonGenericDictionaryMessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema schema )
 			: base( ownerContext )
 		{
-			this._keySerializer = ownerContext.GetSerializer( typeof( object ), schema.KeySchema );
-			this._valueSerializer = ownerContext.GetSerializer( typeof( object ), schema.ItemSchema );
+			var safeSchema = schema ?? PolymorphismSchema.Default;
+			this._keySerializer = ownerContext.GetSerializer( typeof( object ), safeSchema.KeySchema );
+			this._valueSerializer = ownerContext.GetSerializer( typeof( object ), safeSchema.ItemSchema );
 		}
 
 		/// <summary>
