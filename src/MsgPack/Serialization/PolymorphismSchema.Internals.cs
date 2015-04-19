@@ -22,9 +22,9 @@
 
 using System;
 using System.Collections.Generic;
-#if !NETFX_35 && !UNITY
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !NETFX_35 && !UNITY
+#endif // !UNITY
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -202,7 +202,7 @@ namespace MsgPack.Serialization
 #if !UNITY
 			SerializingMember? memberMayBeNull
 #else
- SerializingMember memberMayBeNull
+			SerializingMember memberMayBeNull
 #endif // !UNITY
  )
 		{
@@ -461,14 +461,14 @@ namespace MsgPack.Serialization
 					}
 				}
 
-#if DEBUG && !NETFX_35 && !UNITY
+#if DEBUG && !UNITY
 				Contract.Assert( attribute is IPolymorphicRuntimeTypeAttribute, attribute + " is IPolymorphicRuntimeTypeAttribute" );
-#endif // DEBUG && !NETFX_35 && !UNITY
+#endif // DEBUG && !UNITY
 				if ( this._useTypeEmbedding )
 				{
-#if DEBUG && !NETFX_35 && !UNITY
+#if DEBUG && !UNITY
 					Contract.Assert( attribute.Target == PolymorphismTarget.TupleItem, attribute.Target + " == PolymorphismTarget.TupleItem" );
-#endif // DEBUG && !NETFX_35 && !UNITY
+#endif // DEBUG && !UNITY
 					throw new SerializationException(
 						String.Format(
 							CultureInfo.CurrentCulture,

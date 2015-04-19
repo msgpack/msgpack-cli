@@ -35,7 +35,6 @@ using System.Diagnostics.Contracts;
 #if NETFX_CORE
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 #endif // NETFX_CORE
 using System.Threading;
 
