@@ -349,6 +349,7 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 #>
 		#endregion ------ <#= attributeType.Name #>.DictionaryTypes ------
 
+#if !NETFX_35 && !UNITY
 		#region ------ <#= attributeType.Name #>.TupleTypes ------
 <#+
 		}
@@ -373,6 +374,7 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 		{
 #>
 		#endregion ------ <#= attributeType.Name #>.TupleTypes ------
+#endif // #if !NETFX_35 && !UNITY
 
 		#endregion ---- <#= attributeType.Name #> ----
 <#+
@@ -738,19 +740,19 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 	var members =
 		new []
 		{
-			new { Name = "NormalVanilla",	Type = "string",			InitialValue = @"""ABC""",										Attributes = new string[ 0 ] },
-			new { Name = "NormalRuntime",	Type = "FileSystemEntry",	InitialValue = @"new FileEntry { Name = ""File"", Size = 1 }",	Attributes = new [] { "[MessagePackRuntimeType]" } },
-			new { Name = "NormalKnown",		Type = "FileSystemEntry",	InitialValue = @"new FileEntry { Name = ""File"", Size = 2 }",	Attributes = new [] { "[MessagePackKnownType( 1, typeof( FileEntry ) )]", "[MessagePackKnownType( 2, typeof( DirectoryEntry ) )]" } },
-			new { Name = "ObjectRuntime",	Type = "Object",			InitialValue = @"new FileEntry { Name = ""File"", Size = 3 }",	Attributes = new [] { "[MessagePackRuntimeType]" } },
-			new { Name = "ListVanilla",						Type = "IList<string>",				InitialValue = @"new List<string> { ""ABC"" }",												Attributes = new string[ 0 ] },
-			new { Name = "ListKnownItem",					Type = "IList<FileSystemEntry>",	InitialValue = @"new List<FileSystemEntry> { new FileEntry { Name = ""File"", Size = 1 } }",	Attributes = new [] { "[MessagePackKnownCollectionItemType( 1, typeof( FileEntry ) )]", "[MessagePackKnownCollectionItemType( 2, typeof( DirectoryEntry ) )]" } },
-			new { Name = "ListKnwonContainerRuntimeItem",	Type = "IList<FileSystemEntry>",	InitialValue = @"new List<FileSystemEntry> { new FileEntry { Name = ""File"", Size = 2 } }",	Attributes = new [] { "[MessagePackKnownType( 1, typeof( Collection<FileSystemEntry> ) )]", "[MessagePackKnownType( 2, typeof( List<FileSystemEntry> ) )]", "[MessagePackRuntimeCollectionItemType]" } },
-			new { Name = "ListObjectRuntimeItem",			Type = "IList<object>",				InitialValue = @"new List<object> { new FileEntry { Name = ""File"", Size = 3 } }",			Attributes = new [] { "[MessagePackRuntimeCollectionItemType]" } },
-			new { Name = "DictionaryVanilla",						Type = "IDictionary<string, string>",			InitialValue = @"new Dictionary<string, string> { { ""Key"", ""ABC"" } }",													Attributes = new string[ 0 ] },
-			new { Name = "DictionaryKnownValue",					Type = "IDictionary<string, FileSystemEntry>",	InitialValue = @"new Dictionary<string, FileSystemEntry> { { ""Key"", new FileEntry { Name = ""File"", Size = 1 } } }",	Attributes = new [] { "[MessagePackKnownCollectionItemType( 1, typeof( FileEntry ) )]", "[MessagePackKnownCollectionItemType( 2, typeof( DirectoryEntry ) )]" } },
-			new { Name = "DictionaryKnownContainerRuntimeValue",	Type = "IDictionary<string, FileSystemEntry>",	InitialValue = @"new Dictionary<string, FileSystemEntry> { { ""Key"", new FileEntry { Name = ""File"", Size = 2 } } }",	Attributes = new [] { "[MessagePackKnownType( 1, typeof( SortedDictionary<string, FileSystemEntry> ) )]", "[MessagePackKnownType( 2, typeof( Dictionary<string, FileSystemEntry> ) )]", "[MessagePackRuntimeCollectionItemType]" } },
-			new { Name = "DictionaryObjectRuntimeValue",			Type = "IDictionary<string, object>",			InitialValue = @"new Dictionary<string, object> { { ""Key"", new FileEntry { Name = ""File"", Size = 3 } } }",				Attributes = new [] { "[MessagePackRuntimeCollectionItemType]" } },
-			new { Name = "Tuple",	Type = "Tuple<string, FileSystemEntry, FileSystemEntry, object>", InitialValue = @"Tuple.Create<string, FileSystemEntry, FileSystemEntry, object>( ""ABC"", new FileEntry { Name = ""File"", Size = 1 }, new FileEntry { Name = ""File"", Size = 3 }, new FileEntry { Name = ""File"", Size = 3 } )", Attributes = new [] { "[MessagePackKnownTupleItemType( 2, 1, typeof( FileEntry ) )]", "[MessagePackKnownTupleItemType( 2, 2, typeof( DirectoryEntry ) )]", "[MessagePackRuntimeTupleItemType( 3 )]","[MessagePackRuntimeTupleItemType( 4 )]" } },
+			new { Name = "NormalVanilla",	Type = "string",			InitialValue = @"""ABC""",										Attributes = new string[ 0 ], IsTuple = false },
+			new { Name = "NormalRuntime",	Type = "FileSystemEntry",	InitialValue = @"new FileEntry { Name = ""File"", Size = 1 }",	Attributes = new [] { "[MessagePackRuntimeType]" }, IsTuple = false },
+			new { Name = "NormalKnown",		Type = "FileSystemEntry",	InitialValue = @"new FileEntry { Name = ""File"", Size = 2 }",	Attributes = new [] { "[MessagePackKnownType( 1, typeof( FileEntry ) )]", "[MessagePackKnownType( 2, typeof( DirectoryEntry ) )]" }, IsTuple = false },
+			new { Name = "ObjectRuntime",	Type = "Object",			InitialValue = @"new FileEntry { Name = ""File"", Size = 3 }",	Attributes = new [] { "[MessagePackRuntimeType]" }, IsTuple = false },
+			new { Name = "ListVanilla",						Type = "IList<string>",				InitialValue = @"new List<string> { ""ABC"" }",													Attributes = new string[ 0 ], IsTuple = false },
+			new { Name = "ListKnownItem",					Type = "IList<FileSystemEntry>",	InitialValue = @"new List<FileSystemEntry> { new FileEntry { Name = ""File"", Size = 1 } }",	Attributes = new [] { "[MessagePackKnownCollectionItemType( 1, typeof( FileEntry ) )]", "[MessagePackKnownCollectionItemType( 2, typeof( DirectoryEntry ) )]" }, IsTuple = false },
+			new { Name = "ListKnwonContainerRuntimeItem",	Type = "IList<FileSystemEntry>",	InitialValue = @"new List<FileSystemEntry> { new FileEntry { Name = ""File"", Size = 2 } }",	Attributes = new [] { "[MessagePackKnownType( 1, typeof( Collection<FileSystemEntry> ) )]", "[MessagePackKnownType( 2, typeof( List<FileSystemEntry> ) )]", "[MessagePackRuntimeCollectionItemType]" }, IsTuple = false },
+			new { Name = "ListObjectRuntimeItem",			Type = "IList<object>",				InitialValue = @"new List<object> { new FileEntry { Name = ""File"", Size = 3 } }",				Attributes = new [] { "[MessagePackRuntimeCollectionItemType]" }, IsTuple = false },
+			new { Name = "DictionaryVanilla",						Type = "IDictionary<string, string>",			InitialValue = @"new Dictionary<string, string> { { ""Key"", ""ABC"" } }",												Attributes = new string[ 0 ], IsTuple = false },
+			new { Name = "DictionaryKnownValue",					Type = "IDictionary<string, FileSystemEntry>",	InitialValue = @"new Dictionary<string, FileSystemEntry> { { ""Key"", new FileEntry { Name = ""File"", Size = 1 } } }",	Attributes = new [] { "[MessagePackKnownCollectionItemType( 1, typeof( FileEntry ) )]", "[MessagePackKnownCollectionItemType( 2, typeof( DirectoryEntry ) )]" }, IsTuple = false },
+			new { Name = "DictionaryKnownContainerRuntimeValue",	Type = "IDictionary<string, FileSystemEntry>",	InitialValue = @"new Dictionary<string, FileSystemEntry> { { ""Key"", new FileEntry { Name = ""File"", Size = 2 } } }",	Attributes = new [] { "[MessagePackKnownType( 1, typeof( SortedDictionary<string, FileSystemEntry> ) )]", "[MessagePackKnownType( 2, typeof( Dictionary<string, FileSystemEntry> ) )]", "[MessagePackRuntimeCollectionItemType]" }, IsTuple = false },
+			new { Name = "DictionaryObjectRuntimeValue",			Type = "IDictionary<string, object>",			InitialValue = @"new Dictionary<string, object> { { ""Key"", new FileEntry { Name = ""File"", Size = 3 } } }",			Attributes = new [] { "[MessagePackRuntimeCollectionItemType]" }, IsTuple = false },
+			new { Name = "Tuple",	Type = "Tuple<string, FileSystemEntry, FileSystemEntry, object>", InitialValue = @"Tuple.Create<string, FileSystemEntry, FileSystemEntry, object>( ""ABC"", new FileEntry { Name = ""File"", Size = 1 }, new FileEntry { Name = ""File"", Size = 3 }, new FileEntry { Name = ""File"", Size = 3 } )", Attributes = new [] { "[MessagePackKnownTupleItemType( 2, 1, typeof( FileEntry ) )]", "[MessagePackKnownTupleItemType( 2, 2, typeof( DirectoryEntry ) )]", "[MessagePackRuntimeTupleItemType( 3 )]","[MessagePackRuntimeTupleItemType( 4 )]" }, IsTuple = true },
 		};
 
 	const string typeName = "PolymorphicMemberTypeMixed";
@@ -765,6 +767,13 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 <#+
 		foreach ( var member in members )
 		{
+			if ( member.IsTuple )
+			{
+#>
+#if !NETFX_35 && !UNITY
+<#+
+			}
+
 			foreach ( var attribute in member.Attributes )
 			{
 #>
@@ -774,6 +783,12 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 #>
 			public <#= member.Type #> <#= member.Name #> { get; set; }
 <#+
+			if ( member.IsTuple )
+			{
+#>
+#endif // !NETFX_35 && !UNITY
+<#+
+			}
 		}
 #>
 
@@ -795,9 +810,21 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 <#+
 		foreach ( var member in members )
 		{
+			if ( member.IsTuple )
+			{
+#>
+#if !NETFX_35 && !UNITY
+<#+
+			}
 #>
 				target.<#= member.Name #> = <#= member.InitialValue #>;
 <#+
+			if ( member.IsTuple )
+			{
+#>
+#endif // !NETFX_35 && !UNITY
+<#+
+			}
 		}
 #>
 				var serializer = context.GetSerializer<#= "<" + typeName + ">" #>();
@@ -813,10 +840,22 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 <#+
 		foreach ( var member in members )
 		{
+			if ( member.IsTuple )
+			{
+#>
+#if !NETFX_35 && !UNITY
+<#+
+			}
 #>
 					Assert.That( result.<#= member.Name #>, Is.EqualTo( target.<#= member.Name #> ), "<#= member.Name #>" );
 					Assert.That( result.<#= member.Name #>, Is.InstanceOf( target.<#= member.Name #>.GetType() ), "<#= member.Name #>" );
 <#+
+			if ( member.IsTuple )
+			{
+#>
+#endif // !NETFX_35 && !UNITY
+<#+
+			}
 		}
 #>
 				}
@@ -841,9 +880,21 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 <#+
 		foreach ( var member in members )
 		{
+			if ( member.IsTuple )
+			{
+#>
+#if !NETFX_35 && !UNITY
+<#+
+			}
 #>
 					Assert.That( result.<#= member.Name #>, Is.Null );
 <#+
+			if ( member.IsTuple )
+			{
+#>
+#endif // !NETFX_35 && !UNITY
+<#+
+			}
 		}
 #>
 				}
@@ -969,6 +1020,7 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 	if ( generateTypes )
 	{
 #>
+#if !NETFX_35 && !UNITY
 
 		public class TupleAbstractType
 		{
@@ -980,12 +1032,15 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 
 			public TupleAbstractType() { }
 		}
+
+#endif // !NETFX_35 && !UNITY
 <#+
 	}
 
 	if ( generateMethods )
 	{
 #>
+#if !NETFX_35 && !UNITY
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestTupleAbstractType_Success()
@@ -1006,6 +1061,7 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
 			}
 		}
+#endif // !NETFX_35 && !UNITY
 <#+
 	}
 
@@ -1059,7 +1115,7 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 		if ( generateTypes )
 		{
 #>
-
+#if !NETFX_35 && !UNITY
 		public class <#= tupleItemClassName #>
 		{
 <#+
@@ -1081,12 +1137,19 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 
 			public <#= tupleItemClassName #>() { }
 		}
+#endif // !NETFX_35 && !UNITY
 <#+
 		}
 
 		if ( generateMethods )
 		{
+#>
+#if !NETFX_35 && !UNITY
+<#+
 			GenerateAttributeErrorTestMethod( testCase.Name + "TupleItem", tupleItemClassName );
+#>
+#endif // !NETFX_35 && !UNITY
+<#+
 		}
 	}
 }

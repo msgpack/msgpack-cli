@@ -22,6 +22,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 #pragma warning disable 3003
 using System;
 using System.Collections;
@@ -5316,6 +5320,7 @@ namespace MsgPack.Serialization
 		}
 		#endregion ------ KnownType.DictionaryTypes ------
 
+#if !NETFX_35 && !UNITY
 		#region ------ KnownType.TupleTypes ------
 
 		[Test]
@@ -6578,6 +6583,7 @@ namespace MsgPack.Serialization
 			}
 		}
 		#endregion ------ KnownType.TupleTypes ------
+#endif // #if !NETFX_35 && !UNITY
 
 		#endregion ---- KnownType ----
 		#region ---- RuntimeType ----
@@ -9043,6 +9049,7 @@ namespace MsgPack.Serialization
 		}
 		#endregion ------ RuntimeType.DictionaryTypes ------
 
+#if !NETFX_35 && !UNITY
 		#region ------ RuntimeType.TupleTypes ------
 
 		[Test]
@@ -10305,6 +10312,7 @@ namespace MsgPack.Serialization
 			}
 		}
 		#endregion ------ RuntimeType.TupleTypes ------
+#endif // #if !NETFX_35 && !UNITY
 
 		#endregion ---- RuntimeType ----
 
@@ -10326,7 +10334,9 @@ namespace MsgPack.Serialization
 				target.DictionaryKnownValue = new Dictionary<string, FileSystemEntry> { { "Key", new FileEntry { Name = "File", Size = 1 } } };
 				target.DictionaryKnownContainerRuntimeValue = new Dictionary<string, FileSystemEntry> { { "Key", new FileEntry { Name = "File", Size = 2 } } };
 				target.DictionaryObjectRuntimeValue = new Dictionary<string, object> { { "Key", new FileEntry { Name = "File", Size = 3 } } };
+#if !NETFX_35 && !UNITY
 				target.Tuple = Tuple.Create<string, FileSystemEntry, FileSystemEntry, object>( "ABC", new FileEntry { Name = "File", Size = 1 }, new FileEntry { Name = "File", Size = 3 }, new FileEntry { Name = "File", Size = 3 } );
+#endif // !NETFX_35 && !UNITY
 				var serializer = context.GetSerializer<PolymorphicMemberTypeMixed>();
 				
 				using ( var buffer = new MemoryStream() )
@@ -10361,8 +10371,10 @@ namespace MsgPack.Serialization
 					Assert.That( result.DictionaryKnownContainerRuntimeValue, Is.InstanceOf( target.DictionaryKnownContainerRuntimeValue.GetType() ), "DictionaryKnownContainerRuntimeValue" );
 					Assert.That( result.DictionaryObjectRuntimeValue, Is.EqualTo( target.DictionaryObjectRuntimeValue ), "DictionaryObjectRuntimeValue" );
 					Assert.That( result.DictionaryObjectRuntimeValue, Is.InstanceOf( target.DictionaryObjectRuntimeValue.GetType() ), "DictionaryObjectRuntimeValue" );
+#if !NETFX_35 && !UNITY
 					Assert.That( result.Tuple, Is.EqualTo( target.Tuple ), "Tuple" );
 					Assert.That( result.Tuple, Is.InstanceOf( target.Tuple.GetType() ), "Tuple" );
+#endif // !NETFX_35 && !UNITY
 				}
 		}
 
@@ -10394,7 +10406,9 @@ namespace MsgPack.Serialization
 					Assert.That( result.DictionaryKnownValue, Is.Null );
 					Assert.That( result.DictionaryKnownContainerRuntimeValue, Is.Null );
 					Assert.That( result.DictionaryObjectRuntimeValue, Is.Null );
+#if !NETFX_35 && !UNITY
 					Assert.That( result.Tuple, Is.Null );
+#endif // !NETFX_35 && !UNITY
 				}
 		}
 
@@ -10873,6 +10887,7 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
 			}
 		}
+#if !NETFX_35 && !UNITY
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestTupleAbstractType_Success()
@@ -10893,6 +10908,7 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
 			}
 		}
+#endif // !NETFX_35 && !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10920,6 +10936,7 @@ namespace MsgPack.Serialization
 			var target = new DuplicatedKnownDictionaryKey();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<DuplicatedKnownDictionaryKey>() );
 		}
+#if !NETFX_35 && !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10929,6 +10946,7 @@ namespace MsgPack.Serialization
 			var target = new DuplicatedKnownTupleItem();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<DuplicatedKnownTupleItem>() );
 		}
+#endif // !NETFX_35 && !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10956,6 +10974,7 @@ namespace MsgPack.Serialization
 			var target = new KnownAndRuntimeDictionaryKey();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<KnownAndRuntimeDictionaryKey>() );
 		}
+#if !NETFX_35 && !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10965,6 +10984,7 @@ namespace MsgPack.Serialization
 			var target = new KnownAndRuntimeTupleItem();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<KnownAndRuntimeTupleItem>() );
 		}
+#endif // !NETFX_35 && !UNITY
 
 		#endregion -- Polymorphism --
 		[Test]

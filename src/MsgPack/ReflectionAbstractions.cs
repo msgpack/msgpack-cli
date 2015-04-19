@@ -381,12 +381,12 @@ namespace MsgPack
 		}
 #endif // SILVERLIGHT
 
-#if NETFX_40
+#if NETFX_35 || NETFX_40 || UNITY
 		public static Delegate CreateDelegate( this MethodInfo source, Type delegateType )
 		{
 			return Delegate.CreateDelegate( delegateType, source );
 		}
-#endif // NETFX_40
+#endif // NETFX_35 || NETFX_40 || UNITY
 
 		public static bool GetHasDefaultValue( this ParameterInfo source )
 		{

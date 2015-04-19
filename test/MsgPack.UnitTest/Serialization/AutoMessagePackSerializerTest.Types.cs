@@ -19,6 +19,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 #pragma warning disable 3003
 using System;
 using System.Collections;
@@ -3930,6 +3934,7 @@ namespace MsgPack.Serialization
 		}
 		#endregion ------ KnownType.DictionaryTypes ------
 
+#if !NETFX_35 && !UNITY
 		#region ------ KnownType.TupleTypes ------
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty
@@ -5227,6 +5232,7 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor() {}
 		}
 		#endregion ------ KnownType.TupleTypes ------
+#endif // #if !NETFX_35 && !UNITY
 
 		#endregion ---- KnownType ----
 		#region ---- RuntimeType ----
@@ -7858,6 +7864,7 @@ namespace MsgPack.Serialization
 		}
 		#endregion ------ RuntimeType.DictionaryTypes ------
 
+#if !NETFX_35 && !UNITY
 		#region ------ RuntimeType.TupleTypes ------
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty
@@ -9050,6 +9057,7 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor() {}
 		}
 		#endregion ------ RuntimeType.TupleTypes ------
+#endif // #if !NETFX_35 && !UNITY
 
 		#endregion ---- RuntimeType ----
 		public class PolymorphicMemberTypeMixed
@@ -9082,11 +9090,13 @@ namespace MsgPack.Serialization
 			public IDictionary<string, FileSystemEntry> DictionaryKnownContainerRuntimeValue { get; set; }
 			[MessagePackRuntimeCollectionItemType]
 			public IDictionary<string, object> DictionaryObjectRuntimeValue { get; set; }
+#if !NETFX_35 && !UNITY
 			[MessagePackKnownTupleItemType( 2, 1, typeof( FileEntry ) )]
 			[MessagePackKnownTupleItemType( 2, 2, typeof( DirectoryEntry ) )]
 			[MessagePackRuntimeTupleItemType( 3 )]
 			[MessagePackRuntimeTupleItemType( 4 )]
 			public Tuple<string, FileSystemEntry, FileSystemEntry, object> Tuple { get; set; }
+#endif // !NETFX_35 && !UNITY
 
 			public PolymorphicMemberTypeMixed() { }
 		}
@@ -9283,6 +9293,7 @@ namespace MsgPack.Serialization
 
 			public InterfaceCollectionRuntimeType() { }
 		}
+#if !NETFX_35 && !UNITY
 
 		public class TupleAbstractType
 		{
@@ -9294,6 +9305,8 @@ namespace MsgPack.Serialization
 
 			public TupleAbstractType() { }
 		}
+
+#endif // !NETFX_35 && !UNITY
 
 		public class DuplicatedKnownMember
 		{
@@ -9321,7 +9334,7 @@ namespace MsgPack.Serialization
 
 			public DuplicatedKnownDictionaryKey() { }
 		}
-
+#if !NETFX_35 && !UNITY
 		public class DuplicatedKnownTupleItem
 		{
 			[MessagePackKnownTupleItemType( 1, 1, typeof( FileEntry ) )]
@@ -9330,6 +9343,7 @@ namespace MsgPack.Serialization
 
 			public DuplicatedKnownTupleItem() { }
 		}
+#endif // !NETFX_35 && !UNITY
 
 		public class KnownAndRuntimeMember
 		{
@@ -9357,7 +9371,7 @@ namespace MsgPack.Serialization
 
 			public KnownAndRuntimeDictionaryKey() { }
 		}
-
+#if !NETFX_35 && !UNITY
 		public class KnownAndRuntimeTupleItem
 		{
 			[MessagePackKnownTupleItemType( 1, 1, typeof( FileEntry ) )]
@@ -9366,6 +9380,7 @@ namespace MsgPack.Serialization
 
 			public KnownAndRuntimeTupleItem() { }
 		}
+#endif // !NETFX_35 && !UNITY
 
 		public interface IFileSystemEntry { }
 

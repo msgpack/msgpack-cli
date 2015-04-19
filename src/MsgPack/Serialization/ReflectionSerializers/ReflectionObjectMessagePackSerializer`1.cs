@@ -38,6 +38,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 	/// </summary>
 	internal class ReflectionObjectMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
+		private static readonly PropertyInfo DictionaryEntryKeyProperty = typeof( DictionaryEntry ).GetProperty( "Key" );
+		private static readonly PropertyInfo DictionaryEntryValueProperty = typeof( DictionaryEntry ).GetProperty( "Value" );
+
 		private readonly Func<object, object>[] _getters;
 		private readonly Action<object, object>[] _setters;
 		private readonly MemberInfo[] _memberInfos;
@@ -293,8 +296,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 									var arguments = new object[ 2 ];
 									foreach ( var item in source )
 									{
-										arguments[ 0 ] = Metadata._DictionaryEntry.Key.GetValue( item, null );
-										arguments[ 1 ] = Metadata._DictionaryEntry.Value.GetValue( item, null );
+										arguments[ 0 ] = DictionaryEntryKeyProperty.GetValue( item, null );
+										arguments[ 1 ] = DictionaryEntryValueProperty.GetValue( item, null );
 										traits.AddMethod.Invoke( destination, arguments );
 									}
 									break;
