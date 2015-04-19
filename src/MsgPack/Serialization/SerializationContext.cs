@@ -23,8 +23,7 @@
 #endif
 
 using System;
-using System.Globalization;
-using System.Runtime.Serialization;
+using System.Reflection;
 #if !SILVERLIGHT && !NETFX_35 && !UNITY
 using System.Collections.Concurrent;
 #else // !SILVERLIGHT && !NETFX_35 && !UNITY
@@ -54,6 +53,12 @@ namespace MsgPack.Serialization
 #if UNITY
 		private static readonly object DefaultContextSyncRoot = new object();
 #endif // UNITY
+
+#if UNITY || XAMIOS || XAMDROID
+		private static readonly MethodInfo GetSerializer1Method =
+			typeof( SerializationContext ).GetMethod( "GetSerializer", new[] { typeof( object ) } );
+#endif // UNITY || XAMIOS || XAMDROID
+
 
 		// Set SerializerRepository null because it requires SerializationContext, so re-init in constructor.
 		private static SerializationContext _default = new SerializationContext( PackerCompatibilityOptions.Classic );
@@ -97,13 +102,11 @@ namespace MsgPack.Serialization
 		}
 
 		private readonly SerializerRepository _serializers;
-#if !XAMIOS && !XAMDROID && !UNITY
-#if SILVERLIGHT || NETFX_35
+#if SILVERLIGHT || NETFX_35 || UNITY
 		private readonly Dictionary<Type, object> _typeLock;
 #else
 		private readonly ConcurrentDictionary<Type, object> _typeLock;
-#endif // SILVERLIGHT || NETFX_35
-#endif // XAMIOS && !XAMDROID && !UNITY
+#endif // SILVERLIGHT || NETFX_35 || UNITY
 
 		/// <summary>
 		///		Gets the current <see cref="SerializerRepository"/>.
@@ -351,13 +354,11 @@ namespace MsgPack.Serialization
 
 			this._serializers = new SerializerRepository( SerializerRepository.GetDefault( this ) );
 
-#if !XAMIOS && !XAMDROID && !UNITY
-#if SILVERLIGHT || NETFX_35
+#if SILVERLIGHT || NETFX_35 || UNITY
 			this._typeLock = new Dictionary<Type, object>();
 #else
 			this._typeLock = new ConcurrentDictionary<Type, object>();
-#endif // SILVERLIGHT || NETFX_35
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // SILVERLIGHT || NETFX_35 || UNITY
 			this._defaultCollectionTypes = new DefaultConcreteTypeRepository();
 		}
 
@@ -422,147 +423,151 @@ namespace MsgPack.Serialization
 			// Explicitly generated serializer should always used, so get it first.
 			MessagePackSerializer<T> serializer = this._serializers.Get<T>( this, providerParameter );
 
-			if ( serializer == null )
+			if ( serializer != null )
 			{
-				object aquiredLock = null;
-				bool lockTaken = false;
-				try
+				return serializer;
+			}
+
+			object aquiredLock = null;
+			bool lockTaken = false;
+			try
+			{
+				try { }
+				finally
 				{
-					try { }
+					var newLock = new object();
+#if SILVERLIGHT || NETFX_35 || UNITY
+					Monitor.Enter( newLock );
+					try
+					{
+						lock ( this._typeLock )
+						{
+							lockTaken = !this._typeLock.TryGetValue( typeof( T ), out aquiredLock );
+							if ( lockTaken )
+							{
+								aquiredLock = newLock;
+								this._typeLock.Add( typeof( T ), newLock );
+							}
+						}
+#else
+					bool newLockTaken = false;
+					try
+					{
+						Monitor.Enter( newLock, ref newLockTaken );
+						aquiredLock = this._typeLock.GetOrAdd( typeof( T ), _ => newLock );
+						lockTaken = newLock == aquiredLock;
+#endif // if  SILVERLIGHT || NETFX_35 || UNITY
+					}
 					finally
 					{
-						var newLock = new object();
-#if SILVERLIGHT || NETFX_35
-						Monitor.Enter( newLock );
-						try
-						{
-							lock ( this._typeLock )
-							{
-								lockTaken = !this._typeLock.TryGetValue( typeof( T ), out aquiredLock );
-								if ( lockTaken )
-								{
-									aquiredLock = newLock;
-									this._typeLock.Add( typeof( T ), newLock );
-								}
-							}
+#if SILVERLIGHT || NETFX_35 || UNITY
+						if ( !lockTaken )
 #else
-						bool newLockTaken = false;
-						try
+						if ( !lockTaken && newLockTaken )
+#endif // if SILVERLIGHT || NETFX_35 || UNITY
 						{
-							Monitor.Enter( newLock, ref newLockTaken );
-							aquiredLock = this._typeLock.GetOrAdd( typeof( T ), _ => newLock );
-							lockTaken = newLock == aquiredLock;
-#endif // if  SILVERLIGHT || NETFX_35
-						}
-						finally
-						{
-#if SILVERLIGHT || NETFX_35
-							if ( !lockTaken )
-#else
-							if ( !lockTaken && newLockTaken )
-#endif // if SILVERLIGHT || NETFX_35
-							{
-								// Release the lock which failed to become 'primary' lock.
-								Monitor.Exit( newLock );
-							}
+							// Release the lock which failed to become 'primary' lock.
+							Monitor.Exit( newLock );
 						}
 					}
+				}
 
-					if ( Monitor.TryEnter( aquiredLock ) )
+				if ( Monitor.TryEnter( aquiredLock ) )
+				{
+					// Decrement monitor counter.
+					Monitor.Exit( aquiredLock );
+
+					if ( lockTaken )
 					{
-						// Decrement monitor counter.
-						Monitor.Exit( aquiredLock );
+						// First try to create generic serializer w/o code generation.
+						serializer = GenericSerializer.Create<T>( this, schema );
 
-						if ( lockTaken )
+						if ( serializer == null )
 						{
-							// First try to create generic serializer w/o code generation.
-							serializer = GenericSerializer.Create<T>( this, schema );
-
-							if ( serializer == null )
+#if !XAMIOS && !XAMDROID && !UNITY
+							if ( this.IsRuntimeGenerationDisabled )
 							{
-#if !XAMIOS && !XAMDROID && !UNITY
-								if ( this.IsRuntimeGenerationDisabled )
-								{
 #endif // !XAMIOS && !XAMDROID && !UNITY
-									// On debugging, or AOT only envs, use reflection based aproach.
-									serializer =
-										this.GetSerializerWithoutGeneration<T>( schema )
-										?? MessagePackSerializer.CreateReflectionInternal<T>( this, this.EnsureConcreteTypeRegistered( typeof( T ) ), schema );
+								// On debugging, or AOT only envs, use reflection based aproach.
+								serializer =
+									this.GetSerializerWithoutGeneration<T>( schema )
+									?? MessagePackSerializer.CreateReflectionInternal<T>( this, this.EnsureConcreteTypeRegistered( typeof( T ) ), schema );
 #if !XAMIOS && !XAMDROID && !UNITY
-								}
-								else
-								{
-									// This thread creating new type serializer.
-									serializer = MessagePackSerializer.CreateInternal<T>( this, schema );
-								}
 							}
-						}
-						else
-						{
-							// This thread owns existing lock -- thus, constructing self-composite type.
-
-							// Prevent release owned lock.
-							aquiredLock = null;
-							return new LazyDelegatingMessagePackSerializer<T>( this, providerParameter );
+							else
+							{
+								// This thread creating new type serializer.
+								serializer = MessagePackSerializer.CreateInternal<T>( this, schema );
+							}
+#endif // !XAMIOS && !XAMDROID && !UNITY
 						}
 					}
 					else
 					{
-						// Wait creation by other thread.
-						// Acquire as 'waiting' lock.
-						Monitor.Enter( aquiredLock );
+						// This thread owns existing lock -- thus, constructing self-composite type.
+
+						// Prevent release owned lock.
+						aquiredLock = null;
+						return new LazyDelegatingMessagePackSerializer<T>( this, providerParameter );
 					}
+
+
+					// Some types always have to use provider. 
+					MessagePackSerializerProvider provider;
+					var asEnumSerializer = serializer as ICustomizableEnumSerializer;
+					if ( asEnumSerializer != null )
+					{
+#if DEBUG && !UNITY
+						Contract.Assert( typeof( T ).GetIsEnum(), typeof( T ) + " is not enum but generated serializer is ICustomizableEnumSerializer" );
+#endif // DEBUG && !UNITY
+
+						provider = new EnumMessagePackSerializerProvider( typeof( T ), asEnumSerializer );
+					}
+					else
+					{
+#if DEBUG && !UNITY
+						Contract.Assert( !typeof( T ).GetIsEnum(), typeof( T ) + " is enum but generated serializer is not ICustomizableEnumSerializer : " + ( serializer == null ? "null" : serializer.GetType().FullName ) );
+#endif // DEBUG && !UNITY
+
+						// Creates provider even if no schema -- the schema might be specified future for the type.
+						// It is OK to use polymorphic provider for value type.
+						provider = new PolymorphicSerializerProvider<T>( serializer );
+					}
+
+					this._serializers.Register( typeof( T ), provider );
 				}
-				finally
+				else
 				{
-					if ( lockTaken )
-					{
-#if SILVERLIGHT || NETFX_35
-						lock ( this._typeLock )
-						{
-							this._typeLock.Remove( typeof( T ) );
-						}
-#else
-						object dummy;
-						this._typeLock.TryRemove( typeof( T ), out dummy );
-#endif // if SILVERLIGHT || NETFX_35
-					}
-
-					if ( aquiredLock != null )
-					{
-						// Release primary lock or waiting lock.
-						Monitor.Exit( aquiredLock );
-					}
+					// Wait creation by other thread.
+					// Acquire as 'waiting' lock.
+					Monitor.Enter( aquiredLock );
 				}
-#endif // !XAMIOS && !XAMDROID && !UNITY
-			}
 
-			// Some types always have to use provider. 
-			MessagePackSerializerProvider provider;
-			var asEnumSerializer = serializer as ICustomizableEnumSerializer;
-			if ( asEnumSerializer != null )
+				// Re-get to avoid duplicated registration and handle provider parameter or get the one created by prececing thread.
+				// If T is null and schema is not provided or default schema is provided, then exception will be thrown here from the new provider.
+				return this._serializers.Get<T>( this, providerParameter );
+			}
+			finally
 			{
-#if DEBUG && !UNITY
-				Contract.Assert( typeof( T ).GetIsEnum(), typeof( T ) + " is not enum but generated serializer is ICustomizableEnumSerializer" );
-#endif // DEBUG && !UNITY
+				if ( lockTaken )
+				{
+#if SILVERLIGHT || NETFX_35 || UNITY
+					lock ( this._typeLock )
+					{
+						this._typeLock.Remove( typeof( T ) );
+					}
+#else
+					object dummy;
+					this._typeLock.TryRemove( typeof( T ), out dummy );
+#endif // if SILVERLIGHT || NETFX_35 || UNITY
+				}
 
-				provider = new EnumMessagePackSerializerProvider( typeof( T ), asEnumSerializer );
+				if ( aquiredLock != null )
+				{
+					// Release primary lock or waiting lock.
+					Monitor.Exit( aquiredLock );
+				}
 			}
-			else
-			{
-#if DEBUG && !UNITY
-				Contract.Assert( !typeof( T ).GetIsEnum(), typeof( T ) + " is enum but generated serializer is not ICustomizableEnumSerializer : " + ( serializer == null ? "null" : serializer.GetType().FullName ) );
-#endif // DEBUG && !UNITY
-
-				// Creates provider even if no schema -- the schema might be specified future for the type.
-				// It is OK to use polymorphic provider for value type.
-				provider = new PolymorphicSerializerProvider<T>( serializer );
-			}
-
-			this._serializers.Register( typeof( T ), provider );
-			// Re-get to avoid duplicated registration and handle provider parameter.
-			// If T is null and schema is not provided or default schema is provided, then exception will be thrown here from the new provider.
-			return this._serializers.Get<T>( this, providerParameter );
 		}
 
 		private Type EnsureConcreteTypeRegistered( Type mayBeAbstractType )
@@ -677,49 +682,30 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
 #endif // !UNITY
 
-#if !XAMIOS && !XAMDROID && !UNITY
 			return SerializerGetter.Instance.Get( this, targetType, providerParameter );
-#else
-			var serializer = this._serializers.Get( this, targetType, providerParameter ) ?? GenericSerializer.Create( this, targetType );
-			if ( serializer == null )
-			{
-				serializer =
-					this.GetSerializerWithoutGeneration( targetType ) as IMessagePackSingleObjectSerializer
-					?? MessagePackSerializer.CreateReflectionInternal( this, targetType );
-			}
-			
-			if ( !this._serializers.Register( targetType, serializer ) || providerParameter != null )
-			{
-				// Re-get to avoid duplicated registration and handle provider parameter.
-				serializer = this._serializers.Get( this, targetType, providerParameter );
-			}
-
-			return serializer;
-#endif // !XAMIOS && !XAMDROID && !UNITY
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY
 		private sealed class SerializerGetter
 		{
 			public static readonly SerializerGetter Instance = new SerializerGetter();
 
-#if !SILVERLIGHT && !NETFX_35
+#if !SILVERLIGHT && !NETFX_35 && !UNITY
 			private readonly ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>> _cache =
 				new ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>>();
 #else
 			private readonly Dictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>> _cache =
 				new Dictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>>();
-#endif
+#endif // !SILVERLIGHT && !NETFX_35 && !UNITY
 
 			private SerializerGetter() { }
 
 			public IMessagePackSingleObjectSerializer Get( SerializationContext context, Type targetType, object providerParameter )
 			{
 				Func<SerializationContext, object, IMessagePackSingleObjectSerializer> func;
-#if SILVERLIGHT || NETFX_35
+#if SILVERLIGHT || NETFX_35 || UNITY
 				lock ( this._cache )
 				{
-#endif
+#endif // SILVERLIGHT || NETFX_35 || UNITY
 				if ( !this._cache.TryGetValue( targetType.TypeHandle, out func ) || func == null )
 				{
 #if !NETFX_CORE
@@ -748,9 +734,9 @@ namespace MsgPack.Serialization
 #endif // if DEBUG && !UNITY
 					this._cache[ targetType.TypeHandle ] = func;
 				}
-#if SILVERLIGHT || NETFX_35
+#if SILVERLIGHT || NETFX_35 || UNITY
 				}
-#endif
+#endif // SILVERLIGHT || NETFX_35 || UNITY
 				return func( context, providerParameter );
 			}
 		}
@@ -761,7 +747,11 @@ namespace MsgPack.Serialization
 			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
 				Delegate.CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> ),
+#if UNITY || XAMIOS || XAMDROID
+					GetSerializer1Method.MakeGenericMethod( typeof( T ) )
+#else
 					Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) )
+#endif // UNITY || XAMIOS || XAMDROID
 				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
 #else
 			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
@@ -792,6 +782,5 @@ namespace MsgPack.Serialization
 			}
 			// ReSharper restore UnusedMember.Local
 		}
-#endif // !XAMIOS && !XAMDROID && !UNITY
 	}
 }

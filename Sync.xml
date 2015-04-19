@@ -43,7 +43,6 @@
     <Exclude Path="Serialization\CallbackMessagePackSerializer`1.cs" />
     <Exclude Path="Serialization\FromExpression.cs" />
     <Exclude Path="Serialization\FromExpression.*.cs" />
-    <Exclude Path="Serialization\LazyDelegatingMessagePackSerializer`1.cs" />
     <Exclude Path="Serialization\SerializerCodeGenerationConfiguration.cs" />
     <Exclude Path="Serialization\SerializerGenerator.cs" />
     <Exclude Path="Serialization\Tracer.cs" />
