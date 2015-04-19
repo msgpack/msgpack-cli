@@ -126,7 +126,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 #if !SILVERLIGHT
-		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, PolymorphismSchema itemSchema )
+		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema )
 		{
 			var asAssemblyBuilderCodeGenerationContext = context as AssemblyBuilderCodeGenerationContext;
 			if ( asAssemblyBuilderCodeGenerationContext == null )
@@ -142,7 +142,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					typeof( TObject )
 				);
 
-			this.BuildSerializer( emittingContext, itemSchema );
+			this.BuildSerializer( emittingContext, concreteType, itemSchema );
 			// Finish type creation, and discard returned ctor.
 			emittingContext.Emitter.CreateConstructor<TObject>();
 		}

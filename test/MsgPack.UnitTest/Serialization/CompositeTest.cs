@@ -164,6 +164,7 @@ namespace MsgPack.Serialization
 						GeneratorOption = SerializationMethodGeneratorOption.CanDump
 #endif
 					}, 
+					typeof( DirectoryItem ),
 					PolymorphismSchema.Default
 				);
 			using ( var memoryStream = new MemoryStream() )

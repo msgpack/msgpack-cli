@@ -343,7 +343,14 @@ namespace MsgPack.Serialization
 				foreach ( var targetType in targetTypes.Distinct() )
 				{
 					var generator = generatorFactory( targetType );
-					generator.BuildSerializerCode( generationContext, null );
+
+					var concreteType = default( Type );
+					if ( targetType.GetIsInterface() || targetType.GetIsAbstract() )
+					{
+						concreteType = context.DefaultCollectionTypes.GetConcreteType( targetType );
+					}
+
+					generator.BuildSerializerCode( generationContext, concreteType, null );
 				}
 
 				Directory.CreateDirectory( configuration.OutputDirectory );

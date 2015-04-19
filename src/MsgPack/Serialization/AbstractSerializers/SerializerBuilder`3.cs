@@ -21,8 +21,6 @@
 using System;
 using System.Diagnostics.Contracts;
 
-using MsgPack.Serialization.DefaultSerializers;
-
 namespace MsgPack.Serialization.AbstractSerializers
 {
 	/// <summary>
@@ -52,20 +50,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Builds the serializer and returns its new instance.
 		/// </summary>
 		/// <param name="context">The context information.</param>
+		/// <param name="concreteType">The substitution type if <typeparamref name="TObject"/> is abstract type. <c>null</c> when <typeparamref name="TObject"/> is not abstract type.</param>
 		/// <param name="schema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value may be <c>null</c>.</param>
 		/// <returns>
 		///		Newly created serializer object.
 		///		This value will not be <c>null</c>.
 		/// </returns>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		public MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context, PolymorphismSchema schema )
+		public MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context, Type concreteType, PolymorphismSchema schema )
 		{
-			var genericSerializer = GenericSerializer.Create<TObject>( context, schema );
-			if ( genericSerializer != null )
-			{
-				return genericSerializer;
-			}
-
 			Func<SerializationContext, MessagePackSerializer<TObject>> constructor;
 			var codeGenerationContext = this.CreateCodeGenerationContextForSerializerCreation( context );
 			if ( typeof( TObject ).GetIsEnum() )
@@ -75,7 +68,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			else
 			{
-				this.BuildSerializer( codeGenerationContext, schema );
+				this.BuildSerializer( codeGenerationContext, concreteType, schema );
 				constructor = this.CreateSerializerConstructor( codeGenerationContext );
 			}
 
@@ -105,12 +98,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Builds the serializer and returns its new instance.
 		/// </summary>
 		/// <param name="context">The context information. This value will not be <c>null</c>.</param>
+		/// <param name="concreteType">The substitution type if <typeparamref name="TObject"/> is abstract type. <c>null</c> when <typeparamref name="TObject"/> is not abstract type.</param>
 		/// <param name="schema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value may be <c>null</c>.</param>
 		/// <returns>
 		///		Newly created serializer object.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		protected void BuildSerializer( TContext context, PolymorphismSchema schema )
+		protected void BuildSerializer( TContext context, Type concreteType, PolymorphismSchema schema )
 		{
 #if DEBUG
 			Contract.Assert( !typeof( TObject ).IsArray );
@@ -121,13 +115,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 			{
 				case CollectionKind.Array:
 				{
-					this.BuildArraySerializer( context, traits, ( schema ?? PolymorphismSchema.Default ).ItemSchema );
+					this.BuildArraySerializer( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ).ItemSchema );
 					break;
 				}
 				case CollectionKind.Map:
 				{
 					var itemSchema = ( schema ?? PolymorphismSchema.Default );
-					this.BuildMapSerializer( context, traits, itemSchema.KeySchema, itemSchema.ItemSchema );
+					this.BuildMapSerializer( context, concreteType, traits, itemSchema.KeySchema, itemSchema.ItemSchema );
 					break;
 				}
 				case CollectionKind.NotCollection:
@@ -186,6 +180,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="context">
 		///		The <see cref="ISerializerCodeGenerationContext"/> which holds configuration and stores generated code constructs.
 		/// </param>
+		/// <param name="concreteType">The substitution type if <typeparamref name="TObject"/> is abstract type. <c>null</c> when <typeparamref name="TObject"/> is not abstract type.</param>
 		/// <param name="itemSchema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value must not be <c>null</c>.</param>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="context"/> is <c>null</c>.
@@ -196,7 +191,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <remarks>
 		///		This method will not do anything when <see cref="ISerializerCodeGenerationContext.BuiltInSerializerExists"/> returns <c>true</c> for <typeparamref name="TObject"/>.
 		/// </remarks>
-		public void BuildSerializerCode( ISerializerCodeGenerationContext context, PolymorphismSchema itemSchema )
+		public void BuildSerializerCode( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema )
 		{
 			if ( context == null )
 			{
@@ -209,7 +204,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				return;
 			}
 
-			this.BuildSerializerCodeCore( context, itemSchema );
+			this.BuildSerializerCodeCore( context, concreteType, itemSchema );
 		}
 
 		/// <summary>
@@ -219,11 +214,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		The <see cref="ISerializerCodeGenerationContext"/> which holds configuration and stores generated code constructs.
 		///		This value will not be <c>null</c>.
 		/// </param>
+		/// <param name="concreteType">The substitution type if <typeparamref name="TObject"/> is abstract type. <c>null</c> when <typeparamref name="TObject"/> is not abstract type.</param>
 		/// <param name="itemSchema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value must not be <c>null</c>.</param>
 		/// <exception cref="NotSupportedException">
 		///		This class does not support code generation.
 		/// </exception>
-		protected virtual void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, PolymorphismSchema itemSchema )
+		protected virtual void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema )
 		{
 			throw new NotSupportedException();
 		}

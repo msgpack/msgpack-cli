@@ -907,7 +907,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return CodeDomConstruct.Expression( underlyingType, new CodeCastExpression( underlyingType, enumValue.AsExpression() ) );
 		}
 
-		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, PolymorphismSchema itemSchema )
+		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema )
 		{
 			var asCodeDomContext = context as CodeDomContext;
 			if ( asCodeDomContext == null )
@@ -920,7 +920,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 			asCodeDomContext.Reset( typeof( TObject ) );
 
-			this.BuildSerializer( asCodeDomContext, itemSchema );
+			this.BuildSerializer( asCodeDomContext, concreteType, itemSchema );
 			this.Finish( asCodeDomContext, typeof( TObject ).GetIsEnum() );
 		}
 

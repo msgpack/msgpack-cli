@@ -26,10 +26,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 {
 	partial class SerializerBuilder<TContext, TConstruct, TObject>
 	{
-		private void BuildMapSerializer( TContext context, CollectionTraits traits, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
+		private void BuildMapSerializer( TContext context, Type concreteType, CollectionTraits traits, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
 		{
 			this.BuildMapPackTo( context, traits, keysSchema, valuesSchema );
-			this.BuildMapUnpackFrom( context );
+			this.BuildMapUnpackFrom( context, concreteType );
 			this.BuildMapUnpackTo( context, traits, keysSchema, valuesSchema );
 		}
 
@@ -121,25 +121,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 		}
 
-		private void BuildMapUnpackFrom( TContext context )
+		private void BuildMapUnpackFrom( TContext context, Type concreteType )
 		{
 			this.EmitMethodPrologue( context, SerializerMethod.UnpackFromCore );
 			TConstruct construct = null;
 			try
 			{
-				Type instanceType;
-				if ( typeof( TObject ).GetIsInterface() || typeof( TObject ).GetIsAbstract() )
-				{
-					instanceType = context.SerializationContext.DefaultCollectionTypes.GetConcreteType( typeof( TObject ) );
-					if ( instanceType == null )
-					{
-						throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( TObject ) );
-					}
-				}
-				else
-				{
-					instanceType = typeof( TObject );
-				}
+				var instanceType = concreteType ?? typeof( TObject );
 
 				/*
 				 *	if (!unpacker.IsMapHeader)

@@ -25,10 +25,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 {
 	partial class SerializerBuilder<TContext, TConstruct, TObject>
 	{
-		private void BuildArraySerializer( TContext context, CollectionTraits traits, PolymorphismSchema itemsSchema )
+		private void BuildArraySerializer( TContext context, Type concreteType, CollectionTraits traits, PolymorphismSchema itemsSchema )
 		{
 			this.BuildCollectionPackTo( context, traits, itemsSchema );
-			this.BuildCollectionUnpackFrom( context, traits, itemsSchema );
+			this.BuildCollectionUnpackFrom( context, concreteType, traits, itemsSchema );
 			if ( traits.AddMethod != null )
 			{
 				this.BuildCollectionUnpackTo( context, traits, itemsSchema );
@@ -99,26 +99,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return this.EmitInvokeMethodExpression( context, null, Metadata._Enumerable.ToArray1Method.MakeGenericMethod( elementType ), enumerable );
 		}
 
-		private void BuildCollectionUnpackFrom( TContext context, CollectionTraits traits, PolymorphismSchema itemsSchema )
+		private void BuildCollectionUnpackFrom( TContext context, Type concreteType, CollectionTraits traits, PolymorphismSchema itemsSchema )
 		{
 			this.EmitMethodPrologue( context, SerializerMethod.UnpackFromCore );
 
 			TConstruct construct = null;
 			try
 			{
-				Type instanceType;
-				if ( typeof( TObject ).GetIsInterface() || typeof( TObject ).GetIsAbstract() )
-				{
-					instanceType = context.SerializationContext.DefaultCollectionTypes.GetConcreteType( typeof( TObject ) );
-					if ( instanceType == null )
-					{
-						throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( TObject ) );
-					}
-				}
-				else
-				{
-					instanceType = typeof( TObject );
-				}
+				var instanceType = concreteType ?? typeof( TObject );
 
 				/*
 				 *	if (!unpacker.IsArrayHeader)

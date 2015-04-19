@@ -301,7 +301,7 @@ namespace MsgPack.Serialization
 #endif // !XAMIOS && !XAMDROID && !UNITY
 #endif // NETFX_CORE else
 #if !XAMIOS && !XAMDROID && !UNITY
-			return builder.BuildSerializerInstance( context, schema == null ? null : schema.FilterSelf() );
+			return builder.BuildSerializerInstance( context, concreteType, schema == null ? null : schema.FilterSelf() );
 #endif // !XAMIOS && !XAMDROID && !UNITY
 		}
 

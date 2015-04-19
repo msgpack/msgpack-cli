@@ -34,6 +34,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="context">
 		///		The <see cref="ISerializerCodeGenerationContext"/> which holds configuration and stores generated code constructs.
 		/// </param>
+		/// <param name="concreteType">The substitution type if builder's target type is abstract type. <c>null</c> when builder's target type is not abstract type.</param>
 		/// <param name="itemSchema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value must not be <c>null</c>.</param>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="context"/> is <c>null</c>.
@@ -41,6 +42,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <exception cref="NotSupportedException">
 		///		This class does not support code generation.
 		/// </exception>
-		void BuildSerializerCode( ISerializerCodeGenerationContext context, PolymorphismSchema itemSchema );
+		void BuildSerializerCode( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema );
 	}
 }

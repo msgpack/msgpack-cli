@@ -489,7 +489,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestIssue13_StringListMapAsMpoDictionary()
 		{
-			var target = MessagePackSerializer.CreateInternal<Dictionary<MessagePackObject, MessagePackObject>>( SerializationContext.Default, PolymorphismSchema.Default );
+			var target = MessagePackSerializer.Get<Dictionary<MessagePackObject, MessagePackObject>>( SerializationContext.Default, PolymorphismSchema.Default );
 			using ( var buffer = new MemoryStream( Convert.FromBase64String( "gadyZXN1bHRzkss/8AAAAAAAAMtAAAAAAAAAAA==" ) ) )
 			{
 				var result = target.Unpack( buffer );

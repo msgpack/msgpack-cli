@@ -41,7 +41,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		}
 
 #if !NETFX_CORE && !SILVERLIGHT
-		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, PolymorphismSchema itemSchema )
+		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema )
 		{
 			Contract.Requires( context != null );
 		}
