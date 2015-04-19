@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,10 +20,10 @@
 
 using System;
 
-namespace MsgPack.Serialization
+namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
-	///		Callback based <see cref="MessagePackSerializer{T}"/> to implement context-based serialization.
+	///		A helper <see cref="MessagePackSerializer{T}"/> for <see cref="DynamicMethodSerializerBuilder{TObject}"/>.
 	/// </summary>
 	/// <typeparam name="T">The type of target type.</typeparam>
 	internal sealed class CallbackMessagePackSerializer<T> : MessagePackSerializer<T>

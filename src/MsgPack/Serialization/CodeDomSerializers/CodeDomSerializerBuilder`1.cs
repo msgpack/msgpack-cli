@@ -32,6 +32,7 @@ using System.Runtime.Serialization;
 using System.Security;
 
 using MsgPack.Serialization.AbstractSerializers;
+using MsgPack.Serialization.CollectionSerializers;
 
 namespace MsgPack.Serialization.CodeDomSerializers
 {
@@ -48,6 +49,12 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override void EmitMethodPrologue( CodeDomContext context, EnumSerializerMethod method )
+		{
+			context.ResetMethodContext();
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		protected override void EmitMethodPrologue( CodeDomContext context, CollectionSerializerMethod method, MethodInfo declaration )
 		{
 			context.ResetMethodContext();
 		}
@@ -156,6 +163,70 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
 			codeMethod.Attributes = ( context.IsInternalToMsgPackLibrary ? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
 			// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
+			codeMethod.Statements.AddRange( construct.AsStatements().ToArray() );
+
+			context.DeclaringType.Members.Add( codeMethod );
+		}
+
+		protected override void EmitMethodEpilogue( CodeDomContext context, CollectionSerializerMethod method, CodeDomConstruct construct )
+		{
+			if ( construct == null )
+			{
+				return;
+			}
+			CodeMemberMethod codeMethod;
+			switch ( method )
+			{
+				case CollectionSerializerMethod.AddItem:
+				{
+					codeMethod =
+						new CodeMemberMethod
+						{
+							Name = "AddItem",
+						};
+					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( TObject ), "collection" ) );
+					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( CollectionTraitsOfThis.ElementType, "item" ) );
+
+					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+					codeMethod.Attributes = MemberAttributes.Family | MemberAttributes.Override;
+					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
+					break;
+				}
+				case CollectionSerializerMethod.CreateInstance:
+				{
+					codeMethod =
+						new CodeMemberMethod
+						{
+							Name = "CreateInstance",
+							ReturnType = new CodeTypeReference( typeof( TObject ) )
+						};
+					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( int ), "initialCapacity" ) );
+
+					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+					codeMethod.Attributes = MemberAttributes.Family | MemberAttributes.Override;
+					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
+					break;
+				}
+				case CollectionSerializerMethod.RestoreSchema:
+				{
+					codeMethod =
+						new CodeMemberMethod
+						{
+							Name = "RestoreSchema",
+							ReturnType = new CodeTypeReference( typeof( PolymorphismSchema ) )
+						};
+
+					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+					codeMethod.Attributes = MemberAttributes.Private | MemberAttributes.Static;
+					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
+					break;
+				}
+				default:
+				{
+					throw new ArgumentOutOfRangeException( "method" );
+				}
+			}
+
 			codeMethod.Statements.AddRange( construct.AsStatements().ToArray() );
 
 			context.DeclaringType.Members.Add( codeMethod );
@@ -624,7 +695,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return
 				CodeDomConstruct.Statement(
 					new CodeAssignStatement(
-						new CodeArrayIndexerExpression( array.AsExpression(), index.AsExpression() ), 
+						new CodeArrayIndexerExpression( array.AsExpression(), index.AsExpression() ),
 						value.AsExpression()
 					)
 				);
@@ -726,28 +797,29 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 		}
 
-		protected override CodeDomConstruct EmitStringSwitchStatement ( CodeDomContext context, CodeDomConstruct target, IDictionary<string, CodeDomConstruct> cases, CodeDomConstruct defaultCase ) {
+		protected override CodeDomConstruct EmitStringSwitchStatement( CodeDomContext context, CodeDomConstruct target, IDictionary<string, CodeDomConstruct> cases, CodeDomConstruct defaultCase )
+		{
 #if DEBUG
-			Contract.Assert(target.IsExpression);
-			Contract.Assert(defaultCase.IsStatement);
-			Contract.Assert(cases.Values.All(c => c.IsStatement));
+			Contract.Assert( target.IsExpression );
+			Contract.Assert( defaultCase.IsStatement );
+			Contract.Assert( cases.Values.All( c => c.IsStatement ) );
 #endif
 
 			var statements = cases.Aggregate<KeyValuePair<string, CodeDomConstruct>, CodeConditionStatement>(
 				null,
-				(current, caseStatement) =>
+				( current, caseStatement ) =>
 				new CodeConditionStatement(
 					new CodeBinaryOperatorExpression(
 						target.AsExpression(),
 						CodeBinaryOperatorType.ValueEquality,
-						new CodePrimitiveExpression(caseStatement.Key)
+						new CodePrimitiveExpression( caseStatement.Key )
 					),
 					caseStatement.Value.AsStatements().ToArray(),
 					current == null ? defaultCase.AsStatements().ToArray() : new CodeStatement[] { current }
 				)
 			);
 
-			return CodeDomConstruct.Statement(statements);
+			return CodeDomConstruct.Statement( statements );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
@@ -918,13 +990,13 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 			}
 
-			asCodeDomContext.Reset( typeof( TObject ) );
+			asCodeDomContext.Reset( typeof( TObject ), BaseClass );
 
 			this.BuildSerializer( asCodeDomContext, concreteType, itemSchema );
 			this.Finish( asCodeDomContext, typeof( TObject ).GetIsEnum() );
 		}
 
-		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( CodeDomContext codeGenerationContext )
+		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( CodeDomContext codeGenerationContext, PolymorphismSchema schema )
 		{
 			this.Finish( codeGenerationContext, false );
 			var targetType = PrepareSerializerConstructorCreation( codeGenerationContext );
@@ -980,7 +1052,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							CompilerOptions = "/optimize+"
 						}
 #endif
-						,
+,
 						cu
 					);
 				var errors = cr.Errors.OfType<CompilerError>().Where( e => !e.IsWarning ).ToArray();
@@ -1124,6 +1196,24 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						)
 					);
 				}
+				else if (
+					BaseClass.GetConstructors( BindingFlags.NonPublic | BindingFlags.Instance )
+						.Any( c => c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( CollectionSerializerHelpers.CollectionConstructorTypes ) )
+					)
+				{
+					ctor.BaseConstructorArgs.Add(
+						new CodeMethodInvokeExpression(
+							new CodeMethodReferenceExpression(
+								new CodeTypeReferenceExpression( context.DeclaringType.Name ),
+								"RestoreSchema"
+							)
+						)
+					);
+
+#if DEBUG
+					Contract.Assert( context.GetDependentSerializers().Count == 0, "Dependent serializers are found in collection serializer." );
+#endif // DEBUG
+				}
 
 				int schemaNumber = -1;
 				foreach ( var dependentSerializer in context.GetDependentSerializers() )
@@ -1157,7 +1247,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					}
 					else
 					{
-
 						CodeExpression schemaExpression;
 						if ( dependentSerializer.Key.PolymorphismSchema == null )
 						{
@@ -1309,7 +1398,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		protected override CodeDomContext CreateCodeGenerationContextForSerializerCreation( SerializationContext context )
 		{
 			var result = new CodeDomContext( context, new SerializerCodeGenerationConfiguration() );
-			result.Reset( typeof( TObject ) );
+			result.Reset( typeof( TObject ), BaseClass );
 			return result;
 		}
 	}

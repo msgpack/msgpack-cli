@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -41,6 +42,58 @@ namespace MsgPack.Serialization.ExpressionSerializers
 	/// <typeparam name="TObject">The type of the serializing object.</typeparam>
 	internal sealed class ExpressionTreeSerializerBuilder<TObject> : SerializerBuilder<ExpressionTreeContext, ExpressionConstruct, TObject>
 	{
+		private static readonly Type SerializerClass = InitializeSerializerClass();
+
+		private static Type InitializeSerializerClass()
+		{
+			switch ( CollectionTraitsOfThis.DetailedCollectionType )
+			{
+				case CollectionDetailedKind.GenericEnumerable:
+				{
+					return typeof( ExpressionCallbackEnumerableMessagePackSerializer<,> ).MakeGenericType( typeof( TObject ), CollectionTraitsOfThis.ElementType );
+				}
+				case CollectionDetailedKind.GenericCollection:
+				case CollectionDetailedKind.GenericSet:
+				case CollectionDetailedKind.GenericList:
+				{
+					return typeof( ExpressionCallbackCollectionMessagePackSerializer<,> ).MakeGenericType( typeof( TObject ), CollectionTraitsOfThis.ElementType );
+				}
+				case CollectionDetailedKind.GenericDictionary:
+				{
+					var keyValuePairGenericArguments = CollectionTraitsOfThis.ElementType.GetGenericArguments();
+					return
+						typeof( ExpressionCallbackDictionaryMessagePackSerializer<,,> ).MakeGenericType(
+							typeof( TObject ),
+							keyValuePairGenericArguments[ 0 ],
+							keyValuePairGenericArguments[ 1 ]
+						);
+				}
+				case CollectionDetailedKind.NonGenericEnumerable:
+				{
+					return typeof( ExpressionCallbackNonGenericEnumerableMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
+				}
+				case CollectionDetailedKind.NonGenericCollection:
+				{
+					return typeof( ExpressionCallbackNonGenericCollectionMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
+				}
+				case CollectionDetailedKind.NonGenericList:
+				{
+					return typeof( ExpressionCallbackNonGenericListMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
+				}
+				case CollectionDetailedKind.NonGenericDictionary:
+				{
+					return typeof( ExpressionCallbackNonGenericDictionaryMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
+				}
+				default:
+				{
+					return
+						typeof( TObject ).GetIsEnum()
+							? typeof( ExpressionCallbackEnumMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) )
+							: typeof( ExpressionCallbackMessagePackSerializer<TObject> );
+				}
+			}
+		}
+
 #if !NETFX_CORE && !SILVERLIGHT
 		private readonly TypeBuilder _typeBuilder;
 #endif
@@ -62,15 +115,21 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override void EmitMethodPrologue( ExpressionTreeContext context, SerializerMethod method )
 		{
-			context.Reset( typeof( TObject ) );
-			context.SetCurrentMethod( typeof( TObject ), method );
+			context.Reset( typeof( TObject ), BaseClass );
+			context.SetCurrentMethod( SerializerClass, typeof( TObject ), method );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override void EmitMethodPrologue( ExpressionTreeContext context, EnumSerializerMethod method )
 		{
-			context.Reset( typeof( TObject ) );
-			context.SetCurrentMethod( typeof( TObject ), method );
+			context.Reset( typeof( TObject ), BaseClass );
+			context.SetCurrentMethod( SerializerClass, typeof( TObject ), method );
+		}
+
+		protected override void EmitMethodPrologue( ExpressionTreeContext context, CollectionSerializerMethod method, MethodInfo declaration )
+		{
+			context.Reset( typeof( TObject ), BaseClass );
+			context.SetCurrentMethod( SerializerClass, typeof( TObject ), method );
 		}
 
 		protected override void EmitMethodEpilogue( ExpressionTreeContext context, SerializerMethod method, ExpressionConstruct construct )
@@ -80,7 +139,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				return;
 			}
 
-			context.SetDelegate( method, this.EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method ), method, construct ) );
+			context.SetDelegate( method, this.EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method, SerializerClass ), method, construct ) );
 
 		}
 
@@ -92,6 +151,16 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 
 			context.SetDelegate( method, this.EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method ), method, construct ) );
+		}
+
+		protected override void EmitMethodEpilogue( ExpressionTreeContext context, CollectionSerializerMethod method, ExpressionConstruct construct )
+		{
+			if ( construct == null )
+			{
+				return;
+			}
+
+			context.SetDelegate( method, this.EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method, SerializerClass, CollectionTraitsOfThis ), method, construct ) );
 		}
 
 #if NETFX_CORE || SILVERLIGHT
@@ -483,8 +552,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		{
 #if DEBUG
 			Contract.Assert(
-				elseExpression == null 
-				|| thenExpression.ContextType == typeof( void ) 
+				elseExpression == null
+				|| thenExpression.ContextType == typeof( void )
 				|| elseExpression.ContextType == typeof( void )
 				|| thenExpression.ContextType == elseExpression.ContextType,
 				thenExpression.ContextType + " != " + ( elseExpression == null ? "(null)" : elseExpression.ContextType.FullName )
@@ -597,7 +666,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( ExpressionTreeContext codeGenerationContext )
+		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( ExpressionTreeContext codeGenerationContext, PolymorphismSchema schema )
 		{
 #if !NETFX_CORE && !SILVERLIGHT
 			if ( SerializerDebugging.DumpEnabled )
@@ -607,17 +676,139 @@ namespace MsgPack.Serialization.ExpressionSerializers
 #endif
 
 			// Get at this point to prevent unexpected context change.
-			var packToCore = codeGenerationContext.GetPackToCore<TObject>();
-			var unpackFromCore = codeGenerationContext.GetUnpackFromCore<TObject>();
-			var unpackToCore = codeGenerationContext.GetUnpackToCore<TObject>();
-			return
-				context =>
-					new ExpressionCallbackMessagePackSerializer<TObject>(
-						context,
-						packToCore,
-						unpackFromCore,
-						unpackToCore
-					);
+			var packToCore = codeGenerationContext.GetPackToCore();
+			var unpackFromCore = codeGenerationContext.GetUnpackFromCore();
+			var unpackToCore = codeGenerationContext.GetUnpackToCore();
+			var createInstance = codeGenerationContext.GetCreateInstance();
+			var addItem = codeGenerationContext.GetAddItem();
+
+			switch ( CollectionTraitsOfThis.DetailedCollectionType )
+			{
+				case CollectionDetailedKind.NonGenericEnumerable:
+				{
+					var factory =
+						Activator.CreateInstance(
+							typeof( NonGenericEnumerableCallbackSerializerFactory<> ).MakeGenericType( typeof( TObject ), typeof( TObject ) )
+						) as IEnumerableCallbackSerializerFactory;
+#if DEBUG
+					Contract.Assert( factory != null );
+#endif // DEBUG
+
+					return
+						context =>
+							factory.Create( context, schema, createInstance, unpackFromCore, addItem ) as MessagePackSerializer<TObject>;
+				}
+				case CollectionDetailedKind.NonGenericCollection:
+				{
+					var factory =
+						Activator.CreateInstance(
+							typeof( NonGenericCollectionCallbackSerializerFactory<> ).MakeGenericType( typeof( TObject ), typeof( TObject ) )
+						) as IEnumerableCallbackSerializerFactory;
+#if DEBUG
+					Contract.Assert( factory != null );
+#endif // DEBUG
+
+					return
+						context =>
+							factory.Create( context, schema, createInstance, unpackFromCore, addItem ) as MessagePackSerializer<TObject>;
+				}
+				case CollectionDetailedKind.NonGenericList:
+				{
+					var factory =
+						Activator.CreateInstance(
+							typeof( NonGenericListCallbackSerializerFactory<> ).MakeGenericType( typeof( TObject ), typeof( TObject ) )
+						) as ICollectionCallbackSerializerFactory;
+#if DEBUG
+					Contract.Assert( factory != null );
+#endif // DEBUG
+
+					return
+						context =>
+							factory.Create( context, schema, createInstance ) as MessagePackSerializer<TObject>;
+				}
+				case CollectionDetailedKind.NonGenericDictionary:
+				{
+					var factory =
+						Activator.CreateInstance(
+							typeof( NonGenericDictionaryCallbackSerializerFactory<> ).MakeGenericType( typeof( TObject ), typeof( TObject ) )
+						) as ICollectionCallbackSerializerFactory;
+#if DEBUG
+					Contract.Assert( factory != null );
+#endif // DEBUG
+
+					return
+						context =>
+							factory.Create( context, schema, createInstance ) as MessagePackSerializer<TObject>;
+				}
+				case CollectionDetailedKind.GenericEnumerable:
+				{
+					var factory =
+						Activator.CreateInstance(
+							typeof( EnumerableCallbackSerializerFactory<,> ).MakeGenericType( typeof( TObject ), typeof( TObject ), CollectionTraitsOfThis.ElementType )
+						) as IEnumerableCallbackSerializerFactory;
+#if DEBUG
+					Contract.Assert( factory != null );
+#endif // DEBUG
+
+					return
+						context =>
+							factory.Create( context, schema, createInstance, unpackFromCore, addItem ) as MessagePackSerializer<TObject>;
+				}
+				case CollectionDetailedKind.GenericCollection:
+#if !NETFX_35 && !UNITY
+				case CollectionDetailedKind.GenericSet:
+#endif // !NETFX_35 && !UNITY
+				case CollectionDetailedKind.GenericList:
+				{
+					var factory =
+						Activator.CreateInstance(
+							typeof( CollectionCallbackSerializerFactory<,> ).MakeGenericType( typeof( TObject ), typeof( TObject ), CollectionTraitsOfThis.ElementType )
+						) as ICollectionCallbackSerializerFactory;
+#if DEBUG
+					Contract.Assert( factory != null );
+#endif // DEBUG
+
+					return
+						context =>
+							factory.Create( context, schema, createInstance ) as MessagePackSerializer<TObject>;
+				}
+				case CollectionDetailedKind.GenericDictionary:
+				{
+					var keyValuePairGenericArguments = CollectionTraitsOfThis.ElementType.GetGenericArguments();
+					var factory =
+						Activator.CreateInstance(
+							typeof( DictionaryCallbackSerializerFactory<,,> ).MakeGenericType(
+								typeof( TObject ), 
+								typeof( TObject ),
+								keyValuePairGenericArguments[ 0 ],
+								keyValuePairGenericArguments[ 1 ]
+							)
+						) as ICollectionCallbackSerializerFactory;
+#if DEBUG
+					Contract.Assert( factory != null );
+#endif // DEBUG
+
+					return
+						context =>
+							factory.Create( context, schema, createInstance ) as MessagePackSerializer<TObject>;
+				}
+				default:
+				{
+					var factory =
+						Activator.CreateInstance(
+							typeof( CallbackSerializerFactory<> ).MakeGenericType(
+								typeof( TObject ), typeof( TObject )
+							)
+						) as ICallbackSerializerFactory;
+#if DEBUG
+					Contract.Assert( factory != null );
+#endif // DEBUG
+					return
+						context =>
+							factory.Create( context, packToCore, unpackFromCore, unpackToCore ) as MessagePackSerializer<TObject>;
+				}
+			}
+
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
@@ -654,6 +845,297 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		protected override ExpressionTreeContext CreateCodeGenerationContextForSerializerCreation( SerializationContext context )
 		{
 			return new ExpressionTreeContext( context );
+		}
+
+		private interface ICallbackSerializerFactory
+		{
+			object Create(
+				SerializationContext context,
+				Delegate packTo,
+				Delegate unpackFrom,
+				Delegate unpackTo
+			);
+		}
+
+		private sealed class CallbackSerializerFactory<T> : ICallbackSerializerFactory
+		{
+			public CallbackSerializerFactory() { }
+
+			private object Create(
+				SerializationContext context,
+				Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T> packTo,
+				Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackFrom,
+				Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackTo
+			)
+			{
+				return
+					new ExpressionCallbackMessagePackSerializer<T>(
+						context,
+						packTo,
+						unpackFrom,
+						unpackTo
+					);
+			}
+
+			public object Create(
+				SerializationContext context,
+				Delegate packTo,
+				Delegate unpackFrom,
+				Delegate unpackTo
+			)
+			{
+				return
+					this.Create(
+						context,
+						( Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T> )packTo,
+						( Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> )unpackFrom,
+						( Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> )unpackTo
+					);
+			}
+		}
+
+		private interface IEnumerableCallbackSerializerFactory
+		{
+			object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Delegate createInstance,
+				Delegate unpackFrom,
+				Delegate addItem
+			);
+		}
+
+		private abstract class EnumerableCallbackSerializerFactoryBase<TCollection, TItem, TSerializer> :
+			IEnumerableCallbackSerializerFactory
+		{
+			protected abstract object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Func<TSerializer, SerializationContext, int, TCollection> createInstance,
+				Func<TSerializer, SerializationContext, Unpacker, TCollection> unpackFrom,
+				Action<TSerializer, SerializationContext, TCollection, TItem> addItem
+			);
+
+			public object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Delegate createInstance,
+				Delegate unpackFrom,
+				Delegate addItem
+			)
+			{
+				return
+					this.Create(
+						context,
+						schema,
+						( Func<TSerializer, SerializationContext, int, TCollection> )createInstance,
+						( Func<TSerializer, SerializationContext, Unpacker, TCollection> )unpackFrom,
+						( Action<TSerializer, SerializationContext, TCollection, TItem> )addItem
+					);
+
+			}
+		}
+
+		private sealed class EnumerableCallbackSerializerFactory<TCollection, TItem> : EnumerableCallbackSerializerFactoryBase<TCollection, TItem, ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>>
+			where TCollection : IEnumerable<TItem>
+		{
+			public EnumerableCallbackSerializerFactory() { }
+
+			protected override object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Func<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, SerializationContext, int, TCollection> createInstance,
+				Func<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, SerializationContext, Unpacker, TCollection> unpackFrom,
+				Action<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, SerializationContext, TCollection, TItem> addItem
+			)
+			{
+				return
+					new ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>(
+						context,
+						schema,
+						createInstance,
+						unpackFrom,
+						addItem
+					);
+			}
+		}
+
+		private sealed class NonGenericEnumerableCallbackSerializerFactory<TCollection> : EnumerableCallbackSerializerFactoryBase<TCollection, object, ExpressionCallbackNonGenericEnumerableMessagePackSerializer<TCollection>>
+			where TCollection : IEnumerable
+		{
+			public NonGenericEnumerableCallbackSerializerFactory() { }
+
+			protected override object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Func<ExpressionCallbackNonGenericEnumerableMessagePackSerializer<TCollection>, SerializationContext, int, TCollection> createInstance,
+				Func<ExpressionCallbackNonGenericEnumerableMessagePackSerializer<TCollection>, SerializationContext, Unpacker, TCollection> unpackFrom,
+				Action<ExpressionCallbackNonGenericEnumerableMessagePackSerializer<TCollection>, SerializationContext, TCollection, object> addItem
+			)
+			{
+				return
+					new ExpressionCallbackNonGenericEnumerableMessagePackSerializer<TCollection>(
+						context,
+						schema,
+						createInstance,
+						unpackFrom,
+						addItem
+					);
+			}
+		}
+
+		private sealed class NonGenericCollectionCallbackSerializerFactory<TCollection> : EnumerableCallbackSerializerFactoryBase<TCollection, object, ExpressionCallbackNonGenericCollectionMessagePackSerializer<TCollection>>
+			where TCollection : ICollection
+		{
+			public NonGenericCollectionCallbackSerializerFactory() { }
+
+			protected override object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Func<ExpressionCallbackNonGenericCollectionMessagePackSerializer<TCollection>, SerializationContext, int, TCollection> createInstance,
+				Func<ExpressionCallbackNonGenericCollectionMessagePackSerializer<TCollection>, SerializationContext, Unpacker, TCollection> unpackFrom,
+				Action<ExpressionCallbackNonGenericCollectionMessagePackSerializer<TCollection>, SerializationContext, TCollection, object> addItem
+			)
+			{
+				return
+					new ExpressionCallbackNonGenericCollectionMessagePackSerializer<TCollection>(
+						context,
+						schema,
+						createInstance,
+						unpackFrom,
+						addItem
+					);
+			}
+		}
+
+		private interface ICollectionCallbackSerializerFactory
+		{
+			object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Delegate createInstance
+			);
+		}
+
+		private abstract class CollectionCallbackSerializerFactoryBase<TCollection, TSerializer> : ICollectionCallbackSerializerFactory
+		{
+			protected abstract object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Func<TSerializer, SerializationContext, int, TCollection> createInstance
+			);
+
+			public object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Delegate createInstance
+			)
+			{
+				return
+					this.Create(
+						context,
+						schema,
+						( Func<TSerializer, SerializationContext, int, TCollection> )createInstance
+					);
+
+			}
+		}
+
+		private sealed class CollectionCallbackSerializerFactory<TCollection, TItem>
+			: CollectionCallbackSerializerFactoryBase<TCollection, ExpressionCallbackCollectionMessagePackSerializer<TCollection, TItem>>
+			where TCollection : ICollection<TItem>
+		{
+			public CollectionCallbackSerializerFactory() { }
+
+			protected override object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Func<ExpressionCallbackCollectionMessagePackSerializer<TCollection, TItem>, SerializationContext, int, TCollection> createInstance
+			)
+			{
+				return
+					new ExpressionCallbackCollectionMessagePackSerializer<TCollection, TItem>(
+						context,
+						schema,
+						createInstance
+					);
+			}
+		}
+
+		private sealed class NonGenericListCallbackSerializerFactory<TCollection>
+			: CollectionCallbackSerializerFactoryBase<TCollection, ExpressionCallbackNonGenericListMessagePackSerializer<TCollection>>
+			where TCollection : IList
+		{
+			public NonGenericListCallbackSerializerFactory() { }
+
+			protected override object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Func<ExpressionCallbackNonGenericListMessagePackSerializer<TCollection>, SerializationContext, int, TCollection> createInstance
+			)
+			{
+				return
+					new ExpressionCallbackNonGenericListMessagePackSerializer<TCollection>(
+						context,
+						schema,
+						createInstance
+					);
+			}
+		}
+
+		private sealed class NonGenericDictionaryCallbackSerializerFactory<TDictionary>
+			: CollectionCallbackSerializerFactoryBase<TDictionary, ExpressionCallbackNonGenericDictionaryMessagePackSerializer<TDictionary>>
+			where TDictionary : IDictionary
+		{
+			public NonGenericDictionaryCallbackSerializerFactory() { }
+
+			protected override object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Func<ExpressionCallbackNonGenericDictionaryMessagePackSerializer<TDictionary>, SerializationContext, int, TDictionary> createInstance
+			)
+			{
+				return
+					new ExpressionCallbackNonGenericDictionaryMessagePackSerializer<TDictionary>(
+						context,
+						schema,
+						createInstance
+					);
+			}
+		}
+
+		private sealed class DictionaryCallbackSerializerFactory<TDictionary, TKey, TValue> : ICollectionCallbackSerializerFactory
+			where TDictionary : IDictionary<TKey, TValue>
+		{
+			public DictionaryCallbackSerializerFactory() { }
+
+			private object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Func<ExpressionCallbackDictionaryMessagePackSerializer<TDictionary, TKey, TValue>, SerializationContext, int, TDictionary> createInstance
+			)
+			{
+				return
+					new ExpressionCallbackDictionaryMessagePackSerializer<TDictionary, TKey, TValue>(
+						context,
+						schema,
+						createInstance
+					);
+			}
+
+			public object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Delegate createInstance
+			)
+			{
+				return
+					this.Create(
+						context,
+						schema,
+						( Func<ExpressionCallbackDictionaryMessagePackSerializer<TDictionary, TKey, TValue>, SerializationContext, int, TDictionary> )createInstance
+					);
+			}
 		}
 	}
 }

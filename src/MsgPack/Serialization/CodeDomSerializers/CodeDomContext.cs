@@ -186,13 +186,11 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		///		Resets internal states for new type.
 		/// </summary>
 		/// <param name="targetType">Type of the target.</param>
-		protected override void ResetCore( Type targetType )
+		/// <param name="baseClass">Type of base class of the target.</param>
+		protected override void ResetCore( Type targetType, Type baseClass )
 		{
 			var declaringType = new CodeTypeDeclaration( IdentifierUtility.EscapeTypeName( targetType ) + "Serializer" );
-			declaringType.BaseTypes.Add(
-				targetType.GetIsEnum()
-				? typeof( EnumMessagePackSerializer<> ).MakeGenericType( targetType )
-				: typeof( MessagePackSerializer<> ).MakeGenericType( targetType ) );
+			declaringType.BaseTypes.Add( baseClass );
 			declaringType.CustomAttributes.Add(
 				new CodeAttributeDeclaration(
 					new CodeTypeReference( typeof( GeneratedCodeAttribute ) ),
@@ -214,6 +212,13 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			this.PackToTarget = CodeDomConstruct.Parameter( targetType, "objectTree" );
 			this.Unpacker = CodeDomConstruct.Parameter( typeof( Unpacker ), "unpacker" );
 			this.UnpackToTarget = CodeDomConstruct.Parameter( targetType, "collection" );
+			var traits = targetType.GetCollectionTraits();
+			if ( traits.ElementType != null )
+			{
+				this.CollectionToBeAdded = CodeDomConstruct.Parameter( targetType, "collection" );
+				this.ItemToAdd = CodeDomConstruct.Parameter( traits.ElementType, "item" );
+				this.InitialCapacity = CodeDomConstruct.Parameter( typeof( int ), "initialCapacity" );
+			}
 		}
 
 		/// <summary>

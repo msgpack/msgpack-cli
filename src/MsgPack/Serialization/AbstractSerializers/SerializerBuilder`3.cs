@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@
 
 using System;
 using System.Diagnostics.Contracts;
+
+using MsgPack.Serialization.CollectionSerializers;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -40,6 +42,84 @@ namespace MsgPack.Serialization.AbstractSerializers
 	{
 		private readonly SerializerBuilderNilImplicationHandler _nilImplicationHandler =
 			new SerializerBuilderNilImplicationHandler();
+
+		// ReSharper disable once StaticMemberInGenericType
+		/// <summary>
+		///		The <see cref="CollectionTraits"/> cache of <typeparamref name="TObject"/>.
+		/// </summary>
+		protected static readonly CollectionTraits CollectionTraitsOfThis;
+
+		// ReSharper disable once StaticMemberInGenericType
+		/// <summary>
+		///		A base class of the generating serializer.
+		/// </summary>
+		protected static readonly Type BaseClass;
+
+		static SerializerBuilder()
+		{
+			var traits = typeof( TObject ).GetCollectionTraits();
+			CollectionTraitsOfThis = traits;
+#if DEBUG && !UNITY
+			Contract.Assert( traits.DetailedCollectionType != CollectionDetailedKind.Array );
+			Contract.Assert( traits.DetailedCollectionType != CollectionDetailedKind.Unserializable );
+#endif // DEBUG
+			switch ( traits.DetailedCollectionType )
+			{
+				case CollectionDetailedKind.GenericEnumerable:
+				{
+					BaseClass = typeof( EnumerableMessagePackSerializer<,> ).MakeGenericType( typeof( TObject ), traits.ElementType );
+					break;
+				}
+				case CollectionDetailedKind.GenericCollection:
+#if !NETFX_35 && !UNITY
+				case CollectionDetailedKind.GenericSet:
+#endif // !NETFX_35 && !UNITY
+				case CollectionDetailedKind.GenericList:
+				{
+					BaseClass = typeof( CollectionMessagePackSerializer<,> ).MakeGenericType( typeof( TObject ), traits.ElementType );
+					break;
+				}
+				case CollectionDetailedKind.GenericDictionary:
+				{
+					var keyValuePairGenericArguments = traits.ElementType.GetGenericArguments();
+					BaseClass =
+						typeof( DictionaryMessagePackSerializer<,,> ).MakeGenericType(
+							typeof( TObject ),
+							keyValuePairGenericArguments[ 0 ],
+							keyValuePairGenericArguments[ 1 ]
+						);
+					break;
+				}
+				case CollectionDetailedKind.NonGenericEnumerable:
+				{
+					BaseClass = typeof( NonGenericEnumerableMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
+					break;
+				}
+				case CollectionDetailedKind.NonGenericCollection:
+				{
+					BaseClass = typeof( NonGenericCollectionMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
+					break;
+				}
+				case CollectionDetailedKind.NonGenericList:
+				{
+					BaseClass = typeof( NonGenericListMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
+					break;
+				}
+				case CollectionDetailedKind.NonGenericDictionary:
+				{
+					BaseClass = typeof( NonGenericDictionaryMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
+					break;
+				}
+				default:
+				{
+					BaseClass =
+						typeof( TObject ).GetIsEnum()
+							? typeof( EnumMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) )
+							: typeof( MessagePackSerializer<TObject> );
+					break;
+				}
+			}
+		} 
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializerBuilder{TContext, TConstruct, TObject}"/> class.
@@ -69,7 +149,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			else
 			{
 				this.BuildSerializer( codeGenerationContext, concreteType, schema );
-				constructor = this.CreateSerializerConstructor( codeGenerationContext );
+				constructor = this.CreateSerializerConstructor( codeGenerationContext, schema );
 			}
 
 			if ( constructor != null )
@@ -110,18 +190,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Assert( !typeof( TObject ).IsArray );
 #endif
 
-			var traits = typeof( TObject ).GetCollectionTraits();
-			switch ( traits.CollectionType )
+			switch ( CollectionTraitsOfThis.CollectionType )
 			{
 				case CollectionKind.Array:
-				{
-					this.BuildArraySerializer( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ).ItemSchema );
-					break;
-				}
 				case CollectionKind.Map:
 				{
-					var itemSchema = ( schema ?? PolymorphismSchema.Default );
-					this.BuildMapSerializer( context, concreteType, traits, itemSchema.KeySchema, itemSchema.ItemSchema );
+					this.BuildCollectionSerializer( context, concreteType, schema );
 					break;
 				}
 				case CollectionKind.NotCollection:
@@ -152,12 +226,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Creates the serializer type and returns its constructor.
 		/// </summary>
 		/// <param name="codeGenerationContext">The code generation context.</param>
+		/// <param name="schema">The polymorphism schema of this.</param>
 		/// <returns>
 		///		<see cref="Func{T, TResult}"/> which refers newly created constructor.
 		///		This value will not be <c>null</c>.
 		/// </returns>
 		protected abstract Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor(
-			TContext codeGenerationContext
+			TContext codeGenerationContext,
+			PolymorphismSchema schema
 		);
 
 		/// <summary>

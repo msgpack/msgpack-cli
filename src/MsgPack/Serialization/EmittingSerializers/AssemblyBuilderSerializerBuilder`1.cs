@@ -120,7 +120,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				new AssemblyBuilderEmittingContext(
 					context,
 					typeof( TObject ),
-					() => SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( TObject ), EmitterFlavor.FieldBased ),
+					() => SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( TObject ), BaseClass, EmitterFlavor.FieldBased ),
 					() => SerializationMethodGeneratorManager.Get().CreateEnumEmitter( typeof( TObject ), EmitterFlavor.FieldBased )
 				);
 		}
@@ -139,7 +139,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			var emittingContext =
 				asAssemblyBuilderCodeGenerationContext.CreateEmittingContext(
-					typeof( TObject )
+					typeof( TObject ),
+					BaseClass
 				);
 
 			this.BuildSerializer( emittingContext, concreteType, itemSchema );

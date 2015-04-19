@@ -47,7 +47,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		}
 #endif
 
-		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( TContext codeGenerationContext )
+		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( TContext codeGenerationContext, PolymorphismSchema schema )
 		{
 			Contract.Requires( codeGenerationContext != null );
 			Contract.Ensures( Contract.Result<Func<SerializationContext, MessagePackSerializer<TObject>>>() != null );
@@ -67,10 +67,17 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Requires( Enum.IsDefined( typeof( SerializationMethod ), method ) );
 		}
 
-		protected override void EmitMethodPrologue( TContext context, EnumSerializerMethod enumSerializerMethod )
+		protected override void EmitMethodPrologue( TContext context, EnumSerializerMethod method )
 		{
 			Contract.Requires( context != null );
-			Contract.Requires( Enum.IsDefined( typeof( EnumSerializerMethod ), enumSerializerMethod ) );
+			Contract.Requires( Enum.IsDefined( typeof( EnumSerializerMethod ), method ) );
+		}
+
+		protected override void EmitMethodPrologue( TContext context, CollectionSerializerMethod method, MethodInfo declaration )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( Enum.IsDefined( typeof( CollectionSerializerMethod ), method ) );
+			Contract.Requires( declaration != null );
 		}
 
 		protected override void EmitMethodEpilogue( TContext context, SerializerMethod method, TConstruct construct )
@@ -80,10 +87,17 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Requires( construct != null );
 		}
 
-		protected override void EmitMethodEpilogue( TContext context, EnumSerializerMethod enumSerializerMethod, TConstruct construct )
+		protected override void EmitMethodEpilogue( TContext context, EnumSerializerMethod method, TConstruct construct )
 		{
 			Contract.Requires( context != null );
-			Contract.Requires( Enum.IsDefined( typeof( EnumSerializerMethod ), enumSerializerMethod ) );
+			Contract.Requires( Enum.IsDefined( typeof( EnumSerializerMethod ), method ) );
+			Contract.Requires( construct != null );
+		}
+
+		protected override void EmitMethodEpilogue( TContext context, CollectionSerializerMethod method, TConstruct construct )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( Enum.IsDefined( typeof( CollectionSerializerMethod ), method ) );
 			Contract.Requires( construct != null );
 		}
 

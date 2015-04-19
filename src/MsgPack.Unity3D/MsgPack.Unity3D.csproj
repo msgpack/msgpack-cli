@@ -180,6 +180,9 @@
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\CollectionMessagePackSerializer`2.cs">
       <Link>Serialization\CollectionSerializers\CollectionMessagePackSerializer`2.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\CollectionSerializerHelpers.cs">
+      <Link>Serialization\CollectionSerializers\CollectionSerializerHelpers.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\DictionaryMessagePackSerializer`3.cs">
       <Link>Serialization\CollectionSerializers\DictionaryMessagePackSerializer`3.cs</Link>
     </Compile>

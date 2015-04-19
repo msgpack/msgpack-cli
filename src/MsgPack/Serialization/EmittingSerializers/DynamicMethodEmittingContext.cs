@@ -55,7 +55,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			: base( context, emitterFactory, enumEmitterFactory )
 		{
 			this._context = ILConstruct.Argument( 0, typeof( SerializationContext ), "context" );
-			this.Reset( targetType );
+			this.Reset( targetType, null );
 		}
 	}
 }

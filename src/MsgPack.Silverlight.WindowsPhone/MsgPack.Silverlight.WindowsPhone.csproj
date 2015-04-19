@@ -226,6 +226,9 @@
     <Compile Include="..\MsgPack\ReflectionAbstractions.cs">
       <Link>ReflectionAbstractions.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\CollectionSerializerMethod.cs">
+      <Link>Serialization\AbstractSerializers\CollectionSerializerMethod.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\EnumSerializerMethod.cs">
       <Link>Serialization\AbstractSerializers\EnumSerializerMethod.cs</Link>
     </Compile>
@@ -238,8 +241,8 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilderContract`3.cs">
       <Link>Serialization\AbstractSerializers\SerializerBuilderContract`3.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Array.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Array.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Collection.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Collection.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.CommonConstructs.cs">
       <Link>Serialization\AbstractSerializers\SerializerBuilder`3.CommonConstructs.cs</Link>
@@ -249,9 +252,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs">
       <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Map.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Map.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs">
       <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs</Link>
@@ -268,12 +268,6 @@
     <Compile Include="..\MsgPack\Serialization\BoxedEnumMemberSerializationMethod.cs">
       <Link>Serialization\BoxedEnumMemberSerializationMethod.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\CallbackEnumMessagePackSerializer.cs">
-      <Link>Serialization\CallbackEnumMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\CallbackMessagePackSerializer`1.cs">
-      <Link>Serialization\CallbackMessagePackSerializer`1.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionDetailedKind.cs">
       <Link>Serialization\CollectionDetailedKind.cs</Link>
     </Compile>
@@ -282,6 +276,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\CollectionMessagePackSerializer`2.cs">
       <Link>Serialization\CollectionSerializers\CollectionMessagePackSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\CollectionSerializerHelpers.cs">
+      <Link>Serialization\CollectionSerializers\CollectionSerializerHelpers.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\DictionaryMessagePackSerializer`3.cs">
       <Link>Serialization\CollectionSerializers\DictionaryMessagePackSerializer`3.cs</Link>
@@ -454,11 +451,32 @@
     <Compile Include="..\MsgPack\Serialization\EnumSerializationMethod.cs">
       <Link>Serialization\EnumSerializationMethod.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackCollectionMessagePackSerializer`2.cs">
+      <Link>Serialization\ExpressionSerializers\ExpressionCallbackCollectionMessagePackSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackDictionaryMessagePackSerializer`3.cs">
+      <Link>Serialization\ExpressionSerializers\ExpressionCallbackDictionaryMessagePackSerializer`3.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackEnumerableMessagePackSerializer`2.cs">
+      <Link>Serialization\ExpressionSerializers\ExpressionCallbackEnumerableMessagePackSerializer`2.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackEnumMessagePackSerializer`1.cs">
       <Link>Serialization\ExpressionSerializers\ExpressionCallbackEnumMessagePackSerializer`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackMessagePackSerializer`1.cs">
       <Link>Serialization\ExpressionSerializers\ExpressionCallbackMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackNonGenericCollectionMessagePackSerializer`1.cs">
+      <Link>Serialization\ExpressionSerializers\ExpressionCallbackNonGenericCollectionMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackNonGenericDictionaryMessagePackSerializer`1.cs">
+      <Link>Serialization\ExpressionSerializers\ExpressionCallbackNonGenericDictionaryMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackNonGenericEnumerableMessagePackSerializer`1.cs">
+      <Link>Serialization\ExpressionSerializers\ExpressionCallbackNonGenericEnumerableMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackNonGenericListMessagePackSerializer`1.cs">
+      <Link>Serialization\ExpressionSerializers\ExpressionCallbackNonGenericListMessagePackSerializer`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionConstruct.cs">
       <Link>Serialization\ExpressionSerializers\ExpressionConstruct.cs</Link>

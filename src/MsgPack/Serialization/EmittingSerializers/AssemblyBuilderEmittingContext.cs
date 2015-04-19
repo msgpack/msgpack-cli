@@ -42,7 +42,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Func<SerializerEmitter> emitterFactory, Func<EnumSerializerEmitter> enumEmitterFactory )
 			: base( context, emitterFactory, enumEmitterFactory )
 		{
-			this.Reset( targetType );
+			this.Reset( targetType, null );
 		}
 	}
 }

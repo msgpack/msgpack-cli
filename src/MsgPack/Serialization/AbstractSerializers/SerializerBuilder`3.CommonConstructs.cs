@@ -41,31 +41,47 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// 	Emits the method prologue of general serializer.
 		///  </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="serializerMethod">The kind of implementing general serializer method.</param>
-		protected abstract void EmitMethodPrologue( TContext context, SerializerMethod serializerMethod );
+		/// <param name="method">The kind of implementing general serializer method.</param>
+		protected abstract void EmitMethodPrologue( TContext context, SerializerMethod method );
 
 		///  <summary>
 		/// 	Emits the method prologue of enum serializer.
 		///  </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="enumSerializerMethod">The kind of implementing enum serializer method.</param>
-		protected abstract void EmitMethodPrologue( TContext context, EnumSerializerMethod enumSerializerMethod );
+		/// <param name="method">The kind of implementing enum serializer method.</param>
+		protected abstract void EmitMethodPrologue( TContext context, EnumSerializerMethod method );
+
+		///  <summary>
+		/// 	Emits the method prologue of general serializer.
+		///  </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="method">The kind of implementing general serializer method.</param>
+		/// <param name="declaration">The method declaration to be overridden.</param>
+		protected abstract void EmitMethodPrologue( TContext context, CollectionSerializerMethod method, MethodInfo declaration );
 
 		///  <summary>
 		/// 	Emits the method epiloigue of general serializer.
 		///  </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="serializerMethod">The kind of implementing general serializer method.</param>
+		/// <param name="method">The kind of implementing general serializer method.</param>
 		/// <param name="construct">The construct which represent method statements in order. Null entry should be ignored.</param>
-		protected abstract void EmitMethodEpilogue( TContext context, SerializerMethod serializerMethod, TConstruct construct );
+		protected abstract void EmitMethodEpilogue( TContext context, SerializerMethod method, TConstruct construct );
 
 		///  <summary>
 		/// 	Emits the method epiloigue of enum serializer.
 		///  </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="enumSerializerMethod">The kind of implementing enum serializer method.</param>
+		/// <param name="method">The kind of implementing enum serializer method.</param>
 		/// <param name="construct">The construct which represent method statements in order. Null entry should be ignored.</param>
-		protected abstract void EmitMethodEpilogue( TContext context, EnumSerializerMethod enumSerializerMethod, TConstruct construct );
+		protected abstract void EmitMethodEpilogue( TContext context, EnumSerializerMethod method, TConstruct construct );
+
+		///  <summary>
+		/// 	Emits the method epiloigue of enum serializer.
+		///  </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="method">The kind of implementing general serializer method.</param>
+		/// <param name="construct">The construct which represent method statements in order. Null entry should be ignored.</param>
+		protected abstract void EmitMethodEpilogue( TContext context, CollectionSerializerMethod method, TConstruct construct );
 
 		private TConstruct MakeDefaultParameterValueLiteral( TContext context, TConstruct targetVariable, Type literalType, object literal, bool hasDefault )
 		{
@@ -430,6 +446,20 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="statements">The statements.</param>
 		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct EmitSequentialStatements( TContext context, Type contextType, IEnumerable<TConstruct> statements );
+
+		/// <summary>
+		///		Creates the argument reference.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="parameterInfo">The metadata of the the parameter.</param>
+		/// <param name="isStatic">The value which indicates whether this method is static or not.</param>
+		/// <returns>
+		///		The generated construct which represents an argument reference.
+		/// </returns>
+		protected TConstruct ReferArgument( TContext context, ParameterInfo parameterInfo, bool isStatic )
+		{
+			return this.ReferArgument( context, parameterInfo.ParameterType, parameterInfo.Name, parameterInfo.Position + ( isStatic ? 0 : 1 ) );
+		}
 
 		/// <summary>
 		///		Creates the argument reference.
@@ -1053,18 +1083,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="value">The value to be set.</param>
 		/// <returns>The generated code construct.</returns>
 		protected abstract TConstruct EmitSetArrayElementStatement( TContext context, TConstruct array, TConstruct index, TConstruct value );
-
-		/// <summary>
-		///		Emits the code which gets collection count.
-		/// </summary>
-		/// <param name="context">The generation context.</param>
-		/// <param name="collection">The collection reference.</param>
-		/// <param name="traits">The collection traits.</param>
-		/// <returns>The generated code construct.</returns>
-		private TConstruct EmitGetCollectionCountExpression( TContext context, TConstruct collection, CollectionTraits traits )
-		{
-			return this.EmitGetPropertyExpression( context, collection, traits.CountProperty );
-		}
 
 		/// <summary>
 		///		Emits the get serializer expression.
@@ -1739,7 +1757,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		private TConstruct EmitAppendCollectionItem(
 			TContext context,
 			MemberInfo member,
-			CollectionTraits traits,
+			CollectionTraits traits, 
 			TConstruct collection,
 			TConstruct unpackedItem
 		)

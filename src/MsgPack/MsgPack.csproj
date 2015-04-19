@@ -160,12 +160,15 @@
       <DependentUpon>Packer.Nullable.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\AbstractSerializers\CollectionSerializerMethod.cs" />
     <Compile Include="Serialization\AbstractSerializers\ICodeConstruct.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerBuilder.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Collection.cs" />
     <Compile Include="Serialization\BoxedEnumMemberSerializationMethod.cs" />
     <Compile Include="Serialization\CollectionDetailedKind.cs" />
+    <Compile Include="Serialization\CollectionSerializers\CollectionSerializerHelpers.cs" />
     <Compile Include="Serialization\CollectionSerializers\NonGenericDictionaryMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\CollectionSerializers\NonGenericListMessagePackSerializer`1.cs" />
@@ -184,6 +187,22 @@
     <Compile Include="Serialization\DefaultSerializers\AbstractNonGenericListMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\AbstractCollectionMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\DefaultSerializers\AbstractDictionaryMessagePackSerializer`3.cs" />
+    <Compile Include="Serialization\EmittingSerializers\CallbackCollectionMessagePackSerializer`2.cs" />
+    <Compile Include="Serialization\EmittingSerializers\CallbackDictionaryMessagePackSerializer`3.cs" />
+    <Compile Include="Serialization\EmittingSerializers\CallbackEnumerableMessagePackSerializer`2.cs" />
+    <Compile Include="Serialization\EmittingSerializers\CallbackEnumMessagePackSerializer.cs" />
+    <Compile Include="Serialization\EmittingSerializers\CallbackMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\EmittingSerializers\CallbackNonGenericCollectionMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\EmittingSerializers\CallbackNonGenericDictionaryMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\EmittingSerializers\CallbackNonGenericEnumerableMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\EmittingSerializers\CallbackNonGenericListMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackCollectionMessagePackSerializer`2.cs" />
+    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackDictionaryMessagePackSerializer`3.cs" />
+    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackEnumerableMessagePackSerializer`2.cs" />
+    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackNonGenericCollectionMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackNonGenericDictionaryMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackNonGenericEnumerableMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackNonGenericListMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\INilImplicationHandlerOnUnpackedParameter.cs" />
     <Compile Include="Serialization\INilImplicationHandlerParameter.cs" />
     <Compile Include="Serialization\MessagePackRuntimeTypeAttributes.cs">
@@ -230,7 +249,6 @@
     </Compile>
     <Compile Include="Serialization\AbstractSerializers\SerializerFieldKey.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerMethod.cs" />
-    <Compile Include="Serialization\CallbackEnumMessagePackSerializer.cs" />
     <Compile Include="Serialization\CodeDomSerializers\CodeDomConstruct.cs" />
     <Compile Include="Serialization\CodeDomSerializers\CodeDomContext.cs" />
     <Compile Include="Serialization\CodeDomSerializers\CodeDomSerializerBuilder`1.cs" />
@@ -292,9 +310,7 @@
     <Compile Include="Serialization\EmittingSerializers\ILEmittingSerializerBuilder`2.cs" />
     <Compile Include="Serialization\DefaultSerializers\ArraySerializer`1.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilderContract`3.cs" />
-    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Array.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.CommonConstructs.cs" />
-    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Map.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.cs" />
     <Compile Include="Serialization\DefaultConcreteTypeRepository.cs" />
     <Compile Include="Serialization\DefaultSerializers\MessagePackObjectExtensions.cs" />
@@ -304,7 +320,6 @@
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs" />
     <Compile Include="Serialization\EmittingSerializers\InvocationILConsruct.cs" />
     <Compile Include="Serialization\EmittingSerializers\LoadFieldILConstruct.cs" />
-    <Compile Include="Serialization\CallbackMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\EmittingSerializers\ContextBasedSerializerEmitter.cs" />
     <Compile Include="Serialization\DefaultSerializers\DefaultSerializers.cs">
       <AutoGen>True</AutoGen>
@@ -539,7 +554,6 @@
   <ItemGroup>
     <Content Include="remarks.xml" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

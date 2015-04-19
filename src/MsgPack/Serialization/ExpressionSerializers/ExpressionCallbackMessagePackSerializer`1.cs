@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
@@ -47,6 +48,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		)
 			: base( ownerContext )
 		{
+#if DEBUG
+			Contract.Assert( packToCore != null );
+			Contract.Assert( unpackFromCore != null );
+#endif // DEBUG
+
 			this._packToCore = packToCore;
 			this._unpackFromCore = unpackFromCore;
 			this._unpackToCore = unpackToCore;

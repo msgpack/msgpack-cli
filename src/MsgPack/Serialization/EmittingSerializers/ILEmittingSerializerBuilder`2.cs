@@ -88,12 +88,43 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
+		protected override void EmitMethodPrologue( TContext context, CollectionSerializerMethod method, MethodInfo declaration )
+		{
+			switch ( method )
+			{
+				case CollectionSerializerMethod.AddItem:
+				{
+					context.IL = context.Emitter.GetAddItemMethodILGenerator( declaration );
+					break;
+				}
+				case CollectionSerializerMethod.CreateInstance:
+				{
+					context.IL = context.Emitter.GetCreateInstanceMethodILGenerator( declaration );
+					break;
+				}
+				case CollectionSerializerMethod.RestoreSchema:
+				{
+					context.IL = context.Emitter.GetRestoreSchemaMethodILGenerator();
+					break;
+				}
+				default:
+				{
+					throw new ArgumentOutOfRangeException( "method", method.ToString() );
+				}
+			}
+		}
+
 		protected override void EmitMethodEpilogue( TContext context, SerializerMethod method, ILConstruct construct )
 		{
 			EmitMethodEpilogue( context, construct );
 		}
 
-		protected override void EmitMethodEpilogue( TContext context, EnumSerializerMethod enumSerializerMethod, ILConstruct construct )
+		protected override void EmitMethodEpilogue( TContext context, EnumSerializerMethod method, ILConstruct construct )
+		{
+			EmitMethodEpilogue( context, construct );
+		}
+
+		protected override void EmitMethodEpilogue( TContext context, CollectionSerializerMethod method, ILConstruct construct )
 		{
 			EmitMethodEpilogue( context, construct );
 		}
@@ -153,7 +184,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		protected override ILConstruct MakeUInt32Literal( TContext context, uint constant )
 		{
-			return this.MakeIntegerLiteral( typeof( uint ), unchecked( ( int ) constant ) );
+			return this.MakeIntegerLiteral( typeof( uint ), unchecked( ( int )constant ) );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Many case switch" )]
@@ -222,7 +253,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		protected override ILConstruct MakeUInt64Literal( TContext context, ulong constant )
 		{
-			return ILConstruct.Literal( typeof( ulong ), constant, il => il.EmitLdc_I8( unchecked ( ( long ) constant ) ) );
+			return ILConstruct.Literal( typeof( ulong ), constant, il => il.EmitLdc_I8( unchecked( ( long )constant ) ) );
 		}
 
 		protected override ILConstruct MakeReal32Literal( TContext context, float constant )
@@ -690,7 +721,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					false,
 					il =>
 					{
-						il.EmitAnyStelem( 
+						il.EmitAnyStelem(
 							value.ContextType,
 							il0 =>
 							{
@@ -809,11 +840,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally")]
-		protected override ILConstruct EmitStringSwitchStatement ( TContext context, ILConstruct target, IDictionary<string, ILConstruct> cases, ILConstruct defaultCase ) {
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
+		protected override ILConstruct EmitStringSwitchStatement( TContext context, ILConstruct target, IDictionary<string, ILConstruct> cases, ILConstruct defaultCase )
+		{
 			// Simple if statements
 			ILConstruct @else = defaultCase;
-			foreach (var @case in cases) {
+			foreach ( var @case in cases )
+			{
 				@else =
 					this.EmitConditionalExpression(
 						context,
@@ -822,7 +855,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 							null,
 							Metadata._String.op_Equality,
 							target,
-							this.MakeStringLiteral(context, @case.Key)
+							this.MakeStringLiteral( context, @case.Key )
 						),
 						@case.Value,
 						@else
@@ -989,9 +1022,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return enumValue;
 		}
 
-		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( TContext codeGenerationContext )
+		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( TContext codeGenerationContext, PolymorphismSchema schema )
 		{
-			return context => codeGenerationContext.Emitter.CreateInstance<TObject>( context );
+			return context => codeGenerationContext.Emitter.CreateInstance<TObject>( context, schema );
 		}
 
 		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateEnumSerializerConstructor( TContext codeGenerationContext )
