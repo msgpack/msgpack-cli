@@ -201,6 +201,9 @@
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializerBase`1.cs">
       <Link>Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializerBase`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializer`1.cs">
+      <Link>Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializer`1.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\NonGenericListMessagePackSerializer`1.cs">
       <Link>Serialization\CollectionSerializers\NonGenericListMessagePackSerializer`1.cs</Link>
     </Compile>
