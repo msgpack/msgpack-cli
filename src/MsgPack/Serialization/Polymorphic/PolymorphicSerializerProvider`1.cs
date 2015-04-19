@@ -40,8 +40,9 @@ namespace MsgPack.Serialization.Polymorphic
 		{
 			var schema = providerParameter as PolymorphismSchema;
 
-			if ( schema == null || schema.UseDefault )
+			if ( schema == null || schema.UseDefault || schema.TargetType != typeof( T ) )
 			{
+				// No schema is applied or this provider is used for container but the schema is only applied for keys/items.
 				if ( this._defaultSerializer == null )
 				{
 					throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( T ) );
