@@ -303,6 +303,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						( Func<TSerializer, SerializationContext, Unpacker, TCollection> )unpackFrom,
 						( Action<TSerializer, SerializationContext, TCollection, TItem> )addItem
 					);
+
 			}
 		}
 

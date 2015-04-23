@@ -55,7 +55,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			SerializationTarget.VerifyType( typeof( T ) );
 			var target = SerializationTarget.Prepare( context, typeof( T ) );
-			ReflectionSerializerHelper.GetMetadata( target.Members, context, typeof( T ), out this._getters, out this._setters, out this._memberInfos, out this._contracts, out this._serializers );
+			ReflectionSerializerHelper.GetMetadata( target.Members, context, out this._getters, out this._setters, out this._memberInfos, out this._contracts, out this._serializers );
 			this._memberIndexes =
 				this._contracts
 					.Select( ( contract, index ) => new KeyValuePair<string, int>( contract.Name, index ) )
@@ -239,81 +239,11 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				{
 					if ( setter != null || this._constructorParameters != null )
 					{
-						if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
-						{
-							nullable = this._serializers[ index ].UnpackFrom( unpacker );
-						}
-						else
-						{
-							using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
-							{
-								nullable = this._serializers[ index ].UnpackFrom( subtreeUnpacker );
-							}
-						}
+						nullable = this.UnpackSingleValue( unpacker, index );
 					}
 					else if ( this._getters[ index ] != null ) // null getter supposes undeclared member (should be treated as nil)
 					{
-						var destination = this._getters[ index ]( objectGraph );
-						if ( destination == null )
-						{
-							throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._contracts[ index ].Name );
-						}
-
-						var traits = destination.GetType().GetCollectionTraits();
-						if ( traits.AddMethod == null )
-						{
-							throw SerializationExceptions.NewUnpackToIsNotSupported( destination.GetType(), null );
-						}
-
-						var source = this._serializers[ index ].UnpackFrom( unpacker ) as IEnumerable;
-						if ( source != null )
-						{
-							switch ( traits.DetailedCollectionType )
-							{
-								case CollectionDetailedKind.GenericDictionary:
-								{
-									// item should be KeyValuePair<TKey, TValue>
-									var arguments = new object[ 2 ];
-									var key = default( PropertyInfo );
-									var value = default( PropertyInfo );
-									foreach ( var item in source )
-									{
-										if ( key == null )
-										{
-											key = item.GetType().GetProperty( "Key" );
-											value = item.GetType().GetProperty( "Value" );
-										}
-
-										arguments[ 0 ] = key.GetValue( item, null );
-										arguments[ 1 ] = value.GetValue( item, null );
-										traits.AddMethod.Invoke( destination, arguments );
-									}
-									break;
-								}
-								case CollectionDetailedKind.NonGenericDictionary:
-								{
-									// item should be DictionaryEntry
-									var arguments = new object[ 2 ];
-									foreach ( var item in source )
-									{
-										arguments[ 0 ] = DictionaryEntryKeyProperty.GetValue( item, null );
-										arguments[ 1 ] = DictionaryEntryValueProperty.GetValue( item, null );
-										traits.AddMethod.Invoke( destination, arguments );
-									}
-									break;
-								}
-								default:
-								{
-									var arguments = new object[ 1 ];
-									foreach ( var item in source )
-									{
-										arguments[ 0 ] = item;
-										traits.AddMethod.Invoke( destination, arguments );
-									}
-									break;
-								}
-							}
-						}
+						this.UnpackAndAddCollectionItem( objectGraph, unpacker, index );
 					}
 				}
 			}
@@ -369,6 +299,86 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			unpacked++;
 
 			return objectGraph;
+		}
+
+		private object UnpackSingleValue( Unpacker unpacker, int index )
+		{
+			if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+			{
+				return this._serializers[ index ].UnpackFrom( unpacker );
+			}
+			else
+			{
+				using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+				{
+					return this._serializers[ index ].UnpackFrom( subtreeUnpacker );
+				}
+			}
+		}
+
+		private void UnpackAndAddCollectionItem( object objectGraph, Unpacker unpacker, int index )
+		{
+			var destination = this._getters[ index ]( objectGraph );
+			if ( destination == null )
+			{
+				throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._contracts[ index ].Name );
+			}
+
+			var traits = destination.GetType().GetCollectionTraits();
+			if ( traits.AddMethod == null )
+			{
+				throw SerializationExceptions.NewUnpackToIsNotSupported( destination.GetType(), null );
+			}
+
+			var source = this._serializers[ index ].UnpackFrom( unpacker ) as IEnumerable;
+			if ( source != null )
+			{
+				switch ( traits.DetailedCollectionType )
+				{
+					case CollectionDetailedKind.GenericDictionary:
+					{
+						// item should be KeyValuePair<TKey, TValue>
+						var arguments = new object[ 2 ];
+						var key = default( PropertyInfo );
+						var value = default( PropertyInfo );
+						foreach ( var item in source )
+						{
+							if ( key == null )
+							{
+								key = item.GetType().GetProperty( "Key" );
+								value = item.GetType().GetProperty( "Value" );
+							}
+
+							arguments[ 0 ] = key.GetValue( item, null );
+							arguments[ 1 ] = value.GetValue( item, null );
+							traits.AddMethod.Invoke( destination, arguments );
+						}
+						break;
+					}
+					case CollectionDetailedKind.NonGenericDictionary:
+					{
+						// item should be DictionaryEntry
+						var arguments = new object[ 2 ];
+						foreach ( var item in source )
+						{
+							arguments[ 0 ] = DictionaryEntryKeyProperty.GetValue( item, null );
+							arguments[ 1 ] = DictionaryEntryValueProperty.GetValue( item, null );
+							traits.AddMethod.Invoke( destination, arguments );
+						}
+						break;
+					}
+					default:
+					{
+						var arguments = new object[ 1 ];
+						foreach ( var item in source )
+						{
+							arguments[ 0 ] = item;
+							traits.AddMethod.Invoke( destination, arguments );
+						}
+						break;
+					}
+				}
+			}
 		}
 	}
 }

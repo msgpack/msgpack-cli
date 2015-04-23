@@ -166,7 +166,6 @@
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Collection.cs" />
-    <Compile Include="Serialization\BoxedEnumMemberSerializationMethod.cs" />
     <Compile Include="Serialization\CollectionDetailedKind.cs" />
     <Compile Include="Serialization\CollectionSerializers\CollectionSerializerHelpers.cs" />
     <Compile Include="Serialization\CollectionSerializers\NonGenericDictionaryMessagePackSerializer`1.cs" />
@@ -203,6 +202,7 @@
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackNonGenericDictionaryMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackNonGenericEnumerableMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackNonGenericListMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilderHelpers.cs" />
     <Compile Include="Serialization\INilImplicationHandlerOnUnpackedParameter.cs" />
     <Compile Include="Serialization\INilImplicationHandlerParameter.cs" />
     <Compile Include="Serialization\MessagePackRuntimeTypeAttributes.cs">
@@ -348,7 +348,6 @@
     <Compile Include="Serialization\SerializerTypeKeyRepository.cs" />
     <Compile Include="Serialization\LazyDelegatingMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\MessagePackMemberAttribute.cs" />
-    <Compile Include="Serialization\Metadata\_Enumerable.cs" />
     <Compile Include="Serialization\Metadata\_IDictionaryEnumerator.cs" />
     <Compile Include="Serialization\Metadata\_IEnumreator.cs" />
     <Compile Include="Serialization\Metadata\_MessagePackSerializer.cs" />

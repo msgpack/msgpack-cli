@@ -55,6 +55,8 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <exception cref="SerializationException">
 		///		<typeparamref name="TCollection"/> is not serializable etc.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 		protected internal sealed override void PackToCore( Packer packer, TCollection objectTree )
 		{
 			packer.PackArrayHeader( objectTree.Count );
@@ -88,6 +90,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <remarks>
 		///		This method invokes <see cref="EnumerableMessagePackSerializerBase{TCollection,TItem}.CreateInstance(int)"/>, and then fill deserialized items to resultong collection.
 		/// </remarks>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal sealed override TCollection UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsArrayHeader )

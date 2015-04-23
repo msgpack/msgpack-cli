@@ -54,6 +54,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <exception cref="SerializationException">
 		///		<typeparamref name="TCollection"/> is not serializable etc.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal sealed override void PackToCore( Packer packer, TCollection objectTree )
 		{
 			packer.PackArrayHeader( objectTree.Count );

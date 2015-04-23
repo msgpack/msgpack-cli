@@ -34,6 +34,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 	///		This class provides framework to implement variable collection serializer, and this type seals some virtual members to maximize future backward compatibility.
 	///		If you cannot use this class, you can implement your own serializer which inherits <see cref="MessagePackSerializer{T}"/> and implements <see cref="ICollectionInstanceFactory"/>.
 	/// </remarks>
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes", Justification = "By design" )]
 	public abstract class DictionaryMessagePackSerializer<TDictionary, TKey, TValue> : MessagePackSerializer<TDictionary>, ICollectionInstanceFactory
 		where TDictionary : IDictionary<TKey, TValue>
 	{
@@ -51,6 +52,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="ownerContext"/> is <c>null</c>.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by base .ctor" )]
 		protected DictionaryMessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema schema )
 			: base( ownerContext )
 		{
@@ -67,8 +69,8 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <exception cref="SerializationException">
 		///		<typeparamref name="TDictionary"/> is not serializable etc.
 		/// </exception>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 		protected internal sealed override void PackToCore( Packer packer, TDictionary objectTree )
 		{
 			packer.PackMapHeader( objectTree.Count );
@@ -99,6 +101,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <remarks>
 		///		This method invokes <see cref="CreateInstance(int)"/>, and then fill deserialized items to resultong collection.
 		/// </remarks>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal sealed override TDictionary UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsMapHeader )
@@ -151,8 +154,8 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="TDictionary"/> is not collection.
 		/// </exception>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 		protected internal sealed override void UnpackToCore( Unpacker unpacker, TDictionary collection )
 		{
 			if ( !unpacker.IsMapHeader )

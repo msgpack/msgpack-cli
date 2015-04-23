@@ -96,10 +96,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this._key = new MessagePackString( Pack( value ), true );
 			}
 
+			[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes", Justification = "Avoided via ownsStream: false" )]
 			private static byte[] Pack( PolymorphismSchema value )
 			{
 				using ( var buffer = new MemoryStream() )
-				using ( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+				using ( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None, ownsStream: false ) )
 				{
 					Pack( packer, value );
 					return buffer.ToArray();

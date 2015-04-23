@@ -2143,6 +2143,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Stsfld, field );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'stobj' instruction with specified arguments.
@@ -2162,6 +2163,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Stobj, type );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'conv.ovf.i1.un' instruction with specified arguments.
 		///	</summary>
@@ -2373,12 +2375,13 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Ldlen );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'ldelema' instruction with specified arguments.
 		///	</summary>
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
-		public void EmitLdelema( System.Type type )
+		public void EmitLdelema( Type type )
 		{
 			Contract.Assert( !this.IsEnded );
 			Contract.Assert( type != null );
@@ -2392,6 +2395,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Ldelema, type );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'ldelem.i1' instruction with specified arguments.
 		///	</summary>
@@ -2571,6 +2575,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Stelem_I );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'stelem.i1' instruction with specified arguments.
@@ -2677,6 +2682,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Stelem_Ref );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'ldelem' instruction with specified arguments.
 		///	</summary>

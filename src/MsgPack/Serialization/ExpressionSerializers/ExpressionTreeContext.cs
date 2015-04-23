@@ -96,17 +96,17 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return this._currentParamters;
 		}
 
-		public void SetCurrentMethod( Type thisType, Type targetType, SerializerMethod method )
+		public void SetCurrentMethod( SerializerMethod method )
 		{
 			this._currentParamters = this.GetParameters( method ).ToArray();
 		}
 
-		public void SetCurrentMethod( Type thisType, Type targetType, EnumSerializerMethod method )
+		public void SetCurrentMethod( Type targetType, EnumSerializerMethod method )
 		{
 			this._currentParamters = this.GetParameters( targetType, method ).ToArray();
 		}
 
-		public void SetCurrentMethod( Type thisType, Type targetType, CollectionSerializerMethod method )
+		public void SetCurrentMethod( CollectionSerializerMethod method )
 		{
 			this._currentParamters = this.GetParameters( method ).ToArray();
 		}

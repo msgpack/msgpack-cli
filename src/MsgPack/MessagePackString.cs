@@ -33,6 +33,8 @@ using System.Security;
 using System.Text;
 using System.Threading;
 
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations", Scope = "member", Target = "MsgPack.MessagePackString.#.cctor()", Justification = "Just create as marker" )]
+
 namespace MsgPack
 {
 	// Dictionary based approach is better from memory usage and stability.
@@ -50,7 +52,8 @@ namespace MsgPack
 	internal sealed class MessagePackString
 	{
 		// TODO: CLOB support?
-		private static readonly DecoderFallbackException IsBinary = new DecoderFallbackException();
+		// marker to indicate this is definitively binary.
+		private static readonly DecoderFallbackException IsBinary = new DecoderFallbackException( "This value is not string." );
 		private byte[] _encoded;
 		private string _decoded;
 		private DecoderFallbackException _decodingError;

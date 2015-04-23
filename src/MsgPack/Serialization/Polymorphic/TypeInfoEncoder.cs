@@ -54,7 +54,7 @@ namespace MsgPack.Serialization.Polymorphic
 #endif // DEBUG && !UNITY
 
 			var compressedTypeName =
-				type.Namespace.StartsWith( assemblyName.Name )
+				type.Namespace.StartsWith( assemblyName.Name, StringComparison.Ordinal )
 				? Elipsis + type.FullName.Substring( assemblyName.Name.Length )
 				: type.FullName;
 			var version = new byte[ 16 ];
@@ -161,7 +161,7 @@ namespace MsgPack.Serialization.Polymorphic
 					.ToString()
 #endif // SILVERLIGHT
 				).GetType(
-					compressedTypeName.StartsWith( Elipsis )
+					compressedTypeName.StartsWith( Elipsis, StringComparison.Ordinal )
 					? assemblySimpleName + compressedTypeName
 					: compressedTypeName
 #if !NETFX_CORE

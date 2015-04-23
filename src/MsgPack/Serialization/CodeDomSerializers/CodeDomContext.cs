@@ -146,7 +146,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				throw new ArgumentNullException( "type" );
 			}
 
-			return type.IsArray || SerializerRepository.Default.Contains( type );
+			return type.IsArray || SerializerRepository.InternalDefault.Contains( type );
 		}
 
 		/// <summary>

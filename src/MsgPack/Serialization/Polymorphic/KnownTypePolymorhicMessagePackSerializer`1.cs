@@ -108,11 +108,13 @@ namespace MsgPack.Serialization.Polymorphic
 			return result;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes", Justification = "Avoided via ownsStream: false" )]
 		protected internal override void PackToCore( Packer packer, T objectTree )
 		{
 			using ( var buffer = new MemoryStream() )
 			{
-				using ( var valuePacker = Packer.Create( buffer, this.PackerCompatibilityOptions ) )
+				using ( var valuePacker = Packer.Create( buffer, this.PackerCompatibilityOptions, false ) )
 				{
 					this.GetActualTypeSerializer( objectTree.GetType() ).PackTo( valuePacker, objectTree );
 				}
@@ -124,6 +126,7 @@ namespace MsgPack.Serialization.Polymorphic
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
 			// It is not reasonable to identify other forms.

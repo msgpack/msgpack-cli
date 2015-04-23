@@ -71,14 +71,6 @@ namespace MsgPack.Serialization
 			this._table = table;
 		}
 
-		internal void ImportNoLock( Dictionary<RuntimeTypeHandle, object> table )
-		{
-			foreach ( var entry in table )
-			{
-				this._table.Add( entry.Key, entry.Value );
-			}
-		}
-
 #if !NETFX_35 && !UNITY
 		[SecuritySafeCritical]
 #endif

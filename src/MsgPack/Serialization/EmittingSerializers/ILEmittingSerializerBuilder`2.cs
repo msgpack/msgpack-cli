@@ -159,36 +159,36 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		protected override ILConstruct MakeByteLiteral( TContext context, byte constant )
 		{
-			return this.MakeIntegerLiteral( typeof( byte ), constant );
+			return MakeIntegerLiteral( typeof( byte ), constant );
 		}
 
 		protected override ILConstruct MakeSByteLiteral( TContext context, sbyte constant )
 		{
-			return this.MakeIntegerLiteral( typeof( sbyte ), constant );
+			return MakeIntegerLiteral( typeof( sbyte ), constant );
 		}
 
 		protected override ILConstruct MakeInt16Literal( TContext context, short constant )
 		{
-			return this.MakeIntegerLiteral( typeof( short ), constant );
+			return MakeIntegerLiteral( typeof( short ), constant );
 		}
 
 		protected override ILConstruct MakeUInt16Literal( TContext context, ushort constant )
 		{
-			return this.MakeIntegerLiteral( typeof( ushort ), constant );
+			return MakeIntegerLiteral( typeof( ushort ), constant );
 		}
 
 		protected override ILConstruct MakeInt32Literal( TContext context, int constant )
 		{
-			return this.MakeIntegerLiteral( typeof( int ), constant );
+			return MakeIntegerLiteral( typeof( int ), constant );
 		}
 
 		protected override ILConstruct MakeUInt32Literal( TContext context, uint constant )
 		{
-			return this.MakeIntegerLiteral( typeof( uint ), unchecked( ( int )constant ) );
+			return MakeIntegerLiteral( typeof( uint ), unchecked( ( int )constant ) );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Many case switch" )]
-		private ILConstruct MakeIntegerLiteral( Type contextType, int constant )
+		private static ILConstruct MakeIntegerLiteral( Type contextType, int constant )
 		{
 			switch ( constant )
 			{
@@ -268,12 +268,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		protected override ILConstruct MakeBooleanLiteral( TContext context, bool constant )
 		{
-			return this.MakeIntegerLiteral( typeof( bool ), constant ? 1 : 0 );
+			return MakeIntegerLiteral( typeof( bool ), constant ? 1 : 0 );
 		}
 
 		protected override ILConstruct MakeCharLiteral( TContext context, char constant )
 		{
-			return this.MakeIntegerLiteral( typeof( char ), constant );
+			return MakeIntegerLiteral( typeof( char ), constant );
 		}
 
 		protected override ILConstruct MakeStringLiteral( TContext context, string constant )
@@ -712,6 +712,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitSetArrayElementStatement( TContext context, ILConstruct array, ILConstruct index, ILConstruct value )
 		{
 			return

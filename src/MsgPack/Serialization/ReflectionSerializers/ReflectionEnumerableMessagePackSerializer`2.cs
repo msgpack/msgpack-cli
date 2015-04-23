@@ -41,6 +41,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			this._addItem = ReflectionSerializerHelper.GetAddItem<TCollection, TItem>( targetType );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override TCollection UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsArrayHeader )

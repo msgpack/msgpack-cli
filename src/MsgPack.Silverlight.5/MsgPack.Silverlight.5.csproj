@@ -226,9 +226,6 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerMethod.cs">
       <Link>Serialization\AbstractSerializers\SerializerMethod.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\BoxedEnumMemberSerializationMethod.cs">
-      <Link>Serialization\BoxedEnumMemberSerializationMethod.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionDetailedKind.cs">
       <Link>Serialization\CollectionDetailedKind.cs</Link>
     </Compile>
@@ -553,6 +550,9 @@
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionTreeContext.cs">
       <Link>Serialization\ExpressionSerializers\ExpressionTreeContext.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilderHelpers.cs">
+      <Link>Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilderHelpers.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilder`1.cs">
       <Link>Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilder`1.cs</Link>
     </Compile>
@@ -624,9 +624,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_DictionaryEntry.cs">
       <Link>Serialization\Metadata\_DictionaryEntry.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\Metadata\_Enumerable.cs">
-      <Link>Serialization\Metadata\_Enumerable.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_EnumMessagePackSerializerHelpers.cs">
       <Link>Serialization\Metadata\_EnumMessagePackSerializerHelpers.cs</Link>

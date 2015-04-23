@@ -227,6 +227,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		Newly built <see cref="MessagePackSerializer{T}"/> type constructor.
 		///		This value will not be <c>null</c>.
 		///	</returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Well patterned" )]
 		public override Func<SerializationContext, PolymorphismSchema, MessagePackSerializer<T>> CreateConstructor<T>()
 		{
 			var traits = typeof( T ).GetCollectionTraits();
@@ -611,7 +612,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			public DictionaryCallbackSerializerFactory() { }
 
-			private object Create(
+			private static object Create(
 				SerializationContext context,
 				PolymorphismSchema schema,
 				Func<SerializationContext, int, TDictionary> createInstance
@@ -632,7 +633,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			)
 			{
 				return
-					this.Create(
+					Create(
 						context,
 						schema,
 						( Func<SerializationContext, int, TDictionary> )createInstance.CreateDelegate(

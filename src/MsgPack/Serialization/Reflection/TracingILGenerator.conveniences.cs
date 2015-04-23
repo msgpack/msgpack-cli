@@ -745,6 +745,7 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( 0 <= index );
 			this.EmitAnyStelem( elementType, arrayLoadingEmitter, il => il.EmitLiteralInteger( index ), elementLoadingEmitter );
 		}
+#endif // DEBUG
 
 		/// <summary>
 		///		Emit array element storing instructions.
@@ -840,7 +841,6 @@ namespace MsgPack.Serialization.Reflection
 				}
 			}
 		}
-#endif // DEBUG
 
 		/// <summary>
 		///		Emit efficient integer constant loading.

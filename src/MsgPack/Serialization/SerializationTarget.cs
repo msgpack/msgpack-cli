@@ -137,56 +137,74 @@ namespace MsgPack.Serialization
 
 			if ( filtered.Length > 0 )
 			{
-				var duplicated =
-					filtered.FirstOrDefault(
-						member => member.IsDefined( typeof( MessagePackIgnoreAttribute ) ) 
-					);
-
-				if ( duplicated != null )
-				{
-					throw new SerializationException(
-						String.Format(
-							CultureInfo.CurrentCulture,
-							"A member '{0}' of type '{1}' is marked with both MessagePackMemberAttribute and MessagePackIgnoreAttribute.",
-							duplicated.Name,
-							type 
-						)
-					);
-				}
-
-				return
-					filtered.Select( member =>
-						new SerializingMember(
-							member,
-							new DataMemberContract( member, member.GetCustomAttribute<MessagePackMemberAttribute>() )
-						)
-					);
+				return GetAnnotatedMembersWithDuplicationDetection( type, filtered );
 			}
 
 			if ( type.GetCustomAttributesData().Any( attr =>
 				attr.GetAttributeType().FullName == "System.Runtime.Serialization.DataContractAttribute" ) )
 			{
-				return
-					members.Select(
-						item =>
+				return GetSystemRuntimeSerializationCompatibleMembers( members );
+			}
+
+			return GetPublicUnpreventedMembers( members );
+		}
+
+		private static IEnumerable<SerializingMember> GetAnnotatedMembersWithDuplicationDetection( Type type, MemberInfo[] filtered )
+		{
+			var duplicated =
+				filtered.FirstOrDefault(
+					member => member.IsDefined( typeof( MessagePackIgnoreAttribute ) )
+					);
+
+			if ( duplicated != null )
+			{
+				throw new SerializationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"A member '{0}' of type '{1}' is marked with both MessagePackMemberAttribute and MessagePackIgnoreAttribute.",
+						duplicated.Name,
+						type
+						)
+					);
+			}
+
+			return
+				filtered.Select(
+					member =>
+						new SerializingMember(
+							member,
+							new DataMemberContract( member, member.GetCustomAttribute<MessagePackMemberAttribute>() )
+							)
+					);
+		}
+
+		private static IEnumerable<SerializingMember> GetSystemRuntimeSerializationCompatibleMembers( MemberInfo[] members )
+		{
+			return
+				members.Select(
+					item =>
 						new
 						{
 							member = item,
-							data = item.GetCustomAttributesData()
+							data = 
+								item.GetCustomAttributesData()
 								.FirstOrDefault(
-									data => data.GetAttributeType().FullName == "System.Runtime.Serialization.DataMemberAttribute" )
+									data => data.GetAttributeType().FullName == "System.Runtime.Serialization.DataMemberAttribute" 
+								)
 						}
 					).Where( item => item.data != null )
 					.Select(
 						item =>
 						{
-							var name = item.data.GetNamedArguments()
+							var name = 
+								item.data.GetNamedArguments()
 								.Where( arg => arg.GetMemberName() == "Name" )
-								.Select( arg => ( string )arg.GetTypedValue().Value )
+								.Select( arg => ( string ) arg.GetTypedValue().Value )
 								.FirstOrDefault();
-							var id = item.data.GetNamedArguments()
+							var id = 
+								item.data.GetNamedArguments()
 								.Where( arg => arg.GetMemberName() == "Order" )
-								.Select( arg => ( int? )arg.GetTypedValue().Value )
+								.Select( arg => ( int? ) arg.GetTypedValue().Value )
 								.FirstOrDefault();
 #if SILVERLIGHT
 							if ( id == -1 )
@@ -203,15 +221,16 @@ namespace MsgPack.Serialization
 								);
 						}
 					);
-			}
+		}
 
-			return
-				members.Where(
-					member => member.GetIsPublic()
+		private static IEnumerable<SerializingMember> GetPublicUnpreventedMembers( MemberInfo[] members )
+		{
+			return members.Where(
+				member => member.GetIsPublic()
 #if !SILVERLIGHT && !NETFX_CORE
-					&& !Attribute.IsDefined( member, typeof( NonSerializedAttribute ) )
+						&& !Attribute.IsDefined( member, typeof( NonSerializedAttribute ) )
 #endif // !SILVERLIGHT && !NETFX_CORE
-					&& !member.IsDefined( typeof( MessagePackIgnoreAttribute ) ) 
+						&& !member.IsDefined( typeof( MessagePackIgnoreAttribute ) ) 
 				).Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
 		}
 
@@ -474,7 +493,7 @@ namespace MsgPack.Serialization
 									CultureInfo.CurrentCulture,
 									"\"{0}\":[{1}]",
 									kv.Key,
-									String.Join( ",", kv.Value.Select( m => String.Format( "{0}.{1}({2})", m.DeclaringType, m.Name, ( m is FieldInfo ) ? "Field" : "Property" ) ).ToArray() )
+									String.Join( ",", kv.Value.Select( m => String.Format( CultureInfo.InvariantCulture, "{0}.{1}({2})", m.DeclaringType, m.Name, ( m is FieldInfo ) ? "Field" : "Property" ) ).ToArray() )
 								)
 							).ToArray()
 						)

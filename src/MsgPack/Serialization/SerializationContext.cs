@@ -47,6 +47,7 @@ namespace MsgPack.Serialization
 	///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 	///		Represents serialization context information for internal serialization logic.
 	/// </summary>
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "Rerely instanticated and backward compatibility" )]
 	public sealed partial class SerializationContext
 	{
 #if UNITY

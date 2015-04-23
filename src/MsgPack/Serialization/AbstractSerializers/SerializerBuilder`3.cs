@@ -55,6 +55,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// </summary>
 		protected static readonly Type BaseClass;
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "BaseClass and CollectionTraitsOfThis should be initialized at once" )]
 		static SerializerBuilder()
 		{
 			var traits = typeof( TObject ).GetCollectionTraits();

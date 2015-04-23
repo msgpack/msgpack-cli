@@ -30,6 +30,7 @@ using MsgPack.Serialization.CollectionSerializers;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Well patterned" )]
 	partial class SerializerBuilder<TContext, TConstruct, TObject>
 	{
 		private void BuildCollectionSerializer(
@@ -43,69 +44,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 #endif // DEBUG
 			bool isUnpackFromRequired;
 			Type declaringType;
-			switch ( CollectionTraitsOfThis.DetailedCollectionType )
-			{
-				case CollectionDetailedKind.NonGenericEnumerable:
-				case CollectionDetailedKind.NonGenericCollection:
-				{
-					isUnpackFromRequired = true;
-					declaringType =
-						typeof( NonGenericEnumerableMessagePackSerializerBase<> ).MakeGenericType(
-						typeof( TObject )
-					);
-					break;
-				}
-				case CollectionDetailedKind.NonGenericList:
-				{
-					isUnpackFromRequired = false;
-					declaringType =
-						typeof( NonGenericEnumerableMessagePackSerializerBase<> ).MakeGenericType(
-						typeof( TObject )
-					);
-					break;
-				}
-				case CollectionDetailedKind.NonGenericDictionary:
-				{
-					isUnpackFromRequired = false;
-					declaringType =
-						typeof( NonGenericDictionaryMessagePackSerializer<> ).MakeGenericType(
-						typeof( TObject )
-					);
-					break;
-				}
-				case CollectionDetailedKind.GenericEnumerable:
-				{
-					isUnpackFromRequired = true;
-					declaringType =
-						typeof( EnumerableMessagePackSerializerBase<,> ).MakeGenericType(
-						typeof( TObject ),
-						CollectionTraitsOfThis.ElementType
-					);
-					break;
-				}
-				case CollectionDetailedKind.GenericDictionary:
-				{
-					isUnpackFromRequired = false;
-					var keyValurPairGenericArguments = CollectionTraitsOfThis.ElementType.GetGenericArguments();
-					declaringType =
-						typeof( DictionaryMessagePackSerializer<,,> ).MakeGenericType(
-						typeof( TObject ),
-						keyValurPairGenericArguments[ 0 ],
-						keyValurPairGenericArguments[ 1 ]
-					);
-					break;
-				}
-				default:
-				{
-					isUnpackFromRequired = false;
-					declaringType =
-						typeof( EnumerableMessagePackSerializerBase<,> ).MakeGenericType(
-						typeof( TObject ),
-						CollectionTraitsOfThis.ElementType
-					);
-					break;
-				}
-			} // switch
+			DetermineSerializationStrategy( out isUnpackFromRequired, out declaringType );
 
 			if ( isUnpackFromRequired && CollectionTraitsOfThis.AddMethod != null )
 			{
@@ -120,6 +59,73 @@ namespace MsgPack.Serialization.AbstractSerializers
 			this.BuildCollectionCreateInstance( context, concreteType, declaringType );
 
 			this.BuildRestoreSchema( context, schema );
+		}
+
+		private static void DetermineSerializationStrategy( out bool isUnpackFromRequired, out Type declaringType )
+		{
+			switch ( CollectionTraitsOfThis.DetailedCollectionType )
+			{
+				case CollectionDetailedKind.NonGenericEnumerable:
+				case CollectionDetailedKind.NonGenericCollection:
+				{
+					isUnpackFromRequired = true;
+					declaringType =
+						typeof( NonGenericEnumerableMessagePackSerializerBase<> ).MakeGenericType(
+							typeof( TObject )
+						);
+					break;
+				}
+				case CollectionDetailedKind.NonGenericList:
+				{
+					isUnpackFromRequired = false;
+					declaringType =
+						typeof( NonGenericEnumerableMessagePackSerializerBase<> ).MakeGenericType(
+							typeof( TObject )
+						);
+					break;
+				}
+				case CollectionDetailedKind.NonGenericDictionary:
+				{
+					isUnpackFromRequired = false;
+					declaringType =
+						typeof( NonGenericDictionaryMessagePackSerializer<> ).MakeGenericType(
+							typeof( TObject )
+						);
+					break;
+				}
+				case CollectionDetailedKind.GenericEnumerable:
+				{
+					isUnpackFromRequired = true;
+					declaringType =
+						typeof( EnumerableMessagePackSerializerBase<,> ).MakeGenericType(
+							typeof( TObject ),
+							CollectionTraitsOfThis.ElementType
+						);
+					break;
+				}
+				case CollectionDetailedKind.GenericDictionary:
+				{
+					isUnpackFromRequired = false;
+					var keyValurPairGenericArguments = CollectionTraitsOfThis.ElementType.GetGenericArguments();
+					declaringType =
+						typeof( DictionaryMessagePackSerializer<,,> ).MakeGenericType(
+							typeof( TObject ),
+							keyValurPairGenericArguments[ 0 ],
+							keyValurPairGenericArguments[ 1 ]
+						);
+					break;
+				}
+				default:
+				{
+					isUnpackFromRequired = false;
+					declaringType =
+						typeof( EnumerableMessagePackSerializerBase<,> ).MakeGenericType(
+							typeof( TObject ),
+							CollectionTraitsOfThis.ElementType
+						);
+					break;
+				}
+			} // switch
 		}
 
 		private void BuildCollectionAddItem( TContext context, Type declaringType )

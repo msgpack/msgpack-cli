@@ -34,6 +34,26 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed partial class SerializerRepository : IDisposable
 	{
+		private static readonly object SyncRoot = new object();
+		private static SerializerRepository _internalDefault;
+
+		internal static SerializerRepository InternalDefault
+		{
+			get
+			{
+				// Lazy init to avoid .cctor recursion from SerializationContext.cctor()
+				lock ( SyncRoot )
+				{
+					if ( _internalDefault == null )
+					{
+						_internalDefault = GetDefault( SerializationContext.Default );
+					}
+
+					return _internalDefault;
+				}
+			}
+		}
+
 		private readonly SerializerTypeKeyRepository _repository;
 
 		/// <summary>
@@ -183,21 +203,36 @@ namespace MsgPack.Serialization
 		///		Note that the repository is frozen.
 		/// </value>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Justification = "Historical reason" )]
+		[Obsolete( "Use GetDefault()")]
 		public static SerializerRepository Default
 		{
-			get { return GetDefault( PackerCompatibilityOptions.Classic ); }
+			get { return GetDefault( SerializationContext.Default ); }
 		}
 
 		/// <summary>
 		///		Gets the system default repository bound to default context.
 		/// </summary>
-		/// <param name="packerCompatibilityOptions"><see cref="PackerCompatibilityOptions"/> for default serializers must use.</param>
 		/// <returns>
 		///		The system default repository.
 		///		This value will not be <c>null</c>.
 		///		Note that the repository is frozen.
 		/// </returns>
-		/// <exception cref="ArgumentOutOfRangeException"><paramref name="packerCompatibilityOptions"/> is invalid.</exception>
+		public static SerializerRepository GetDefault()
+		{
+			return GetDefault( SerializationContext.Default );
+		}
+
+		/// <summary>
+		///		Gets the system default repository bound to default context.
+		/// </summary>
+		/// <param name="packerCompatibilityOptions">Not used.</param>
+		/// <returns>
+		///		The system default repository.
+		///		This value will not be <c>null</c>.
+		///		Note that the repository is frozen.
+		/// </returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "packerCompatibilityOptions", Justification = "Historical reason" )]
+		[Obsolete( "Use GetDefault()" )]
 		public static SerializerRepository GetDefault( PackerCompatibilityOptions packerCompatibilityOptions )
 		{
 			return GetDefault( SerializationContext.Default );

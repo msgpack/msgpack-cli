@@ -51,6 +51,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="ownerContext"/> is <c>null</c>.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by base .ctor" )]
 		protected EnumerableMessagePackSerializerBase( SerializationContext ownerContext, PolymorphismSchema schema )
 			: base( ownerContext )
 		{

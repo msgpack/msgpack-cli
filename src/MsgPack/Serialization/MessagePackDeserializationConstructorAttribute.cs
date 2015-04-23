@@ -56,7 +56,7 @@ namespace MsgPack.Serialization
 	///		</para>
 	/// </remarks>
 	[AttributeUsage(AttributeTargets.Constructor)]
-	public class MessagePackDeserializationConstructorAttribute : Attribute
+	public sealed class MessagePackDeserializationConstructorAttribute : Attribute
 	{
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackDeserializationConstructorAttribute"/> class.

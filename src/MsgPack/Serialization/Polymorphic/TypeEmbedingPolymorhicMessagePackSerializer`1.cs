@@ -56,6 +56,7 @@ namespace MsgPack.Serialization.Polymorphic
 			return result;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, T objectTree )
 		{
 			packer.PackArrayHeader( 3 );
@@ -68,6 +69,7 @@ namespace MsgPack.Serialization.Polymorphic
 			this.GetActualTypeSerializer( objectTree.GetType() ).PackTo( packer, objectTree );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
 			// It is not reasonable to identify other forms.

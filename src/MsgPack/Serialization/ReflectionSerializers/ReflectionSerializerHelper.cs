@@ -165,7 +165,6 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		public static void GetMetadata(
 			IList<SerializingMember> members,
 			SerializationContext context,
-			Type targetType,
 			out Func<object, object>[] getters,
 			out Action<object, object>[] setters,
 			out MemberInfo[] memberInfos,
@@ -229,12 +228,6 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		}
 
 		private static readonly Type[] ConstructorWithCapacityParameters = { typeof( int ) };
-
-		// For non abstract
-		public static Func<int, T> CreateCollectionInstanceFactory<T>()
-		{
-			return CreateCollectionInstanceFactory<T>( typeof( T ) );
-		}
 
 		public static Func<int, T> CreateCollectionInstanceFactory<T>( Type targetType )
 		{
