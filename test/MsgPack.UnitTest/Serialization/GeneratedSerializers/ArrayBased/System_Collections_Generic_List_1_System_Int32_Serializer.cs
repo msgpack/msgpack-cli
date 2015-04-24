@@ -13,62 +13,22 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.6.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    public class System_Collections_Generic_List_1_System_Int32_Serializer : MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<int>> {
-        
-        private MsgPack.Serialization.MessagePackSerializer<int> _serializer0;
+    public class System_Collections_Generic_List_1_System_Int32_Serializer : MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer<System.Collections.Generic.List<int>, int> {
         
         public System_Collections_Generic_List_1_System_Int32_Serializer(MsgPack.Serialization.SerializationContext context) : 
-                base(context) {
-            MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema0 = null;
-            this._serializer0 = context.GetSerializer<int>(schema0);
+                base(context, System_Collections_Generic_List_1_System_Int32_Serializer.RestoreSchema()) {
         }
         
-        protected internal override void PackToCore(MsgPack.Packer packer, System.Collections.Generic.List<int> objectTree) {
-            packer.PackArrayHeader(objectTree.Count);
-            System.Collections.Generic.List<int>.Enumerator enumerator = objectTree.GetEnumerator();
-            int current;
-            try {
-                for (
-                ; enumerator.MoveNext(); 
-                ) {
-                    current = enumerator.Current;
-                    this._serializer0.PackTo(packer, current);
-                }
-            }
-            finally {
-                enumerator.Dispose();
-            }
-        }
-        
-        protected internal override System.Collections.Generic.List<int> UnpackFromCore(MsgPack.Unpacker unpacker) {
-            if ((unpacker.IsArrayHeader == false)) {
-                throw MsgPack.Serialization.SerializationExceptions.NewIsNotArrayHeader();
-            }
+        protected override System.Collections.Generic.List<int> CreateInstance(int initialCapacity) {
             System.Collections.Generic.List<int> collection = default(System.Collections.Generic.List<int>);
-            collection = new System.Collections.Generic.List<int>(MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker));
-            this.UnpackToCore(unpacker, collection);
+            collection = new System.Collections.Generic.List<int>(initialCapacity);
             return collection;
         }
         
-        protected internal override void UnpackToCore(MsgPack.Unpacker unpacker, System.Collections.Generic.List<int> collection) {
-            if ((unpacker.IsArrayHeader == false)) {
-                throw MsgPack.Serialization.SerializationExceptions.NewIsNotArrayHeader();
-            }
-            int count = default(int);
-            count = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-            for (int i = 0; (i < count); i = (i + 1)) {
-                System.Nullable<int> nullable = default(System.Nullable<int>);
-                nullable = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(System.Collections.Generic.List<int>), string.Format(System.Globalization.CultureInfo.InvariantCulture, "item{0}", new object[] {
-                                ((object)(i))}));
-                if (nullable.HasValue) {
-                    collection.Add(nullable.Value);
-                }
-                else {
-                    throw MsgPack.Serialization.SerializationExceptions.NewValueTypeCannotBeNull(string.Format(System.Globalization.CultureInfo.InvariantCulture, "item{0}", new object[] {
-                                    ((object)(i))}), typeof(int), typeof(System.Collections.Generic.List<int>));
-                }
-            }
+        private static MsgPack.Serialization.PolymorphismSchema RestoreSchema() {
+            MsgPack.Serialization.PolymorphismSchema schema = default(MsgPack.Serialization.PolymorphismSchema);
+            schema = null;
+            return schema;
         }
         
         private static T @__Conditional<T>(bool condition, T whenTrue, T whenFalse)

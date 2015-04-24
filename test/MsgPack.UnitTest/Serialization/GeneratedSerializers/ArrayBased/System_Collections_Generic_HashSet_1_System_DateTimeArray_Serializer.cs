@@ -13,80 +13,22 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.6.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    public class System_Collections_Generic_HashSet_1_System_DateTimeArray_Serializer : MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<System.DateTime[]>> {
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTime[]> _serializer0;
+    public class System_Collections_Generic_HashSet_1_System_DateTimeArray_Serializer : MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer<System.Collections.Generic.HashSet<System.DateTime[]>, System.DateTime[]> {
         
         public System_Collections_Generic_HashSet_1_System_DateTimeArray_Serializer(MsgPack.Serialization.SerializationContext context) : 
-                base(context) {
-            MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema0 = null;
-            this._serializer0 = context.GetSerializer<System.DateTime[]>(schema0);
+                base(context, System_Collections_Generic_HashSet_1_System_DateTimeArray_Serializer.RestoreSchema()) {
         }
         
-        protected internal override void PackToCore(MsgPack.Packer packer, System.Collections.Generic.HashSet<System.DateTime[]> objectTree) {
-            packer.PackArrayHeader(objectTree.Count);
-            System.Collections.Generic.HashSet<System.DateTime[]>.Enumerator enumerator = objectTree.GetEnumerator();
-            System.DateTime[] current;
-            try {
-                for (
-                ; enumerator.MoveNext(); 
-                ) {
-                    current = enumerator.Current;
-                    this._serializer0.PackTo(packer, current);
-                }
-            }
-            finally {
-                enumerator.Dispose();
-            }
-        }
-        
-        protected internal override System.Collections.Generic.HashSet<System.DateTime[]> UnpackFromCore(MsgPack.Unpacker unpacker) {
-            if ((unpacker.IsArrayHeader == false)) {
-                throw MsgPack.Serialization.SerializationExceptions.NewIsNotArrayHeader();
-            }
+        protected override System.Collections.Generic.HashSet<System.DateTime[]> CreateInstance(int initialCapacity) {
             System.Collections.Generic.HashSet<System.DateTime[]> collection = default(System.Collections.Generic.HashSet<System.DateTime[]>);
             collection = new System.Collections.Generic.HashSet<System.DateTime[]>();
-            this.UnpackToCore(unpacker, collection);
             return collection;
         }
         
-        protected internal override void UnpackToCore(MsgPack.Unpacker unpacker, System.Collections.Generic.HashSet<System.DateTime[]> collection) {
-            if ((unpacker.IsArrayHeader == false)) {
-                throw MsgPack.Serialization.SerializationExceptions.NewIsNotArrayHeader();
-            }
-            int count = default(int);
-            count = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-            for (int i = 0; (i < count); i = (i + 1)) {
-                System.DateTime[] nullable = default(System.DateTime[]);
-                if ((unpacker.Read() == false)) {
-                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                }
-                if (((unpacker.IsArrayHeader == false) 
-                            && (unpacker.IsMapHeader == false))) {
-                    nullable = this._serializer0.UnpackFrom(unpacker);
-                }
-                else {
-                    MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
-                    disposable = unpacker.ReadSubtree();
-                    try {
-                        nullable = this._serializer0.UnpackFrom(disposable);
-                    }
-                    finally {
-                        if (((disposable == null) 
-                                    == false)) {
-                            disposable.Dispose();
-                        }
-                    }
-                }
-                if (((nullable == null) 
-                            == false)) {
-                    collection.Add(nullable);
-                }
-                else {
-                    collection.Add(nullable);
-                }
-            }
+        private static MsgPack.Serialization.PolymorphismSchema RestoreSchema() {
+            MsgPack.Serialization.PolymorphismSchema schema = default(MsgPack.Serialization.PolymorphismSchema);
+            schema = null;
+            return schema;
         }
         
         private static T @__Conditional<T>(bool condition, T whenTrue, T whenFalse)

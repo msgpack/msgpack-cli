@@ -23,8 +23,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
             MsgPack.Serialization.PolymorphismSchema keysSchema0 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<byte, System.Type> keysSchemaTypeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             keysSchemaTypeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            keysSchemaTypeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
             keysSchemaTypeMap0.Add(0, typeof(MsgPack.Serialization.FileEntry));
+            keysSchemaTypeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
             keysSchema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(object), keysSchemaTypeMap0);
             MsgPack.Serialization.PolymorphismSchema valuesSchema0 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<byte, System.Type> valuesSchemaTypeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);

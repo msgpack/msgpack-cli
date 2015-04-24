@@ -13,80 +13,22 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.6.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    public class System_Collections_Generic_HashSet_1_MsgPack_MessagePackObjectArray_Serializer : MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<MsgPack.MessagePackObject[]>> {
-        
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject[]> _serializer0;
+    public class System_Collections_Generic_HashSet_1_MsgPack_MessagePackObjectArray_Serializer : MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer<System.Collections.Generic.HashSet<MsgPack.MessagePackObject[]>, MsgPack.MessagePackObject[]> {
         
         public System_Collections_Generic_HashSet_1_MsgPack_MessagePackObjectArray_Serializer(MsgPack.Serialization.SerializationContext context) : 
-                base(context) {
-            MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema0 = null;
-            this._serializer0 = context.GetSerializer<MsgPack.MessagePackObject[]>(schema0);
+                base(context, System_Collections_Generic_HashSet_1_MsgPack_MessagePackObjectArray_Serializer.RestoreSchema()) {
         }
         
-        protected internal override void PackToCore(MsgPack.Packer packer, System.Collections.Generic.HashSet<MsgPack.MessagePackObject[]> objectTree) {
-            packer.PackArrayHeader(objectTree.Count);
-            System.Collections.Generic.HashSet<MsgPack.MessagePackObject[]>.Enumerator enumerator = objectTree.GetEnumerator();
-            MsgPack.MessagePackObject[] current;
-            try {
-                for (
-                ; enumerator.MoveNext(); 
-                ) {
-                    current = enumerator.Current;
-                    this._serializer0.PackTo(packer, current);
-                }
-            }
-            finally {
-                enumerator.Dispose();
-            }
-        }
-        
-        protected internal override System.Collections.Generic.HashSet<MsgPack.MessagePackObject[]> UnpackFromCore(MsgPack.Unpacker unpacker) {
-            if ((unpacker.IsArrayHeader == false)) {
-                throw MsgPack.Serialization.SerializationExceptions.NewIsNotArrayHeader();
-            }
+        protected override System.Collections.Generic.HashSet<MsgPack.MessagePackObject[]> CreateInstance(int initialCapacity) {
             System.Collections.Generic.HashSet<MsgPack.MessagePackObject[]> collection = default(System.Collections.Generic.HashSet<MsgPack.MessagePackObject[]>);
             collection = new System.Collections.Generic.HashSet<MsgPack.MessagePackObject[]>();
-            this.UnpackToCore(unpacker, collection);
             return collection;
         }
         
-        protected internal override void UnpackToCore(MsgPack.Unpacker unpacker, System.Collections.Generic.HashSet<MsgPack.MessagePackObject[]> collection) {
-            if ((unpacker.IsArrayHeader == false)) {
-                throw MsgPack.Serialization.SerializationExceptions.NewIsNotArrayHeader();
-            }
-            int count = default(int);
-            count = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-            for (int i = 0; (i < count); i = (i + 1)) {
-                MsgPack.MessagePackObject[] nullable = default(MsgPack.MessagePackObject[]);
-                if ((unpacker.Read() == false)) {
-                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                }
-                if (((unpacker.IsArrayHeader == false) 
-                            && (unpacker.IsMapHeader == false))) {
-                    nullable = this._serializer0.UnpackFrom(unpacker);
-                }
-                else {
-                    MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
-                    disposable = unpacker.ReadSubtree();
-                    try {
-                        nullable = this._serializer0.UnpackFrom(disposable);
-                    }
-                    finally {
-                        if (((disposable == null) 
-                                    == false)) {
-                            disposable.Dispose();
-                        }
-                    }
-                }
-                if (((nullable == null) 
-                            == false)) {
-                    collection.Add(nullable);
-                }
-                else {
-                    collection.Add(nullable);
-                }
-            }
+        private static MsgPack.Serialization.PolymorphismSchema RestoreSchema() {
+            MsgPack.Serialization.PolymorphismSchema schema = default(MsgPack.Serialization.PolymorphismSchema);
+            schema = null;
+            return schema;
         }
         
         private static T @__Conditional<T>(bool condition, T whenTrue, T whenFalse)

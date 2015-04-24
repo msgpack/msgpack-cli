@@ -13,82 +13,22 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.6.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    public class System_Collections_Generic_Dictionary_2_System_String_System_Int32_Serializer : MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<string, int>> {
-        
-        private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
-        
-        private MsgPack.Serialization.MessagePackSerializer<int> _serializer1;
+    public class System_Collections_Generic_Dictionary_2_System_String_System_Int32_Serializer : MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer<System.Collections.Generic.Dictionary<string, int>, string, int> {
         
         public System_Collections_Generic_Dictionary_2_System_String_System_Int32_Serializer(MsgPack.Serialization.SerializationContext context) : 
-                base(context) {
-            MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema0 = null;
-            this._serializer0 = context.GetSerializer<string>(schema0);
-            MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema1 = null;
-            this._serializer1 = context.GetSerializer<int>(schema1);
+                base(context, System_Collections_Generic_Dictionary_2_System_String_System_Int32_Serializer.RestoreSchema()) {
         }
         
-        protected internal override void PackToCore(MsgPack.Packer packer, System.Collections.Generic.Dictionary<string, int> objectTree) {
-            packer.PackMapHeader(objectTree.Count);
-            System.Collections.Generic.Dictionary<string, int>.Enumerator enumerator = objectTree.GetEnumerator();
-            System.Collections.Generic.KeyValuePair<string, int> current;
-            try {
-                for (
-                ; enumerator.MoveNext(); 
-                ) {
-                    current = enumerator.Current;
-                    this._serializer0.PackTo(packer, current.Key);
-                    this._serializer1.PackTo(packer, current.Value);
-                }
-            }
-            finally {
-                enumerator.Dispose();
-            }
-        }
-        
-        protected internal override System.Collections.Generic.Dictionary<string, int> UnpackFromCore(MsgPack.Unpacker unpacker) {
-            if ((unpacker.IsMapHeader == false)) {
-                throw MsgPack.Serialization.SerializationExceptions.NewIsNotMapHeader();
-            }
+        protected override System.Collections.Generic.Dictionary<string, int> CreateInstance(int initialCapacity) {
             System.Collections.Generic.Dictionary<string, int> collection = default(System.Collections.Generic.Dictionary<string, int>);
-            collection = new System.Collections.Generic.Dictionary<string, int>(MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker));
-            this.UnpackToCore(unpacker, collection);
+            collection = new System.Collections.Generic.Dictionary<string, int>(initialCapacity);
             return collection;
         }
         
-        protected internal override void UnpackToCore(MsgPack.Unpacker unpacker, System.Collections.Generic.Dictionary<string, int> collection) {
-            if ((unpacker.IsMapHeader == false)) {
-                throw MsgPack.Serialization.SerializationExceptions.NewIsNotMapHeader();
-            }
-            int itemsCount = default(int);
-            itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-            for (int i = 0; (i < itemsCount); i = (i + 1)) {
-                string key = default(string);
-                int value = default(int);
-                string nullable = default(string);
-                nullable = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(System.Collections.Generic.Dictionary<string, int>), string.Format(System.Globalization.CultureInfo.InvariantCulture, "key{0}", new object[] {
-                                ((object)(i))}));
-                if (((nullable == null) 
-                            == false)) {
-                    key = nullable;
-                }
-                else {
-                    throw MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited(string.Format(System.Globalization.CultureInfo.InvariantCulture, "key{0}", new object[] {
-                                    ((object)(i))}));
-                }
-                System.Nullable<int> nullable0 = default(System.Nullable<int>);
-                nullable0 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(System.Collections.Generic.Dictionary<string, int>), string.Format(System.Globalization.CultureInfo.InvariantCulture, "value{0}", new object[] {
-                                ((object)(i))}));
-                if (nullable0.HasValue) {
-                    value = nullable0.Value;
-                }
-                else {
-                    throw MsgPack.Serialization.SerializationExceptions.NewValueTypeCannotBeNull(string.Format(System.Globalization.CultureInfo.InvariantCulture, "value{0}", new object[] {
-                                    ((object)(i))}), typeof(int), typeof(System.Collections.Generic.Dictionary<string, int>));
-                }
-                collection.Add(key, value);
-            }
+        private static MsgPack.Serialization.PolymorphismSchema RestoreSchema() {
+            MsgPack.Serialization.PolymorphismSchema schema = default(MsgPack.Serialization.PolymorphismSchema);
+            schema = null;
+            return schema;
         }
         
         private static T @__Conditional<T>(bool condition, T whenTrue, T whenFalse)
