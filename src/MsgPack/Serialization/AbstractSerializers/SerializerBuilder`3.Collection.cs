@@ -287,16 +287,21 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						typeof( TObject ),
 						collection,
-						this.EmitRetrunStatement(
+						this.EmitStoreVariableStatement(
 							context,
+							collection,
 							this.EmitCreateNewObjectExpression(
 								context,
 								collection,
 								ctor,
-							ctor.GetParameters().Length == 0
+								ctor.GetParameters().Length == 0
 								? NoConstructs
 								: new[] { context.InitialCapacity }
 							)
+						),
+						this.EmitRetrunStatement(
+							context,
+							this.EmitLoadVariableExpression( context, collection )
 						)
 					);
 			}
