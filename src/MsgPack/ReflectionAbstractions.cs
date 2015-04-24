@@ -181,7 +181,7 @@ namespace MsgPack
 
 		public static IEnumerable<ConstructorInfo> GetConstructors( this Type source )
 		{
-			return source.GetTypeInfo().DeclaredConstructors;
+			return source.GetTypeInfo().DeclaredConstructors.Where( c => c.IsPublic );
 		}
 
 		public static Type[] GetGenericArguments( this Type source )
