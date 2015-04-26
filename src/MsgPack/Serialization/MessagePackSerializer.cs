@@ -212,7 +212,7 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 #endif // !XAMIOS && !XAMDROID && !UNITY
 
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !XAMDROID && !XAMIOS
 			SerializerDebugging.TraceEvent(
 				"SerializationContext::CreateInternal<{0}>(@{1}, {2})",
 				typeof( T ),
@@ -220,7 +220,7 @@ namespace MsgPack.Serialization
 				schema == null ? "null" : schema.DebugString
 			);
 
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !XAMDROID && !XAMIOS
 			Type concreteType = null;
 
 			if ( typeof( T ).GetIsAbstract() || typeof( T ).GetIsInterface() )

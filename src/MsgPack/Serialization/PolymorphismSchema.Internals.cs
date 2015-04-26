@@ -95,9 +95,7 @@ namespace MsgPack.Serialization
 		///		ForPolymorphicTuple( Type targetType, PolymorphismSchema[] itemSchemaList )
 		/// </summary>
 		internal static readonly MethodInfo ForPolymorphicTupleMethod =
-			FromExpression.ToMethod(
-				( Type targetType, PolymorphismSchema[] itemSchemaList ) => ForPolymorphicTuple( targetType, itemSchemaList )
-			);
+			typeof( PolymorphismSchema ).GetMethod( "ForPolymorphicTuple", new[] { typeof( Type ), typeof( PolymorphismSchema[]) } );
 #endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
 
 		internal static readonly ConstructorInfo CodeTypeMapConstructor =
