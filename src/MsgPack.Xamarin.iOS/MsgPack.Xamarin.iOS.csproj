@@ -50,7 +50,6 @@
     <Folder Include="Serialization\ReflectionSerializers\" />
     <Folder Include="Serialization\ReflectionSerializers\ReflectionSerializers\" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
