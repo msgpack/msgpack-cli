@@ -475,6 +475,9 @@
     <None Include="MsgPack.UnitTest.WinRT_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\MsgPack.UnitTest\gen\ReadMe.txt">
+      <Link>gen\ReadMe.txt</Link>
+    </Content>
     <Content Include="Images\UnitTestLogo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
