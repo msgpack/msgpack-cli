@@ -248,7 +248,11 @@ Release 0.6.0 Alpha1 - 2015/3/2
   * Deserializer now uses 'best match' constructor when all members are read-only. Issue #52.
   * `MessagePackSerializer.UnpackMessagePackObject` API. This is convinient shortcut to deserialize stream as `MessagePackObject` tree.
 
-Release 0.6.0 Alpha2 -
+Release 0.6.0 Beta1 -
 
   NEW FEATURE
   * Add Type Embedding. Issue #47.
+
+  BUG FIXES
+  * MessagePackSerializer.Create now always returns new instance.
+  * Fix build problem related to interface generic parameter variance.
