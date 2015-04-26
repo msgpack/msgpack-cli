@@ -67,7 +67,11 @@ namespace MsgPack.Serialization.Polymorphic
 				.Pack( compressedTypeName )
 				.Pack( assemblyName.Name )
 				.Pack( version )
+#if !XAMIOS && !XAMDROID
 				.Pack( assemblyName.GetCultureName() )
+#else
+				.Pack( assemblyName.GetCultureName() == "neutral" ? null : assemblyName.GetCultureName() )
+#endif // !XAMIOS && !XAMDROID
 				.Pack( assemblyName.GetPublicKeyToken() );
 		}
 
