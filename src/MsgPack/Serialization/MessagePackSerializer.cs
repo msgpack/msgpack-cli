@@ -368,7 +368,7 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 
 #if XAMIOS || XAMDROID || UNITY
-			return CreateReflectionInternal( context, targetType );
+			return CreateInternal( context, targetType, null );
 #else
 			// MPS.Create should always return new instance, and creator delegate should be cached for performance.
 #if NETFX_CORE
@@ -561,29 +561,29 @@ namespace MsgPack.Serialization
 		}
 
 #if XAMIOS || XAMDROID || UNITY
-		private static readonly System.Reflection.MethodInfo CreateReflectionInternal_1 = 
+		private static readonly System.Reflection.MethodInfo CreateInternal_2 = 
 			typeof( MessagePackSerializer ).GetMethod( 
-				"CreateReflectionInternal", 
+				"CreateInternal", 
 				System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic,
 				null,
-				new []{ typeof( SerializationContext ) },
+				new []{ typeof( SerializationContext ), typeof( PolymorphismSchema ) },
 				null
 			);
 
-		internal static IMessagePackSingleObjectSerializer CreateReflectionInternal( SerializationContext context, Type targetType )
+		internal static IMessagePackSingleObjectSerializer CreateInternal( SerializationContext context, Type targetType, PolymorphismSchema schema )
 		{
 #if UNITY_ANDROID || UNITY
 			return
 				(
 					Delegate.CreateDelegate( 
-						typeof( Func<SerializationContext, object> ),
-						CreateReflectionInternal_1.MakeGenericMethod( targetType )
+						typeof( Func<SerializationContext, PolymorphismSchema, object> ),
+						CreateInternal_2.MakeGenericMethod( targetType )
 					)
-				as Func<SerializationContext, object> )( context ) as IMessagePackSingleObjectSerializer;
+				as Func<SerializationContext, PolymorphismSchema, object> )( context, schema ) as IMessagePackSingleObjectSerializer;
 #else
 			return 
-				( CreateReflectionInternal_1.MakeGenericMethod( targetType ).CreateDelegate( typeof( Func<SerializationContext,object> ) ) 
-				as Func<SerializationContext, object> )( context ) as IMessagePackSingleObjectSerializer;
+				( CreateInternal_2.MakeGenericMethod( targetType ).CreateDelegate( typeof( Func<SerializationContext, PolymorphismSchema, object> ) ) 
+				as Func<SerializationContext, PolymorphismSchema, object> )( context, schema ) as IMessagePackSingleObjectSerializer;
 #endif
 		}
 #endif // XAMIOS || XAMDROID || UNITY
