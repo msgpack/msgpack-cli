@@ -73,6 +73,9 @@
 
   <Project Name="MsgPack.UnitTest.Net35" Base="MsgPack.UnitTest">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude Path="gen\*" />
+    <Exclude Path="gen\array\*" />
+    <Exclude Path="gen\map\*" />
     <Exclude Path="Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\ArrayExpressionBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs" />
@@ -83,9 +86,6 @@
     <Exclude Path="Serialization\MapExpressionBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\MapGenerationBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\MapGenerationBasedEnumSerializationTest.cs" />
-    <Exclude Path="Serialization\GeneratedSerializers\*" />
-    <Exclude Path="Serialization\GeneratedSerializers\ArrayBased\*" />
-    <Exclude Path="Serialization\GeneratedSerializers\MapBased\*" />
     <Exclude Path="Serialization\PreGenerated*" />
     <Preserve Path="Dummies\System.Threading.Tasks\Task.cs" />
     <Preserve Path="Dummies\System.Threading.Tasks\TaskFactory.cs" />
