@@ -21,14 +21,12 @@ using System.Diagnostics;
 
 namespace MsgPack
 {
-#if DEBUG
-	// Use compiler directive to ensure compiler removal of related expressions of assertion.
-
 	/// <summary>
 	///		System.Contract alternative working on Xamarin.
 	/// </summary>
 	internal static class MPContract
 	{
+		[Conditional( "DEBUG" )]
 		public static void Assert( bool condition, string userMessage )
 		{
 			if ( !condition )
@@ -60,5 +58,4 @@ namespace MsgPack
 			return default( T );
 		}
 	}
-#endif // DEBUG
 }
