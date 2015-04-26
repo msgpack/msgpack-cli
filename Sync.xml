@@ -32,6 +32,7 @@
 
   <Project Name="MsgPack.Xamarin.iOS" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve Path="MPContract.cs" />
     <Exclude Path="Serialization\AbstractSerializers\*" />
     <Exclude Path="Serialization\CodeDomSerializers\*" />
     <Exclude Path="Serialization\EmittingSerializers\*" />

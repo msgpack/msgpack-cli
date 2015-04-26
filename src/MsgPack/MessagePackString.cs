@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,7 +25,11 @@
 using System;
 using System.Diagnostics;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 using System.Globalization;
 using System.Linq;
@@ -69,7 +73,7 @@ namespace MsgPack
 		public MessagePackString( string decoded )
 		{
 #if !UNITY
-			Contract.Assert( decoded != null );
+			Contract.Assert( decoded != null, "decoded != null" );
 #endif // !UNITY
 			this._decoded = decoded;
 			this._type = BinaryType.String;
@@ -78,7 +82,7 @@ namespace MsgPack
 		public MessagePackString( byte[] encoded, bool isBinary )
 		{
 #if !UNITY
-			Contract.Assert( encoded != null );
+			Contract.Assert( encoded != null, "encoded != null" );
 #endif // !UNITY
 			this._encoded = encoded;
 			this._type = isBinary ? BinaryType.Blob : BinaryType.Unknwon;
@@ -322,10 +326,10 @@ namespace MsgPack
 		private static bool UnsafeFastEquals( byte[] x, byte[] y )
 		{
 #if DEBUG
-			Contract.Assert( x != null );
-			Contract.Assert( y != null );
-			Contract.Assert( 0 < x.Length );
-			Contract.Assert( x.Length == y.Length );
+			Contract.Assert( x != null, "x != null" );
+			Contract.Assert( y != null, "y != null" );
+			Contract.Assert( 0 < x.Length, "0 < x.Length" );
+			Contract.Assert( x.Length == y.Length, "x.Length == y.Length" );
 #endif // if DEBUG
 			int result;
 			if ( !UnsafeNativeMethods.TryMemCmp( x, y, new UIntPtr( unchecked( ( uint )x.Length ) ), out result ) )

@@ -34,7 +34,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 #if NETFX_CORE || WINDOWS_PHONE
 using System.Linq.Expressions;

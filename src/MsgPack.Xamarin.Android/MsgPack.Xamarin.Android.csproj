@@ -53,6 +53,9 @@
     <Compile Include="..\CommonAssemblyInfo.Pack.cs">
       <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.Xamarin.iOS\MPContract.cs">
+      <Link>MPContract.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\BigEndianBinary.cs">
       <Link>BigEndianBinary.cs</Link>
     </Compile>
@@ -616,12 +619,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Serialization\" />
-    <Folder Include="Serialization\Reflection\" />
-    <Folder Include="Properties\" />
-    <Folder Include="Serialization\DefaultSerializers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="..\MsgPack\remarks.xml">
       <Link>remarks.xml</Link>

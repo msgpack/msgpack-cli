@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -28,7 +28,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 using System.Globalization;
 using System.Linq;
@@ -448,15 +452,18 @@ namespace MsgPack
 		{
 			if ( this._dictionary == null )
 			{
-				Contract.Assert( this._keys != null );
-				Contract.Assert( this._values != null );
-				Contract.Assert( this._keys.Count == this._values.Count );
-				Contract.Assert( this._keys.Distinct( MessagePackObjectEqualityComparer.Instance ).Count() == this._keys.Count );
+				Contract.Assert( this._keys != null, "this._keys != null" );
+				Contract.Assert( this._values != null, "this._values != null" );
+				Contract.Assert( this._keys.Count == this._values.Count, "this._keys.Count == this._values.Count" );
+				Contract.Assert(
+					this._keys.Distinct( MessagePackObjectEqualityComparer.Instance ).Count() == this._keys.Count,
+					"this._keys.Distinct( MessagePackObjectEqualityComparer.Instance ).Count() == this._keys.Count"
+				);
 			}
 			else
 			{
-				Contract.Assert( this._keys == null );
-				Contract.Assert( this._values == null );
+				Contract.Assert( this._keys == null, "this._keys == null" );
+				Contract.Assert( this._values == null, "this._values == null" );
 			}
 		}
 #endif // !UNITY
@@ -771,7 +778,7 @@ namespace MsgPack
 		private void AddCore( MessagePackObject key, MessagePackObject value, bool allowOverwrite )
 		{
 #if !UNITY
-			Contract.Assert( !key.IsNil );
+			Contract.Assert( !key.IsNil, "!key.IsNil" );
 #endif // !UNITY
 
 			if ( this._dictionary == null )
@@ -923,7 +930,7 @@ namespace MsgPack
 		private bool RemoveCore( MessagePackObject key, MessagePackObject value, bool checkValue )
 		{
 #if !UNITY
-			Contract.Assert( !key.IsNil );
+			Contract.Assert( !key.IsNil, "!key.IsNil" );
 			this.AssertInvariant();
 #endif // !UNITY
 

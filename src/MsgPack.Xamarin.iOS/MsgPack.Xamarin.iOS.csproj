@@ -41,11 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
-    <Folder Include="Properties\" />
-    <Folder Include="Serialization\" />
-    <Folder Include="Serialization\DefaultSerializers\" />
-    <Folder Include="Serialization\Reflection\" />
-    <Folder Include="Serialization\ReflectionSerializers\" />
     <Folder Include="Serialization\ReflectionSerializers\ReflectionSerializers\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
@@ -617,6 +612,7 @@
     <Compile Include="..\MsgPack\Validation.cs">
       <Link>Validation.cs</Link>
     </Compile>
+    <Compile Include="MPContract.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

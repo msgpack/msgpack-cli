@@ -24,9 +24,6 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY
-using System.Diagnostics.Contracts;
-#endif // !UNITY
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -47,10 +44,6 @@ namespace MsgPack.Serialization.Polymorphic
 		public KnownTypePolymorhicMessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema schema )
 			: base( ownerContext )
 		{
-#if DEBUG && !UNITY
-			Contract.Assert( typeof( T ) != null );
-#endif // DEBUG && !UNITY
-
 			if ( typeof( T ).GetIsValueType() )
 			{
 				throw SerializationExceptions.NewValueTypeCannotBePolymorphic( typeof( T ) );

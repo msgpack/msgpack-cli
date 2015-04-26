@@ -27,7 +27,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 using System.Reflection;
 
@@ -195,7 +199,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				{
 					var property = member.Member as PropertyInfo;
 #if DEBUG && !UNITY
-					Contract.Assert( property != null );
+					Contract.Assert( property != null, "member.Member is PropertyInfo" );
 #endif // DEBUG && !UNITY
 					getters[ i ] = target => property.GetGetMethod( true ).Invoke( target, null );
 					var setter = property.GetSetMethod( true );

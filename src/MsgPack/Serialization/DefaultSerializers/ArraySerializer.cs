@@ -24,7 +24,11 @@
 
 using System;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 
 namespace MsgPack.Serialization.DefaultSerializers
@@ -39,7 +43,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public static IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema itemsSchema ) 
 		{
 #if DEBUG && !UNITY
-			Contract.Assert( targetType.IsArray );
+			Contract.Assert( targetType.IsArray, "targetType.IsArray" );
 #endif // DEBUG && !UNITY
 			return
 				( GetPrimitiveArraySerializer( context, targetType )
@@ -54,7 +58,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private static object GetPrimitiveArraySerializer( SerializationContext context, Type targetType )
 		{
 #if DEBUG && !UNITY
-			Contract.Assert( targetType.IsArray );
+			Contract.Assert( targetType.IsArray, "targetType.IsArray" );
 #endif // DEBUG && !UNITY
 
 			Func<SerializationContext, object> serializerFactory;

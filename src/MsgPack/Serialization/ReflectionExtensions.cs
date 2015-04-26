@@ -26,7 +26,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 using System.Globalization;
 using System.Linq;
@@ -58,7 +62,7 @@ namespace MsgPack.Serialization
 		public static CollectionTraits GetCollectionTraits( this Type source )
 		{
 #if !UNITY && DEBUG
-			Contract.Assert( !source.GetContainsGenericParameters() );
+			Contract.Assert( !source.GetContainsGenericParameters(), "!source.GetContainsGenericParameters()" );
 #endif // !UNITY
 			/*
 			 * SPEC
@@ -514,7 +518,7 @@ namespace MsgPack.Serialization
 		{
 #if !NETFX_CORE
 #if !UNITY
-			Contract.Assert( type.IsInterface );
+			Contract.Assert( type.IsInterface, "type.IsInterface" );
 #endif // !UNITY
 			return type.Assembly.Equals( typeof( Array ).Assembly ) && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
 #else

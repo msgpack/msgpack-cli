@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,7 +25,11 @@
 using System;
 using System.Collections.Generic;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 using System.Globalization;
 using System.IO;
@@ -367,9 +371,9 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackInt8( value );
 #pragma warning restore 168
-#if !UNITY
-			Contract.Assume( b );
-#endif // !UNITY
+#if !UNITY && DEBUG
+			Contract.Assert( b, "success" );
+#endif // !UNITY && DEBUG
 		}
 
 		/// <summary>
@@ -419,9 +423,9 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackUInt8( value );
 #pragma warning restore 168
-#if !UNITY
-			Contract.Assume( b );
-#endif // !UNITY
+#if !UNITY && DEBUG
+			Contract.Assert( b, "success" );
+#endif // !UNITY && DEBUG
 		}
 
 		/// <summary>
@@ -476,9 +480,9 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackInt16( value );
 #pragma warning restore 168
-#if !UNITY
-			Contract.Assume( b );
-#endif // !UNITY
+#if !UNITY && DEBUG
+			Contract.Assert( b, "success" );
+#endif // !UNITY && DEBUG
 		}
 
 		/// <summary>
@@ -540,9 +544,9 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackUInt16( value );
 #pragma warning restore 168
-#if !UNITY
-			Contract.Assume( b );
-#endif // !UNITY
+#if !UNITY && DEBUG
+			Contract.Assert( b, "success" );
+#endif // !UNITY && DEBUG
 		}
 
 		/// <summary>
@@ -609,9 +613,9 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackInt32( value );
 #pragma warning restore 168
-#if !UNITY
-			Contract.Assume( b );
-#endif // !UNITY
+#if !UNITY && DEBUG
+			Contract.Assert( b, "success" );
+#endif // !UNITY && DEBUG
 
 		}
 
@@ -682,9 +686,9 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackUInt32( value );
 #pragma warning restore 168
-#if !UNITY
-			Contract.Assume( b );
-#endif // !UNITY
+#if !UNITY && DEBUG
+			Contract.Assert( b, "success" );
+#endif // !UNITY && DEBUG
 
 		}
 
@@ -759,9 +763,9 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackInt64( value );
 #pragma warning restore 168
-#if !UNITY
-			Contract.Assume( b );
-#endif // !UNITY
+#if !UNITY && DEBUG
+			Contract.Assert( b, "success" );
+#endif // !UNITY && DEBUG
 
 		}
 
@@ -835,10 +839,9 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackUInt64( value );
 #pragma warning restore 168
-#if !UNITY
-			Contract.Assume( b );
-#endif // !UNITY
-
+#if !UNITY && DEBUG
+			Contract.Assert( b, "success" );
+#endif // !UNITY && DEBUG
 		}
 
 		/// <summary>
@@ -997,7 +1000,7 @@ namespace MsgPack
 		private void PrivatePackArrayHeaderCore( int count )
 		{
 #if !UNITY
-			Contract.Assert( 0 <= count );
+			Contract.Assert( 0 <= count, "0 <= count" );
 #endif // !UNITY
 			if ( count < 16 )
 			{
@@ -1057,7 +1060,7 @@ namespace MsgPack
 		private void PrivatePackMapHeaderCore( int count )
 		{
 #if !UNITY
-			Contract.Assert( 0 <= count );
+			Contract.Assert( 0 <= count, "0 <= count" );
 #endif // !UNITY
 
 			if ( count < 16 )
@@ -1183,7 +1186,7 @@ namespace MsgPack
 		private void PrivatePackRawHeaderCore( int length, bool isString )
 		{
 #if !UNITY
-			Contract.Assert( 0 <= length );
+			Contract.Assert( 0 <= length, "0 <= length" );
 #endif // !UNITY
 
 			if ( isString || ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
@@ -1454,7 +1457,7 @@ namespace MsgPack
 		private int PrivatePackRawBodyCore( IEnumerable<byte> value )
 		{
 #if !UNITY
-			Contract.Assert( value != null );
+			Contract.Assert( value != null, "value != null" );
 #endif // !UNITY
 
 			var asCollection = value as ICollection<byte>;
@@ -1477,7 +1480,7 @@ namespace MsgPack
 		private int PrivatePackRawBodyCore( ICollection<byte> value, bool isImmutable )
 		{
 #if !UNITY
-			Contract.Assert( value != null );
+			Contract.Assert( value != null, "value != null" );
 #endif // !UNITY
 
 			var asArray = value as byte[];
@@ -1570,7 +1573,7 @@ namespace MsgPack
 		private void PrivatePackString( IEnumerable<char> value, Encoding encoding )
 		{
 #if !UNITY
-			Contract.Assert( encoding != null );
+			Contract.Assert( encoding != null, "encoding != null" );
 #endif // !UNITY
 
 			if ( value == null )
@@ -1585,8 +1588,8 @@ namespace MsgPack
 		private void PrivatePackStringCore( IEnumerable<char> value, Encoding encoding )
 		{
 #if !UNITY
-			Contract.Assert( value != null );
-			Contract.Assert( encoding != null );
+			Contract.Assert( value != null, "value != null" );
+			Contract.Assert( encoding != null, "encoding != null" );
 #endif // !UNITY
 
 			// TODO: streaming encoding
@@ -1619,7 +1622,7 @@ namespace MsgPack
 		private void PrivatePackString( string value, Encoding encoding )
 		{
 #if !UNITY
-			Contract.Assert( encoding != null );
+			Contract.Assert( encoding != null, "encoding != null" );
 #endif // !UNITY
 
 			if ( value == null )
@@ -1634,8 +1637,8 @@ namespace MsgPack
 		private void PrivatePackStringCore( string value, Encoding encoding )
 		{
 #if !UNITY
-			Contract.Assert( value != null );
-			Contract.Assert( encoding != null );
+			Contract.Assert( value != null, "value != null" );
+			Contract.Assert( encoding != null, "encoding != null" );
 #endif // !UNITY
 
 			// TODO: streaming encoding
@@ -1672,8 +1675,8 @@ namespace MsgPack
 			else
 			{
 				this.PrivatePackBinary( asCollection );
-			} 
-			
+			}
+
 			return this;
 		}
 

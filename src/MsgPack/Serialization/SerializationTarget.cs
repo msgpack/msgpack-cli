@@ -27,9 +27,13 @@
 
 using System;
 using System.Collections.Generic;
-#if DEBUG && !UNITY
+#if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
-#endif // DEBUG && !UNITY
+#endif // XAMIOS || XAMDROID
+#endif // !UNITY
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -117,7 +121,7 @@ namespace MsgPack.Serialization
 		private static IEnumerable<SerializingMember> GetTargetMembers( Type type )
 		{
 #if DEBUG && !UNITY
-			Contract.Assert( type != null );
+			Contract.Assert( type != null, "type != null" );
 #endif // DEBUG && !UNITY
 #if !NETFX_CORE
 			var members =
@@ -385,7 +389,7 @@ namespace MsgPack.Serialization
 				source++, destination++ )
 			{
 #if DEBUG && !UNITY
-				Contract.Assert( candidates[ source ].Contract.Id >= 0 );
+				Contract.Assert( candidates[ source ].Contract.Id >= 0, "candidates[ source ].Contract.Id >= 0" );
 #endif // DEBUG && !UNITY
 
 				if ( candidates[ source ].Contract.Id < destination )

@@ -25,9 +25,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if DEBUG && !UNITY
+#if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
-#endif // DEBUG && !UNITY
+#endif // XAMIOS || XAMDROID
+#endif // !UNITY
 using System.Linq;
 using System.Reflection;
 
@@ -176,7 +180,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			else
 			{
 #if DEBUG && !UNITY
-				Contract.Assert( unpacker.IsMapHeader );
+				Contract.Assert( unpacker.IsMapHeader, "unpacker.IsMapHeader" );
 #endif // DEBUG && !UNITY
 				var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
 
@@ -251,7 +255,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			if ( this._constructorParameters != null )
 			{
 #if DEBUG && !UNITY
-				Contract.Assert( objectGraph is object[] );
+				Contract.Assert( objectGraph is object[], "objectGraph is object[]" );
 #endif // !UNITY
 
 				int argumentIndex;

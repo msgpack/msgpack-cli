@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,7 +25,11 @@
 using System;
 using System.Collections.Generic;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 
 namespace MsgPack
@@ -87,8 +91,8 @@ namespace MsgPack
 		private SubtreeUnpacker( ItemsUnpacker root, SubtreeUnpacker parent )
 		{
 #if DEBUG && !UNITY
-			Contract.Assert( root != null );
-			Contract.Assert( root.IsArrayHeader || root.IsMapHeader );
+			Contract.Assert( root != null, "root != null" );
+			Contract.Assert( root.IsArrayHeader || root.IsMapHeader, "root.IsArrayHeader || root.IsMapHeader" );
 #endif // DEBUG && !UNITY
 			this._root = root;
 			this._parent = parent;
@@ -210,7 +214,7 @@ namespace MsgPack
 			if ( this._itemsCount.Count == 0 )
 			{
 #if DEBUG && !UNITY
-				Contract.Assert( this._unpacked.Count == 0 );
+				Contract.Assert( this._unpacked.Count == 0, "this._unpacked.Count == 0" );
 #endif // DEBUG && !UNITY
 				return;
 			}
@@ -224,7 +228,7 @@ namespace MsgPack
 				if ( this._itemsCount.Count == 0 )
 				{
 #if DEBUG && !UNITY
-					Contract.Assert( this._unpacked.Count == 0 );
+					Contract.Assert( this._unpacked.Count == 0, "this._unpacked.Count == 0 " );
 #endif // DEBUG && !UNITY
 					break;
 				}

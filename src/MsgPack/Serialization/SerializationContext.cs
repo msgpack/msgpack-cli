@@ -30,7 +30,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 #if NETFX_CORE
 using System.Linq;
@@ -730,7 +734,7 @@ namespace MsgPack.Serialization
 						).Compile();
 #endif // if !NETFX_CORE
 #if DEBUG && !UNITY
-					Contract.Assert( func != null );
+					Contract.Assert( func != null, "func != null" );
 #endif // if DEBUG && !UNITY
 					this._cache[ targetType.TypeHandle ] = func;
 				}
