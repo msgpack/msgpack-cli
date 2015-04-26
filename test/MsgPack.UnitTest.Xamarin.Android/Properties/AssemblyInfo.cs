@@ -25,13 +25,13 @@ using System.Runtime.InteropServices;
 using System.Resources;
 
 [assembly: AssemblyTitle( "Unit test of MessagePack for CLI" )]
-[assembly: AssemblyDescription( "Unit test of MessagePack CLI binding" )]
+[assembly: AssemblyDescription( "Unit test of MessagePack CLI binding for Xamarin for Android (Xamdroid)" )]
 [assembly: AssemblyConfiguration( "Develop" )]
 [assembly: AssemblyProduct( "MessagePack" )]
-[assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010-2014" )]
+[assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010-2015" )]
 
 [assembly: ComVisible( false )]
-[assembly: CLSCompliant( true )]
+[assembly: CLSCompliant( false )]
 [assembly: NeutralResourcesLanguage( "en-US" )]
 [assembly: AssemblyVersion( "1.0.0.0" )]
 [assembly: AssemblyFileVersion( "0.1.0.0" )]
