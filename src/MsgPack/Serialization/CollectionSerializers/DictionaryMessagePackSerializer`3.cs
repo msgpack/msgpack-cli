@@ -18,6 +18,10 @@
 // 
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -73,12 +77,23 @@ namespace MsgPack.Serialization.CollectionSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 		protected internal sealed override void PackToCore( Packer packer, TDictionary objectTree )
 		{
+#if ( !UNITY && !XAMIOS ) || AOT_CHECK
 			packer.PackMapHeader( objectTree.Count );
 			foreach ( var item in objectTree )
 			{
 				this._keySerializer.PackTo( packer, item.Key );
 				this._valueSerializer.PackTo( packer, item.Value );
 			}
+#else
+			// .constraind call for TDictionary.get_Count/TDictionary.GetEnumerator() causes AOT error.
+			// So use cast and invoke as normal call (it might cause boxing, but most collection should be reference type).
+			packer.PackMapHeader( ( objectTree as IDictionary<TKey, TValue> ).Count );
+			foreach ( var item in objectTree as IEnumerable<KeyValuePair<TKey,TValue>> )
+			{
+				this._keySerializer.PackTo( packer, item.Key );
+				this._valueSerializer.PackTo( packer, item.Value );
+			}
+#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
 		}
 
 		/// <summary>
@@ -207,7 +222,13 @@ namespace MsgPack.Serialization.CollectionSerializers
 					}
 				}
 
+#if ( !UNITY && !XAMIOS ) || AOT_CHECK
 				collection.Add( key, value );
+#else
+				// .constraind call for TDictionary.Add causes AOT error.
+				// So use cast and invoke as normal call (it might cause boxing, but most collection should be reference type).
+				( collection as IDictionary<TKey, TValue> ).Add( key, value );
+#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
 			}
 		}
 	}

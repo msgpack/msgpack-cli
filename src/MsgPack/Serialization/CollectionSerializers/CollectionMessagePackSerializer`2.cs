@@ -18,7 +18,12 @@
 // 
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -59,13 +64,23 @@ namespace MsgPack.Serialization.CollectionSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 		protected internal sealed override void PackToCore( Packer packer, TCollection objectTree )
 		{
+#if ( !UNITY && !XAMIOS ) || AOT_CHECK
 			packer.PackArrayHeader( objectTree.Count );
-
 			var itemSerializer = this.ItemSerializer;
 			foreach ( var item in objectTree )
 			{
 				itemSerializer.PackTo( packer, item );
 			}
+#else
+			// .constraind call for TCollection.get_Count/TCollection.GetEnumerator() causes AOT error.
+			// So use cast and invoke as normal call (it might cause boxing, but most collection should be reference type).
+			packer.PackArrayHeader( ( objectTree as ICollection<TItem> ).Count );
+			var itemSerializer = this.ItemSerializer;
+			foreach ( var item in objectTree as IEnumerable<TItem> )
+			{
+				itemSerializer.PackTo( packer, item );
+			}
+#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
 		}
 
 
@@ -118,7 +133,13 @@ namespace MsgPack.Serialization.CollectionSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override void AddItem( TCollection collection, TItem item )
 		{
+#if ( !UNITY && !XAMIOS ) || AOT_CHECK
 			collection.Add( item );
+#else
+			// .constraind call for TCollection.Add causes AOT error.
+			// So use cast and invoke as normal call (it might cause boxing, but most collection should be reference type).
+			( collection as ICollection<TItem> ).Add( item );
+#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
 		}
 	}
 }

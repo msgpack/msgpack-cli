@@ -154,16 +154,22 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						typeof( IList )
 					)
 				);
-
 			}
+
+			// CreateDelegate causes AOT error.
+			// So use reflection in AOT environment.
+#if ( !UNITY && !XAMIOS ) || AOT_CHECK
 			try
 			{
 				return addMethod.CreateDelegate( typeof( Action<TCollection, TItem> ) ) as Action<TCollection, TItem>;
 			}
 			catch ( ArgumentException )
 			{
+#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
 				return ( collection, item ) => addMethod.Invoke( collection, new object[] { item } );
+#if ( !UNITY && !XAMIOS ) || AOT_CHECK
 			}
+#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
 		}
 
 		public static void GetMetadata(
