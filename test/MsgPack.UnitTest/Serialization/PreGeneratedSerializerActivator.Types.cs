@@ -44,8 +44,10 @@ namespace MsgPack.Serialization
 			result.Add( typeof( List<System.Object[]> ) ); 
 			result.Add( typeof( HashSet<System.Object> ) ); 
 			result.Add( typeof( HashSet<System.Object[]> ) ); 
+#if !NETFX_35
 			result.Add( typeof( ObservableCollection<System.Object> ) ); 
 			result.Add( typeof( ObservableCollection<System.Object[]> ) ); 
+#endif // !NETFX_35
 			result.Add( typeof( StringKeyedCollection<System.Object> ) ); 
 			result.Add( typeof( StringKeyedCollection<System.Object[]> ) ); 
 			result.Add( typeof( AddOnlyCollection<System.DateTime> ) ); 
@@ -58,8 +60,10 @@ namespace MsgPack.Serialization
 			result.Add( typeof( List<System.DateTime[]> ) ); 
 			result.Add( typeof( HashSet<System.DateTime> ) ); 
 			result.Add( typeof( HashSet<System.DateTime[]> ) ); 
+#if !NETFX_35
 			result.Add( typeof( ObservableCollection<System.DateTime> ) ); 
 			result.Add( typeof( ObservableCollection<System.DateTime[]> ) ); 
+#endif // !NETFX_35
 			result.Add( typeof( StringKeyedCollection<System.DateTime> ) ); 
 			result.Add( typeof( StringKeyedCollection<System.DateTime[]> ) ); 
 			result.Add( typeof( AddOnlyCollection<MessagePackObject> ) ); 
@@ -71,8 +75,10 @@ namespace MsgPack.Serialization
 			result.Add( typeof( List<MessagePackObject[]> ) ); 
 			result.Add( typeof( HashSet<MessagePackObject> ) ); 
 			result.Add( typeof( HashSet<MessagePackObject[]> ) ); 
+#if !NETFX_35
 			result.Add( typeof( ObservableCollection<MessagePackObject> ) ); 
 			result.Add( typeof( ObservableCollection<MessagePackObject[]> ) ); 
+#endif // !NETFX_35
 			result.Add( typeof( StringKeyedCollection<MessagePackObject> ) ); 
 			result.Add( typeof( StringKeyedCollection<MessagePackObject[]> ) ); 
 			result.Add( typeof( AddOnlyCollection<System.Int32> ) ); 
@@ -85,8 +91,10 @@ namespace MsgPack.Serialization
 			result.Add( typeof( List<System.Int32[]> ) ); 
 			result.Add( typeof( HashSet<System.Int32> ) ); 
 			result.Add( typeof( HashSet<System.Int32[]> ) ); 
+#if !NETFX_35
 			result.Add( typeof( ObservableCollection<System.Int32> ) ); 
 			result.Add( typeof( ObservableCollection<System.Int32[]> ) ); 
+#endif // !NETFX_35
 			result.Add( typeof( StringKeyedCollection<System.Int32> ) ); 
 			result.Add( typeof( StringKeyedCollection<System.Int32[]> ) ); 
 			result.Add( typeof( Dictionary<MessagePackObject, MessagePackObject> ) );
@@ -254,6 +262,7 @@ namespace MsgPack.Serialization
 			result.Add( typeof( PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteProperty ) ); 
 			result.Add( typeof( PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteField ) ); 
 			result.Add( typeof( PolymorphicMemberTypeKnownType_Dict_DictObjectItselfPrivateSetterCollectionProperty ) ); 
+#if !NETFX_35
 			result.Add( typeof( PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty ) ); 
 			result.Add( typeof( PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField ) ); 
 			result.Add( typeof( PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor ) ); 
@@ -314,6 +323,7 @@ namespace MsgPack.Serialization
 			result.Add( typeof( PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor ) ); 
 			result.Add( typeof( PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor ) ); 
 			result.Add( typeof( PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor ) ); 
+#endif // !NETFX_35
 			result.Add( typeof( PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty ) ); 
 			result.Add( typeof( PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject ) ); 
 			result.Add( typeof( PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField ) ); 
@@ -430,6 +440,7 @@ namespace MsgPack.Serialization
 			result.Add( typeof( PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty ) ); 
 			result.Add( typeof( PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteField ) ); 
 			result.Add( typeof( PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfPrivateSetterCollectionProperty ) ); 
+#if !NETFX_35
 			result.Add( typeof( PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty ) ); 
 			result.Add( typeof( PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField ) ); 
 			result.Add( typeof( PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor ) ); 
@@ -490,6 +501,7 @@ namespace MsgPack.Serialization
 			result.Add( typeof( PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor ) ); 
 			result.Add( typeof( PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor ) ); 
 			result.Add( typeof( PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor ) ); 
+#endif // !NETFX_35
 			result.Add( typeof( PolymorphicMemberTypeMixed ) ); 
 			result.Add( typeof( AbstractClassMemberKnownType ) ); 
 			result.Add( typeof( AbstractClassMemberRuntimeType ) ); 
@@ -509,7 +521,9 @@ namespace MsgPack.Serialization
 			result.Add( typeof( InterfaceCollectionNoAttribute ) ); 
 			result.Add( typeof( InterfaceCollectionKnownType ) ); 
 			result.Add( typeof( InterfaceCollectionRuntimeType ) ); 
+#if !NETFX_35
 			result.Add( typeof( TupleAbstractType ) ); 
+#endif // !NETFX_35
 			return result;
 		}
 	}

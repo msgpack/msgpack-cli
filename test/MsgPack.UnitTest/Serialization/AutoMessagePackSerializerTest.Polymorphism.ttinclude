@@ -34,14 +34,14 @@ private void GeneratePolymorphismTestTypes()
 	this.GeneratePolymorphismTestPartsCore( true, false );
 }
 
-private IEnumerable<string> GetSerialiazablePolymprohicTestTypeNames()
+private IEnumerable<TestTargetType> GetSerialiazablePolymprohicTestTypeNames()
 {
 	return this.GeneratePolymorphismTestPartsCore( false, false );
 }
 
-private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateTypes, bool generateMethods )
+private IEnumerable<TestTargetType> GeneratePolymorphismTestPartsCore( bool generateTypes, bool generateMethods )
 {
-	ICollection<string> generatedSerializableTypeNames = new HashSet<string>();
+	ICollection<TestTargetType> generatedSerializableTypeNames = new HashSet<TestTargetType>();
 
 	Func<Member, bool, IEnumerable<string>> knownAttributeFactory =
 		( Member member, bool asObject  ) => 
@@ -280,14 +280,14 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyPropertyAndConstructor, TypeKind.PrivateSetterPropertyAndConstructor, TypeKind.ReadOnlyFieldAndConstructor } )
 			{
 				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Normal_" + member.Name + kind, kind, member, attributeType.AttributeFactory, false, generateTypes );
-				generatedSerializableTypeNames.Add( typeName );
+				generatedSerializableTypeNames.Add( new TestTargetType( typeName, true ) );
 				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, false );
 				
 				var typeNameAsObject = GeneratePolymorphicTestType( attributeType.Name + "_" + member.Name + kind + "AsObject", kind, member, attributeType.AttributeFactory, true, generateTypes );
 				
 				if ( !WillFail( member.Targets, kind ) )
 				{
-					generatedSerializableTypeNames.Add( typeNameAsObject );
+					generatedSerializableTypeNames.Add(  new TestTargetType( typeNameAsObject, true ) );
 				}
 
 				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, generateMethods, true );
@@ -312,7 +312,7 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 				
 				if ( !member.AsObject.Value || !WillFail( member.Targets, kind ) )
 				{
-					generatedSerializableTypeNames.Add( typeName );
+					generatedSerializableTypeNames.Add( new TestTargetType( typeName, true ) );
 				}
 				
 				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, member.AsObject.Value );
@@ -337,7 +337,7 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 				
 				if ( !member.AsObject.Value || !WillFail( member.Targets, kind ) )
 				{
-					generatedSerializableTypeNames.Add( typeName );
+					generatedSerializableTypeNames.Add( new TestTargetType( typeName, true ) );
 				}
 
 				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, member.AsObject.Value );
@@ -362,7 +362,7 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 				
 				if ( !member.AsObject.Value || !WillFail( member.Targets, kind ) )
 				{
-					generatedSerializableTypeNames.Add( typeName );
+					generatedSerializableTypeNames.Add( new TestTargetType( typeName, false ) );
 				}
 
 				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, member.AsObject.Value );
@@ -390,10 +390,10 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 	if ( generateTypes )
 	{
 		// Add static generated types
-		generatedSerializableTypeNames.Add( "IFileSystemEntry" );
-		generatedSerializableTypeNames.Add( "AbstractFileSystemEntry" );
-		generatedSerializableTypeNames.Add( "FileEntry" );
-		generatedSerializableTypeNames.Add( "DirectoryEntry" );
+		generatedSerializableTypeNames.Add( new TestTargetType( "IFileSystemEntry", true ) );
+		generatedSerializableTypeNames.Add( new TestTargetType( "AbstractFileSystemEntry", true ) );
+		generatedSerializableTypeNames.Add( new TestTargetType( "FileEntry", true ) );
+		generatedSerializableTypeNames.Add( new TestTargetType( "DirectoryEntry", true ) );
 #>
 
 		public interface IFileSystemEntry { }
@@ -728,7 +728,7 @@ private void GeneratePolymorphicTestMethods( string targetType, TypeKind kind, M
 }
 
 // Mixed Pattern
-private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generateMethods, ICollection<string> generatedSerializableTypeNames )
+private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generateMethods, ICollection<TestTargetType> generatedSerializableTypeNames )
 {
 	/*
 		Tests only popular cases:
@@ -758,7 +758,7 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 	const string typeName = "PolymorphicMemberTypeMixed";
 
 	// Add static generated types
-	generatedSerializableTypeNames.Add( typeName );
+	generatedSerializableTypeNames.Add( new TestTargetType( typeName, true ) );
 	if ( generateTypes )
 	{
 #>
@@ -904,7 +904,7 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 }
 
 // Error Pattern
-private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, ICollection<string> generatedSerializableTypeNames )
+private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, ICollection<TestTargetType> generatedSerializableTypeNames )
 {
 	var abstractTypes =
 		new []
@@ -941,7 +941,7 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 				if ( attribute.Attribute != null )
 				{
 					// will success
-					generatedSerializableTypeNames.Add( typeName );
+					generatedSerializableTypeNames.Add( new TestTargetType( typeName, true ) );
 				}
 
 				if ( generateTypes )
@@ -999,7 +999,7 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 		)
 		{
 			var typeName = declarationType.Name + "Collection" + attribute.Name;
-			generatedSerializableTypeNames.Add( typeName );
+			generatedSerializableTypeNames.Add( new TestTargetType( typeName, true ) );
 			if ( generateTypes )
 			{
 				GenerateAbstractTypeTestClass( typeName, attribute.Attribute, declarationType.Type );
@@ -1016,7 +1016,7 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 		Cartesian of
 		{Abstract Class | Interface } x {Knwon Attributes | Runtime Attribute } for Tuple Items
 	 */
-	generatedSerializableTypeNames.Add( "TupleAbstractType" );
+	generatedSerializableTypeNames.Add( new TestTargetType( "TupleAbstractType", false ) );
 	if ( generateTypes )
 	{
 #>
@@ -1358,5 +1358,17 @@ private enum PolymorphismTargets
 	Key = 0x2,
 	Item = 0x4,
 	TupleItem = 0x8
+}
+
+public class TestTargetType
+{
+	public string Name { get; private set; }
+	public bool IsNet35Supported { get; private set; }
+
+	public TestTargetType( string name, bool isNet35Supported )
+	{
+		this.Name = name;
+		this.IsNet35Supported = isNet35Supported;
+	}
 }
 #>
