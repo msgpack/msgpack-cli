@@ -78,9 +78,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 #if SILVERLIGHT && !WINDOWS_PHONE
 						this._constructorParameters.FindIndex( 
 #else
- Array.FindIndex( this._constructorParameters,
+							Array.FindIndex( this._constructorParameters,
 #endif // SILVERLIGHT && !WINDOWS_PHONE
- item => item.Name.Equals( member.Contract.Name, StringComparison.OrdinalIgnoreCase ) && item.ParameterType == member.Member.GetMemberValueType()
+							item => item.Name.Equals( member.Contract.Name, StringComparison.OrdinalIgnoreCase ) && item.ParameterType == member.Member.GetMemberValueType()
 						);
 					if ( index >= 0 )
 					{
