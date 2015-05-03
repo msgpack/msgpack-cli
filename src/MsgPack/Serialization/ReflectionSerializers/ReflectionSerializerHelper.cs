@@ -192,6 +192,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				var member = members[ i ];
 				if ( member.Member == null )
 				{
+#if UNITY
+					contracts[ i ] = DataMemberContract.Null;
+#endif // UNITY
 					continue;
 				}
 
@@ -216,7 +219,11 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				}
 
 				memberInfos[ i ] = member.Member;
+#if !UNITY
 				contracts[ i ] = member.Contract;
+#else
+				contracts[ i ] = member.Contract ?? DataMemberContract.Null;
+#endif // !UNITY
 				var memberType = member.Member.GetMemberValueType();
 				if ( !memberType.GetIsEnum() )
 				{

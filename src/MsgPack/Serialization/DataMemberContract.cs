@@ -45,6 +45,13 @@ namespace MsgPack.Serialization
 	internal sealed class DataMemberContract
 #endif // !UNITY
 	{
+#if UNITY
+		/// <summary>
+		///		Null object.
+		/// </summary>
+		public static readonly DataMemberContract Null = new DataMemberContract();
+#endif
+
 		internal const int UnspecifiedId = -1;
 
 		private readonly string _name;
