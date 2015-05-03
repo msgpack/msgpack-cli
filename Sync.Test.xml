@@ -105,6 +105,30 @@
     <Exclude File="*.ttinclude" />
   </Project>
 
+  <Project Name="MsgPack.UnitTest.Unity3D" Base="MsgPack.UnitTest.Net35">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve Path="Resources\*" />
+    <Preserve File="*.config" />
+    <Preserve File="*.json" />
+    <Preserve File="*.mpac" />
+    <Preserve File="*.snk" />
+    <Exclude File="*.ps1" />
+    <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
+    <Exclude File="_SetUpFixture.cs" />
+    <Exclude File="ReadMe.txt" />
+    <Exclude Path="Serialization\PreGeneratedSerializerGenerator.cs" />
+    <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
+    <Exclude Path="TestSuite.cs" />
+    <Exclude Path="Serialization\CompositeTest.cs" />
+    <!-- Generator related -->
+    <Exclude File="*ContextBased*.cs" />
+    <Exclude File="*FieldBased*.cs" />
+    <Exclude Path="Serialization\FromExpressionTest.cs" />
+    <Exclude Path="Serialization\MessagePackMemberAndDataMemberMixedTarget.cs" />
+    <Exclude Path="Serialization\MessagePackMemberAttributeTest.cs" />
+  </Project>
+
   <Project Name="MsgPack.UnitTest.WinRT" Base="MsgPack.UnitTest">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve File="*.config" />

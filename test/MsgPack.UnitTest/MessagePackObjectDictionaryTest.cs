@@ -615,7 +615,11 @@ namespace MsgPack
 			IEnumerator<MessagePackObject> ke = values.Keys.GetEnumerator();
 			IEnumerator<MessagePackObject> ve = values.Values.GetEnumerator();
 
+#if !UNITY
 			Assert.IsTrue( ke is MessagePackObjectDictionary.KeySet.Enumerator );
+#else
+			Assert.IsTrue( ke is MessagePackObjectDictionary.KeyCollection.Enumerator );
+#endif // !UNITY
 			Assert.IsTrue( ve is MessagePackObjectDictionary.ValueCollection.Enumerator );
 		}
 
@@ -979,8 +983,13 @@ namespace MsgPack
 		// based on #491858, #517415
 		public void KeyEnumerator_Current()
 		{
+#if !UNITY
 			var e1 = new MessagePackObjectDictionary.KeySet.Enumerator();
 			Assert.IsFalse( Throws( delegate { var x = e1.Current; } ) );
+#else
+			var e1 = new MessagePackObjectDictionary.KeyCollection.Enumerator();
+			Assert.IsFalse( Throws( delegate { var x = e1.Current; } ) );
+#endif // !UNITY
 
 			var d = new MessagePackObjectDictionary().Keys;
 			var e2 = d.GetEnumerator();
@@ -1135,6 +1144,7 @@ namespace MsgPack
 			Assert.That( array[ 4 ], Is.EqualTo( MessagePackObject.Nil ) );
 		}
 
+#if !UNITY
 		[Test]
 		public void TestKeySetIsProperSupersetOf()
 		{
@@ -1272,6 +1282,7 @@ namespace MsgPack
 			Assert.That( target.SetEquals( new MessagePackObject[] { 1, 2, 3, 4, 1 } ), Is.False );
 			Assert.That( target.SetEquals( new MessagePackObject[ 0 ] ), Is.False );
 		}
+#endif // !UNITY
 
 		[Test]
 		public void TestValues()
