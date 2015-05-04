@@ -39,9 +39,8 @@
     <AssemblyOriginatorKeyFile>..\..\src\MsgPack.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="nunitlite">
+      <HintPath>..\..\..\..\Yusuke\Documents\git\msgpack-cli\lib.test\nunitlite.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />
@@ -2513,9 +2512,6 @@
       <Project>{04774100-60ee-4fd5-aced-593394dff7b7}</Project>
       <Name>MsgPack.Unity3D</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
