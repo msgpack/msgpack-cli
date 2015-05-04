@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunitlite">
-      <HintPath>..\..\lib.test\nunitlite.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -52,6 +49,10 @@
     <ProjectReference Include="..\..\..\..\..\..\build\msgpack-cli-latest\test\MsgPack.UnitTest.Unity3D\MsgPack.UnitTest.Unity3D.csproj">
       <Project>{804fbeb9-c62f-4788-8eb5-47c17b45a096}</Project>
       <Name>MsgPack.UnitTest.Unity3D</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NUnitLite\src\framework\nunitlite-3.5.csproj">
+      <Project>{43b24dc5-16d6-45ef-93f1-b021b785a892}</Project>
+      <Name>nunitlite-3.5</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
