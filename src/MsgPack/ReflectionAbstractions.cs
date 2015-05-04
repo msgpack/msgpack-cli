@@ -43,6 +43,32 @@ namespace MsgPack
 		public static readonly char TypeDelimiter = '.';
 		public static readonly Type[] EmptyTypes = new Type[ 0 ];
 
+#if UNITY
+		public static object SafeInvoke( this MethodBase source, object instance, params object[] parameters )
+		{
+#if DEBUG
+			try
+			{
+#endif // DEBUG
+				return source.Invoke( instance, parameters );
+#if DEBUG
+			}
+			catch ( TargetInvocationException ex )
+			{
+				if ( ex.InnerException == null )
+				{
+					throw;
+				}
+				else
+				{
+					ex.InnerException.Data[ "MsgPack.ReflectionStackTrace" ] = ex.StackTrace;
+					throw ex.InnerException;
+				}
+			}
+#endif // DEBUG
+		}
+#endif // UNITY
+
 		public static bool GetIsValueType( this Type source )
 		{
 #if NETFX_CORE
