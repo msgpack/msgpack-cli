@@ -67,7 +67,7 @@ namespace NUnit.Framework.Constraints
             if (property == null)
                 throw new ArgumentException(string.Format("Property {0} was not found", name), "name");
 
-            propValue = property.GetValue(actual, null);
+            propValue = property.GetGetMethod().Invoke(actual, null);
             return baseConstraint.Matches(propValue);
         }
 
