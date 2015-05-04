@@ -208,7 +208,11 @@ namespace MsgPack.Serialization
 							var id = 
 								item.data.GetNamedArguments()
 								.Where( arg => arg.GetMemberName() == "Order" )
-								.Select( arg => ( int? ) arg.GetTypedValue().Value )
+#if !UNITY
+								.Select( arg => ( int? )arg.GetTypedValue().Value )
+#else
+								.Select( arg => arg.GetTypedValue().Value )
+#endif
 								.FirstOrDefault();
 #if SILVERLIGHT
 							if ( id == -1 )
@@ -221,7 +225,11 @@ namespace MsgPack.Serialization
 							return
 								new SerializingMember(
 									item.member,
+#if !UNITY
 									new DataMemberContract( item.member, name, NilImplication.MemberDefault, id )
+#else
+									new DataMemberContract( item.member, name, NilImplication.MemberDefault, ( int? )id )
+#endif // !UNITY
 								);
 						}
 					);
@@ -382,7 +390,15 @@ namespace MsgPack.Serialization
 					"Cannot specify order value 0 on DataMemberAttribute when SerializationContext.CompatibilityOptions.OneBoundDataMemberOrder is set to true." );
 			}
 
+#if !UNITY
 			var maxId = candidates.Max( item => item.Contract.Id );
+#else
+			int maxId = -1;
+			foreach ( var id in candidates.Select( item => item.Contract.Id ) )
+			{
+				maxId = Math.Max( id, maxId );
+			}
+#endif
 			var result = new List<SerializingMember>( maxId + 1 );
 			for ( int source = 0, destination = context.CompatibilityOptions.OneBoundDataMemberOrder ? 1 : 0;
 				source < candidates.Count;
