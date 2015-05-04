@@ -36,15 +36,9 @@ namespace MsgPack.NUnitLiteRunner
 
 		private static void Main( string[] args )
 		{
-			Console.WriteLine( "Init:{0}:{1}", CultureInfo.CurrentCulture, CultureInfo.CurrentUICulture );
 			var adjustedArgs = new List<string>( args.Length + 1 );
 			adjustedArgs.AddRange( args );
 			adjustedArgs.Add( AssemblyName );
-
-			// Avoid JIT error
-			Thread.CurrentThread.CurrentCulture = new CultureInfo( "en-US" );
-			Thread.CurrentThread.CurrentUICulture = new CultureInfo( "en-US" );
-
 			new TextUI().Execute( adjustedArgs.ToArray() );
 		}
 	}
