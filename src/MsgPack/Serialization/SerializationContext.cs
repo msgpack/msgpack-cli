@@ -23,6 +23,7 @@
 #endif
 
 using System;
+using System.Linq;
 using System.Reflection;
 #if !SILVERLIGHT && !NETFX_35 && !UNITY
 using System.Collections.Concurrent;
@@ -693,9 +694,17 @@ namespace MsgPack.Serialization
 		{
 			public static readonly SerializerGetter Instance = new SerializerGetter();
 
+#if UNITY
+			private static readonly MethodInfo GetSerializer1Method =
+				typeof( SerializationContext ).GetMethods()
+					.Single( m => m.IsGenericMethodDefinition && m.Name == "GetSerializer" && m.GetParameters().Length == 1 );
+#endif // UNITY
 #if !SILVERLIGHT && !NETFX_35 && !UNITY
 			private readonly ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>> _cache =
 				new ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>>();
+#elif UNITY
+			private readonly Dictionary<RuntimeTypeHandle, MethodInfo> _cache =
+				new Dictionary<RuntimeTypeHandle, MethodInfo>();
 #else
 			private readonly Dictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>> _cache =
 				new Dictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>>();
@@ -705,6 +714,16 @@ namespace MsgPack.Serialization
 
 			public IMessagePackSingleObjectSerializer Get( SerializationContext context, Type targetType, object providerParameter )
 			{
+#if UNITY
+				MethodInfo method;
+				if ( !this._cache.TryGetValue( targetType.TypeHandle, out method ) || method == null )
+				{
+					method = GetSerializer1Method.MakeGenericMethod( targetType );
+					this._cache[ targetType.TypeHandle ] = method;
+				}
+
+				return ( IMessagePackSingleObjectSerializer ) method.SafeInvoke( context, new[] { providerParameter } );
+#else
 				Func<SerializationContext, object, IMessagePackSingleObjectSerializer> func;
 #if SILVERLIGHT || NETFX_35 || UNITY
 				lock ( this._cache )
@@ -732,7 +751,7 @@ namespace MsgPack.Serialization
 							contextParameter,
 							providerParameterParameter
 						).Compile();
-#endif // if !NETFX_CORE
+#endif // !NETFX_CORE
 #if DEBUG && !UNITY
 					Contract.Assert( func != null, "func != null" );
 #endif // if DEBUG && !UNITY
@@ -742,20 +761,22 @@ namespace MsgPack.Serialization
 				}
 #endif // SILVERLIGHT || NETFX_35 || UNITY
 				return func( context, providerParameter );
+#endif // UNITY
 			}
 		}
 
+#if !UNITY
 		private static class SerializerGetter<T>
 		{
 #if !NETFX_CORE
 			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
 				Delegate.CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> ),
-#if UNITY || XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID
 					GetSerializer1Method.MakeGenericMethod( typeof( T ) )
 #else
 					Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) )
-#endif // UNITY || XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID
 				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
 #else
 			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
@@ -786,5 +807,6 @@ namespace MsgPack.Serialization
 			}
 			// ReSharper restore UnusedMember.Local
 		}
+#endif // !UNITY
 	}
 }
