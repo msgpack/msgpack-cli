@@ -40,23 +40,23 @@ using System.Runtime.Remoting.Messaging;
 
 namespace NUnit.Framework.Internal
 {
-	/// <summary>
-	/// Helper class used to save and restore certain static or
-	/// singleton settings in the environment that affect tests 
-	/// or which might be changed by the user tests.
-	/// 
-	/// An internal class is used to hold settings and a stack
-	/// of these objects is pushed and popped as Save and Restore
-	/// are called.
-	/// 
-	/// Static methods for each setting forward to the internal 
-	/// object on the top of the stack.
-	/// </summary>
-	public class TestExecutionContext
+    /// <summary>
+    /// Helper class used to save and restore certain static or
+    /// singleton settings in the environment that affect tests 
+    /// or which might be changed by the user tests.
+    /// 
+    /// An internal class is used to hold settings and a stack
+    /// of these objects is pushed and popped as Save and Restore
+    /// are called.
+    /// 
+    /// Static methods for each setting forward to the internal 
+    /// object on the top of the stack.
+    /// </summary>
+    public class TestExecutionContext
 #if !SILVERLIGHT && !NETCF
         : ILogicalThreadAffinative
 #endif
-	{
+    {
         #region Instance Fields
 
         /// <summary>
@@ -78,12 +78,12 @@ namespace NUnit.Framework.Internal
         /// The active TestResult for the current test
         /// </summary>
         private TestResult currentResult;
-		
-		/// <summary>
-		/// The work directory to receive test output
-		/// </summary>
-		private string workDirectory;
-		
+        
+        /// <summary>
+        /// The work directory to receive test output
+        /// </summary>
+        private string workDirectory;
+        
         /// <summary>
         /// The object on which tests are currently being executed - i.e. the user fixture object
         /// </summary>
@@ -111,18 +111,6 @@ namespace NUnit.Framework.Internal
 
         private RandomGenerator randomGenerator;
 
-#if !NETCF
-        /// <summary>
-        /// The current culture
-        /// </summary>
-        private CultureInfo currentCulture;
-
-        /// <summary>
-        /// The current UI culture
-        /// </summary>
-        private CultureInfo currentUICulture;
-#endif
-
 #if !NETCF && !SILVERLIGHT
         /// <summary>
         /// Destination for standard output
@@ -135,9 +123,9 @@ namespace NUnit.Framework.Internal
         private TextWriter errorWriter;
 
         /// <summary>
-		/// Indicates whether trace is enabled
-		/// </summary>
-		private bool tracing;
+        /// Indicates whether trace is enabled
+        /// </summary>
+        private bool tracing;
 
         /// <summary>
         /// Destination for Trace output
@@ -151,17 +139,17 @@ namespace NUnit.Framework.Internal
         /// </summary>
         private bool logging;
 
-		/// <summary>
-		/// The current working directory
-		/// </summary>
-		private string currentDirectory;
+        /// <summary>
+        /// The current working directory
+        /// </summary>
+        private string currentDirectory;
 
-		private Log4NetCapture logCapture;
+        private Log4NetCapture logCapture;
 
         /// <summary>
         /// The current Principal.
         /// </summary>
-		private IPrincipal currentPrincipal;
+        private IPrincipal currentPrincipal;
 #endif
 
         #endregion
@@ -172,25 +160,20 @@ namespace NUnit.Framework.Internal
         /// Initializes a new instance of the <see cref="TestExecutionContext"/> class.
         /// </summary>
         public TestExecutionContext()
-		{
-			this.prior = null;
+        {
+            this.prior = null;
             this.testCaseTimeout = 0;
 
-#if !NETCF
-            this.currentCulture = CultureInfo.CurrentCulture;
-            this.currentUICulture = CultureInfo.CurrentUICulture;
-#endif
-
 #if !NETCF && !SILVERLIGHT
-			this.outWriter = Console.Out;
-			this.errorWriter = Console.Error;
+            this.outWriter = Console.Out;
+            this.errorWriter = Console.Error;
             this.traceWriter = null;
             this.tracing = false;
 #endif
 
 #if !NUNITLITE
-			this.logging = false;
-			this.currentDirectory = Environment.CurrentDirectory;
+            this.logging = false;
+            this.currentDirectory = Environment.CurrentDirectory;
             this.logCapture = new Log4NetCapture();
             this.currentPrincipal = Thread.CurrentPrincipal;
 #endif
@@ -200,33 +183,28 @@ namespace NUnit.Framework.Internal
         /// Initializes a new instance of the <see cref="TestExecutionContext"/> class.
         /// </summary>
         /// <param name="other">An existing instance of TestExecutionContext.</param>
-		public TestExecutionContext( TestExecutionContext other )
-		{
-			this.prior = other;
+        public TestExecutionContext( TestExecutionContext other )
+        {
+            this.prior = other;
 
             this.currentTest = other.currentTest;
             this.currentResult = other.currentResult;
             this.testObject = other.testObject;
-			this.workDirectory = other.workDirectory;
+            this.workDirectory = other.workDirectory;
             this.listener = other.listener;
             this.stopOnError = other.stopOnError;
             this.testCaseTimeout = other.testCaseTimeout;
 
-#if !NETCF
-            this.currentCulture = CultureInfo.CurrentCulture;
-            this.currentUICulture = CultureInfo.CurrentUICulture;
-#endif
-
 #if !NETCF && !SILVERLIGHT
-			this.outWriter = other.outWriter;
-			this.errorWriter = other.errorWriter;
+            this.outWriter = other.outWriter;
+            this.errorWriter = other.errorWriter;
             this.traceWriter = other.traceWriter;
             this.tracing = other.tracing;
 #endif
 
 #if !NUNITLITE
-			this.logging = other.logging;
-			this.currentDirectory = Environment.CurrentDirectory;
+            this.logging = other.logging;
+            this.currentDirectory = Environment.CurrentDirectory;
             this.logCapture = other.logCapture;
             this.currentPrincipal = Thread.CurrentPrincipal;
 #endif
@@ -320,15 +298,15 @@ namespace NUnit.Framework.Internal
             get { return testObject; }
             set { testObject = value; }
         }
-		
+        
         /// <summary>
         /// Get or set the working directory
         /// </summary>
-		public string WorkDirectory
-		{
-			get { return workDirectory; }
-			set { workDirectory = value; }
-		}
+        public string WorkDirectory
+        {
+            get { return workDirectory; }
+            set { workDirectory = value; }
+        }
 
         /// <summary>
         /// Get or set indicator that run should stop on the first error
@@ -338,7 +316,7 @@ namespace NUnit.Framework.Internal
             get { return stopOnError; }
             set { stopOnError = value; }
         }
-		
+        
         /// <summary>
         /// The current test event listener
         /// </summary>
@@ -382,68 +360,40 @@ namespace NUnit.Framework.Internal
             set { testCaseTimeout = value; }
         }
 
-#if !NETCF
-        /// <summary>
-        /// Saves or restores the CurrentCulture
-        /// </summary>
-        public CultureInfo CurrentCulture
-        {
-            get { return currentCulture; }
-            set
-            {
-                currentCulture = value;
-                Thread.CurrentThread.CurrentCulture = currentCulture;
-            }
-        }
-
-        /// <summary>
-        /// Saves or restores the CurrentUICulture
-        /// </summary>
-        public CultureInfo CurrentUICulture
-        {
-            get { return currentUICulture; }
-            set
-            {
-                currentUICulture = value;
-                Thread.CurrentThread.CurrentUICulture = currentUICulture;
-            }
-        }
-#endif
-
 #if !NETCF && !SILVERLIGHT
         /// <summary>
-		/// Controls where Console.Out is directed
-		/// </summary>
-		internal TextWriter Out
-		{
-			get { return outWriter; }
-			set 
-			{
-				if ( outWriter != value )
-				{
-					outWriter = value; 
-					Console.Out.Flush();
-					Console.SetOut( outWriter );
-				}
-			}
-		}
+        /// Controls where Console.Out is directed
+        /// </summary>
+        internal TextWriter Out
+        {
+            get { return outWriter; }
+            set 
+            {
+                if ( outWriter != value )
+                {
+                    outWriter = value; 
+                    Console.Out.Flush();
+                    Console.SetOut( outWriter );
+                }
+            }
+        }
 
-		/// <summary>
-		/// Controls where Console.Error is directed
-		/// </summary>
-		internal TextWriter Error
-		{
-			get { return errorWriter; }
-			set 
-			{
-				if ( errorWriter != value )
-				{
-					errorWriter = value; 
-					Console.Error.Flush();
-					Console.SetError( errorWriter );
-				}
-			}
-		}
+        /// <summary>
+        /// Controls where Console.Error is directed
+        /// </summary>
+        internal TextWriter Error
+        {
+            get { return errorWriter; }
+            set 
+            {
+                if ( errorWriter != value )
+                {
+                    errorWriter = value; 
+                    Console.Error.Flush();
+                    Console.SetError( errorWriter );
+                }
+            }
+        }
 
         /// <summary>
         /// Controls whether trace and debug output are written
@@ -470,34 +420,34 @@ namespace NUnit.Framework.Internal
         /// <summary>
         /// Controls where Trace output is directed
         /// </summary>
-		internal TextWriter TraceWriter
-		{
-			get { return traceWriter; }
-			set
-			{
-				if ( traceWriter != value )
-				{
-					if ( traceWriter != null  && tracing )
-						StopTracing();
+        internal TextWriter TraceWriter
+        {
+            get { return traceWriter; }
+            set
+            {
+                if ( traceWriter != value )
+                {
+                    if ( traceWriter != null  && tracing )
+                        StopTracing();
 
-					traceWriter = value;
+                    traceWriter = value;
 
-					if ( traceWriter != null && tracing )
-						StartTracing();
-				}
-			}
-		}
+                    if ( traceWriter != null && tracing )
+                        StartTracing();
+                }
+            }
+        }
 
-		private void StopTracing()
-		{
-			traceWriter.Close();
-			System.Diagnostics.Trace.Listeners.Remove( "NUnit" );
-		}
+        private void StopTracing()
+        {
+            traceWriter.Close();
+            System.Diagnostics.Trace.Listeners.Remove( "NUnit" );
+        }
 
-		private void StartTracing()
-		{
-			System.Diagnostics.Trace.Listeners.Add( new TextWriterTraceListener( traceWriter, "NUnit" ) );
-		}
+        private void StartTracing()
+        {
+            System.Diagnostics.Trace.Listeners.Add( new TextWriterTraceListener( traceWriter, "NUnit" ) );
+        }
 #endif
 
 #if !NUNITLITE
@@ -530,28 +480,28 @@ namespace NUnit.Framework.Internal
         /// <summary>
         /// Saves and restores the CurrentDirectory
         /// </summary>
-		public string CurrentDirectory
-		{
-			get { return currentDirectory; }
-			set
-			{
-				currentDirectory = value;
-				Environment.CurrentDirectory = currentDirectory;
-			}
-		}
+        public string CurrentDirectory
+        {
+            get { return currentDirectory; }
+            set
+            {
+                currentDirectory = value;
+                Environment.CurrentDirectory = currentDirectory;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the current <see cref="IPrincipal"/> for the Thread.
         /// </summary>
-		public IPrincipal CurrentPrincipal
-		{
-		    get { return this.currentPrincipal; }
+        public IPrincipal CurrentPrincipal
+        {
+            get { return this.currentPrincipal; }
             set
             {
                 this.currentPrincipal = value;
                 Thread.CurrentPrincipal = this.currentPrincipal;
             }
-		}
+        }
 #endif
 
         #endregion
@@ -578,11 +528,6 @@ namespace NUnit.Framework.Internal
 
             this.TestCaseTimeout = prior.TestCaseTimeout;
 
-#if !NETCF
-            this.CurrentCulture = prior.CurrentCulture;
-            this.CurrentUICulture = prior.CurrentUICulture;
-#endif
-
 #if !NETCF && !SILVERLIGHT
             this.Out = prior.Out;
             this.Error = prior.Error;
@@ -591,7 +536,7 @@ namespace NUnit.Framework.Internal
 
 #if !NUNITLITE
             this.CurrentDirectory = prior.CurrentDirectory;
-			this.CurrentPrincipal = prior.CurrentPrincipal;
+            this.CurrentPrincipal = prior.CurrentPrincipal;
 #endif
 
             return prior;
@@ -604,10 +549,6 @@ namespace NUnit.Framework.Internal
         /// </summary>
         public void UpdateContext()
         {
-#if !NETCF
-            this.currentCulture = CultureInfo.CurrentCulture;
-            this.currentUICulture = CultureInfo.CurrentUICulture;
-#endif
 #if !NUNITLITE
             this.currentDirectory = Environment.CurrentDirectory;
             this.currentPrincipal = System.Threading.Thread.CurrentPrincipal;
@@ -623,5 +564,5 @@ namespace NUnit.Framework.Internal
         }
 
         #endregion
-	}
+    }
 }

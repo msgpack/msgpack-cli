@@ -47,7 +47,7 @@ namespace NUnit.Framework
 
         void IApplyToContext.ApplyToContext(TestExecutionContext context)
         {
-            context.CurrentUICulture = new System.Globalization.CultureInfo(_culture);
+           throw new NotSupportedException();
         }
 
         #endregion
