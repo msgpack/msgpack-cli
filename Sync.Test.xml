@@ -112,6 +112,10 @@
     <Preserve File="*.json" />
     <Preserve File="*.mpac" />
     <Preserve File="*.snk" />
+    <!-- Direct Link to NetFx35 because Unity build cannot exclude via #if DEBUG them. -->
+    <Preserve File="Delegates.cs" />
+    <Preserve File="NetFxCompatibilities.cs" />
+    <Preserve File="Tuple`n.cs" />
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
