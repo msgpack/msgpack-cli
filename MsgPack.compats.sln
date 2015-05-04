@@ -35,9 +35,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.Unity3D", "src\MsgP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.UnitTest.Unity3D", "test\MsgPack.UnitTest.Unity3D\MsgPack.UnitTest.Unity3D.csproj", "{804FBEB9-C62F-4788-8EB5-47C17B45A096}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runner", "Runner", "{767C2A1C-53F8-4048-BE02-CB4393B1CEB6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NUnitLite", "NUnitLite", "{767C2A1C-53F8-4048-BE02-CB4393B1CEB6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitLiteRunner", "..\..\Yusuke\Documents\git\msgpack-cli\test\NUnitLiteRunner\NUnitLiteRunner.csproj", "{12047296-B817-4C1A-B01B-5E619F72E407}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunitlite-3.5", "..\..\Yusuke\Documents\git\msgpack-cli\test\NUnitLite\src\framework\nunitlite-3.5.csproj", "{43B24DC5-16D6-45EF-93F1-B021B785A892}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -270,6 +272,36 @@ Global
 		{12047296-B817-4C1A-B01B-5E619F72E407}.Release|ARM.ActiveCfg = Release|Any CPU
 		{12047296-B817-4C1A-B01B-5E619F72E407}.Release|x64.ActiveCfg = Release|Any CPU
 		{12047296-B817-4C1A-B01B-5E619F72E407}.Release|x86.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.CodeAnalysis|Any CPU.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.CodeAnalysis|Any CPU.Build.0 = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.CodeAnalysis|ARM.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.CodeAnalysis|x64.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.CodeAnalysis|x86.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.CoreProfile|Any CPU.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.CoreProfile|Any CPU.Build.0 = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.CoreProfile|ARM.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.CoreProfile|x64.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.CoreProfile|x86.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Instrument|Any CPU.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Instrument|Any CPU.Build.0 = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Instrument|ARM.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Instrument|x64.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Instrument|x86.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.PerformanceTest|Any CPU.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.PerformanceTest|Any CPU.Build.0 = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.PerformanceTest|ARM.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.PerformanceTest|x64.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.PerformanceTest|x86.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Release|ARM.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Release|x64.ActiveCfg = Release|Any CPU
+		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -285,5 +317,6 @@ Global
 		{804FBEB9-C62F-4788-8EB5-47C17B45A096} = {87A17015-9338-431E-B338-57BDA03984C1}
 		{767C2A1C-53F8-4048-BE02-CB4393B1CEB6} = {87A17015-9338-431E-B338-57BDA03984C1}
 		{12047296-B817-4C1A-B01B-5E619F72E407} = {767C2A1C-53F8-4048-BE02-CB4393B1CEB6}
+		{43B24DC5-16D6-45EF-93F1-B021B785A892} = {767C2A1C-53F8-4048-BE02-CB4393B1CEB6}
 	EndGlobalSection
 EndGlobal
