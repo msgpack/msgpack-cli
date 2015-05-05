@@ -619,13 +619,26 @@
       <Link>UnpackingStreamReader.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\AotHelper.cs" />
+    <Compile Include="Serialization\AotHelper.EqualityComparers.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AotHelper.EqualityComparers.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\NonGenericMessagePackSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\MsgPack\remarks.xml">
       <Link>remarks.xml</Link>
     </None>
+    <None Include="Serialization\AotHelper.EqualityComparers.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AotHelper.EqualityComparers.cs</LastGenOutput>
+    </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="..\MsgPack\remarks.xml">
       <Link>remarks.xml</Link>

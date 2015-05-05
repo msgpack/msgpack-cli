@@ -1,0 +1,124 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#
+var excludingNamespaces =
+	new HashSet<string>
+	{
+		"Microsoft.Win32",
+		"System.Collections.Concurrent",
+		"System.Configuration.Assemblies",
+		"System.Diagnostics.Contracts",
+		"System.Diagnostics.Tracing",
+		"System.IO.IsolatedStorage",
+		"System.IO.MemoryMappedFiles",
+		"System.Linq.Expressions",
+		"System.Reflection.Emit",
+		"System.Runtime",
+		"System.Runtime.CompilerServices",
+		"System.Runtime.InteropServices",
+		"System.Runtime.InteropServices.ComTypes",
+		"System.Runtime.InteropServices.WindowsRuntime",
+		"System.Runtime.Versioning",
+		"System.Security",
+		"System.Security.Permissions",
+		"System.Threading.Tasks",
+	};
+
+var excludingTypes =
+	new HashSet<string>
+	{
+		"System.ArgIterator",
+		"System.RuntimeArgumentHandle",
+		"System.TypedReference",
+		"System.Void",
+		"System.Globalization.TimeSpanStyles",
+		"System.Linq.ParallelMergeOptions",
+		"System.Linq.ParallelExecutionMode",
+		"System.Reflection.AssemblyContentType",
+		"System.Threading.CancellationTokenRegistration",
+		"System.Threading.CancellationToken",
+		"System.Threading.LazyThreadSafetyMode",
+		"System.Threading.SpinLock",
+		"System.Threading.SpinWait",
+	};
+
+var valueTypes =
+	typeof( object ).Assembly
+		.GetTypes()
+		.Concat( typeof( Enumerable ).Assembly.GetTypes() )
+		.Where( t => !excludingNamespaces.Contains( t.Namespace ) && !excludingTypes.Contains( t.FullName ) && t.IsValueType && t.IsPublic && !t.IsGenericTypeDefinition )
+		.Select( t => new { TypeName = t.FullName, ComparerName = t.FullName.Replace( ".", "_" ).Replace( "+", "_" ) + "EqualityComparer" } )
+		.ToArray();
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2015 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+
+// ReSharper disable InconsistentNaming
+// ReSharper disable RedundantNameQualifier
+
+namespace MsgPack.Serialization
+{
+	partial class AotHelper
+	{
+		private static Dictionary<RuntimeTypeHandle, object> InitializeEqualityComparerTable()
+		{
+			var result = new Dictionary<RuntimeTypeHandle, object>( <#= valueTypes.Length #> );
+<#
+foreach ( var valueType in valueTypes )
+{
+#>
+			result.Add( typeof( <#= valueType.TypeName #> ).TypeHandle, new <#= valueType.ComparerName #>() );
+<#
+}
+#>
+			return result;
+		}
+
+<#
+foreach ( var valueType in valueTypes )
+{
+#>
+
+		private sealed class <#= valueType.ComparerName #> : IEqualityComparer<#= "<" + valueType.TypeName + ">" #>
+		{
+			public <#= valueType.ComparerName #>() {}
+
+			public bool Equals( <#= valueType.TypeName #> left, <#= valueType.TypeName #> right )
+			{
+				return left.Equals( right );
+			}
+
+			public int GetHashCode( <#= valueType.TypeName #> obj )
+			{
+				return obj.GetHashCode();
+			}
+		}
+<#
+}
+#>
+	}
+}

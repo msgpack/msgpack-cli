@@ -58,6 +58,9 @@
 
   <Project Name="MsgPack.Unity3D" Base="MsgPack.Xamarin.iOS">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve Path="Serialization\AotHelper*.tt" />
+    <Preserve Path="Serialization\AotHelper*.cs" />
+    <Preserve Path="Serialization\NonGenericMessagePackSerializer.cs" />
     <Exclude Path="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
     <Exclude Path="UnsafeNativeMethods.cs" />
     <Exclude Path="Validation.cs" />
