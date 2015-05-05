@@ -91,6 +91,7 @@ namespace MsgPack.Serialization
 					new CollectionTraits(
 						CollectionDetailedKind.Array,
 						null, // Add() : Never used for array.
+						null, // get_Count() : Never used for array.
 						null, // GetEnumerator() : Never used for array.
 						source.GetElementType()
 					);
@@ -168,6 +169,7 @@ namespace MsgPack.Serialization
 					new CollectionTraits(
 						CollectionDetailedKind.GenericDictionary,
 						GetAddMethod( source, idictionaryT.GetGenericArguments()[ 0 ], idictionaryT.GetGenericArguments()[ 1 ] ),
+						GetCountGetterMethod( source, elementType ),
 						FindInterfaceMethod( source, typeof( IEnumerable<> ).MakeGenericType( elementType ), "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 						elementType
 					);
@@ -188,6 +190,7 @@ namespace MsgPack.Serialization
 						? CollectionDetailedKind.GenericCollection
 						: CollectionDetailedKind.GenericEnumerable,
 						GetAddMethod( source, elementType ),
+						GetCountGetterMethod( source, elementType ),
 						FindInterfaceMethod( source, ienumerableT, "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 						elementType
 					);
@@ -199,6 +202,7 @@ namespace MsgPack.Serialization
 					new CollectionTraits(
 						CollectionDetailedKind.NonGenericDictionary,
 						GetAddMethod( source, typeof( object ), typeof( object ) ),
+						GetCountGetterMethod( source, typeof( object ) ),
 						FindInterfaceMethod( source, idictionary, "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 						typeof( object )
 					);
@@ -217,6 +221,7 @@ namespace MsgPack.Serialization
 							? CollectionDetailedKind.NonGenericCollection
 							: CollectionDetailedKind.NonGenericEnumerable,
 							addMethod,
+							GetCountGetterMethod( source, typeof( object ) ),
 							FindInterfaceMethod( source, ienumerable, "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 							typeof( object )
 						);
@@ -246,6 +251,7 @@ namespace MsgPack.Serialization
 						result = new CollectionTraits(
 							CollectionDetailedKind.GenericDictionary,
 							GetAddMethod( source, elementType.GetGenericArguments()[ 0 ], elementType.GetGenericArguments()[ 1 ] ),
+							GetCountGetterMethod( source, elementType ),
 							getEnumerator,
 							elementType
 						);
@@ -261,6 +267,7 @@ namespace MsgPack.Serialization
 					result = new CollectionTraits(
 						CollectionDetailedKind.NonGenericDictionary,
 						GetAddMethod( source, typeof( object ), typeof( object ) ),
+						GetCountGetterMethod( source, typeof( object ) ),
 						getEnumerator,
 						typeof( DictionaryEntry )
 					);
@@ -291,6 +298,7 @@ namespace MsgPack.Serialization
 							? CollectionDetailedKind.GenericCollection
 							: CollectionDetailedKind.GenericEnumerable,
 							GetAddMethod( source, elementType ),
+							GetCountGetterMethod( source, elementType ),
 							getEnumerator,
 							elementType
 						);
@@ -312,6 +320,7 @@ namespace MsgPack.Serialization
 				result = new CollectionTraits(
 					CollectionDetailedKind.GenericDictionary,
 					GetAddMethod( source, typeof( MessagePackObject ), typeof( MessagePackObject ) ),
+					GetCountGetterMethod( source, typeof( MessagePackObject ) ),
 					FindInterfaceMethod(
 						source,
 						typeof( IEnumerable<KeyValuePair<MessagePackObject, MessagePackObject>> ),
@@ -342,6 +351,7 @@ namespace MsgPack.Serialization
 							? CollectionDetailedKind.GenericCollection
 							: CollectionDetailedKind.GenericEnumerable,
 							addMethod,
+							GetCountGetterMethod( source, typeof( MessagePackObject ) ),
 							FindInterfaceMethod(
 								source,
 								typeof( IEnumerable<MessagePackObject> ),
@@ -497,6 +507,28 @@ namespace MsgPack.Serialization
 			if ( targetType.IsAssignableTo( typeof( IList ) ) )
 			{
 				return typeof( IList ).GetMethod( "Add", new[] { typeof( object ) } );
+			}
+
+			return null;
+		}
+
+		private static MethodInfo GetCountGetterMethod( Type targetType, Type elementType )
+		{
+			var result = targetType.GetProperty( "Count" );
+			if ( result != null && result.GetHasPublicGetter() )
+			{
+				return result.GetGetMethod();
+			}
+
+			var icollectionT = typeof( ICollection<> ).MakeGenericType( elementType );
+			if ( targetType.IsAssignableTo( icollectionT ) )
+			{
+				return icollectionT.GetProperty( "Count" ).GetGetMethod();
+			}
+
+			if ( targetType.IsAssignableTo( typeof( ICollection ) ) )
+			{
+				return typeof( ICollection ).GetProperty( "Count" ).GetGetMethod();
 			}
 
 			return null;
