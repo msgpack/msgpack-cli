@@ -44,6 +44,8 @@ namespace MsgPack
 		public static readonly Type[] EmptyTypes = new Type[ 0 ];
 
 #if UNITY
+		private static readonly Type[] ExceptionConstructorWithInnerParameterTypes = { typeof( string ), typeof( Exception ) };
+
 		public static object SafeInvoke( this MethodBase source, object instance, params object[] parameters )
 		{
 #if DEBUG
@@ -59,10 +61,27 @@ namespace MsgPack
 				{
 					throw;
 				}
+
+				var ctor = ex.InnerException.GetType().GetConstructor( ExceptionConstructorWithInnerParameterTypes );
+				if ( ctor == null )
+				{
+					throw;
+				}
+
+				Exception rethrowing = null;
+				try
+				{
+					rethrowing = ctor.Invoke( new object[] { ex.InnerException.Message, ex } ) as Exception;
+				}
+				catch{}
+
+				if ( rethrowing == null )
+				{
+					throw;
+				}
 				else
 				{
-					ex.InnerException.Data[ "MsgPack.ReflectionStackTrace" ] = ex.StackTrace;
-					throw ex.InnerException;
+					throw rethrowing;
 				}
 			}
 #endif // DEBUG
