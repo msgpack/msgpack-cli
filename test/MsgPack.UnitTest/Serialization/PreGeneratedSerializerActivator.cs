@@ -190,7 +190,7 @@ namespace MsgPack.Serialization
 					serializer = ( MessagePackSerializer<T> )this._constructor3.Invoke( new object[] { context, this._serializationTargetType, null } );
 				}
 
-				return new PolymorphicSerializerProvider<T>( serializer ).Get( context, schema ?? PolymorphismSchema.Default ) as IMessagePackSerializer;
+				return new PolymorphicSerializerProvider<T>( context, serializer ).Get( context, schema ?? PolymorphismSchema.Default ) as IMessagePackSerializer;
 			}
 		}
 	}

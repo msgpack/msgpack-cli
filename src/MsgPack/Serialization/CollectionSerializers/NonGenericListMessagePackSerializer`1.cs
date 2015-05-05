@@ -18,6 +18,10 @@
 // 
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections;
 using System.Runtime.Serialization;
@@ -97,4 +101,35 @@ namespace MsgPack.Serialization.CollectionSerializers
 			collection.Add( item );
 		}
 	}
+
+#if UNITY
+	internal abstract class UnityNonGenericListMessagePackSerializer : UnityNonGenericCollectionMessagePackSerializer
+	{
+		protected UnityNonGenericListMessagePackSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema schema )
+			: base( ownerContext, targetType, schema ) { }
+
+		protected internal sealed override object UnpackFromCore( Unpacker unpacker )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				throw SerializationExceptions.NewIsNotArrayHeader();
+			}
+
+			return this.InternalUnpackFromCore( unpacker );
+		}
+
+		internal virtual object InternalUnpackFromCore( Unpacker unpacker )
+		{
+			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+			var collection = this.CreateInstance( itemsCount );
+			this.UnpackToCore( unpacker, collection, itemsCount );
+			return collection;
+		}
+
+		protected override void AddItem( object collection, object item )
+		{
+			( collection as IList ).Add( item );
+		}
+	}
+#endif // UNITY
 }

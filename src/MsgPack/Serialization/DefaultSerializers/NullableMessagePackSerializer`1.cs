@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,10 +18,18 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
+#if UNITY
+using System.Reflection;
+#endif // UNITY
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+#if !UNITY
 	internal class NullableMessagePackSerializer<T> : MessagePackSerializer<T?>
 		where T : struct
 	{
@@ -52,4 +60,37 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return unpacker.LastReadData.IsNil ? default( T? ) : this._valueSerializer.UnpackFromCore( unpacker );
 		}
 	}
+#else
+	internal class NullableMessagePackSerializer : NonGenericMessagePackSerializer
+	{
+		private readonly MethodInfo _getValue;
+		private readonly IMessagePackSingleObjectSerializer _valueSerializer;
+
+		public NullableMessagePackSerializer( SerializationContext ownerContext, Type nullableType, Type underlyingType )
+			: base( ownerContext, nullableType )
+		{
+			this._valueSerializer = ownerContext.GetSerializer( underlyingType );
+			this._getValue = nullableType.GetProperty( "Value" ).GetGetMethod();
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		protected internal override void PackToCore( Packer packer, object objectTree )
+		{
+			if ( objectTree == null )
+			{
+				packer.PackNull();
+			}
+			else
+			{
+				this._valueSerializer.PackTo( packer, this._getValue.SafeInvoke( objectTree ) );
+			}
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		protected internal override object UnpackFromCore( Unpacker unpacker )
+		{
+			return unpacker.LastReadData.IsNil ? null : this._valueSerializer.UnpackFrom( unpacker );
+		}
+	}
+#endif // !UNITY
 }

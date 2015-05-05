@@ -18,6 +18,10 @@
 // 
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections;
 using System.Runtime.Serialization;
@@ -66,4 +70,25 @@ namespace MsgPack.Serialization.CollectionSerializers
 			}
 		}
 	}
+
+#if UNITY
+	internal abstract class UnityNonGenericCollectionMessagePackSerializer : UnityNonGenericEnumerableMessagePackSerializerBase
+	{
+		protected UnityNonGenericCollectionMessagePackSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema schema )
+			: base( ownerContext, targetType, schema ) { }
+
+		protected internal sealed override void PackToCore( Packer packer, object objectTree )
+		{
+			var asCollection = objectTree as ICollection;
+			// ReSharper disable once PossibleNullReferenceException
+			packer.PackArrayHeader( asCollection.Count );
+
+			var itemSerializer = this.ItemSerializer;
+			foreach ( var item in asCollection )
+			{
+				itemSerializer.PackTo( packer, item );
+			}
+		}
+	}
+#endif // UNITY
 }

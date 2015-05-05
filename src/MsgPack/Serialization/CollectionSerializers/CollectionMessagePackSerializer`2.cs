@@ -25,6 +25,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY
+using System.Reflection;
+#endif // UNITY
 using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.CollectionSerializers
@@ -142,4 +145,59 @@ namespace MsgPack.Serialization.CollectionSerializers
 #endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
 		}
 	}
+
+#if UNITY
+	internal abstract class UnityCollectionMessagePackSerializer : UnityEnumerableMessagePackSerializerBase
+	{
+		private readonly MethodInfo _getCount;
+		private readonly MethodInfo _add;
+
+		protected UnityCollectionMessagePackSerializer(
+			SerializationContext ownerContext,
+			Type targetType,
+			CollectionTraits traits,
+			PolymorphismSchema schema 
+		)
+			: base( ownerContext, targetType, traits.ElementType, schema )
+		{
+			this._getCount = traits.CountPropertyGetter;
+			this._add = traits.AddMethod;
+		}
+
+		protected internal sealed override void PackToCore( Packer packer, object objectTree )
+		{
+			packer.PackArrayHeader( ( int ) this._getCount.SafeInvoke( objectTree ) );
+			var itemSerializer = this.ItemSerializer;
+
+			// ReSharper disable once PossibleNullReferenceException
+			foreach ( var item in objectTree as IEnumerable )
+			{
+				itemSerializer.PackTo( packer, item );
+			}
+		}
+
+		protected internal sealed override object UnpackFromCore( Unpacker unpacker )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				throw SerializationExceptions.NewIsNotArrayHeader();
+			}
+
+			return this.InternalUnpackFromCore( unpacker );
+		}
+
+		internal virtual object InternalUnpackFromCore( Unpacker unpacker )
+		{
+			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+			var collection = this.CreateInstance( itemsCount );
+			this.UnpackToCore( unpacker, collection, itemsCount );
+			return collection;
+		}
+
+		protected override void AddItem( object collection, object item )
+		{
+			this._add.SafeInvoke( collection, item );
+		}
+	}
+#endif // UNITY
 }

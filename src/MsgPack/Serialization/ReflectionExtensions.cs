@@ -320,7 +320,7 @@ namespace MsgPack.Serialization
 				result = new CollectionTraits(
 					CollectionDetailedKind.GenericDictionary,
 					GetAddMethod( source, typeof( MessagePackObject ), typeof( MessagePackObject ) ),
-					GetCountGetterMethod( source, typeof( MessagePackObject ) ),
+					GetCountGetterMethod( source, typeof( KeyValuePair<MessagePackObject, MessagePackObject> ) ),
 					FindInterfaceMethod(
 						source,
 						typeof( IEnumerable<KeyValuePair<MessagePackObject, MessagePackObject>> ),

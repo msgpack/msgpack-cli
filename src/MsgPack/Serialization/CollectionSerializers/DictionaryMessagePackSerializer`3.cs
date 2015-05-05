@@ -23,7 +23,13 @@
 #endif
 
 using System;
+#if UNITY
+using System.Collections;
+#endif // UNITY
 using System.Collections.Generic;
+#if UNITY
+using System.Reflection;
+#endif // UNITY
 using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.CollectionSerializers
@@ -232,4 +238,127 @@ namespace MsgPack.Serialization.CollectionSerializers
 			}
 		}
 	}
+
+#if UNITY
+	internal abstract class UnityDictionaryMessagePackSerializer : NonGenericMessagePackSerializer,
+		ICollectionInstanceFactory
+	{
+		private readonly IMessagePackSingleObjectSerializer _keySerializer;
+		private readonly IMessagePackSingleObjectSerializer _valueSerializer;
+		private readonly MethodInfo _add;
+		private readonly MethodInfo _getCount;
+		private readonly MethodInfo _getKey;
+		private readonly MethodInfo _getValue;
+
+		protected UnityDictionaryMessagePackSerializer(
+			SerializationContext ownerContext,
+			Type targetType,
+			Type keyType,
+			Type valueType,
+			CollectionTraits traits,
+			PolymorphismSchema schema
+		)
+			: base( ownerContext, targetType )
+		{
+			var safeSchema = schema ?? PolymorphismSchema.Default;
+			this._keySerializer = ownerContext.GetSerializer( keyType, safeSchema.KeySchema );
+			this._valueSerializer = ownerContext.GetSerializer( valueType, safeSchema.ItemSchema );
+			this._add = traits.AddMethod;
+			this._getCount = traits.CountPropertyGetter;
+			this._getKey = traits.ElementType.GetProperty( "Key" ).GetGetMethod();
+			this._getValue = traits.ElementType.GetProperty( "Value" ).GetGetMethod();
+		}
+
+		protected internal override sealed void PackToCore( Packer packer, object objectTree )
+		{
+			packer.PackMapHeader( ( int ) this._getCount.SafeInvoke( objectTree ) );
+			// ReSharper disable once PossibleNullReferenceException
+			foreach ( var item in objectTree as IEnumerable )
+			{
+				this._keySerializer.PackTo( packer, this._getKey.SafeInvoke( item ) );
+				this._valueSerializer.PackTo( packer, this._getValue.SafeInvoke( item ) );
+			}
+		}
+
+		protected internal override sealed object UnpackFromCore( Unpacker unpacker )
+		{
+			if ( !unpacker.IsMapHeader )
+			{
+				throw SerializationExceptions.NewIsNotArrayHeader();
+			}
+
+			return this.InternalUnpackFromCore( unpacker );
+		}
+
+		internal virtual object InternalUnpackFromCore( Unpacker unpacker )
+		{
+			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+			var collection = this.CreateInstance( itemsCount );
+			this.UnpackToCore( unpacker, collection, itemsCount );
+			return collection;
+		}
+
+		protected abstract object CreateInstance( int initialCapacity );
+
+		object ICollectionInstanceFactory.CreateInstance( int initialCapacity )
+		{
+			return this.CreateInstance( initialCapacity );
+		}
+
+		protected internal override sealed void UnpackToCore( Unpacker unpacker, object collection )
+		{
+			if ( !unpacker.IsMapHeader )
+			{
+				throw SerializationExceptions.NewIsNotArrayHeader();
+			}
+
+			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
+		}
+
+		private void UnpackToCore( Unpacker unpacker, object collection, int itemsCount )
+		{
+			for ( int i = 0; i < itemsCount; i++ )
+			{
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewMissingItem( i );
+				}
+
+				object key;
+				if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+				{
+					key = this._keySerializer.UnpackFrom( unpacker );
+				}
+				else
+				{
+					using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+					{
+						key = this._keySerializer.UnpackFrom( subtreeUnpacker );
+					}
+				}
+
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewMissingItem( i );
+				}
+
+
+				object value;
+				if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+				{
+					value = this._valueSerializer.UnpackFrom( unpacker );
+				}
+				else
+				{
+					using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+					{
+						value = this._valueSerializer.UnpackFrom( subtreeUnpacker );
+					}
+				}
+
+				this._add.SafeInvoke( collection, key, value );
+			}
+		}
+	}
+#endif // UNITY
 }

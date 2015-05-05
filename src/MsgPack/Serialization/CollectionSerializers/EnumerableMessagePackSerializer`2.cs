@@ -23,8 +23,14 @@
 #endif
 
 using System;
+#if UNITY
+using System.Collections;
+#endif // UNITY
 using System.Collections.Generic;
 using System.Linq;
+#if UNITY
+using System.Reflection;
+#endif // UNITY
 using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.CollectionSerializers
@@ -78,4 +84,46 @@ namespace MsgPack.Serialization.CollectionSerializers
 			}
 		}
 	}
+#if UNITY
+	internal abstract class UnityEnumerableMessagePackSerializer : UnityEnumerableMessagePackSerializerBase
+	{
+		private readonly MethodInfo _getCount;
+
+		protected UnityEnumerableMessagePackSerializer(
+			SerializationContext ownerContext,
+			Type targetType,
+			CollectionTraits traits,
+			PolymorphismSchema schema
+		)
+			: base( ownerContext, targetType, traits.ElementType, schema )
+		{
+			this._getCount = traits.CountPropertyGetter;
+		}
+
+		protected internal sealed override void PackToCore( Packer packer, object objectTree )
+		{
+			var asEnumerable = objectTree as IEnumerable;
+			int count;
+			if ( this._getCount == null )
+			{
+				// ReSharper disable once AssignNullToNotNullAttribute
+				var asArray = asEnumerable.OfType<object>().ToArray();
+				asEnumerable = asArray;
+				count = asArray.Length;
+			}
+			else
+			{
+				count = ( int )this._getCount.SafeInvoke( objectTree );
+			}
+
+			packer.PackArrayHeader( count );
+			var itemSerializer = this.ItemSerializer;
+			// ReSharper disable once PossibleNullReferenceException
+			foreach ( var item in asEnumerable )
+			{
+				itemSerializer.PackTo( packer, item );
+			}
+		}
+	}
+#endif
 }

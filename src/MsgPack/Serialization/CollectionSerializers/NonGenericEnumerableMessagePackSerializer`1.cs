@@ -18,6 +18,10 @@
 // 
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections;
 using System.Linq;
@@ -67,4 +71,30 @@ namespace MsgPack.Serialization.CollectionSerializers
 			packer.PackArrayHeader( asICollection.Count );
 		}
 	}
+
+#if UNITY
+	internal abstract class UnityNonGenericEnumerableMessagePackSerializer : UnityNonGenericEnumerableMessagePackSerializerBase
+	{
+		protected UnityNonGenericEnumerableMessagePackSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema schema )
+			: base( ownerContext, targetType, schema ) { }
+
+		protected internal sealed override void PackToCore( Packer packer, object objectTree )
+		{
+			var asEnumerable = objectTree as IEnumerable;
+			int count;
+			ICollection asCollection;
+			if ( ( asCollection = objectTree as ICollection ) == null )
+			{
+				// ReSharper disable once AssignNullToNotNullAttribute
+				count = asEnumerable.OfType<object>().ToArray().Length;
+			}
+			else
+			{
+				count = asCollection.Count;
+			}
+
+			packer.PackArrayHeader( count );
+		}
+	}
+#endif // UNITY
 }

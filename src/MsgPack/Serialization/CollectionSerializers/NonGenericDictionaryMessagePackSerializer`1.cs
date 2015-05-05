@@ -18,6 +18,10 @@
 // 
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections;
 using System.Runtime.Serialization;
@@ -207,4 +211,111 @@ namespace MsgPack.Serialization.CollectionSerializers
 			}
 		}
 	}
+
+#if UNITY
+	internal abstract class UnityNonGenericDictionaryMessagePackSerializer : NonGenericMessagePackSerializer, ICollectionInstanceFactory
+	{
+		private readonly IMessagePackSingleObjectSerializer _keySerializer;
+		private readonly IMessagePackSingleObjectSerializer _valueSerializer;
+
+		protected UnityNonGenericDictionaryMessagePackSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema schema )
+			: base( ownerContext, targetType )
+		{
+			var safeSchema = schema ?? PolymorphismSchema.Default;
+			this._keySerializer = ownerContext.GetSerializer( typeof( object ), safeSchema.KeySchema );
+			this._valueSerializer = ownerContext.GetSerializer( typeof( object ), safeSchema.ItemSchema );
+		}
+
+		protected internal sealed override void PackToCore( Packer packer, object objectTree )
+		{
+			var asDictionary = objectTree as IDictionary;
+			// ReSharper disable once PossibleNullReferenceException
+			packer.PackMapHeader( asDictionary.Count );
+			foreach ( DictionaryEntry item in asDictionary )
+			{
+				this._keySerializer.PackTo( packer, item.Key );
+				this._valueSerializer.PackTo( packer, item.Value );
+			}
+		}
+
+		protected internal sealed override object UnpackFromCore( Unpacker unpacker )
+		{
+			if ( !unpacker.IsMapHeader )
+			{
+				throw SerializationExceptions.NewIsNotArrayHeader();
+			}
+
+			return this.InternalUnpackFromCore( unpacker );
+		}
+
+		internal virtual object InternalUnpackFromCore( Unpacker unpacker )
+		{
+			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+			var collection = this.CreateInstance( itemsCount );
+			this.UnpackToCore( unpacker, collection as IDictionary, itemsCount );
+			return collection;
+		}
+
+		protected abstract object CreateInstance( int initialCapacity );
+
+		object ICollectionInstanceFactory.CreateInstance( int initialCapacity )
+		{
+			return this.CreateInstance( initialCapacity );
+		}
+
+		protected internal sealed override void UnpackToCore( Unpacker unpacker, object collection )
+		{
+			if ( !unpacker.IsMapHeader )
+			{
+				throw SerializationExceptions.NewIsNotArrayHeader();
+			}
+
+			this.UnpackToCore( unpacker, collection as IDictionary, UnpackHelpers.GetItemsCount( unpacker ) );
+		}
+
+		private void UnpackToCore( Unpacker unpacker, IDictionary collection, int itemsCount )
+		{
+			for ( int i = 0; i < itemsCount; i++ )
+			{
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewMissingItem( i );
+				}
+
+				object key;
+				if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+				{
+					key = this._keySerializer.UnpackFrom( unpacker );
+				}
+				else
+				{
+					using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+					{
+						key = this._keySerializer.UnpackFrom( subtreeUnpacker );
+					}
+				}
+
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewMissingItem( i );
+				}
+
+				object value;
+				if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+				{
+					value = this._valueSerializer.UnpackFrom( unpacker );
+				}
+				else
+				{
+					using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+					{
+						value = this._valueSerializer.UnpackFrom( subtreeUnpacker );
+					}
+				}
+
+				collection.Add( key, value );
+			}
+		}
+	}
+#endif // UNITY
 }

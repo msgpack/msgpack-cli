@@ -18,13 +18,24 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
+#if UNITY
+using System.Collections;
+#endif // UNITY
 using System.Collections.Generic;
+#if UNITY
+using System.Reflection;
+#endif // UNITY
 
 using MsgPack.Serialization.CollectionSerializers;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+#if !UNITY
 	/// <summary>
 	///		Provides default implementation for <see cref="Dictionary{TKey,TValue}"/>.
 	/// </summary>
@@ -119,4 +130,114 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return new Dictionary<TKey, TValue>( initialCapacity );
 		}
 	}
+#else
+	// ReSharper disable once InconsistentNaming
+	internal class System_Collections_Generic_Dictionary_2MessagePackSerializer : NonGenericMessagePackSerializer, ICollectionInstanceFactory
+	{
+		private readonly IMessagePackSingleObjectSerializer  _keySerializer;
+		private readonly IMessagePackSingleObjectSerializer _valueSerializer;
+		private readonly Type _keyType;
+		private readonly ConstructorInfo _constructor;
+		private readonly MethodInfo _add;
+
+		public System_Collections_Generic_Dictionary_2MessagePackSerializer( SerializationContext ownerContext, Type targetType, CollectionTraits traits, Type keyType, Type valueType, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
+			: base( ownerContext, targetType )
+		{
+			this._keySerializer = ownerContext.GetSerializer( keyType, keysSchema );
+			this._valueSerializer = ownerContext.GetSerializer( valueType, valuesSchema );
+			this._keyType = keyType;
+			this._constructor =
+				targetType.GetConstructor( new[] { typeof( int ), typeof( IEqualityComparer<> ).MakeGenericType( keyType ) } );
+			this._add = traits.AddMethod;
+		}
+
+		protected internal override void PackToCore( Packer packer, object objectTree )
+		{
+			var asDictionary = objectTree as IDictionary;
+			if ( asDictionary == null )
+			{
+				packer.PackNull();
+				return;
+			}
+
+			packer.PackMapHeader( asDictionary.Count );
+			foreach ( DictionaryEntry entry in asDictionary )
+			{
+				this._keySerializer.PackTo( packer, entry.Key );
+				this._valueSerializer.PackTo( packer, entry.Value );
+			}
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		protected internal override object UnpackFromCore( Unpacker unpacker )
+		{
+			if ( !unpacker.IsMapHeader )
+			{
+				throw SerializationExceptions.NewIsNotMapHeader();
+			}
+
+			var count = UnpackHelpers.GetItemsCount( unpacker );
+			var collection = this.CreateInstance( count );
+			this.UnpackToCore( unpacker, collection, count );
+			return collection;
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		protected internal override void UnpackToCore( Unpacker unpacker, object collection )
+		{
+			if ( !unpacker.IsMapHeader )
+			{
+				throw SerializationExceptions.NewIsNotMapHeader();
+			}
+
+			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
+		}
+
+		private void UnpackToCore( Unpacker unpacker, object collection, int count )
+		{
+			for ( int i = 0; i < count; i++ )
+			{
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewUnexpectedEndOfStream();
+				}
+
+				object key;
+				if ( unpacker.IsCollectionHeader )
+				{
+					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
+					{
+						key = this._keySerializer.UnpackFrom( subTreeUnpacker );
+					}
+				}
+				else
+				{
+					key = this._keySerializer.UnpackFrom( unpacker );
+				}
+
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewUnexpectedEndOfStream();
+				}
+
+				if ( unpacker.IsCollectionHeader )
+				{
+					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
+					{
+						this._add.SafeInvoke( collection, key, this._valueSerializer.UnpackFrom( subTreeUnpacker ) );
+					}
+				}
+				else
+				{
+					this._add.SafeInvoke( collection, key, this._valueSerializer.UnpackFrom( unpacker ) );
+				}
+			}
+		}
+
+		public object CreateInstance( int initialCapacity )
+		{
+			return AotHelper.CreateSystemCollectionsGenericDictionary( this._constructor, this._keyType, initialCapacity );
+		}
+	}
+#endif // !UNITY
 }

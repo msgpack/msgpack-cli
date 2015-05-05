@@ -18,33 +18,60 @@
 // 
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
+#if !UNITY
 using System.Collections.Generic;
+#endif // !UNITY
 
 using MsgPack.Serialization.CollectionSerializers;
 using MsgPack.Serialization.Polymorphic;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+#if !UNITY
 	internal sealed class AbstractDictionaryMessagePackSerializer<TDictionary, TKey, TValue> : DictionaryMessagePackSerializer<TDictionary, TKey, TValue>
 		where TDictionary : IDictionary<TKey, TValue>
+#else
+	internal sealed class AbstractDictionaryMessagePackSerializer : UnityDictionaryMessagePackSerializer
+#endif // !UNITY
 	{
 		private readonly ICollectionInstanceFactory _concreteCollectionInstanceFactory;
 		private readonly IPolymorphicDeserializer _polymorphicDeserializer;
 
 		public AbstractDictionaryMessagePackSerializer(
 			SerializationContext ownerContext,
+#if !UNITY
 			Type targetType,
+#else
+			Type abstractType,
+			Type concreteType,
+			Type keyType,
+			Type valueType,
+			CollectionTraits traits,
+#endif // !UNITY
 			PolymorphismSchema schema
 		)
+#if !UNITY
 			: base( ownerContext, schema )
+#else
+			: base( ownerContext, abstractType, keyType, valueType, traits, schema )
+#endif // !UNITY
 		{
 			IMessagePackSingleObjectSerializer serializer;
 			AbstractCollectionSerializerHelper.GetConcreteSerializer( 
 				ownerContext,
 				schema,
+#if !UNITY
 				typeof( TDictionary ),
 				targetType,
+#else
+				abstractType,
+				concreteType,
+#endif // !UNITY
 				typeof( DictionaryMessagePackSerializer<,,> ),
 				out this._concreteCollectionInstanceFactory,
 				out serializer
@@ -52,12 +79,20 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._polymorphicDeserializer = serializer as IPolymorphicDeserializer;
 		}
 
+#if !UNITY
 		internal override TDictionary InternalUnpackFromCore( Unpacker unpacker )
+#else
+		internal override object InternalUnpackFromCore( Unpacker unpacker )
+#endif // !UNITY
 		{
 			if ( this._polymorphicDeserializer != null )
 			{
 				// This boxing is OK because TCollection should be reference type because TCollection is abstract class or interface.
-				return ( TDictionary )this._polymorphicDeserializer.PolymorphicUnpackFrom( unpacker );
+				return 
+#if !UNITY
+					( TDictionary )
+#endif // !UNITY
+					this._polymorphicDeserializer.PolymorphicUnpackFrom( unpacker );
 			}
 			else
 			{
@@ -65,10 +100,18 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+#if !UNITY
 		protected override TDictionary CreateInstance( int initialCapacity )
+#else
+		protected override object CreateInstance( int initialCapacity )
+#endif // !UNITY
 		{
 			// This boxing is OK because TCollection should be reference type because TCollection is abstract class or interface.
-			return ( TDictionary )this._concreteCollectionInstanceFactory.CreateInstance( initialCapacity );
+			return 
+#if !UNITY
+				( TDictionary )
+#endif // !UNITY
+				this._concreteCollectionInstanceFactory.CreateInstance( initialCapacity );
 		}
 	}
 }

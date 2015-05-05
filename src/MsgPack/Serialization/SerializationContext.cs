@@ -536,7 +536,7 @@ namespace MsgPack.Serialization
 
 						// Creates provider even if no schema -- the schema might be specified future for the type.
 						// It is OK to use polymorphic provider for value type.
-						provider = new PolymorphicSerializerProvider<T>( serializer );
+						provider = new PolymorphicSerializerProvider<T>( this, serializer );
 					}
 
 					this._serializers.Register( typeof( T ), provider );
@@ -603,6 +603,7 @@ namespace MsgPack.Serialization
 					var serializer =
 						GenericSerializer.TryCreateAbstractCollectionSerializer( this, typeof( T ), concreteCollectionType, schema );
 
+#if !UNITY
 					if ( serializer != null )
 					{
 						var typedSerializer = serializer as MessagePackSerializer<T>;
@@ -620,10 +621,13 @@ namespace MsgPack.Serialization
 					{
 						provider = new PolymorphicSerializerProvider<T>( null );
 					}
+#else
+					provider = new PolymorphicSerializerProvider<T>( this, serializer );
+#endif
 				}
 				else
 				{
-					provider = new PolymorphicSerializerProvider<T>( null );
+					provider = new PolymorphicSerializerProvider<T>( this, null );
 				}
 			}
 			else

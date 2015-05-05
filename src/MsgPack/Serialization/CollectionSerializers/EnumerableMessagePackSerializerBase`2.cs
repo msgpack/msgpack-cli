@@ -18,6 +18,10 @@
 // 
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -145,4 +149,70 @@ namespace MsgPack.Serialization.CollectionSerializers
 			throw SerializationExceptions.NewUnpackToIsNotSupported( typeof( TCollection), null ); 
 		}
 	}
+
+#if UNITY
+	internal abstract class UnityEnumerableMessagePackSerializerBase : NonGenericMessagePackSerializer, ICollectionInstanceFactory
+	{
+		private readonly IMessagePackSingleObjectSerializer _itemSerializer;
+
+		internal IMessagePackSingleObjectSerializer ItemSerializer { get { return this._itemSerializer; } }
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by base .ctor" )]
+		protected UnityEnumerableMessagePackSerializerBase( SerializationContext ownerContext, Type targetType, Type itemType, PolymorphismSchema schema )
+			: base( ownerContext, targetType )
+		{
+			this._itemSerializer = ownerContext.GetSerializer( itemType, ( schema ?? PolymorphismSchema.Default ).ItemSchema );
+		}
+
+		protected abstract object CreateInstance( int initialCapacity );
+
+		object ICollectionInstanceFactory.CreateInstance( int initialCapacity )
+		{
+			return this.CreateInstance( initialCapacity );
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods",
+			MessageId = "0", Justification = "By design" )]
+		protected internal sealed override void UnpackToCore( Unpacker unpacker, object collection )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				throw SerializationExceptions.NewIsNotArrayHeader();
+			}
+
+			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
+		}
+
+		internal void UnpackToCore( Unpacker unpacker, object collection, int itemsCount )
+		{
+			for ( var i = 0; i < itemsCount; i++ )
+			{
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewMissingItem( i );
+				}
+
+				object item;
+				if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+				{
+					item = this._itemSerializer.UnpackFrom( unpacker );
+				}
+				else
+				{
+					using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+					{
+						item = this._itemSerializer.UnpackFrom( subtreeUnpacker );
+					}
+				}
+
+				this.AddItem( collection, item );
+			}
+		}
+
+		protected virtual void AddItem( object collection, object item )
+		{
+			throw SerializationExceptions.NewUnpackToIsNotSupported( this.TargetType, null ); 
+		}
+	}
+#endif // UNITY
 }
