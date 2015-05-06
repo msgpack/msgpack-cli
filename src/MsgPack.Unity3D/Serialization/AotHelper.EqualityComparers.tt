@@ -86,8 +86,18 @@ var valueTypes =
 		)
 		.OrderBy( t => t.Namespace )
 		.ThenBy( t => t.Name )
-		.Select( t => new { TypeName = t.FullName, ComparerName = t.FullName.Replace( ".", "_" ).Replace( "+", "_" ) + "EqualityComparer" } )
+		.Select( t => new { Type = t, ComparerName = t.FullName.Replace( ".", "_" ).Replace( "+", "_" ) + "EqualityComparer" } )
 		.ToArray();
+
+var knownComparers =
+	new []
+	{
+		new { TypeName = "System.Object", ComparerExpression = "new BoxingGenericEqualityComparer<System.Object>()" },
+		new { TypeName = "System.Uri", ComparerExpression = "new BoxingGenericEqualityComparer<System.Uri>()" },
+		new { TypeName = "System.Version", ComparerExpression = "new BoxingGenericEqualityComparer<System.Version>()" },
+		new { TypeName = "System.String", ComparerExpression = "System.StringComparer.Ordinal" },
+		new { TypeName = "MsgPack.MessagePackObject", ComparerExpression = "MsgPack.MessagePackObjectEqualityComparer.Instance" },
+	};
 #>
 #region -- License Terms --
 //
@@ -112,6 +122,7 @@ var valueTypes =
 using System;
 using System.Collections.Generic;
 
+// ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable InconsistentNaming
 // ReSharper disable RedundantNameQualifier
 
@@ -121,12 +132,21 @@ namespace MsgPack.Serialization
 	{
 		private static Dictionary<RuntimeTypeHandle, object> InitializeEqualityComparerTable()
 		{
-			var result = new Dictionary<RuntimeTypeHandle, object>( <#= valueTypes.Length #> );
+			var result = new Dictionary<RuntimeTypeHandle, object>( <#= valueTypes.Length + knownComparers.Length #> );
 <#
 foreach ( var valueType in valueTypes )
 {
 #>
-			result.Add( typeof( <#= valueType.TypeName #> ).TypeHandle, new <#= valueType.ComparerName #>() );
+			result.Add( typeof( <#= valueType.Type.FullName #> ).TypeHandle, new <#= valueType.ComparerName #>() );
+			result.Add( typeof( <#= valueType.Type.FullName #>? ).TypeHandle, new Nullable<#= valueType.ComparerName #>() );
+<#
+}
+#>
+<#
+foreach ( var knownComparer in knownComparers )
+{
+#>
+			result.Add( typeof( <#= knownComparer.TypeName #> ).TypeHandle, <#= knownComparer.ComparerExpression #> );
 <#
 }
 #>
@@ -138,18 +158,68 @@ foreach ( var valueType in valueTypes )
 {
 #>
 
-		private sealed class <#= valueType.ComparerName #> : IEqualityComparer<#= "<" + valueType.TypeName + ">" #>
+		private sealed class <#= valueType.ComparerName #> : IEqualityComparer<#= "<" + valueType.Type.FullName + ">" #>
 		{
 			public <#= valueType.ComparerName #>() {}
 
-			public bool Equals( <#= valueType.TypeName #> left, <#= valueType.TypeName #> right )
+			public bool Equals( <#= valueType.Type.FullName #> left, <#= valueType.Type.FullName #> right )
 			{
+<#
+	if ( valueType.Type.IsPrimitive )
+	{
+#>
+				return left == right;
+<#		
+	}
+	else 
+	{
+#>
 				return left.Equals( right );
+<#		
+	}
+#>
 			}
 
-			public int GetHashCode( <#= valueType.TypeName #> obj )
+			public int GetHashCode( <#= valueType.Type.FullName #> obj )
 			{
 				return obj.GetHashCode();
+			}
+		}
+
+		private sealed class Nullable<#= valueType.ComparerName #> : IEqualityComparer<#= "<" + valueType.Type.FullName + "?>" #>
+		{
+			public Nullable<#= valueType.ComparerName #>() {}
+
+			public bool Equals( <#= valueType.Type.FullName #>? left, <#= valueType.Type.FullName #>? right )
+			{
+				if ( left == null )
+				{
+					return right == null;
+				}
+
+				if ( right == null )
+				{
+					return false;
+				}
+<#
+	if ( valueType.Type.IsPrimitive )
+	{
+#>
+				return left.Value == right.Value;
+<#		
+	}
+	else 
+	{
+#>
+				return left.Value.Equals( right.Value );
+<#		
+	}
+#>
+			}
+
+			public int GetHashCode( <#= valueType.Type.FullName #>? obj )
+			{
+				return obj == null ? 0 : obj.GetHashCode();
 			}
 		}
 <#

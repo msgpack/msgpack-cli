@@ -777,7 +777,11 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 			}
 
 			Assert.That(
+#if !UNITY
 				EqualityComparer<T>.Default.Equals( expected, actual ),
+#else
+				( AotHelper.GetEqualityComparer( typeof( T ) ) as IEqualityComparer<T> ).Equals( expected, actual ),
+#endif // !UNITY
 				"Expected:{1}({2}){0}Actual :{3}({4})",
 				Environment.NewLine,
 				expected,

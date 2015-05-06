@@ -34,15 +34,53 @@ namespace MsgPack.Serialization
 			return constructor.InvokePreservingExceptionType( initialCapacity, GetEqualityComparer( keyType ) );
 		}
 
-		private static object GetEqualityComparer( Type keyType )
+		internal static IEqualityComparer<T> GetEqualityComparer<T>()
 		{
-			object result;
-			if ( !EqualityComparerTable.TryGetValue( keyType.TypeHandle, out result ) )
+			return ( IEqualityComparer<T> ) GetEqualityComparer( typeof( T ) );
+		}
+
+		private static object GetEqualityComparer( Type type )
+		{
+			lock ( EqualityComparerTable )
 			{
-				return null;
+				object result;
+				if ( !EqualityComparerTable.TryGetValue( type.TypeHandle, out result ) )
+				{
+					result =
+						ReflectionExtensions.CreateInstancePreservingExceptionType(
+							typeof( BoxingGenericEqualityComparer<> ).MakeGenericType( type )
+						);
+					EqualityComparerTable[ type.TypeHandle ] = result;
+				}
+
+				return result;
+			}
+		}
+
+		private sealed class BoxingGenericEqualityComparer<T> : IEqualityComparer<T>
+		{
+			public BoxingGenericEqualityComparer() {}
+
+			public bool Equals( T x, T y )
+			{
+				if ( ReferenceEquals( x, y ) )
+				{
+					return true;
+				}
+
+				if ( x == null )
+				{
+					return false;
+				}
+
+				return x.Equals( y );
 			}
 
-			return result;
+			public int GetHashCode( T obj )
+			{
+				return obj == null ? 0 : obj.GetHashCode();
+			}
 		}
+
 	}
 }

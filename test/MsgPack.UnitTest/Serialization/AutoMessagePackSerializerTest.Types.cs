@@ -1169,7 +1169,11 @@ namespace MsgPack.Serialization
 			}
 
 			Assert.That(
+#if !UNITY
 				EqualityComparer<T>.Default.Equals( expected, actual ),
+#else
+				AotHelper.GetEqualityComparer<T>().Equals( expected, actual ),
+#endif // !UNITY
 				"Expected:{1}({2}){0}Actual :{3}({4})",
 				Environment.NewLine,
 				expected,
