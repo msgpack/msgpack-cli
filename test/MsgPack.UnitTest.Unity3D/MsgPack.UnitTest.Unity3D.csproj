@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;UNITY_IPHONE;NETFX_35;UNITY</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNITY_IPHONE;NETFX_35;UNITY;MONO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>3001,3002</NoWarn>
