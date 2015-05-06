@@ -163,7 +163,11 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public bool Register<T>( MessagePackSerializer<T> serializer )
 		{
+#if !UNITY
+			return this.Register( typeof( T ), new PolymorphicSerializerProvider<T>( serializer ) );
+#else
 			return this.Register( typeof( T ), new PolymorphicSerializerProvider<T>( serializer.OwnerContext, serializer ) );
+#endif // !UNITY
 		}
 
 		internal bool Register( Type targetType, MessagePackSerializerProvider serializer )

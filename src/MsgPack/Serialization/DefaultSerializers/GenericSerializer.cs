@@ -44,7 +44,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		public static MessagePackSerializer<T> Create<T>( SerializationContext context, PolymorphismSchema schema )
 		{
+#if !UNITY
 			return Create( context, typeof( T ), schema ) as MessagePackSerializer<T>;
+#else
+			return MessagePackSerializer.Wrap<T>( context, Create( context, typeof( T ), schema ) );
+#endif // !UNITY
 		}
 
 		public static IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )

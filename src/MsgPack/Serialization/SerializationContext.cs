@@ -38,7 +38,6 @@ using System.Diagnostics.Contracts;
 #endif // XAMIOS || XAMDROID
 #endif // !UNITY
 #if NETFX_CORE
-using System.Linq;
 using System.Linq.Expressions;
 #endif // NETFX_CORE
 using System.Threading;
@@ -536,7 +535,11 @@ namespace MsgPack.Serialization
 
 						// Creates provider even if no schema -- the schema might be specified future for the type.
 						// It is OK to use polymorphic provider for value type.
+#if !UNITY
+						provider = new PolymorphicSerializerProvider<T>( serializer );
+#else
 						provider = new PolymorphicSerializerProvider<T>( this, serializer );
+#endif // !UNITY
 					}
 
 					this._serializers.Register( typeof( T ), provider );
@@ -627,7 +630,11 @@ namespace MsgPack.Serialization
 				}
 				else
 				{
+#if !UNITY
+					provider = new PolymorphicSerializerProvider<T>( null );
+#else
 					provider = new PolymorphicSerializerProvider<T>( this, null );
+#endif // !UNITY
 				}
 			}
 			else

@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.IO;
 using System.Linq;
@@ -93,7 +97,9 @@ namespace MsgPack.Serialization
 			Assert.That( first, Is.Not.Null );
 			var second = MessagePackSerializer.Create<Image>();
 			Assert.That( second, Is.Not.Null );
+#if !UNITY
 			Assert.That( first.GetType(), Is.EqualTo( second.GetType() ) );
+#endif // !UNITY
 		}
 
 		[Test]
@@ -116,7 +122,9 @@ namespace MsgPack.Serialization
 			Assert.That( first, Is.Not.Null );
 			var second = MessagePackSerializer.Create<Image>( context );
 			Assert.That( second, Is.Not.Null );
+#if !UNITY
 			Assert.That( first.GetType(), Is.EqualTo( second.GetType() ) );
+#endif // !UNITY
 		}
 
 		[Test]

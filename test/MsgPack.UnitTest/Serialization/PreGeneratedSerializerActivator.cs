@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -190,7 +194,13 @@ namespace MsgPack.Serialization
 					serializer = ( MessagePackSerializer<T> )this._constructor3.Invoke( new object[] { context, this._serializationTargetType, null } );
 				}
 
-				return new PolymorphicSerializerProvider<T>( context, serializer ).Get( context, schema ?? PolymorphismSchema.Default ) as IMessagePackSerializer;
+				return 
+#if !UNITY
+					new PolymorphicSerializerProvider<T>( serializer )
+#else
+					new PolymorphicSerializerProvider<T>( context, serializer )
+#endif // !UNITY
+					.Get( context, schema ?? PolymorphismSchema.Default ) as IMessagePackSerializer;
 			}
 		}
 	}

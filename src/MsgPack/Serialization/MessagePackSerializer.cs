@@ -649,6 +649,18 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if UNITY
+		internal static MessagePackSerializer<T> Wrap<T>( SerializationContext context, IMessagePackSingleObjectSerializer nonGeneric )
+		{
+			return
+				nonGeneric == null
+				? null
+				: nonGeneric is ICustomizableEnumSerializer
+				? new EnumTypedMessagePackSerializerWrapper<T>( context, nonGeneric )
+				: new TypedMessagePackSerializerWrapper<T>( context, nonGeneric );
+		}
+#endif // UNITY
+
 		// For stable behavior, use singleton concrete deserializer and private context.
 		private static readonly MessagePackSerializer<MessagePackObject> _singleTonMpoDeserializer =
 			new DefaultSerializers.MsgPack_MessagePackObjectMessagePackSerializer( new SerializationContext() );

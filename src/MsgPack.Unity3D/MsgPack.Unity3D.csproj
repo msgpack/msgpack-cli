@@ -625,7 +625,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AotHelper.EqualityComparers.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\EnumTypedMessagePackSerializerWrapper`1.cs" />
     <Compile Include="Serialization\NonGenericMessagePackSerializer.cs" />
+    <Compile Include="Serialization\TypedMessagePackSerializerWrapper`1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\MsgPack\remarks.xml">
