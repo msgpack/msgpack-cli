@@ -154,23 +154,41 @@ namespace MsgPack.Serialization
 			public static ISerializerActivator Create( Type targetType, Type serializerType, Type serializationTargetType )
 			{
 				return
+#if !UNITY
 					( ISerializerActivator )Activator.CreateInstance(
 						typeof( SerializerActivator<> ).MakeGenericType( targetType ),
 						serializerType,
 						serializationTargetType
 					);
+#else
+					new SerializerActivatorImpl( targetType, serializerType, serializationTargetType );
+#endif // !UNITY
 			}
 		}
 
+#if !UNITY
 		private sealed class SerializerActivator<T> : SerializerActivator, ISerializerActivator
+#else
+		private sealed class SerializerActivatorImpl : SerializerActivator, ISerializerActivator
+#endif // !UNITY
 		{
+#if UNITY
+			private readonly Type _targetType;
+#endif // UNITY
 			private readonly Type _serializerType;
 			private readonly Type _serializationTargetType;
 			private readonly ConstructorInfo _constructor1;
 			private readonly ConstructorInfo _constructor3;
 
+#if !UNITY
 			public SerializerActivator( Type serializerType, Type serializationTargetType )
+#else
+			public SerializerActivatorImpl( Type targetType, Type serializerType, Type serializationTargetType )
+#endif // !UNITY
 			{
+#if UNITY
+				this._targetType = targetType;
+#endif // UNITY
 				this._serializerType = serializerType;
 				this._serializationTargetType = serializationTargetType;
 				this._constructor1 = serializerType.GetConstructor( SerializerConstructorParameterTypes1 );
@@ -184,23 +202,36 @@ namespace MsgPack.Serialization
 					throw new Exception( "A cosntructor of type '" + this._serializerType.FullName + "' is not found." );
 				}
 
+#if !UNITY
 				MessagePackSerializer<T> serializer;
 				if ( this._constructor1 != null )
 				{
-					serializer = ( MessagePackSerializer<T> )this._constructor1.Invoke( new object[] { context } );
+					serializer = ( MessagePackSerializer<T> )this._constructor1.InvokePreservingExceptionType( context );
 				}
 				else
 				{
-					serializer = ( MessagePackSerializer<T> )this._constructor3.Invoke( new object[] { context, this._serializationTargetType, null } );
+					serializer = ( MessagePackSerializer<T> )this._constructor3.InvokePreservingExceptionType( context, this._serializationTargetType, null );
+				}
+
+				return new PolymorphicSerializerProvider<T>( serializer ).Get( context, schema ?? PolymorphismSchema.Default ) as IMessagePackSerializer;
+#else
+				IMessagePackSingleObjectSerializer serializer;
+				if ( this._constructor1 != null )
+				{
+					serializer = this._constructor1.InvokePreservingExceptionType( context ) as IMessagePackSingleObjectSerializer;
+				}
+				else
+				{
+					serializer = this._constructor3.InvokePreservingExceptionType( context, this._serializationTargetType, null ) as IMessagePackSingleObjectSerializer;
 				}
 
 				return 
-#if !UNITY
-					new PolymorphicSerializerProvider<T>( serializer )
-#else
-					new PolymorphicSerializerProvider<T>( context, serializer )
+					ReflectionExtensions.CreateInstancePreservingExceptionType<MessagePackSerializerProvider>(
+						typeof( PolymorphicSerializerProvider<> ).MakeGenericType( this._targetType ),
+						context, 
+						serializer
+					).Get( context, schema ?? PolymorphismSchema.Default ) as IMessagePackSerializer;
 #endif // !UNITY
-					.Get( context, schema ?? PolymorphismSchema.Default ) as IMessagePackSerializer;
 			}
 		}
 	}

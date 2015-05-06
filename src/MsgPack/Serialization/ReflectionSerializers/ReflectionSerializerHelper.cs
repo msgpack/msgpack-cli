@@ -47,18 +47,22 @@ namespace MsgPack.Serialization.ReflectionSerializers
 	{
 		public static MessagePackSerializer<T> CreateReflectionEnumMessagePackSerializer<T>( SerializationContext context )
 		{
-#if UNITY_IPHONE
-			throw new PlatformNotSupportedException( "On-the-fly enum serializer generation is not supported in Unity iOS. Use pre-generated serializer instead." );
-#else
+#if !UNITY
 			return
-#endif
 				ReflectionExtensions.CreateInstancePreservingExceptionType<MessagePackSerializer<T>>(
 					typeof( ReflectionEnumMessagePackSerializer<> ).MakeGenericType( typeof( T ) ),
 					context 
 				);
+#else
+			return MessagePackSerializer.Wrap<T>( context, new ReflectionEnumMessagePackSerializer( context, typeof( T ) ) );
+#endif // !UNITY
 		}
 
+#if !UNITY
 		public static MessagePackSerializer<T> CreateCollectionSerializer<T>(
+#else
+		public static IMessagePackSingleObjectSerializer CreateCollectionSerializer<T>(
+#endif // !UNITY
 			SerializationContext context,
 			Type targetType,
 			CollectionTraits traits,
@@ -78,63 +82,99 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				case CollectionDetailedKind.GenericCollection:
 				{
 					return
+#if !UNITY
 						( MessagePackSerializer<T> )
-						( ( IVariantReflectionSerializerFactory )Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantReflectionSerializerFactory>(
 							typeof( CollectionSerializerFactory<,> ).MakeGenericType( typeof( T ), traits.ElementType )
-						) ).Create( context, targetType, schema );
+						).Create( context, targetType, schema );
+#else
+						new ReflectionCollectionMessagePackSerializer( context, typeof( T ), targetType, traits, schema );
+#endif // !UNITY
 				}
 				case CollectionDetailedKind.GenericEnumerable:
 				{
 					return
+#if !UNITY
 						( MessagePackSerializer<T> )
-						( ( IVariantReflectionSerializerFactory )Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantReflectionSerializerFactory>(
 							typeof( EnumerableSerializerFactory<,> ).MakeGenericType( typeof( T ), traits.ElementType )
-						) ).Create( context, targetType, schema );
+						).Create( context, targetType, schema );
+#else
+						new ReflectionEnumerableMessagePackSerializer( context, typeof( T ), targetType, traits, schema );
+#endif // !Enumerable
 				}
 				case CollectionDetailedKind.GenericDictionary:
 				{
 					var genericArgumentOfKeyValuePair = traits.ElementType.GetGenericArguments();
 					return
+#if !UNITY
 						( MessagePackSerializer<T> )
-						( ( IVariantReflectionSerializerFactory )Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantReflectionSerializerFactory>(
 							typeof( DictionarySerializerFactory<,,> ).MakeGenericType(
 								typeof( T ),
 								genericArgumentOfKeyValuePair[ 0 ],
 								genericArgumentOfKeyValuePair[ 1 ]
 							)
-						) ).Create( context, targetType, schema );
+						).Create( context, targetType, schema );
+#else
+						new ReflectionDictionaryMessagePackSerializer(
+							context,
+							typeof( T ),
+							targetType,
+							genericArgumentOfKeyValuePair[ 0 ],
+							genericArgumentOfKeyValuePair[ 1 ],
+							traits,
+							schema 
+						);
+#endif // !UNITY
 				}
 				case CollectionDetailedKind.NonGenericList:
 				{
 					return
+#if !UNITY
 						( MessagePackSerializer<T> )
-						( ( IVariantReflectionSerializerFactory )Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantReflectionSerializerFactory>(
 							typeof( NonGenericListSerializerFactory<> ).MakeGenericType( typeof( T ) )
-						) ).Create( context, targetType, schema );
+						).Create( context, targetType, schema );
+#else
+						new ReflectionNonGenericListMessagePackSerializer( context, typeof( T ), targetType, schema );
+#endif // !UNITY
 				}
 				case CollectionDetailedKind.NonGenericCollection:
 				{
 					return
+#if !UNITY
 						( MessagePackSerializer<T> )
-						( ( IVariantReflectionSerializerFactory )Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantReflectionSerializerFactory>(
 							typeof( NonGenericCollectionSerializerFactory<> ).MakeGenericType( typeof( T ), traits.ElementType )
-						) ).Create( context, targetType, schema );
+						).Create( context, targetType, schema );
+#else
+						new ReflectionNonGenericCollectionMessagePackSerializer( context, typeof( T ), targetType, schema );
+#endif // !UNITY
 				}
 				case CollectionDetailedKind.NonGenericEnumerable:
 				{
 					return
+#if !UNITY
 						( MessagePackSerializer<T> )
-						( ( IVariantReflectionSerializerFactory )Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantReflectionSerializerFactory>(
 							typeof( NonGenericEnumerableSerializerFactory<> ).MakeGenericType( typeof( T ), traits.ElementType )
-						) ).Create( context, targetType, schema );
+						).Create( context, targetType, schema );
+#else
+						new ReflectionNonGenericEnumerableMessagePackSerializer( context, typeof( T ), targetType, schema );
+#endif // !UNITY
 				}
 				case CollectionDetailedKind.NonGenericDictionary:
 				{
 					return
+#if !UNITY
 						( MessagePackSerializer<T> )
-						( ( IVariantReflectionSerializerFactory )Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantReflectionSerializerFactory>(
 							typeof( NonGenericDictionarySerializerFactory<> ).MakeGenericType( typeof( T ) )
-						) ).Create( context, targetType, schema );
+						).Create( context, targetType, schema );
+#else
+						new ReflectionNonGenericDictionaryMessagePackSerializer( context, typeof( T ), targetType, schema );
+#endif // !UNITY
 				}
 				default:
 				{
@@ -143,7 +183,11 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 		}
 
+#if !UNITY
 		public static Action<TCollection, TItem> GetAddItem<TCollection, TItem>( Type targetType )
+#else
+		public static Action<object, object> GetAddItem( Type targetType )
+#endif // !UNITY
 		{
 			var addMethod = targetType.GetCollectionTraits().AddMethod;
 			if ( addMethod == null )
@@ -168,7 +212,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			catch ( ArgumentException )
 			{
 #endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
-				return ( collection, item ) => addMethod.Invoke( collection, new object[] { item } );
+			return ( collection, item ) => addMethod.InvokePreservingExceptionType( collection, item );
 #if ( !UNITY && !XAMIOS ) || AOT_CHECK
 			}
 #endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
@@ -212,11 +256,11 @@ namespace MsgPack.Serialization.ReflectionSerializers
 #if DEBUG && !UNITY
 					Contract.Assert( property != null, "member.Member is PropertyInfo" );
 #endif // DEBUG && !UNITY
-					getters[ i ] = target => property.GetGetMethod( true ).Invoke( target, null );
+					getters[ i ] = target => property.GetGetMethod( true ).InvokePreservingExceptionType( target, null );
 					var setter = property.GetSetMethod( true );
 					if ( setter != null )
 					{
-						setters[ i ] = ( target, value ) => setter.Invoke( target, new[] { value } );
+						setters[ i ] = ( target, value ) => setter.InvokePreservingExceptionType( target, new[] { value } );
 					}
 				}
 
@@ -248,24 +292,42 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 		private static readonly Type[] ConstructorWithCapacityParameters = { typeof( int ) };
 
+#if !UNITY
 		public static Func<int, T> CreateCollectionInstanceFactory<T>( Type targetType )
+#else
+		public static Func<int, object> CreateCollectionInstanceFactory( Type abstractType, Type targetType )
+#endif // !UNITY
 		{
 			var constructorWithCapacity = targetType.GetConstructor( ConstructorWithCapacityParameters );
 			if ( constructorWithCapacity != null )
 			{
-				return capacity => ( T )constructorWithCapacity.Invoke( new object[] { capacity } );
+				return capacity => 
+#if !UNITY
+					( T )
+#endif // !UNITY
+					constructorWithCapacity.InvokePreservingExceptionType( capacity );
 			}
 
 			var constructorWithoutCapacity = targetType.GetConstructor( ReflectionAbstractions.EmptyTypes );
 			if ( constructorWithoutCapacity == null )
 			{
-				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( typeof( T ) );
+				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity(
+#if !UNITY
+					typeof( T )
+#else
+					abstractType
+#endif // !UNITY
+				);
 			}
 
-			return _ => ( T )constructorWithoutCapacity.Invoke( null );
+			return _ => 
+#if !UNITY
+				( T )
+#endif // !UNITY
+				constructorWithoutCapacity.InvokePreservingExceptionType();
 		}
 
-
+#if !UNITY
 		/// <summary>
 		///		Defines non-generic factory method for 'universal' serializers which use general collection features.
 		/// </summary>
@@ -355,5 +417,6 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 		}
 		// ReSharper restore MemberHidesStaticFromOuterClass
+#endif // !UNITY
 	}
 }

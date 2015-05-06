@@ -47,12 +47,16 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // DEBUG && !UNITY
 			return
 				( GetPrimitiveArraySerializer( context, targetType )
+#if !UNITY
 				?? ReflectionExtensions.CreateInstancePreservingExceptionType(
 					typeof( ArraySerializer<> ).MakeGenericType( targetType.GetElementType() ),
 					context,
 					itemsSchema
-				) )
-				as IMessagePackSingleObjectSerializer;
+				)
+#else
+				?? new UnityArraySerializer( context, targetType.GetElementType(), itemsSchema )
+#endif
+				) as IMessagePackSingleObjectSerializer;
 		}
 
 		private static object GetPrimitiveArraySerializer( SerializationContext context, Type targetType )

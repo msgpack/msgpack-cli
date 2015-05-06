@@ -132,9 +132,7 @@ namespace MsgPack.Serialization
 			}
 			catch(Exception ex)
 			{
-#if !UNITY
 				Debug.WriteLine( "HoistUpInnerException:" + ex );
-#endif // !UNITY
 				return null;
 			}
 		}

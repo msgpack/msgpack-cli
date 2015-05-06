@@ -18,31 +18,65 @@
 // 
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
+#if !UNITY
 using System.Collections;
+#endif // !UNITY
 
 using MsgPack.Serialization.CollectionSerializers;
 
 namespace MsgPack.Serialization.ReflectionSerializers
 {
+#if !UNITY
 	internal sealed class ReflectionNonGenericCollectionMessagePackSerializer<TCollection> : NonGenericCollectionMessagePackSerializer<TCollection>
 		where TCollection : ICollection
+#else
+	internal sealed class ReflectionNonGenericCollectionMessagePackSerializer : UnityNonGenericCollectionMessagePackSerializer
+#endif // !UNITY
 	{
+#if !UNITY
 		private readonly Func<int, TCollection> _factory;
 		private readonly Action<TCollection, object> _addItem;
+#else
+		private readonly Func<int, object> _factory;
+		private readonly Action<object, object> _addItem;
+#endif // !UNITY
 
+#if !UNITY
 		public ReflectionNonGenericCollectionMessagePackSerializer(
 			SerializationContext ownerContext,
 			Type targetType,
-			PolymorphismSchema itemsSchema )
+			PolymorphismSchema itemsSchema
+		)
 			: base( ownerContext, itemsSchema )
 		{
 			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TCollection>( targetType );
 			this._addItem = ReflectionSerializerHelper.GetAddItem<TCollection, object>( targetType );
 		}
+#else
+		public ReflectionNonGenericCollectionMessagePackSerializer(
+			SerializationContext ownerContext,
+			Type abstractType,
+			Type concreteType,
+			PolymorphismSchema itemsSchema 
+		)
+			: base( ownerContext, abstractType, itemsSchema )
+		{
+			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory( abstractType, concreteType );
+			this._addItem = ReflectionSerializerHelper.GetAddItem( concreteType );
+		}
+#endif // !UNITY
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+#if !UNITY
 		protected internal override TCollection UnpackFromCore( Unpacker unpacker )
+#else
+		protected internal override object UnpackFromCore( Unpacker unpacker )
+#endif // !UNITY
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
@@ -55,12 +89,20 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			return collection;
 		}
 
+#if !UNITY
 		protected override TCollection CreateInstance( int initialCapacity )
+#else
+		protected override object CreateInstance( int initialCapacity )
+#endif // !UNITY
 		{
 			return this._factory( initialCapacity );
 		}
 
+#if !UNITY
 		protected override void AddItem( TCollection collection, object item )
+#else
+		protected override void AddItem( object collection, object item )
+#endif // !UNITY
 		{
 			this._addItem( collection, item );
 		}

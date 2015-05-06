@@ -616,7 +616,15 @@ namespace MsgPack.Serialization
 				case CollectionKind.Array:
 				case CollectionKind.Map:
 				{
-					return ReflectionSerializerHelper.CreateCollectionSerializer<T>( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ) );
+					return 
+#if !UNITY
+						ReflectionSerializerHelper.CreateCollectionSerializer<T>( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ) );
+#else
+						Wrap<T>( 
+							context,
+							ReflectionSerializerHelper.CreateCollectionSerializer<T>( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ) )
+						);
+#endif // !UNITY
 				}
 				default:
 				{

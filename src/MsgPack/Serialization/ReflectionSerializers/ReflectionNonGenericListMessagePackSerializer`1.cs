@@ -18,30 +18,65 @@
 // 
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
+#if !UNITY
 using System.Collections;
+#endif // !UNITY
 
 using MsgPack.Serialization.CollectionSerializers;
 
 namespace MsgPack.Serialization.ReflectionSerializers
 {
+#if !UNITY
 	internal sealed class ReflectionNonGenericListMessagePackSerializer<TList> : NonGenericListMessagePackSerializer<TList>
 		where TList : IList
+#else
+	internal sealed class ReflectionNonGenericListMessagePackSerializer : UnityNonGenericListMessagePackSerializer
+#endif // !UNITY
 	{
+#if !UNITY
 		private readonly Func<int, TList> _factory;
+#else
+		private readonly Func<int, object> _factory;
+#endif // !UNITY
 
+#if !UNITY
 		public ReflectionNonGenericListMessagePackSerializer(
 			SerializationContext ownerContext,
 			Type targetType,
-			PolymorphismSchema itemsSchema )
+			PolymorphismSchema itemsSchema
+		)
 			: base( ownerContext, itemsSchema )
 		{
 			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TList>( targetType );
 		}
+#else
+		public ReflectionNonGenericListMessagePackSerializer(
+			SerializationContext ownerContext,
+			Type abstractType,
+			Type concreteType,
+			PolymorphismSchema itemsSchema
+		)
+			: base( ownerContext, abstractType, itemsSchema )
+		{
+			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory( abstractType, concreteType );
+		}
+#endif // !UNITY
 
+#if !UNITY
 		protected override TList CreateInstance( int initialCapacity )
 		{
 			return this._factory( initialCapacity );
 		}
+#else
+		protected override object CreateInstance( int initialCapacity )
+		{
+			return this._factory( initialCapacity );
+		}
+#endif // !UNITY
 	}
 }

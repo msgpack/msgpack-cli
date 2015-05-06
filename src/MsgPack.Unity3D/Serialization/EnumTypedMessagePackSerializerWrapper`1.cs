@@ -36,7 +36,11 @@ namespace MsgPack.Serialization
 
 		ICustomizableEnumSerializer ICustomizableEnumSerializer.GetCopyAs( EnumSerializationMethod method )
 		{
-			return this._underlyingEnumSerializer.GetCopyAs( method );
+			return 
+				new EnumTypedMessagePackSerializerWrapper<T>(
+					this.OwnerContext,
+					this._underlyingEnumSerializer.GetCopyAs( method ) as IMessagePackSingleObjectSerializer
+				);
 		}
 	}
 }

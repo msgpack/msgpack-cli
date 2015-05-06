@@ -280,7 +280,7 @@ namespace MsgPack
 						return false;
 					}
 
-					return asArray.SequenceEqual( otherAsArray );
+					return asArray.SequenceEqual( otherAsArray, MessagePackObjectEqualityComparer.Instance );
 				}
 			}
 
