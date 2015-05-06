@@ -24,7 +24,9 @@
 
 using System;
 using System.Collections.Generic;
+#if !NETFX_35 && !UNITY
 using System.Security;
+#endif // !NETFX_35 && !UNITY
 #if !UNITY
 #if XAMIOS || XAMDROID
 using Contract = MsgPack.MPContract;
@@ -43,6 +45,14 @@ namespace MsgPack.Serialization
 #endif // !NETFX_35
 	internal sealed class SerializerTypeKeyRepository : TypeKeyRepository
 	{
+#if UNITY
+		private static readonly Type[] NonGenericSerializerConstructorParameterTypes =
+			{
+				typeof( SerializationContext ),
+				typeof( Type )
+			};
+#endif // UNITY
+
 		public SerializerTypeKeyRepository()
 			// ReSharper disable once RedundantBaseConstructorCall
 			: base()
@@ -83,7 +93,20 @@ namespace MsgPack.Serialization
 				Contract.Assert( type != null, "type != null" );
 				Contract.Assert( type.GetIsGenericTypeDefinition(), "type.GetIsGenericTypeDefinition()" );
 #endif // !UNITY && DEBUG
-				var result = ReflectionExtensions.CreateInstancePreservingExceptionType( type.MakeGenericType( keyType.GetGenericArguments() ), context );
+#if !UNITY
+				var result =
+					ReflectionExtensions.CreateInstancePreservingExceptionType( 
+						type.MakeGenericType( keyType.GetGenericArguments() ), 
+						context
+					);
+#else
+				var resultType = type.IsGenericTypeDefinition ? type.MakeGenericType( keyType.GetGenericArguments() ) : type;
+				var constructor2 = resultType.GetConstructor( NonGenericSerializerConstructorParameterTypes );
+				var result =
+					constructor2 == null 
+					? ReflectionExtensions.CreateInstancePreservingExceptionType( resultType, context )
+					: ReflectionExtensions.CreateInstancePreservingExceptionType( resultType, context, keyType );
+#endif // !UNITY
 #if !UNITY && DEBUG
 				Contract.Assert( result != null, "result != null" );
 #endif // !UNITY && DEBUG

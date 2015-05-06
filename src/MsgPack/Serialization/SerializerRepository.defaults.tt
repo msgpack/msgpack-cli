@@ -190,6 +190,11 @@ var __notInWPs =
 		typeof( System.Numerics.BigInteger ),
 		typeof( System.Numerics.Complex ),
 	};
+var __notInUnities =
+	new HashSet<Type>
+	{
+		typeof( KeyValuePair<,> ),
+	};
 #>
 #region -- License Terms --
 //
@@ -252,6 +257,9 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( StringBuilder ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= typeof( StringBuilder ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( Char[] ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= typeof( Char ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>ArrayMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( Byte[] ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= typeof( Byte ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>ArrayMessagePackSerializer( ownerContext ) );
+#if UNITY
+			dictionary.Add( typeof( System.Collections.Generic.KeyValuePair<,> ).TypeHandle, typeof( System_Collections_Generic_KeyValuePair_2MessagePackSerializer ) );
+#endif // UNITY
 <#
 foreach( Type __type in __structTypes )
 {
@@ -355,6 +363,13 @@ foreach( Type __type in __classTypes )
 #if !NETFX_35 && !UNITY
 <#
 	}
+
+	if( __notInUnities.Contains( __type) )
+	{
+#>
+#if !UNITY
+<#
+	}
 	
 	if( __type.IsGenericTypeDefinition )
 	{
@@ -366,6 +381,13 @@ foreach( Type __type in __classTypes )
 	{
 #>
 			dictionary.Add( typeof( <#= ToCSharpTypeToken( __type ) #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer( ownerContext ) );
+<#
+	}
+
+	if( __notInUnities.Contains( __type) )
+	{
+#>
+#endif // !UNITY
 <#
 	}
 
