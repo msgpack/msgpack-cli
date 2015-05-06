@@ -733,7 +733,7 @@ namespace MsgPack.Serialization
 					this._cache[ targetType.TypeHandle ] = method;
 				}
 
-				return ( IMessagePackSingleObjectSerializer ) method.SafeInvoke( context, new[] { providerParameter } );
+				return ( IMessagePackSingleObjectSerializer )method.InvokePreservingExceptionType( context, providerParameter );
 #else
 				Func<SerializationContext, object, IMessagePackSingleObjectSerializer> func;
 #if SILVERLIGHT || NETFX_35 || UNITY

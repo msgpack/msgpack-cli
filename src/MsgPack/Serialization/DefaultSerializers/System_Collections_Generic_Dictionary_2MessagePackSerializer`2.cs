@@ -224,12 +224,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 					{
-						this._add.SafeInvoke( collection, key, this._valueSerializer.UnpackFrom( subTreeUnpacker ) );
+						this._add.InvokePreservingExceptionType( collection, key, this._valueSerializer.UnpackFrom( subTreeUnpacker ) );
 					}
 				}
 				else
 				{
-					this._add.SafeInvoke( collection, key, this._valueSerializer.UnpackFrom( unpacker ) );
+					this._add.InvokePreservingExceptionType( collection, key, this._valueSerializer.UnpackFrom( unpacker ) );
 				}
 			}
 		}

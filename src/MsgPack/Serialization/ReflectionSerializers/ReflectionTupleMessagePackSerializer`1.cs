@@ -96,7 +96,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						 object current = tuple;
 						 foreach ( var getter in getters )
 						 {
-							 current = getter.Invoke( current, null );
+							 current = getter.InvokePreservingExceptionType( current );
 						 }
 
 						 return current;
@@ -159,7 +159,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				}
 
 				currentTuple =
-					this._tupleConstructors[ nest ].Invoke( items.ToArray() );
+					this._tupleConstructors[ nest ].InvokePreservingExceptionType( items.ToArray() );
 			}
 
 			return ( T )currentTuple;

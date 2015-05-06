@@ -645,7 +645,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 			return
 				context =>
-					Activator.CreateInstance(
+					ReflectionExtensions.CreateInstancePreservingExceptionType<MessagePackSerializer<TObject>>(
 						targetType,
 						context,
 						EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(
@@ -655,7 +655,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						),
 						packUnderyingValueTo,
 						unpackFromUnderlyingValue
-					) as MessagePackSerializer<TObject>;
+					);
 		}
 
 		protected override ExpressionTreeContext CreateCodeGenerationContextForSerializerCreation( SerializationContext context )

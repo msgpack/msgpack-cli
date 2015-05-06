@@ -110,9 +110,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private static IMessagePackSingleObjectSerializer CreateNullableSerializer( SerializationContext context, Type underlyingType, PolymorphismSchema schema )
 		{
 			return
-				( ( IGenericBuiltInSerializerFactory )Activator.CreateInstance(
+				ReflectionExtensions.CreateInstancePreservingExceptionType<IGenericBuiltInSerializerFactory>(
 					typeof( NullableInstanceFactory<> ).MakeGenericType( underlyingType )
-				) ).Create( context, schema );
+				).Create( context, schema );
 		}
 #else
 		private static IMessagePackSingleObjectSerializer CreateNullableSerializer( SerializationContext context, Type nullableType, Type underlyingType )
@@ -131,9 +131,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 #endif // DEBUG && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 			return
-				( ( IGenericBuiltInSerializerFactory )Activator.CreateInstance(
+				ReflectionExtensions.CreateInstancePreservingExceptionType<IGenericBuiltInSerializerFactory>(
 					typeof( ListInstanceFactory<> ).MakeGenericType( itemType )
-				) ).Create( context, schema );
+				).Create( context, schema );
 		}
 #else
 		private static IMessagePackSingleObjectSerializer CreateListSerializer( SerializationContext context, Type targetType, CollectionTraits traits, PolymorphismSchema schema )
@@ -152,9 +152,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 #endif // DEBUG && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 			return
-				( ( IGenericBuiltInSerializerFactory )Activator.CreateInstance(
+				ReflectionExtensions.CreateInstancePreservingExceptionType<IGenericBuiltInSerializerFactory>(
 					typeof( DictionaryInstanceFactory<,> ).MakeGenericType( keyType, valueType )
-				) ).Create( context, schema );
+				).Create( context, schema );
 		}
 #else
 		private static IMessagePackSingleObjectSerializer CreateDictionarySerializer( SerializationContext context, Type targetType, CollectionTraits traits, Type keyType, Type valueType, PolymorphismSchema schema )
@@ -204,30 +204,24 @@ namespace MsgPack.Serialization.DefaultSerializers
 				case "ImmutableQueue`1":
 				{
 					return
-						( ( IGenericBuiltInSerializerFactory )
-							Activator.CreateInstance(
-								typeof( ImmutableCollectionSerializerFactory<,> )
-									.MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] )
-						) ).Create( context, itemSchema );
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IGenericBuiltInSerializerFactory>(
+							typeof( ImmutableCollectionSerializerFactory<,> ).MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] )
+						).Create( context, itemSchema );
 				}
 				case "ImmutableStack`1":
 				{
 					return
-						( ( IGenericBuiltInSerializerFactory )
-							Activator.CreateInstance(
-								typeof( ImmutableStackSerializerFactory<,> )
-									.MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] )
-						) ).Create( context, itemSchema );
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IGenericBuiltInSerializerFactory>(
+							typeof( ImmutableStackSerializerFactory<,> ).MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] )
+						).Create( context, itemSchema );
 				}
 				case "ImmutableDictionary`2":
 				case "ImmutableSortedDictionary`2":
 				{
 					return
-						( ( IGenericBuiltInSerializerFactory )
-							Activator.CreateInstance(
-								typeof( ImmutableDictionarySerializerFactory<,,> )
-									.MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ], targetType.GetGenericArguments()[ 1 ] )
-						) ).Create( context, itemSchema );
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IGenericBuiltInSerializerFactory>(
+							typeof( ImmutableDictionarySerializerFactory<,,> ).MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ], targetType.GetGenericArguments()[ 1 ] )
+						).Create( context, itemSchema );
 				}
 				default:
 				{
@@ -272,9 +266,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 #if !UNITY
 					return
-						( ( IVariantSerializerFactory )Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantSerializerFactory>(
 							typeof( CollectionSerializerFactory<,> ).MakeGenericType( abstractType, traits.ElementType )
-						) ).Create( context, concreteType, schema );
+						).Create( context, concreteType, schema );
 #else
 					return new AbstractCollectionMessagePackSerializer( context, abstractType, concreteType, traits, schema );
 #endif
@@ -283,9 +277,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 #if !UNITY
 					return
-						( ( IVariantSerializerFactory )Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantSerializerFactory>(
 							typeof( EnumerableSerializerFactory<,> ).MakeGenericType( abstractType, traits.ElementType )
-						) ).Create( context, concreteType, schema );
+						).Create( context, concreteType, schema );
 #else
 					return new AbstractEnumerableMessagePackSerializer( context, abstractType, concreteType, traits, schema );
 #endif
@@ -295,13 +289,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 					var genericArgumentOfKeyValuePair = traits.ElementType.GetGenericArguments();
 #if !UNITY
 					return
-						( ( IVariantSerializerFactory )Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantSerializerFactory>(
 							typeof( DictionarySerializerFactory<,,> ).MakeGenericType(
 								abstractType,
 								genericArgumentOfKeyValuePair[ 0 ],
 								genericArgumentOfKeyValuePair[ 1 ]
 							)
-						) ).Create( context, concreteType, schema );
+						).Create( context, concreteType, schema );
 #else
 					return new AbstractDictionaryMessagePackSerializer( context, abstractType, concreteType, genericArgumentOfKeyValuePair[ 0 ], genericArgumentOfKeyValuePair[ 1 ], traits, schema );
 #endif
@@ -310,9 +304,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 #if !UNITY
 					return
-						( ( IVariantSerializerFactory )Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantSerializerFactory>(
 							typeof( NonGenericListSerializerFactory<> ).MakeGenericType( abstractType )
-						) ).Create( context, concreteType, schema );
+						).Create( context, concreteType, schema );
 #else
 					return new AbstractNonGenericListMessagePackSerializer( context, abstractType, concreteType, schema );
 #endif
@@ -321,9 +315,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 #if !UNITY
 					return
-						( ( IVariantSerializerFactory )Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantSerializerFactory>(
 							typeof( NonGenericCollectionSerializerFactory<> ).MakeGenericType( abstractType )
-						) ).Create( context, concreteType, schema );
+						).Create( context, concreteType, schema );
 #else
 					return new AbstractNonGenericCollectionMessagePackSerializer( context, abstractType, concreteType, schema );
 #endif
@@ -332,9 +326,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 #if !UNITY
 					return
-						( ( IVariantSerializerFactory )Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantSerializerFactory>(
 							typeof( NonGenericEnumerableSerializerFactory<> ).MakeGenericType( abstractType )
-						) ).Create( context, concreteType, schema );
+						).Create( context, concreteType, schema );
 #else
 					return new AbstractNonGenericEnumerableMessagePackSerializer( context, abstractType, concreteType, schema );
 #endif
@@ -343,9 +337,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 #if !UNITY
 					return
-						( ( IVariantSerializerFactory )Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantSerializerFactory>(
 							typeof( NonGenericDictionarySerializerFactory<> ).MakeGenericType( abstractType )
-						) ).Create( context, concreteType, schema );
+						).Create( context, concreteType, schema );
 #else
 					return new AbstractNonGenericDictionaryMessagePackSerializer( context, abstractType, concreteType, schema );
 #endif

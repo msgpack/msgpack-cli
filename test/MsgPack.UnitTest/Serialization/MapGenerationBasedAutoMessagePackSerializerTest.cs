@@ -456,7 +456,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			context.DefaultCollectionTypes.Unregister( typeof( IList<> ) );
-			Assert.Throws<TargetInvocationException>( () => DoKnownCollectionTest<WithAbstractInt32Collection>( context ) );
+			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractInt32Collection>( context ) );
 		}
 
 		[Test]
@@ -515,7 +515,7 @@ namespace MsgPack.Serialization
 		public void TestAbstractTypes_NotACollection_Fail()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			Assert.Throws<TargetInvocationException>( () => DoKnownCollectionTest<WithAbstractNonCollection>( context ) );
+			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractNonCollection>( context ) );
 		}
 
 		// FIXME: init-only field, get-only property, Value type which implements IList<T> and has .ctor(int), Enumerator class which explicitly implements IEnumerator

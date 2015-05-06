@@ -47,7 +47,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // DEBUG && !UNITY
 			return
 				( GetPrimitiveArraySerializer( context, targetType )
-				?? Activator.CreateInstance(
+				?? ReflectionExtensions.CreateInstancePreservingExceptionType(
 					typeof( ArraySerializer<> ).MakeGenericType( targetType.GetElementType() ),
 					context,
 					itemsSchema

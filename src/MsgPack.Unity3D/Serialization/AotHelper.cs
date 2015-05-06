@@ -31,7 +31,7 @@ namespace MsgPack.Serialization
 
 		public static object CreateSystemCollectionsGenericDictionary( ConstructorInfo constructor, Type keyType, int initialCapacity )
 		{
-			return constructor.Invoke( null, new [] { initialCapacity, GetEqualityComparer( keyType ) } );
+			return constructor.InvokePreservingExceptionType( initialCapacity, GetEqualityComparer( keyType ) );
 		}
 
 		private static object GetEqualityComparer( Type keyType )

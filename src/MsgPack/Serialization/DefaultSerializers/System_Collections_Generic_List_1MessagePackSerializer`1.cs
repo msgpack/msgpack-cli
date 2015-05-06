@@ -178,19 +178,19 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 					{
-						this._add.SafeInvoke( collection, this._itemSerializer.UnpackFrom( subTreeUnpacker ) );
+						this._add.InvokePreservingExceptionType( collection, this._itemSerializer.UnpackFrom( subTreeUnpacker ) );
 					}
 				}
 				else
 				{
-					this._add.SafeInvoke( collection, this._itemSerializer.UnpackFrom( unpacker ) );
+					this._add.InvokePreservingExceptionType( collection, this._itemSerializer.UnpackFrom( unpacker ) );
 				}
 			}
 		}
 
 		public object CreateInstance( int initialCapacity )
 		{
-			return this._constructor.Invoke( null, new object[] { initialCapacity } );
+			return this._constructor.InvokePreservingExceptionType( initialCapacity );
 		}
 	}
 #endif // !UNITY

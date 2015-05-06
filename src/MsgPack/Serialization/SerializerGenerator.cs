@@ -386,9 +386,9 @@ namespace MsgPack.Serialization
 			{
 				return
 					type =>
-					Activator.CreateInstance(
+					ReflectionExtensions.CreateInstancePreservingExceptionType<ISerializerCodeGenerator>(
 						typeof( AssemblyBuilderSerializerBuilder<> ).MakeGenericType( type )
-					) as ISerializerCodeGenerator;
+					);
 			}
 		}
 
@@ -410,9 +410,9 @@ namespace MsgPack.Serialization
 			{
 				return
 					type =>
-					Activator.CreateInstance(
-						typeof( CodeDomSerializerBuilder<> ).MakeGenericType( type )
-					) as ISerializerCodeGenerator;
+						ReflectionExtensions.CreateInstancePreservingExceptionType<ISerializerCodeGenerator>(
+							typeof( CodeDomSerializerBuilder<> ).MakeGenericType( type )
+						);
 			}
 		}
 	}

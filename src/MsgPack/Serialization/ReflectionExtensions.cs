@@ -25,6 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 #if !UNITY
 #if XAMIOS || XAMDROID
 using Contract = MsgPack.MPContract;
@@ -35,12 +36,109 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization
 {
 	internal static class ReflectionExtensions
 	{
+		private static readonly Type[] ExceptionConstructorWithInnerParameterTypes = { typeof( string ), typeof( Exception ) };
+
+		public static object InvokePreservingExceptionType( this ConstructorInfo source, params object[] parameters )
+		{
+			try
+			{
+				return source.Invoke( parameters );
+			}
+			catch ( TargetInvocationException ex )
+			{
+				var rethrowing = HoistUpInnerException( ex );
+				if ( rethrowing == null )
+				{
+					// ctor.Invoke threw exception, so rethrow original TIE.
+					throw;
+				}
+				else
+				{
+					throw rethrowing;
+				}
+			}
+		}
+
+		public static object InvokePreservingExceptionType( this MethodInfo source, object instance, params object[] parameters )
+		{
+			try
+			{
+				return source.Invoke( instance, parameters );
+			}
+			catch ( TargetInvocationException ex )
+			{
+				var rethrowing = HoistUpInnerException( ex );
+				if ( rethrowing == null )
+				{
+					// ctor.Invoke threw exception, so rethrow original TIE.
+					throw;
+				}
+				else
+				{
+					throw rethrowing;
+				}
+			}
+		}
+
+		public static T CreateInstancePreservingExceptionType<T>( Type instanceType, params object[] constructorParameters )
+		{
+			return ( T )CreateInstancePreservingExceptionType( instanceType, constructorParameters );
+		}
+
+		public static object CreateInstancePreservingExceptionType( Type type, params object[] constructorParameters )
+		{
+			try
+			{
+				return Activator.CreateInstance( type, constructorParameters );
+			}
+			catch ( TargetInvocationException ex )
+			{
+				var rethrowing = HoistUpInnerException( ex );
+				if ( rethrowing == null )
+				{
+					// ctor.Invoke threw exception, so rethrow original TIE.
+					throw;
+				}
+				else
+				{
+					throw rethrowing;
+				}
+			}
+		}
+
+		private static Exception HoistUpInnerException( TargetInvocationException targetInvocationException )
+		{
+			if ( targetInvocationException.InnerException == null )
+			{
+				return null;
+			}
+
+			var ctor = targetInvocationException.InnerException.GetType().GetConstructor( ExceptionConstructorWithInnerParameterTypes );
+			if ( ctor == null )
+			{
+				return null;
+			}
+
+			try
+			{
+				return ctor.Invoke( new object[] { targetInvocationException.InnerException.Message, targetInvocationException } ) as Exception;
+			}
+			catch(Exception ex)
+			{
+#if !UNITY
+				Debug.WriteLine( "HoistUpInnerException:" + ex );
+#endif // !UNITY
+				return null;
+			}
+		}
+
 		public static Type GetMemberValueType( this MemberInfo source )
 		{
 			if ( source == null )

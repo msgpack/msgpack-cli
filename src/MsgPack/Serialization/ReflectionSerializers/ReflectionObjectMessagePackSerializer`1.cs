@@ -150,12 +150,12 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			object result =
 				this._constructorParameters == null
-					? Activator.CreateInstance( typeof( T ) )
+					? ReflectionExtensions.CreateInstancePreservingExceptionType( typeof( T ) )
 					: this._constructorParameters.Select( p =>
 						p.GetHasDefaultValue()
 						? p.DefaultValue
 						: p.ParameterType.GetIsValueType()
-						? Activator.CreateInstance( p.ParameterType )
+						? ReflectionExtensions.CreateInstancePreservingExceptionType( p.ParameterType )
 						: null
 					).ToArray();
 
@@ -223,7 +223,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 			else
 			{
-				return ( T )Activator.CreateInstance( typeof( T ), result as object[] );
+				return ReflectionExtensions.CreateInstancePreservingExceptionType<T>( typeof( T ), result as object[] );
 			}
 		}
 
@@ -355,7 +355,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 							arguments[ 0 ] = key.GetValue( item, null );
 							arguments[ 1 ] = value.GetValue( item, null );
-							traits.AddMethod.Invoke( destination, arguments );
+							traits.AddMethod.InvokePreservingExceptionType( destination, arguments );
 						}
 						break;
 					}
@@ -367,7 +367,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						{
 							arguments[ 0 ] = DictionaryEntryKeyProperty.GetValue( item, null );
 							arguments[ 1 ] = DictionaryEntryValueProperty.GetValue( item, null );
-							traits.AddMethod.Invoke( destination, arguments );
+							traits.AddMethod.InvokePreservingExceptionType( destination, arguments );
 						}
 						break;
 					}
@@ -377,7 +377,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						foreach ( var item in source )
 						{
 							arguments[ 0 ] = item;
-							traits.AddMethod.Invoke( destination, arguments );
+							traits.AddMethod.InvokePreservingExceptionType( destination, arguments );
 						}
 						break;
 					}

@@ -113,7 +113,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 			}
 			else
 			{
-				count = ( int )this._getCount.SafeInvoke( objectTree );
+				count = ( int )this._getCount.InvokePreservingExceptionType( objectTree );
 			}
 
 			packer.PackArrayHeader( count );

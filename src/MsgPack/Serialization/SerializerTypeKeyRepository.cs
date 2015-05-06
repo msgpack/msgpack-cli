@@ -83,7 +83,7 @@ namespace MsgPack.Serialization
 				Contract.Assert( type != null, "type != null" );
 				Contract.Assert( type.GetIsGenericTypeDefinition(), "type.GetIsGenericTypeDefinition()" );
 #endif // !UNITY && DEBUG
-				var result = Activator.CreateInstance( type.MakeGenericType( keyType.GetGenericArguments() ), context );
+				var result = ReflectionExtensions.CreateInstancePreservingExceptionType( type.MakeGenericType( keyType.GetGenericArguments() ), context );
 #if !UNITY && DEBUG
 				Contract.Assert( result != null, "result != null" );
 #endif // !UNITY && DEBUG

@@ -96,9 +96,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				case CollectionDetailedKind.NonGenericEnumerable:
 				{
 					var factory =
-						Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IEnumerableCallbackSerializerFactory>(
 							typeof( NonGenericEnumerableCallbackSerializerFactory<> ).MakeGenericType( typeof( TObject ) )
-						) as IEnumerableCallbackSerializerFactory;
+						);
 #if DEBUG
 					Contract.Assert( factory != null );
 #endif // DEBUG
@@ -110,9 +110,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				case CollectionDetailedKind.NonGenericCollection:
 				{
 					var factory =
-						Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IEnumerableCallbackSerializerFactory>(
 							typeof( NonGenericCollectionCallbackSerializerFactory<> ).MakeGenericType( typeof( TObject ) )
-						) as IEnumerableCallbackSerializerFactory;
+						);
 #if DEBUG
 					Contract.Assert( factory != null );
 #endif // DEBUG
@@ -124,9 +124,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				case CollectionDetailedKind.NonGenericList:
 				{
 					var factory =
-						Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<ICollectionCallbackSerializerFactory>(
 							typeof( NonGenericListCallbackSerializerFactory<> ).MakeGenericType( typeof( TObject ) )
-						) as ICollectionCallbackSerializerFactory;
+						);
 #if DEBUG
 					Contract.Assert( factory != null );
 #endif // DEBUG
@@ -138,9 +138,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				case CollectionDetailedKind.NonGenericDictionary:
 				{
 					var factory =
-						Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<ICollectionCallbackSerializerFactory>(
 							typeof( NonGenericDictionaryCallbackSerializerFactory<> ).MakeGenericType( typeof( TObject ) )
-						) as ICollectionCallbackSerializerFactory;
+						);
 #if DEBUG
 					Contract.Assert( factory != null );
 #endif // DEBUG
@@ -152,9 +152,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				case CollectionDetailedKind.GenericEnumerable:
 				{
 					var factory =
-						Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IEnumerableCallbackSerializerFactory>(
 							typeof( EnumerableCallbackSerializerFactory<,> ).MakeGenericType( typeof( TObject ), traits.ElementType )
-						) as IEnumerableCallbackSerializerFactory;
+						);
 #if DEBUG
 					Contract.Assert( factory != null );
 #endif // DEBUG
@@ -170,9 +170,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				case CollectionDetailedKind.GenericList:
 				{
 					var factory =
-						Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<ICollectionCallbackSerializerFactory>(
 							typeof( CollectionCallbackSerializerFactory<,> ).MakeGenericType( typeof( TObject ), traits.ElementType )
-						) as ICollectionCallbackSerializerFactory;
+						);
 #if DEBUG
 					Contract.Assert( factory != null );
 #endif // DEBUG
@@ -185,13 +185,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				{
 					var keyValuePairGenericArguments = traits.ElementType.GetGenericArguments();
 					var factory =
-						Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<ICollectionCallbackSerializerFactory>(
 							typeof( DictionaryCallbackSerializerFactory<,,> ).MakeGenericType(
 								typeof( TObject ),
 								keyValuePairGenericArguments[ 0 ],
 								keyValuePairGenericArguments[ 1 ]
 							)
-						) as ICollectionCallbackSerializerFactory;
+						);
 #if DEBUG
 					Contract.Assert( factory != null );
 #endif // DEBUG
@@ -203,11 +203,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				default:
 				{
 					var factory =
-						Activator.CreateInstance(
+						ReflectionExtensions.CreateInstancePreservingExceptionType<ICallbackSerializerFactory>(
 							typeof( CallbackSerializerFactory<> ).MakeGenericType(
 								typeof( TObject )
 							)
-						) as ICallbackSerializerFactory;
+						);
 #if DEBUG
 					Contract.Assert( factory != null );
 #endif // DEBUG

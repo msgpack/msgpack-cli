@@ -271,12 +271,12 @@ namespace MsgPack.Serialization.CollectionSerializers
 
 		protected internal override sealed void PackToCore( Packer packer, object objectTree )
 		{
-			packer.PackMapHeader( ( int ) this._getCount.SafeInvoke( objectTree ) );
+			packer.PackMapHeader( ( int )this._getCount.InvokePreservingExceptionType( objectTree ) );
 			// ReSharper disable once PossibleNullReferenceException
 			foreach ( var item in objectTree as IEnumerable )
 			{
-				this._keySerializer.PackTo( packer, this._getKey.SafeInvoke( item ) );
-				this._valueSerializer.PackTo( packer, this._getValue.SafeInvoke( item ) );
+				this._keySerializer.PackTo( packer, this._getKey.InvokePreservingExceptionType( item ) );
+				this._valueSerializer.PackTo( packer, this._getValue.InvokePreservingExceptionType( item ) );
 			}
 		}
 
@@ -356,7 +356,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 					}
 				}
 
-				this._add.SafeInvoke( collection, key, value );
+				this._add.InvokePreservingExceptionType( collection, key, value );
 			}
 		}
 	}

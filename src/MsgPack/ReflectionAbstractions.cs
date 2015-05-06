@@ -43,51 +43,6 @@ namespace MsgPack
 		public static readonly char TypeDelimiter = '.';
 		public static readonly Type[] EmptyTypes = new Type[ 0 ];
 
-#if UNITY
-		private static readonly Type[] ExceptionConstructorWithInnerParameterTypes = { typeof( string ), typeof( Exception ) };
-
-		public static object SafeInvoke( this MethodBase source, object instance, params object[] parameters )
-		{
-#if DEBUG
-			try
-			{
-#endif // DEBUG
-				return source.Invoke( instance, parameters );
-#if DEBUG
-			}
-			catch ( TargetInvocationException ex )
-			{
-				if ( ex.InnerException == null )
-				{
-					throw;
-				}
-
-				var ctor = ex.InnerException.GetType().GetConstructor( ExceptionConstructorWithInnerParameterTypes );
-				if ( ctor == null )
-				{
-					throw;
-				}
-
-				Exception rethrowing = null;
-				try
-				{
-					rethrowing = ctor.Invoke( new object[] { ex.InnerException.Message, ex } ) as Exception;
-				}
-				catch{}
-
-				if ( rethrowing == null )
-				{
-					throw;
-				}
-				else
-				{
-					throw rethrowing;
-				}
-			}
-#endif // DEBUG
-		}
-#endif // UNITY
-
 		public static bool GetIsValueType( this Type source )
 		{
 #if NETFX_CORE

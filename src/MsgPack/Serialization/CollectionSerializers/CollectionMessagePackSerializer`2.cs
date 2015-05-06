@@ -166,7 +166,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, object objectTree )
 		{
-			packer.PackArrayHeader( ( int ) this._getCount.SafeInvoke( objectTree ) );
+			packer.PackArrayHeader( ( int )this._getCount.InvokePreservingExceptionType( objectTree ) );
 			var itemSerializer = this.ItemSerializer;
 
 			// ReSharper disable once PossibleNullReferenceException
@@ -196,7 +196,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 
 		protected override void AddItem( object collection, object item )
 		{
-			this._add.SafeInvoke( collection, item );
+			this._add.InvokePreservingExceptionType( collection, item );
 		}
 	}
 #endif // UNITY
