@@ -131,6 +131,7 @@
     <Exclude Path="Serialization\FromExpressionTest.cs" />
     <Exclude Path="Serialization\MessagePackMemberAndDataMemberMixedTarget.cs" />
     <Exclude Path="Serialization\MessagePackMemberAttributeTest.cs" />
+    <Exclude Path="MessagePackObjectTest.RuntimeSerialization.cs" />
   </Project>
 
   <Project Name="MsgPack.UnitTest.WinRT" Base="MsgPack.UnitTest">

@@ -2244,9 +2244,6 @@
     <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.Objects.cs">
       <Link>MessagePackObjectTest.Objects.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.RuntimeSerialization.cs">
-      <Link>MessagePackObjectTest.RuntimeSerialization.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.Strings.cs">
       <Link>MessagePackObjectTest.Strings.cs</Link>
     </Compile>
