@@ -1549,7 +1549,11 @@ namespace MsgPack.Serialization
 #endif
 					if ( property != null )
 					{
+#if !UNITY
 						getter = obj => property.GetValue( obj, null );
+#else
+						getter = obj => property.GetGetMethod().InvokePreservingExceptionType( obj, null );
+#endif // !UNITY
 					}
 					else
 					{

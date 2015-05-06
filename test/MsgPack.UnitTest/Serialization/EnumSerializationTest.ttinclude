@@ -1,5 +1,4 @@
-﻿<#@ IntelliSenseLanguage processor="tangibleT4Editor" language="C#" #>
-<#+ 
+﻿<#+ 
 private void GenerateCore( string serializationMethod, string emitterFlavor, bool canDump, bool forIos )
 {
 	var testCases =

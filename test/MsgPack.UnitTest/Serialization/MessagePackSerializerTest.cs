@@ -247,8 +247,8 @@ namespace MsgPack.Serialization
 			Assert.That( result.AsList()[ 2 ], Is.EqualTo( new MessagePackObject( 0 ) ) );
 			Assert.That( result.AsList()[ 3 ], Is.EqualTo( new MessagePackObject( "a" ) ) );
 			Assert.That( result.AsList()[ 4 ].AsDictionary().Count, Is.EqualTo( 1 ) );
-			Assert.That( result.AsList()[ 4 ].AsDictionary().Single().Key, Is.EqualTo( new MessagePackObject( "k" ) ) );
-			Assert.That( result.AsList()[ 4 ].AsDictionary().Single().Value, Is.EqualTo( new MessagePackObject( 1 ) ) );
+			Assert.That( result.AsList()[ 4 ].AsDictionary().First().Key, Is.EqualTo( new MessagePackObject( "k" ) ) );
+			Assert.That( result.AsList()[ 4 ].AsDictionary().First().Value, Is.EqualTo( new MessagePackObject( 1 ) ) );
 		}
 	}
 }

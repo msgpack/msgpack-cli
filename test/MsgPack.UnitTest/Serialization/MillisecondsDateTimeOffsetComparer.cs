@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,20 +23,20 @@ using System.Collections.Generic;
 
 namespace MsgPack.Serialization
 {
-	public sealed class MillisecondsDateTimeOffsetComparer : EqualityComparer<DateTimeOffset>
+	public sealed class MillisecondsDateTimeOffsetComparer : IEqualityComparer<DateTimeOffset>
 	{
 		public static readonly MillisecondsDateTimeOffsetComparer Instance = new MillisecondsDateTimeOffsetComparer();
 
 		private MillisecondsDateTimeOffsetComparer() { }
 
-		public sealed override bool Equals( DateTimeOffset x, DateTimeOffset y )
+		public bool Equals( DateTimeOffset x, DateTimeOffset y )
 		{
 			var xms = new DateTimeOffset( new DateTime( x.Year, x.Month, x.Day, x.Hour, x.Minute, x.Second, x.Millisecond, x.DateTime.Kind ), x.Offset );
 			var yms = new DateTimeOffset( new DateTime( y.Year, y.Month, y.Day, y.Hour, y.Minute, y.Second, y.Millisecond, y.DateTime.Kind ), y.Offset );
 			return xms.Equals( yms );
 		}
 
-		public sealed override int GetHashCode( DateTimeOffset obj )
+		public int GetHashCode( DateTimeOffset obj )
 		{
 			return new DateTimeOffset( new DateTime( obj.Year, obj.Month, obj.Day, obj.Hour, obj.Minute, obj.Second, obj.Millisecond, obj.DateTime.Kind ), obj.Offset ).GetHashCode();
 		}

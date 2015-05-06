@@ -282,7 +282,7 @@ namespace MsgPack
 		public void TestPackToMessage_Dictionary15Length_Success()
 		{
 			TestPackToMessageCore(
-				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 15 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ) ) ) ),
+				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 15 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ), MessagePackObjectEqualityComparer.Instance ) ) ),
 				new byte[] { MessagePackCode.MinimumFixedMap | 15 }.Concat( GetMessagePackMapBytes( 1, 15 ) ).ToArray()
 			);
 		}
@@ -291,7 +291,7 @@ namespace MsgPack
 		public void TestPackToMessage_Dictionary16Length_Success()
 		{
 			TestPackToMessageCore(
-				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 16 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ) ) ) ),
+				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 16 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ), MessagePackObjectEqualityComparer.Instance ) ) ),
 				new byte[] { MessagePackCode.Map16, 0x0, 16 }.Concat( GetMessagePackMapBytes( 1, 16 ) ).ToArray()
 			);
 		}
@@ -300,7 +300,7 @@ namespace MsgPack
 		public void TestPackToMessage_Dictionary0xFFFFLength_Success()
 		{
 			TestPackToMessageCore(
-				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 0xFFFF ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ) ) ) ),
+				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 0xFFFF ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ), MessagePackObjectEqualityComparer.Instance ) ) ),
 				new byte[] { MessagePackCode.Map16, 0xFF, 0xFF }.Concat( GetMessagePackMapBytes( 1, 0xFFFF ) ).ToArray()
 			);
 		}
@@ -309,7 +309,7 @@ namespace MsgPack
 		public void TestPackToMessage_Dictionary0x10000Length_Success()
 		{
 			TestPackToMessageCore(
-				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 0x10000 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ) ) ) ),
+				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 0x10000 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ), MessagePackObjectEqualityComparer.Instance ) ) ),
 				new byte[] { MessagePackCode.Map32, 0x0, 0x1, 0x0, 0x0 }.Concat( GetMessagePackMapBytes( 1, 0x10000 ) ).ToArray()
 			);
 		}
