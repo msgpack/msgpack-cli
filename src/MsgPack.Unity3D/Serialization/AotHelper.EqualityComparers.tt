@@ -12,18 +12,17 @@ var excludingNamespaces =
 		"System.Collections.Concurrent",
 		"System.Configuration.Assemblies",
 		"System.Diagnostics.Contracts",
+		"System.Diagnostics.Eventing",
+		"System.Diagnostics.Eventing.Reader",
+		"System.Diagnostics.PerformanceData",
 		"System.Diagnostics.Tracing",
 		"System.IO.IsolatedStorage",
 		"System.IO.MemoryMappedFiles",
 		"System.Linq.Expressions",
+		"System.Management.Instrumentation",
 		"System.Reflection.Emit",
-		"System.Runtime",
-		"System.Runtime.CompilerServices",
-		"System.Runtime.InteropServices",
 		"System.Runtime.InteropServices.ComTypes",
 		"System.Runtime.InteropServices.WindowsRuntime",
-		"System.Runtime.Versioning",
-		"System.Security",
 		"System.Security.Permissions",
 		"System.Threading.Tasks",
 	};
@@ -35,9 +34,36 @@ var excludingTypes =
 		"System.RuntimeArgumentHandle",
 		"System.TypedReference",
 		"System.Void",
+		"System.Diagnostics.TraceLogRetentionOption",
 		"System.Globalization.TimeSpanStyles",
 		"System.Linq.ParallelMergeOptions",
 		"System.Linq.ParallelExecutionMode",
+		"System.Runtime.GCLargeObjectHeapCompactionMode",
+		"System.Runtime.CompilerServices.AsyncTaskMethodBuilder",
+		"System.Runtime.CompilerServices.AsyncVoidMethodBuilder",
+		"System.Runtime.CompilerServices.ConfiguredTaskAwaitable",
+		"System.Runtime.CompilerServices.TaskAwaiter",
+		"System.Runtime.CompilerServices.YieldAwaitable",
+		"System.Runtime.InteropServices.CustomQueryInterfaceMode",
+		"System.Runtime.InteropServices.CustomQueryInterfaceResult",
+		"System.Runtime.InteropServices.DllImportSearchPath",
+		"System.Runtime.Versioning.ComponentGuaranteesOptions",
+		"System.Security.ManifestKinds",
+		"System.Security.PartialTrustVisibilityLevel",
+		"System.Security.SecurityContextSource",
+		"System.Security.SecurityRuleSet",
+		"System.Security.Cryptography.CngExportPolicies",
+		"System.Security.Cryptography.CngKeyCreationOptions",
+		"System.Security.Cryptography.CngKeyHandleOpenOptions",
+		"System.Security.Cryptography.CngKeyOpenOptions",
+		"System.Security.Cryptography.CngKeyUsages",
+		"System.Security.Cryptography.CngProperty",
+		"System.Security.Cryptography.CngPropertyOptions",
+		"System.Security.Cryptography.CngUIProtectionLevels",
+		"System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction",
+		"System.Security.Cryptography.ECKeyXmlFormat",
+		"System.Security.Cryptography.SignatureVerificationResult",
+		"System.Security.Cryptography.X509Certificates.TrustStatus",
 		"System.Reflection.AssemblyContentType",
 		"System.Threading.CancellationTokenRegistration",
 		"System.Threading.CancellationToken",
@@ -50,7 +76,16 @@ var valueTypes =
 	typeof( object ).Assembly
 		.GetTypes()
 		.Concat( typeof( Enumerable ).Assembly.GetTypes() )
-		.Where( t => !excludingNamespaces.Contains( t.Namespace ) && !excludingTypes.Contains( t.FullName ) && t.IsValueType && t.IsPublic && !t.IsGenericTypeDefinition )
+		.Where( t => 
+			!excludingNamespaces.Contains( t.Namespace ) 
+			&& !excludingTypes.Contains( t.FullName ) 
+			&& t.IsValueType
+			&& t.IsPublic 
+			&& !t.IsGenericTypeDefinition 
+			&& !t.IsDefined( typeof( ObsoleteAttribute ), false )
+		)
+		.OrderBy( t => t.Namespace )
+		.ThenBy( t => t.Name )
 		.Select( t => new { TypeName = t.FullName, ComparerName = t.FullName.Replace( ".", "_" ).Replace( "+", "_" ) + "EqualityComparer" } )
 		.ToArray();
 #>
