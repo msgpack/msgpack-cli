@@ -498,9 +498,9 @@ namespace MsgPack
 			{
 				sw.Restart();
 				var output = new MemoryStream();
-				Packer.Create( output ).Pack( Enumerable.Range( 0, count ).ToDictionary( item => item.ToString() ) );
+				Packer.Create( output ).Pack( Enumerable.Range( 0, count ).ToDictionary( item => item.ToString(), item => item ) );
 				Assert.That(
-					Enumerable.Range( 0, count ).ToDictionary( item => item.ToString() ),
+					Enumerable.Range( 0, count ).ToDictionary( item => item.ToString(), item => item ),
 					Is.EqualTo( UnpackOne( output ).AsDictionary().ToDictionary( kv => kv.Key.AsString(), kv => kv.Value.AsInt32() ) )
 				);
 				sw.Stop();
@@ -529,12 +529,12 @@ namespace MsgPack
 			{
 				using ( var output = new MemoryStream() )
 				{
-					Packer.Create( output ).Pack( Enumerable.Range( 0, count ).ToDictionary( item => item.ToString() ) );
+					Packer.Create( output ).Pack( Enumerable.Range( 0, count ).ToDictionary( item => item.ToString(), item => item ) );
 					output.Position = 0;
 					using ( var splitted = new SplittingStream( output ) )
 					{
 						Assert.That(
-							Enumerable.Range( 0, count ).ToDictionary( item => item.ToString() ),
+							Enumerable.Range( 0, count ).ToDictionary( item => item.ToString(), item => item ),
 							Is.EqualTo( Unpacking.UnpackObject( splitted ).AsDictionary().ToDictionary( kv => kv.Key.AsString(), kv => kv.Value.AsInt32() ) )
 						);
 					}

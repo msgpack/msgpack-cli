@@ -60,9 +60,9 @@ var __fields =
 		new Tuple<Object, string, string, bool>( typeof( Collection<DateTime> ), String.Empty, "new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.StringKeyedCollection`1", new []{ typeof( DateTime ).FullName } ), String.Empty, "new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
 		new Tuple<Object, string, string, bool>( typeof( ObservableCollection<DateTime> ), String.Empty, "new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
-		new Tuple<Object, string, string, bool>( typeof( HashSet<DateTime> ), String.Empty, "new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
+		new Tuple<Object, string, string, bool>( typeof( HashSet<DateTime> ), String.Empty, "new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
 		new Tuple<Object, string, string, bool>( typeof( ICollection<DateTime> ), String.Empty, "new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
-		new Tuple<Object, string, string, bool>( typeof( ISet<DateTime> ), String.Empty, "new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
+		new Tuple<Object, string, string, bool>( typeof( ISet<DateTime> ), String.Empty, "new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
 		new Tuple<Object, string, string, bool>( typeof( IList<DateTime> ), String.Empty, "new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
 		new Tuple<Object, string, string, bool>( typeof( IDictionary<String, DateTime> ), String.Empty, "new Dictionary<String, DateTime>(){ { \"Yesterday\", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { \"Today\", DateTime.UtcNow } }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.AddOnlyCollection`1", new []{ typeof( DateTime ).FullName } ), String.Empty, "new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
@@ -84,15 +84,15 @@ var __fields =
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.MessagePackObject", new String[ 0 ] ), String.Empty, "new MessagePackObject( 1 )", true ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.MessagePackObject[]", new String[ 0 ] ), String.Empty, "new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", true ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( List<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
-		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( Dictionary<,> ).FullName, new [] { "MsgPack.MessagePackObject", "MsgPack.MessagePackObject" } ), String.Empty, "new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
+		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( Dictionary<,> ).FullName, new [] { "MsgPack.MessagePackObject", "MsgPack.MessagePackObject" } ), String.Empty, "new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( Collection<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.StringKeyedCollection`1", new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( ObservableCollection<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
-		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( HashSet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( HashSet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( ICollection<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
-		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( ISet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( ISet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( IList<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
-		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( IDictionary<,> ).FullName, new [] { "MsgPack.MessagePackObject", "MsgPack.MessagePackObject" } ), String.Empty, "new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
+		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( IDictionary<,> ).FullName, new [] { "MsgPack.MessagePackObject", "MsgPack.MessagePackObject" } ), String.Empty, "new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.AddOnlyCollection`1", new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 	};
 
@@ -541,7 +541,7 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 
 		public DictionaryValueType( int capacity )
 		{
-			this._underlying = new Dictionary<TKey, TValue>( capacity );
+			this._underlying = new Dictionary<TKey, TValue>( capacity, DictionaryTestHelper.GetEqualityComparer<TKey>() );
 		}
 
 		public void Add( TKey key, TValue value )
@@ -780,7 +780,7 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 #if !UNITY
 				EqualityComparer<T>.Default.Equals( expected, actual ),
 #else
-				( AotHelper.GetEqualityComparer( typeof( T ) ) as IEqualityComparer<T> ).Equals( expected, actual ),
+				AotHelper.GetEqualityComparer<T>().Equals( expected, actual ),
 #endif // !UNITY
 				"Expected:{1}({2}){0}Actual :{3}({4})",
 				Environment.NewLine,
@@ -836,6 +836,17 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 		public IEnumerable<int> Numbers { get; set; }
 	}
 
+	internal class DictionaryTestHelper
+	{
+		public static IEqualityComparer<T> GetEqualityComparer<T>()
+		{
+#if !UNITY
+			return EqualityComparer<T>.Default;
+#else
+			return AotHelper.GetEqualityComparer<T>();
+#endif // !UNITY
+		}
+	}
 <#
 GeneratePolymorphismTestTypes();
 #>

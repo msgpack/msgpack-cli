@@ -362,7 +362,7 @@ namespace MsgPack.Serialization
 			get { return this._ObservableCollectionDateTimeField; }
 		}
 #endif // !NETFX_35
-		private HashSet<DateTime> _HashSetDateTimeField = new HashSet<DateTime>();
+		private HashSet<DateTime> _HashSetDateTimeField = new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() );
 		
 		public HashSet<DateTime> HashSetDateTimeField
 		{
@@ -375,7 +375,7 @@ namespace MsgPack.Serialization
 			get { return this._ICollectionDateTimeField; }
 		}
 #if !NETFX_35
-		private ISet<DateTime> _ISetDateTimeField = new HashSet<DateTime>();
+		private ISet<DateTime> _ISetDateTimeField = new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() );
 		
 		public ISet<DateTime> ISetDateTimeField
 		{
@@ -520,7 +520,7 @@ namespace MsgPack.Serialization
 		{
 			get { return this._List_MessagePackObjectField; }
 		}
-		private System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> _Dictionary_MessagePackObject_MessagePackObjectField = new Dictionary<MessagePackObject, MessagePackObject>();
+		private System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> _Dictionary_MessagePackObject_MessagePackObjectField = new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() );
 		
 		public System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> Dictionary_MessagePackObject_MessagePackObjectField
 		{
@@ -546,7 +546,7 @@ namespace MsgPack.Serialization
 			get { return this._ObservableCollection_MessagePackObjectField; }
 		}
 #endif // !NETFX_35
-		private System.Collections.Generic.HashSet<MsgPack.MessagePackObject> _HashSet_MessagePackObjectField = new HashSet<MessagePackObject>();
+		private System.Collections.Generic.HashSet<MsgPack.MessagePackObject> _HashSet_MessagePackObjectField = new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() );
 		
 		public System.Collections.Generic.HashSet<MsgPack.MessagePackObject> HashSet_MessagePackObjectField
 		{
@@ -559,7 +559,7 @@ namespace MsgPack.Serialization
 			get { return this._ICollection_MessagePackObjectField; }
 		}
 #if !NETFX_35
-		private System.Collections.Generic.ISet<MsgPack.MessagePackObject> _ISet_MessagePackObjectField = new HashSet<MessagePackObject>();
+		private System.Collections.Generic.ISet<MsgPack.MessagePackObject> _ISet_MessagePackObjectField = new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() );
 		
 		public System.Collections.Generic.ISet<MsgPack.MessagePackObject> ISet_MessagePackObjectField
 		{
@@ -572,7 +572,7 @@ namespace MsgPack.Serialization
 		{
 			get { return this._IList_MessagePackObjectField; }
 		}
-		private System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> _IDictionary_MessagePackObject_MessagePackObjectField = new Dictionary<MessagePackObject, MessagePackObject>();
+		private System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> _IDictionary_MessagePackObject_MessagePackObjectField = new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() );
 		
 		public System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> IDictionary_MessagePackObject_MessagePackObjectField
 		{
@@ -638,10 +638,10 @@ namespace MsgPack.Serialization
 #if !NETFX_35
 			this._ObservableCollectionDateTimeField = new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
 #endif // !NETFX_35
-			this._HashSetDateTimeField = new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
+			this._HashSetDateTimeField = new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
 			this._ICollectionDateTimeField = new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
 #if !NETFX_35
-			this._ISetDateTimeField = new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
+			this._ISetDateTimeField = new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
 #endif // !NETFX_35
 			this._IListDateTimeField = new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
 			this._IDictionaryStringDateTimeField = new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } };
@@ -672,19 +672,19 @@ namespace MsgPack.Serialization
 			this._MessagePackObject_Field = new MessagePackObject( 1 );
 			this._MessagePackObjectArray_Field = new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 			this._List_MessagePackObjectField = new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
-			this._Dictionary_MessagePackObject_MessagePackObjectField = new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } };
+			this._Dictionary_MessagePackObject_MessagePackObjectField = new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } };
 			this._Collection_MessagePackObjectField = new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 			this._StringKeyedCollection_MessagePackObjectField = new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 #if !NETFX_35
 			this._ObservableCollection_MessagePackObjectField = new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 #endif // !NETFX_35
-			this._HashSet_MessagePackObjectField = new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
+			this._HashSet_MessagePackObjectField = new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 			this._ICollection_MessagePackObjectField = new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 #if !NETFX_35
-			this._ISet_MessagePackObjectField = new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
+			this._ISet_MessagePackObjectField = new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 #endif // !NETFX_35
 			this._IList_MessagePackObjectField = new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
-			this._IDictionary_MessagePackObject_MessagePackObjectField = new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } };
+			this._IDictionary_MessagePackObject_MessagePackObjectField = new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } };
 			this._AddOnlyCollection_MessagePackObjectField = new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 			return this;
 		}
@@ -933,7 +933,7 @@ namespace MsgPack.Serialization
 
 		public DictionaryValueType( int capacity )
 		{
-			this._underlying = new Dictionary<TKey, TValue>( capacity );
+			this._underlying = new Dictionary<TKey, TValue>( capacity, DictionaryTestHelper.GetEqualityComparer<TKey>() );
 		}
 
 		public void Add( TKey key, TValue value )
@@ -1228,6 +1228,17 @@ namespace MsgPack.Serialization
 		public IEnumerable<int> Numbers { get; set; }
 	}
 
+	internal class DictionaryTestHelper
+	{
+		public static IEqualityComparer<T> GetEqualityComparer<T>()
+		{
+#if !UNITY
+			return EqualityComparer<T>.Default;
+#else
+			return AotHelper.GetEqualityComparer<T>();
+#endif // !UNITY
+		}
+	}
 		#region -- Polymorphism --
 		#region ---- KnownType ----
 

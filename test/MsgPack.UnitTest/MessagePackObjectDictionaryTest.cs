@@ -1334,7 +1334,7 @@ namespace MsgPack
 			Assert.That( array[ 4 ], Is.EqualTo( MessagePackObject.Nil ) );
 		}
 
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE && !SILVERLIGHT && !UNITY
 		[Test]
 		public void TestRuntimeSerialization_NotEmpty_RoundTripped()
 		{
@@ -1348,7 +1348,7 @@ namespace MsgPack
 				Assert.AreEqual( target, deserialized );
 			}
 		}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT && !UNITY
 
 		private sealed class MyClass { }
 	}

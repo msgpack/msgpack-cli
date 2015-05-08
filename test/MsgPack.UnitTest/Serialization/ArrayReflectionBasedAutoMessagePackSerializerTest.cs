@@ -764,7 +764,19 @@ namespace MsgPack.Serialization
 			var serializer = this.CreateTarget<TestValueType>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				var value = new TestValueType() { StringField = "ABC", Int32ArrayField = new int[] { 1, 2, 3 }, DictionaryField = new Dictionary<int, int>() { { 1, 1 } } };
+				var value = 
+					new TestValueType()
+					{ 
+						StringField = "ABC", 
+						Int32ArrayField = new int[] { 1, 2, 3 }, 
+						DictionaryField = 
+#if !UNITY
+							new Dictionary<int, int>() 
+#else
+							new Dictionary<int, int>( AotHelper.GetEqualityComparer<int>() ) 
+#endif // !UNITY
+							{ { 1, 1 } } 
+					};
 				serializer.Pack( stream, value );
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
@@ -11646,13 +11658,13 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestHashSetDateTimeField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestHashSetDateTimeFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
@@ -11695,13 +11707,13 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestISetDateTimeField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestISetDateTimeFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
@@ -12232,13 +12244,13 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestDictionary_MessagePackObject_MessagePackObjectField()
 		{
-			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDictionary_MessagePackObject_MessagePackObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
@@ -12330,13 +12342,13 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestHashSet_MessagePackObjectField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestHashSet_MessagePackObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
@@ -12379,13 +12391,13 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestISet_MessagePackObjectField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestISet_MessagePackObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
@@ -12428,13 +12440,13 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestIDictionary_MessagePackObject_MessagePackObjectField()
 		{
-			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]

@@ -853,7 +853,19 @@ namespace MsgPack.Serialization
 			var serializer = this.CreateTarget<TestValueType>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				var value = new TestValueType() { StringField = "ABC", Int32ArrayField = new int[] { 1, 2, 3 }, DictionaryField = new Dictionary<int, int>() { { 1, 1 } } };
+				var value = 
+					new TestValueType()
+					{ 
+						StringField = "ABC", 
+						Int32ArrayField = new int[] { 1, 2, 3 }, 
+						DictionaryField = 
+#if !UNITY
+							new Dictionary<int, int>() 
+#else
+							new Dictionary<int, int>( AotHelper.GetEqualityComparer<int>() ) 
+#endif // !UNITY
+							{ { 1, 1 } } 
+					};
 				serializer.Pack( stream, value );
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
