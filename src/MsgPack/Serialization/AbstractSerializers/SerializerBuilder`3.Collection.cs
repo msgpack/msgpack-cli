@@ -282,6 +282,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						"collection"
 					);
 				var ctor = GetCollectionConstructor( instanceType );
+				var ctorArguments = this.DetermineCollectionConstructorArguments( context, ctor );
 				construct =
 					this.EmitSequentialStatements(
 						context,
@@ -294,9 +295,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								context,
 								collection,
 								ctor,
-								ctor.GetParameters().Length == 0
-								? NoConstructs
-								: new[] { context.InitialCapacity }
+								ctorArguments
 							)
 						),
 						this.EmitRetrunStatement(

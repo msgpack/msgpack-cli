@@ -1840,16 +1840,181 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <returns>A constructor of the <paramref name="instanceType"/>.</returns>
 		private static ConstructorInfo GetCollectionConstructor( Type instanceType )
 		{
-			var ctor =
-				instanceType.GetConstructor( UnpackHelpers.CollectionConstructorWithCapacityParameterTypes )
-				?? instanceType.GetConstructor( ReflectionAbstractions.EmptyTypes );
+			const int noParameters = 0;
+			const int withCapacity = 10;
+			const int withComparer = 11;
+			const int withComparerAndCapacity = 20;
+			const int withCapacityAndComparer = 21;
 
-			if ( ctor == null )
+			ConstructorInfo constructor = null;
+			var currentScore = -1;
+
+			foreach ( var candidate in instanceType.GetConstructors() )
+			{
+				var parameters = candidate.GetParameters();
+				switch ( parameters.Length )
+				{
+					case 0:
+					{
+						if ( currentScore < noParameters )
+						{
+							constructor = candidate;
+							currentScore = noParameters;
+						}
+
+						break;
+					}
+					case 1:
+					{
+						if ( currentScore < withCapacity && parameters[ 0 ].ParameterType == typeof( int ) )
+						{
+							constructor = candidate;
+							currentScore = noParameters;
+						}
+						else if ( currentScore < withComparer && IsIEqualityComparer( parameters[ 0 ].ParameterType ) )
+						{
+							constructor = candidate;
+							currentScore = noParameters;
+						}
+						break;
+					}
+					case 2:
+					{
+						if ( currentScore < withCapacityAndComparer && parameters[ 0 ].ParameterType == typeof( int ) && IsIEqualityComparer( parameters[ 1 ].ParameterType ) )
+						{
+							constructor = candidate;
+							currentScore = withCapacityAndComparer;
+						}
+						else if ( currentScore < withComparerAndCapacity && parameters[ 1 ].ParameterType == typeof( int ) && IsIEqualityComparer( parameters[ 0 ].ParameterType ) )
+						{
+							constructor = candidate;
+							currentScore = withComparerAndCapacity;
+						}
+
+						break;
+					}
+				}
+			}
+
+			if ( constructor == null )
 			{
 				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( instanceType );
 			}
 
-			return ctor;
+			return constructor;
+		}
+
+		/// <summary>
+		///		Determines the type is <see cref="IEqualityComparer{T}"/>.
+		/// </summary>
+		/// <param name="type">The type should be <see cref="IEqualityComparer{T}"/>.</param>
+		/// <returns>
+		///		<c>true</c>, if <paramref name="type"/> is open <see cref="IEqualityComparer{T}"/> generic type; <c>false</c>, otherwise.
+		/// </returns>
+		private static bool IsIEqualityComparer( Type type )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( !type.GetIsGenericTypeDefinition(), "!(" + type + ").GetIsGenericTypeDefinition()" );
+#endif // DEBUG && !UNITY
+
+			return type.GetIsGenericType() && type.GetGenericTypeDefinition() == typeof( IEqualityComparer<> );
+		}
+
+		/// <summary>
+		///		Determines the collection constructor arguments.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="constructor">The constructor.</param>
+		/// <returns>
+		///		An array of constructs representing constructor arguments.
+		/// </returns>
+		/// <exception cref="System.NotSupportedException">
+		///		The <paramref name="constructor"/> has unsupported signature.
+		/// </exception>
+		private TConstruct[] DetermineCollectionConstructorArguments( TContext context, ConstructorInfo constructor )
+		{
+			var parameters = constructor.GetParameters();
+			switch ( parameters.Length )
+			{
+				case 0:
+				{
+					return NoConstructs;
+				}
+				case 1:
+				{
+					return new[] { this.GetConstructorArgument( context, parameters[ 0 ] ) };
+				}
+				case 2:
+				{
+					return new[] { this.GetConstructorArgument( context, parameters[ 0 ] ), this.GetConstructorArgument( context, parameters[ 1 ] ) };
+				}
+				default:
+				{
+					throw new NotSupportedException(
+						String.Format( CultureInfo.CurrentCulture, "Constructor signature '{0}' is not supported.", constructor )
+					);
+				}
+			}
+		}
+
+
+		/// <summary>
+		///		Gets the construt for constructor argument.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="parameter">The parameter of the constructor parameter.</param>
+		/// <returns>The construt for constructor argument.</returns>
+		private TConstruct GetConstructorArgument( TContext context, ParameterInfo parameter )
+		{
+			return
+				parameter.ParameterType == typeof( int )
+				? context.InitialCapacity
+				: this.EmitGetEqualityComparer( context );
+		}
+
+
+		/// <summary>
+		///		Emits the construct to get equality comparer via <see cref="UnpackHelpers"/>.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <returns>
+		///		The construct to get equality comparer via <see cref="UnpackHelpers"/>.
+		/// </returns>
+		private TConstruct EmitGetEqualityComparer( TContext context )
+		{
+			Type comparisonType;
+			switch ( CollectionTraitsOfThis.DetailedCollectionType )
+			{
+				case CollectionDetailedKind.Array:
+				case CollectionDetailedKind.GenericCollection:
+				case CollectionDetailedKind.GenericEnumerable:
+				case CollectionDetailedKind.GenericList:
+#if !NETFX_35 && !UNITY
+				case CollectionDetailedKind.GenericSet:
+#endif // !NETFX_35 && !UNITY
+				{
+					comparisonType = CollectionTraitsOfThis.ElementType;
+					break;
+				}
+				case CollectionDetailedKind.GenericDictionary:
+				{
+					comparisonType = CollectionTraitsOfThis.ElementType.GetGenericArguments()[ 0 ];
+					break;
+				}
+				default:
+				{
+					// non-generic
+					comparisonType = typeof( object );
+					break;
+				}
+			}
+
+			return
+				this.EmitInvokeMethodExpression(
+					context,
+					null,
+					Metadata._UnpackHelpers.GetEqualityComparer_1Method.MakeGenericMethod( comparisonType )
+				);
 		}
 
 		/// <summary>

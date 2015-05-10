@@ -47,8 +47,6 @@ namespace MsgPack.Serialization
 		private static readonly MessagePackSerializer<MessagePackObject> _messagePackObjectSerializer =
 			new MsgPack_MessagePackObjectMessagePackSerializer( SerializationContext.Default );
 
-		internal static readonly Type[] CollectionConstructorWithCapacityParameterTypes = { typeof( int ) };
-
 		/// <summary>
 		///		Unpacks the array to the specified array.
 		/// </summary>
@@ -618,5 +616,23 @@ namespace MsgPack.Serialization
 
 			return serializer.UnpackFromCore( unpacker );
 		}
+
+		/// <summary>
+		///		Gets an <see cref="IEqualityComparer{T}"/> with platform safe fashion.
+		/// </summary>
+		/// <typeparam name="T">The type to be compared.</typeparam>
+		/// <returns>
+		///		An <see cref="IEqualityComparer{T}"/> instance.
+		/// </returns>
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static IEqualityComparer<T> GetEqualityComparer<T>()
+		{
+#if !UNITY
+			return EqualityComparer<T>.Default;
+#else
+			// AotHelper is internal because it should not be API -- it is subject to change when the Unity's Mono is updated or IL2CPP becomes stable.
+			return AotHelper.GetEqualityComparer<T>();
+#endif // !UNITY
+		} 
 	}
 }
