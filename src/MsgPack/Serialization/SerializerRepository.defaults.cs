@@ -61,6 +61,7 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( Byte[] ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_ByteArrayMessagePackSerializer( ownerContext ) );
 #if UNITY
 			dictionary.Add( typeof( System.Collections.Generic.KeyValuePair<,> ).TypeHandle, typeof( System_Collections_Generic_KeyValuePair_2MessagePackSerializer ) );
+			dictionary.Add( typeof( System.ArraySegment<> ).TypeHandle, typeof( System_ArraySegment_1MessagePackSerializer ) );
 #endif // UNITY
 			dictionary.Add( typeof( System.DateTime ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_DateTimeMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( System.DateTimeOffset ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_DateTimeOffsetMessagePackSerializer( ownerContext ) );
@@ -90,7 +91,9 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( System.Numerics.BigInteger ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_BigIntegerMessagePackSerializer( ownerContext ) );
 #endif // !NETFX_35 && !UNITY
 #endif // !WINDOWS_PHONE
+#if !UNITY
 			dictionary.Add( typeof( System.ArraySegment<> ).TypeHandle, typeof( System_ArraySegment_1MessagePackSerializer<> ) );
+#endif // !UNITY
 			dictionary.Add( typeof( System.Collections.DictionaryEntry ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_DictionaryEntryMessagePackSerializer( ownerContext ) );
 #if !SILVERLIGHT && !NETFX_CORE
 			dictionary.Add( typeof( System.Collections.Stack ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_StackMessagePackSerializer( ownerContext ) );
