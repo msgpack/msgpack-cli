@@ -60,7 +60,7 @@ namespace MsgPack.Serialization
 
 		public ComplexType()
 		{
-			this._history = new Dictionary<DateTime, string>();
+			this._history = new Dictionary<DateTime, string>( DictionaryTestHelper.GetEqualityComparer<DateTime>() );
 			this.Points = new List<int>();
 		}
 

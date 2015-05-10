@@ -46,7 +46,7 @@ namespace MsgPack.Serialization
 		[DataMember]
 		public byte[] Data { get; set; }
 
-		private readonly Dictionary<DateTime, string> _history = new Dictionary<DateTime, string>();
+		private readonly Dictionary<DateTime, string> _history = new Dictionary<DateTime, string>( DictionaryTestHelper.GetEqualityComparer<DateTime>() );
 
 		[DataMember]
 		public Dictionary<DateTime, string> History
