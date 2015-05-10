@@ -21,7 +21,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         
         protected override System.Collections.Generic.Dictionary<string, int> CreateInstance(int initialCapacity) {
             System.Collections.Generic.Dictionary<string, int> collection = default(System.Collections.Generic.Dictionary<string, int>);
-            collection = new System.Collections.Generic.Dictionary<string, int>(initialCapacity);
+            collection = new System.Collections.Generic.Dictionary<string, int>(initialCapacity, MsgPack.Serialization.UnpackHelpers.GetEqualityComparer<string>());
             return collection;
         }
         
