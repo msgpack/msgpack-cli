@@ -197,7 +197,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			 * #endif
 			 *	return collection;
 			 */
-			var ctor = GetCollectionConstructor( instanceType );
+			var ctor = UnpackHelpers.GetCollectionConstructor( instanceType );
 
 			yield return
 				CollectionTraitsOfThis.CollectionType == CollectionKind.Array
@@ -281,7 +281,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						typeof( TObject ),
 						"collection"
 					);
-				var ctor = GetCollectionConstructor( instanceType );
+				var ctor = UnpackHelpers.GetCollectionConstructor( instanceType );
 				var ctorArguments = this.DetermineCollectionConstructorArguments( context, ctor );
 				construct =
 					this.EmitSequentialStatements(

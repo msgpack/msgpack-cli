@@ -52,7 +52,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		)
 			: base( ownerContext, itemsSchema )
 		{
-			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TList>( targetType );
+			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TList, object>( targetType );
 		}
 #else
 		public ReflectionNonGenericListMessagePackSerializer(
@@ -63,7 +63,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		)
 			: base( ownerContext, abstractType, itemsSchema )
 		{
-			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory( abstractType, concreteType );
+			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory( abstractType, concreteType, typeof( object ) );
 		}
 #endif // !UNITY
 

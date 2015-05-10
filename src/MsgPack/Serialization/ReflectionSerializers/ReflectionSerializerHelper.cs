@@ -290,41 +290,90 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 		}
 
-		private static readonly Type[] ConstructorWithCapacityParameters = { typeof( int ) };
-
 #if !UNITY
-		public static Func<int, T> CreateCollectionInstanceFactory<T>( Type targetType )
+		public static Func<int, T> CreateCollectionInstanceFactory<T, TKey>( Type targetType )
 #else
-		public static Func<int, object> CreateCollectionInstanceFactory( Type abstractType, Type targetType )
+		public static Func<int, object> CreateCollectionInstanceFactory( Type abstractType, Type targetType, Type comparisonType )
 #endif // !UNITY
 		{
-			var constructorWithCapacity = targetType.GetConstructor( ConstructorWithCapacityParameters );
-			if ( constructorWithCapacity != null )
-			{
-				return capacity => 
-#if !UNITY
-					( T )
-#endif // !UNITY
-					constructorWithCapacity.InvokePreservingExceptionType( capacity );
-			}
+			var constructor = UnpackHelpers.GetCollectionConstructor( targetType );
+			var parameters = constructor.GetParameters();
 
-			var constructorWithoutCapacity = targetType.GetConstructor( ReflectionAbstractions.EmptyTypes );
-			if ( constructorWithoutCapacity == null )
+			switch ( parameters.Length )
 			{
-				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity(
+				case 0:
+				{
+					return _ => 
 #if !UNITY
-					typeof( T )
+						( T )
+#endif // !UNITY
+						constructor.InvokePreservingExceptionType();
+				}
+				case 1:
+				{
+					if ( parameters[ 0 ].ParameterType == typeof( int ) )
+					{
+						return capacity =>
+#if !UNITY
+							( T )
+#endif // !UNITY
+							constructor.InvokePreservingExceptionType( capacity );
+					}
+					else if ( UnpackHelpers.IsIEqualityComparer( parameters[ 0 ].ParameterType ) )
+					{
+						var comparer = 
+#if !UNITY
+							EqualityComparer<TKey>.Default;
 #else
-					abstractType
+							UnpackHelpers.GetEqualityComparer( comparisonType );
 #endif // !UNITY
-				);
-			}
-
-			return _ => 
+						return _ =>
 #if !UNITY
-				( T )
+							( T )
 #endif // !UNITY
-				constructorWithoutCapacity.InvokePreservingExceptionType();
+							constructor.InvokePreservingExceptionType( comparer );
+					}
+
+					break;
+				}
+				case 2:
+				{
+					var comparer =
+#if !UNITY
+						EqualityComparer<TKey>.Default;
+#else
+						UnpackHelpers.GetEqualityComparer( comparisonType );
+#endif // !UNITY
+					if ( parameters[ 0 ].ParameterType == typeof( int )
+						&& UnpackHelpers.IsIEqualityComparer( parameters[ 1 ].ParameterType ) )
+					{
+						return capacity =>
+#if !UNITY
+							( T )
+#endif // !UNITY
+							constructor.InvokePreservingExceptionType( capacity, comparer );
+					}
+					else if ( UnpackHelpers.IsIEqualityComparer( parameters[ 0 ].ParameterType ) &&
+							parameters[ 0 ].ParameterType == typeof( int ) )
+					{
+						return capacity =>
+#if !UNITY
+							( T )
+#endif // !UNITY
+							constructor.InvokePreservingExceptionType( comparer, capacity );
+					}
+
+					break;
+				}
+			}
+			
+			throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity(
+#if !UNITY
+				typeof( T )
+#else
+				abstractType
+#endif // !UNITY
+			);
 		}
 
 #if !UNITY

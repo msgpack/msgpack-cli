@@ -26,6 +26,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
 #if !UNITY
 #if XAMIOS || XAMDROID
 using Contract = MsgPack.MPContract;
@@ -616,6 +617,102 @@ namespace MsgPack.Serialization
 
 			return serializer.UnpackFromCore( unpacker );
 		}
+
+
+		/// <summary>
+		///		Retrieves a most appropriate constructor with <see cref="Int32"/> capacity parameter and <see cref="IEqualityComparer{T}"/> comparer parameter or both of them, >or default constructor of the <paramref name="instanceType"/>.
+		/// </summary>
+		/// <param name="instanceType">The target collection type to be instanciated.</param>
+		/// <returns>A constructor of the <paramref name="instanceType"/>.</returns>
+		internal static ConstructorInfo GetCollectionConstructor( Type instanceType )
+		{
+			const int noParameters = 0;
+			const int withCapacity = 10;
+			const int withComparer = 11;
+			const int withComparerAndCapacity = 20;
+			const int withCapacityAndComparer = 21;
+
+			ConstructorInfo constructor = null;
+			var currentScore = -1;
+
+			foreach ( var candidate in instanceType.GetConstructors() )
+			{
+				var parameters = candidate.GetParameters();
+				switch ( parameters.Length )
+				{
+					case 0:
+					{
+						if ( currentScore < noParameters )
+						{
+							constructor = candidate;
+							currentScore = noParameters;
+						}
+
+						break;
+					}
+					case 1:
+					{
+						if ( currentScore < withCapacity && parameters[ 0 ].ParameterType == typeof( int ) )
+						{
+							constructor = candidate;
+							currentScore = noParameters;
+						}
+						else if ( currentScore < withComparer && IsIEqualityComparer( parameters[ 0 ].ParameterType ) )
+						{
+							constructor = candidate;
+							currentScore = noParameters;
+						}
+						break;
+					}
+					case 2:
+					{
+						if ( currentScore < withCapacityAndComparer && parameters[ 0 ].ParameterType == typeof( int ) && IsIEqualityComparer( parameters[ 1 ].ParameterType ) )
+						{
+							constructor = candidate;
+							currentScore = withCapacityAndComparer;
+						}
+						else if ( currentScore < withComparerAndCapacity && parameters[ 1 ].ParameterType == typeof( int ) && IsIEqualityComparer( parameters[ 0 ].ParameterType ) )
+						{
+							constructor = candidate;
+							currentScore = withComparerAndCapacity;
+						}
+
+						break;
+					}
+				}
+			}
+
+			if ( constructor == null )
+			{
+				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( instanceType );
+			}
+
+			return constructor;
+		}
+
+		/// <summary>
+		///		Determines the type is <see cref="IEqualityComparer{T}"/>.
+		/// </summary>
+		/// <param name="type">The type should be <see cref="IEqualityComparer{T}"/>.</param>
+		/// <returns>
+		///		<c>true</c>, if <paramref name="type"/> is open <see cref="IEqualityComparer{T}"/> generic type; <c>false</c>, otherwise.
+		/// </returns>
+		internal static bool IsIEqualityComparer( Type type )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( !type.GetIsGenericTypeDefinition(), "!(" + type + ").GetIsGenericTypeDefinition()" );
+#endif // DEBUG && !UNITY
+
+			return type.GetIsGenericType() && type.GetGenericTypeDefinition() == typeof( IEqualityComparer<> );
+		}
+
+#if UNITY
+		internal static object GetEqualityComparer( Type comparerType )
+		{
+			return AotHelper.GetEqualityComparer( comparerType );
+		}
+#endif // UNITY
+
 
 		/// <summary>
 		///		Gets an <see cref="IEqualityComparer{T}"/> with platform safe fashion.

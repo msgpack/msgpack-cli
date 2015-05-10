@@ -54,7 +54,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		)
 			: base( ownerContext, itemsSchema )
 		{
-			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TCollection>( targetType );
+			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TCollection, TItem>( targetType );
 			this._addItem = ReflectionSerializerHelper.GetAddItem<TCollection, TItem>( targetType );
 		}
 #else
@@ -67,7 +67,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		)
 			: base( ownerContext, abstractType, traits, itemsSchema )
 		{
-			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory( abstractType, concreteType );
+			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory( abstractType, concreteType, traits.ElementType );
 			this._addItem = ReflectionSerializerHelper.GetAddItem( concreteType );
 		}
 #endif // !UNITY

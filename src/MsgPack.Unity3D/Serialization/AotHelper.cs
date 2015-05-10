@@ -39,7 +39,7 @@ namespace MsgPack.Serialization
 			return ( IEqualityComparer<T> ) GetEqualityComparer( typeof( T ) );
 		}
 
-		private static object GetEqualityComparer( Type type )
+		internal static object GetEqualityComparer( Type type )
 		{
 			lock ( EqualityComparerTable )
 			{

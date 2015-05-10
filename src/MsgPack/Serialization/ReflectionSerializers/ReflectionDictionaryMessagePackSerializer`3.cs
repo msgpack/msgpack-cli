@@ -52,7 +52,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		)
 			: base( ownerContext, itemsSchema )
 		{
-			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TDictionary>( targetType );
+			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TDictionary, TKey>( targetType );
 		}
 #else
 		public ReflectionDictionaryMessagePackSerializer(
@@ -66,7 +66,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		)
 			: base( ownerContext, abstractType, keyType, valueType, traits, itemsSchema )
 		{
-			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory( abstractType, concreteType );
+			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory( abstractType, concreteType, keyType );
 		}
 #endif // !UNITY
 
