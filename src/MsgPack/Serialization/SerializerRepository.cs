@@ -128,7 +128,13 @@ namespace MsgPack.Serialization
 
 			var result = this._repository.Get( context, typeof( T ) );
 			var asProvider = result as MessagePackSerializerProvider;
+#if !UNITY
 			return ( asProvider != null ? asProvider.Get( context, providerParameter ) : result ) as MessagePackSerializer<T>;
+#else
+			var asSerializer =
+				( asProvider != null ? asProvider.Get( context, providerParameter ) : result ) as IMessagePackSingleObjectSerializer;
+			return asSerializer != null ? MessagePackSerializer.Wrap<T>( context, asSerializer ) : null;
+#endif // !UNITY
 		}
 
 #if UNITY || XAMIOS || XAMDROID
