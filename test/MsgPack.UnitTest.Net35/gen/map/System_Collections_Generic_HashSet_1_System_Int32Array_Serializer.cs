@@ -21,7 +21,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
         
         protected override System.Collections.Generic.HashSet<int[]> CreateInstance(int initialCapacity) {
             System.Collections.Generic.HashSet<int[]> collection = default(System.Collections.Generic.HashSet<int[]>);
-            collection = new System.Collections.Generic.HashSet<int[]>();
+            collection = new System.Collections.Generic.HashSet<int[]>(MsgPack.Serialization.UnpackHelpers.GetEqualityComparer<int[]>());
             return collection;
         }
         

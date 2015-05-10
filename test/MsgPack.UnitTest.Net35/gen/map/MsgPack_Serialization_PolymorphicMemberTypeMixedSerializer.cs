@@ -65,8 +65,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             System.Collections.Generic.Dictionary<byte, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             typeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
             typeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            typeMap0.Add(1, typeof(System.Collections.Generic.SortedDictionary<string, MsgPack.Serialization.FileSystemEntry>));
             typeMap0.Add(2, typeof(System.Collections.Generic.Dictionary<string, MsgPack.Serialization.FileSystemEntry>));
+            typeMap0.Add(1, typeof(System.Collections.Generic.SortedDictionary<string, MsgPack.Serialization.FileSystemEntry>));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicDictionary(typeof(System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>), typeMap0, null, valuesSchema0);
             this._serializer0 = context.GetSerializer<string>(schema0);
             MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
@@ -75,8 +75,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             System.Collections.Generic.Dictionary<byte, System.Type> typeMap1 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             typeMap1 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
             typeMap1 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            typeMap1.Add(1, typeof(System.Collections.Generic.SortedDictionary<string, MsgPack.Serialization.FileSystemEntry>));
             typeMap1.Add(2, typeof(System.Collections.Generic.Dictionary<string, MsgPack.Serialization.FileSystemEntry>));
+            typeMap1.Add(1, typeof(System.Collections.Generic.SortedDictionary<string, MsgPack.Serialization.FileSystemEntry>));
             schema1 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicDictionary(typeof(System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>), typeMap1, null, valuesSchema1);
             this._serializer1 = context.GetSerializer<System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>>(schema1);
             MsgPack.Serialization.PolymorphismSchema schema2 = default(MsgPack.Serialization.PolymorphismSchema);
@@ -117,8 +117,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             MsgPack.Serialization.PolymorphismSchema itemsSchema0 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<byte, System.Type> itemsSchemaTypeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             itemsSchemaTypeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            itemsSchemaTypeMap0.Add(1, typeof(MsgPack.Serialization.FileEntry));
             itemsSchemaTypeMap0.Add(2, typeof(MsgPack.Serialization.DirectoryEntry));
+            itemsSchemaTypeMap0.Add(1, typeof(MsgPack.Serialization.FileEntry));
             itemsSchema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), itemsSchemaTypeMap0);
             schema8 = MsgPack.Serialization.PolymorphismSchema.ForContextSpecifiedCollection(typeof(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>), itemsSchema0);
             this._serializer8 = context.GetSerializer<string>(schema8);
@@ -126,8 +126,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             MsgPack.Serialization.PolymorphismSchema itemsSchema1 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<byte, System.Type> itemsSchema1TypeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             itemsSchema1TypeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            itemsSchema1TypeMap0.Add(1, typeof(MsgPack.Serialization.FileEntry));
             itemsSchema1TypeMap0.Add(2, typeof(MsgPack.Serialization.DirectoryEntry));
+            itemsSchema1TypeMap0.Add(1, typeof(MsgPack.Serialization.FileEntry));
             itemsSchema1 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), itemsSchema1TypeMap0);
             schema9 = MsgPack.Serialization.PolymorphismSchema.ForContextSpecifiedCollection(typeof(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>), itemsSchema1);
             this._serializer9 = context.GetSerializer<System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>>(schema9);
@@ -137,8 +137,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             System.Collections.Generic.Dictionary<byte, System.Type> typeMap2 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             typeMap2 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
             typeMap2 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            typeMap2.Add(1, typeof(System.Collections.ObjectModel.Collection<MsgPack.Serialization.FileSystemEntry>));
             typeMap2.Add(2, typeof(System.Collections.Generic.List<MsgPack.Serialization.FileSystemEntry>));
+            typeMap2.Add(1, typeof(System.Collections.ObjectModel.Collection<MsgPack.Serialization.FileSystemEntry>));
             schema10 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicCollection(typeof(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>), typeMap2, itemsSchema2);
             this._serializer10 = context.GetSerializer<string>(schema10);
             MsgPack.Serialization.PolymorphismSchema schema11 = default(MsgPack.Serialization.PolymorphismSchema);
@@ -147,8 +147,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             System.Collections.Generic.Dictionary<byte, System.Type> typeMap3 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             typeMap3 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
             typeMap3 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            typeMap3.Add(1, typeof(System.Collections.ObjectModel.Collection<MsgPack.Serialization.FileSystemEntry>));
             typeMap3.Add(2, typeof(System.Collections.Generic.List<MsgPack.Serialization.FileSystemEntry>));
+            typeMap3.Add(1, typeof(System.Collections.ObjectModel.Collection<MsgPack.Serialization.FileSystemEntry>));
             schema11 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicCollection(typeof(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>), typeMap3, itemsSchema3);
             this._serializer11 = context.GetSerializer<System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>>(schema11);
             MsgPack.Serialization.PolymorphismSchema schema12 = default(MsgPack.Serialization.PolymorphismSchema);

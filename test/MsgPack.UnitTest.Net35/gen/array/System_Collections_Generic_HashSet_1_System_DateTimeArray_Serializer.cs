@@ -21,7 +21,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         
         protected override System.Collections.Generic.HashSet<System.DateTime[]> CreateInstance(int initialCapacity) {
             System.Collections.Generic.HashSet<System.DateTime[]> collection = default(System.Collections.Generic.HashSet<System.DateTime[]>);
-            collection = new System.Collections.Generic.HashSet<System.DateTime[]>();
+            collection = new System.Collections.Generic.HashSet<System.DateTime[]>(MsgPack.Serialization.UnpackHelpers.GetEqualityComparer<System.DateTime[]>());
             return collection;
         }
         
