@@ -82,7 +82,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 			else
 			{
-				this._valueSerializer.PackTo( packer, this._getValue.InvokePreservingExceptionType( objectTree ) );
+				this._valueSerializer.PackTo( packer, objectTree );
 			}
 		}
 
