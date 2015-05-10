@@ -103,7 +103,14 @@ namespace MsgPack.Serialization
 	if ( !forIos )
 	{
 #>
+#if !UNITY
 			return new SerializationContext { SerializationMethod = SerializationMethod.<#= serializationMethod #>, EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #> };
+#else
+			var context = new SerializationContext { SerializationMethod = SerializationMethod.<#= serializationMethod #>, EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #> };
+			AotWorkarounds.SetWorkaround( context );
+			return context;
+
+#endif // !UNITY
 <#+
 	}
 	else
@@ -114,6 +121,9 @@ namespace MsgPack.Serialization
 			context.Serializers.Register( 
 				new EchoKeyedCollection_2MessagePackSerializer<string, string>( context, null ) 
 			);
+#if UNITY
+			AotWorkarounds.SetWorkaround( context );
+#endif // UNITY
 			return context;
 <#+
 	}

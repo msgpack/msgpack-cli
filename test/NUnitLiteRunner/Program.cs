@@ -20,7 +20,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 
 using MsgPack.Serialization;
 
@@ -44,7 +47,7 @@ namespace MsgPack.NUnitLiteRunner
 			new TextUI().Execute( adjustedArgs.ToArray() );
 		}
 
-		[MethodImpl(MethodImplOptions.NoOptimization)]
+		[MethodImpl( MethodImplOptions.NoOptimization )]
 		private static void PreHeat()
 		{
 			new ArraySegmentEqualityComparer<byte>().Equals( default( ArraySegment<byte> ), default( ArraySegment<byte> ) );
@@ -52,6 +55,8 @@ namespace MsgPack.NUnitLiteRunner
 			new ArraySegmentEqualityComparer<decimal>().Equals( default( ArraySegment<decimal> ), default( ArraySegment<decimal> ) );
 
 			new SerializationContext().GetSerializer<KeyValuePair<string, int>>( null );
+
+			// DateTimeOffset is not able to be instanciated via reflection, it might be because it consist of other non-primitive value types (DateTime and TimeSpan).
 		}
 	}
 }

@@ -68,7 +68,14 @@ namespace MsgPack.Serialization
 	{
 		private static SerializationContext GetSerializationContext()
 		{
+#if !UNITY
 			return new SerializationContext { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.ExpressionBased };
+#else
+			var context = new SerializationContext { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.ExpressionBased };
+			AotWorkarounds.SetWorkaround( context );
+			return context;
+
+#endif // !UNITY
 		}
 
 		private static SerializationContext  NewSerializationContext( PackerCompatibilityOptions compatibilityOptions )

@@ -73,6 +73,9 @@ namespace MsgPack.Serialization
 			context.Serializers.Register( 
 				new EchoKeyedCollection_2MessagePackSerializer<string, string>( context, null ) 
 			);
+#if UNITY
+			AotWorkarounds.SetWorkaround( context );
+#endif // UNITY
 			return context;
 		}
 

@@ -116,6 +116,7 @@
     <Preserve File="Delegates.cs" />
     <Preserve File="NetFxCompatibilities.cs" />
     <Preserve File="Tuple`n.cs" />
+    <Preserve Path="Serialization\AotWorkarounds.cs" />
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
