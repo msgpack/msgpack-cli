@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,21 +24,21 @@ using System.Linq;
 
 namespace MsgPack.Serialization
 {
-	public sealed class ArraySegmentEqualityComparer<T> : EqualityComparer<ArraySegment<T>>
+	public sealed class ArraySegmentEqualityComparer<T> : IEqualityComparer<ArraySegment<T>>
 	{
 		public ArraySegmentEqualityComparer() { }
 
-		public sealed override bool Equals( ArraySegment<T> x, ArraySegment<T> y )
+		public bool Equals( ArraySegment<T> x, ArraySegment<T> y )
 		{
 			if ( x.Count == 0 )
 			{
 				return y.Count == 0;
 			}
 
-			return x.Array.Skip( x.Offset ).Take( x.Count ).SequenceEqual( y.Array.Skip( y.Offset ).Take( y.Count ), EqualityComparer<T>.Default );
+			return x.Array.Skip( x.Offset ).Take( x.Count ).SequenceEqual( y.Array.Skip( y.Offset ).Take( y.Count ), DictionaryTestHelper.GetEqualityComparer<T>() );
 		}
 
-		public sealed override int GetHashCode( ArraySegment<T> obj )
+		public int GetHashCode( ArraySegment<T> obj )
 		{
 			return obj.GetHashCode();
 		}
