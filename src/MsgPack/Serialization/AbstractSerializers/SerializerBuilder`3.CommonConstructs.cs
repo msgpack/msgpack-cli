@@ -682,14 +682,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 					 *	}
 					 */
 					return
-						this.EmitStoreCollectionItemsEmitSetCollectionMemberIfNullAndSettable( 
-							context, 
-							instance, 
-							value, 
-							member.GetMemberValueType(), 
-							asField, 
+						this.EmitStoreCollectionItemsEmitSetCollectionMemberIfNullAndSettable(
+							context,
+							instance,
+							value,
+							member.GetMemberValueType(),
+							asField,
 							asProperty,
-							traits.AddMethod == null 
+							traits.AddMethod == null
 								? null
 								: this.EmitForEachLoop(
 									context,
@@ -717,12 +717,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 					Type keyType, valueType;
 					GetDictionaryKeyValueType( traits.ElementType, out keyType, out valueType );
 					return
-						this.EmitStoreCollectionItemsEmitSetCollectionMemberIfNullAndSettable( 
-							context, 
-							instance, 
-							value, 
+						this.EmitStoreCollectionItemsEmitSetCollectionMemberIfNullAndSettable(
+							context,
+							instance,
+							value,
 							member.GetMemberValueType(),
-							asField, 
+							asField,
 							asProperty,
 							traits.AddMethod == null
 								? null
@@ -790,11 +790,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 		}
 
 		private TConstruct EmitStoreCollectionItemsEmitSetCollectionMemberIfNullAndSettable(
-			TContext context, 
-			TConstruct instance, 
-			TConstruct collection, 
-			Type collectionType, 
-			FieldInfo asField, 
+			TContext context,
+			TConstruct instance,
+			TConstruct collection,
+			Type collectionType,
+			FieldInfo asField,
 			PropertyInfo asProperty,
 			TConstruct storeCollectionItems // null for not appendable like String
 		)
@@ -829,7 +829,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 
 			return
-				this.EmitSequentialStatements( 
+				this.EmitSequentialStatements(
 					context,
 					storeCollectionItems.ContextType,
 					this.EmitConditionalExpression(
@@ -1744,7 +1744,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		private TConstruct EmitAppendCollectionItem(
 			TContext context,
 			MemberInfo member,
-			CollectionTraits traits, 
+			CollectionTraits traits,
 			TConstruct collection,
 			TConstruct unpackedItem
 		)
@@ -2143,11 +2143,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.DeclareLocal(
 							context,
 							typeof( PolymorphismSchema[] ),
-							context.GetUniqueVariableName( "tupleItemsSchema" ) 
+							context.GetUniqueVariableName( "tupleItemsSchema" )
 						);
 
 					yield return tupleItemsSchema;
-	
+
 					yield return
 						this.EmitStoreVariableStatement(
 							context,
