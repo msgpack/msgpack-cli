@@ -36,6 +36,11 @@ using MsgPack.Serialization.CollectionSerializers;
 
 namespace MsgPack.Serialization.CodeDomSerializers
 {
+	/// <summary>
+	///		Code DOM based implementation of <see cref="SerializerBuilder{TContext,TConstruct,TObject}"/>.
+	///		This type supports pre-generation.
+	/// </summary>
+	/// <typeparam name="TObject">Serialization target type.</typeparam>
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "CodeDOM" )]
 	internal class CodeDomSerializerBuilder<TObject> : SerializerBuilder<CodeDomContext, CodeDomConstruct, TObject>
 	{
@@ -493,10 +498,15 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				CodeDomConstruct.Statement(
 					new CodeExpressionStatement(
 						new CodeMethodInvokeExpression(
-							instance == null
-							? new CodeTypeReferenceExpression( method.DeclaringType )
-							: instance.AsExpression(),
-							method.Name,
+							new CodeMethodReferenceExpression(
+								instance == null
+								? new CodeTypeReferenceExpression( method.DeclaringType )
+								: instance.AsExpression(),
+								method.Name,
+								method.IsGenericMethod
+								? method.GetGenericArguments().Select( t => new CodeTypeReference( t ) ).ToArray()
+								: CodeDomSerializerBuilder.EmptyGenericArguments
+							),
 							arguments.Select( a => a.AsExpression() ).ToArray()
 						)
 					)
@@ -516,10 +526,15 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				CodeDomConstruct.Expression(
 					method.ReturnType,
 					new CodeMethodInvokeExpression(
-						instance == null
-						? new CodeTypeReferenceExpression( method.DeclaringType )
-						: instance.AsExpression(),
-						method.Name,
+						new CodeMethodReferenceExpression(
+							instance == null
+							? new CodeTypeReferenceExpression( method.DeclaringType )
+							: instance.AsExpression(),
+							method.Name,
+							method.IsGenericMethod
+							? method.GetGenericArguments().Select( t => new CodeTypeReference(t)).ToArray()
+							: CodeDomSerializerBuilder.EmptyGenericArguments
+						),
 						arguments.Select( a => a.AsExpression() ).ToArray()
 					)
 				);

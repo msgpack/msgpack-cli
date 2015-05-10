@@ -208,6 +208,9 @@
     <Compile Include="..\MsgPack\Serialization\CodeDomSerializers\CodeDomContext.cs">
       <Link>Serialization\CodeDomSerializers\CodeDomContext.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\CodeDomSerializers\CodeDomSerializerBuilder.cs">
+      <Link>Serialization\CodeDomSerializers\CodeDomSerializerBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CodeDomSerializers\CodeDomSerializerBuilder`1.cs">
       <Link>Serialization\CodeDomSerializers\CodeDomSerializerBuilder`1.cs</Link>
     </Compile>
