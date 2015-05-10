@@ -33,11 +33,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal static class ArraySegmentMessageSerializer
 	{
-#if UNITY
-		private static readonly MethodInfo GetCount = typeof( ArraySegment<> ).GetProperty( "Count" ).GetGetMethod();
-		private static readonly MethodInfo GetOffset = typeof( ArraySegment<> ).GetProperty( "Offset" ).GetGetMethod();
-#endif // UNITY
-
 		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemSerializer", Justification = "For Delegate signature compatibility" )]
 #if !UNITY
 		public static void PackByteArraySegmentTo( Packer packer, ArraySegment<byte> objectTree, MessagePackSerializer<byte> itemSerializer )
@@ -83,8 +78,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 #else
 		public static void PackGenericArraySegmentTo( Packer packer, object objectTree, IMessagePackSingleObjectSerializer itemSerializer )
 		{
-			var count = ( int )GetCount.InvokePreservingExceptionType( objectTree );
-			var offset = ( int )GetOffset.InvokePreservingExceptionType( objectTree );
+			var count = ( int )objectTree.GetType().GetProperty( "Count" ).GetGetMethod().InvokePreservingExceptionType( objectTree );
+			var offset = ( int )objectTree.GetType().GetProperty( "Offset" ).GetGetMethod().InvokePreservingExceptionType( objectTree );
 			var array = objectTree.GetType().GetProperty( "Array" ).GetGetMethod().InvokePreservingExceptionType( objectTree ) as Array;
 			packer.PackArrayHeader( count );
 			for ( int i = 0; i < count; i++ )
