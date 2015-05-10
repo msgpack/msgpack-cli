@@ -20,6 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
+using MsgPack.Serialization;
 
 using NUnitLite.Runner;
 
@@ -37,7 +40,18 @@ namespace MsgPack.NUnitLiteRunner
 			var adjustedArgs = new List<string>( args.Length + 1 );
 			adjustedArgs.AddRange( args );
 			adjustedArgs.Add( AssemblyName );
+			PreHeat();
 			new TextUI().Execute( adjustedArgs.ToArray() );
+		}
+
+		[MethodImpl(MethodImplOptions.NoOptimization)]
+		private static void PreHeat()
+		{
+			new ArraySegmentEqualityComparer<byte>().Equals( default( ArraySegment<byte> ), default( ArraySegment<byte> ) );
+			new ArraySegmentEqualityComparer<int>().Equals( default( ArraySegment<int> ), default( ArraySegment<int> ) );
+			new ArraySegmentEqualityComparer<decimal>().Equals( default( ArraySegment<decimal> ), default( ArraySegment<decimal> ) );
+
+			new SerializationContext().GetSerializer<KeyValuePair<string, int>>( null );
 		}
 	}
 }
