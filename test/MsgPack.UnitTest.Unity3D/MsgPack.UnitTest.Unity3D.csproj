@@ -2385,6 +2385,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\ReflectionBasedNilImplicationTest.cs">
       <Link>Serialization\ReflectionBasedNilImplicationTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\RegressionTests.cs">
+      <Link>Serialization\RegressionTests.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationContextTest.cs">
       <Link>Serialization\SerializationContextTest.cs</Link>
     </Compile>
@@ -2515,6 +2518,7 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

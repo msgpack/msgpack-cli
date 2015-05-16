@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -30,6 +31,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal override void PackToCore( Packer packer, object value )
 		{
+			if ( value.GetType() == typeof( object ) )
+			{
+				// Prevents stack overflow -- System.Object cannot be serialized anyway because it does not have any properties/fields to serialize.
+				throw new SerializationException( "System.Object cannot be serialized." );
+			}
+
 			packer.PackObject( value );
 		}
 

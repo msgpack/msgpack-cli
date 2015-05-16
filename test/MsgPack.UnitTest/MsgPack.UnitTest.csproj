@@ -1243,6 +1243,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Serialization\RegressionTests.cs" />
     <Compile Include="Serialization\SerializationTargets.cs" />
     <Compile Include="Serialization\GenerationBasedNilImplicationTest.cs">
       <AutoGen>True</AutoGen>

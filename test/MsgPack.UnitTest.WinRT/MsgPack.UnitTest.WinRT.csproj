@@ -335,6 +335,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\ReflectionBasedNilImplicationTest.cs">
       <Link>Serialization\ReflectionBasedNilImplicationTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\RegressionTests.cs">
+      <Link>Serialization\RegressionTests.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationContextTest.cs">
       <Link>Serialization\SerializationContextTest.cs</Link>
     </Compile>
