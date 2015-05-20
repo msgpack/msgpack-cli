@@ -266,4 +266,4 @@ Release 0.6.0 Beta2 - 2015/05/17
   * Add many workarounds for AOT issues of Mono on iOS (in particular, Unity).
 
   BUG FIXES
-  * 
+  * Fix System.Object instance causes StackOverflowException. Issue #73
