@@ -1110,10 +1110,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 									context,
 									typeof( EnumMemberSerializationMethod ),
 									memberInfo.Value.GetEnumMemberSerializationMethod()
-									)
 								)
 							)
-						);
+						)
+					);
 			}
 			else
 			{

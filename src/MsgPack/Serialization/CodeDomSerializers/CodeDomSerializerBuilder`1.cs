@@ -732,8 +732,8 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						context.GetSerializerFieldName(
 							targetType,
 							memberInfo == null
-							? EnumMemberSerializationMethod.Default
-							: memberInfo.Value.GetEnumMemberSerializationMethod(),
+								? EnumMemberSerializationMethod.Default
+								: memberInfo.Value.GetEnumMemberSerializationMethod(),
 							itemsSchema ?? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo )
 						)
 					)
@@ -1253,7 +1253,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 									),
 									new CodeMethodInvokeExpression(
 										new CodeTypeReferenceExpression( typeof( EnumMessagePackSerializerHelpers ) ),
-										"DetermineEnumSerializationMethod",
+										Metadata._EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethodMethod.Name,
 										contextArgument,
 										new CodeTypeOfExpression( @targetType ),
 										new CodeFieldReferenceExpression(

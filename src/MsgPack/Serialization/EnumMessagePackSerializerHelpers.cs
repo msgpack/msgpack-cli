@@ -48,7 +48,8 @@ namespace MsgPack.Serialization
 		public static EnumSerializationMethod DetermineEnumSerializationMethod(
 			SerializationContext context,
 			Type enumType,
-			EnumMemberSerializationMethod enumMemberSerializationMethod )
+			EnumMemberSerializationMethod enumMemberSerializationMethod 
+		)
 		{
 			if ( context == null )
 			{
