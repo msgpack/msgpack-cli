@@ -265,9 +265,13 @@ namespace MsgPack.Serialization
 		public void TestDateTime()
 		{
 			TestCore(
-				DateTime.UtcNow,
-				stream => MessagePackConvert.ToDateTime( Unpacking.UnpackInt64( stream ) ),
-				CompareDateTime
+				DateTime.Now,
+				stream => DateTime.FromBinary( Unpacking.UnpackInt64( stream ) ),
+				( x, y ) => x.Equals( y ),
+				context =>
+				{
+					Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+				}
 			);
 		}
 
@@ -275,9 +279,45 @@ namespace MsgPack.Serialization
 		public void TestDateTimeOffset()
 		{
 			TestCore(
+				DateTimeOffset.Now,
+				stream => 
+					{
+						var array = Unpacking.UnpackArray( stream );
+						return new DateTimeOffset( DateTime.FromBinary( array[ 0 ].AsInt64() ), TimeSpan.FromMinutes( array[ 1 ].AsInt16() ) );
+					},
+				( x, y ) => x.Equals( y ),
+				context =>
+				{
+					Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+				}
+			);
+		}
+
+		[Test]
+		public void TestDateTimeClassic()
+		{
+			TestCore(
+				DateTime.UtcNow,
+				stream => MessagePackConvert.ToDateTime( Unpacking.UnpackInt64( stream ) ),
+				CompareDateTime,
+				context =>
+				{
+					context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.UnixEpoc;
+				}
+			);
+		}
+
+		[Test]
+		public void TestDateTimeOffsetClassic()
+		{
+			TestCore(
 				DateTimeOffset.UtcNow,
 				stream => MessagePackConvert.ToDateTimeOffset( Unpacking.UnpackInt64( stream ) ),
-				( x, y ) => CompareDateTime( x.DateTime.ToUniversalTime(), y.DateTime.ToUniversalTime() )
+				( x, y ) => CompareDateTime( x.DateTime.ToUniversalTime(), y.DateTime.ToUniversalTime() ),
+				context =>
+				{
+					context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.UnixEpoc;
+				}
 			);
 		}
 
@@ -285,6 +325,121 @@ namespace MsgPack.Serialization
 		{
 			return x.Date == y.Date && x.Hour == y.Hour && x.Minute == y.Minute && x.Second == y.Second && x.Millisecond == y.Millisecond;
 		}
+
+<#+
+	foreach ( var contextSetting in new[] { "Native", "UnixEpoc" } )
+	{
+		foreach ( var kind in new[] { new { Label = "Local", Property = "Now" }, new { Label = "Utc", Property = "UtcNow" } }
+			)
+		{
+			#>
+		[Test]
+		public void TestDateTimeMemberAttributes_<#= contextSetting #>Context_<#= kind.Label #>()
+		{
+			var context = GetSerializationContext();
+<#+
+			if ( contextSetting == "Navie" )
+			{
+#>
+			Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.<#= contextSetting #> ) );
+<#+
+			}
+			else
+			{
+#>
+			context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.<#= contextSetting #>;
+<#+
+			}
+#>
+			var target = this.CreateTarget<AnnotatedDateTimes>( context );
+			using ( var buffer = new MemoryStream() )
+			{
+				var input = new AnnotatedDateTimes( DateTimeOffset.<#= kind.Property #> );
+				target.Pack( buffer, input );
+				buffer.Position = 0;
+				var result = target.Unpack( buffer );
+<#+
+
+			foreach ( var memberType in new[] { "Field", "Property" } )
+			{
+				var suffix = String.Format( CultureInfo.InvariantCulture, "DateTime{0}", memberType );
+				if ( contextSetting == "Native" )
+				{
+#>
+
+				// Kind is preserved.
+				Assert.That( result.Vanilla<#= suffix #>, Is.EqualTo( input.Vanilla<#= suffix #> ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.Vanilla<#= suffix #>, input.Vanilla<#= suffix #> );
+				Assert.That( result.Default<#= suffix #>, Is.EqualTo( input.Default<#= suffix #> ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.Default<#= suffix #>, input.Default<#= suffix #> );
+<#+
+				}
+				else
+				{
+#>
+
+				// UTC is forced.
+				Assert.That( CompareDateTime( result.Vanilla<#= suffix #>, input.Vanilla<#= suffix #>.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.Vanilla<#= suffix #>, input.Vanilla<#= suffix #> );
+				Assert.That( CompareDateTime( result.Default<#= suffix #>, input.Default<#= suffix #>.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.Default<#= suffix #>, input.Default<#= suffix #> );
+<#+
+				}
+#>
+				Assert.That( result.Native<#= suffix #>, Is.EqualTo( input.Native<#= suffix #> ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.Native<#= suffix #>, input.Native<#= suffix #> );
+				Assert.That( CompareDateTime( result.UnixEpoc<#= suffix #>, input.UnixEpoc<#= suffix #>.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpoc<#= suffix #>, input.UnixEpoc<#= suffix #> );
+
+<#+
+					suffix = String.Format( CultureInfo.InvariantCulture, "DateTimeOffset{0}.DateTime", memberType );
+				if ( contextSetting == "Native" )
+				{
+#>
+
+				// Offset is preserved. 
+				Assert.That( result.Vanilla<#= suffix #>, Is.EqualTo( input.Vanilla<#= suffix #> ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.Vanilla<#= suffix #>, input.Vanilla<#= suffix #> );
+				Assert.That( result.Default<#= suffix #>, Is.EqualTo( input.Default<#= suffix #> ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.Default<#= suffix #>, input.Default<#= suffix #> );
+<#+
+				}
+				else if ( kind.Label == "Utc" )
+				{
+#>
+
+				// UTC == UTC
+				Assert.That( CompareDateTime( result.Vanilla<#= suffix #>, input.Vanilla<#= suffix #> ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.Vanilla<#= suffix #>, input.Vanilla<#= suffix #> );
+				Assert.That( CompareDateTime( result.Default<#= suffix #>, input.Default<#= suffix #> ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.Default<#= suffix #>, input.Default<#= suffix #> );
+<#+
+				}
+				else
+				{
+#>
+
+				// UTC is forced.
+				Assert.That( CompareDateTime( result.Vanilla<#= suffix #>, input.Vanilla<#= suffix #>.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.Vanilla<#= suffix #>, input.Vanilla<#= suffix #> );
+				Assert.That( CompareDateTime( result.Default<#= suffix #>, input.Default<#= suffix #>.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.Default<#= suffix #>, input.Default<#= suffix #> );
+<#+
+				}
+#>
+				Assert.That( result.Native<#= suffix #>, Is.EqualTo( input.Native<#= suffix #> ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.Native<#= suffix #>, input.Native<#= suffix #> );
+<#+
+				if ( kind.Label == "Utc" )
+				{
+#>
+				// UTC == UTC
+				Assert.That( CompareDateTime( result.UnixEpoc<#= suffix #>, input.UnixEpoc<#= suffix #> ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpoc<#= suffix #>, input.UnixEpoc<#= suffix #> );
+<#+
+				}
+				else
+				{
+#>
+				// UTC is forced.
+				Assert.That( CompareDateTime( result.UnixEpoc<#= suffix #>, input.UnixEpoc<#= suffix #>.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpoc<#= suffix #>, input.UnixEpoc<#= suffix #> );
+<#+
+				}
+			}
+#>
+			}
+		}
+
+<#+
+		}
+	}
+#>
 
 		[Test]
 		public void TestUri()
@@ -1450,8 +1605,19 @@ namespace MsgPack.Serialization
 
 		private void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer )
 		{
+			TestCore( value, unpacking, comparer, null );
+		}
+
+		private void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer, Action<SerializationContext> contextAdjuster )
+		{
 			var safeComparer = comparer ?? EqualityComparer<T>.Default.Equals;
-			var target = this.CreateTarget<T>( GetSerializationContext() );
+			var context = GetSerializationContext();
+			if ( contextAdjuster != null )
+			{
+				contextAdjuster( context );
+			}
+
+			var target = this.CreateTarget<T>( context );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( buffer, value );

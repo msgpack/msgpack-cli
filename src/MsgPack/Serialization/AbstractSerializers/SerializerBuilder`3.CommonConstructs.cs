@@ -1115,6 +1115,30 @@ namespace MsgPack.Serialization.AbstractSerializers
 						)
 					);
 			}
+			else if ( memberInfo != null && DateTimeMessagePackSerializerHelpers.IsDateTime( targetType ) )
+			{
+				return
+					this.EmitInvokeMethodExpression(
+						context,
+						context.Context,
+						Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
+						this.EmitBoxExpression(
+							context,
+							typeof( DateTimeConversionMethod ),
+							this.EmitInvokeMethodExpression(
+								context,
+								null,
+								Metadata._DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethodMethod,
+								context.Context,
+								this.MakeEnumLiteral(
+									context,
+									typeof( DateTimeMemberConversionMethod ),
+									memberInfo.Value.GetDateTimeMemberConversionMethod()
+								)
+							)
+						)
+					);
+			}
 			else
 			{
 				// Check by try to get serializer now.

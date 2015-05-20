@@ -44,6 +44,10 @@ var __excludes =
 		typeof( System.ArraySegment<> ),
 		typeof( System.Collections.DictionaryEntry ),
 		typeof( System.Collections.Generic.KeyValuePair<,> ),
+		// Special(manual) handlings on builtin serializer:
+		typeof( System.DateTime ),
+		// Special(manual) handlings on builtin serializer:
+		typeof( System.DateTimeOffset ),
 		typeof( System.Numerics.Complex ),
 		// Special handling on serializer:
 		typeof( System.Nullable<> ),
@@ -90,6 +94,8 @@ var __excludes =
 		typeof( System.Runtime.InteropServices.ComTypes.ELEMDESC ),
 		typeof( System.Runtime.InteropServices.ComTypes.EXCEPINFO ),
 		typeof( System.Runtime.InteropServices.ComTypes.FORMATETC ),
+		// Special(manual) handlings on builtin serializer:
+		typeof( System.Runtime.InteropServices.ComTypes.FILETIME ),
 		typeof( System.Runtime.InteropServices.ComTypes.FUNCDESC ),
 		typeof( System.Runtime.InteropServices.ComTypes.IDLDESC ),
 		typeof( System.Runtime.InteropServices.ComTypes.PARAMDESC ),
@@ -239,6 +245,7 @@ namespace MsgPack.Serialization
 	// This file generated from <#= __typeName #>.tt T4Template.
 	// Do not modify this file. Edit <#= __typeName #>.tt instead.
 
+	// ReSharper disable RedundantNameQualifier
 	partial class <#= __typeName #> 
 	{
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This API is naturally coupled with many types" )]
@@ -258,6 +265,16 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( StringBuilder ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= typeof( StringBuilder ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( Char[] ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= typeof( Char ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>ArrayMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( Byte[] ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= typeof( Byte ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>ArrayMessagePackSerializer( ownerContext ) );
+			dictionary.Add( typeof( DateTime ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeMessagePackSerializerProvider( ownerContext, false ) );
+			dictionary.Add( typeof( DateTimeOffset ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeOffsetMessagePackSerializerProvider( ownerContext ) );
+#if !SILVERLIGHT
+			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.FileTimeMessagePackSerializerProvider( ownerContext, false ) );
+#endif // !SILVERLIGHT
+			// DateTime and FILETIME must have nullable providers.
+			dictionary.Add( typeof( DateTime? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeMessagePackSerializerProvider( ownerContext, true ) );
+#if !SILVERLIGHT
+			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.FileTimeMessagePackSerializerProvider( ownerContext, true ) );
+#endif // !SILVERLIGHT
 #if UNITY
 			dictionary.Add( typeof( System.Collections.Generic.KeyValuePair<,> ).TypeHandle, typeof( System_Collections_Generic_KeyValuePair_2MessagePackSerializer ) );
 			dictionary.Add( typeof( System.ArraySegment<> ).TypeHandle, typeof( System_ArraySegment_1MessagePackSerializer ) );

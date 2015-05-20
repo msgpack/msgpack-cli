@@ -76,7 +76,7 @@ namespace MsgPack.Serialization
 				NUnit.Framework.Assert.That( this.Source, Is.Not.Null );
 				NUnit.Framework.Assert.That( map[ "Source" ].AsString(), Is.EqualTo( this.Source.ToString() ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "TimeStamp" ) );
-				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( map[ "TimeStamp" ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
+				NUnit.Framework.Assert.That( DateTime.FromBinary( map[ "TimeStamp" ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "Data" ) );
 				NUnit.Framework.Assert.That( map[ "Data" ].AsBinary(), Is.EqualTo( this.Data ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "History" ) );
@@ -89,7 +89,7 @@ namespace MsgPack.Serialization
 				var array = data.AsList();
 				NUnit.Framework.Assert.That( this.Source, Is.Not.Null );
 				NUnit.Framework.Assert.That( array[ 0 ].AsString(), Is.EqualTo( this.Source.ToString() ) );
-				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( array[ 2 ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
+				NUnit.Framework.Assert.That( DateTime.FromBinary( array[ 2 ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
 				NUnit.Framework.Assert.That( array[ 1 ].AsBinary(), Is.EqualTo( this.Data ) );
 				NUnit.Framework.Assert.That( array[ 3 ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
 				NUnit.Framework.Assert.That( array[ 4 ].AsList().Count, Is.EqualTo( this.Points.Count ) );

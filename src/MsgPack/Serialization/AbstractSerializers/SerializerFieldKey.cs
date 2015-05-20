@@ -26,7 +26,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 	/// <summary>
 	///		Represents dictionary key to remember fields which store dependent serializer instance.
 	/// </summary>
-	internal struct SerializerFieldKey : IEquatable<SerializerFieldKey>
+	internal sealed class SerializerFieldKey : IEquatable<SerializerFieldKey>
 	{
 		/// <summary>
 		///		Type of serializing/deserializing type. 
@@ -38,6 +38,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// </summary>
 		public readonly EnumMemberSerializationMethod EnumSerializationMethod;
 
+		/// <summary>
+		///		DateTime conversion method for specific member.
+		/// </summary>
+		public readonly DateTimeMemberConversionMethod DateTimeConversionMethod;
+
 		private readonly ComparablePolymorphismSchema _schema;
 
 		/// <summary>
@@ -45,10 +50,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// </summary>
 		public PolymorphismSchema PolymorphismSchema { get { return this._schema.Value; } }
 
-		public SerializerFieldKey( Type targetType, EnumMemberSerializationMethod enumMemberSerializationMethod, PolymorphismSchema polymorphismSchema )
+		public SerializerFieldKey( Type targetType, EnumMemberSerializationMethod enumMemberSerializationMethod, DateTimeMemberConversionMethod dateTimeConversionMethod, PolymorphismSchema polymorphismSchema )
 		{
 			this.TypeHandle = targetType.TypeHandle;
 			this.EnumSerializationMethod = enumMemberSerializationMethod;
+			this.DateTimeConversionMethod = dateTimeConversionMethod;
 			this._schema = new ComparablePolymorphismSchema( polymorphismSchema );
 		}
 
@@ -58,6 +64,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return
 				this.TypeHandle.Equals( other.TypeHandle )
 				&& this.EnumSerializationMethod == other.EnumSerializationMethod
+				&& this.DateTimeConversionMethod == other.DateTimeConversionMethod
 				&& this._schema.Equals( other._schema );
 		}
 
@@ -73,7 +80,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		public override int GetHashCode()
 		{
-			return this.TypeHandle.GetHashCode() ^ this.EnumSerializationMethod.GetHashCode() ^ this._schema.GetHashCode();
+			return this.TypeHandle.GetHashCode() ^ this.EnumSerializationMethod.GetHashCode() ^ this.DateTimeConversionMethod.GetHashCode() ^ this._schema.GetHashCode();
 		}
 
 		/// <summary>

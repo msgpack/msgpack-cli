@@ -18,20 +18,10 @@
 //
 #endregion -- License Terms --
 
-using System.Runtime.Serialization;
-using System.Collections.Generic;
 using System;
-using System.Diagnostics;
-using System.Globalization;
+using System.Collections.Generic;
 using System.IO;
-using MsgPack.Serialization.AbstractSerializers;
-#if !NETFX_CORE && !WINDOWS_PHONE
-using MsgPack.Serialization.CodeDomSerializers;
-using MsgPack.Serialization.EmittingSerializers;
-#endif // if !NETFX_CORE && !WINDOWS_PHONE
-#if !NETFX_35
-using MsgPack.Serialization.ExpressionSerializers;
-#endif // if !NETFX_35
+using System.Runtime.Serialization;
 #if !MSTEST
 using NUnit.Framework;
 #else

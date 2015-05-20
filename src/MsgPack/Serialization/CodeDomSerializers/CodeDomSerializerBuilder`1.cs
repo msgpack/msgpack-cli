@@ -734,6 +734,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							memberInfo == null
 								? EnumMemberSerializationMethod.Default
 								: memberInfo.Value.GetEnumMemberSerializationMethod(),
+							memberInfo == null
+								? DateTimeMemberConversionMethod.Default
+								: memberInfo.Value.GetDateTimeMemberConversionMethod(),
 							itemsSchema ?? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo )
 						)
 					)
@@ -1259,6 +1262,30 @@ namespace MsgPack.Serialization.CodeDomSerializers
 										new CodeFieldReferenceExpression(
 											new CodeTypeReferenceExpression( typeof( EnumMemberSerializationMethod ) ),
 											dependentSerializer.Key.EnumSerializationMethod.ToString()
+										)
+									)
+								)
+							)
+						);
+					}
+					else if ( DateTimeMessagePackSerializerHelpers.IsDateTime( targetType ) )
+					{
+						ctor.Statements.Add(
+							new CodeAssignStatement(
+								new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), dependentSerializer.Value ),
+								new CodeMethodInvokeExpression(
+									new CodeMethodReferenceExpression(
+										contextArgument,
+										"GetSerializer",
+										new CodeTypeReference( targetType )
+									),
+									new CodeMethodInvokeExpression(
+										new CodeTypeReferenceExpression( typeof( DateTimeMessagePackSerializerHelpers ) ),
+										Metadata._DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethodMethod.Name,
+										contextArgument,
+										new CodeFieldReferenceExpression(
+											new CodeTypeReferenceExpression( typeof( DateTimeMemberConversionMethod ) ),
+											dependentSerializer.Key.DateTimeConversionMethod.ToString()
 										)
 									)
 								)

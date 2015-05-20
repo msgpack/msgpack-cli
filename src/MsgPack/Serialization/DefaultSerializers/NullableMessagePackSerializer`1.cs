@@ -41,6 +41,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._valueSerializer = ownerContext.GetSerializer<T>();
 		}
 
+		public NullableMessagePackSerializer( SerializationContext ownerContext, MessagePackSerializer<T> valueSerializer )
+			: base( ownerContext )
+		{
+			this._valueSerializer = valueSerializer;
+		}
+
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override void PackToCore( Packer packer, T? objectTree )
 		{
@@ -70,6 +76,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 			: base( ownerContext, nullableType )
 		{
 			this._valueSerializer = ownerContext.GetSerializer( underlyingType );
+			this._getValue = nullableType.GetProperty( "Value" ).GetGetMethod();
+		}
+
+		public NullableMessagePackSerializer( SerializationContext ownerContext, Type nullableType, IMessagePackSingleObjectSerializer valueSerializer )
+			: base( ownerContext, nullableType )
+		{
+			this._valueSerializer = valueSerializer;
 			this._getValue = nullableType.GetProperty( "Value" ).GetGetMethod();
 		}
 

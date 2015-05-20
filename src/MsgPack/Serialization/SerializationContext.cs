@@ -338,7 +338,24 @@ namespace MsgPack.Serialization
 #endif // !XAMIOS && !UNITY_IPHONE
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.Default"/>.
+		///		Gets or sets the default <see cref="DateTime"/> conversion methods of built-in serializers.
+		/// </summary>
+		/// <value>
+		///		The default <see cref="DateTime"/> conversion methods of built-in serializers. The default is <see cref="F:DateTimeConversionMethod.Native"/>.
+		/// </value>
+		/// <remarks>
+		///		As of 0.6, <see cref="DateTime"/> value is serialized as its native representation instead of interoperable UTC milliseconds Unix epoc.
+		///		This behavior solves some debugging problem and interop issues, but breaks compability.
+		///		If you want to change this behavior, set this value to <see cref="F:DateTimeConversionMethod.UnixEpoc"/>.
+		/// </remarks>
+		public DateTimeConversionMethod DefaultDateTimeConversionMethod
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.GetDefault()"/>.
 		/// </summary>
 		public SerializationContext()
 			: this( PackerCompatibilityOptions.Classic ) { }

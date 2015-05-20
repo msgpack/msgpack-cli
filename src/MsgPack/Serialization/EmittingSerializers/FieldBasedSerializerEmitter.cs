@@ -425,6 +425,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 							il.EmitCall( Metadata._EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethodMethod );
 							il.EmitBox( typeof( EnumSerializationMethod ) );
 						}
+						else if ( DateTimeMessagePackSerializerHelpers.IsDateTime( targetType ) )
+						{
+							il.EmitLdarg_1();
+							il.EmitAnyLdc_I4( ( int )entry.Key.DateTimeConversionMethod );
+							il.EmitCall( Metadata._DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethodMethod );
+							il.EmitBox( typeof( DateTimeConversionMethod ) );
+						}
 						else
 						{
 							if ( entry.Key.PolymorphismSchema == null )
@@ -483,6 +490,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		/// <param name="targetType">The type of the member to be serialized/deserialized.</param>
 		/// <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
+		/// <param name="dateTimeConversionMethod">The date time conversion method of the member to be serialized/deserialized.</param>
 		/// <param name="polymorphismSchema">The schema for polymorphism support.</param>
 		/// <param name="schemaRegenerationCodeProvider">The delegate to provide constructs to emit schema regeneration codes.</param>
 		/// <returns>
@@ -494,6 +502,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public override Action<TracingILGenerator, int> RegisterSerializer(
 			Type targetType,
 			EnumMemberSerializationMethod enumMemberSerializationMethod,
+			DateTimeMemberConversionMethod dateTimeConversionMethod,
 			PolymorphismSchema polymorphismSchema,
 			Func<IEnumerable<ILConstruct>> schemaRegenerationCodeProvider 
 		)
@@ -503,7 +512,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				throw new InvalidOperationException( "Type is already built." );
 			}
 
-			var key = new SerializerFieldKey( targetType, enumMemberSerializationMethod, polymorphismSchema );
+			var key = new SerializerFieldKey( targetType, enumMemberSerializationMethod, dateTimeConversionMethod, polymorphismSchema );
 
 			SerializerFieldInfo result;
 			if ( !this._serializers.TryGetValue( key, out result ) )

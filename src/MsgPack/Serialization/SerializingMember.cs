@@ -74,5 +74,27 @@ namespace MsgPack.Serialization
 
 			return EnumMemberSerializationMethod.Default;
 		}
+
+		public DateTimeMemberConversionMethod GetDateTimeMemberConversionMethod()
+		{
+#if NETFX_CORE
+			var messagePackDateTimeMemberAttribute = 
+				this.Member.GetCustomAttribute<MessagePackDateTimeMemberAttribute>();
+			if ( messagePackDateTimeMemberAttribute != null)
+			{
+				return messagePackDateTimeMemberAttribute.DateTimeConversionMethod;
+#else
+			var messagePackDateTimeMemberAttribute =
+				this.Member.GetCustomAttributes( typeof( MessagePackDateTimeMemberAttribute ), true );
+			if ( messagePackDateTimeMemberAttribute.Length > 0 )
+			{
+				return
+					// ReSharper disable once PossibleNullReferenceException
+					( messagePackDateTimeMemberAttribute[ 0 ] as MessagePackDateTimeMemberAttribute ).DateTimeConversionMethod;
+#endif // NETFX_CORE
+			}
+
+			return DateTimeMemberConversionMethod.Default;
+		}
 	}
 }

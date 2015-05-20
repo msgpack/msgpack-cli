@@ -658,8 +658,8 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 			if ( expected is DateTime )
 			{
 				Assert.That(
-					MillisecondsDateTimeComparer.Instance.Equals( ( DateTime )( object )expected, ( DateTime )( object )actual ),
-					"Expected:{1}({2},{3}){0}Actual :{4}({5},{6})",
+					( DateTime )( object )expected == ( DateTime )( object )actual,
+					"Expected:{1:O}({2},{3}){0}Actual :{4:O}({5},{6})",
 					Environment.NewLine,
 					expected,
 					expected == null ? "(null)" : expected.GetType().FullName,
@@ -667,19 +667,19 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 					actual,
 					actual == null ? "(null)" : actual.GetType().FullName,
 					( ( DateTime )( object )actual ).Kind
-					);
+				);
 				return;
 			}
 			else if ( expected is DateTimeOffset )
 			{
 				Assert.That(
-					MillisecondsDateTimeOffsetComparer.Instance.Equals( ( DateTimeOffset )( object )expected, ( DateTimeOffset )( object )actual ),
-				"Expected:{1}({2}){0}Actual :{3}({4})",
-				Environment.NewLine,
-				expected,
-				expected == null ? "(null)" : expected.GetType().FullName,
-				actual,
-				actual == null ? "(null)" : actual.GetType().FullName
+					( DateTimeOffset )( object )expected == ( DateTimeOffset )( object )actual,
+					"Expected:{1:O}({2}){0}Actual :{3:O}({4})",
+					Environment.NewLine,
+					expected,
+					expected == null ? "(null)" : expected.GetType().FullName,
+					actual,
+					actual == null ? "(null)" : actual.GetType().FullName
 				);
 				return;
 			}
@@ -834,6 +834,85 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 	public class HasEnumerable
 	{
 		public IEnumerable<int> Numbers { get; set; }
+	}
+
+	public class AnnotatedDateTimes
+	{
+		public DateTime VanillaDateTimeProperty { get; set; }
+
+		public DateTime VanillaDateTimeField;
+
+
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Default )]
+		public DateTime DefaultDateTimeProperty { get; set; }
+
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Default )]
+		public DateTime DefaultDateTimeField;
+
+
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Native )]
+		public DateTime NativeDateTimeProperty { get; set; }
+
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Native )]
+		public DateTime NativeDateTimeField;
+
+
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.UnixEpoc )]
+		public DateTime UnixEpocDateTimeProperty { get; set; }
+
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.UnixEpoc )]
+		public DateTime UnixEpocDateTimeField;
+
+		
+		
+		public DateTimeOffset VanillaDateTimeOffsetProperty { get; set; }
+		
+		public DateTimeOffset VanillaDateTimeOffsetField;
+		
+		
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Default )]
+		public DateTimeOffset DefaultDateTimeOffsetProperty { get; set; }
+		
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Default )]
+		public DateTimeOffset DefaultDateTimeOffsetField;
+		
+		
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Native )]
+		public DateTimeOffset NativeDateTimeOffsetProperty { get; set; }
+		
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Native )]
+		public DateTimeOffset NativeDateTimeOffsetField;
+		
+		
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.UnixEpoc )]
+		public DateTimeOffset UnixEpocDateTimeOffsetProperty { get; set; }
+		
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.UnixEpoc )]
+		public DateTimeOffset UnixEpocDateTimeOffsetField;
+
+
+
+		public AnnotatedDateTimes() {}
+
+		public AnnotatedDateTimes( DateTimeOffset now )
+		{
+			VanillaDateTimeProperty = now.DateTime;
+			VanillaDateTimeField = now.DateTime.AddDays( 1 );
+			DefaultDateTimeProperty = now.DateTime.AddDays( 2 );
+			DefaultDateTimeField = now.DateTime.AddDays( 3 );
+			NativeDateTimeProperty = now.DateTime.AddDays( 4 );
+			NativeDateTimeField = now.DateTime.AddDays( 5 );
+			UnixEpocDateTimeProperty = now.DateTime.AddDays( 6 );
+			UnixEpocDateTimeField = now.DateTime.AddDays( 7 );
+			VanillaDateTimeOffsetProperty = now.AddDays( 8 );
+			VanillaDateTimeOffsetField = now.AddDays( 9 );
+			DefaultDateTimeOffsetProperty = now.AddDays( 10 );
+			DefaultDateTimeOffsetField = now.AddDays( 11 );
+			NativeDateTimeOffsetProperty = now.AddDays( 12 );
+			NativeDateTimeOffsetField = now.AddDays( 13 );
+			UnixEpocDateTimeOffsetProperty = now.AddDays( 14 );
+			UnixEpocDateTimeOffsetField = now.AddDays( 15 );
+		}
 	}
 
 	internal class DictionaryTestHelper

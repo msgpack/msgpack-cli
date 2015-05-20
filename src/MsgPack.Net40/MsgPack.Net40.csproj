@@ -271,6 +271,15 @@
     <Compile Include="..\MsgPack\Serialization\DataMemberContract.cs">
       <Link>Serialization\DataMemberContract.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DateTimeConversionMethod.cs">
+      <Link>Serialization\DateTimeConversionMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DateTimeMemberConversionMethod.cs">
+      <Link>Serialization\DateTimeMemberConversionMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DateTimeMessagePackSerializerHelpers.cs">
+      <Link>Serialization\DateTimeMessagePackSerializerHelpers.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultConcreteTypeRepository.cs">
       <Link>Serialization\DefaultConcreteTypeRepository.cs</Link>
     </Compile>
@@ -310,11 +319,26 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ArraySerializer`1.cs">
       <Link>Serialization\DefaultSerializers\ArraySerializer`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\DateTimeMessagePackSerializerProvider.cs">
+      <Link>Serialization\DefaultSerializers\DateTimeMessagePackSerializerProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\DateTimeOffsetMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\DateTimeOffsetMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\DateTimeOffsetMessagePackSerializerProvider.cs">
+      <Link>Serialization\DefaultSerializers\DateTimeOffsetMessagePackSerializerProvider.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\DefaultSerializers.cs">
       <Link>Serialization\DefaultSerializers\DefaultSerializers.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs">
+      <Link>Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\GenericSerializer.cs">
       <Link>Serialization\DefaultSerializers\GenericSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\InternalDateTimeExtensions.cs">
+      <Link>Serialization\DefaultSerializers\InternalDateTimeExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MessagePackObjectExtensions.cs">
       <Link>Serialization\DefaultSerializers\MessagePackObjectExtensions.cs</Link>
@@ -327,6 +351,12 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NativeDateTimeMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\NativeDateTimeMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NullableMessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\NullableMessagePackSerializer`1.cs</Link>
@@ -376,9 +406,6 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_ObjectMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_ObjectMessagePackSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_StringMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_StringMessagePackSerializer.cs</Link>
     </Compile>
@@ -390,6 +417,12 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\UnixEpocDateTimeMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\UnixEpocDateTimeMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\EmitterFlavor.cs">
       <Link>Serialization\EmitterFlavor.cs</Link>
@@ -595,6 +628,9 @@
     <Compile Include="..\MsgPack\Serialization\LazyDelegatingMessagePackSerializer`1.cs">
       <Link>Serialization\LazyDelegatingMessagePackSerializer`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackDateTimeMemberAttribute.cs">
+      <Link>Serialization\MessagePackDateTimeMemberAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackDeserializationConstructorAttribute.cs">
       <Link>Serialization\MessagePackDeserializationConstructorAttribute.cs</Link>
     </Compile>
@@ -630,6 +666,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_CultureInfo.cs">
       <Link>Serialization\Metadata\_CultureInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_DateTimeMessagePackSerializerHelpers.cs">
+      <Link>Serialization\Metadata\_DateTimeMessagePackSerializerHelpers.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_Decimal.cs">
       <Link>Serialization\Metadata\_Decimal.cs</Link>

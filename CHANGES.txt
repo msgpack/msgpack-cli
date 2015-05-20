@@ -264,6 +264,8 @@ Release 0.6.0 Beta2 - 2015/05/17
 
   IMPROVEMENTS
   * Add many workarounds for AOT issues of Mono on iOS (in particular, Unity).
+  * System.DateTime, System.DateTimeOffset, System.Runtime.InteropServices.ComTypes.FILETIME are now serialized native representation by default, it keeps 100-nanosecond resolution, DateTimeKind, and Offset.
+    You can revert the behavior to the previous Unix Epoc via SerializationContext.DefaultDateTimeConversion or [MessagePackDateTimeMember] custom attribute. Issue #74
 
   BUG FIXES
   * Fix System.Object instance causes StackOverflowException. Issue #73

@@ -70,9 +70,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			this._configuration = configuration;
 		}
 
-		public string GetSerializerFieldName( Type targetType, EnumMemberSerializationMethod enumSerializationMethod, PolymorphismSchema polymorphismSchema )
+		public string GetSerializerFieldName( Type targetType, EnumMemberSerializationMethod enumSerializationMethod, DateTimeMemberConversionMethod dateTimeConversionMethod, PolymorphismSchema polymorphismSchema )
 		{
-			var key = new SerializerFieldKey( targetType, enumSerializationMethod, polymorphismSchema );
+			var key = new SerializerFieldKey( targetType, enumSerializationMethod, dateTimeConversionMethod, polymorphismSchema );
 
 			string fieldName;
 			if ( !this._dependentSerializers.TryGetValue( key, out fieldName ) )

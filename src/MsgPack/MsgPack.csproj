@@ -179,6 +179,9 @@
     <Compile Include="Serialization\CollectionSerializers\EnumerableMessagePackSerializerBase`2.cs" />
     <Compile Include="Serialization\CollectionSerializers\EnumerableMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\CollectionSerializers\ICollectionInstanceFactory.cs" />
+    <Compile Include="Serialization\DateTimeConversionMethod.cs" />
+    <Compile Include="Serialization\DateTimeMemberConversionMethod.cs" />
+    <Compile Include="Serialization\DateTimeMessagePackSerializerHelpers.cs" />
     <Compile Include="Serialization\DefaultSerializers\AbstractCollectionSerializerHelper.cs" />
     <Compile Include="Serialization\DefaultSerializers\AbstractNonGenericDictionaryMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\AbstractEnumerableMessagePackSerializer`2.cs" />
@@ -187,6 +190,15 @@
     <Compile Include="Serialization\DefaultSerializers\AbstractNonGenericListMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\AbstractCollectionMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\DefaultSerializers\AbstractDictionaryMessagePackSerializer`3.cs" />
+    <Compile Include="Serialization\DefaultSerializers\DateTimeMessagePackSerializerProvider.cs" />
+    <Compile Include="Serialization\DefaultSerializers\DateTimeOffsetMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\DateTimeOffsetMessagePackSerializerProvider.cs" />
+    <Compile Include="Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs" />
+    <Compile Include="Serialization\DefaultSerializers\InternalDateTimeExtensions.cs" />
+    <Compile Include="Serialization\DefaultSerializers\NativeDateTimeMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\UnixEpocDateTimeMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
     <Compile Include="Serialization\EmittingSerializers\CallbackCollectionMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\EmittingSerializers\CallbackDictionaryMessagePackSerializer`3.cs" />
     <Compile Include="Serialization\EmittingSerializers\CallbackEnumerableMessagePackSerializer`2.cs" />
@@ -206,6 +218,7 @@
     <Compile Include="Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilderHelpers.cs" />
     <Compile Include="Serialization\INilImplicationHandlerOnUnpackedParameter.cs" />
     <Compile Include="Serialization\INilImplicationHandlerParameter.cs" />
+    <Compile Include="Serialization\MessagePackDateTimeMemberAttribute.cs" />
     <Compile Include="Serialization\MessagePackRuntimeTypeAttributes.cs">
       <DependentUpon>MessagePackRuntimeTypeAttributes.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -216,6 +229,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MessagePackKnownTypeAttributes.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\Metadata\_DateTimeMessagePackSerializerHelpers.cs" />
     <Compile Include="Serialization\Polymorphic\IPolymorphicHelperAttributes.cs" />
     <Compile Include="Serialization\Polymorphic\IPolymorphicDeserializer.cs" />
     <Compile Include="Serialization\Polymorphic\KnownTypePolymorhicMessagePackSerializer`1.cs" />
@@ -416,7 +430,6 @@
     <Compile Include="Serialization\SerializationContext.cs" />
     <Compile Include="Serialization\SerializationExceptions.cs" />
     <Compile Include="Serialization\SerializerRepository.cs" />
-    <Compile Include="Serialization\DefaultSerializers\System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />
     <Compile Include="Serialization\Tracer.cs" />
     <Compile Include="Serialization\TypeEmbeddingSettings.cs" />

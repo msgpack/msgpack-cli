@@ -371,6 +371,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		/// <param name="targetType">The type of the member to be serialized/deserialized.</param>
 		/// <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
+		/// <param name="dateTimeConversionMethod">The date time conversion method of the member to be serialized/deserialized.</param>
 		/// <param name="polymorphismSchema">The schema for polymorphism support.</param>
 		/// <param name="schemaRegenerationCodeProvider">The delegate to provide constructs to emit schema regeneration codes.</param>
 		/// <returns>
@@ -382,6 +383,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public override Action<TracingILGenerator, int> RegisterSerializer(
 			Type targetType,
 			EnumMemberSerializationMethod enumMemberSerializationMethod,
+			DateTimeMemberConversionMethod dateTimeConversionMethod,
 			PolymorphismSchema polymorphismSchema,
 			Func<IEnumerable<ILConstruct>> schemaRegenerationCodeProvider
 		)

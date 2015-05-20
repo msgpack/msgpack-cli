@@ -271,11 +271,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				contracts[ i ] = member.Contract ?? DataMemberContract.Null;
 #endif // !UNITY
 				var memberType = member.Member.GetMemberValueType();
-				if ( !memberType.GetIsEnum() )
-				{
-					serializers[ i ] = context.GetSerializer( memberType, PolymorphismSchema.Create( context, memberType, member ) );
-				}
-				else
+				if ( memberType.GetIsEnum() )
 				{
 					serializers[ i ] =
 						context.GetSerializer(
@@ -286,6 +282,21 @@ namespace MsgPack.Serialization.ReflectionSerializers
 								member.GetEnumMemberSerializationMethod()
 							)
 						);
+				}
+				else if ( DateTimeMessagePackSerializerHelpers.IsDateTime( memberType ) )
+				{
+					serializers[ i ] =
+						context.GetSerializer(
+							memberType,
+							DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(
+								context,
+								member.GetDateTimeMemberConversionMethod()
+							)
+						);
+				}
+				else
+				{
+					serializers[ i ] = context.GetSerializer( memberType, PolymorphismSchema.Create( context, memberType, member ) );
 				}
 			}
 		}

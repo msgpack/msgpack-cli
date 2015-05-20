@@ -47,6 +47,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 					memberInfo == null
 						? EnumMemberSerializationMethod.Default
 						: memberInfo.Value.GetEnumMemberSerializationMethod(),
+					memberInfo == null
+						? DateTimeMemberConversionMethod.Default
+						: memberInfo.Value.GetDateTimeMemberConversionMethod(),
 					realSchema,
 					() => this.EmitConstructPolymorphismSchema( context, realSchema ) 
 				);
