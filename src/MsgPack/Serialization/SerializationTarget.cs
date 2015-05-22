@@ -102,10 +102,10 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructor( targetType );
 			}
 
+			// Because members' order is equal to declared order is NOT guaranteed, so explicit ordering is required.
 			IList<SerializingMember> members;
 			if ( memberCandidates.All( item => item.Contract.Id == DataMemberContract.UnspecifiedId ) )
 			{
-				// TODO: Declared order option
 				// Alphabetical order.
 				members = memberCandidates.OrderBy( item => item.Contract.Name ).ToArray();
 			}
