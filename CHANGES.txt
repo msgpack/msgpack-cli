@@ -257,10 +257,10 @@ Release 0.6.0 Beta1 - 2015/04/27
   * MessagePackSerializer.Create now always returns new instance.
   * Fix build problem related to interface generic parameter variance.
 
-Release 0.6.0 Beta2 - 2015/05/17
+Release 0.6.0 Beta2 - 2015/05/24
 
   NEW FEATURE
-  * 
+  * New utility method of SerializationContext to switch back the behavior to previous version's one.
 
   IMPROVEMENTS
   * Add many workarounds for AOT issues of Mono on iOS (in particular, Unity).

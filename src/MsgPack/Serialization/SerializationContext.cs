@@ -65,7 +65,7 @@ namespace MsgPack.Serialization
 
 
 		// Set SerializerRepository null because it requires SerializationContext, so re-init in constructor.
-		private static SerializationContext _default = new SerializationContext( PackerCompatibilityOptions.Classic );
+		private static SerializationContext _default = new SerializationContext( PackerCompatibilityOptions.None );
 
 		/// <summary>
 		///		Gets or sets the default instance.
@@ -355,10 +355,65 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
+		///		Configures <see cref="Default"/> as new classic <see cref="SerializationContext"/> instance.
+		/// </summary>
+		/// <returns>The previously set context as <see cref="Default"/>.</returns>
+		/// <seealso cref="CreateClassicContext()"/>
+		public static SerializationContext ConfigureClassic()
+		{
+#if !UNITY
+			return Interlocked.Exchange( ref _default, CreateClassicContext() );
+#else
+			lock ( DefaultContextSyncRoot )
+			{
+				var old = _default;
+				_default = CreateClassicContext();
+				return old;
+			}
+#endif // !UNITY
+		}
+
+		/// <summary>
+		///		Creates a new <see cref="SerializationContext"/> which is configured as same as 0.5.
+		/// </summary>
+		/// <returns>
+		///		A new <see cref="SerializationContext"/> which is configured as same as 0.5.
+		/// </returns>
+		/// <remarks>
+		///		There are breaking changes of <see cref="SerializationContext"/> properties to improve API usability and to prevent accidental failure.
+		///		This method returns a <see cref="SerializationContext"/> which configured as classic style settings as follows:
+		///		<list type="table">
+		///			<listheader>
+		///				<term></term>
+		///				<description>Default (as of 0.6)</description>
+		///				<description>Classic (before 0.6)</description>
+		///			</listheader>
+		///			<item>
+		///				<term>Packed object members order (if members are not marked with <see cref="MessagePackMemberAttribute"/>  nor <c>System.Runtime.Serialization.DataMemberAttribute</c> and serializer uses <see cref="F:SerializationMethod.Array"/>)</term>
+		///				<description>As declared (metadata table order)</description>
+		///				<description>As lexicographical</description>
+		///			</item>
+		///			<item>
+		///				<term><see cref="DateTime"/> value</term>
+		///				<description>Native representation (100-nano ticks, preserving <see cref="DateTimeKind"/>.)</description>
+		///				<description>UTC, milliseconds Unix epoc.</description>
+		///			</item>
+		///		</list>
+		/// </remarks>
+		public static SerializationContext CreateClassicContext()
+		{
+			return
+				new SerializationContext( PackerCompatibilityOptions.Classic )
+				{
+					DefaultDateTimeConversionMethod = DateTimeConversionMethod.UnixEpoc
+				};
+		}
+
+		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.GetDefault()"/>.
 		/// </summary>
 		public SerializationContext()
-			: this( PackerCompatibilityOptions.Classic ) { }
+			: this( PackerCompatibilityOptions.None ) { }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.GetDefault(PackerCompatibilityOptions)"/> for specified <see cref="PackerCompatibilityOptions"/>.
@@ -381,6 +436,9 @@ namespace MsgPack.Serialization
 			this._typeLock = new ConcurrentDictionary<Type, object>();
 #endif // SILVERLIGHT || NETFX_35 || UNITY
 			this._defaultCollectionTypes = new DefaultConcreteTypeRepository();
+#if !XAMIOS &&!UNITY
+			this._generatorOption = SerializationMethodGeneratorOption.Fast;
+#endif // !XAMIOS && !UNITY
 		}
 
 		internal bool ContainsSerializer( Type rootType )

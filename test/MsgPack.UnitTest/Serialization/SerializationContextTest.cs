@@ -192,6 +192,73 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		public void TestDefault_SafeAndEasySettings()
+		{
+			Assert.That( SerializationContext.Default, Is.Not.Null );
+			Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+			Assert.That( SerializationContext.Default.EnumSerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
+#if !XAMIOS && !UNITY
+			Assert.That( SerializationContext.Default.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
+#endif // !XAMIOS && !UNITY
+			Assert.That( SerializationContext.Default.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
+		}
+
+		[Test]
+		public void TestCreateClassicContext_Version0_5_Compatible()
+		{
+			var context = SerializationContext.CreateClassicContext();
+			Assert.That( context, Is.Not.Null );
+			Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.UnixEpoc ) );
+			Assert.That( context.EnumSerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
+#if !XAMIOS && !UNITY
+			Assert.That( context.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
+#endif // !XAMIOS && !UNITY
+			Assert.That( context.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
+		}
+
+		[Test]
+		public void TestConfigureClassic_DefaultIsReplaced()
+		{
+			var previous = SerializationContext.Default;
+			try
+			{
+				var result = SerializationContext.ConfigureClassic();
+
+				// result is old.
+				Assert.That( result, Is.SameAs( previous ) );
+				// result is default settings.
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+				Assert.That( result.EnumSerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
+#if !XAMIOS && !UNITY
+				Assert.That( result.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
+#endif // !XAMIOS && !UNITY
+				Assert.That( result.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
+
+				// default is now classic
+				Assert.That( SerializationContext.Default, Is.Not.Null );
+				Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.UnixEpoc ) );
+				Assert.That( SerializationContext.Default.EnumSerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
+#if !XAMIOS && !UNITY
+				Assert.That( SerializationContext.Default.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
+#endif // !XAMIOS && !UNITY
+				Assert.That( SerializationContext.Default.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
+			}
+			finally
+			{
+				SerializationContext.Default = previous;
+			}
+
+			// Verify restore
+			Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+			Assert.That( SerializationContext.Default.EnumSerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
+#if !XAMIOS && !UNITY
+			Assert.That( SerializationContext.Default.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
+#endif // !XAMIOS && !UNITY
+			Assert.That( SerializationContext.Default.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
+		}
+
+		[Test]
 		public void TestIssue24()
 		{
 			var context = new SerializationContext();

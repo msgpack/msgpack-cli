@@ -465,6 +465,20 @@ namespace MsgPack.Serialization
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[ 0 ] );
+				Assert.That( stream.Length, Is.EqualTo( 2 ), BitConverter.ToString( stream.ToArray() ) );
+				stream.Position = 0;
+				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new byte[ 0 ] ) );
+			}
+		}
+
+		[Test]
+		public void TestEmptyBytes_Classic()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.Classic );
+			var serializer = this.CreateTarget<byte[]>( context );
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( stream, new byte[ 0 ] );
 				Assert.That( stream.Length, Is.EqualTo( 1 ), BitConverter.ToString( stream.ToArray() ) );
 				stream.Position = 0;
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new byte[ 0 ] ) );
@@ -613,16 +627,20 @@ namespace MsgPack.Serialization
 			}
 		}
 
-
 		[Test]
-		public void TestBinary_DefaultContext()
+		public void TestExt_ClassicContext()
 		{
-			var serializer = SerializationContext.Default.GetSerializer<byte[]>();
+			var context = NewSerializationContext( SerializationContext.CreateClassicContext().CompatibilityOptions.PackerCompatibilityOptions );
+			context.Serializers.Register( new CustomDateTimeSerealizer() );
+			var serializer = CreateTarget<DateTime>( context );
 
 			using ( var stream = new MemoryStream() )
 			{
-				serializer.Pack( stream, new byte[] { 1 } );
-				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { MessagePackCode.MinimumFixedRaw + 1, 1 } ) );
+				var date = DateTime.UtcNow;
+				serializer.Pack( stream, date );
+				stream.Position = 0;
+				var unpacked = serializer.Unpack( stream );
+				Assert.That( unpacked.ToString( "yyyyMMddHHmmssfff" ), Is.EqualTo( date.ToString( "yyyyMMddHHmmssfff" ) ) );
 			}
 		}
 
@@ -745,8 +763,6 @@ namespace MsgPack.Serialization
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractNonCollection>( context ) );
 		}
-
-		// FIXME: init-only field, get-only property, Value type which implements IList<T> and has .ctor(int), Enumerator class which explicitly implements IEnumerator
 
 		private void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer )
 		{
