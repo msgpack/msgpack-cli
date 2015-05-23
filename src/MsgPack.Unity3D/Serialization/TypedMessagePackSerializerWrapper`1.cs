@@ -57,6 +57,19 @@ namespace MsgPack.Serialization
 			return ( T )this._underlyingSerializer.UnpackFrom( unpacker );
 		}
 
+		protected internal override T UnpackNil()
+		{
+			var asTyped = this._underlyingSerializer as MessagePackSerializer<T>;
+			if ( asTyped != null )
+			{
+				return asTyped.UnpackNil();
+			}
+			else
+			{
+				return base.UnpackNil();
+			}
+		}
+
 		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
 		{
 			this._underlyingSerializer.UnpackTo( unpacker, collection );

@@ -261,12 +261,13 @@ Release 0.6.0 Beta2 - 2015/05/24
 
   NEW FEATURE
   * New utility method of SerializationContext to switch back the behavior to previous version's one.
-  * Add corlib only build (MsgPack.Unity3D.Micro). This build only depends mscorlib. This feature is experimental. Related to Issue #72.
+  * Add corlib only build (MsgPack.Unity3D.Micro). This build only depends mscorlib. This feature is experimental. Related to Issue #70.
 
   IMPROVEMENTS
   * Add many workarounds for AOT issues of Mono on iOS (in particular, Unity).
   * System.DateTime, System.DateTimeOffset, System.Runtime.InteropServices.ComTypes.FILETIME are now serialized native representation by default, it keeps 100-nanosecond resolution, DateTimeKind, and Offset.
     You can revert the behavior to the previous Unix Epoc via SerializationContext.DefaultDateTimeConversion or [MessagePackDateTimeMember] custom attribute. Issue #74
+  * System.DBNull become serializable now. Issue #72.
 
   BUG FIXES
   * Fix System.Object instance causes StackOverflowException. Issue #73

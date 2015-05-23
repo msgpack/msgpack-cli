@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,6 +41,32 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class RegressionTests
 	{
+#if !NETFX_CORE
+		[Test]
+		public void TestIssue70()
+		{
+			var serializer = MessagePackSerializer.Get<DBNull>( new SerializationContext() );
+#if !UNITY
+			// Should not be created dynamically.
+			Assert.That( serializer, Is.TypeOf( typeof( DefaultSerializers.System_DBNullMessagePackSerializer ) ) );
+#endif // !UNITY
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, DBNull.Value );
+
+				buffer.Position = 0;
+				var packed = Unpacking.UnpackObject( buffer );
+				Assert.That( packed.IsNil, packed.ToString() );
+
+				buffer.Position = 0;
+				var unpacked = serializer.Unpack( buffer );
+				Assert.That( Object.ReferenceEquals( unpacked, null ), Is.False );
+				Assert.That( unpacked, Is.SameAs( DBNull.Value ) );
+			}
+		}
+#endif // !NETFX_CORE
+
 		[Test]
 		public void TestIssue73()
 		{

@@ -45,10 +45,12 @@ namespace MsgPack.Serialization
 	// ReSharper disable RedundantNameQualifier
 	partial class SerializerRepository 
 	{
+		internal const int DefaultTableCapacity = 434;
+
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This API is naturally coupled with many types" )]
 		internal static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable( SerializationContext ownerContext )
 		{
-			var dictionary = new Dictionary<RuntimeTypeHandle, object>( 433 );
+			var dictionary = new Dictionary<RuntimeTypeHandle, object>( DefaultTableCapacity );
 			dictionary.Add( typeof( MessagePackObject ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.MsgPack_MessagePackObjectMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( MessagePackObjectDictionary ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.MsgPack_MessagePackObjectDictionaryMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( MessagePackExtendedTypeObject ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer( ownerContext ) );
@@ -76,6 +78,9 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( System.Collections.Generic.KeyValuePair<,> ).TypeHandle, typeof( System_Collections_Generic_KeyValuePair_2MessagePackSerializer ) );
 			dictionary.Add( typeof( System.ArraySegment<> ).TypeHandle, typeof( System_ArraySegment_1MessagePackSerializer ) );
 #endif // UNITY
+#if !NETFX_CORE
+			dictionary.Add( typeof( DBNull ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_DBNullMessagePackSerializer( ownerContext ) );
+#endif // !NETFX_CORE
 			dictionary.Add( typeof( System.Boolean ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_BooleanMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( System.Byte ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_ByteMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( System.Char ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_CharMessagePackSerializer( ownerContext ) );

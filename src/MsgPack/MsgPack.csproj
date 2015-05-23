@@ -197,6 +197,7 @@
     <Compile Include="Serialization\DefaultSerializers\InternalDateTimeExtensions.cs" />
     <Compile Include="Serialization\DefaultSerializers\NativeDateTimeMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_DBNullMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\UnixEpocDateTimeMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
     <Compile Include="Serialization\EmittingSerializers\CallbackCollectionMessagePackSerializer`2.cs" />
