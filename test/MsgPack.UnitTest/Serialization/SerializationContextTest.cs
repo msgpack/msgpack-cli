@@ -326,6 +326,14 @@ namespace MsgPack.Serialization
 				Assert.That( result.First(), Is.EqualTo( "A" ) );
 			}
 		}
+
+		[Test]
+		public void TestDefaultTableCapacity()
+		{
+			var table = SerializerRepository.InitializeDefaultTable( new SerializationContext() );
+			Assert.That( table.Count, Is.LessThanOrEqualTo( SerializerRepository.DefaultTableCapacity ) );
+		}
+
 		private sealed class NetDateTimeSerializer : MessagePackSerializer<DateTime>
 		{
 			public NetDateTimeSerializer()
