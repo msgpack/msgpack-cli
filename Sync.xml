@@ -68,6 +68,17 @@
     <Exclude Path="Validation.cs" />
   </Project>
 
+  <Project Name="MsgPack.Unity3D.Micro" Base="MsgPack.Unity3D">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve Path="MicroCorLibHelper*.tt" />
+    <Preserve Path="MicroCorLibHelper*.cs" />
+    <Exclude Path="Serialization\AotHelper*.tt" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs" />
+  </Project>
+
   <Project Name="MsgPack.WinRT.Portable" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.tt" />

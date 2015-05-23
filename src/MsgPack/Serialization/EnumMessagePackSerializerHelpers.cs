@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+#if !CORLIB_ONLY
 using System.ComponentModel;
+#endif // !CORLIB_ONLY
 #if NETFX_CORE
 using System.Reflection;
 #endif
@@ -30,7 +32,9 @@ namespace MsgPack.Serialization
 	///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 	///		Helper methods for enum message pack serializer.
 	/// </summary>
+#if !CORLIB_ONLY
 	[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 	public static class EnumMessagePackSerializerHelpers
 	{
 		/// <summary>

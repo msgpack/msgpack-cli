@@ -34,6 +34,10 @@ using System.Diagnostics.Contracts;
 #endif // !UNITY
 using System.Globalization;
 
+#if !CORLIB_ONLY
+using Int64Stack = System.Collections.Generic.Stack<System.Int64>;
+#endif // !CORLIB_ONLY
+
 namespace MsgPack
 {
 	// This file was generated from ItemsUnpacker.Skipping.tt and StreamingUnapkcerBase.ttinclude T4Template.
@@ -54,7 +58,7 @@ namespace MsgPack
 
 			long remainingItems = -1;
 			long skipped = 0;
-			Stack<long> remainingCollections = null;
+			Int64Stack remainingCollections = null;
 			do
 			{
 				var header = source.ReadByte();
@@ -178,7 +182,7 @@ namespace MsgPack
 						{
 							if( remainingCollections == null )
 							{
-								remainingCollections = new Stack<long>( 4 );
+								remainingCollections = new Int64Stack( 4 );
 							}
 							
 							remainingCollections.Push( remainingItems );
@@ -225,7 +229,7 @@ namespace MsgPack
 						{
 							if( remainingCollections == null )
 							{
-								remainingCollections = new Stack<long>( 4 );
+								remainingCollections = new Int64Stack( 4 );
 							}
 							
 							remainingCollections.Push( remainingItems );
@@ -603,7 +607,7 @@ namespace MsgPack
 							{
 								if( remainingCollections == null )
 								{
-									remainingCollections = new Stack<long>( 4 );
+									remainingCollections = new Int64Stack( 4 );
 								}
 								
 								remainingCollections.Push( remainingItems );
@@ -660,7 +664,7 @@ namespace MsgPack
 							{
 								if( remainingCollections == null )
 								{
-									remainingCollections = new Stack<long>( 4 );
+									remainingCollections = new Int64Stack( 4 );
 								}
 								
 								remainingCollections.Push( remainingItems );
@@ -717,7 +721,7 @@ namespace MsgPack
 							{
 								if( remainingCollections == null )
 								{
-									remainingCollections = new Stack<long>( 4 );
+									remainingCollections = new Int64Stack( 4 );
 								}
 								
 								remainingCollections.Push( remainingItems );
@@ -774,7 +778,7 @@ namespace MsgPack
 							{
 								if( remainingCollections == null )
 								{
-									remainingCollections = new Stack<long>( 4 );
+									remainingCollections = new Int64Stack( 4 );
 								}
 								
 								remainingCollections.Push( remainingItems );

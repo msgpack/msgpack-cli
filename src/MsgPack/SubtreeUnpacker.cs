@@ -32,6 +32,12 @@ using System.Diagnostics.Contracts;
 #endif // XAMIOS || XAMDROID
 #endif // !UNITY
 
+#if !CORLIB_ONLY
+using BooleanStack = System.Collections.Generic.Stack<System.Boolean>;
+using Int64Stack = System.Collections.Generic.Stack<System.Int64>;
+#endif
+
+
 namespace MsgPack
 {
 	// TODO: Expose base subtree unpacker as API
@@ -42,9 +48,9 @@ namespace MsgPack
 	{
 		private readonly ItemsUnpacker _root;
 		private readonly SubtreeUnpacker _parent;
-		private readonly Stack<bool> _isMap;
-		private readonly Stack<long> _unpacked;
-		private readonly Stack<long> _itemsCount;
+		private readonly BooleanStack _isMap;
+		private readonly Int64Stack _unpacked;
+		private readonly Int64Stack _itemsCount;
 
 		public override long ItemsCount
 		{
@@ -96,10 +102,10 @@ namespace MsgPack
 #endif // DEBUG && !UNITY
 			this._root = root;
 			this._parent = parent;
-			this._unpacked = new Stack<long>( 2 );
+			this._unpacked = new Int64Stack( 2 );
 
-			this._itemsCount = new Stack<long>( 2 );
-			this._isMap = new Stack<bool>( 2 );
+			this._itemsCount = new Int64Stack( 2 );
+			this._isMap = new BooleanStack( 2 );
 
 			if ( root.ItemsCount > 0 )
 			{

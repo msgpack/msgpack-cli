@@ -25,7 +25,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if !CORLIB_ONLY
 using System.ComponentModel;
+#endif //!CORLIB_ONLY
 using System.Reflection;
 #if !UNITY
 #if XAMIOS || XAMDROID
@@ -42,7 +44,9 @@ namespace MsgPack.Serialization
 	///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 	///		Defines serialization helper APIs.
 	/// </summary>
+#if !CORLIB_ONLY
 	[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 	public static partial class UnpackHelpers
 	{
 		private static readonly MessagePackSerializer<MessagePackObject> _messagePackObjectSerializer =
@@ -58,8 +62,10 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialization.
 		/// </exception>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future.")]
+#endif // !CORLIB_ONLY
+		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackArrayTo<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, T[] array )
 		{
 			if ( unpacker == null )
@@ -120,7 +126,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialization.
 		/// </exception>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackCollectionTo( Unpacker unpacker, IEnumerable collection, Action<object> addition )
 		{
@@ -184,7 +192,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialization.
 		/// </exception>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackCollectionTo<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, IEnumerable<T> collection, Action<T> addition )
 		{
@@ -254,7 +264,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialization.
 		/// </exception>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackCollectionTo<TDiscarded>( Unpacker unpacker, IEnumerable collection, Func<object, TDiscarded> addition )
 		{
@@ -319,7 +331,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialization.
 		/// </exception>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackCollectionTo<T, TDiscarded>( Unpacker unpacker, MessagePackSerializer<T> serializer, IEnumerable<T> collection, Func<T, TDiscarded> addition )
 		{
@@ -389,7 +403,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialization.
 		/// </exception>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackMapTo<TKey, TValue>( Unpacker unpacker, MessagePackSerializer<TKey> keySerializer, MessagePackSerializer<TValue> valueSerializer, IDictionary<TKey, TValue> dictionary )
 		{
@@ -474,7 +490,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialization.
 		/// </exception>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackMapTo( Unpacker unpacker, IDictionary dictionary )
 		{
@@ -552,7 +570,9 @@ namespace MsgPack.Serialization
 		///		The items count of the collection can be between <see cref="Int32.MaxValue"/> and <see cref="UInt32.MaxValue"/>,
 		///		but most collections do not support so big count.
 		/// </remarks>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		public static int GetItemsCount( Unpacker unpacker )
 		{
 			if( unpacker == null )
@@ -587,7 +607,9 @@ namespace MsgPack.Serialization
 		/// <param name="name">The name of the member.</param>
 		/// <param name="targetType">The type of the target.</param>
 		/// <returns>The unboxed value.</returns>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static T ConvertWithEnsuringNotNull<T>( object boxed, string name, Type targetType )
 		{
@@ -606,7 +628,9 @@ namespace MsgPack.Serialization
 		/// <param name="serializer">The invocation target <see cref="MessagePackSerializer{T}"/>.</param>
 		/// <param name="unpacker">The unpacker to be passed to the method.</param>
 		/// <returns>A deserialized value.</returns>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static T InvokeUnpackFrom<T>( MessagePackSerializer<T> serializer, Unpacker unpacker )
 		{
@@ -721,7 +745,9 @@ namespace MsgPack.Serialization
 		/// <returns>
 		///		An <see cref="IEqualityComparer{T}"/> instance.
 		/// </returns>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		public static IEqualityComparer<T> GetEqualityComparer<T>()
 		{
 #if !UNITY

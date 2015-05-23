@@ -136,18 +136,42 @@ namespace MsgPack.Serialization
 <#
 foreach ( var valueType in valueTypes )
 {
+	if ( valueType.Type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	{
+#>
+#if !CORLIB_ONLY
+<#
+	}
 #>
 			result.Add( typeof( <#= valueType.Type.FullName #> ).TypeHandle, new <#= valueType.ComparerName #>() );
 			result.Add( typeof( <#= valueType.Type.FullName #>? ).TypeHandle, new Nullable<#= valueType.ComparerName #>() );
 <#
+	if ( valueType.Type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	{
+#>
+#endif // !CORLIB_ONLY
+<#
+	}
 }
 #>
 <#
 foreach ( var knownComparer in knownComparers )
 {
+	if ( typeof( object ).Assembly.GetType( knownComparer.TypeName, false ) == null && !knownComparer.TypeName.StartsWith( "MsgPack." ) )
+	{
+#>
+#if !CORLIB_ONLY
+<#
+	}
 #>
 			result.Add( typeof( <#= knownComparer.TypeName #> ).TypeHandle, <#= knownComparer.ComparerExpression #> );
 <#
+	if ( typeof( object ).Assembly.GetType( knownComparer.TypeName, false ) == null && !knownComparer.TypeName.StartsWith( "MsgPack." ) )
+	{
+#>
+#endif // !CORLIB_ONLY
+<#
+	}
 }
 #>
 			return result;
@@ -156,6 +180,12 @@ foreach ( var knownComparer in knownComparers )
 <#
 foreach ( var valueType in valueTypes )
 {
+	if ( valueType.Type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	{
+#>
+#if !CORLIB_ONLY
+<#
+	}
 #>
 
 		private sealed class <#= valueType.ComparerName #> : IEqualityComparer<#= "<" + valueType.Type.FullName + ">" #>
@@ -223,6 +253,12 @@ foreach ( var valueType in valueTypes )
 			}
 		}
 <#
+	if ( valueType.Type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	{
+#>
+#endif // !CORLIB_ONLY
+<#
+	}
 }
 #>
 	}

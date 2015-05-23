@@ -92,7 +92,7 @@ namespace MsgPack.Serialization
 		///				<description><see cref="List{T}"/></description>
 		///			</item>
 		///			<item>
-		///				<term><see cref="ISet{T}"/> (.NET 4 or lator)</term>
+		///				<term><c>ISet{T}</c> (.NET 4 or lator)</term>
 		///				<description><see cref="HashSet{T}"/></description>
 		///			</item>
 		///			<item>

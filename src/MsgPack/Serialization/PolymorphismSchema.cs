@@ -25,7 +25,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+#if !CORLIB_ONLY
 using System.ComponentModel;
+#endif // !CORLIB_ONLY
 using System.Diagnostics;
 using System.Linq;
 
@@ -39,7 +41,9 @@ namespace MsgPack.Serialization
 	///			A provider parameter to support polymorphism.
 	///		</para>
 	/// </summary>
+#if !CORLIB_ONLY
 	[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 	[DebuggerDisplay("{DebugString}")]
 	public sealed partial class PolymorphismSchema
 	{

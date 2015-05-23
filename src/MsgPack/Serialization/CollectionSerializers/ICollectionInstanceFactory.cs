@@ -19,8 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-using System.CodeDom;
-using System.Runtime.CompilerServices;
 
 namespace MsgPack.Serialization.CollectionSerializers
 {

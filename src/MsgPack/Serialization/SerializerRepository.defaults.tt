@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -207,7 +207,7 @@ var __notInUnities =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -230,7 +230,9 @@ var __notInUnities =
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if !CORLIB_ONLY
 using System.Collections.Specialized;
+#endif // !CORLIB_ONLY
 using System.Globalization;
 #if !WINDOWS_PHONE && !NETFX_35 && !UNITY
 using System.Numerics;
@@ -316,9 +318,23 @@ foreach( Type __type in __structTypes )
 #if !NETFX_35 && !UNITY
 <#
 	}
+
+	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	{
+#>
+#if !CORLIB_ONLY
+<#
+	}
 #>
 			dictionary.Add( typeof( <#= __type.FullName #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer( ownerContext ) );
 <#
+
+	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	{
+#>
+#endif // !CORLIB_ONLY
+<#
+	}
 
 	if( __notInNet35s.Contains( __type ) )
 	{
@@ -389,6 +405,13 @@ foreach( Type __type in __classTypes )
 #if !UNITY
 <#
 	}
+
+	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	{
+#>
+#if !CORLIB_ONLY
+<#
+	}
 	
 	if( __type.IsGenericTypeDefinition )
 	{
@@ -400,6 +423,13 @@ foreach( Type __type in __classTypes )
 	{
 #>
 			dictionary.Add( typeof( <#= ToCSharpTypeToken( __type ) #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer( ownerContext ) );
+<#
+	}
+	
+	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	{
+#>
+#endif // !CORLIB_ONLY
 <#
 	}
 

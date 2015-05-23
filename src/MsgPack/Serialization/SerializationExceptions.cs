@@ -23,7 +23,9 @@
 #endif
 
 using System;
+#if !CORLIB_ONLY
 using System.ComponentModel;
+#endif // !CORLIB_ONLY
 #if !UNITY
 #if XAMIOS || XAMDROID
 using Contract = MsgPack.MPContract;
@@ -44,7 +46,9 @@ namespace MsgPack.Serialization
 	///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 	///		Defines common exception factory methods.
 	/// </summary>
+#if !CORLIB_ONLY
 	[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 	public static class SerializationExceptions
 	{
 #if !XAMIOS && !XAMDROID && !UNITY

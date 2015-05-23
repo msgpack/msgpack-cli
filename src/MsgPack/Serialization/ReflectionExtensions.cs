@@ -130,9 +130,15 @@ namespace MsgPack.Serialization
 			{
 				return ctor.Invoke( new object[] { targetInvocationException.InnerException.Message, targetInvocationException } ) as Exception;
 			}
-			catch(Exception ex)
+#if !CORLIB_ONLY
+			catch ( Exception ex )
+#else
+			catch ( Exception )
+#endif // !CORLIB_ONLY
 			{
+#if !CORLIB_ONLY
 				Debug.WriteLine( "HoistUpInnerException:" + ex );
+#endif // !CORLIB_ONLY
 				return null;
 			}
 		}

@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+#if !CORLIB_ONLY
 using System.ComponentModel;
+#endif // !CORLIB_ONLY
 #if !SILVERLIGHT || WINDOWS_PHONE
 using System.Runtime.InteropServices.ComTypes;
 #endif // !SILVERLIGHT || WINDOWS_PHONE
@@ -30,7 +32,9 @@ namespace MsgPack.Serialization
 	///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 	///		Helper methods for date time message pack serializer.
 	/// </summary>
+#if !CORLIB_ONLY
 	[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 	public static class DateTimeMessagePackSerializerHelpers
 	{
 		/// <summary>
@@ -42,6 +46,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="context"/> is <c>null</c>.
 		/// </exception>
+#if !CORLIB_ONLY
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		public static DateTimeConversionMethod DetermineDateTimeConversionMethod(
 			SerializationContext context,
 			DateTimeMemberConversionMethod dateTimeMemberConversionMethod 
