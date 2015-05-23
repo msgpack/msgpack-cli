@@ -103,6 +103,17 @@ foreach( var __left in __values )
 		[Test]
 		public void <#= __methodName #>()
 		{
+<#
+		if ( (  __left.Key.Contains( "Epsilon" ) ||  __left.Key.Contains( "Zero" ) )
+			&& (  __right.Key.Contains( "Epsilon" ) ||  __right.Key.Contains( "Zero" ) )
+			&& ( __left.Key != __right.Key )
+		)
+		{
+#>
+			CheckEpsilonComparison();
+<#
+		}
+#>
 			Assert<#= ( !__left.Equals( __right ) ) ? "Not" : String.Empty #>Equals( ( <#= __left.Value #> ), ( <#= __right.Value #> ) );
 		}
 		
@@ -181,5 +192,22 @@ foreach( var __integerType in __integerTypes )
 <#
 }
 #>
+
+		private static void CheckEpsilonComparison()
+		{
+			// Use Equals instead of == to avoid compiler optmization for constant expression
+			if ( Double.Epsilon.Equals( 0.0 ) )
+			{
+				// Xamarin iOS comes here.
+				Assert.Inconclusive( "Comparison of Double.Epsilon cannot be checked on this platform." );
+			}
+
+			// Use Equals instead of == to avoid compiler optmization for constant expression
+			if ( Single.Epsilon.Equals( 0.0f ) )
+			{
+				// Xamarin iOS comes here.
+				Assert.Inconclusive( "Comparison of Single.Epsilon cannot be checked on this platform." );
+			}
+		}
 	}
 }

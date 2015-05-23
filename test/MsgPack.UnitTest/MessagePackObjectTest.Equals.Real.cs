@@ -172,24 +172,28 @@ namespace MsgPack
 		[Test]
 		public void TestEquals_MinusSingleEpsilon_MinusDoubleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( -Single.Epsilon ), ( -Double.Epsilon ) );
 		}
 		
 		[Test]
 		public void TestEquals_MinusSingleEpsilon_DoubleZero_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( -Single.Epsilon ), ( 0.0 ) );
 		}
 		
 		[Test]
 		public void TestEquals_MinusSingleEpsilon_DoubleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( -Single.Epsilon ), ( Double.Epsilon ) );
 		}
 		
 		[Test]
 		public void TestEquals_MinusSingleEpsilon_SingleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( -Single.Epsilon ), ( Single.Epsilon ) );
 		}
 		
@@ -225,6 +229,7 @@ namespace MsgPack
 		[Test]
 		public void TestEquals_MinusDoubleEpsilon_MinusSingleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( -Double.Epsilon ), ( -Single.Epsilon ) );
 		}
 		
@@ -237,18 +242,21 @@ namespace MsgPack
 		[Test]
 		public void TestEquals_MinusDoubleEpsilon_DoubleZero_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( -Double.Epsilon ), ( 0.0 ) );
 		}
 		
 		[Test]
 		public void TestEquals_MinusDoubleEpsilon_DoubleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( -Double.Epsilon ), ( Double.Epsilon ) );
 		}
 		
 		[Test]
 		public void TestEquals_MinusDoubleEpsilon_SingleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( -Double.Epsilon ), ( Single.Epsilon ) );
 		}
 		
@@ -284,12 +292,14 @@ namespace MsgPack
 		[Test]
 		public void TestEquals_DoubleZero_MinusSingleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( 0.0 ), ( -Single.Epsilon ) );
 		}
 		
 		[Test]
 		public void TestEquals_DoubleZero_MinusDoubleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( 0.0 ), ( -Double.Epsilon ) );
 		}
 		
@@ -302,12 +312,14 @@ namespace MsgPack
 		[Test]
 		public void TestEquals_DoubleZero_DoubleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( 0.0 ), ( Double.Epsilon ) );
 		}
 		
 		[Test]
 		public void TestEquals_DoubleZero_SingleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( 0.0 ), ( Single.Epsilon ) );
 		}
 		
@@ -343,18 +355,21 @@ namespace MsgPack
 		[Test]
 		public void TestEquals_DoubleEpsilon_MinusSingleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( Double.Epsilon ), ( -Single.Epsilon ) );
 		}
 		
 		[Test]
 		public void TestEquals_DoubleEpsilon_MinusDoubleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( Double.Epsilon ), ( -Double.Epsilon ) );
 		}
 		
 		[Test]
 		public void TestEquals_DoubleEpsilon_DoubleZero_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( Double.Epsilon ), ( 0.0 ) );
 		}
 		
@@ -367,6 +382,7 @@ namespace MsgPack
 		[Test]
 		public void TestEquals_DoubleEpsilon_SingleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( Double.Epsilon ), ( Single.Epsilon ) );
 		}
 		
@@ -402,24 +418,28 @@ namespace MsgPack
 		[Test]
 		public void TestEquals_SingleEpsilon_MinusSingleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( Single.Epsilon ), ( -Single.Epsilon ) );
 		}
 		
 		[Test]
 		public void TestEquals_SingleEpsilon_MinusDoubleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( Single.Epsilon ), ( -Double.Epsilon ) );
 		}
 		
 		[Test]
 		public void TestEquals_SingleEpsilon_DoubleZero_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( Single.Epsilon ), ( 0.0 ) );
 		}
 		
 		[Test]
 		public void TestEquals_SingleEpsilon_DoubleEpsilon_False()
 		{
+			CheckEpsilonComparison();
 			AssertNotEquals( ( Single.Epsilon ), ( Double.Epsilon ) );
 		}
 		
@@ -796,6 +816,23 @@ namespace MsgPack
 		public void TestEquals_DoubleOne_UInt64_True()
 		{
 			AssertEquals( 1.0f, ( System.UInt64 )( 1 ) );
+		}
+
+		private static void CheckEpsilonComparison()
+		{
+			// Use Equals instead of == to avoid compiler optmization for constant expression
+			if ( Double.Epsilon.Equals( 0.0 ) )
+			{
+				// Xamarin iOS comes here.
+				Assert.Inconclusive( "Comparison of Double.Epsilon cannot be checked on this platform." );
+			}
+
+			// Use Equals instead of == to avoid compiler optmization for constant expression
+			if ( Single.Epsilon.Equals( 0.0f ) )
+			{
+				// Xamarin iOS comes here.
+				Assert.Inconclusive( "Comparison of Single.Epsilon cannot be checked on this platform." );
+			}
 		}
 	}
 }
