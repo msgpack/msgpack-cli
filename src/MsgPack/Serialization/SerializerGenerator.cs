@@ -343,7 +343,14 @@ namespace MsgPack.Serialization
 				foreach ( var targetType in targetTypes.Distinct() )
 				{
 					var generator = generatorFactory( targetType );
-					generator.BuildSerializerCode( generationContext );
+
+					var concreteType = default( Type );
+					if ( targetType.GetIsInterface() || targetType.GetIsAbstract() )
+					{
+						concreteType = context.DefaultCollectionTypes.GetConcreteType( targetType );
+					}
+
+					generator.BuildSerializerCode( generationContext, concreteType, null );
 				}
 
 				Directory.CreateDirectory( configuration.OutputDirectory );
@@ -379,9 +386,9 @@ namespace MsgPack.Serialization
 			{
 				return
 					type =>
-					Activator.CreateInstance(
+					ReflectionExtensions.CreateInstancePreservingExceptionType<ISerializerCodeGenerator>(
 						typeof( AssemblyBuilderSerializerBuilder<> ).MakeGenericType( type )
-					) as ISerializerCodeGenerator;
+					);
 			}
 		}
 
@@ -403,9 +410,9 @@ namespace MsgPack.Serialization
 			{
 				return
 					type =>
-					Activator.CreateInstance(
-						typeof( CodeDomSerializerBuilder<> ).MakeGenericType( type )
-					) as ISerializerCodeGenerator;
+						ReflectionExtensions.CreateInstancePreservingExceptionType<ISerializerCodeGenerator>(
+							typeof( CodeDomSerializerBuilder<> ).MakeGenericType( type )
+						);
 			}
 		}
 	}

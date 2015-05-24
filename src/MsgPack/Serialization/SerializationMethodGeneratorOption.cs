@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+#if !CORLIB_ONLY
 using System.ComponentModel;
+#endif // !CORLIB_ONLY
 
 namespace MsgPack.Serialization
 {
@@ -33,7 +35,9 @@ namespace MsgPack.Serialization
 		///		The generated method IL can be dumped to the current directory.
 		///		It is intended for the runtime, you cannot use this option.
 		/// </summary>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		CanDump,
 
 		/// <summary>

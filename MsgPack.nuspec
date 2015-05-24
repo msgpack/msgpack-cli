@@ -3,7 +3,7 @@
   <metadata>
     <id>MsgPack.Cli</id>
     <title>MessagePack for CLI</title>
-    <version>0.5.11</version>
+    <version>0.6.0-Beta2</version>
     <authors>FUJIWARA, Yusuke</authors>
     <owners>FUJIWARA, Yusuke</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>MessagePack is fast, compact, and interoperable binary serialization format.
 This package provides MessagePack serialization/deserialization APIs. This pacakge also supports Mono, Xamarin and Unity3D.</description>
-    <releaseNotes>This release adds new feature to exclude specified property from serialization.</releaseNotes>
+    <releaseNotes>This release contains new constructor based deserialization and type embedding serialization. This release is fine tuned for iOS (Xamarin and Unity).</releaseNotes>
     <copyright>Copyright 2010-2015 FUJIWARA, Yusuke, all rights reserved.</copyright>
     <tags>MsgPack MessagePack Serialization Formatter Binary Serializer Fast Xamarin Unity3D</tags>
     <dependencies />

@@ -1,5 +1,4 @@
-﻿
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -118,12 +117,21 @@ namespace MsgPack.Serialization
 				else
 				{
 					var propertyInfo = typeof( T ).GetProperty( property );
+#if !UNITY
 					Assert.That( propertyInfo.GetValue( deserialized, null ), Is.EqualTo( propertyInfo.GetValue( value, null ) ) );
+#else
+					Assert.That( propertyInfo.GetGetMethod().Invoke( deserialized, null ), Is.EqualTo( propertyInfo.GetGetMethod().Invoke( value, null ) ) );
+#endif // !UNITY
 					stream.Position = 0;
 					var result = Unpacking.UnpackDictionary( stream );
 					Assert.That(
+#if !UNITY
 						result[ property ].Equals( propertyInfo.GetValue( value, null ).ToString() ),
 						result[ property ] + " == " + propertyInfo.GetValue( value, null )
+#else
+						result[ property ].Equals( propertyInfo.GetGetMethod().Invoke( value, null ).ToString() ),
+						result[ property ] + " == " + propertyInfo.GetGetMethod().Invoke( value, null )
+#endif // !UNITY
 					);
 				}
 			}
@@ -169,12 +177,21 @@ namespace MsgPack.Serialization
 				else
 				{
 					var propertyInfo = typeof( T ).GetProperty( property );
+#if !UNITY
 					Assert.That( propertyInfo.GetValue( deserialized, null ), Is.EqualTo( propertyInfo.GetValue( value, null ) ) );
+#else
+					Assert.That( propertyInfo.GetGetMethod().Invoke( deserialized, null ), Is.EqualTo( propertyInfo.GetGetMethod().Invoke( value, null ) ) );
+#endif // !UNITY
 					stream.Position = 0;
 					var result = Unpacking.UnpackDictionary( stream );
 					Assert.That(
+#if !UNITY
 						result[ property ].ToString().Equals( ( ( IFormattable )propertyInfo.GetValue( value, null ) ).ToString( "D", null ) ),
 						result[ property ] + " == " + ( ( IFormattable )propertyInfo.GetValue( value, null ) ).ToString( "D", null )
+#else
+						result[ property ].ToString().Equals( ( ( IFormattable )propertyInfo.GetGetMethod().Invoke( value, null ) ).ToString( "D", null ) ),
+						result[ property ] + " == " + ( ( IFormattable )propertyInfo.GetGetMethod().Invoke( value, null ) ).ToString( "D", null )
+#endif // !UNITY
 					);
 				}
 			}

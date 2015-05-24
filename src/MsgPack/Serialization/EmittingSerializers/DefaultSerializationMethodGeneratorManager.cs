@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -208,18 +208,19 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		Creates new <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
 		/// </summary>
 		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="baseClass">Type of the base class of the serializer.</param>
 		/// <param name="emitterFlavor"><see cref="EmitterFlavor"/>.</param>
 		/// <returns>
 		///		New <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
 		/// </returns>
-		protected override SerializerEmitter CreateEmitterCore( Type targetType, EmitterFlavor emitterFlavor )
+		protected override SerializerEmitter CreateEmitterCore( Type targetType, Type baseClass, EmitterFlavor emitterFlavor )
 		{
 #if !WINDOWS_PHONE
 			switch ( emitterFlavor )
 			{
 				case EmitterFlavor.FieldBased:
 				{
-					return new FieldBasedSerializerEmitter( this._module, this._isExternalAssemblyBuilder ? default( int? ) : Interlocked.Increment( ref this._typeSequence ), targetType, this._isDebuggable );
+					return new FieldBasedSerializerEmitter( this._module, this._isExternalAssemblyBuilder ? default( int? ) : Interlocked.Increment( ref this._typeSequence ), targetType, baseClass, this._isDebuggable );
 				}
 				default:
 				{

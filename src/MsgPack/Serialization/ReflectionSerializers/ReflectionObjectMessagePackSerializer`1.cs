@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,10 +23,15 @@
 #endif
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
-#if DEBUG && !UNITY
+#if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
-#endif // DEBUG && !UNITY
+#endif // XAMIOS || XAMDROID
+#endif // !UNITY
 using System.Linq;
 using System.Reflection;
 
@@ -37,22 +42,52 @@ namespace MsgPack.Serialization.ReflectionSerializers
 	/// </summary>
 	internal class ReflectionObjectMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
+		private static readonly PropertyInfo DictionaryEntryKeyProperty = typeof( DictionaryEntry ).GetProperty( "Key" );
+		private static readonly PropertyInfo DictionaryEntryValueProperty = typeof( DictionaryEntry ).GetProperty( "Value" );
+
 		private readonly Func<object, object>[] _getters;
 		private readonly Action<object, object>[] _setters;
 		private readonly MemberInfo[] _memberInfos;
 		private readonly DataMemberContract[] _contracts;
 		private readonly Dictionary<string, int> _memberIndexes;
 		private readonly IMessagePackSerializer[] _serializers;
+		private readonly ParameterInfo[] _constructorParameters;
+		private readonly Dictionary<int, int> _constructorArgumentIndexes;
 
 		public ReflectionObjectMessagePackSerializer( SerializationContext context )
 			: base( context )
 		{
-			ReflectionSerializerHelper.GetMetadata( context, typeof( T ), out this._getters, out this._setters, out this._memberInfos, out this._contracts, out this._serializers );
+			SerializationTarget.VerifyType( typeof( T ) );
+			var target = SerializationTarget.Prepare( context, typeof( T ) );
+			ReflectionSerializerHelper.GetMetadata( target.Members, context, out this._getters, out this._setters, out this._memberInfos, out this._contracts, out this._serializers );
 			this._memberIndexes =
 				this._contracts
 					.Select( ( contract, index ) => new KeyValuePair<string, int>( contract.Name, index ) )
 					.Where( kv => kv.Key != null )
 					.ToDictionary( kv => kv.Key, kv => kv.Value );
+			this._constructorParameters =
+				( !typeof( IUnpackable ).IsAssignableFrom( typeof( T ) ) && target.IsConstructorDeserialization )
+					? target.DeserializationConstructor.GetParameters()
+					: null;
+			if ( this._constructorParameters != null )
+			{
+				this._constructorArgumentIndexes = new Dictionary<int, int>( this._memberIndexes.Count );
+				foreach ( var member in target.Members )
+				{
+					int index =
+#if SILVERLIGHT && !WINDOWS_PHONE
+						this._constructorParameters.FindIndex( 
+#else
+							Array.FindIndex( this._constructorParameters,
+#endif // SILVERLIGHT && !WINDOWS_PHONE
+							item => item.Name.Equals( member.Contract.Name, StringComparison.OrdinalIgnoreCase ) && item.ParameterType == member.Member.GetMemberValueType()
+						);
+					if ( index >= 0 )
+					{
+						this._constructorArgumentIndexes.Add( index, this._memberIndexes[ member.Contract.Name ] );
+					}
+				}
+			}
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
@@ -113,14 +148,24 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
-			var result = Activator.CreateInstance<T>();
+			object result =
+				this._constructorParameters == null
+					? ReflectionExtensions.CreateInstancePreservingExceptionType( typeof( T ) )
+					: this._constructorParameters.Select( p =>
+						p.GetHasDefaultValue()
+						? p.DefaultValue
+						: p.ParameterType.GetIsValueType()
+						? ReflectionExtensions.CreateInstancePreservingExceptionType( p.ParameterType )
+						: null
+					).ToArray();
+
 			var unpacked = 0;
 
 			var asUnpackable = result as IUnpackable;
 			if ( asUnpackable != null )
 			{
 				asUnpackable.UnpackFromMessage( unpacker );
-				return result;
+				return ( T )result;
 			}
 
 			if ( unpacker.IsArrayHeader )
@@ -135,7 +180,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			else
 			{
 #if DEBUG && !UNITY
-				Contract.Assert( unpacker.IsMapHeader );
+				Contract.Assert( unpacker.IsMapHeader, "unpacker.IsMapHeader" );
 #endif // DEBUG && !UNITY
 				var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
 
@@ -158,7 +203,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					}
 
 					int index;
-					if ( !this._memberIndexes.TryGetValue(name, out index) )
+					if ( !this._memberIndexes.TryGetValue( name, out index ) )
 					{
 						// key does not exist in the object, skip the associated value
 						if ( unpacker.Skip() == null )
@@ -168,17 +213,25 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						continue;
 					}
 
-					result = this.UnpackMemberValue(result, unpacker, itemsCount, ref unpacked, index, i);
+					result = this.UnpackMemberValue( result, unpacker, itemsCount, ref unpacked, index, i );
 				}
 			}
 
-			return result;
+			if ( this._constructorParameters == null )
+			{
+				return ( T )result;
+			}
+			else
+			{
+				return ReflectionExtensions.CreateInstancePreservingExceptionType<T>( typeof( T ), result as object[] );
+			}
 		}
 
-		private T UnpackMemberValue( T objectGraph, Unpacker unpacker, int itemsCount, ref int unpacked, int index, int unpackerOffset )
+		private object UnpackMemberValue( object objectGraph, Unpacker unpacker, int itemsCount, ref int unpacked, int index, int unpackerOffset )
 		{
 			object nullable = null;
-			var setter = this._setters[ index ];
+
+			var setter = index < this._setters.Length ? this._setters[ index ] : null;
 			if ( unpacked < itemsCount )
 			{
 				if ( !unpacker.Read() )
@@ -188,52 +241,62 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 				if ( !unpacker.LastReadData.IsNil )
 				{
-					if ( setter != null )
+					if ( setter != null || this._constructorParameters != null )
 					{
-						if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
-						{
-							nullable = this._serializers[ index ].UnpackFrom( unpacker );
-						}
-						else
-						{
-							using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
-							{
-								nullable = this._serializers[ index ].UnpackFrom( subtreeUnpacker );
-							}
-						}
+						nullable = this.UnpackSingleValue( unpacker, index );
 					}
 					else if ( this._getters[ index ] != null ) // null getter supposes undeclared member (should be treated as nil)
 					{
-						var collection = this._getters[ index ]( objectGraph );
-						if ( collection == null )
-						{
-							throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._contracts[ index ].Name );
-						}
-						using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
-						{
-							this._serializers[ index ].UnpackTo( subtreeUnpacker, collection );
-						}
+						this.UnpackAndAddCollectionItem( objectGraph, unpacker, index );
 					}
 				}
 			}
 
-			if ( setter != null )
+			if ( this._constructorParameters != null )
+			{
+#if DEBUG && !UNITY
+				Contract.Assert( objectGraph is object[], "objectGraph is object[]" );
+#endif // !UNITY
+
+				int argumentIndex;
+				if ( this._constructorArgumentIndexes.TryGetValue( index, out argumentIndex ) )
+				{
+					if ( nullable == null )
+					{
+						ReflectionNilImplicationHandler.Instance.OnUnpacked(
+							new ReflectionSerializerNilImplicationHandlerOnUnpackedParameter(
+								this._memberInfos[ index ].GetMemberValueType(),
+								// ReSharper disable once PossibleNullReferenceException
+								value => ( objectGraph as object[] )[ argumentIndex ] = nullable,
+								this._contracts[ index ].Name,
+								this._memberInfos[ index ].DeclaringType
+							),
+							this._contracts[ index ].NilImplication
+						)( null );
+					}
+					else
+					{
+						( objectGraph as object[] )[ argumentIndex ] = nullable;
+					}
+				}
+			}
+			else if ( setter != null )
 			{
 				if ( nullable == null )
 				{
 					ReflectionNilImplicationHandler.Instance.OnUnpacked(
 						new ReflectionSerializerNilImplicationHandlerOnUnpackedParameter(
 							this._memberInfos[ index ].GetMemberValueType(),
-							value => SetMemverValue( objectGraph, setter, value ),
+							value => setter( objectGraph, nullable ),
 							this._contracts[ index ].Name,
 							this._memberInfos[ index ].DeclaringType
-							),
+						),
 						this._contracts[ index ].NilImplication
-						)( null );
+					)( null );
 				}
 				else
 				{
-					objectGraph = SetMemverValue( objectGraph, setter, nullable );
+					setter( objectGraph, nullable );
 				}
 			}
 
@@ -242,13 +305,84 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			return objectGraph;
 		}
 
-		private static T SetMemverValue( T result, Action<object, object> setter, object value )
+		private object UnpackSingleValue( Unpacker unpacker, int index )
 		{
-			object boxed = result;
-			setter( boxed, value );
-			return ( T )boxed;
+			if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+			{
+				return this._serializers[ index ].UnpackFrom( unpacker );
+			}
+			else
+			{
+				using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+				{
+					return this._serializers[ index ].UnpackFrom( subtreeUnpacker );
+				}
+			}
+		}
+
+		private void UnpackAndAddCollectionItem( object objectGraph, Unpacker unpacker, int index )
+		{
+			var destination = this._getters[ index ]( objectGraph );
+			if ( destination == null )
+			{
+				throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._contracts[ index ].Name );
+			}
+
+			var traits = destination.GetType().GetCollectionTraits();
+			if ( traits.AddMethod == null )
+			{
+				throw SerializationExceptions.NewUnpackToIsNotSupported( destination.GetType(), null );
+			}
+
+			var source = this._serializers[ index ].UnpackFrom( unpacker ) as IEnumerable;
+			if ( source != null )
+			{
+				switch ( traits.DetailedCollectionType )
+				{
+					case CollectionDetailedKind.GenericDictionary:
+					{
+						// item should be KeyValuePair<TKey, TValue>
+						var arguments = new object[ 2 ];
+						var key = default( PropertyInfo );
+						var value = default( PropertyInfo );
+						foreach ( var item in source )
+						{
+							if ( key == null )
+							{
+								key = item.GetType().GetProperty( "Key" );
+								value = item.GetType().GetProperty( "Value" );
+							}
+
+							arguments[ 0 ] = key.GetValue( item, null );
+							arguments[ 1 ] = value.GetValue( item, null );
+							traits.AddMethod.InvokePreservingExceptionType( destination, arguments );
+						}
+						break;
+					}
+					case CollectionDetailedKind.NonGenericDictionary:
+					{
+						// item should be DictionaryEntry
+						var arguments = new object[ 2 ];
+						foreach ( var item in source )
+						{
+							arguments[ 0 ] = DictionaryEntryKeyProperty.GetValue( item, null );
+							arguments[ 1 ] = DictionaryEntryValueProperty.GetValue( item, null );
+							traits.AddMethod.InvokePreservingExceptionType( destination, arguments );
+						}
+						break;
+					}
+					default:
+					{
+						var arguments = new object[ 1 ];
+						foreach ( var item in source )
+						{
+							arguments[ 0 ] = item;
+							traits.AddMethod.InvokePreservingExceptionType( destination, arguments );
+						}
+						break;
+					}
+				}
+			}
 		}
 	}
-
-
 }

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,35 +24,45 @@
 
 using System;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal static partial class ArraySerializer
 	{
-		public static MessagePackSerializer<T> Create<T>( SerializationContext context )
+		public static MessagePackSerializer<T> Create<T>( SerializationContext context, PolymorphismSchema itemsSchema )
 		{
-			return Create( context, typeof( T ) ) as MessagePackSerializer<T>;
+			return Create( context, typeof( T ), itemsSchema ) as MessagePackSerializer<T>;
 		}
 
-		public static IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType ) {
+		public static IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema itemsSchema ) 
+		{
 #if DEBUG && !UNITY
-			Contract.Assert( targetType.IsArray );
+			Contract.Assert( targetType.IsArray, "targetType.IsArray" );
 #endif // DEBUG && !UNITY
 			return
 				( GetPrimitiveArraySerializer( context, targetType )
-				?? Activator.CreateInstance(
+#if !UNITY
+				?? ReflectionExtensions.CreateInstancePreservingExceptionType(
 					typeof( ArraySerializer<> ).MakeGenericType( targetType.GetElementType() ),
-					context
-				) )
-				as IMessagePackSingleObjectSerializer;
+					context,
+					itemsSchema
+				)
+#else
+				?? new UnityArraySerializer( context, targetType.GetElementType(), itemsSchema )
+#endif
+				) as IMessagePackSingleObjectSerializer;
 		}
 
 		private static object GetPrimitiveArraySerializer( SerializationContext context, Type targetType )
 		{
 #if DEBUG && !UNITY
-			Contract.Assert( targetType.IsArray );
+			Contract.Assert( targetType.IsArray, "targetType.IsArray" );
 #endif // DEBUG && !UNITY
 
 			Func<SerializationContext, object> serializerFactory;

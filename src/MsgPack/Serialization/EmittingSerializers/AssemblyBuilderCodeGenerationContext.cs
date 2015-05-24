@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
-using System.Security;
 
 using MsgPack.Serialization.AbstractSerializers;
 
@@ -49,15 +48,17 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		Create new <see cref="AssemblyBuilderEmittingContext"/> for specified <see cref="Type"/>.
 		/// </summary>
 		/// <param name="type">The type will be emitted.</param>
+		/// <param name="serializerBaseClass">The base class of the serializer.</param>
 		/// <returns><see cref="AssemblyBuilderEmittingContext"/>.</returns>
-		public AssemblyBuilderEmittingContext CreateEmittingContext( Type type )
+		public AssemblyBuilderEmittingContext CreateEmittingContext( Type type, Type serializerBaseClass )
 		{
-			return new AssemblyBuilderEmittingContext(
-				this._context,
-				type,
-				() => this._generatorManager.CreateEmitter( type, EmitterFlavor.FieldBased ),
-				() => this._generatorManager.CreateEnumEmitter( type, EmitterFlavor.FieldBased ) 
-			);
+			return
+				new AssemblyBuilderEmittingContext(
+					this._context,
+					type,
+					() => this._generatorManager.CreateEmitter( type, serializerBaseClass, EmitterFlavor.FieldBased ),
+					() => this._generatorManager.CreateEnumEmitter( type, EmitterFlavor.FieldBased ) 
+				);
 		}
 
 		/// <summary>
@@ -75,7 +76,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				throw new ArgumentNullException( "type" );
 			}
 
-			return type.IsArray || SerializerRepository.Default.Contains( type );
+			return type.IsArray || SerializerRepository.InternalDefault.Contains( type );
 		}
 
 		/// <summary>

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ namespace MsgPack.Serialization
 		[DataMember( Order = 1 )]
 		public byte[] Data { get; set; }
 
-		private readonly Dictionary<DateTime, string> _history = new Dictionary<DateTime, string>();
+		private readonly Dictionary<DateTime, string> _history = new Dictionary<DateTime, string>( DictionaryTestHelper.GetEqualityComparer<DateTime>() );
 
 		[DataMember( Order = 3 )]
 		public Dictionary<DateTime, string> History
@@ -65,7 +65,7 @@ namespace MsgPack.Serialization
 				NUnit.Framework.Assert.That( map.ContainsKey( "Source" ) );
 				NUnit.Framework.Assert.That( map[ "Source" ].AsString(), Is.EqualTo( this.Source.ToString() ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "TimeStamp" ) );
-				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( map[ "TimeStamp" ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
+				NUnit.Framework.Assert.That( DateTime.FromBinary( map[ "TimeStamp" ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "Data" ) );
 				NUnit.Framework.Assert.That( map[ "Data" ].AsBinary(), Is.EqualTo( this.Data ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "History" ) );
@@ -77,7 +77,7 @@ namespace MsgPack.Serialization
 				var array = data.AsList();
 				NUnit.Framework.Assert.That( array.Count, Is.EqualTo( 4 ) );
 				NUnit.Framework.Assert.That( array[ 0 ].AsString(), Is.EqualTo( this.Source.ToString() ) );
-				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( array[ 2 ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
+				NUnit.Framework.Assert.That( DateTime.FromBinary( array[ 2 ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
 				NUnit.Framework.Assert.That( array[ 1 ].AsBinary(), Is.EqualTo( this.Data ) );
 				NUnit.Framework.Assert.That( array[ 3 ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
 			}

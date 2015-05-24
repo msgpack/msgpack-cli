@@ -25,19 +25,123 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization
 {
 	internal static class ReflectionExtensions
 	{
-		private static readonly PropertyInfo _icollectionCount = typeof( ICollection ).GetProperty( "Count" );
+		private static readonly Type[] ExceptionConstructorWithInnerParameterTypes = { typeof( string ), typeof( Exception ) };
+
+		public static object InvokePreservingExceptionType( this ConstructorInfo source, params object[] parameters )
+		{
+			try
+			{
+				return source.Invoke( parameters );
+			}
+			catch ( TargetInvocationException ex )
+			{
+				var rethrowing = HoistUpInnerException( ex );
+				if ( rethrowing == null )
+				{
+					// ctor.Invoke threw exception, so rethrow original TIE.
+					throw;
+				}
+				else
+				{
+					throw rethrowing;
+				}
+			}
+		}
+
+		public static object InvokePreservingExceptionType( this MethodInfo source, object instance, params object[] parameters )
+		{
+			try
+			{
+				return source.Invoke( instance, parameters );
+			}
+			catch ( TargetInvocationException ex )
+			{
+				var rethrowing = HoistUpInnerException( ex );
+				if ( rethrowing == null )
+				{
+					// ctor.Invoke threw exception, so rethrow original TIE.
+					throw;
+				}
+				else
+				{
+					throw rethrowing;
+				}
+			}
+		}
+
+		public static T CreateInstancePreservingExceptionType<T>( Type instanceType, params object[] constructorParameters )
+		{
+			return ( T )CreateInstancePreservingExceptionType( instanceType, constructorParameters );
+		}
+
+		public static object CreateInstancePreservingExceptionType( Type type, params object[] constructorParameters )
+		{
+			try
+			{
+				return Activator.CreateInstance( type, constructorParameters );
+			}
+			catch ( TargetInvocationException ex )
+			{
+				var rethrowing = HoistUpInnerException( ex );
+				if ( rethrowing == null )
+				{
+					// ctor.Invoke threw exception, so rethrow original TIE.
+					throw;
+				}
+				else
+				{
+					throw rethrowing;
+				}
+			}
+		}
+
+		private static Exception HoistUpInnerException( TargetInvocationException targetInvocationException )
+		{
+			if ( targetInvocationException.InnerException == null )
+			{
+				return null;
+			}
+
+			var ctor = targetInvocationException.InnerException.GetType().GetConstructor( ExceptionConstructorWithInnerParameterTypes );
+			if ( ctor == null )
+			{
+				return null;
+			}
+
+			try
+			{
+				return ctor.Invoke( new object[] { targetInvocationException.InnerException.Message, targetInvocationException } ) as Exception;
+			}
+#if !CORLIB_ONLY
+			catch ( Exception ex )
+#else
+			catch ( Exception )
+#endif // !CORLIB_ONLY
+			{
+#if !CORLIB_ONLY
+				Debug.WriteLine( "HoistUpInnerException:" + ex );
+#endif // !CORLIB_ONLY
+				return null;
+			}
+		}
 
 		public static Type GetMemberValueType( this MemberInfo source )
 		{
@@ -60,7 +164,7 @@ namespace MsgPack.Serialization
 		public static CollectionTraits GetCollectionTraits( this Type source )
 		{
 #if !UNITY && DEBUG
-			Contract.Assert( !source.GetContainsGenericParameters() );
+			Contract.Assert( !source.GetContainsGenericParameters(), "!source.GetContainsGenericParameters()" );
 #endif // !UNITY
 			/*
 			 * SPEC
@@ -89,8 +193,8 @@ namespace MsgPack.Serialization
 					new CollectionTraits(
 						CollectionDetailedKind.Array,
 						null, // Add() : Never used for array.
+						null, // get_Count() : Never used for array.
 						null, // GetEnumerator() : Never used for array.
-						null, // Count : Never used for array.
 						source.GetElementType()
 					);
 			}
@@ -99,61 +203,10 @@ namespace MsgPack.Serialization
 			if ( getEnumerator != null && getEnumerator.ReturnType.IsAssignableTo( typeof( IEnumerator ) ) )
 			{
 				// If public 'GetEnumerator' is found, it is primary collection traits.
-				if ( source.Implements( typeof( IDictionary<,> ) ) )
+				CollectionTraits result;
+				if ( TryCreateCollectionTraitsForHasGetEnumeratorType( source, getEnumerator, out result ) )
 				{
-					var ienumetaorT = getEnumerator.ReturnType.GetInterfaces().FirstOrDefault( @interface => @interface.GetIsGenericType() && @interface.GetGenericTypeDefinition() == typeof( IEnumerator<> ) );
-					if ( ienumetaorT != null )
-					{
-						var elementType = ienumetaorT.GetGenericArguments()[ 0 ];
-						return
-							new CollectionTraits(
-								CollectionDetailedKind.GenericDictionary,
-								GetAddMethod( source, elementType.GetGenericArguments()[ 0 ], elementType.GetGenericArguments()[ 1 ] ),
-								getEnumerator,
-								GetDictionaryCountProperty( source, elementType.GetGenericArguments()[ 0 ], elementType.GetGenericArguments()[ 1 ] ),
-								elementType
-							);
-					}
-				}
-
-				if ( source.IsAssignableTo( typeof( IDictionary ) ) )
-				{
-					return
-						new CollectionTraits(
-							CollectionDetailedKind.NonGenericDictionary,
-							GetAddMethod( source, typeof( object ), typeof( object ) ),
-							getEnumerator,
-							_icollectionCount,
-							typeof( DictionaryEntry )
-						);
-				}
-
-				// Block to limit variable scope
-				{
-					var ienumetaorT =
-						IsIEnumeratorT( getEnumerator.ReturnType )
-						? getEnumerator.ReturnType
-						: getEnumerator.ReturnType.GetInterfaces().FirstOrDefault( IsIEnumeratorT );
-					if ( ienumetaorT != null )
-					{
-						var elementType = ienumetaorT.GetGenericArguments()[ 0 ];
-						return
-							new CollectionTraits(
-								source.Implements( typeof( IList<> ) )
-								? CollectionDetailedKind.GenericList
-#if !NETFX_35 && !UNITY
-								: source.Implements( typeof( ISet<> ) )
-								? CollectionDetailedKind.GenericSet
-#endif // !NETFX_35 && !UNITY
-								: source.Implements( typeof( ICollection<> ) )
-								? CollectionDetailedKind.GenericCollection
-								: CollectionDetailedKind.GenericEnumerable,
-								GetAddMethod( source, elementType ),
-								getEnumerator,
-								GetCollectionTCountProperty( source, elementType ),
-								elementType
-							);
-					}
+					return result;
 				}
 			}
 
@@ -185,106 +238,29 @@ namespace MsgPack.Serialization
 
 			foreach ( var type in sourceInterfaces )
 			{
-				if ( type == typeof( IDictionary<MessagePackObject, MessagePackObject> ) )
+				CollectionTraits result;
+				if ( TryCreateGenericCollectionTraits( source, type, out result ) )
 				{
-					return
-						new CollectionTraits(
-							CollectionDetailedKind.GenericDictionary,
-							GetAddMethod( source, typeof( MessagePackObject ), typeof( MessagePackObject ) ),
-							FindInterfaceMethod( source, typeof( IEnumerable<KeyValuePair<MessagePackObject, MessagePackObject>> ), "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
-							GetDictionaryCountProperty( source, typeof( MessagePackObject ), typeof( MessagePackObject ) ),
-							typeof( KeyValuePair<MessagePackObject, MessagePackObject> )
-						);
+					return result;
 				}
 
-				if ( type == typeof( IEnumerable<MessagePackObject> ) )
-				{
-					var addMethod = GetAddMethod( source, typeof( MessagePackObject ) );
-					if ( addMethod != null )
-					{
-						return
-							new CollectionTraits(
-								( source ==typeof( IList<MessagePackObject> ) || source.Implements( typeof( IList<MessagePackObject> ) ) )
-								? CollectionDetailedKind.GenericList
+				if ( !DetermineCollectionInterfaces(
+						type,
+						ref idictionaryT,
+						ref ilistT,
 #if !NETFX_35 && !UNITY
-								: ( source ==typeof( ISet<MessagePackObject> ) || source.Implements( typeof( ISet<MessagePackObject> ) ) )
-								? CollectionDetailedKind.GenericSet
+						ref isetT,
 #endif // !NETFX_35 && !UNITY
-								: ( source ==typeof( ICollection<MessagePackObject> ) || source.Implements( typeof( ICollection<MessagePackObject> ) ) )
-								? CollectionDetailedKind.GenericCollection
-								: CollectionDetailedKind.GenericEnumerable,
-								addMethod,
-								FindInterfaceMethod( source, typeof( IEnumerable<MessagePackObject> ), "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
-								GetCollectionTCountProperty( source, typeof( MessagePackObject ) ),
-								typeof( MessagePackObject )
-							);
-					}
-				}
-
-				if ( type.GetIsGenericType() )
+						ref icollectionT,
+						ref ienumerableT,
+						ref idictionary,
+						ref ilist,
+						ref icollection,
+						ref ienumerable
+					)
+				)
 				{
-					var genericTypeDefinition = type.GetGenericTypeDefinition();
-					if ( genericTypeDefinition == typeof( IDictionary<,> ) )
-					{
-						if ( idictionaryT != null )
-						{
-							return CollectionTraits.Unserializable;
-						}
-						idictionaryT = type;
-					}
-					else if ( genericTypeDefinition == typeof( IList<> ) )
-					{
-						if ( ilistT != null )
-						{
-							return CollectionTraits.Unserializable;
-						}
-						ilistT = type;
-					}
-#if !NETFX_35 && !UNITY
-					else if ( genericTypeDefinition == typeof( ISet<> ) )
-					{
-						if ( isetT != null )
-						{
-							return CollectionTraits.Unserializable;
-						}
-						isetT = type;
-					}
-#endif // !NETFX_35 && !UNITY
-					else if ( genericTypeDefinition == typeof( ICollection<> ) )
-					{
-						if ( icollectionT != null )
-						{
-							return CollectionTraits.Unserializable;
-						}
-						icollectionT = type;
-					}
-					else if ( genericTypeDefinition == typeof( IEnumerable<> ) )
-					{
-						if ( ienumerableT != null )
-						{
-							return CollectionTraits.Unserializable;
-						}
-						ienumerableT = type;
-					}
-				}
-				else
-				{
-					if ( type == typeof( IDictionary ) )
-					{
-						idictionary = type;
-					}
-					else if ( type == typeof( IList ) )
-					{
-						ilist = type;
-					}
-					else if ( type == typeof( ICollection ) )
-					{
-						icollection = type;
-					}
-					else if ( type == typeof( IEnumerable ) )
-					{
-						ienumerable = type;
-					}
+					return CollectionTraits.Unserializable;
 				}
 			}
 
@@ -295,8 +271,8 @@ namespace MsgPack.Serialization
 					new CollectionTraits(
 						CollectionDetailedKind.GenericDictionary,
 						GetAddMethod( source, idictionaryT.GetGenericArguments()[ 0 ], idictionaryT.GetGenericArguments()[ 1 ] ),
+						GetCountGetterMethod( source, elementType ),
 						FindInterfaceMethod( source, typeof( IEnumerable<> ).MakeGenericType( elementType ), "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
-						GetDictionaryCountProperty( source, idictionaryT.GetGenericArguments()[ 0 ], idictionaryT.GetGenericArguments()[ 1 ] ),
 						elementType
 					);
 			}
@@ -316,8 +292,8 @@ namespace MsgPack.Serialization
 						? CollectionDetailedKind.GenericCollection
 						: CollectionDetailedKind.GenericEnumerable,
 						GetAddMethod( source, elementType ),
+						GetCountGetterMethod( source, elementType ),
 						FindInterfaceMethod( source, ienumerableT, "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
-						GetCollectionTCountProperty( source, elementType ),
 						elementType
 					);
 			}
@@ -328,8 +304,8 @@ namespace MsgPack.Serialization
 					new CollectionTraits(
 						CollectionDetailedKind.NonGenericDictionary,
 						GetAddMethod( source, typeof( object ), typeof( object ) ),
+						GetCountGetterMethod( source, typeof( object ) ),
 						FindInterfaceMethod( source, idictionary, "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
-						_icollectionCount,
 						typeof( object )
 					);
 			}
@@ -347,14 +323,241 @@ namespace MsgPack.Serialization
 							? CollectionDetailedKind.NonGenericCollection
 							: CollectionDetailedKind.NonGenericEnumerable,
 							addMethod,
+							GetCountGetterMethod( source, typeof( object ) ),
 							FindInterfaceMethod( source, ienumerable, "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
-							_icollectionCount,
 							typeof( object )
 						);
 				}
 			}
 
 			return CollectionTraits.NotCollection;
+		}
+
+		private static bool TryCreateCollectionTraitsForHasGetEnumeratorType(
+			Type source,
+			MethodInfo getEnumerator,
+			out CollectionTraits result 
+		)
+		{
+			if ( source.Implements( typeof( IDictionary<,> ) ) )
+			{
+				var ienumetaorT =
+					getEnumerator.ReturnType.GetInterfaces()
+					.FirstOrDefault( @interface => 
+						@interface.GetIsGenericType() && @interface.GetGenericTypeDefinition() == typeof( IEnumerator<> ) 
+					);
+				if ( ienumetaorT != null )
+				{
+					var elementType = ienumetaorT.GetGenericArguments()[ 0 ];
+					{
+						result = new CollectionTraits(
+							CollectionDetailedKind.GenericDictionary,
+							GetAddMethod( source, elementType.GetGenericArguments()[ 0 ], elementType.GetGenericArguments()[ 1 ] ),
+							GetCountGetterMethod( source, elementType ),
+							getEnumerator,
+							elementType
+						);
+
+						return true;
+					}
+				}
+			}
+
+			if ( source.IsAssignableTo( typeof( IDictionary ) ) )
+			{
+				{
+					result = new CollectionTraits(
+						CollectionDetailedKind.NonGenericDictionary,
+						GetAddMethod( source, typeof( object ), typeof( object ) ),
+						GetCountGetterMethod( source, typeof( object ) ),
+						getEnumerator,
+						typeof( DictionaryEntry )
+					);
+
+					return true;
+				}
+			}
+
+			// Block to limit variable scope
+			{
+				var ienumetaorT =
+					IsIEnumeratorT( getEnumerator.ReturnType )
+					? getEnumerator.ReturnType
+					: getEnumerator.ReturnType.GetInterfaces().FirstOrDefault( IsIEnumeratorT );
+
+				if ( ienumetaorT != null )
+				{
+					var elementType = ienumetaorT.GetGenericArguments()[ 0 ];
+					{
+						result = new CollectionTraits(
+							source.Implements( typeof( IList<> ) )
+							? CollectionDetailedKind.GenericList
+#if !NETFX_35 && !UNITY
+							: source.Implements( typeof( ISet<> ) )
+							? CollectionDetailedKind.GenericSet
+#endif // !NETFX_35 && !UNITY
+							: source.Implements( typeof( ICollection<> ) )
+							? CollectionDetailedKind.GenericCollection
+							: CollectionDetailedKind.GenericEnumerable,
+							GetAddMethod( source, elementType ),
+							GetCountGetterMethod( source, elementType ),
+							getEnumerator,
+							elementType
+						);
+
+						return true;
+					}
+				}
+			}
+
+			result = default( CollectionTraits );
+			return false;
+		}
+
+
+		private static bool TryCreateGenericCollectionTraits( Type source, Type type, out CollectionTraits result )
+		{
+			if ( type == typeof( IDictionary<MessagePackObject, MessagePackObject> ) )
+			{
+				result = new CollectionTraits(
+					CollectionDetailedKind.GenericDictionary,
+					GetAddMethod( source, typeof( MessagePackObject ), typeof( MessagePackObject ) ),
+					GetCountGetterMethod( source, typeof( KeyValuePair<MessagePackObject, MessagePackObject> ) ),
+					FindInterfaceMethod(
+						source,
+						typeof( IEnumerable<KeyValuePair<MessagePackObject, MessagePackObject>> ),
+						"GetEnumerator",
+						ReflectionAbstractions.EmptyTypes
+					),
+					typeof( KeyValuePair<MessagePackObject, MessagePackObject> )
+				);
+
+				return true;
+			}
+
+			if ( type == typeof( IEnumerable<MessagePackObject> ) )
+			{
+				var addMethod = GetAddMethod( source, typeof( MessagePackObject ) );
+				if ( addMethod != null )
+				{
+					{
+						result = new CollectionTraits(
+							( source == typeof( IList<MessagePackObject> ) || source.Implements( typeof( IList<MessagePackObject> ) ) )
+							? CollectionDetailedKind.GenericList
+#if !NETFX_35 && !UNITY
+							: ( source == typeof( ISet<MessagePackObject> ) || source.Implements( typeof( ISet<MessagePackObject> ) ) )
+							? CollectionDetailedKind.GenericSet
+#endif // !NETFX_35 && !UNITY
+							: ( source == typeof( ICollection<MessagePackObject> ) ||
+							source.Implements( typeof( ICollection<MessagePackObject> ) ) )
+							? CollectionDetailedKind.GenericCollection
+							: CollectionDetailedKind.GenericEnumerable,
+							addMethod,
+							GetCountGetterMethod( source, typeof( MessagePackObject ) ),
+							FindInterfaceMethod(
+								source,
+								typeof( IEnumerable<MessagePackObject> ),
+								"GetEnumerator",
+								ReflectionAbstractions.EmptyTypes
+							),
+							typeof( MessagePackObject )
+						);
+						return true;
+					}
+				}
+			}
+
+			result = default( CollectionTraits );
+			return false;
+		}
+
+		private static bool DetermineCollectionInterfaces(
+			Type type,
+			ref Type idictionaryT,
+			ref Type ilistT,
+#if !NETFX_35 && !UNITY
+			ref Type isetT,
+#endif // !NETFX_35 && !UNITY
+			ref Type icollectionT,
+			ref Type ienumerableT,
+			ref Type idictionary,
+			ref Type ilist,
+			ref Type icollection,
+			ref Type ienumerable
+		)
+		{
+			if ( type.GetIsGenericType() )
+			{
+				var genericTypeDefinition = type.GetGenericTypeDefinition();
+				if ( genericTypeDefinition == typeof( IDictionary<,> ) )
+				{
+					if ( idictionaryT != null )
+					{
+						return false;
+					}
+
+					idictionaryT = type;
+				}
+				else if ( genericTypeDefinition == typeof( IList<> ) )
+				{
+					if ( ilistT != null )
+					{
+						return false;
+					}
+
+					ilistT = type;
+				}
+#if !NETFX_35 && !UNITY
+				else if ( genericTypeDefinition == typeof( ISet<> ) )
+				{
+					if ( isetT != null )
+					{
+						return false;
+					}
+
+					isetT = type;
+				}
+#endif // !NETFX_35 && !UNITY
+				else if ( genericTypeDefinition == typeof( ICollection<> ) )
+				{
+					if ( icollectionT != null )
+					{
+						return false;
+					}
+
+					icollectionT = type;
+				}
+				else if ( genericTypeDefinition == typeof( IEnumerable<> ) )
+				{
+					if ( ienumerableT != null )
+					{
+						return false;
+					}
+
+					ienumerableT = type;
+				}
+			}
+			else
+			{
+				if ( type == typeof( IDictionary ) )
+				{
+					idictionary = type;
+				}
+				else if ( type == typeof( IList ) )
+				{
+					ilist = type;
+				}
+				else if ( type == typeof( ICollection ) )
+				{
+					icollection = type;
+				}
+				else if ( type == typeof( IEnumerable ) )
+				{
+					ienumerable = type;
+				}
+			}
+
+			return true;
 		}
 
 		private static MethodInfo FindInterfaceMethod( Type targetType, Type interfaceType, string name, Type[] parameterTypes )
@@ -388,36 +591,6 @@ namespace MsgPack.Serialization
 			return map.TargetMethods[ index ];
 		}
 
-		private static PropertyInfo GetCollectionTCountProperty( Type targetType, Type elementType )
-		{
-			if ( !targetType.GetIsValueType() && targetType.Implements( typeof( ICollection<> ) ) )
-			{
-				return typeof( ICollection<> ).MakeGenericType( elementType ).GetProperty( "Count" );
-			}
-
-			var property = targetType.GetProperty( "Count" );
-			if ( property != null && property.PropertyType == typeof( int ) && property.GetIndexParameters().Length == 0 )
-			{
-				return property;
-			}
-
-			return null;
-		}
-
-		private static PropertyInfo GetDictionaryCountProperty( Type targetType, Type keyType, Type valueType )
-		{
-			var property = targetType.GetProperty( "Count" );
-			if ( property != null && property.PropertyType == typeof( int ) && property.GetIndexParameters().Length == 0 )
-			{
-				return property;
-			}
-
-			return
-				typeof( ICollection<> ).MakeGenericType(
-					typeof( KeyValuePair<,> ).MakeGenericType( keyType, valueType )
-				).GetProperty( "Count" );
-		}
-
 		private static MethodInfo GetAddMethod( Type targetType, Type argumentType )
 		{
 			var argumentTypes = new[] { argumentType };
@@ -441,6 +614,28 @@ namespace MsgPack.Serialization
 			return null;
 		}
 
+		private static MethodInfo GetCountGetterMethod( Type targetType, Type elementType )
+		{
+			var result = targetType.GetProperty( "Count" );
+			if ( result != null && result.GetHasPublicGetter() )
+			{
+				return result.GetGetMethod();
+			}
+
+			var icollectionT = typeof( ICollection<> ).MakeGenericType( elementType );
+			if ( targetType.IsAssignableTo( icollectionT ) )
+			{
+				return icollectionT.GetProperty( "Count" ).GetGetMethod();
+			}
+
+			if ( targetType.IsAssignableTo( typeof( ICollection ) ) )
+			{
+				return typeof( ICollection ).GetProperty( "Count" ).GetGetMethod();
+			}
+
+			return null;
+		}
+
 		private static MethodInfo GetAddMethod( Type targetType, Type keyType, Type valueType )
 		{
 			var argumentTypes = new[] { keyType, valueType };
@@ -457,9 +652,9 @@ namespace MsgPack.Serialization
 		{
 #if !NETFX_CORE
 #if !UNITY
-			Contract.Assert( type.IsInterface );
+			Contract.Assert( type.IsInterface, "type.IsInterface" );
 #endif // !UNITY
-			return type.Assembly == typeof( Array ).Assembly && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
+			return type.Assembly.Equals( typeof( Array ).Assembly ) && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
 #else
 			var typeInfo = type.GetTypeInfo();
 			Contract.Assert( typeInfo.IsInterface );
@@ -506,6 +701,28 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		public static bool GetHasPublicSetter( this MemberInfo source )
+		{
+			PropertyInfo asProperty;
+			FieldInfo asField;
+			if ( ( asProperty = source as PropertyInfo ) != null )
+			{
+#if !NETFX_CORE
+				return asProperty.GetSetMethod() != null;
+#else
+				return ( asProperty.SetMethod != null && asProperty.SetMethod.IsPublic );
+#endif
+			}
+			else if ( ( asField = source as FieldInfo ) != null )
+			{
+				return asField.IsPublic && !asField.IsInitOnly && !asField.IsLiteral;
+			}
+			else
+			{
+				throw new NotSupportedException( source.GetType() + " is not supported." );
+			}
+		}
+
 		public static bool GetIsPublic( this MemberInfo source )
 		{
 			PropertyInfo asProperty;
@@ -517,11 +734,10 @@ namespace MsgPack.Serialization
 			if ( ( asProperty = source as PropertyInfo ) != null )
 			{
 #if !NETFX_CORE
-				return asProperty.GetAccessors( true ).All( a => a.IsPublic );
+				return asProperty.GetAccessors( true ).Where( a => a.ReturnType != typeof( void ) ).All( a => a.IsPublic );
 #else
 				return
-					( asProperty.GetMethod == null || asProperty.GetMethod.IsPublic )
-					&& ( asProperty.SetMethod == null || asProperty.SetMethod.IsPublic );
+					( asProperty.GetMethod == null || asProperty.GetMethod.IsPublic );
 #endif
 			}
 			else if ( ( asField = source as FieldInfo ) != null )
@@ -542,6 +758,15 @@ namespace MsgPack.Serialization
 			{
 				throw new NotSupportedException( source.GetType() + " is not supported." );
 			}
+		}
+
+		public static bool GetIsVisible( this Type source )
+		{
+#if !NETFX_CORE
+			return source.IsVisible;
+#else
+			return source.GetTypeInfo().IsVisible;
+#endif
 		}
 	}
 }

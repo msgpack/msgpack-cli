@@ -1,5 +1,6 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ output extension=".cs" #>
+<#@ include file="AutoMessagePackSerializerTest.Polymorphism.ttinclude" #>
 <#@ assembly name="System.Core.dll" #>
 <#@ assembly name="System.Numerics.dll" #>
 <#@ import namespace="System" #>
@@ -59,9 +60,9 @@ var __fields =
 		new Tuple<Object, string, string, bool>( typeof( Collection<DateTime> ), String.Empty, "new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.StringKeyedCollection`1", new []{ typeof( DateTime ).FullName } ), String.Empty, "new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
 		new Tuple<Object, string, string, bool>( typeof( ObservableCollection<DateTime> ), String.Empty, "new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
-		new Tuple<Object, string, string, bool>( typeof( HashSet<DateTime> ), String.Empty, "new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
+		new Tuple<Object, string, string, bool>( typeof( HashSet<DateTime> ), String.Empty, "new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
 		new Tuple<Object, string, string, bool>( typeof( ICollection<DateTime> ), String.Empty, "new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
-		new Tuple<Object, string, string, bool>( typeof( ISet<DateTime> ), String.Empty, "new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
+		new Tuple<Object, string, string, bool>( typeof( ISet<DateTime> ), String.Empty, "new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
 		new Tuple<Object, string, string, bool>( typeof( IList<DateTime> ), String.Empty, "new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
 		new Tuple<Object, string, string, bool>( typeof( IDictionary<String, DateTime> ), String.Empty, "new Dictionary<String, DateTime>(){ { \"Yesterday\", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { \"Today\", DateTime.UtcNow } }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.AddOnlyCollection`1", new []{ typeof( DateTime ).FullName } ), String.Empty, "new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
@@ -83,15 +84,15 @@ var __fields =
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.MessagePackObject", new String[ 0 ] ), String.Empty, "new MessagePackObject( 1 )", true ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.MessagePackObject[]", new String[ 0 ] ), String.Empty, "new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", true ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( List<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
-		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( Dictionary<,> ).FullName, new [] { "MsgPack.MessagePackObject", "MsgPack.MessagePackObject" } ), String.Empty, "new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
+		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( Dictionary<,> ).FullName, new [] { "MsgPack.MessagePackObject", "MsgPack.MessagePackObject" } ), String.Empty, "new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( Collection<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.StringKeyedCollection`1", new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( ObservableCollection<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
-		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( HashSet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( HashSet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( ICollection<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
-		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( ISet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( ISet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( IList<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
-		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( IDictionary<,> ).FullName, new [] { "MsgPack.MessagePackObject", "MsgPack.MessagePackObject" } ), String.Empty, "new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
+		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( IDictionary<,> ).FullName, new [] { "MsgPack.MessagePackObject", "MsgPack.MessagePackObject" } ), String.Empty, "new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.AddOnlyCollection`1", new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 	};
 
@@ -145,6 +146,10 @@ var __notInNet35 =
 //    limitations under the License.
 //
 #endregion -- License Terms --
+
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
 
 #pragma warning disable 3003
 using System;
@@ -536,7 +541,7 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 
 		public DictionaryValueType( int capacity )
 		{
-			this._underlying = new Dictionary<TKey, TValue>( capacity );
+			this._underlying = new Dictionary<TKey, TValue>( capacity, DictionaryTestHelper.GetEqualityComparer<TKey>() );
 		}
 
 		public void Add( TKey key, TValue value )
@@ -653,8 +658,8 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 			if ( expected is DateTime )
 			{
 				Assert.That(
-					MillisecondsDateTimeComparer.Instance.Equals( ( DateTime )( object )expected, ( DateTime )( object )actual ),
-					"Expected:{1}({2},{3}){0}Actual :{4}({5},{6})",
+					( DateTime )( object )expected == ( DateTime )( object )actual,
+					"Expected:{1:O}({2},{3}){0}Actual :{4:O}({5},{6})",
 					Environment.NewLine,
 					expected,
 					expected == null ? "(null)" : expected.GetType().FullName,
@@ -662,19 +667,19 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 					actual,
 					actual == null ? "(null)" : actual.GetType().FullName,
 					( ( DateTime )( object )actual ).Kind
-					);
+				);
 				return;
 			}
 			else if ( expected is DateTimeOffset )
 			{
 				Assert.That(
-					MillisecondsDateTimeOffsetComparer.Instance.Equals( ( DateTimeOffset )( object )expected, ( DateTimeOffset )( object )actual ),
-				"Expected:{1}({2}){0}Actual :{3}({4})",
-				Environment.NewLine,
-				expected,
-				expected == null ? "(null)" : expected.GetType().FullName,
-				actual,
-				actual == null ? "(null)" : actual.GetType().FullName
+					( DateTimeOffset )( object )expected == ( DateTimeOffset )( object )actual,
+					"Expected:{1:O}({2}){0}Actual :{3:O}({4})",
+					Environment.NewLine,
+					expected,
+					expected == null ? "(null)" : expected.GetType().FullName,
+					actual,
+					actual == null ? "(null)" : actual.GetType().FullName
 				);
 				return;
 			}
@@ -772,7 +777,11 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 			}
 
 			Assert.That(
+#if !UNITY
 				EqualityComparer<T>.Default.Equals( expected, actual ),
+#else
+				AotHelper.GetEqualityComparer<T>().Equals( expected, actual ),
+#endif // !UNITY
 				"Expected:{1}({2}){0}Actual :{3}({4})",
 				Environment.NewLine,
 				expected,
@@ -826,6 +835,100 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 	{
 		public IEnumerable<int> Numbers { get; set; }
 	}
+
+	public class AnnotatedDateTimes
+	{
+		public DateTime VanillaDateTimeProperty { get; set; }
+
+		public DateTime VanillaDateTimeField;
+
+
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Default )]
+		public DateTime DefaultDateTimeProperty { get; set; }
+
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Default )]
+		public DateTime DefaultDateTimeField;
+
+
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Native )]
+		public DateTime NativeDateTimeProperty { get; set; }
+
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Native )]
+		public DateTime NativeDateTimeField;
+
+
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.UnixEpoc )]
+		public DateTime UnixEpocDateTimeProperty { get; set; }
+
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.UnixEpoc )]
+		public DateTime UnixEpocDateTimeField;
+
+		
+		
+		public DateTimeOffset VanillaDateTimeOffsetProperty { get; set; }
+		
+		public DateTimeOffset VanillaDateTimeOffsetField;
+		
+		
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Default )]
+		public DateTimeOffset DefaultDateTimeOffsetProperty { get; set; }
+		
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Default )]
+		public DateTimeOffset DefaultDateTimeOffsetField;
+		
+		
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Native )]
+		public DateTimeOffset NativeDateTimeOffsetProperty { get; set; }
+		
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.Native )]
+		public DateTimeOffset NativeDateTimeOffsetField;
+		
+		
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.UnixEpoc )]
+		public DateTimeOffset UnixEpocDateTimeOffsetProperty { get; set; }
+		
+		[MessagePackDateTimeMember( DateTimeConversionMethod = DateTimeMemberConversionMethod.UnixEpoc )]
+		public DateTimeOffset UnixEpocDateTimeOffsetField;
+
+
+
+		public AnnotatedDateTimes() {}
+
+		public AnnotatedDateTimes( DateTimeOffset now )
+		{
+			VanillaDateTimeProperty = now.DateTime;
+			VanillaDateTimeField = now.DateTime.AddDays( 1 );
+			DefaultDateTimeProperty = now.DateTime.AddDays( 2 );
+			DefaultDateTimeField = now.DateTime.AddDays( 3 );
+			NativeDateTimeProperty = now.DateTime.AddDays( 4 );
+			NativeDateTimeField = now.DateTime.AddDays( 5 );
+			UnixEpocDateTimeProperty = now.DateTime.AddDays( 6 );
+			UnixEpocDateTimeField = now.DateTime.AddDays( 7 );
+			VanillaDateTimeOffsetProperty = now.AddDays( 8 );
+			VanillaDateTimeOffsetField = now.AddDays( 9 );
+			DefaultDateTimeOffsetProperty = now.AddDays( 10 );
+			DefaultDateTimeOffsetField = now.AddDays( 11 );
+			NativeDateTimeOffsetProperty = now.AddDays( 12 );
+			NativeDateTimeOffsetField = now.AddDays( 13 );
+			UnixEpocDateTimeOffsetProperty = now.AddDays( 14 );
+			UnixEpocDateTimeOffsetField = now.AddDays( 15 );
+		}
+	}
+
+	internal class DictionaryTestHelper
+	{
+		public static IEqualityComparer<T> GetEqualityComparer<T>()
+		{
+#if !UNITY
+			return EqualityComparer<T>.Default;
+#else
+			return AotHelper.GetEqualityComparer<T>();
+#endif // !UNITY
+		}
+	}
+<#
+GeneratePolymorphismTestTypes();
+#>
 }
 <#+
 private static string ToTypeName( Type type )

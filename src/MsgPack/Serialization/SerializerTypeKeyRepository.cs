@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,9 +24,15 @@
 
 using System;
 using System.Collections.Generic;
+#if !NETFX_35 && !UNITY
 using System.Security;
+#endif // !NETFX_35 && !UNITY
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 
 namespace MsgPack.Serialization
@@ -39,6 +45,14 @@ namespace MsgPack.Serialization
 #endif // !NETFX_35
 	internal sealed class SerializerTypeKeyRepository : TypeKeyRepository
 	{
+#if UNITY
+		private static readonly Type[] NonGenericSerializerConstructorParameterTypes =
+			{
+				typeof( SerializationContext ),
+				typeof( Type )
+			};
+#endif // UNITY
+
 		public SerializerTypeKeyRepository()
 			// ReSharper disable once RedundantBaseConstructorCall
 			: base()
@@ -70,19 +84,32 @@ namespace MsgPack.Serialization
 			}
 			else
 			{
-#if !UNITY
-				Contract.Assert( keyType.GetIsGenericType() );
-				Contract.Assert( !keyType.GetIsGenericTypeDefinition() );
-#endif // !UNITY
+#if !UNITY && DEBUG
+				Contract.Assert( keyType.GetIsGenericType(), "keyType.GetIsGenericType()" );
+				Contract.Assert( !keyType.GetIsGenericTypeDefinition(), "!keyType.GetIsGenericTypeDefinition()" );
+#endif // !UNITY && DEBUG
 				var type = genericDefinitionMatched as Type;
+#if !UNITY && DEBUG
+				Contract.Assert( type != null, "type != null" );
+				Contract.Assert( type.GetIsGenericTypeDefinition(), "type.GetIsGenericTypeDefinition()" );
+#endif // !UNITY && DEBUG
 #if !UNITY
-				Contract.Assert( type != null );
-				Contract.Assert( type.GetIsGenericTypeDefinition() );
+				var result =
+					ReflectionExtensions.CreateInstancePreservingExceptionType( 
+						type.MakeGenericType( keyType.GetGenericArguments() ), 
+						context
+					);
+#else
+				var resultType = type.IsGenericTypeDefinition ? type.MakeGenericType( keyType.GetGenericArguments() ) : type;
+				var constructor2 = resultType.GetConstructor( NonGenericSerializerConstructorParameterTypes );
+				var result =
+					constructor2 == null 
+					? ReflectionExtensions.CreateInstancePreservingExceptionType( resultType, context )
+					: ReflectionExtensions.CreateInstancePreservingExceptionType( resultType, context, keyType );
 #endif // !UNITY
-				var result = Activator.CreateInstance( type.MakeGenericType( keyType.GetGenericArguments() ), context );
-#if !UNITY
-				Contract.Assert( result != null );
-#endif // !UNITY
+#if !UNITY && DEBUG
+				Contract.Assert( result != null, "result != null" );
+#endif // !UNITY && DEBUG
 				return result;
 			}
 		}

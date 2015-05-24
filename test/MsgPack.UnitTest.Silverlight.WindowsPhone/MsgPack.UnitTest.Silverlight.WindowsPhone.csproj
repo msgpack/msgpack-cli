@@ -237,6 +237,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataMemberAttributeNamedPropertyTestTarget.cs">
       <Link>Serialization\DataMemberAttributeNamedPropertyTestTarget.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs">
+      <Link>Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\EnumSerializationTest.EnumDefinitions.cs">
       <Link>Serialization\EnumSerializationTest.EnumDefinitions.cs</Link>
     </Compile>
@@ -290,6 +293,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ReflectionBasedNilImplicationTest.cs">
       <Link>Serialization\ReflectionBasedNilImplicationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\RegressionTests.cs">
+      <Link>Serialization\RegressionTests.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationContextTest.cs">
       <Link>Serialization\SerializationContextTest.cs</Link>
@@ -450,6 +456,9 @@
     <SDKReference Include="TestPlatform, Version=11.0" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\MsgPack.UnitTest\gen\ReadMe.txt">
+      <Link>gen\ReadMe.txt</Link>
+    </Content>
     <Content Include="Assets\AlignmentGrid.png" />
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

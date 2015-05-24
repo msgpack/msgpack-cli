@@ -1,5 +1,4 @@
-﻿
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -118,14 +117,23 @@ namespace MsgPack.Serialization
 				else
 				{
 					var propertyInfo = typeof( T ).GetProperty( property );
+#if !UNITY
 					Assert.That( propertyInfo.GetValue( deserialized, null ), Is.EqualTo( propertyInfo.GetValue( value, null ) ) );
+#else
+					Assert.That( propertyInfo.GetGetMethod().Invoke( deserialized, null ), Is.EqualTo( propertyInfo.GetGetMethod().Invoke( value, null ) ) );
+#endif // !UNITY
 					stream.Position = 0;
 					// Properties are sorted by lexical order
 					var index = Array.IndexOf( typeof( T ).GetProperties().OrderBy( p => p.Name ).ToArray(), propertyInfo );
 					var result = Unpacking.UnpackArray( stream );
 					Assert.That(
+#if !UNITY
 						result[ index ].Equals( propertyInfo.GetValue( value, null ).ToString() ),
 						result[ index ] + " == " + propertyInfo.GetValue( value, null )
+#else
+						result[ index ].Equals( propertyInfo.GetGetMethod().Invoke( value, null ).ToString() ),
+						result[ index ] + " == " + propertyInfo.GetGetMethod().Invoke( value, null )
+#endif // !UNITY
 					);
 				}
 			}
@@ -171,14 +179,23 @@ namespace MsgPack.Serialization
 				else
 				{
 					var propertyInfo = typeof( T ).GetProperty( property );
+#if !UNITY
 					Assert.That( propertyInfo.GetValue( deserialized, null ), Is.EqualTo( propertyInfo.GetValue( value, null ) ) );
+#else
+					Assert.That( propertyInfo.GetGetMethod().Invoke( deserialized, null ), Is.EqualTo( propertyInfo.GetGetMethod().Invoke( value, null ) ) );
+#endif // !UNITY
 					stream.Position = 0;
 					var result = Unpacking.UnpackArray( stream );
 					// Properties are sorted by lexical order
 					var index = Array.IndexOf( typeof( T ).GetProperties().OrderBy( p => p.Name ).ToArray(), propertyInfo );
 					Assert.That(
+#if !UNITY
 						result[ index ].ToString().Equals( ( ( IFormattable )propertyInfo.GetValue( value, null ) ).ToString( "D", null ) ),
 						result[ index ] + " == " + ( ( IFormattable )propertyInfo.GetValue( value , null) ).ToString( "D", null )
+#else
+						result[ index ].ToString().Equals( ( ( IFormattable )propertyInfo.GetGetMethod().Invoke( value, null ) ).ToString( "D", null ) ),
+						result[ index ] + " == " + ( ( IFormattable )propertyInfo.GetGetMethod().Invoke( value , null) ).ToString( "D", null )
+#endif // !UNITY
 					);
 				}
 			}

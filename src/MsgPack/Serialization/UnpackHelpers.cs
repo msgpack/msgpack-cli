@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,9 +25,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if !CORLIB_ONLY
 using System.ComponentModel;
+#endif //!CORLIB_ONLY
+using System.Reflection;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 using MsgPack.Serialization.DefaultSerializers;
 
@@ -37,13 +44,13 @@ namespace MsgPack.Serialization
 	///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 	///		Defines serialization helper APIs.
 	/// </summary>
+#if !CORLIB_ONLY
 	[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 	public static partial class UnpackHelpers
 	{
 		private static readonly MessagePackSerializer<MessagePackObject> _messagePackObjectSerializer =
 			new MsgPack_MessagePackObjectMessagePackSerializer( SerializationContext.Default );
-
-		internal static readonly Type[] CollectionConstructorWithCapacityParameterTypes = { typeof( int ) };
 
 		/// <summary>
 		///		Unpacks the array to the specified array.
@@ -55,8 +62,10 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialization.
 		/// </exception>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future.")]
+#endif // !CORLIB_ONLY
+		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackArrayTo<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, T[] array )
 		{
 			if ( unpacker == null )
@@ -117,7 +126,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialization.
 		/// </exception>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackCollectionTo( Unpacker unpacker, IEnumerable collection, Action<object> addition )
 		{
@@ -181,7 +192,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialization.
 		/// </exception>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackCollectionTo<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, IEnumerable<T> collection, Action<T> addition )
 		{
@@ -251,7 +264,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialization.
 		/// </exception>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackCollectionTo<TDiscarded>( Unpacker unpacker, IEnumerable collection, Func<object, TDiscarded> addition )
 		{
@@ -316,7 +331,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialization.
 		/// </exception>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackCollectionTo<T, TDiscarded>( Unpacker unpacker, MessagePackSerializer<T> serializer, IEnumerable<T> collection, Func<T, TDiscarded> addition )
 		{
@@ -386,7 +403,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialization.
 		/// </exception>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackMapTo<TKey, TValue>( Unpacker unpacker, MessagePackSerializer<TKey> keySerializer, MessagePackSerializer<TValue> valueSerializer, IDictionary<TKey, TValue> dictionary )
 		{
@@ -471,7 +490,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialization.
 		/// </exception>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackMapTo( Unpacker unpacker, IDictionary dictionary )
 		{
@@ -549,7 +570,9 @@ namespace MsgPack.Serialization
 		///		The items count of the collection can be between <see cref="Int32.MaxValue"/> and <see cref="UInt32.MaxValue"/>,
 		///		but most collections do not support so big count.
 		/// </remarks>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		public static int GetItemsCount( Unpacker unpacker )
 		{
 			if( unpacker == null )
@@ -584,7 +607,9 @@ namespace MsgPack.Serialization
 		/// <param name="name">The name of the member.</param>
 		/// <param name="targetType">The type of the target.</param>
 		/// <returns>The unboxed value.</returns>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static T ConvertWithEnsuringNotNull<T>( object boxed, string name, Type targetType )
 		{
@@ -603,7 +628,9 @@ namespace MsgPack.Serialization
 		/// <param name="serializer">The invocation target <see cref="MessagePackSerializer{T}"/>.</param>
 		/// <param name="unpacker">The unpacker to be passed to the method.</param>
 		/// <returns>A deserialized value.</returns>
+#if !CORLIB_ONLY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static T InvokeUnpackFrom<T>( MessagePackSerializer<T> serializer, Unpacker unpacker )
 		{
@@ -614,5 +641,121 @@ namespace MsgPack.Serialization
 
 			return serializer.UnpackFromCore( unpacker );
 		}
+
+
+		/// <summary>
+		///		Retrieves a most appropriate constructor with <see cref="Int32"/> capacity parameter and <see cref="IEqualityComparer{T}"/> comparer parameter or both of them, >or default constructor of the <paramref name="instanceType"/>.
+		/// </summary>
+		/// <param name="instanceType">The target collection type to be instanciated.</param>
+		/// <returns>A constructor of the <paramref name="instanceType"/>.</returns>
+		internal static ConstructorInfo GetCollectionConstructor( Type instanceType )
+		{
+			const int noParameters = 0;
+			const int withCapacity = 10;
+			const int withComparer = 11;
+			const int withComparerAndCapacity = 20;
+			const int withCapacityAndComparer = 21;
+
+			ConstructorInfo constructor = null;
+			var currentScore = -1;
+
+			foreach ( var candidate in instanceType.GetConstructors() )
+			{
+				var parameters = candidate.GetParameters();
+				switch ( parameters.Length )
+				{
+					case 0:
+					{
+						if ( currentScore < noParameters )
+						{
+							constructor = candidate;
+							currentScore = noParameters;
+						}
+
+						break;
+					}
+					case 1:
+					{
+						if ( currentScore < withCapacity && parameters[ 0 ].ParameterType == typeof( int ) )
+						{
+							constructor = candidate;
+							currentScore = noParameters;
+						}
+						else if ( currentScore < withComparer && IsIEqualityComparer( parameters[ 0 ].ParameterType ) )
+						{
+							constructor = candidate;
+							currentScore = noParameters;
+						}
+						break;
+					}
+					case 2:
+					{
+						if ( currentScore < withCapacityAndComparer && parameters[ 0 ].ParameterType == typeof( int ) && IsIEqualityComparer( parameters[ 1 ].ParameterType ) )
+						{
+							constructor = candidate;
+							currentScore = withCapacityAndComparer;
+						}
+						else if ( currentScore < withComparerAndCapacity && parameters[ 1 ].ParameterType == typeof( int ) && IsIEqualityComparer( parameters[ 0 ].ParameterType ) )
+						{
+							constructor = candidate;
+							currentScore = withComparerAndCapacity;
+						}
+
+						break;
+					}
+				}
+			}
+
+			if ( constructor == null )
+			{
+				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( instanceType );
+			}
+
+			return constructor;
+		}
+
+		/// <summary>
+		///		Determines the type is <see cref="IEqualityComparer{T}"/>.
+		/// </summary>
+		/// <param name="type">The type should be <see cref="IEqualityComparer{T}"/>.</param>
+		/// <returns>
+		///		<c>true</c>, if <paramref name="type"/> is open <see cref="IEqualityComparer{T}"/> generic type; <c>false</c>, otherwise.
+		/// </returns>
+		internal static bool IsIEqualityComparer( Type type )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( !type.GetIsGenericTypeDefinition(), "!(" + type + ").GetIsGenericTypeDefinition()" );
+#endif // DEBUG && !UNITY
+
+			return type.GetIsGenericType() && type.GetGenericTypeDefinition() == typeof( IEqualityComparer<> );
+		}
+
+#if UNITY
+		internal static object GetEqualityComparer( Type comparerType )
+		{
+			return AotHelper.GetEqualityComparer( comparerType );
+		}
+#endif // UNITY
+
+
+		/// <summary>
+		///		Gets an <see cref="IEqualityComparer{T}"/> with platform safe fashion.
+		/// </summary>
+		/// <typeparam name="T">The type to be compared.</typeparam>
+		/// <returns>
+		///		An <see cref="IEqualityComparer{T}"/> instance.
+		/// </returns>
+#if !CORLIB_ONLY
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
+		public static IEqualityComparer<T> GetEqualityComparer<T>()
+		{
+#if !UNITY
+			return EqualityComparer<T>.Default;
+#else
+			// AotHelper is internal because it should not be API -- it is subject to change when the Unity's Mono is updated or IL2CPP becomes stable.
+			return AotHelper.GetEqualityComparer<T>();
+#endif // !UNITY
+		} 
 	}
 }

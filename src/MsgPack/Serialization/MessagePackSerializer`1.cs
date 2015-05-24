@@ -265,18 +265,40 @@ namespace MsgPack.Serialization
 
 			if ( unpacker.LastReadData.IsNil )
 			{
-				if ( _isNullable )
-				{
-					// null
-					return default( T );
-				}
-				else
-				{
-					throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
-				}
+				return this.UnpackNil();
 			}
 
 			return this.UnpackFromCore( unpacker );
+		}
+
+		/// <summary>
+		///		Unpacks the nil value.
+		/// </summary>
+		/// <returns>
+		///		A valid value of <typeparamref name="T"/> which represents 'null' state.
+		/// </returns>
+		/// <remarks>
+		///		<para>
+		///			This method is invoked from <see cref="UnpackFrom"/> method when the current <see cref="Unpacker.LastReadData"/> is <see cref="MessagePackObject.IsNil">nil</see>.
+		///		</para>
+		///		<para>
+		///			The implementation of this class returns <c>null</c> for nullable types (that is, all reference types and <see cref="Nullable{T}"/>); otherwise, throws <see cref="SerializationException"/>.
+		///		</para>
+		///		<para>
+		///			Custom serializers can override this method to provide custom nil representation. For example, built-in <see cref="DBNull"/> serializer overrides this method to return <see cref="DBNull.Value"/> instead of <c>null</c>.
+		///		</para>
+		/// </remarks>
+		protected internal virtual T UnpackNil()
+		{
+			if ( _isNullable )
+			{
+				// null
+				return default( T );
+			}
+			else
+			{
+				throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
+			}
 		}
 
 		/// <summary>

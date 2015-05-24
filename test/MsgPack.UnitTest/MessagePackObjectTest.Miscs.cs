@@ -84,10 +84,10 @@ namespace MsgPack
 				Enumerable.Repeat( ( MessagePackObject )1, 0x10000 ).ToArray(),
 				new MessagePackObject( new MessagePackObjectDictionary() ),
 				new MessagePackObject( new MessagePackObjectDictionary() { { 1, 1 } } ),
-				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 15 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ) ) ) ),
-				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 16 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ) ) ) ),
-				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 0xFFFF ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ) ) ) ),
-				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 0x10000 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ) ) ) )
+				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 15 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ), MessagePackObjectEqualityComparer.Instance ) ) ),
+				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 16 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ), MessagePackObjectEqualityComparer.Instance ) ) ),
+				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 0xFFFF ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ), MessagePackObjectEqualityComparer.Instance ) ) ),
+				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 0x10000 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ), MessagePackObjectEqualityComparer.Instance ) ) )
 			);
 		}
 
@@ -171,10 +171,10 @@ namespace MsgPack
 				Enumerable.Repeat( ( MessagePackObject )1, 0x10000 ).ToArray(),
 				new MessagePackObject( new MessagePackObjectDictionary() ),
 				new MessagePackObject( new MessagePackObjectDictionary() { { 1, 1 } } ),
-				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 15 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ) ) ) ),
-				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 16 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ) ) ) ),
-				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 0xFFFF ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ) ) ) ),
-				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 0x10000 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ) ) ) )
+				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 15 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ), MessagePackObjectEqualityComparer.Instance ) ) ),
+				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 16 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ), MessagePackObjectEqualityComparer.Instance ) ) ),
+				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 0xFFFF ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ), MessagePackObjectEqualityComparer.Instance ) ) ),
+				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 0x10000 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ), MessagePackObjectEqualityComparer.Instance ) ) )
 			);
 		}
 

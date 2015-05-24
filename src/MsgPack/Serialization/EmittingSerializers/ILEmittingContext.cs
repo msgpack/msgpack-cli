@@ -114,16 +114,20 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this._enumEmitterFactory = enumEmitterFactory;
 		}
 
-		/// <summary>
-		///		Resets internal states for specified target type.
-		/// </summary>
-		/// <param name="targetType">Type of the serialization target.</param>
-		protected sealed override void ResetCore( Type targetType )
+		protected sealed override void ResetCore( Type targetType, Type baseClass )
 		{
+			// Note: baseClass is always null this class hiearchy.
 			this.Packer = ILConstruct.Argument( 1, typeof( Packer ), "packer" );
 			this.PackToTarget = ILConstruct.Argument( 2, targetType, "objectTree" );
 			this.Unpacker = ILConstruct.Argument( 1, typeof( Unpacker ), "unpacker" );
 			this.UnpackToTarget = ILConstruct.Argument( 2, targetType, "collection" );
+			var traits = targetType.GetCollectionTraits();
+			if ( traits.ElementType != null )
+			{
+				this.CollectionToBeAdded = ILConstruct.Argument( 1, targetType, "collection" );
+				this.ItemToAdd = ILConstruct.Argument( 2, traits.ElementType, "item" );
+				this.InitialCapacity = ILConstruct.Argument( 1, typeof( int ), "initialCapacity" );
+			}
 			this._emitter = null;
 			this._enumEmitter = null;
 		}

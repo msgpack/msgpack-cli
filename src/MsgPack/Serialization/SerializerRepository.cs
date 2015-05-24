@@ -25,6 +25,8 @@
 using System;
 using System.Collections.Generic;
 
+using MsgPack.Serialization.Polymorphic;
+
 namespace MsgPack.Serialization
 {
 	/// <summary>
@@ -32,6 +34,26 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed partial class SerializerRepository : IDisposable
 	{
+		private static readonly object SyncRoot = new object();
+		private static SerializerRepository _internalDefault;
+
+		internal static SerializerRepository InternalDefault
+		{
+			get
+			{
+				// Lazy init to avoid .cctor recursion from SerializationContext.cctor()
+				lock ( SyncRoot )
+				{
+					if ( _internalDefault == null )
+					{
+						_internalDefault = GetDefault( SerializationContext.Default );
+					}
+
+					return _internalDefault;
+				}
+			}
+		}
+
 		private readonly SerializerTypeKeyRepository _repository;
 
 		/// <summary>
@@ -62,7 +84,6 @@ namespace MsgPack.Serialization
 		private SerializerRepository( Dictionary<RuntimeTypeHandle, object> table )
 		{
 			this._repository = new SerializerTypeKeyRepository( table );
-			this._repository.Freeze();
 		}
 
 		/// <summary>
@@ -85,7 +106,7 @@ namespace MsgPack.Serialization
 		/// </returns>
 		public MessagePackSerializer<T> Get<T>( SerializationContext context )
 		{
-			return Get<T>( context, null );
+			return this.Get<T>( context, null );
 		}
 
 		/// <summary>
@@ -107,7 +128,13 @@ namespace MsgPack.Serialization
 
 			var result = this._repository.Get( context, typeof( T ) );
 			var asProvider = result as MessagePackSerializerProvider;
+#if !UNITY
 			return ( asProvider != null ? asProvider.Get( context, providerParameter ) : result ) as MessagePackSerializer<T>;
+#else
+			var asSerializer =
+				( asProvider != null ? asProvider.Get( context, providerParameter ) : result ) as IMessagePackSingleObjectSerializer;
+			return asSerializer != null ? MessagePackSerializer.Wrap<T>( context, asSerializer ) : null;
+#endif // !UNITY
 		}
 
 #if UNITY || XAMIOS || XAMDROID
@@ -142,25 +169,21 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public bool Register<T>( MessagePackSerializer<T> serializer )
 		{
-			return this.Register( typeof( T ), serializer );
+#if !UNITY
+			return this.Register( typeof( T ), new PolymorphicSerializerProvider<T>( serializer ) );
+#else
+			return this.Register( typeof( T ), new PolymorphicSerializerProvider<T>( serializer.OwnerContext, serializer ) );
+#endif // !UNITY
 		}
 
-		internal bool Register( Type targetType, object serializer )
+		internal bool Register( Type targetType, MessagePackSerializerProvider serializer )
 		{
 			if ( serializer == null )
 			{
 				throw new ArgumentNullException( "serializer" );
 			}
 
-			var asEnumSerializer = serializer as ICustomizableEnumSerializer;
-			if ( asEnumSerializer != null )
-			{
-				return this._repository.Register( targetType, new EnumMessagePackSerializerProvider( targetType, asEnumSerializer ), /*allowOverwrite:*/ false );
-			}
-			else
-			{
-				return this._repository.Register( targetType, serializer, /*allowOverwrite:*/ false );
-			}
+			return this._repository.Register( targetType, serializer, /*allowOverwrite*/ false );
 		}
 
 		/// <summary>
@@ -190,25 +213,39 @@ namespace MsgPack.Serialization
 		///		Note that the repository is frozen.
 		/// </value>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Justification = "Historical reason" )]
+		[Obsolete( "Use GetDefault()")]
 		public static SerializerRepository Default
 		{
-			get { return GetDefault( PackerCompatibilityOptions.Classic ); }
+			get { return GetDefault( SerializationContext.Default ); }
 		}
 
 		/// <summary>
 		///		Gets the system default repository bound to default context.
 		/// </summary>
-		/// <param name="packerCompatibilityOptions"><see cref="PackerCompatibilityOptions"/> for default serializers must use.</param>
 		/// <returns>
 		///		The system default repository.
 		///		This value will not be <c>null</c>.
 		///		Note that the repository is frozen.
 		/// </returns>
-		/// <exception cref="ArgumentOutOfRangeException"><paramref name="packerCompatibilityOptions"/> is invalid.</exception>
+		public static SerializerRepository GetDefault()
+		{
+			return GetDefault( SerializationContext.Default );
+		}
+
+		/// <summary>
+		///		Gets the system default repository bound to default context.
+		/// </summary>
+		/// <param name="packerCompatibilityOptions">Not used.</param>
+		/// <returns>
+		///		The system default repository.
+		///		This value will not be <c>null</c>.
+		///		Note that the repository is frozen.
+		/// </returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "packerCompatibilityOptions", Justification = "Historical reason" )]
+		[Obsolete( "Use GetDefault()" )]
 		public static SerializerRepository GetDefault( PackerCompatibilityOptions packerCompatibilityOptions )
 		{
-			var newContext = new SerializationContext( SerializationContext.Default.Serializers, packerCompatibilityOptions );
-			return GetDefault( newContext );
+			return GetDefault( SerializationContext.Default );
 		}
 
 		/// <summary>
@@ -233,7 +270,7 @@ namespace MsgPack.Serialization
 
 		internal bool Contains( Type rootType )
 		{
-			return this._repository.Coontains( rootType );
+			return this._repository.Contains( rootType );
 		}
 	}
 }

@@ -39,7 +39,7 @@ namespace MsgPack.Serialization
 		public DateTime TimeStamp { get; set; }
 		public byte[] Data { get; set; }
 
-		private readonly Dictionary<DateTime, string> _history = new Dictionary<DateTime, string>();
+		private readonly Dictionary<DateTime, string> _history = new Dictionary<DateTime, string>( DictionaryTestHelper.GetEqualityComparer<DateTime>() );
 
 		public Dictionary<DateTime, string> History
 		{
@@ -62,7 +62,7 @@ namespace MsgPack.Serialization
 				NUnit.Framework.Assert.That( map.ContainsKey( "Source" ) );
 				NUnit.Framework.Assert.That( map[ "Source" ].AsString(), Is.EqualTo( this.Source.ToString() ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "TimeStamp" ) );
-				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( map[ "TimeStamp" ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
+				NUnit.Framework.Assert.That( DateTime.FromBinary( map[ "TimeStamp" ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "Data" ) );
 				NUnit.Framework.Assert.That( map[ "Data" ].AsBinary(), Is.EqualTo( this.Data ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "History" ) );
@@ -78,7 +78,7 @@ namespace MsgPack.Serialization
 				NUnit.Framework.Assert.That( array[ 0 ].AsBinary(), Is.EqualTo( this.Data ) );
 				NUnit.Framework.Assert.That( array[ 1 ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
 				NUnit.Framework.Assert.That( array[ 2 ].AsString(), Is.EqualTo( this.Source.ToString() ) );
-				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( array[ 3 ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
+				NUnit.Framework.Assert.That( DateTime.FromBinary( array[ 3 ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
 			}
 		}
 	}

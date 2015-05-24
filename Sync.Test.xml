@@ -11,6 +11,7 @@
   </Project>
   <Project Name="MsgPack.UnitTest.BclExtensions.Mono" Base="MsgPack.UnitTest.BclExtensions">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve File="*.config" />
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
@@ -72,20 +73,14 @@
 
   <Project Name="MsgPack.UnitTest.Net35" Base="MsgPack.UnitTest">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve Path="gen\*" />
+    <Preserve Path="gen\array\*" />
+    <Preserve Path="gen\map\*" />
     <Exclude Path="Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\ArrayExpressionBasedEnumSerializationTest.cs" />
-    <Exclude Path="Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs" />
-    <Exclude Path="Serialization\ArrayGenerationBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\ExpressionBasedNilImplicationTest.cs" />
-    <Exclude Path="Serialization\GenerationBasedNilImplicationTest.cs" />
     <Exclude Path="Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\MapExpressionBasedEnumSerializationTest.cs" />
-    <Exclude Path="Serialization\MapGenerationBasedAutoMessagePackSerializerTest.cs" />
-    <Exclude Path="Serialization\MapGenerationBasedEnumSerializationTest.cs" />
-    <Exclude Path="Serialization\GeneratedSerializers\*" />
-    <Exclude Path="Serialization\GeneratedSerializers\ArrayBased\*" />
-    <Exclude Path="Serialization\GeneratedSerializers\MapBased\*" />
-    <Exclude Path="Serialization\PreGenerated*" />
     <Preserve Path="Dummies\System.Threading.Tasks\Task.cs" />
     <Preserve Path="Dummies\System.Threading.Tasks\TaskFactory.cs" />
     <Preserve Path="Mono\System\AggregateException.cs" />
@@ -104,9 +99,40 @@
   </Project>
   <Project Name="MsgPack.UnitTest.CodeDom.Net35" Base="MsgPack.UnitTest.CodeDom">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve File="*.config" />
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
+  </Project>
+
+  <Project Name="MsgPack.UnitTest.Unity3D" Base="MsgPack.UnitTest.Net35">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve Path="Resources\*" />
+    <Preserve File="*.config" />
+    <Preserve File="*.json" />
+    <Preserve File="*.mpac" />
+    <Preserve File="*.snk" />
+    <!-- Direct Link to NetFx35 because Unity build cannot exclude via #if DEBUG them. -->
+    <Preserve File="Delegates.cs" />
+    <Preserve File="NetFxCompatibilities.cs" />
+    <Preserve File="Tuple`n.cs" />
+    <Preserve Path="Serialization\AotWorkarounds.cs" />
+    <Exclude File="*.ps1" />
+    <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
+    <Exclude File="_SetUpFixture.cs" />
+    <Exclude File="ReadMe.txt" />
+    <Exclude Path="Serialization\PreGeneratedSerializerGenerator.cs" />
+    <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
+    <Exclude Path="TestSuite.cs" />
+    <Exclude Path="Serialization\CompositeTest.cs" />
+    <!-- Generator related -->
+    <Exclude File="*ContextBased*.cs" />
+    <Exclude File="*FieldBased*.cs" />
+    <Exclude Path="Serialization\FromExpressionTest.cs" />
+    <Exclude Path="Serialization\MessagePackMemberAndDataMemberMixedTarget.cs" />
+    <Exclude Path="Serialization\MessagePackMemberAttributeTest.cs" />
+    <Exclude Path="MessagePackObjectTest.RuntimeSerialization.cs" />
   </Project>
 
   <Project Name="MsgPack.UnitTest.WinRT" Base="MsgPack.UnitTest">
@@ -119,9 +145,9 @@
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
-    <Exclude Path="Serialization\GeneratedSerializers\*" />
-    <Exclude Path="Serialization\GeneratedSerializers\ArrayBased\*" />
-    <Exclude Path="Serialization\GeneratedSerializers\MapBased\*" />
+    <Exclude Path="gen\*" />
+    <Exclude Path="gen\array\*" />
+    <Exclude Path="gen\map\*" />
     <Exclude Path="Serialization\PreGenerated*" />
     <Exclude Path="Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\ArrayFieldBasedEnumSerializationTest.cs" />
@@ -144,7 +170,9 @@
 
   <Project Name="MsgPack.UnitTest.BclExtensions.WinRT" Base="MsgPack.UnitTest.BclExtensions">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve File="*.config" />
     <Exclude File="*.ps1" />
+    <Preserve File="*.pfx" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
     <Exclude Path="Serialization\ArrayFieldBasedCustomCollectionSerializersTest.cs" />

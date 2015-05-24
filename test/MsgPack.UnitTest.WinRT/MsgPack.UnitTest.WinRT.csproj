@@ -15,7 +15,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>MsgPack.UnitTest.WinRT_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>AA9B1677D255E9526960070BE74E14DFA777C817</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>202044F5836CCA95275D68B47C9B4306D9016B91</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -278,6 +278,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataMemberAttributeNamedPropertyTestTarget.cs">
       <Link>Serialization\DataMemberAttributeNamedPropertyTestTarget.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs">
+      <Link>Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\EnumSerializationTest.EnumDefinitions.cs">
       <Link>Serialization\EnumSerializationTest.EnumDefinitions.cs</Link>
     </Compile>
@@ -331,6 +334,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ReflectionBasedNilImplicationTest.cs">
       <Link>Serialization\ReflectionBasedNilImplicationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\RegressionTests.cs">
+      <Link>Serialization\RegressionTests.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationContextTest.cs">
       <Link>Serialization\SerializationContextTest.cs</Link>
@@ -472,6 +478,9 @@
     <None Include="MsgPack.UnitTest.WinRT_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\MsgPack.UnitTest\gen\ReadMe.txt">
+      <Link>gen\ReadMe.txt</Link>
+    </Content>
     <Content Include="Images\UnitTestLogo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

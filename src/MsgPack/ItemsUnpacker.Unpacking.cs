@@ -4,7 +4,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,7 +26,11 @@
 
 using System;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 using System.Globalization;
 using System.IO;
@@ -49,8 +53,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -88,8 +92,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -130,8 +134,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -175,8 +179,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -223,8 +227,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -274,8 +278,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -328,8 +332,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -385,8 +389,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -445,8 +449,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -503,8 +507,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -564,8 +568,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -628,8 +632,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -695,8 +699,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -769,8 +773,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -846,8 +850,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -926,8 +930,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -1009,8 +1013,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -1076,8 +1080,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -1146,8 +1150,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -1219,8 +1223,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -1295,8 +1299,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -1393,8 +1397,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -1494,8 +1498,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -1598,8 +1602,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -1705,8 +1709,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -1796,8 +1800,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -1890,8 +1894,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -1987,8 +1991,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -2087,8 +2091,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -2209,8 +2213,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -2334,8 +2338,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -2462,8 +2466,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -2593,8 +2597,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -2708,8 +2712,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -2826,8 +2830,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -2947,8 +2951,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -3071,8 +3075,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -3193,8 +3197,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -3318,8 +3322,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -3446,8 +3450,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -3577,8 +3581,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -3699,8 +3703,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -3824,8 +3828,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -3952,8 +3956,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -4084,8 +4088,8 @@ namespace MsgPack
 		#pragma warning restore 168
 			#region UnpackRawLength
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -4177,8 +4181,8 @@ namespace MsgPack
 		#pragma warning restore 168
 			#region UnpackRawLength
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -4273,12 +4277,12 @@ namespace MsgPack
 		#pragma warning restore 168
 			var encoding = Encoding.UTF8;
 			#if DEBUG && !UNITY
-			Contract.Assert( encoding != null );
+			Contract.Assert( encoding != null, "encoding != null" );
 			#endif // DEBUG && !UNITY
 			#region UnpackRawLength
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -4406,12 +4410,12 @@ namespace MsgPack
 		#pragma warning restore 168
 			var encoding = Encoding.UTF8;
 			#if DEBUG && !UNITY
-			Contract.Assert( encoding != null );
+			Contract.Assert( encoding != null, "encoding != null" );
 			#endif // DEBUG && !UNITY
 			#region UnpackRawLength
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -4541,8 +4545,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -5163,8 +5167,8 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -5789,8 +5793,8 @@ namespace MsgPack
 		#pragma warning restore 168
 			#region UnpackArrayLength
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -5850,8 +5854,8 @@ namespace MsgPack
 		#pragma warning restore 168
 			#region UnpackArrayLength
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -5914,8 +5918,8 @@ namespace MsgPack
 		#pragma warning restore 168
 			#region UnpackMapLength
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -5975,8 +5979,8 @@ namespace MsgPack
 		#pragma warning restore 168
 			#region UnpackMapLength
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -6039,8 +6043,8 @@ namespace MsgPack
 		#pragma warning restore 168
 			#region UnpackExt
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
@@ -6265,8 +6269,8 @@ namespace MsgPack
 		#pragma warning restore 168
 			#region UnpackExt
 			#if DEBUG && !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();

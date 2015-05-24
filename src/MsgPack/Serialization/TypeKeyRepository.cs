@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,7 +25,11 @@
 using System;
 using System.Collections.Generic;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 #if NETFX_CORE
 using System.Reflection;
@@ -45,13 +49,6 @@ namespace MsgPack.Serialization
 #endif
 	internal class TypeKeyRepository
 	{
-		private volatile int _isFrozen;
-
-		public bool IsFrozen
-		{
-			get { return this._isFrozen != 0; }
-		}
-
 		private readonly ReaderWriterLockSlim _lock;
 
 		private readonly Dictionary<RuntimeTypeHandle, object> _table;
@@ -171,21 +168,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public void Freeze()
-		{
-			this._isFrozen = 1;
-		}
-
 		public bool Register( Type type, object entry, bool allowOverwrite )
 		{
-#if !UNITY
-			Contract.Assert( entry != null );
-#endif // !UNITY
-
-			if ( this.IsFrozen )
-			{
-				throw new InvalidOperationException( "This repository is frozen." );
-			}
+#if !UNITY && DEBUG
+			Contract.Assert( entry != null, "entry != null" );
+#endif // !UNITY && DEBUG
 
 			return this.RegisterCore( type, entry, allowOverwrite );
 		}
@@ -237,11 +224,6 @@ namespace MsgPack.Serialization
 
 		public bool Unregister( Type type )
 		{
-			if ( this.IsFrozen )
-			{
-				throw new InvalidOperationException( "This repository is frozen." );
-			}
-
 			return this.UnregisterCore( type );
 		}
 
@@ -287,7 +269,7 @@ namespace MsgPack.Serialization
 #if !NETFX_35 && !UNITY
 		[SecuritySafeCritical]
 #endif
-		internal bool Coontains( Type type )
+		internal bool Contains( Type type )
 		{
 			bool holdsReadLock = false;
 #if !SILVERLIGHT && !NETFX_CORE

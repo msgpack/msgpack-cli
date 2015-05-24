@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,8 +25,18 @@
 using System;
 using System.Collections.Generic;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
+
+#if !CORLIB_ONLY
+using BooleanStack = System.Collections.Generic.Stack<System.Boolean>;
+using Int64Stack = System.Collections.Generic.Stack<System.Int64>;
+#endif
+
 
 namespace MsgPack
 {
@@ -38,9 +48,9 @@ namespace MsgPack
 	{
 		private readonly ItemsUnpacker _root;
 		private readonly SubtreeUnpacker _parent;
-		private readonly Stack<bool> _isMap;
-		private readonly Stack<long> _unpacked;
-		private readonly Stack<long> _itemsCount;
+		private readonly BooleanStack _isMap;
+		private readonly Int64Stack _unpacked;
+		private readonly Int64Stack _itemsCount;
 
 		public override long ItemsCount
 		{
@@ -87,15 +97,15 @@ namespace MsgPack
 		private SubtreeUnpacker( ItemsUnpacker root, SubtreeUnpacker parent )
 		{
 #if DEBUG && !UNITY
-			Contract.Assert( root != null );
-			Contract.Assert( root.IsArrayHeader || root.IsMapHeader );
+			Contract.Assert( root != null, "root != null" );
+			Contract.Assert( root.IsArrayHeader || root.IsMapHeader, "root.IsArrayHeader || root.IsMapHeader" );
 #endif // DEBUG && !UNITY
 			this._root = root;
 			this._parent = parent;
-			this._unpacked = new Stack<long>( 2 );
+			this._unpacked = new Int64Stack( 2 );
 
-			this._itemsCount = new Stack<long>( 2 );
-			this._isMap = new Stack<bool>( 2 );
+			this._itemsCount = new Int64Stack( 2 );
+			this._isMap = new BooleanStack( 2 );
 
 			if ( root.ItemsCount > 0 )
 			{
@@ -210,7 +220,7 @@ namespace MsgPack
 			if ( this._itemsCount.Count == 0 )
 			{
 #if DEBUG && !UNITY
-				Contract.Assert( this._unpacked.Count == 0 );
+				Contract.Assert( this._unpacked.Count == 0, "this._unpacked.Count == 0" );
 #endif // DEBUG && !UNITY
 				return;
 			}
@@ -224,7 +234,7 @@ namespace MsgPack
 				if ( this._itemsCount.Count == 0 )
 				{
 #if DEBUG && !UNITY
-					Contract.Assert( this._unpacked.Count == 0 );
+					Contract.Assert( this._unpacked.Count == 0, "this._unpacked.Count == 0 " );
 #endif // DEBUG && !UNITY
 					break;
 				}

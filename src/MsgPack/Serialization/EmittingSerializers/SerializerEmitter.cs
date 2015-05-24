@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Reflection;
 
@@ -32,8 +33,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 	[ContractClass( typeof( SerializerEmitterContract ) )]
 	internal abstract class SerializerEmitter : IDisposable
 	{
-		protected static readonly Type[] UnpackFromCoreParameterTypes = { typeof( Unpacker ) };
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SerializerEmitter"/> class.
 		/// </summary>
@@ -88,17 +87,47 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public abstract TracingILGenerator GetUnpackToMethodILGenerator();
 
 		/// <summary>
+		///		Gets the IL generator to implement AddItem(TCollection, TItem) or AddItem(TCollection, object) overrides.
+		/// </summary>
+		/// <param name="declaration">The virtual method declaration to be overriden.</param>
+		/// <returns>
+		///		The IL generator to implement AddItem(TCollection, TItem) or AddItem(TCollection, object) overrides.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		public abstract TracingILGenerator GetAddItemMethodILGenerator( MethodInfo declaration );
+
+		/// <summary>
+		///		Gets the IL generator to implement CreateInstance(int) overrides.
+		/// </summary>
+		/// <param name="declaration">The virtual method declaration to be overriden.</param>
+		/// <returns>
+		///		The IL generator to implement CreateInstance(int) overrides.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		public abstract TracingILGenerator GetCreateInstanceMethodILGenerator( MethodInfo declaration );
+		
+		/// <summary>
+		///		Gets the IL generator to implement private static RestoreSchema() method.
+		/// </summary>
+		/// <returns>
+		///		The IL generator to implement RestoreSchema() static method.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		public abstract TracingILGenerator GetRestoreSchemaMethodILGenerator();
+
+		/// <summary>
 		///		Creates the serializer type built now and returns its new instance.
 		/// </summary>
 		/// <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
 		/// <param name="context">The <see cref="SerializationContext"/> to holds serializers.</param>
+		/// <param name="schema">The <see cref="PolymorphismSchema"/> for this instance.</param>
 		/// <returns>
 		///		Newly built <see cref="MessagePackSerializer{T}"/> instance.
 		///		This value will not be <c>null</c>.
 		///	</returns>
-		public MessagePackSerializer<T> CreateInstance<T>( SerializationContext context )
+		public MessagePackSerializer<T> CreateInstance<T>( SerializationContext context, PolymorphismSchema schema )
 		{
-			return this.CreateConstructor<T>()( context );
+			return this.CreateConstructor<T>()( context, schema );
 		}
 
 		/// <summary>
@@ -106,13 +135,16 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		/// <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
 		/// <returns>A delegate for serializer constructor.</returns>
-		public abstract Func<SerializationContext, MessagePackSerializer<T>> CreateConstructor<T>();
+		public abstract Func<SerializationContext, PolymorphismSchema, MessagePackSerializer<T>> CreateConstructor<T>();
 
 		/// <summary>
 		///		Regisgters <see cref="MessagePackSerializer{T}"/> of target type usage to the current emitting session.
 		/// </summary>
 		/// <param name="targetType">The type of the member to be serialized/deserialized.</param>
 		/// <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
+		/// <param name="dateTimeConversionMethod">The date time conversion method of the member to be serialized/deserialized.</param>
+		/// <param name="polymorphismSchema">The schema for polymorphism support.</param>
+		/// <param name="schemaRegenerationCodeProvider">The delegate to provide constructs to emit schema regeneration codes.</param>
 		/// <returns>
 		///		<see cref=" Action{T1,T2}"/> to emit serializer retrieval instructions.
 		///		The 1st argument should be <see cref="TracingILGenerator"/> to emit instructions.
@@ -121,7 +153,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </returns>
 		public abstract Action<TracingILGenerator, int> RegisterSerializer(
 			Type targetType,
-			EnumMemberSerializationMethod enumMemberSerializationMethod
+			EnumMemberSerializationMethod enumMemberSerializationMethod,
+			DateTimeMemberConversionMethod dateTimeConversionMethod,
+			PolymorphismSchema polymorphismSchema,
+			Func<IEnumerable<ILConstruct>> schemaRegenerationCodeProvider
 		);
 
 		/// <summary>
@@ -176,18 +211,45 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return null;
 		}
 
-		public override Func<SerializationContext, MessagePackSerializer<T>> CreateConstructor<T>()
+		public override TracingILGenerator GetAddItemMethodILGenerator( MethodInfo declaration )
 		{
-			Contract.Ensures( Contract.Result<Func<SerializationContext, MessagePackSerializer<T>>>() != null );
+			Contract.Requires( declaration != null );
+			Contract.Ensures( Contract.Result<TracingILGenerator>() != null );
 			return null;
 		}
 
-		public override Action<TracingILGenerator, int> RegisterSerializer( Type targetType, EnumMemberSerializationMethod enumMemberSerializationMethod )
+		public override TracingILGenerator GetCreateInstanceMethodILGenerator( MethodInfo declaration )
+		{
+			Contract.Requires( declaration != null );
+			Contract.Ensures( Contract.Result<TracingILGenerator>() != null );
+			return null;
+		}
+
+		public override TracingILGenerator GetRestoreSchemaMethodILGenerator()
+		{
+			Contract.Ensures( Contract.Result<TracingILGenerator>() != null );
+			return null;
+		}
+
+		public override Func<SerializationContext, PolymorphismSchema, MessagePackSerializer<T>> CreateConstructor<T>()
+		{
+			Contract.Ensures( Contract.Result<Func<SerializationContext, PolymorphismSchema, MessagePackSerializer<T>>>() != null );
+			return null;
+		}
+
+		public override Action<TracingILGenerator, int> RegisterSerializer(
+			Type targetType,
+			EnumMemberSerializationMethod enumMemberSerializationMethod,
+			DateTimeMemberConversionMethod dateTimeConversionMethod,
+			PolymorphismSchema polymorphismSchema,
+			Func<IEnumerable<ILConstruct>> schemaRegenerationCodeProvider
+		)
 		{
 			Contract.Requires( targetType != null );
 			Contract.Requires( Enum.IsDefined( typeof( EnumMemberSerializationMethod ), enumMemberSerializationMethod ) );
+			Contract.Requires( Enum.IsDefined( typeof( DateTimeMemberConversionMethod ), dateTimeConversionMethod ) );
 			Contract.Ensures( Contract.Result<Action<TracingILGenerator, int>>() != null );
-			throw new NotImplementedException();
+			return null;
 		}
 	}
 }

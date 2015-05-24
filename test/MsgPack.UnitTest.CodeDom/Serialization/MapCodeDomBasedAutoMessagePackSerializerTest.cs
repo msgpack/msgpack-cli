@@ -1,4 +1,6 @@
 ﻿
+
+
  
 #region -- License Terms --
 //
@@ -19,6 +21,10 @@
 //    limitations under the License.
 //
 #endregion -- License Terms --
+
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
 
 #pragma warning disable 3003
 using System;
@@ -49,6 +55,7 @@ using NUnit.Framework;
 using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
 using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
 using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using CategoryAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestCategoryAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
 #endif
@@ -56,15 +63,22 @@ using Is = NUnit.Framework.Is;
 namespace MsgPack.Serialization
 {
 	[TestFixture]
-	[Timeout( 30000 )]
+	[Timeout( 60000 )]
 	public class MapCodeDomBasedAutoMessagePackSerializerTest
 	{
-		private SerializationContext GetSerializationContext()
+		private static SerializationContext GetSerializationContext()
 		{
+#if !UNITY
 			return new SerializationContext { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.CodeDomBased };
+#else
+			var context = new SerializationContext { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.CodeDomBased };
+			AotWorkarounds.SetWorkaround( context );
+			return context;
+
+#endif // !UNITY
 		}
 
-		private SerializationContext  NewSerializationContext( PackerCompatibilityOptions compatibilityOptions )
+		private static SerializationContext  NewSerializationContext( PackerCompatibilityOptions compatibilityOptions )
 		{
 			return new SerializationContext( compatibilityOptions ) { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.CodeDomBased };
 		}
@@ -174,9 +188,13 @@ namespace MsgPack.Serialization
 		public void TestDateTime()
 		{
 			TestCore(
-				DateTime.UtcNow,
-				stream => MessagePackConvert.ToDateTime( Unpacking.UnpackInt64( stream ) ),
-				CompareDateTime
+				DateTime.Now,
+				stream => DateTime.FromBinary( Unpacking.UnpackInt64( stream ) ),
+				( x, y ) => x.Equals( y ),
+				context =>
+				{
+					Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+				}
 			);
 		}
 
@@ -184,9 +202,45 @@ namespace MsgPack.Serialization
 		public void TestDateTimeOffset()
 		{
 			TestCore(
+				DateTimeOffset.Now,
+				stream => 
+					{
+						var array = Unpacking.UnpackArray( stream );
+						return new DateTimeOffset( DateTime.FromBinary( array[ 0 ].AsInt64() ), TimeSpan.FromMinutes( array[ 1 ].AsInt16() ) );
+					},
+				( x, y ) => x.Equals( y ),
+				context =>
+				{
+					Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+				}
+			);
+		}
+
+		[Test]
+		public void TestDateTimeClassic()
+		{
+			TestCore(
+				DateTime.UtcNow,
+				stream => MessagePackConvert.ToDateTime( Unpacking.UnpackInt64( stream ) ),
+				CompareDateTime,
+				context =>
+				{
+					context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.UnixEpoc;
+				}
+			);
+		}
+
+		[Test]
+		public void TestDateTimeOffsetClassic()
+		{
+			TestCore(
 				DateTimeOffset.UtcNow,
 				stream => MessagePackConvert.ToDateTimeOffset( Unpacking.UnpackInt64( stream ) ),
-				( x, y ) => CompareDateTime( x.DateTime.ToUniversalTime(), y.DateTime.ToUniversalTime() )
+				( x, y ) => CompareDateTime( x.DateTime.ToUniversalTime(), y.DateTime.ToUniversalTime() ),
+				context =>
+				{
+					context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.UnixEpoc;
+				}
 			);
 		}
 
@@ -194,6 +248,179 @@ namespace MsgPack.Serialization
 		{
 			return x.Date == y.Date && x.Hour == y.Hour && x.Minute == y.Minute && x.Second == y.Second && x.Millisecond == y.Millisecond;
 		}
+
+		[Test]
+		public void TestDateTimeMemberAttributes_NativeContext_Local()
+		{
+			var context = GetSerializationContext();
+			context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.Native;
+			var target = this.CreateTarget<AnnotatedDateTimes>( context );
+			using ( var buffer = new MemoryStream() )
+			{
+				var input = new AnnotatedDateTimes( DateTimeOffset.Now );
+				target.Pack( buffer, input );
+				buffer.Position = 0;
+				var result = target.Unpack( buffer );
+
+				// Kind is preserved.
+				Assert.That( result.VanillaDateTimeField, Is.EqualTo( input.VanillaDateTimeField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeField, input.VanillaDateTimeField );
+				Assert.That( result.DefaultDateTimeField, Is.EqualTo( input.DefaultDateTimeField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeField, input.DefaultDateTimeField );
+				Assert.That( result.NativeDateTimeField, Is.EqualTo( input.NativeDateTimeField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeField, input.NativeDateTimeField );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeField, input.UnixEpocDateTimeField.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeField, input.UnixEpocDateTimeField );
+
+
+				// Offset is preserved. 
+				Assert.That( result.VanillaDateTimeOffsetField.DateTime, Is.EqualTo( input.VanillaDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetField.DateTime, input.VanillaDateTimeOffsetField.DateTime );
+				Assert.That( result.DefaultDateTimeOffsetField.DateTime, Is.EqualTo( input.DefaultDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetField.DateTime, input.DefaultDateTimeOffsetField.DateTime );
+				Assert.That( result.NativeDateTimeOffsetField.DateTime, Is.EqualTo( input.NativeDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetField.DateTime, input.NativeDateTimeOffsetField.DateTime );
+				// UTC is forced.
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime );
+
+				// Kind is preserved.
+				Assert.That( result.VanillaDateTimeProperty, Is.EqualTo( input.VanillaDateTimeProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeProperty, input.VanillaDateTimeProperty );
+				Assert.That( result.DefaultDateTimeProperty, Is.EqualTo( input.DefaultDateTimeProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeProperty, input.DefaultDateTimeProperty );
+				Assert.That( result.NativeDateTimeProperty, Is.EqualTo( input.NativeDateTimeProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeProperty, input.NativeDateTimeProperty );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeProperty, input.UnixEpocDateTimeProperty.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeProperty, input.UnixEpocDateTimeProperty );
+
+
+				// Offset is preserved. 
+				Assert.That( result.VanillaDateTimeOffsetProperty.DateTime, Is.EqualTo( input.VanillaDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetProperty.DateTime, input.VanillaDateTimeOffsetProperty.DateTime );
+				Assert.That( result.DefaultDateTimeOffsetProperty.DateTime, Is.EqualTo( input.DefaultDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetProperty.DateTime, input.DefaultDateTimeOffsetProperty.DateTime );
+				Assert.That( result.NativeDateTimeOffsetProperty.DateTime, Is.EqualTo( input.NativeDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetProperty.DateTime, input.NativeDateTimeOffsetProperty.DateTime );
+				// UTC is forced.
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime );
+			}
+		}
+
+		[Test]
+		public void TestDateTimeMemberAttributes_NativeContext_Utc()
+		{
+			var context = GetSerializationContext();
+			context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.Native;
+			var target = this.CreateTarget<AnnotatedDateTimes>( context );
+			using ( var buffer = new MemoryStream() )
+			{
+				var input = new AnnotatedDateTimes( DateTimeOffset.UtcNow );
+				target.Pack( buffer, input );
+				buffer.Position = 0;
+				var result = target.Unpack( buffer );
+
+				// Kind is preserved.
+				Assert.That( result.VanillaDateTimeField, Is.EqualTo( input.VanillaDateTimeField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeField, input.VanillaDateTimeField );
+				Assert.That( result.DefaultDateTimeField, Is.EqualTo( input.DefaultDateTimeField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeField, input.DefaultDateTimeField );
+				Assert.That( result.NativeDateTimeField, Is.EqualTo( input.NativeDateTimeField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeField, input.NativeDateTimeField );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeField, input.UnixEpocDateTimeField.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeField, input.UnixEpocDateTimeField );
+
+
+				// Offset is preserved. 
+				Assert.That( result.VanillaDateTimeOffsetField.DateTime, Is.EqualTo( input.VanillaDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetField.DateTime, input.VanillaDateTimeOffsetField.DateTime );
+				Assert.That( result.DefaultDateTimeOffsetField.DateTime, Is.EqualTo( input.DefaultDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetField.DateTime, input.DefaultDateTimeOffsetField.DateTime );
+				Assert.That( result.NativeDateTimeOffsetField.DateTime, Is.EqualTo( input.NativeDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetField.DateTime, input.NativeDateTimeOffsetField.DateTime );
+				// UTC == UTC
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime );
+
+				// Kind is preserved.
+				Assert.That( result.VanillaDateTimeProperty, Is.EqualTo( input.VanillaDateTimeProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeProperty, input.VanillaDateTimeProperty );
+				Assert.That( result.DefaultDateTimeProperty, Is.EqualTo( input.DefaultDateTimeProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeProperty, input.DefaultDateTimeProperty );
+				Assert.That( result.NativeDateTimeProperty, Is.EqualTo( input.NativeDateTimeProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeProperty, input.NativeDateTimeProperty );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeProperty, input.UnixEpocDateTimeProperty.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeProperty, input.UnixEpocDateTimeProperty );
+
+
+				// Offset is preserved. 
+				Assert.That( result.VanillaDateTimeOffsetProperty.DateTime, Is.EqualTo( input.VanillaDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetProperty.DateTime, input.VanillaDateTimeOffsetProperty.DateTime );
+				Assert.That( result.DefaultDateTimeOffsetProperty.DateTime, Is.EqualTo( input.DefaultDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetProperty.DateTime, input.DefaultDateTimeOffsetProperty.DateTime );
+				Assert.That( result.NativeDateTimeOffsetProperty.DateTime, Is.EqualTo( input.NativeDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetProperty.DateTime, input.NativeDateTimeOffsetProperty.DateTime );
+				// UTC == UTC
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime );
+			}
+		}
+
+		[Test]
+		public void TestDateTimeMemberAttributes_UnixEpocContext_Local()
+		{
+			var context = GetSerializationContext();
+			context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.UnixEpoc;
+			var target = this.CreateTarget<AnnotatedDateTimes>( context );
+			using ( var buffer = new MemoryStream() )
+			{
+				var input = new AnnotatedDateTimes( DateTimeOffset.Now );
+				target.Pack( buffer, input );
+				buffer.Position = 0;
+				var result = target.Unpack( buffer );
+
+				// UTC is forced.
+				Assert.That( CompareDateTime( result.VanillaDateTimeField, input.VanillaDateTimeField.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeField, input.VanillaDateTimeField );
+				Assert.That( CompareDateTime( result.DefaultDateTimeField, input.DefaultDateTimeField.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeField, input.DefaultDateTimeField );
+				Assert.That( result.NativeDateTimeField, Is.EqualTo( input.NativeDateTimeField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeField, input.NativeDateTimeField );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeField, input.UnixEpocDateTimeField.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeField, input.UnixEpocDateTimeField );
+
+
+				// UTC is forced.
+				Assert.That( CompareDateTime( result.VanillaDateTimeOffsetField.DateTime, input.VanillaDateTimeOffsetField.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetField.DateTime, input.VanillaDateTimeOffsetField.DateTime );
+				Assert.That( CompareDateTime( result.DefaultDateTimeOffsetField.DateTime, input.DefaultDateTimeOffsetField.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetField.DateTime, input.DefaultDateTimeOffsetField.DateTime );
+				Assert.That( result.NativeDateTimeOffsetField.DateTime, Is.EqualTo( input.NativeDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetField.DateTime, input.NativeDateTimeOffsetField.DateTime );
+				// UTC is forced.
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime );
+
+				// UTC is forced.
+				Assert.That( CompareDateTime( result.VanillaDateTimeProperty, input.VanillaDateTimeProperty.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeProperty, input.VanillaDateTimeProperty );
+				Assert.That( CompareDateTime( result.DefaultDateTimeProperty, input.DefaultDateTimeProperty.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeProperty, input.DefaultDateTimeProperty );
+				Assert.That( result.NativeDateTimeProperty, Is.EqualTo( input.NativeDateTimeProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeProperty, input.NativeDateTimeProperty );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeProperty, input.UnixEpocDateTimeProperty.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeProperty, input.UnixEpocDateTimeProperty );
+
+
+				// UTC is forced.
+				Assert.That( CompareDateTime( result.VanillaDateTimeOffsetProperty.DateTime, input.VanillaDateTimeOffsetProperty.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetProperty.DateTime, input.VanillaDateTimeOffsetProperty.DateTime );
+				Assert.That( CompareDateTime( result.DefaultDateTimeOffsetProperty.DateTime, input.DefaultDateTimeOffsetProperty.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetProperty.DateTime, input.DefaultDateTimeOffsetProperty.DateTime );
+				Assert.That( result.NativeDateTimeOffsetProperty.DateTime, Is.EqualTo( input.NativeDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetProperty.DateTime, input.NativeDateTimeOffsetProperty.DateTime );
+				// UTC is forced.
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime );
+			}
+		}
+
+		[Test]
+		public void TestDateTimeMemberAttributes_UnixEpocContext_Utc()
+		{
+			var context = GetSerializationContext();
+			context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.UnixEpoc;
+			var target = this.CreateTarget<AnnotatedDateTimes>( context );
+			using ( var buffer = new MemoryStream() )
+			{
+				var input = new AnnotatedDateTimes( DateTimeOffset.UtcNow );
+				target.Pack( buffer, input );
+				buffer.Position = 0;
+				var result = target.Unpack( buffer );
+
+				// UTC is forced.
+				Assert.That( CompareDateTime( result.VanillaDateTimeField, input.VanillaDateTimeField.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeField, input.VanillaDateTimeField );
+				Assert.That( CompareDateTime( result.DefaultDateTimeField, input.DefaultDateTimeField.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeField, input.DefaultDateTimeField );
+				Assert.That( result.NativeDateTimeField, Is.EqualTo( input.NativeDateTimeField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeField, input.NativeDateTimeField );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeField, input.UnixEpocDateTimeField.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeField, input.UnixEpocDateTimeField );
+
+
+				// UTC == UTC
+				Assert.That( CompareDateTime( result.VanillaDateTimeOffsetField.DateTime, input.VanillaDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetField.DateTime, input.VanillaDateTimeOffsetField.DateTime );
+				Assert.That( CompareDateTime( result.DefaultDateTimeOffsetField.DateTime, input.DefaultDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetField.DateTime, input.DefaultDateTimeOffsetField.DateTime );
+				Assert.That( result.NativeDateTimeOffsetField.DateTime, Is.EqualTo( input.NativeDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetField.DateTime, input.NativeDateTimeOffsetField.DateTime );
+				// UTC == UTC
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime );
+
+				// UTC is forced.
+				Assert.That( CompareDateTime( result.VanillaDateTimeProperty, input.VanillaDateTimeProperty.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeProperty, input.VanillaDateTimeProperty );
+				Assert.That( CompareDateTime( result.DefaultDateTimeProperty, input.DefaultDateTimeProperty.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeProperty, input.DefaultDateTimeProperty );
+				Assert.That( result.NativeDateTimeProperty, Is.EqualTo( input.NativeDateTimeProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeProperty, input.NativeDateTimeProperty );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeProperty, input.UnixEpocDateTimeProperty.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeProperty, input.UnixEpocDateTimeProperty );
+
+
+				// UTC == UTC
+				Assert.That( CompareDateTime( result.VanillaDateTimeOffsetProperty.DateTime, input.VanillaDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetProperty.DateTime, input.VanillaDateTimeOffsetProperty.DateTime );
+				Assert.That( CompareDateTime( result.DefaultDateTimeOffsetProperty.DateTime, input.DefaultDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetProperty.DateTime, input.DefaultDateTimeOffsetProperty.DateTime );
+				Assert.That( result.NativeDateTimeOffsetProperty.DateTime, Is.EqualTo( input.NativeDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetProperty.DateTime, input.NativeDateTimeOffsetProperty.DateTime );
+				// UTC == UTC
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime );
+			}
+		}
+
 
 		[Test]
 		public void TestUri()
@@ -207,7 +434,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestComplexObjectCore( this.GetSerializationContext() );
+				this.TestComplexObjectCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -221,7 +448,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestComplexObjectCore( this.GetSerializationContext() );
+				this.TestComplexObjectCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -243,12 +470,13 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestComplexTypeWithoutAnyAttribute( this.GetSerializationContext() );
+				this.TestComplexTypeWithoutAnyAttribute( GetSerializationContext() );
 			}
 			finally
 			{
 				SerializerDebugging.AvoidsGenericSerializer = false;
-			}		}
+			}
+		}
 
 		[Test]
 		public void TestComplexTypeWithoutAnyAttribute_WithoutShortcut()
@@ -256,12 +484,13 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestComplexTypeWithoutAnyAttribute( this.GetSerializationContext() );
+				this.TestComplexTypeWithoutAnyAttribute( GetSerializationContext() );
 			}
 			finally
 			{
 				SerializerDebugging.AvoidsGenericSerializer = false;
-			}		}
+			}
+		}
 
 		private void TestComplexTypeWithoutAnyAttribute( SerializationContext context )
 		{
@@ -273,7 +502,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestTypeWithMissingMessagePackMemberAttributeMember()
 		{
-			this.TestTypeWithMissingMessagePackMemberAttributeMemberCore( this.GetSerializationContext() );
+			this.TestTypeWithMissingMessagePackMemberAttributeMemberCore( GetSerializationContext() );
 		}
 
 		private void TestTypeWithMissingMessagePackMemberAttributeMemberCore( SerializationContext context )
@@ -300,7 +529,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestComplexObjectTypeWithDataContractCore( this.GetSerializationContext() );
+				this.TestComplexObjectTypeWithDataContractCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -314,7 +543,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestComplexObjectTypeWithDataContractCore( this.GetSerializationContext() );
+				this.TestComplexObjectTypeWithDataContractCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -340,7 +569,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestComplexTypeWithDataContractWithOrderCore( this.GetSerializationContext() );
+				this.TestComplexTypeWithDataContractWithOrderCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -354,7 +583,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestComplexTypeWithDataContractWithOrderCore( this.GetSerializationContext() );
+				this.TestComplexTypeWithDataContractWithOrderCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -380,7 +609,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestComplexObjectTypeWithNonSerializedCore( this.GetSerializationContext() );
+				this.TestComplexObjectTypeWithNonSerializedCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -394,7 +623,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestComplexObjectTypeWithNonSerializedCore( this.GetSerializationContext() );
+				this.TestComplexObjectTypeWithNonSerializedCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -535,7 +764,7 @@ namespace MsgPack.Serialization
 			target.Add( "null", null ); // This value will not be packed.
 			target.Add( "Empty", String.Empty );
 			target.Add( "2", "2" );
-			var serializer = this.CreateTarget<NameValueCollection>( this.GetSerializationContext() );
+			var serializer = this.CreateTarget<NameValueCollection>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, target );
@@ -556,7 +785,7 @@ namespace MsgPack.Serialization
 		{
 			var target = new NameValueCollection();
 			target.Add( null, "null" );
-			var serializer = this.CreateTarget<NameValueCollection>( this.GetSerializationContext() );
+			var serializer = this.CreateTarget<NameValueCollection>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				Assert.Throws<NotSupportedException>( () => serializer.Pack( stream, target ) );
@@ -567,7 +796,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestByteArrayContent()
 		{
-			var serializer = this.CreateTarget<byte[]>( this.GetSerializationContext() );
+			var serializer = this.CreateTarget<byte[]>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[] { 1, 2, 3, 4 } );
@@ -672,6 +901,20 @@ namespace MsgPack.Serialization
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[ 0 ] );
+				Assert.That( stream.Length, Is.EqualTo( 2 ), BitConverter.ToString( stream.ToArray() ) );
+				stream.Position = 0;
+				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new byte[ 0 ] ) );
+			}
+		}
+
+		[Test]
+		public void TestEmptyBytes_Classic()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.Classic );
+			var serializer = this.CreateTarget<byte[]>( context );
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( stream, new byte[ 0 ] );
 				Assert.That( stream.Length, Is.EqualTo( 1 ), BitConverter.ToString( stream.ToArray() ) );
 				stream.Position = 0;
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new byte[ 0 ] ) );
@@ -755,7 +998,19 @@ namespace MsgPack.Serialization
 			var serializer = this.CreateTarget<TestValueType>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				var value = new TestValueType() { StringField = "ABC", Int32ArrayField = new int[] { 1, 2, 3 }, DictionaryField = new Dictionary<int, int>() { { 1, 1 } } };
+				var value = 
+					new TestValueType()
+					{ 
+						StringField = "ABC", 
+						Int32ArrayField = new int[] { 1, 2, 3 }, 
+						DictionaryField = 
+#if !UNITY
+							new Dictionary<int, int>() 
+#else
+							new Dictionary<int, int>( AotHelper.GetEqualityComparer<int>() ) 
+#endif // !UNITY
+							{ { 1, 1 } } 
+					};
 				serializer.Pack( stream, value );
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
@@ -772,9 +1027,383 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		public void TestHasInitOnlyFieldWithConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyFieldWithConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasInitOnlyFieldWithConstructor( "123" );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Field, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyFieldWithConstructorMissing_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyFieldWithConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Field, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyFieldWithConstructorWithExtra_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyFieldWithConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.Pack( "Field" );
+					packer.Pack( "ABC" );
+					packer.Pack( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Field, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
 		public void TestHasGetOnlyProperty_Fail()
 		{
 			Assert.Throws<SerializationException>( () => this.CreateTarget<HasGetOnlyProperty>( GetSerializationContext() ) );
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasGetOnlyPropertyWithConstructor( "123" );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Property, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithConstructorMissing_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Property, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithConstructorWithExtra_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.Pack( "Property" );
+					packer.Pack( "ABC" );
+					packer.Pack( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Property, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterPropertyWithConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.Pack( "Property" );
+					packer.Pack( "ABC" );
+					packer.Pack( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Property, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestOnlyCollection_Success()
+		{
+			var serializer = this.CreateTarget<OnlyCollection>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new OnlyCollection();
+				value.Collection.Add( 1 );
+				value.Collection.Add( 2 );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Collection.ToArray(), Is.EqualTo( new [] { 1, 2 } ) );
+			}
+		}
+
+		[Test]
+		public void TestConstrutorDeserializationOnlyCollection_Fail()
+		{
+			Assert.Throws<SerializationException>( () => this.CreateTarget<OnlyCollectionWithConstructor>( GetSerializationContext() ) );
+		}
+
+		[Test]
+		public void TestConstrutorDeserializationWithAnotherNameConstrtor_DifferIsSetDefault()
+		{
+			var serializer = this.CreateTarget<WithAnotherNameConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new WithAnotherNameConstructor( 1, 2 );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.ReadOnlySame, Is.EqualTo( 1 ) );
+				Assert.That( result.ReadOnlyDiffer, Is.EqualTo( 0 ) );
+			}
+		}
+
+		[Test]
+		public void TestConstrutorDeserializationWithAnotherTypeConstrtor_DifferIsSetDefault()
+		{
+			var serializer = this.CreateTarget<WithAnotherTypeConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new WithAnotherTypeConstructor( 1, 2 );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.ReadOnlySame, Is.EqualTo( 1 ) );
+				Assert.That( result.ReadOnlyDiffer, Is.EqualTo( "0" ) );
+			}
+		}
+
+		[Test]
+		public void TestConstrutorDeserializationWithAttribute_Preferred()
+		{
+			var serializer = this.CreateTarget<WithConstructorAttribute>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new WithConstructorAttribute( 1, false );
+				Assert.That( value.IsAttributePreferred, Is.False );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( 1 ) );
+				Assert.That( result.IsAttributePreferred, Is.True );
+			}
+		}
+
+		[Test]
+		public void TestConstrutorDeserializationWithMultipleAttributes_Fail()
+		{
+			Assert.Throws<SerializationException>( () => this.CreateTarget<WithMultipleConstructorAttributes>( GetSerializationContext() ) );
+		}
+
+
+		[Test]
+		public void TestOptionalConstructorByte_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterByte>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( ( byte )2 ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorSByte_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterSByte>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( ( sbyte )-2 ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorInt16_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterInt16>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( ( short )-2 ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorUInt16_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterUInt16>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( ( ushort )2 ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorInt32_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterInt32>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( -2 ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorUInt32_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterUInt32>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( ( uint )2 ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorInt64_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterInt64>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( -2L ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorUInt64_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterUInt64>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( ( ulong )2L ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorSingle_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterSingle>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( 1.2f ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorDouble_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterDouble>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( 1.2 ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorDecimal_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterDecimal>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( 1.2m ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorBoolean_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterBoolean>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( true ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorChar_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterChar>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( 'A' ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorString_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterString>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( "ABC" ) );
+			}
 		}
 
 		[Test]
@@ -864,9 +1493,10 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestBinary_DefaultContext()
+		public void TestBinary_ClassicContext()
 		{
-			var serializer = SerializationContext.Default.GetSerializer<byte[]>();
+			var context = NewSerializationContext( PackerCompatibilityOptions.Classic );
+			var serializer = context.GetSerializer<byte[]>();
 
 			using ( var stream = new MemoryStream() )
 			{
@@ -887,6 +1517,23 @@ namespace MsgPack.Serialization
 				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { MessagePackCode.Bin8, 1, 1 } ) );
 			}
 		}
+		[Test]
+		public void TestExt_ClassicContext()
+		{
+			var context = NewSerializationContext( SerializationContext.CreateClassicContext().CompatibilityOptions.PackerCompatibilityOptions );
+			context.Serializers.Register( new CustomDateTimeSerealizer() );
+			var serializer = CreateTarget<DateTime>( context );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var date = DateTime.UtcNow;
+				serializer.Pack( stream, date );
+				stream.Position = 0;
+				var unpacked = serializer.Unpack( stream );
+				Assert.That( unpacked.ToString( "yyyyMMddHHmmssfff" ), Is.EqualTo( date.ToString( "yyyyMMddHHmmssfff" ) ) );
+			}
+		}
+
 		[Test]
 		public void TestExt_DefaultContext()
 		{
@@ -1007,12 +1654,21 @@ namespace MsgPack.Serialization
 			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractNonCollection>( context ) );
 		}
 
-		// FIXME: init-only field, get-only property, Value type which implements IList<T> and has .ctor(int), Enumerator class which explicitly implements IEnumerator
-
 		private void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer )
 		{
+			TestCore( value, unpacking, comparer, null );
+		}
+
+		private void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer, Action<SerializationContext> contextAdjuster )
+		{
 			var safeComparer = comparer ?? EqualityComparer<T>.Default.Equals;
-			var target = this.CreateTarget<T>( GetSerializationContext() );
+			var context = GetSerializationContext();
+			if ( contextAdjuster != null )
+			{
+				contextAdjuster( context );
+			}
+
+			var target = this.CreateTarget<T>( context );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( buffer, value );
@@ -1043,7 +1699,7 @@ namespace MsgPack.Serialization
 		public void TestIssue25_Plain()
 		{
 			var hasEnumerable = new HasEnumerable { Numbers = new[] { 1, 2 } };
-			var target = CreateTarget<HasEnumerable>( this.GetSerializationContext() );
+			var target = CreateTarget<HasEnumerable>( GetSerializationContext() );
 
 			using ( var buffer = new MemoryStream() )
 			{
@@ -1166,7 +1822,11 @@ namespace MsgPack.Serialization
 #endif
 					if ( property != null )
 					{
+#if !UNITY
 						getter = obj => property.GetValue( obj, null );
+#else
+						getter = obj => property.GetGetMethod( true ).InvokePreservingExceptionType( obj );
+#endif // !UNITY
 					}
 					else
 					{
@@ -1311,10 +1971,235 @@ namespace MsgPack.Serialization
 			public readonly string Field = "ABC";
 		}
 
+		public class HasInitOnlyFieldWithConstructor
+		{
+			public readonly string Field;
+
+			public HasInitOnlyFieldWithConstructor( string field )
+			{
+				this.Field = field;
+			}
+		}
+
 		public class HasGetOnlyProperty
 		{
 			public string Property { get { return "ABC"; } }
 		}
+
+		public class HasGetOnlyPropertyWithConstructor
+		{
+			private readonly string _property;
+			public string Property { get { return this._property; } }
+
+			public HasGetOnlyPropertyWithConstructor( string property )
+			{
+				this._property = property;
+			}
+		}
+
+		public class HasPrivateSetterPropertyWithConstructor
+		{
+			public string Property { get; private set; }
+
+			public HasPrivateSetterPropertyWithConstructor( string property )
+			{
+				this.Property = property;
+			}
+		}
+
+		public class OnlyCollection
+		{
+			public readonly List<int> Collection = new List<int>();
+		}
+
+		public class OnlyCollectionWithConstructor
+		{
+			public readonly List<int> Collection;
+
+			public OnlyCollectionWithConstructor( List<int> collection )
+			{
+				this.Collection = collection;
+			}
+		}
+
+		public class WithAnotherNameConstructor
+		{
+			public readonly int ReadOnlySame;
+			public readonly int ReadOnlyDiffer;
+
+			public WithAnotherNameConstructor( int readonlysame, int the2 )
+			{
+				this.ReadOnlySame = readonlysame;
+				this.ReadOnlyDiffer = the2;
+			}
+		}
+
+		public class WithAnotherTypeConstructor
+		{
+			public readonly int ReadOnlySame;
+			public readonly string ReadOnlyDiffer;
+
+			public WithAnotherTypeConstructor( int readonlysame, int the2 )
+			{
+				this.ReadOnlySame = readonlysame;
+				this.ReadOnlyDiffer = the2.ToString();
+			}
+		}
+
+		public class WithConstructorAttribute
+		{
+			public readonly int Value;
+			public readonly bool IsAttributePreferred;
+
+			public WithConstructorAttribute( int value, bool isAttributePreferred )
+			{
+				this.Value = value;
+				this.IsAttributePreferred = isAttributePreferred;
+			}
+
+			[MessagePackDeserializationConstructor]
+			public WithConstructorAttribute( int value ) : this( value, true ) {}
+		}
+
+		public class WithMultipleConstructorAttributes
+		{
+			public readonly int Value;
+
+			[MessagePackDeserializationConstructor]
+			public WithMultipleConstructorAttributes( int value, string arg ) { }
+
+			[MessagePackDeserializationConstructor]
+			public WithMultipleConstructorAttributes( int value, bool arg ) { }
+		}
+
+#pragma warning disable 3001
+		public class WithOptionalConstructorParameterByte
+		{
+			public readonly Byte Value;
+
+			public WithOptionalConstructorParameterByte( Byte value = ( byte )2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterSByte
+		{
+			public readonly SByte Value;
+
+			public WithOptionalConstructorParameterSByte( SByte value = ( sbyte )-2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterInt16
+		{
+			public readonly Int16 Value;
+
+			public WithOptionalConstructorParameterInt16( Int16 value = ( short )-2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterUInt16
+		{
+			public readonly UInt16 Value;
+
+			public WithOptionalConstructorParameterUInt16( UInt16 value = ( ushort )2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterInt32
+		{
+			public readonly Int32 Value;
+
+			public WithOptionalConstructorParameterInt32( Int32 value = -2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterUInt32
+		{
+			public readonly UInt32 Value;
+
+			public WithOptionalConstructorParameterUInt32( UInt32 value = ( uint )2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterInt64
+		{
+			public readonly Int64 Value;
+
+			public WithOptionalConstructorParameterInt64( Int64 value = -2L )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterUInt64
+		{
+			public readonly UInt64 Value;
+
+			public WithOptionalConstructorParameterUInt64( UInt64 value = ( ulong )2L )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterSingle
+		{
+			public readonly Single Value;
+
+			public WithOptionalConstructorParameterSingle( Single value = 1.2f )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterDouble
+		{
+			public readonly Double Value;
+
+			public WithOptionalConstructorParameterDouble( Double value = 1.2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterDecimal
+		{
+			public readonly Decimal Value;
+
+			public WithOptionalConstructorParameterDecimal( Decimal value = 1.2m )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterBoolean
+		{
+			public readonly Boolean Value;
+
+			public WithOptionalConstructorParameterBoolean( Boolean value = true )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterChar
+		{
+			public readonly Char Value;
+
+			public WithOptionalConstructorParameterChar( Char value = 'A' )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterString
+		{
+			public readonly String Value;
+
+			public WithOptionalConstructorParameterString( String value = "ABC" )
+			{
+				this.Value = value;
+			}
+		}
+#pragma warning restore 3001
 
 		public class JustPackable : IPackable
 		{
@@ -1529,6 +2414,45 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		// Related to issue #62 -- internal types handling is not consistent at first.
+
+		[Test]
+		public void TestNonPublicType_Plain_Failed()
+		{
+			Assert.Throws<SerializationException>( () => this.CreateTarget<NonPublic>( GetSerializationContext() ) );
+		}
+
+		[Test]
+		public void TestNonPublicType_MessagePackMember_Failed()
+		{
+			Assert.Throws<SerializationException>( () => this.CreateTarget<NonPublicWithMessagePackMember>( GetSerializationContext() ) );
+		}
+
+		[Test]
+		public void TestNonPublicType_DataContract_Failed()
+		{
+			Assert.Throws<SerializationException>( () => this.CreateTarget<NonPublicWithDataContract>( GetSerializationContext() ) );
+		}
+
+#pragma warning disable 649
+		internal class NonPublic
+		{
+			public int Value;
+		}
+
+		internal class NonPublicWithMessagePackMember
+		{
+			[MessagePackMember( 0 )]
+			public int Value;
+		}
+
+		[DataContract]
+		internal class NonPublicWithDataContract
+		{
+			[DataMember]
+			public int Value;
+		}
+#pragma warning restore 649
 
 		// issue #63
 		[Test]
@@ -2209,329 +3133,8460 @@ namespace MsgPack.Serialization
 		}
 #pragma warning restore 659
 
+		#region -- Polymorphism --
+		#region ---- KnownType ----
+
+		#region ------ KnownType.NormalTypes ------
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.EqualTo( target.Reference ) );
+				Assert.That( result.Reference, Is.InstanceOf( target.Reference.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.EqualTo( target.Reference ) );
+				Assert.That( result.Reference, Is.InstanceOf( target.Reference.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_ReferenceGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Normal_ReferenceGetOnlyPropertyAndConstructor( new Version( 1, 2, 3, 4 ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ReferenceGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.EqualTo( target.Reference ) );
+				Assert.That( result.Reference, Is.InstanceOf( target.Reference.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_ReferenceGetOnlyPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_ReferenceGetOnlyPropertyAndConstructorAsObject( new Version( 1, 2, 3, 4 ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ReferenceGetOnlyPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_ReferencePrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Normal_ReferencePrivateSetterPropertyAndConstructor( new Version( 1, 2, 3, 4 ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ReferencePrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.EqualTo( target.Reference ) );
+				Assert.That( result.Reference, Is.InstanceOf( target.Reference.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_ReferencePrivateSetterPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_ReferencePrivateSetterPropertyAndConstructorAsObject( new Version( 1, 2, 3, 4 ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ReferencePrivateSetterPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor( new Version( 1, 2, 3, 4 ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.EqualTo( target.Reference ) );
+				Assert.That( result.Reference, Is.InstanceOf( target.Reference.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject( new Version( 1, 2, 3, 4 ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.EqualTo( target.Value ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_ValueReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Normal_ValueReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ValueReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.EqualTo( target.Value ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.EqualTo( target.Value ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_ValueGetOnlyPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_ValueGetOnlyPropertyAndConstructorAsObject( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ValueGetOnlyPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.EqualTo( target.Value ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_ValuePrivateSetterPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_ValuePrivateSetterPropertyAndConstructorAsObject( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ValuePrivateSetterPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_ValueReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Normal_ValueReadOnlyFieldAndConstructor( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ValueReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.EqualTo( target.Value ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_ValueReadOnlyFieldAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_ValueReadOnlyFieldAndConstructorAsObject( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ValueReadOnlyFieldAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.EqualTo( target.Primitive ) );
+				Assert.That( result.Primitive, Is.InstanceOf( target.Primitive.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.EqualTo( target.Primitive ) );
+				Assert.That( result.Primitive, Is.InstanceOf( target.Primitive.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_PrimitiveGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Normal_PrimitiveGetOnlyPropertyAndConstructor( 123 );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PrimitiveGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.EqualTo( target.Primitive ) );
+				Assert.That( result.Primitive, Is.InstanceOf( target.Primitive.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_PrimitiveGetOnlyPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_PrimitiveGetOnlyPropertyAndConstructorAsObject( 123 );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PrimitiveGetOnlyPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_PrimitivePrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Normal_PrimitivePrivateSetterPropertyAndConstructor( 123 );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PrimitivePrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.EqualTo( target.Primitive ) );
+				Assert.That( result.Primitive, Is.InstanceOf( target.Primitive.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_PrimitivePrivateSetterPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_PrimitivePrivateSetterPropertyAndConstructorAsObject( 123 );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PrimitivePrivateSetterPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_PrimitiveReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Normal_PrimitiveReadOnlyFieldAndConstructor( 123 );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PrimitiveReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.EqualTo( target.Primitive ) );
+				Assert.That( result.Primitive, Is.InstanceOf( target.Primitive.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_PrimitiveReadOnlyFieldAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_PrimitiveReadOnlyFieldAndConstructorAsObject( 123 );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PrimitiveReadOnlyFieldAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.EqualTo( target.String ) );
+				Assert.That( result.String, Is.InstanceOf( target.String.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_StringReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Normal_StringReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_StringReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.EqualTo( target.String ) );
+				Assert.That( result.String, Is.InstanceOf( target.String.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_StringGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Normal_StringGetOnlyPropertyAndConstructor( "ABC" );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_StringGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.EqualTo( target.String ) );
+				Assert.That( result.String, Is.InstanceOf( target.String.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_StringGetOnlyPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_StringGetOnlyPropertyAndConstructorAsObject( "ABC" );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_StringGetOnlyPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor( "ABC" );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.EqualTo( target.String ) );
+				Assert.That( result.String, Is.InstanceOf( target.String.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject( "ABC" );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_StringReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Normal_StringReadOnlyFieldAndConstructor( "ABC" );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_StringReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.EqualTo( target.String ) );
+				Assert.That( result.String, Is.InstanceOf( target.String.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_StringReadOnlyFieldAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_StringReadOnlyFieldAndConstructorAsObject( "ABC" );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_StringReadOnlyFieldAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_PolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Normal_PolymorphicGetOnlyPropertyAndConstructor( new FileEntry { Name = "file", Size = 1 } );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject( new FileEntry { Name = "file", Size = 1 } );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor( new FileEntry { Name = "file", Size = 1 } );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObject_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObject( new FileEntry { Name = "file", Size = 1 } );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Normal_PolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Normal_PolymorphicReadOnlyFieldAndConstructor( new FileEntry { Name = "file", Size = 1 } );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObject_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObject( new FileEntry { Name = "file", Size = 1 } );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+		#endregion ------ KnownType.NormalTypes ------
+
+		#region ------ KnownType.CollectionTypes ------
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
+				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
+				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListStaticItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListStaticItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListStaticItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
+				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListStaticItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListStaticItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListStaticItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
+				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListStaticItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListStaticItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListStaticItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
+				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
+				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
+				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
+				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
+				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
+				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItem, Is.EqualTo( target.ListObjectItem ) );
+				Assert.That( result.ListObjectItem, Is.InstanceOf( target.ListObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItem, Is.EqualTo( target.ListObjectItem ) );
+				Assert.That( result.ListObjectItem, Is.InstanceOf( target.ListObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListObjectItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItem, Is.EqualTo( target.ListObjectItem ) );
+				Assert.That( result.ListObjectItem, Is.InstanceOf( target.ListObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItem, Is.EqualTo( target.ListObjectItem ) );
+				Assert.That( result.ListObjectItem, Is.InstanceOf( target.ListObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItem, Is.EqualTo( target.ListObjectItem ) );
+				Assert.That( result.ListObjectItem, Is.InstanceOf( target.ListObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
+				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
+				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItselfGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
+				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItselfPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
+				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
+				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItself, Is.EqualTo( target.ListObjectItself ) );
+				Assert.That( result.ListObjectItself, Is.InstanceOf( target.ListObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItself, Is.EqualTo( target.ListObjectItself ) );
+				Assert.That( result.ListObjectItself, Is.InstanceOf( target.ListObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItselfGetOnlyCollectionProperty_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListObjectItselfGetOnlyCollectionProperty.Initialize();
+			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfGetOnlyCollectionProperty>() );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItself, Is.EqualTo( target.ListObjectItself ) );
+				Assert.That( result.ListObjectItself, Is.InstanceOf( target.ListObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItselfReadOnlyCollectionField_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_List_ListObjectItselfReadOnlyCollectionField.Initialize();
+			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfReadOnlyCollectionField>() );
+		}
+		#endregion ------ KnownType.CollectionTypes ------
+
+		#region ------ KnownType.DictionaryTypes ------
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.EqualTo( target.DictStaticKeyAndStaticItem ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.InstanceOf( target.DictStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.EqualTo( target.DictStaticKeyAndStaticItem ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.InstanceOf( target.DictStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.EqualTo( target.DictStaticKeyAndStaticItem ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.InstanceOf( target.DictStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.EqualTo( target.DictStaticKeyAndStaticItem ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.InstanceOf( target.DictStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.EqualTo( target.DictStaticKeyAndStaticItem ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.InstanceOf( target.DictStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.EqualTo( target.DictObjectKeyAndStaticItem ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.InstanceOf( target.DictObjectKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.EqualTo( target.DictObjectKeyAndStaticItem ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.InstanceOf( target.DictObjectKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.EqualTo( target.DictObjectKeyAndStaticItem ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.InstanceOf( target.DictObjectKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.EqualTo( target.DictObjectKeyAndStaticItem ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.InstanceOf( target.DictObjectKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.EqualTo( target.DictObjectKeyAndStaticItem ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.InstanceOf( target.DictObjectKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.EqualTo( target.DictStaticKeyAndObjectItem ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.InstanceOf( target.DictStaticKeyAndObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.EqualTo( target.DictStaticKeyAndObjectItem ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.InstanceOf( target.DictStaticKeyAndObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.EqualTo( target.DictStaticKeyAndObjectItem ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.InstanceOf( target.DictStaticKeyAndObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.EqualTo( target.DictStaticKeyAndObjectItem ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.InstanceOf( target.DictStaticKeyAndObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.EqualTo( target.DictStaticKeyAndObjectItem ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.InstanceOf( target.DictStaticKeyAndObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.EqualTo( target.DictPolymorphicKeyAndItem ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.EqualTo( target.DictPolymorphicKeyAndItem ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.EqualTo( target.DictPolymorphicKeyAndItem ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.EqualTo( target.DictPolymorphicKeyAndItem ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.EqualTo( target.DictPolymorphicKeyAndItem ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.EqualTo( target.DictObjectKeyAndItem ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.InstanceOf( target.DictObjectKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.EqualTo( target.DictObjectKeyAndItem ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.InstanceOf( target.DictObjectKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.EqualTo( target.DictObjectKeyAndItem ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.InstanceOf( target.DictObjectKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.EqualTo( target.DictObjectKeyAndItem ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.InstanceOf( target.DictObjectKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.EqualTo( target.DictObjectKeyAndItem ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.InstanceOf( target.DictObjectKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicItself, Is.EqualTo( target.DictPolymorphicItself ) );
+				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicItself, Is.EqualTo( target.DictPolymorphicItself ) );
+				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicItself, Is.EqualTo( target.DictPolymorphicItself ) );
+				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicItself, Is.EqualTo( target.DictPolymorphicItself ) );
+				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicItself, Is.EqualTo( target.DictPolymorphicItself ) );
+				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectItself, Is.EqualTo( target.DictObjectItself ) );
+				Assert.That( result.DictObjectItself, Is.InstanceOf( target.DictObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectItself, Is.EqualTo( target.DictObjectItself ) );
+				Assert.That( result.DictObjectItself, Is.InstanceOf( target.DictObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectItselfGetOnlyCollectionProperty_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectItselfGetOnlyCollectionProperty.Initialize();
+			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfGetOnlyCollectionProperty>() );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectItselfPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectItselfPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectItself, Is.EqualTo( target.DictObjectItself ) );
+				Assert.That( result.DictObjectItself, Is.InstanceOf( target.DictObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadOnlyCollectionField_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadOnlyCollectionField.Initialize();
+			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadOnlyCollectionField>() );
+		}
+		#endregion ------ KnownType.DictionaryTypes ------
+
+#if !NETFX_35 && !UNITY
+		#region ------ KnownType.TupleTypes ------
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Static, Is.EqualTo( target.Tuple1Static ) );
+				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Static, Is.EqualTo( target.Tuple1Static ) );
+				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor( Tuple.Create( "1" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Static, Is.EqualTo( target.Tuple1Static ) );
+				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor( Tuple.Create( "1" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Static, Is.EqualTo( target.Tuple1Static ) );
+				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor( Tuple.Create( "1" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Static, Is.EqualTo( target.Tuple1Static ) );
+				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Polymorphic, Is.EqualTo( target.Tuple1Polymorphic ) );
+				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Polymorphic, Is.EqualTo( target.Tuple1Polymorphic ) );
+				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Polymorphic, Is.EqualTo( target.Tuple1Polymorphic ) );
+				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Polymorphic, Is.EqualTo( target.Tuple1Polymorphic ) );
+				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Polymorphic, Is.EqualTo( target.Tuple1Polymorphic ) );
+				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItem, Is.EqualTo( target.Tuple1ObjectItem ) );
+				Assert.That( result.Tuple1ObjectItem, Is.InstanceOf( target.Tuple1ObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItem, Is.EqualTo( target.Tuple1ObjectItem ) );
+				Assert.That( result.Tuple1ObjectItem, Is.InstanceOf( target.Tuple1ObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as object ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItem, Is.EqualTo( target.Tuple1ObjectItem ) );
+				Assert.That( result.Tuple1ObjectItem, Is.InstanceOf( target.Tuple1ObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as object ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItem, Is.EqualTo( target.Tuple1ObjectItem ) );
+				Assert.That( result.Tuple1ObjectItem, Is.InstanceOf( target.Tuple1ObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as object ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItem, Is.EqualTo( target.Tuple1ObjectItem ) );
+				Assert.That( result.Tuple1ObjectItem, Is.InstanceOf( target.Tuple1ObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
+				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
+				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
+				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
+				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
+				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllStatic, Is.EqualTo( target.Tuple7AllStatic ) );
+				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllStatic, Is.EqualTo( target.Tuple7AllStatic ) );
+				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllStatic, Is.EqualTo( target.Tuple7AllStatic ) );
+				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllStatic, Is.EqualTo( target.Tuple7AllStatic ) );
+				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllStatic, Is.EqualTo( target.Tuple7AllStatic ) );
+				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.EqualTo( target.Tuple7FirstPolymorphic ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.EqualTo( target.Tuple7FirstPolymorphic ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.EqualTo( target.Tuple7FirstPolymorphic ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.EqualTo( target.Tuple7FirstPolymorphic ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.EqualTo( target.Tuple7FirstPolymorphic ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.EqualTo( target.Tuple7LastPolymorphic ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.EqualTo( target.Tuple7LastPolymorphic ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.EqualTo( target.Tuple7LastPolymorphic ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.EqualTo( target.Tuple7LastPolymorphic ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.EqualTo( target.Tuple7LastPolymorphic ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.EqualTo( target.Tuple7MidPolymorphic ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.EqualTo( target.Tuple7MidPolymorphic ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.EqualTo( target.Tuple7MidPolymorphic ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.EqualTo( target.Tuple7MidPolymorphic ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.EqualTo( target.Tuple7MidPolymorphic ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.EqualTo( target.Tuple7AllPolymorphic ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.EqualTo( target.Tuple7AllPolymorphic ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.EqualTo( target.Tuple7AllPolymorphic ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.EqualTo( target.Tuple7AllPolymorphic ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.EqualTo( target.Tuple7AllPolymorphic ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllStatic, Is.EqualTo( target.Tuple8AllStatic ) );
+				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllStatic, Is.EqualTo( target.Tuple8AllStatic ) );
+				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllStatic, Is.EqualTo( target.Tuple8AllStatic ) );
+				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllStatic, Is.EqualTo( target.Tuple8AllStatic ) );
+				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllStatic, Is.EqualTo( target.Tuple8AllStatic ) );
+				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.EqualTo( target.Tuple8LastPolymorphic ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.EqualTo( target.Tuple8LastPolymorphic ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.EqualTo( target.Tuple8LastPolymorphic ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.EqualTo( target.Tuple8LastPolymorphic ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.EqualTo( target.Tuple8LastPolymorphic ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.EqualTo( target.Tuple8AllPolymorphic ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.EqualTo( target.Tuple8AllPolymorphic ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.EqualTo( target.Tuple8AllPolymorphic ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.EqualTo( target.Tuple8AllPolymorphic ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.EqualTo( target.Tuple8AllPolymorphic ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
+			}
+		}
+		#endregion ------ KnownType.TupleTypes ------
+#endif // #if !NETFX_35 && !UNITY
+
+		#endregion ---- KnownType ----
+		#region ---- RuntimeType ----
+
+		#region ------ RuntimeType.NormalTypes ------
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.EqualTo( target.Reference ) );
+				Assert.That( result.Reference, Is.InstanceOf( target.Reference.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.EqualTo( target.Reference ) );
+				Assert.That( result.Reference, Is.InstanceOf( target.Reference.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_ReferenceGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Normal_ReferenceGetOnlyPropertyAndConstructor( new Version( 1, 2, 3, 4 ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ReferenceGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.EqualTo( target.Reference ) );
+				Assert.That( result.Reference, Is.InstanceOf( target.Reference.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_ReferenceGetOnlyPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_ReferenceGetOnlyPropertyAndConstructorAsObject( new Version( 1, 2, 3, 4 ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ReferenceGetOnlyPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor( new Version( 1, 2, 3, 4 ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.EqualTo( target.Reference ) );
+				Assert.That( result.Reference, Is.InstanceOf( target.Reference.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_ReferencePrivateSetterPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_ReferencePrivateSetterPropertyAndConstructorAsObject( new Version( 1, 2, 3, 4 ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ReferencePrivateSetterPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_ReferenceReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadOnlyFieldAndConstructor( new Version( 1, 2, 3, 4 ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.EqualTo( target.Reference ) );
+				Assert.That( result.Reference, Is.InstanceOf( target.Reference.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_ReferenceReadOnlyFieldAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_ReferenceReadOnlyFieldAndConstructorAsObject( new Version( 1, 2, 3, 4 ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ReferenceReadOnlyFieldAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.EqualTo( target.Value ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.EqualTo( target.Value ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_ValueGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Normal_ValueGetOnlyPropertyAndConstructor( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ValueGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.EqualTo( target.Value ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_ValueGetOnlyPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_ValueGetOnlyPropertyAndConstructorAsObject( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ValueGetOnlyPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_ValuePrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Normal_ValuePrivateSetterPropertyAndConstructor( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ValuePrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.EqualTo( target.Value ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_ValuePrivateSetterPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_ValuePrivateSetterPropertyAndConstructorAsObject( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ValuePrivateSetterPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_ValueReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Normal_ValueReadOnlyFieldAndConstructor( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ValueReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.EqualTo( target.Value ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_ValueReadOnlyFieldAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_ValueReadOnlyFieldAndConstructorAsObject( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ValueReadOnlyFieldAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.EqualTo( target.Primitive ) );
+				Assert.That( result.Primitive, Is.InstanceOf( target.Primitive.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.EqualTo( target.Primitive ) );
+				Assert.That( result.Primitive, Is.InstanceOf( target.Primitive.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_PrimitiveGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Normal_PrimitiveGetOnlyPropertyAndConstructor( 123 );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PrimitiveGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.EqualTo( target.Primitive ) );
+				Assert.That( result.Primitive, Is.InstanceOf( target.Primitive.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_PrimitiveGetOnlyPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_PrimitiveGetOnlyPropertyAndConstructorAsObject( 123 );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PrimitiveGetOnlyPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_PrimitivePrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Normal_PrimitivePrivateSetterPropertyAndConstructor( 123 );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PrimitivePrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.EqualTo( target.Primitive ) );
+				Assert.That( result.Primitive, Is.InstanceOf( target.Primitive.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_PrimitivePrivateSetterPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_PrimitivePrivateSetterPropertyAndConstructorAsObject( 123 );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PrimitivePrivateSetterPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadOnlyFieldAndConstructor( 123 );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.EqualTo( target.Primitive ) );
+				Assert.That( result.Primitive, Is.InstanceOf( target.Primitive.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_PrimitiveReadOnlyFieldAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_PrimitiveReadOnlyFieldAndConstructorAsObject( 123 );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PrimitiveReadOnlyFieldAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.EqualTo( target.String ) );
+				Assert.That( result.String, Is.InstanceOf( target.String.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.EqualTo( target.String ) );
+				Assert.That( result.String, Is.InstanceOf( target.String.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor( "ABC" );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.EqualTo( target.String ) );
+				Assert.That( result.String, Is.InstanceOf( target.String.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_StringGetOnlyPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_StringGetOnlyPropertyAndConstructorAsObject( "ABC" );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_StringGetOnlyPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_StringPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Normal_StringPrivateSetterPropertyAndConstructor( "ABC" );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_StringPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.EqualTo( target.String ) );
+				Assert.That( result.String, Is.InstanceOf( target.String.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject( "ABC" );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_StringReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Normal_StringReadOnlyFieldAndConstructor( "ABC" );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_StringReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.EqualTo( target.String ) );
+				Assert.That( result.String, Is.InstanceOf( target.String.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_StringReadOnlyFieldAndConstructorAsObject_AsMpo()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_StringReadOnlyFieldAndConstructorAsObject( "ABC" );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_StringReadOnlyFieldAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_PolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Normal_PolymorphicGetOnlyPropertyAndConstructor( new FileEntry { Name = "file", Size = 1 } );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicGetOnlyPropertyAndConstructorAsObject_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_PolymorphicGetOnlyPropertyAndConstructorAsObject( new FileEntry { Name = "file", Size = 1 } );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PolymorphicGetOnlyPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_PolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Normal_PolymorphicPrivateSetterPropertyAndConstructor( new FileEntry { Name = "file", Size = 1 } );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObject_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObject( new FileEntry { Name = "file", Size = 1 } );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadOnlyFieldAndConstructor( new FileEntry { Name = "file", Size = 1 } );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicReadOnlyFieldAndConstructorAsObject_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_PolymorphicReadOnlyFieldAndConstructorAsObject( new FileEntry { Name = "file", Size = 1 } );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PolymorphicReadOnlyFieldAndConstructorAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Polymorphic, Is.EqualTo( target.Polymorphic ) );
+				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
+			}
+		}
+		#endregion ------ RuntimeType.NormalTypes ------
+
+		#region ------ RuntimeType.CollectionTypes ------
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
+				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
+				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListStaticItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListStaticItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListStaticItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
+				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
+				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListStaticItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
+				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
+				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
+				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
+				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
+				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
+				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItem, Is.EqualTo( target.ListObjectItem ) );
+				Assert.That( result.ListObjectItem, Is.InstanceOf( target.ListObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItem, Is.EqualTo( target.ListObjectItem ) );
+				Assert.That( result.ListObjectItem, Is.InstanceOf( target.ListObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItem, Is.EqualTo( target.ListObjectItem ) );
+				Assert.That( result.ListObjectItem, Is.InstanceOf( target.ListObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItem, Is.EqualTo( target.ListObjectItem ) );
+				Assert.That( result.ListObjectItem, Is.InstanceOf( target.ListObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItem, Is.EqualTo( target.ListObjectItem ) );
+				Assert.That( result.ListObjectItem, Is.InstanceOf( target.ListObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
+				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
+				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
+				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
+				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
+				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItself, Is.EqualTo( target.ListObjectItself ) );
+				Assert.That( result.ListObjectItself, Is.InstanceOf( target.ListObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItself, Is.EqualTo( target.ListObjectItself ) );
+				Assert.That( result.ListObjectItself, Is.InstanceOf( target.ListObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItselfGetOnlyCollectionProperty_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItselfGetOnlyCollectionProperty.Initialize();
+			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfGetOnlyCollectionProperty>() );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.ListObjectItself, Is.EqualTo( target.ListObjectItself ) );
+				Assert.That( result.ListObjectItself, Is.InstanceOf( target.ListObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadOnlyCollectionField_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadOnlyCollectionField.Initialize();
+			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadOnlyCollectionField>() );
+		}
+		#endregion ------ RuntimeType.CollectionTypes ------
+
+		#region ------ RuntimeType.DictionaryTypes ------
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.EqualTo( target.DictStaticKeyAndStaticItem ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.InstanceOf( target.DictStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.EqualTo( target.DictStaticKeyAndStaticItem ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.InstanceOf( target.DictStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.EqualTo( target.DictStaticKeyAndStaticItem ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.InstanceOf( target.DictStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.EqualTo( target.DictStaticKeyAndStaticItem ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.InstanceOf( target.DictStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.EqualTo( target.DictStaticKeyAndStaticItem ) );
+				Assert.That( result.DictStaticKeyAndStaticItem, Is.InstanceOf( target.DictStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.EqualTo( target.DictObjectKeyAndStaticItem ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.InstanceOf( target.DictObjectKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.EqualTo( target.DictObjectKeyAndStaticItem ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.InstanceOf( target.DictObjectKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.EqualTo( target.DictObjectKeyAndStaticItem ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.InstanceOf( target.DictObjectKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.EqualTo( target.DictObjectKeyAndStaticItem ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.InstanceOf( target.DictObjectKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.EqualTo( target.DictObjectKeyAndStaticItem ) );
+				Assert.That( result.DictObjectKeyAndStaticItem, Is.InstanceOf( target.DictObjectKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.EqualTo( target.DictStaticKeyAndObjectItem ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.InstanceOf( target.DictStaticKeyAndObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.EqualTo( target.DictStaticKeyAndObjectItem ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.InstanceOf( target.DictStaticKeyAndObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.EqualTo( target.DictStaticKeyAndObjectItem ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.InstanceOf( target.DictStaticKeyAndObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.EqualTo( target.DictStaticKeyAndObjectItem ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.InstanceOf( target.DictStaticKeyAndObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.EqualTo( target.DictStaticKeyAndObjectItem ) );
+				Assert.That( result.DictStaticKeyAndObjectItem, Is.InstanceOf( target.DictStaticKeyAndObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.EqualTo( target.DictPolymorphicKeyAndItem ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.EqualTo( target.DictPolymorphicKeyAndItem ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.EqualTo( target.DictPolymorphicKeyAndItem ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.EqualTo( target.DictPolymorphicKeyAndItem ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.EqualTo( target.DictPolymorphicKeyAndItem ) );
+				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.EqualTo( target.DictObjectKeyAndItem ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.InstanceOf( target.DictObjectKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.EqualTo( target.DictObjectKeyAndItem ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.InstanceOf( target.DictObjectKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.EqualTo( target.DictObjectKeyAndItem ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.InstanceOf( target.DictObjectKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.EqualTo( target.DictObjectKeyAndItem ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.InstanceOf( target.DictObjectKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.EqualTo( target.DictObjectKeyAndItem ) );
+				Assert.That( result.DictObjectKeyAndItem, Is.InstanceOf( target.DictObjectKeyAndItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicItself, Is.EqualTo( target.DictPolymorphicItself ) );
+				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicItself, Is.EqualTo( target.DictPolymorphicItself ) );
+				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicItself, Is.EqualTo( target.DictPolymorphicItself ) );
+				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicItself, Is.EqualTo( target.DictPolymorphicItself ) );
+				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadOnlyCollectionField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadOnlyCollectionField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadOnlyCollectionField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictPolymorphicItself, Is.EqualTo( target.DictPolymorphicItself ) );
+				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectItself, Is.EqualTo( target.DictObjectItself ) );
+				Assert.That( result.DictObjectItself, Is.InstanceOf( target.DictObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectItself, Is.EqualTo( target.DictObjectItself ) );
+				Assert.That( result.DictObjectItself, Is.InstanceOf( target.DictObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfGetOnlyCollectionProperty_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfGetOnlyCollectionProperty.Initialize();
+			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfGetOnlyCollectionProperty>() );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfPrivateSetterCollectionProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictObjectItself, Is.EqualTo( target.DictObjectItself ) );
+				Assert.That( result.DictObjectItself, Is.InstanceOf( target.DictObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadOnlyCollectionField_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadOnlyCollectionField.Initialize();
+			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadOnlyCollectionField>() );
+		}
+		#endregion ------ RuntimeType.DictionaryTypes ------
+
+#if !NETFX_35 && !UNITY
+		#region ------ RuntimeType.TupleTypes ------
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Static, Is.EqualTo( target.Tuple1Static ) );
+				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Static, Is.EqualTo( target.Tuple1Static ) );
+				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor( Tuple.Create( "1" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Static, Is.EqualTo( target.Tuple1Static ) );
+				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor( Tuple.Create( "1" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Static, Is.EqualTo( target.Tuple1Static ) );
+				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor( Tuple.Create( "1" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Static, Is.EqualTo( target.Tuple1Static ) );
+				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Polymorphic, Is.EqualTo( target.Tuple1Polymorphic ) );
+				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Polymorphic, Is.EqualTo( target.Tuple1Polymorphic ) );
+				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Polymorphic, Is.EqualTo( target.Tuple1Polymorphic ) );
+				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Polymorphic, Is.EqualTo( target.Tuple1Polymorphic ) );
+				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1Polymorphic, Is.EqualTo( target.Tuple1Polymorphic ) );
+				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItem, Is.EqualTo( target.Tuple1ObjectItem ) );
+				Assert.That( result.Tuple1ObjectItem, Is.InstanceOf( target.Tuple1ObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItem, Is.EqualTo( target.Tuple1ObjectItem ) );
+				Assert.That( result.Tuple1ObjectItem, Is.InstanceOf( target.Tuple1ObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as object ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItem, Is.EqualTo( target.Tuple1ObjectItem ) );
+				Assert.That( result.Tuple1ObjectItem, Is.InstanceOf( target.Tuple1ObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as object ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItem, Is.EqualTo( target.Tuple1ObjectItem ) );
+				Assert.That( result.Tuple1ObjectItem, Is.InstanceOf( target.Tuple1ObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as object ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItem, Is.EqualTo( target.Tuple1ObjectItem ) );
+				Assert.That( result.Tuple1ObjectItem, Is.InstanceOf( target.Tuple1ObjectItem.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
+				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
+				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
+				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
+				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
+				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllStatic, Is.EqualTo( target.Tuple7AllStatic ) );
+				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllStatic, Is.EqualTo( target.Tuple7AllStatic ) );
+				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllStatic, Is.EqualTo( target.Tuple7AllStatic ) );
+				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllStatic, Is.EqualTo( target.Tuple7AllStatic ) );
+				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllStatic, Is.EqualTo( target.Tuple7AllStatic ) );
+				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.EqualTo( target.Tuple7FirstPolymorphic ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.EqualTo( target.Tuple7FirstPolymorphic ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.EqualTo( target.Tuple7FirstPolymorphic ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.EqualTo( target.Tuple7FirstPolymorphic ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.EqualTo( target.Tuple7FirstPolymorphic ) );
+				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.EqualTo( target.Tuple7LastPolymorphic ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.EqualTo( target.Tuple7LastPolymorphic ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.EqualTo( target.Tuple7LastPolymorphic ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.EqualTo( target.Tuple7LastPolymorphic ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.EqualTo( target.Tuple7LastPolymorphic ) );
+				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.EqualTo( target.Tuple7MidPolymorphic ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.EqualTo( target.Tuple7MidPolymorphic ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.EqualTo( target.Tuple7MidPolymorphic ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.EqualTo( target.Tuple7MidPolymorphic ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.EqualTo( target.Tuple7MidPolymorphic ) );
+				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.EqualTo( target.Tuple7AllPolymorphic ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.EqualTo( target.Tuple7AllPolymorphic ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.EqualTo( target.Tuple7AllPolymorphic ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.EqualTo( target.Tuple7AllPolymorphic ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.EqualTo( target.Tuple7AllPolymorphic ) );
+				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllStatic, Is.EqualTo( target.Tuple8AllStatic ) );
+				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllStatic, Is.EqualTo( target.Tuple8AllStatic ) );
+				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllStatic, Is.EqualTo( target.Tuple8AllStatic ) );
+				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllStatic, Is.EqualTo( target.Tuple8AllStatic ) );
+				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllStatic, Is.EqualTo( target.Tuple8AllStatic ) );
+				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.EqualTo( target.Tuple8LastPolymorphic ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.EqualTo( target.Tuple8LastPolymorphic ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.EqualTo( target.Tuple8LastPolymorphic ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.EqualTo( target.Tuple8LastPolymorphic ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.EqualTo( target.Tuple8LastPolymorphic ) );
+				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.EqualTo( target.Tuple8AllPolymorphic ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.EqualTo( target.Tuple8AllPolymorphic ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.EqualTo( target.Tuple8AllPolymorphic ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.EqualTo( target.Tuple8AllPolymorphic ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.EqualTo( target.Tuple8AllPolymorphic ) );
+				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
+			}
+		}
+		#endregion ------ RuntimeType.TupleTypes ------
+#endif // #if !NETFX_35 && !UNITY
+
+		#endregion ---- RuntimeType ----
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeMixed_Success()
+		{
+				var context = NewSerializationContext( PackerCompatibilityOptions.None );
+				var target = new PolymorphicMemberTypeMixed();
+				target.NormalVanilla = "ABC";
+				target.NormalRuntime = new FileEntry { Name = "File", Size = 1 };
+				target.NormalKnown = new FileEntry { Name = "File", Size = 2 };
+				target.ObjectRuntime = new FileEntry { Name = "File", Size = 3 };
+				target.ListVanilla = new List<string> { "ABC" };
+				target.ListKnownItem = new List<FileSystemEntry> { new FileEntry { Name = "File", Size = 1 } };
+				target.ListKnwonContainerRuntimeItem = new List<FileSystemEntry> { new FileEntry { Name = "File", Size = 2 } };
+				target.ListObjectRuntimeItem = new List<object> { new FileEntry { Name = "File", Size = 3 } };
+				target.DictionaryVanilla = new Dictionary<string, string> { { "Key", "ABC" } };
+				target.DictionaryKnownValue = new Dictionary<string, FileSystemEntry> { { "Key", new FileEntry { Name = "File", Size = 1 } } };
+				target.DictionaryKnownContainerRuntimeValue = new Dictionary<string, FileSystemEntry> { { "Key", new FileEntry { Name = "File", Size = 2 } } };
+				target.DictionaryObjectRuntimeValue = new Dictionary<string, object> { { "Key", new FileEntry { Name = "File", Size = 3 } } };
+#if !NETFX_35 && !UNITY
+				target.Tuple = Tuple.Create<string, FileSystemEntry, FileSystemEntry, object>( "ABC", new FileEntry { Name = "File", Size = 1 }, new FileEntry { Name = "File", Size = 3 }, new FileEntry { Name = "File", Size = 3 } );
+#endif // !NETFX_35 && !UNITY
+				var serializer = context.GetSerializer<PolymorphicMemberTypeMixed>();
+				
+				using ( var buffer = new MemoryStream() )
+				{
+					serializer.Pack( buffer, target );
+					buffer.Position = 0;
+					var result = serializer.Unpack( buffer );
+
+					Assert.That( result, Is.Not.Null );
+					Assert.That( result, Is.Not.SameAs( target ) );
+					Assert.That( result.NormalVanilla, Is.EqualTo( target.NormalVanilla ), "NormalVanilla" );
+					Assert.That( result.NormalVanilla, Is.InstanceOf( target.NormalVanilla.GetType() ), "NormalVanilla" );
+					Assert.That( result.NormalRuntime, Is.EqualTo( target.NormalRuntime ), "NormalRuntime" );
+					Assert.That( result.NormalRuntime, Is.InstanceOf( target.NormalRuntime.GetType() ), "NormalRuntime" );
+					Assert.That( result.NormalKnown, Is.EqualTo( target.NormalKnown ), "NormalKnown" );
+					Assert.That( result.NormalKnown, Is.InstanceOf( target.NormalKnown.GetType() ), "NormalKnown" );
+					Assert.That( result.ObjectRuntime, Is.EqualTo( target.ObjectRuntime ), "ObjectRuntime" );
+					Assert.That( result.ObjectRuntime, Is.InstanceOf( target.ObjectRuntime.GetType() ), "ObjectRuntime" );
+					Assert.That( result.ListVanilla, Is.EqualTo( target.ListVanilla ), "ListVanilla" );
+					Assert.That( result.ListVanilla, Is.InstanceOf( target.ListVanilla.GetType() ), "ListVanilla" );
+					Assert.That( result.ListKnownItem, Is.EqualTo( target.ListKnownItem ), "ListKnownItem" );
+					Assert.That( result.ListKnownItem, Is.InstanceOf( target.ListKnownItem.GetType() ), "ListKnownItem" );
+					Assert.That( result.ListKnwonContainerRuntimeItem, Is.EqualTo( target.ListKnwonContainerRuntimeItem ), "ListKnwonContainerRuntimeItem" );
+					Assert.That( result.ListKnwonContainerRuntimeItem, Is.InstanceOf( target.ListKnwonContainerRuntimeItem.GetType() ), "ListKnwonContainerRuntimeItem" );
+					Assert.That( result.ListObjectRuntimeItem, Is.EqualTo( target.ListObjectRuntimeItem ), "ListObjectRuntimeItem" );
+					Assert.That( result.ListObjectRuntimeItem, Is.InstanceOf( target.ListObjectRuntimeItem.GetType() ), "ListObjectRuntimeItem" );
+					Assert.That( result.DictionaryVanilla, Is.EqualTo( target.DictionaryVanilla ), "DictionaryVanilla" );
+					Assert.That( result.DictionaryVanilla, Is.InstanceOf( target.DictionaryVanilla.GetType() ), "DictionaryVanilla" );
+					Assert.That( result.DictionaryKnownValue, Is.EqualTo( target.DictionaryKnownValue ), "DictionaryKnownValue" );
+					Assert.That( result.DictionaryKnownValue, Is.InstanceOf( target.DictionaryKnownValue.GetType() ), "DictionaryKnownValue" );
+					Assert.That( result.DictionaryKnownContainerRuntimeValue, Is.EqualTo( target.DictionaryKnownContainerRuntimeValue ), "DictionaryKnownContainerRuntimeValue" );
+					Assert.That( result.DictionaryKnownContainerRuntimeValue, Is.InstanceOf( target.DictionaryKnownContainerRuntimeValue.GetType() ), "DictionaryKnownContainerRuntimeValue" );
+					Assert.That( result.DictionaryObjectRuntimeValue, Is.EqualTo( target.DictionaryObjectRuntimeValue ), "DictionaryObjectRuntimeValue" );
+					Assert.That( result.DictionaryObjectRuntimeValue, Is.InstanceOf( target.DictionaryObjectRuntimeValue.GetType() ), "DictionaryObjectRuntimeValue" );
+#if !NETFX_35 && !UNITY
+					Assert.That( result.Tuple, Is.EqualTo( target.Tuple ), "Tuple" );
+					Assert.That( result.Tuple, Is.InstanceOf( target.Tuple.GetType() ), "Tuple" );
+#endif // !NETFX_35 && !UNITY
+				}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeMixed_Null_Success()
+		{
+				var context = NewSerializationContext( PackerCompatibilityOptions.None );
+				var target = new PolymorphicMemberTypeMixed();
+				var serializer = context.GetSerializer<PolymorphicMemberTypeMixed>();
+				
+				using ( var buffer = new MemoryStream() )
+				{
+					serializer.Pack( buffer, target );
+					buffer.Position = 0;
+					var result = serializer.Unpack( buffer );
+
+					Assert.That( result, Is.Not.Null );
+					Assert.That( result, Is.Not.SameAs( target ) );
+					Assert.That( result.NormalVanilla, Is.Null );
+					Assert.That( result.NormalRuntime, Is.Null );
+					Assert.That( result.NormalKnown, Is.Null );
+					Assert.That( result.ObjectRuntime, Is.Null );
+					Assert.That( result.ListVanilla, Is.Null );
+					Assert.That( result.ListKnownItem, Is.Null );
+					Assert.That( result.ListKnwonContainerRuntimeItem, Is.Null );
+					Assert.That( result.ListObjectRuntimeItem, Is.Null );
+					Assert.That( result.DictionaryVanilla, Is.Null );
+					Assert.That( result.DictionaryKnownValue, Is.Null );
+					Assert.That( result.DictionaryKnownContainerRuntimeValue, Is.Null );
+					Assert.That( result.DictionaryObjectRuntimeValue, Is.Null );
+#if !NETFX_35 && !UNITY
+					Assert.That( result.Tuple, Is.Null );
+#endif // !NETFX_35 && !UNITY
+				}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAbstractClassMemberNoAttribute_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new AbstractClassMemberNoAttribute { Value = new FileEntry { Name = "file", Size = 1 } };
+
+			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<AbstractClassMemberNoAttribute>() );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAbstractClassMemberKnownType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new AbstractClassMemberKnownType { Value = new FileEntry { Name = "file", Size = 1 } };
+
+			var serializer = context.GetSerializer<AbstractClassMemberKnownType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.EqualTo( target.Value ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAbstractClassMemberRuntimeType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new AbstractClassMemberRuntimeType { Value = new FileEntry { Name = "file", Size = 1 } };
+
+			var serializer = context.GetSerializer<AbstractClassMemberRuntimeType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.EqualTo( target.Value ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAbstractClassListItemNoAttribute_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new AbstractClassListItemNoAttribute { Value = new List<AbstractFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+
+			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<AbstractClassListItemNoAttribute>() );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAbstractClassListItemKnownType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new AbstractClassListItemKnownType { Value = new List<AbstractFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+
+			var serializer = context.GetSerializer<AbstractClassListItemKnownType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value.Count, Is.EqualTo( target.Value.Count ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAbstractClassListItemRuntimeType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new AbstractClassListItemRuntimeType { Value = new List<AbstractFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+
+			var serializer = context.GetSerializer<AbstractClassListItemRuntimeType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value.Count, Is.EqualTo( target.Value.Count ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAbstractClassDictKeyNoAttribute_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new AbstractClassDictKeyNoAttribute { Value = new Dictionary<AbstractFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+
+			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<AbstractClassDictKeyNoAttribute>() );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAbstractClassDictKeyKnownType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new AbstractClassDictKeyKnownType { Value = new Dictionary<AbstractFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+
+			var serializer = context.GetSerializer<AbstractClassDictKeyKnownType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value.Count, Is.EqualTo( target.Value.Count ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAbstractClassDictKeyRuntimeType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new AbstractClassDictKeyRuntimeType { Value = new Dictionary<AbstractFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+
+			var serializer = context.GetSerializer<AbstractClassDictKeyRuntimeType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value.Count, Is.EqualTo( target.Value.Count ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestInterfaceMemberNoAttribute_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new InterfaceMemberNoAttribute { Value = new FileEntry { Name = "file", Size = 1 } };
+
+			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<InterfaceMemberNoAttribute>() );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestInterfaceMemberKnownType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new InterfaceMemberKnownType { Value = new FileEntry { Name = "file", Size = 1 } };
+
+			var serializer = context.GetSerializer<InterfaceMemberKnownType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.EqualTo( target.Value ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestInterfaceMemberRuntimeType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new InterfaceMemberRuntimeType { Value = new FileEntry { Name = "file", Size = 1 } };
+
+			var serializer = context.GetSerializer<InterfaceMemberRuntimeType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.EqualTo( target.Value ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestInterfaceListItemNoAttribute_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new InterfaceListItemNoAttribute { Value = new List<IFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+
+			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<InterfaceListItemNoAttribute>() );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestInterfaceListItemKnownType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new InterfaceListItemKnownType { Value = new List<IFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+
+			var serializer = context.GetSerializer<InterfaceListItemKnownType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value.Count, Is.EqualTo( target.Value.Count ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestInterfaceListItemRuntimeType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new InterfaceListItemRuntimeType { Value = new List<IFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+
+			var serializer = context.GetSerializer<InterfaceListItemRuntimeType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value.Count, Is.EqualTo( target.Value.Count ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestInterfaceDictKeyNoAttribute_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new InterfaceDictKeyNoAttribute { Value = new Dictionary<IFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+
+			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<InterfaceDictKeyNoAttribute>() );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestInterfaceDictKeyKnownType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new InterfaceDictKeyKnownType { Value = new Dictionary<IFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+
+			var serializer = context.GetSerializer<InterfaceDictKeyKnownType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value.Count, Is.EqualTo( target.Value.Count ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestInterfaceDictKeyRuntimeType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new InterfaceDictKeyRuntimeType { Value = new Dictionary<IFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+
+			var serializer = context.GetSerializer<InterfaceDictKeyRuntimeType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value.Count, Is.EqualTo( target.Value.Count ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAbstractClassCollectionNoAttribute_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.DefaultCollectionTypes.Register( typeof( KeyedCollection<string, string> ), typeof( EchoKeyedCollection<string, string> ) );
+			var target = new AbstractClassCollectionNoAttribute { Value = new EchoKeyedCollection<string, string> { "ABC" } };
+
+			var serializer = context.GetSerializer<AbstractClassCollectionNoAttribute>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value.Count, Is.EqualTo( target.Value.Count ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAbstractClassCollectionKnownType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.DefaultCollectionTypes.Register( typeof( KeyedCollection<string, string> ), typeof( EchoKeyedCollection<string, string> ) );
+			var target = new AbstractClassCollectionKnownType { Value = new EchoKeyedCollection<string, string> { "ABC" } };
+
+			var serializer = context.GetSerializer<AbstractClassCollectionKnownType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value.Count, Is.EqualTo( target.Value.Count ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAbstractClassCollectionRuntimeType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.DefaultCollectionTypes.Register( typeof( KeyedCollection<string, string> ), typeof( EchoKeyedCollection<string, string> ) );
+			var target = new AbstractClassCollectionRuntimeType { Value = new EchoKeyedCollection<string, string> { "ABC" } };
+
+			var serializer = context.GetSerializer<AbstractClassCollectionRuntimeType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value.Count, Is.EqualTo( target.Value.Count ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestInterfaceCollectionNoAttribute_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.DefaultCollectionTypes.Register( typeof( IList<string> ), typeof( EchoKeyedCollection<string, string> ) );
+			var target = new InterfaceCollectionNoAttribute { Value = new EchoKeyedCollection<string, string> { "ABC" } };
+
+			var serializer = context.GetSerializer<InterfaceCollectionNoAttribute>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value.Count, Is.EqualTo( target.Value.Count ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestInterfaceCollectionKnownType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.DefaultCollectionTypes.Register( typeof( IList<string> ), typeof( EchoKeyedCollection<string, string> ) );
+			var target = new InterfaceCollectionKnownType { Value = new EchoKeyedCollection<string, string> { "ABC" } };
+
+			var serializer = context.GetSerializer<InterfaceCollectionKnownType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value.Count, Is.EqualTo( target.Value.Count ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestInterfaceCollectionRuntimeType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.DefaultCollectionTypes.Register( typeof( IList<string> ), typeof( EchoKeyedCollection<string, string> ) );
+			var target = new InterfaceCollectionRuntimeType { Value = new EchoKeyedCollection<string, string> { "ABC" } };
+
+			var serializer = context.GetSerializer<InterfaceCollectionRuntimeType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value.Count, Is.EqualTo( target.Value.Count ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
+			}
+		}
+#if !NETFX_35 && !UNITY
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestTupleAbstractType_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new TupleAbstractType { Value = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as AbstractFileSystemEntry, new FileEntry { Name = "2", Size = 2 } as IFileSystemEntry, new FileEntry { Name = "3", Size = 3 } as AbstractFileSystemEntry, new FileEntry { Name = "4", Size = 4 } as IFileSystemEntry ) };
+			var serializer = context.GetSerializer<TupleAbstractType>();
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.Value, Is.EqualTo( target.Value ) );
+				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
+			}
+		}
+#endif // !NETFX_35 && !UNITY
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAttribute_DuplicatedKnownMember_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new DuplicatedKnownMember();
+			Assert.Throws<SerializationException>( ()=> context.GetSerializer<DuplicatedKnownMember>() );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAttribute_DuplicatedKnownCollectionItem_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new DuplicatedKnownCollectionItem();
+			Assert.Throws<SerializationException>( ()=> context.GetSerializer<DuplicatedKnownCollectionItem>() );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAttribute_DuplicatedKnownDictionaryKey_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new DuplicatedKnownDictionaryKey();
+			Assert.Throws<SerializationException>( ()=> context.GetSerializer<DuplicatedKnownDictionaryKey>() );
+		}
+#if !NETFX_35 && !UNITY
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAttribute_DuplicatedKnownTupleItem_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new DuplicatedKnownTupleItem();
+			Assert.Throws<SerializationException>( ()=> context.GetSerializer<DuplicatedKnownTupleItem>() );
+		}
+#endif // !NETFX_35 && !UNITY
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAttribute_KnownAndRuntimeMember_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new KnownAndRuntimeMember();
+			Assert.Throws<SerializationException>( ()=> context.GetSerializer<KnownAndRuntimeMember>() );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAttribute_KnownAndRuntimeCollectionItem_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new KnownAndRuntimeCollectionItem();
+			Assert.Throws<SerializationException>( ()=> context.GetSerializer<KnownAndRuntimeCollectionItem>() );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAttribute_KnownAndRuntimeDictionaryKey_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new KnownAndRuntimeDictionaryKey();
+			Assert.Throws<SerializationException>( ()=> context.GetSerializer<KnownAndRuntimeDictionaryKey>() );
+		}
+#if !NETFX_35 && !UNITY
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestAttribute_KnownAndRuntimeTupleItem_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new KnownAndRuntimeTupleItem();
+			Assert.Throws<SerializationException>( ()=> context.GetSerializer<KnownAndRuntimeTupleItem>() );
+		}
+#endif // !NETFX_35 && !UNITY
+
+		#endregion -- Polymorphism --
 		[Test]
 		public void TestNullField()
 		{
-			this.TestCoreWithAutoVerify( default( object ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( object ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestNullFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( default( object ), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( default( object ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestNullFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Object ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Object ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestNullFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Object[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Object[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestTrueField()
 		{
-			this.TestCoreWithAutoVerify( true, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( true, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestTrueFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( true, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( true, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestFalseField()
 		{
-			this.TestCoreWithAutoVerify( false, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( false, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestFalseFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( false, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( false, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestTinyByteField()
 		{
-			this.TestCoreWithAutoVerify( 1, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( 1, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestTinyByteFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 1, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 1, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestByteField()
 		{
-			this.TestCoreWithAutoVerify( 0x80, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( 0x80, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestByteFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x80, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x80, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMaxByteField()
 		{
-			this.TestCoreWithAutoVerify( 0xff, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( 0xff, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMaxByteFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0xff, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0xff, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestTinyUInt16Field()
 		{
-			this.TestCoreWithAutoVerify( 0x100, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( 0x100, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestTinyUInt16FieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x100, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x100, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMaxUInt16Field()
 		{
-			this.TestCoreWithAutoVerify( 0xffff, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( 0xffff, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMaxUInt16FieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0xffff, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0xffff, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestTinyInt32Field()
 		{
-			this.TestCoreWithAutoVerify( 0x10000, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( 0x10000, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestTinyInt32FieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x10000, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x10000, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMaxInt32Field()
 		{
-			this.TestCoreWithAutoVerify( Int32.MaxValue, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Int32.MaxValue, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMaxInt32FieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int32.MaxValue, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int32.MaxValue, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMinInt32Field()
 		{
-			this.TestCoreWithAutoVerify( Int32.MinValue, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Int32.MinValue, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMinInt32FieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int32.MinValue, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int32.MinValue, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestTinyInt64Field()
 		{
-			this.TestCoreWithAutoVerify( 0x100000000, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( 0x100000000, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestTinyInt64FieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x100000000, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x100000000, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMaxInt64Field()
 		{
-			this.TestCoreWithAutoVerify( Int64.MaxValue, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Int64.MaxValue, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMaxInt64FieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int64.MaxValue, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int64.MaxValue, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMinInt64Field()
 		{
-			this.TestCoreWithAutoVerify( Int64.MinValue, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Int64.MinValue, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMinInt64FieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int64.MinValue, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int64.MinValue, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDateTimeField()
 		{
-			this.TestCoreWithAutoVerify( DateTime.UtcNow, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( DateTime.UtcNow, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDateTimeFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( DateTime.UtcNow, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( DateTime.UtcNow, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDateTimeOffsetField()
 		{
-			this.TestCoreWithAutoVerify( DateTimeOffset.UtcNow, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( DateTimeOffset.UtcNow, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDateTimeOffsetFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( DateTimeOffset.UtcNow, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( DateTimeOffset.UtcNow, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestUriField()
 		{
-			this.TestCoreWithAutoVerify( new Uri( "http://example.com/" ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Uri( "http://example.com/" ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestUriFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Uri( "http://example.com/" ), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Uri( "http://example.com/" ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestUriFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Uri ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Uri ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestUriFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Uri[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Uri[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestVersionField()
 		{
-			this.TestCoreWithAutoVerify( new Version( 1, 2, 3, 4 ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Version( 1, 2, 3, 4 ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestVersionFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Version( 1, 2, 3, 4 ), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Version( 1, 2, 3, 4 ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestVersionFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Version ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Version ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestVersionFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Version[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Version[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestFILETIMEField()
 		{
-			this.TestCoreWithAutoVerify( ToFileTime( DateTime.UtcNow ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( ToFileTime( DateTime.UtcNow ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestFILETIMEFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( ToFileTime( DateTime.UtcNow ), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( ToFileTime( DateTime.UtcNow ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestTimeSpanField()
 		{
-			this.TestCoreWithAutoVerify( TimeSpan.FromMilliseconds( 123456789 ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( TimeSpan.FromMilliseconds( 123456789 ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestTimeSpanFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( TimeSpan.FromMilliseconds( 123456789 ), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( TimeSpan.FromMilliseconds( 123456789 ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestGuidField()
 		{
-			this.TestCoreWithAutoVerify( Guid.NewGuid(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Guid.NewGuid(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestGuidFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( Guid.NewGuid(), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Guid.NewGuid(), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestCharField()
 		{
-			this.TestCoreWithAutoVerify( '　', this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( '　', GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestCharFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( '　', 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( '　', 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDecimalField()
 		{
-			this.TestCoreWithAutoVerify( 123456789.0987654321m, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( 123456789.0987654321m, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDecimalFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 123456789.0987654321m, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 123456789.0987654321m, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 #if !NETFX_35 && !WINDOWS_PHONE
 		[Test]
 		public void TestBigIntegerField()
 		{
-			this.TestCoreWithAutoVerify( new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestBigIntegerFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 #endif // !NETFX_35 && !WINDOWS_PHONE
@@ -2539,551 +11594,551 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestComplexField()
 		{
-			this.TestCoreWithAutoVerify( new Complex( 1.3, 2.4 ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Complex( 1.3, 2.4 ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestComplexFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Complex( 1.3, 2.4 ), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Complex( 1.3, 2.4 ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 #endif // !NETFX_35 && !WINDOWS_PHONE
 		[Test]
 		public void TestDictionaryEntryField()
 		{
-			this.TestCoreWithAutoVerify( new DictionaryEntry( new MessagePackObject( "Key" ), new MessagePackObject( "Value" ) ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new DictionaryEntry( new MessagePackObject( "Key" ), new MessagePackObject( "Value" ) ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDictionaryEntryFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new DictionaryEntry( new MessagePackObject( "Key" ), new MessagePackObject( "Value" ) ), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new DictionaryEntry( new MessagePackObject( "Key" ), new MessagePackObject( "Value" ) ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestKeyValuePairStringDateTimeOffsetField()
 		{
-			this.TestCoreWithAutoVerify( new KeyValuePair<String, DateTimeOffset>( "Key", DateTimeOffset.UtcNow ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new KeyValuePair<String, DateTimeOffset>( "Key", DateTimeOffset.UtcNow ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestKeyValuePairStringDateTimeOffsetFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new KeyValuePair<String, DateTimeOffset>( "Key", DateTimeOffset.UtcNow ), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new KeyValuePair<String, DateTimeOffset>( "Key", DateTimeOffset.UtcNow ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 #if !NETFX_35 && !WINDOWS_PHONE
 		[Test]
 		public void TestKeyValuePairStringComplexField()
 		{
-			this.TestCoreWithAutoVerify( new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestKeyValuePairStringComplexFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) ), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 #endif // !NETFX_35 && !WINDOWS_PHONE
 		[Test]
 		public void TestStringField()
 		{
-			this.TestCoreWithAutoVerify( "StringValue", this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( "StringValue", GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestStringFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( "StringValue", 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( "StringValue", 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestStringFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( String ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( String ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestStringFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( String[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( String[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestByteArrayField()
 		{
-			this.TestCoreWithAutoVerify( new Byte[]{ 1, 2, 3, 4 }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Byte[]{ 1, 2, 3, 4 }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestByteArrayFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Byte[]{ 1, 2, 3, 4 }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Byte[]{ 1, 2, 3, 4 }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestByteArrayFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Byte[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Byte[] ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestByteArrayFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Byte[][] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Byte[][] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestCharArrayField()
 		{
-			this.TestCoreWithAutoVerify( "ABCD".ToCharArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( "ABCD".ToCharArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestCharArrayFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( "ABCD".ToCharArray(), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( "ABCD".ToCharArray(), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestCharArrayFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Char[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Char[] ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestCharArrayFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Char[][] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Char[][] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestArraySegmentByteField()
 		{
-			this.TestCoreWithAutoVerify( new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestArraySegmentByteFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestArraySegmentInt32Field()
 		{
-			this.TestCoreWithAutoVerify( new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestArraySegmentInt32FieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestArraySegmentDecimalField()
 		{
-			this.TestCoreWithAutoVerify( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestArraySegmentDecimalFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 #if !NETFX_35
 		[Test]
 		public void TestTuple_Int32_String_MessagePackObject_ObjectField()
 		{
-			this.TestCoreWithAutoVerify( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) , this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) , GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) , 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) , 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object>[] ), GetSerializationContext() );
 		}	
 		
 #endif // !NETFX_35
 		[Test]
 		public void TestImage_Field()
 		{
-			this.TestCoreWithAutoVerify( new Image(){ uri = "http://example.com/logo.png", title = "logo", width = 160, height = 120, size = 13612 }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Image(){ uri = "http://example.com/logo.png", title = "logo", width = 160, height = 120, size = 13612 }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestImage_FieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Image(){ uri = "http://example.com/logo.png", title = "logo", width = 160, height = 120, size = 13612 }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Image(){ uri = "http://example.com/logo.png", title = "logo", width = 160, height = 120, size = 13612 }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestImage_FieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Image ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.Image ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestImage_FieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Image[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.Image[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestListDateTimeField()
 		{
-			this.TestCoreWithAutoVerify( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestListDateTimeFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestListDateTimeFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( List<DateTime> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( List<DateTime> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestListDateTimeFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( List<DateTime>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( List<DateTime>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestDictionaryStringDateTimeField()
 		{
-			this.TestCoreWithAutoVerify( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDictionaryStringDateTimeFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDictionaryStringDateTimeFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Dictionary<String, DateTime> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Dictionary<String, DateTime> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDictionaryStringDateTimeFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Dictionary<String, DateTime>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Dictionary<String, DateTime>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestCollectionDateTimeField()
 		{
-			this.TestCoreWithAutoVerify( new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestCollectionDateTimeFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestCollectionDateTimeFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Collection<DateTime> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Collection<DateTime> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestCollectionDateTimeFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Collection<DateTime>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Collection<DateTime>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestStringKeyedCollection_DateTimeField()
 		{
-			this.TestCoreWithAutoVerify( new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestStringKeyedCollection_DateTimeFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestStringKeyedCollection_DateTimeFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.DateTime> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.DateTime> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestStringKeyedCollection_DateTimeFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.DateTime>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.DateTime>[] ), GetSerializationContext() );
 		}	
 		
 #if !NETFX_35
 		[Test]
 		public void TestObservableCollectionDateTimeField()
 		{
-			this.TestCoreWithAutoVerify( new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestObservableCollectionDateTimeFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestObservableCollectionDateTimeFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( ObservableCollection<DateTime> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( ObservableCollection<DateTime> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestObservableCollectionDateTimeFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( ObservableCollection<DateTime>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( ObservableCollection<DateTime>[] ), GetSerializationContext() );
 		}	
 		
 #endif // !NETFX_35
 		[Test]
 		public void TestHashSetDateTimeField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestHashSetDateTimeFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestHashSetDateTimeFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( HashSet<DateTime> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( HashSet<DateTime> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestHashSetDateTimeFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( HashSet<DateTime>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( HashSet<DateTime>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestICollectionDateTimeField()
 		{
-			this.TestCoreWithAutoVerify( new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestICollectionDateTimeFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestICollectionDateTimeFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( ICollection<DateTime> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( ICollection<DateTime> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestICollectionDateTimeFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( ICollection<DateTime>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( ICollection<DateTime>[] ), GetSerializationContext() );
 		}	
 		
 #if !NETFX_35
 		[Test]
 		public void TestISetDateTimeField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestISetDateTimeFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestISetDateTimeFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( ISet<DateTime> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( ISet<DateTime> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestISetDateTimeFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( ISet<DateTime>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( ISet<DateTime>[] ), GetSerializationContext() );
 		}	
 		
 #endif // !NETFX_35
 		[Test]
 		public void TestIListDateTimeField()
 		{
-			this.TestCoreWithAutoVerify( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIListDateTimeFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIListDateTimeFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( IList<DateTime> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( IList<DateTime> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIListDateTimeFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( IList<DateTime>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( IList<DateTime>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestIDictionaryStringDateTimeField()
 		{
-			this.TestCoreWithAutoVerify( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIDictionaryStringDateTimeFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIDictionaryStringDateTimeFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( IDictionary<String, DateTime> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( IDictionary<String, DateTime> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIDictionaryStringDateTimeFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( IDictionary<String, DateTime>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( IDictionary<String, DateTime>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestAddOnlyCollection_DateTimeField()
 		{
-			this.TestCoreWithAutoVerify( new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestAddOnlyCollection_DateTimeFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestAddOnlyCollection_DateTimeFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.DateTime> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.DateTime> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestAddOnlyCollection_DateTimeFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.DateTime>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.DateTime>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestObjectField()
 		{
-			this.TestCoreWithAutoVerify( new MessagePackObject( 1 ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new MessagePackObject( 1 ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject( 1 ), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject( 1 ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Object ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Object ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Object[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Object[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestObjectArrayField()
 		{
-			this.TestCoreWithAutoVerify( new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestObjectArrayFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestObjectArrayFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Object[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Object[] ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestObjectArrayFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Object[][] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Object[][] ), GetSerializationContext() );
 		}	
 		
 #if !NETFX_CORE && !SILVERLIGHT
 		[Test]
 		public void TestArrayListField()
 		{
-			this.TestCoreWithAutoVerify( new ArrayList(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new ArrayList(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestArrayListFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArrayList(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArrayList(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestArrayListFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( ArrayList ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( ArrayList ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestArrayListFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( ArrayList[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( ArrayList[] ), GetSerializationContext() );
 		}	
 		
 #endif // !NETFX_CORE && !SILVERLIGHT
@@ -3091,610 +12146,610 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestHashtableField()
 		{
-			this.TestCoreWithAutoVerify( new Hashtable(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Hashtable(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestHashtableFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Hashtable(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Hashtable(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestHashtableFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Hashtable ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Hashtable ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestHashtableFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Hashtable[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Hashtable[] ), GetSerializationContext() );
 		}	
 		
 #endif // !NETFX_CORE && !SILVERLIGHT
 		[Test]
 		public void TestListObjectField()
 		{
-			this.TestCoreWithAutoVerify( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestListObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestListObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( List<Object> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( List<Object> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestListObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( List<Object>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( List<Object>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestDictionaryObjectObjectField()
 		{
-			this.TestCoreWithAutoVerify( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDictionaryObjectObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDictionaryObjectObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Dictionary<Object, Object> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Dictionary<Object, Object> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDictionaryObjectObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Dictionary<Object, Object>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Dictionary<Object, Object>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestCollectionObjectField()
 		{
-			this.TestCoreWithAutoVerify( new Collection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Collection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestCollectionObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestCollectionObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Collection<Object> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Collection<Object> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestCollectionObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Collection<Object>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( Collection<Object>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestStringKeyedCollection_ObjectField()
 		{
-			this.TestCoreWithAutoVerify( new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestStringKeyedCollection_ObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestStringKeyedCollection_ObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.Object> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.Object> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestStringKeyedCollection_ObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.Object>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.Object>[] ), GetSerializationContext() );
 		}	
 		
 #if !NETFX_35
 		[Test]
 		public void TestObservableCollectionObjectField()
 		{
-			this.TestCoreWithAutoVerify( new ObservableCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new ObservableCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestObservableCollectionObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestObservableCollectionObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( ObservableCollection<Object> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( ObservableCollection<Object> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestObservableCollectionObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( ObservableCollection<Object>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( ObservableCollection<Object>[] ), GetSerializationContext() );
 		}	
 		
 #endif // !NETFX_35
 		[Test]
 		public void TestHashSetObjectField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestHashSetObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestHashSetObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( HashSet<Object> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( HashSet<Object> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestHashSetObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( HashSet<Object>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( HashSet<Object>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestICollectionObjectField()
 		{
-			this.TestCoreWithAutoVerify( new SimpleCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new SimpleCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestICollectionObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestICollectionObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( ICollection<Object> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( ICollection<Object> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestICollectionObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( ICollection<Object>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( ICollection<Object>[] ), GetSerializationContext() );
 		}	
 		
 #if !NETFX_35
 		[Test]
 		public void TestISetObjectField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestISetObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestISetObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( ISet<Object> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( ISet<Object> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestISetObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( ISet<Object>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( ISet<Object>[] ), GetSerializationContext() );
 		}	
 		
 #endif // !NETFX_35
 		[Test]
 		public void TestIListObjectField()
 		{
-			this.TestCoreWithAutoVerify( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIListObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIListObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( IList<Object> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( IList<Object> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIListObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( IList<Object>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( IList<Object>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestIDictionaryObjectObjectField()
 		{
-			this.TestCoreWithAutoVerify( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIDictionaryObjectObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIDictionaryObjectObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( IDictionary<Object, Object> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( IDictionary<Object, Object> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIDictionaryObjectObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( IDictionary<Object, Object>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( IDictionary<Object, Object>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestAddOnlyCollection_ObjectField()
 		{
-			this.TestCoreWithAutoVerify( new AddOnlyCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new AddOnlyCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestAddOnlyCollection_ObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestAddOnlyCollection_ObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.Object> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.Object> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestAddOnlyCollection_ObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.Object>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.Object>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestMessagePackObject_Field()
 		{
-			this.TestCoreWithAutoVerify( new MessagePackObject( 1 ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new MessagePackObject( 1 ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMessagePackObject_FieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject( 1 ), 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject( 1 ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMessagePackObject_FieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMessagePackObject_FieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestMessagePackObjectArray_Field()
 		{
-			this.TestCoreWithAutoVerify( new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMessagePackObjectArray_FieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMessagePackObjectArray_FieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[] ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestMessagePackObjectArray_FieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[][] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[][] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestList_MessagePackObjectField()
 		{
-			this.TestCoreWithAutoVerify( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestList_MessagePackObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestList_MessagePackObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.List<MsgPack.MessagePackObject> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.List<MsgPack.MessagePackObject> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestList_MessagePackObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.List<MsgPack.MessagePackObject>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.List<MsgPack.MessagePackObject>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestDictionary_MessagePackObject_MessagePackObjectField()
 		{
-			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDictionary_MessagePackObject_MessagePackObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDictionary_MessagePackObject_MessagePackObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestDictionary_MessagePackObject_MessagePackObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestCollection_MessagePackObjectField()
 		{
-			this.TestCoreWithAutoVerify( new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestCollection_MessagePackObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestCollection_MessagePackObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestCollection_MessagePackObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestStringKeyedCollection_MessagePackObjectField()
 		{
-			this.TestCoreWithAutoVerify( new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestStringKeyedCollection_MessagePackObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestStringKeyedCollection_MessagePackObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestStringKeyedCollection_MessagePackObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>[] ), GetSerializationContext() );
 		}	
 		
 #if !NETFX_35
 		[Test]
 		public void TestObservableCollection_MessagePackObjectField()
 		{
-			this.TestCoreWithAutoVerify( new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestObservableCollection_MessagePackObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestObservableCollection_MessagePackObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestObservableCollection_MessagePackObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>[] ), GetSerializationContext() );
 		}	
 		
 #endif // !NETFX_35
 		[Test]
 		public void TestHashSet_MessagePackObjectField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestHashSet_MessagePackObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestHashSet_MessagePackObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.HashSet<MsgPack.MessagePackObject> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.HashSet<MsgPack.MessagePackObject> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestHashSet_MessagePackObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.HashSet<MsgPack.MessagePackObject>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.HashSet<MsgPack.MessagePackObject>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestICollection_MessagePackObjectField()
 		{
-			this.TestCoreWithAutoVerify( new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestICollection_MessagePackObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestICollection_MessagePackObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ICollection<MsgPack.MessagePackObject> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ICollection<MsgPack.MessagePackObject> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestICollection_MessagePackObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ICollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ICollection<MsgPack.MessagePackObject>[] ), GetSerializationContext() );
 		}	
 		
 #if !NETFX_35
 		[Test]
 		public void TestISet_MessagePackObjectField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestISet_MessagePackObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestISet_MessagePackObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ISet<MsgPack.MessagePackObject> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ISet<MsgPack.MessagePackObject> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestISet_MessagePackObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ISet<MsgPack.MessagePackObject>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ISet<MsgPack.MessagePackObject>[] ), GetSerializationContext() );
 		}	
 		
 #endif // !NETFX_35
 		[Test]
 		public void TestIList_MessagePackObjectField()
 		{
-			this.TestCoreWithAutoVerify( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIList_MessagePackObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIList_MessagePackObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IList<MsgPack.MessagePackObject> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IList<MsgPack.MessagePackObject> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIList_MessagePackObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IList<MsgPack.MessagePackObject>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IList<MsgPack.MessagePackObject>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestIDictionary_MessagePackObject_MessagePackObjectField()
 		{
-			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
 		public void TestAddOnlyCollection_MessagePackObjectField()
 		{
-			this.TestCoreWithAutoVerify( new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestAddOnlyCollection_MessagePackObjectFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestAddOnlyCollection_MessagePackObjectFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void TestAddOnlyCollection_MessagePackObjectFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>[] ), GetSerializationContext() );
 		}	
 		
 		[Test]
@@ -3705,7 +12760,7 @@ namespace MsgPack.Serialization
 			{
 				var target = new ComplexTypeGeneratedEnclosure();
 				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( target, GetSerializationContext() );
 			}
 			finally
 			{
@@ -3721,7 +12776,7 @@ namespace MsgPack.Serialization
 			{
 				var target = new ComplexTypeGeneratedEnclosure();
 				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( target, GetSerializationContext() );
 			}
 			finally
 			{
@@ -3735,7 +12790,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), GetSerializationContext() );
 			}
 			finally
 			{
@@ -3749,7 +12804,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), GetSerializationContext() );
 			}
 			finally
 			{
@@ -3765,7 +12820,7 @@ namespace MsgPack.Serialization
 			{
 				var target = new ComplexTypeGenerated();
 				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( target, GetSerializationContext() );
 			}
 			finally
 			{
@@ -3781,7 +12836,7 @@ namespace MsgPack.Serialization
 			{
 				var target = new ComplexTypeGenerated();
 				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( target, GetSerializationContext() );
 			}
 			finally
 			{
@@ -3795,7 +12850,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), GetSerializationContext() );
 			}
 			finally
 			{
@@ -3809,7 +12864,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), GetSerializationContext() );
 			}
 			finally
 			{
@@ -3864,12 +12919,12 @@ namespace MsgPack.Serialization
 #if MSTEST
 					catch( Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException ae )
 					{
-						throw new Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException( i.ToString(), ae );
+						throw new Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException( String.Format( "[{0}]:{1}", i, ae.Message ), ae );
 					}
 #else
 					catch( AssertionException ae )
 					{
-						throw new AssertionException( i.ToString(), ae );
+						throw new AssertionException( String.Format( "[{0}]:{1}", i, ae.Message ), ae );
 					}
 #endif
 				}

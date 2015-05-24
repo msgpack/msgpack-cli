@@ -27,12 +27,17 @@
 
 using System;
 using System.Collections.Generic;
-#if DEBUG && !UNITY
+#if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
-#endif // DEBUG && !UNITY
+#endif // XAMIOS || XAMDROID
+#endif // !UNITY
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization
@@ -40,8 +45,32 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Implements serialization target member extraction logics.
 	/// </summary>
-	internal static class SerializationTarget
+	internal class SerializationTarget
 	{
+		public IList<SerializingMember> Members { get; private set; }
+		public ConstructorInfo DeserializationConstructor { get; private set; }
+		public bool IsConstructorDeserialization 
+		{
+			get { return this.DeserializationConstructor != null && this.DeserializationConstructor.GetParameters().Length > 0; }
+		}
+
+		private SerializationTarget( IList<SerializingMember> members, ConstructorInfo constructor )
+		{
+			this.Members = members;
+			this.DeserializationConstructor = constructor;
+		}
+
+		public string FindCorrespondingMemberName( ParameterInfo parameterInfo )
+		{
+			return
+				this.Members.Where(
+					item =>
+						parameterInfo.Name.Equals( item.Contract.Name, StringComparison.OrdinalIgnoreCase ) &&
+						item.Member.GetMemberValueType() == parameterInfo.ParameterType
+				).Select( item => item.Contract.Name )
+				.FirstOrDefault();
+		}
+
 		public static void VerifyType( Type targetType )
 		{
 			if ( targetType.GetIsInterface() || targetType.GetIsAbstract() )
@@ -50,148 +79,140 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public static IList<SerializingMember> Prepare( SerializationContext context, Type targetType )
+		public static SerializationTarget Prepare( SerializationContext context, Type targetType )
 		{
-			var result = PrepareCore( context, targetType );
+			var getters = GetTargetMembers( targetType ).OrderBy( entry => entry.Contract.Id ).ToArray();
 
-			VerifyNilImplication( targetType, result );
-			VerifyKeyUniqueness( result );
-
-			return result;
-		}
-
-		private static IList<SerializingMember> PrepareCore( SerializationContext context, Type targetType )
-		{
-			var entries = GetTargetMembers( targetType ).OrderBy( item => item.Contract.Id ).ToArray();
-
-			if ( entries.Length == 0 )
+			if ( getters.Length == 0 )
 			{
-				throw SerializationExceptions.NewNoSerializableFieldsException( targetType );
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot serialize type '{0}' because it does not have any serializable fields nor properties.", targetType ) );
 			}
 
-			if ( entries.All( item => item.Contract.Id == DataMemberContract.UnspecifiedId ) )
+			var memberCandidates = getters.Where( entry => CheckTargetEligibility( entry.Member ) ).ToArray();
+
+			if ( memberCandidates.Length == 0 )
+			{
+				var constructor = FindDeserializationConstructor( targetType );
+				return new SerializationTarget( ComplementMembers( getters, context, targetType ), constructor );
+			}
+
+			var defaultConstructor = targetType.GetConstructor( ReflectionAbstractions.EmptyTypes );
+			if ( defaultConstructor == null && !targetType.GetIsValueType() )
+			{
+				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructor( targetType );
+			}
+
+			// Because members' order is equal to declared order is NOT guaranteed, so explicit ordering is required.
+			IList<SerializingMember> members;
+			if ( memberCandidates.All( item => item.Contract.Id == DataMemberContract.UnspecifiedId ) )
 			{
 				// Alphabetical order.
-				return entries.OrderBy( item => item.Contract.Name ).ToArray();
+				members = memberCandidates.OrderBy( item => item.Contract.Name ).ToArray();
 			}
-
-			// ID order.
-
-#if DEBUG && !UNITY
-			Contract.Assert( entries[ 0 ].Contract.Id >= 0 );
-#endif // DEBUG && !UNITY
-
-			if ( context.CompatibilityOptions.OneBoundDataMemberOrder && entries[ 0 ].Contract.Id == 0 )
+			else
 			{
-				throw new NotSupportedException( "Cannot specify order value 0 on DataMemberAttribute when SerializationContext.CompatibilityOptions.OneBoundDataMemberOrder is set to true." );
+				// ID order.
+				members = ComplementMembers( memberCandidates, context, targetType );
 			}
 
-			var maxId = entries.Max( item => item.Contract.Id );
-			var result = new List<SerializingMember>( maxId + 1 );
-			for ( int source = 0, destination = context.CompatibilityOptions.OneBoundDataMemberOrder ? 1 : 0; source < entries.Length; source++, destination++ )
-			{
-#if DEBUG && !UNITY
-				Contract.Assert( entries[ source ].Contract.Id >= 0 );
-#endif // DEBUG && !UNITY
-
-				if ( entries[ source ].Contract.Id < destination )
-				{
-					throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member ID '{0}' is duplicated in the '{1}' elementType.", entries[ source ].Contract.Id, targetType ) );
-				}
-
-				while ( entries[ source ].Contract.Id > destination )
-				{
-					result.Add( new SerializingMember() );
-					destination++;
-				}
-
-				result.Add( entries[ source ] );
-			}
-
-			return result;
+			return new SerializationTarget( members, defaultConstructor );
 		}
 
-		// internal for testing
-		internal static IEnumerable<SerializingMember> GetTargetMembers( Type type )
+		private static IEnumerable<SerializingMember> GetTargetMembers( Type type )
 		{
 #if DEBUG && !UNITY
-			Contract.Assert( type != null );
+			Contract.Assert( type != null, "type != null" );
 #endif // DEBUG && !UNITY
 #if !NETFX_CORE
 			var members =
 				type.FindMembers(
 					MemberTypes.Field | MemberTypes.Property,
 					BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-					( member, criteria ) => CheckTargetEligibility( member ),
+					null,
 					null
 				);
-			var filtered = members.Where( item => Attribute.IsDefined( item, typeof( MessagePackMemberAttribute ) ) ).ToArray();
 #else
 			var members =
 				type.GetRuntimeFields().Where( f => !f.IsStatic ).OfType<MemberInfo>()
 					.Concat( type.GetRuntimeProperties().Where( p => p.GetMethod != null && !p.GetMethod.IsStatic ) )
-					.Where( CheckTargetEligibility )
 					.ToArray();
-			var filtered = members.Where( item => item.IsDefined( typeof( MessagePackMemberAttribute ) ) ).ToArray();
 #endif
+			var filtered = members.Where( item => item.IsDefined( typeof( MessagePackMemberAttribute ) ) ).ToArray();
 
 			if ( filtered.Length > 0 )
 			{
-				var duplicated =
-					filtered.FirstOrDefault(
-						member =>
-#if !NETFX_CORE
-							Attribute.IsDefined( member, typeof( MessagePackIgnoreAttribute ) )
-#else
-							member.IsDefined( typeof( MessagePackIgnoreAttribute ) ) 
-#endif // !NETFX_CORE
-					);
-
-				if ( duplicated != null )
-				{
-					throw new SerializationException(
-						String.Format(
-							CultureInfo.CurrentCulture,
-							"A member '{0}' of type '{1}' is marked with both MessagePackMemberAttribute and MessagePackIgnoreAttribute.",
-							duplicated.Name,
-							type 
-						)
-					);
-				}
-
-				return
-					filtered.Select( member =>
-						new SerializingMember(
-							member,
-							new DataMemberContract( member, member.GetCustomAttribute<MessagePackMemberAttribute>() )
-						)
-					);
+				return GetAnnotatedMembersWithDuplicationDetection( type, filtered );
 			}
 
 			if ( type.GetCustomAttributesData().Any( attr =>
 				attr.GetAttributeType().FullName == "System.Runtime.Serialization.DataContractAttribute" ) )
 			{
-				return
-					members.Select(
-						item =>
+				return GetSystemRuntimeSerializationCompatibleMembers( members );
+			}
+
+			return GetPublicUnpreventedMembers( members );
+		}
+
+		private static IEnumerable<SerializingMember> GetAnnotatedMembersWithDuplicationDetection( Type type, MemberInfo[] filtered )
+		{
+			var duplicated =
+				filtered.FirstOrDefault(
+					member => member.IsDefined( typeof( MessagePackIgnoreAttribute ) )
+					);
+
+			if ( duplicated != null )
+			{
+				throw new SerializationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"A member '{0}' of type '{1}' is marked with both MessagePackMemberAttribute and MessagePackIgnoreAttribute.",
+						duplicated.Name,
+						type
+						)
+					);
+			}
+
+			return
+				filtered.Select(
+					member =>
+						new SerializingMember(
+							member,
+							new DataMemberContract( member, member.GetCustomAttribute<MessagePackMemberAttribute>() )
+							)
+					);
+		}
+
+		private static IEnumerable<SerializingMember> GetSystemRuntimeSerializationCompatibleMembers( MemberInfo[] members )
+		{
+			return
+				members.Select(
+					item =>
 						new
 						{
 							member = item,
-							data = item.GetCustomAttributesData()
+							data = 
+								item.GetCustomAttributesData()
 								.FirstOrDefault(
-									data => data.GetAttributeType().FullName == "System.Runtime.Serialization.DataMemberAttribute" )
+									data => data.GetAttributeType().FullName == "System.Runtime.Serialization.DataMemberAttribute" 
+								)
 						}
 					).Where( item => item.data != null )
 					.Select(
 						item =>
 						{
-							var name = item.data.GetNamedArguments()
+							var name = 
+								item.data.GetNamedArguments()
 								.Where( arg => arg.GetMemberName() == "Name" )
-								.Select( arg => ( string )arg.GetTypedValue().Value )
+								.Select( arg => ( string ) arg.GetTypedValue().Value )
 								.FirstOrDefault();
-							var id = item.data.GetNamedArguments()
+							var id = 
+								item.data.GetNamedArguments()
 								.Where( arg => arg.GetMemberName() == "Order" )
+#if !UNITY
 								.Select( arg => ( int? )arg.GetTypedValue().Value )
+#else
+								.Select( arg => arg.GetTypedValue().Value )
+#endif
 								.FirstOrDefault();
 #if SILVERLIGHT
 							if ( id == -1 )
@@ -204,24 +225,103 @@ namespace MsgPack.Serialization
 							return
 								new SerializingMember(
 									item.member,
+#if !UNITY
 									new DataMemberContract( item.member, name, NilImplication.MemberDefault, id )
+#else
+									new DataMemberContract( item.member, name, NilImplication.MemberDefault, ( int? )id )
+#endif // !UNITY
 								);
 						}
 					);
-			}
-			return
-				members.Where(
-					member => member.GetIsPublic()
+		}
+
+		private static IEnumerable<SerializingMember> GetPublicUnpreventedMembers( MemberInfo[] members )
+		{
+			return members.Where(
+				member => member.GetIsPublic()
 #if !SILVERLIGHT && !NETFX_CORE
-					&& !Attribute.IsDefined( member, typeof( NonSerializedAttribute ) )
+						&& !Attribute.IsDefined( member, typeof( NonSerializedAttribute ) )
 #endif // !SILVERLIGHT && !NETFX_CORE
-#if !NETFX_CORE
-					&& !Attribute.IsDefined( member, typeof( MessagePackIgnoreAttribute ) )
-#else
-					&& !member.IsDefined( typeof( MessagePackIgnoreAttribute ) ) 
-#endif // !NETFX_CORE
+						&& !member.IsDefined( typeof( MessagePackIgnoreAttribute ) ) 
 				).Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
 		}
+
+
+		private static ConstructorInfo FindDeserializationConstructor( Type targetType )
+		{
+			var constructors = targetType.GetConstructors().ToArray();
+
+			if ( constructors.Length == 0 )
+			{
+				throw NewTypeCannotBeSerializedException( targetType );
+			}
+
+			// The marked construtor is always preferred.
+			var markedConstructors = constructors.Where( ctor => ctor.IsDefined( typeof( MessagePackDeserializationConstructorAttribute ) ) ).ToArray();
+			switch ( markedConstructors.Length )
+			{
+				case 0:
+				{
+					break;
+				}
+				case 1:
+				{
+					// OK Use it
+					return markedConstructors[ 0 ];
+				}
+				default:
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"There are multiple constructors marked with MessagePackDeserializationConstrutorAttribute in type '{0}'.",
+							targetType
+						)
+					);
+				}
+			}
+
+			// A constructor which has most parameters will be used.
+			var mostRichConstructors =
+				constructors.GroupBy( ctor => ctor.GetParameters().Length ).OrderByDescending( g => g.Key ).First().ToArray();
+			switch ( mostRichConstructors.Length )
+			{
+				case 1:
+				{
+					if ( mostRichConstructors[ 0 ].GetParameters().Length == 0 )
+					{
+						throw NewTypeCannotBeSerializedException( targetType );
+					}
+
+					// OK Use it
+					return mostRichConstructors[ 0 ];
+				}
+				default:
+				{
+					throw
+						new SerializationException(
+							String.Format(
+								CultureInfo.CurrentCulture,
+								"Cannot serialize type '{0}' because it does not have any serializable fields nor properties, and serializer generator failed to determine constructor to deserialize among({1}).",
+								targetType,
+								String.Join( ", ", mostRichConstructors.Select( ctor => ctor.ToString() ).ToArray() )
+							)
+						);
+				}
+			}
+		}
+
+		private static SerializationException NewTypeCannotBeSerializedException( Type targetType )
+		{
+			return new SerializationException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					"Cannot serialize type '{0}' because it does not have any serializable fields nor properties, and it does not have any public constructors with parameters.",
+					targetType
+					) 
+				);
+		}
+
 
 		private static bool CheckTargetEligibility( MemberInfo member )
 		{
@@ -275,6 +375,61 @@ namespace MsgPack.Serialization
 					return false;
 				}
 			}
+		}
+
+		private static IList<SerializingMember> ComplementMembers( IList<SerializingMember> candidates, SerializationContext context, Type targetType )
+		{
+			if ( candidates[ 0 ].Contract.Id < 0 )
+			{
+				return candidates;
+			}
+
+			if ( context.CompatibilityOptions.OneBoundDataMemberOrder && candidates[ 0 ].Contract.Id == 0 )
+			{
+				throw new NotSupportedException(
+					"Cannot specify order value 0 on DataMemberAttribute when SerializationContext.CompatibilityOptions.OneBoundDataMemberOrder is set to true." );
+			}
+
+#if !UNITY
+			var maxId = candidates.Max( item => item.Contract.Id );
+#else
+			int maxId = -1;
+			foreach ( var id in candidates.Select( item => item.Contract.Id ) )
+			{
+				maxId = Math.Max( id, maxId );
+			}
+#endif
+			var result = new List<SerializingMember>( maxId + 1 );
+			for ( int source = 0, destination = context.CompatibilityOptions.OneBoundDataMemberOrder ? 1 : 0;
+				source < candidates.Count;
+				source++, destination++ )
+			{
+#if DEBUG && !UNITY
+				Contract.Assert( candidates[ source ].Contract.Id >= 0, "candidates[ source ].Contract.Id >= 0" );
+#endif // DEBUG && !UNITY
+
+				if ( candidates[ source ].Contract.Id < destination )
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"The member ID '{0}' is duplicated in the '{1}' elementType.",
+							candidates[ source ].Contract.Id,
+							targetType ) );
+				}
+
+				while ( candidates[ source ].Contract.Id > destination )
+				{
+					result.Add( new SerializingMember() );
+					destination++;
+				}
+
+				result.Add( candidates[ source ] );
+			}
+
+			VerifyNilImplication( targetType, result );
+			VerifyKeyUniqueness( result );
+			return result;
 		}
 
 		private static void VerifyNilImplication( Type type, IEnumerable<SerializingMember> entries )
@@ -358,7 +513,7 @@ namespace MsgPack.Serialization
 									CultureInfo.CurrentCulture,
 									"\"{0}\":[{1}]",
 									kv.Key,
-									String.Join( ",", kv.Value.Select( m => String.Format( "{0}.{1}({2})", m.DeclaringType, m.Name, ( m is FieldInfo ) ? "Field" : "Property" ) ).ToArray() )
+									String.Join( ",", kv.Value.Select( m => String.Format( CultureInfo.InvariantCulture, "{0}.{1}({2})", m.DeclaringType, m.Name, ( m is FieldInfo ) ? "Field" : "Property" ) ).ToArray() )
 								)
 							).ToArray()
 						)

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -39,6 +39,10 @@ var __excludes =
 		typeof( System.ArraySegment<> ),
 		typeof( System.Collections.DictionaryEntry ),
 		typeof( System.Collections.Generic.KeyValuePair<,> ),
+		// Special(manual) handlings on builtin serializer:
+		typeof( System.DateTime ),
+		// Special(manual) handlings on builtin serializer:
+		typeof( System.DateTimeOffset ),
 		typeof( System.Numerics.Complex ),
 		// Special handling on serializer:
 		typeof( System.Nullable<> ),
@@ -146,8 +150,6 @@ var __workArounds =
 	{
 		{ typeof( char ), new WorkAround(){ PackCode = "packer.Pack( ( System.UInt16 )value );", UnpackCode = "return ( System.Char ) unpacker.LastReadData.AsUInt16(); " } },
 		{ typeof( decimal ), new WorkAround(){ PackCode = "packer.PackString( value.ToString( \"G\", CultureInfo.InvariantCulture ) );", UnpackCode = "return System.Decimal.Parse( unpacker.LastReadData.AsString(), CultureInfo.InvariantCulture ); " } },
-		{ typeof( DateTime ), new WorkAround(){ PackCode = "packer.Pack( MessagePackConvert.FromDateTime( value ) );", UnpackCode = "return MessagePackConvert.ToDateTime( unpacker.LastReadData.AsInt64() ); " } },
-		{ typeof( DateTimeOffset ), new WorkAround(){ PackCode = "packer.Pack( MessagePackConvert.FromDateTimeOffset( value ) );", UnpackCode = "return MessagePackConvert.ToDateTimeOffset( unpacker.LastReadData.AsInt64() ); " } },
 		{ typeof( Guid ), new WorkAround(){ PackCode = "packer.PackRaw( value.ToByteArray() );", UnpackCode = "return new System.Guid( unpacker.LastReadData.AsBinary() ); " } },
 		{ typeof( BigInteger ), new WorkAround(){ PackCode = "packer.PackRaw( value.ToByteArray() );", UnpackCode = "return new System.Numerics.BigInteger( unpacker.LastReadData.AsBinary() ); " } },
 	};
@@ -233,6 +235,13 @@ foreach( Type __type in __types )
 	}
 
 	var __typeName = __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) + "MessagePackSerializer";
+
+	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	{
+#>
+#if !CORLIB_ONLY
+<#
+	}
 #>
 	internal sealed class <#= __typeName #> : MessagePackSerializer< <#= ToCSharpToken( __type ) #> >
 	{
@@ -374,6 +383,13 @@ foreach( var ctor in ctors )
 	{
 #>
 #endif // !SILVERLIGHT && !NETFX_CORE
+<#
+	}
+
+	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	{
+#>
+#endif // !CORLIB_ONLY
 <#
 	}
 }

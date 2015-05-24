@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,7 +24,11 @@
 
 using System;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 using System.Globalization;
 using System.Reflection;
@@ -41,6 +45,13 @@ namespace MsgPack.Serialization
 	internal sealed class DataMemberContract
 #endif // !UNITY
 	{
+#if UNITY
+		/// <summary>
+		///		Null object.
+		/// </summary>
+		public static readonly DataMemberContract Null = new DataMemberContract();
+#endif
+
 		internal const int UnspecifiedId = -1;
 
 		private readonly string _name;

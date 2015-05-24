@@ -32,6 +32,7 @@
 
   <Project Name="MsgPack.Xamarin.iOS" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve Path="MPContract.cs" />
     <Exclude Path="Serialization\AbstractSerializers\*" />
     <Exclude Path="Serialization\CodeDomSerializers\*" />
     <Exclude Path="Serialization\EmittingSerializers\*" />
@@ -43,7 +44,6 @@
     <Exclude Path="Serialization\CallbackMessagePackSerializer`1.cs" />
     <Exclude Path="Serialization\FromExpression.cs" />
     <Exclude Path="Serialization\FromExpression.*.cs" />
-    <Exclude Path="Serialization\LazyDelegatingMessagePackSerializer`1.cs" />
     <Exclude Path="Serialization\SerializerCodeGenerationConfiguration.cs" />
     <Exclude Path="Serialization\SerializerGenerator.cs" />
     <Exclude Path="Serialization\Tracer.cs" />
@@ -58,9 +58,25 @@
 
   <Project Name="MsgPack.Unity3D" Base="MsgPack.Xamarin.iOS">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve Path="Serialization\AotHelper*.tt" />
+    <Preserve Path="Serialization\AotHelper*.cs" />
+    <Preserve Path="Serialization\NonGenericMessagePackSerializer.cs" />
+    <Preserve Path="Serialization\TypedMessagePackSerializerWrapper`1.cs" />
+    <Preserve Path="Serialization\EnumTypedMessagePackSerializerWrapper`1.cs" />
     <Exclude Path="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
     <Exclude Path="UnsafeNativeMethods.cs" />
     <Exclude Path="Validation.cs" />
+  </Project>
+
+  <Project Name="MsgPack.Unity3D.Micro" Base="MsgPack.Unity3D">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve Path="MicroCorLibHelper*.tt" />
+    <Preserve Path="MicroCorLibHelper*.cs" />
+    <Exclude Path="Serialization\AotHelper*.tt" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs" />
   </Project>
 
   <Project Name="MsgPack.WinRT.Portable" Base="MsgPack">
@@ -75,7 +91,7 @@
     <Exclude Path="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_Collections_QueueMessagePackSerializer.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_Collections_StackMessagePackSerializer.cs" />
-    <Exclude Path="Serialization\Metadata\_DictionaryEntry.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_DBNullMessagePackSerializer.cs" />
     <Exclude Path="Serialization\Metadata\_IDisposable.cs" />
     <Exclude Path="Serialization\EmittingSerializers\*" />
     <Preserve Path="Serialization\Reflection\ReflectionHelpers.cs" />
@@ -101,6 +117,9 @@
     <Exclude Path="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_Collections_QueueMessagePackSerializer.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_Collections_StackMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs" />
     <Exclude Path="Serialization\EmittingSerializers\AssemblyBuilderCodeGenerationContext.cs" />
     <Preserve Path="Serialization\LockRecursionPolicy.cs" />
     <Preserve Path="Serialization\ReaderWriterLockSlim.cs" />
@@ -121,7 +140,6 @@
 
   <Project Name="MsgPack.Silverlight.WindowsPhone" Base="MsgPack.WinRT.Portable">
     <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Preserve Path="Serialization\Metadata\_DictionaryEntry.cs" />
     <Exclude Path="Serialization\Reflection\ReflectionHelpers.cs" />
     <Exclude Path="WinRTCompatibility.cs" />
   </Project>

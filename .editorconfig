@@ -1,0 +1,25 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+# Note: T4 Editor cannot handle non-CRLF, so locally use CRLF and push as LF via git
+end_of_line = crlf
+insert_final_newline = true
+
+# Matches multiple files with brace expansion notation
+# Set default charset
+[*]
+charset = utf-8
+
+# 4 width tab indentation
+[*.{cs,tt,ttinclude}]
+indent_style = tab
+tab_width = 4
+
+# 2 space indentation
+[*.{xml,csproj}]
+indent_style = space
+indent_size = 2

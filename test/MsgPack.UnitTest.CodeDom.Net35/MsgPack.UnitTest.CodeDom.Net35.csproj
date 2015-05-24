@@ -44,6 +44,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -64,6 +65,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest.CodeDom\Serialization\MapCodeDomBasedEnumSerializationTest.cs">
       <Link>Serialization\MapCodeDomBasedEnumSerializationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest.CodeDom\_SetUpFixture.cs">
+      <Link>_SetUpFixture.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

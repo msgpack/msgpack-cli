@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,13 +23,22 @@
 #endif
 
 using System;
+#if !CORLIB_ONLY
 using System.ComponentModel;
+#endif // !CORLIB_ONLY
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
+
+using MsgPack.Serialization.CollectionSerializers;
+using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization
 {
@@ -37,7 +46,9 @@ namespace MsgPack.Serialization
 	///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 	///		Defines common exception factory methods.
 	/// </summary>
+#if !CORLIB_ONLY
 	[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !CORLIB_ONLY
 	public static class SerializationExceptions
 	{
 #if !XAMIOS && !XAMDROID && !UNITY
@@ -155,7 +166,6 @@ namespace MsgPack.Serialization
 			return new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Items at index '{0}' is missing.", index ) );
 		}
 
-#if !UNITY
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 		///		Returns new exception to notify that target type is not serializable because it does not have public default constructor.
@@ -171,7 +181,6 @@ namespace MsgPack.Serialization
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have default (parameterless) public constructor.", type ) );
 		}
-#endif // !UNITY
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -187,22 +196,6 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have both of default (parameterless) public constructor and  public constructor with an Int32 parameter.", type ) );
-		}
-
-		/// <summary>
-		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
-		///		Returns new exception to notify that there are no serializable fields and properties on the target type.
-		/// </summary>
-		/// <param name="type">The target type.</param>
-		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
-		internal static Exception NewNoSerializableFieldsException( Type type )
-		{
-#if !UNITY
-			Contract.Requires( type != null );
-			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
-
-			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot serialize type '{0}' because it does not have any serializable fields nor properties.", type ) );
 		}
 
 		/// <summary>
@@ -441,6 +434,34 @@ namespace MsgPack.Serialization
 			Contract.Requires( type != null );
 #endif // !UNITY
 			return new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported for '{0}' because it does not have accesible Add(T) method.", type ), inner );
+		}
+
+		internal static Exception NewValueTypeCannotBePolymorphic( Type type )
+		{
+			return
+				new SerializationException(
+					String.Format( CultureInfo.CurrentCulture, "Value type '{0}' cannot be polymorphic.", type )
+				);
+		}
+
+		internal static Exception NewUnknownTypeEmbedding()
+		{
+			return new SerializationException( "Cannot deserialize with type-embedding based serializer. Root object must be 3 element array." );
+		}
+
+		internal static Exception NewIncompatibleCollectionSerializer( Type targetType, Type incompatibleType, Type exampleClass )
+		{
+			return 
+				new SerializationException(
+					String.Format( 
+						CultureInfo.CurrentCulture,
+						"Cannot serialize type '{0}' because registered or generated serializer '{1}' does not implement '{2}', which is implemented by '{3}', for example.",
+						targetType.GetFullName(),
+						incompatibleType.GetFullName(),
+						typeof( ICollectionInstanceFactory ),
+						exampleClass.GetFullName()
+					)
+				);
 		}
 	}
 }

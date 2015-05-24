@@ -3,7 +3,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ namespace MsgPack.Serialization
 
 		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
 		{
-			return MessagePackSerializer.CreateInternal<T>( context );
+			return MessagePackSerializer.CreateInternal<T>( context, PolymorphismSchema.Default );
 		}
 #if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 

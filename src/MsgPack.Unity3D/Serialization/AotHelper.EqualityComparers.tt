@@ -1,0 +1,265 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#
+var excludingNamespaces =
+	new HashSet<string>
+	{
+		"Microsoft.Win32",
+		"System.Collections.Concurrent",
+		"System.Configuration.Assemblies",
+		"System.Diagnostics.Contracts",
+		"System.Diagnostics.Eventing",
+		"System.Diagnostics.Eventing.Reader",
+		"System.Diagnostics.PerformanceData",
+		"System.Diagnostics.Tracing",
+		"System.IO.IsolatedStorage",
+		"System.IO.MemoryMappedFiles",
+		"System.Linq.Expressions",
+		"System.Management.Instrumentation",
+		"System.Reflection.Emit",
+		"System.Runtime.InteropServices.ComTypes",
+		"System.Runtime.InteropServices.WindowsRuntime",
+		"System.Security.Permissions",
+		"System.Threading.Tasks",
+	};
+
+var excludingTypes =
+	new HashSet<string>
+	{
+		"System.ArgIterator",
+		"System.RuntimeArgumentHandle",
+		"System.TypedReference",
+		"System.Void",
+		"System.Diagnostics.TraceLogRetentionOption",
+		"System.Globalization.TimeSpanStyles",
+		"System.Linq.ParallelMergeOptions",
+		"System.Linq.ParallelExecutionMode",
+		"System.Runtime.GCLargeObjectHeapCompactionMode",
+		"System.Runtime.CompilerServices.AsyncTaskMethodBuilder",
+		"System.Runtime.CompilerServices.AsyncVoidMethodBuilder",
+		"System.Runtime.CompilerServices.ConfiguredTaskAwaitable",
+		"System.Runtime.CompilerServices.TaskAwaiter",
+		"System.Runtime.CompilerServices.YieldAwaitable",
+		"System.Runtime.InteropServices.CustomQueryInterfaceMode",
+		"System.Runtime.InteropServices.CustomQueryInterfaceResult",
+		"System.Runtime.InteropServices.DllImportSearchPath",
+		"System.Runtime.Versioning.ComponentGuaranteesOptions",
+		"System.Security.ManifestKinds",
+		"System.Security.PartialTrustVisibilityLevel",
+		"System.Security.SecurityContextSource",
+		"System.Security.SecurityRuleSet",
+		"System.Security.Cryptography.CngExportPolicies",
+		"System.Security.Cryptography.CngKeyCreationOptions",
+		"System.Security.Cryptography.CngKeyHandleOpenOptions",
+		"System.Security.Cryptography.CngKeyOpenOptions",
+		"System.Security.Cryptography.CngKeyUsages",
+		"System.Security.Cryptography.CngProperty",
+		"System.Security.Cryptography.CngPropertyOptions",
+		"System.Security.Cryptography.CngUIProtectionLevels",
+		"System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction",
+		"System.Security.Cryptography.ECKeyXmlFormat",
+		"System.Security.Cryptography.SignatureVerificationResult",
+		"System.Security.Cryptography.X509Certificates.TrustStatus",
+		"System.Reflection.AssemblyContentType",
+		"System.Threading.CancellationTokenRegistration",
+		"System.Threading.CancellationToken",
+		"System.Threading.LazyThreadSafetyMode",
+		"System.Threading.SpinLock",
+		"System.Threading.SpinWait",
+	};
+
+var valueTypes =
+	typeof( object ).Assembly
+		.GetTypes()
+		.Concat( typeof( Enumerable ).Assembly.GetTypes() )
+		.Where( t => 
+			!excludingNamespaces.Contains( t.Namespace ) 
+			&& !excludingTypes.Contains( t.FullName ) 
+			&& t.IsValueType
+			&& t.IsPublic 
+			&& !t.IsGenericTypeDefinition 
+			&& !t.IsDefined( typeof( ObsoleteAttribute ), false )
+		)
+		.OrderBy( t => t.Namespace )
+		.ThenBy( t => t.Name )
+		.Select( t => new { Type = t, ComparerName = t.FullName.Replace( ".", "_" ).Replace( "+", "_" ) + "EqualityComparer" } )
+		.ToArray();
+
+var knownComparers =
+	new []
+	{
+		new { TypeName = "System.Object", ComparerExpression = "new BoxingGenericEqualityComparer<System.Object>()" },
+		new { TypeName = "System.Uri", ComparerExpression = "new BoxingGenericEqualityComparer<System.Uri>()" },
+		new { TypeName = "System.Version", ComparerExpression = "new BoxingGenericEqualityComparer<System.Version>()" },
+		new { TypeName = "System.String", ComparerExpression = "System.StringComparer.Ordinal" },
+		new { TypeName = "MsgPack.MessagePackObject", ComparerExpression = "MsgPack.MessagePackObjectEqualityComparer.Instance" },
+	};
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2015 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+
+// ReSharper disable CompareOfFloatsByEqualityOperator
+// ReSharper disable InconsistentNaming
+// ReSharper disable RedundantNameQualifier
+
+namespace MsgPack.Serialization
+{
+	partial class AotHelper
+	{
+		private static Dictionary<RuntimeTypeHandle, object> InitializeEqualityComparerTable()
+		{
+			var result = new Dictionary<RuntimeTypeHandle, object>( <#= valueTypes.Length + knownComparers.Length #> );
+<#
+foreach ( var valueType in valueTypes )
+{
+	if ( valueType.Type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	{
+#>
+#if !CORLIB_ONLY
+<#
+	}
+#>
+			result.Add( typeof( <#= valueType.Type.FullName #> ).TypeHandle, new <#= valueType.ComparerName #>() );
+			result.Add( typeof( <#= valueType.Type.FullName #>? ).TypeHandle, new Nullable<#= valueType.ComparerName #>() );
+<#
+	if ( valueType.Type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	{
+#>
+#endif // !CORLIB_ONLY
+<#
+	}
+}
+#>
+<#
+foreach ( var knownComparer in knownComparers )
+{
+	if ( typeof( object ).Assembly.GetType( knownComparer.TypeName, false ) == null && !knownComparer.TypeName.StartsWith( "MsgPack." ) )
+	{
+#>
+#if !CORLIB_ONLY
+<#
+	}
+#>
+			result.Add( typeof( <#= knownComparer.TypeName #> ).TypeHandle, <#= knownComparer.ComparerExpression #> );
+<#
+	if ( typeof( object ).Assembly.GetType( knownComparer.TypeName, false ) == null && !knownComparer.TypeName.StartsWith( "MsgPack." ) )
+	{
+#>
+#endif // !CORLIB_ONLY
+<#
+	}
+}
+#>
+			return result;
+		}
+
+<#
+foreach ( var valueType in valueTypes )
+{
+	if ( valueType.Type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	{
+#>
+#if !CORLIB_ONLY
+<#
+	}
+#>
+
+		private sealed class <#= valueType.ComparerName #> : IEqualityComparer<#= "<" + valueType.Type.FullName + ">" #>
+		{
+			public <#= valueType.ComparerName #>() {}
+
+			public bool Equals( <#= valueType.Type.FullName #> left, <#= valueType.Type.FullName #> right )
+			{
+<#
+	if ( valueType.Type.IsPrimitive )
+	{
+#>
+				return left == right;
+<#		
+	}
+	else 
+	{
+#>
+				return left.Equals( right );
+<#		
+	}
+#>
+			}
+
+			public int GetHashCode( <#= valueType.Type.FullName #> obj )
+			{
+				return obj.GetHashCode();
+			}
+		}
+
+		private sealed class Nullable<#= valueType.ComparerName #> : IEqualityComparer<#= "<" + valueType.Type.FullName + "?>" #>
+		{
+			public Nullable<#= valueType.ComparerName #>() {}
+
+			public bool Equals( <#= valueType.Type.FullName #>? left, <#= valueType.Type.FullName #>? right )
+			{
+				if ( left == null )
+				{
+					return right == null;
+				}
+
+				if ( right == null )
+				{
+					return false;
+				}
+<#
+	if ( valueType.Type.IsPrimitive )
+	{
+#>
+				return left.Value == right.Value;
+<#		
+	}
+	else 
+	{
+#>
+				return left.Value.Equals( right.Value );
+<#		
+	}
+#>
+			}
+
+			public int GetHashCode( <#= valueType.Type.FullName #>? obj )
+			{
+				return obj == null ? 0 : obj.GetHashCode();
+			}
+		}
+<#
+	if ( valueType.Type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	{
+#>
+#endif // !CORLIB_ONLY
+<#
+	}
+}
+#>
+	}
+}

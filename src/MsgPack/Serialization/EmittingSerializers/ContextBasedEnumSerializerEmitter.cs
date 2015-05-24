@@ -77,13 +77,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			return
 				( context, method ) =>
-					Activator.CreateInstance(
+					ReflectionExtensions.CreateInstancePreservingExceptionType<MessagePackSerializer<T>>(
 						targetType,
 						context,
 						method,
 						packUnderyingValueTo,
 						unpackFromUnderlyingValue
-					) as MessagePackSerializer<T>;
+					);
 		}
 	}
 }

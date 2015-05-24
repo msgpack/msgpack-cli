@@ -2,7 +2,7 @@
 //
 // NLiblet
 //
-// Copyright (C) 2011-2014 FUJIWARA, Yusuke
+// Copyright (C) 2011-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,7 +24,11 @@
 
 using System;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 
 namespace MsgPack.Serialization.Reflection
@@ -48,9 +52,9 @@ namespace MsgPack.Serialization.Reflection
 		/// </returns>
 		public static bool IsAssignableTo( this Type source, Type target )
 		{
-#if !UNITY
-			Contract.Assert( source != null );
-#endif // !UNITY
+#if !UNITY && DEBUG
+			Contract.Assert( source != null, "source != null" );
+#endif // !UNITY && DEBUG
 
 			if ( target == null )
 			{

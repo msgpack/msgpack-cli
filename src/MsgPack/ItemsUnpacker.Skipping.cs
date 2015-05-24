@@ -3,7 +3,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,9 +26,17 @@
 using System;
 using System.Collections.Generic;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 using System.Globalization;
+
+#if !CORLIB_ONLY
+using Int64Stack = System.Collections.Generic.Stack<System.Int64>;
+#endif // !CORLIB_ONLY
 
 namespace MsgPack
 {
@@ -44,13 +52,13 @@ namespace MsgPack
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
 #if !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( buffer != null );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( buffer != null, "buffer != null" );
 #endif // !UNITY
 
 			long remainingItems = -1;
 			long skipped = 0;
-			Stack<long> remainingCollections = null;
+			Int64Stack remainingCollections = null;
 			do
 			{
 				var header = source.ReadByte();
@@ -174,7 +182,7 @@ namespace MsgPack
 						{
 							if( remainingCollections == null )
 							{
-								remainingCollections = new Stack<long>( 4 );
+								remainingCollections = new Int64Stack( 4 );
 							}
 							
 							remainingCollections.Push( remainingItems );
@@ -221,7 +229,7 @@ namespace MsgPack
 						{
 							if( remainingCollections == null )
 							{
-								remainingCollections = new Stack<long>( 4 );
+								remainingCollections = new Int64Stack( 4 );
 							}
 							
 							remainingCollections.Push( remainingItems );
@@ -599,7 +607,7 @@ namespace MsgPack
 							{
 								if( remainingCollections == null )
 								{
-									remainingCollections = new Stack<long>( 4 );
+									remainingCollections = new Int64Stack( 4 );
 								}
 								
 								remainingCollections.Push( remainingItems );
@@ -656,7 +664,7 @@ namespace MsgPack
 							{
 								if( remainingCollections == null )
 								{
-									remainingCollections = new Stack<long>( 4 );
+									remainingCollections = new Int64Stack( 4 );
 								}
 								
 								remainingCollections.Push( remainingItems );
@@ -713,7 +721,7 @@ namespace MsgPack
 							{
 								if( remainingCollections == null )
 								{
-									remainingCollections = new Stack<long>( 4 );
+									remainingCollections = new Int64Stack( 4 );
 								}
 								
 								remainingCollections.Push( remainingItems );
@@ -770,7 +778,7 @@ namespace MsgPack
 							{
 								if( remainingCollections == null )
 								{
-									remainingCollections = new Stack<long>( 4 );
+									remainingCollections = new Int64Stack( 4 );
 								}
 								
 								remainingCollections.Push( remainingItems );

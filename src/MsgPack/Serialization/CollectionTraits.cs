@@ -37,10 +37,7 @@ namespace MsgPack.Serialization
 #endif // UNITY
 		public readonly MethodInfo GetEnumeratorMethod;
 		public readonly MethodInfo AddMethod;
-#if UNITY
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields" )]
-#endif // UNITY
-		public readonly PropertyInfo CountProperty;
+		public readonly MethodInfo CountPropertyGetter;
 		public readonly Type ElementType;
 
 		public readonly CollectionDetailedKind DetailedCollectionType;
@@ -85,12 +82,12 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public CollectionTraits( CollectionDetailedKind type, MethodInfo addMethod, MethodInfo getEnumeratorMethod, PropertyInfo countProperty, Type elementType )
+		public CollectionTraits( CollectionDetailedKind type, MethodInfo addMethod, MethodInfo countPropertyGetter, MethodInfo getEnumeratorMethod, Type elementType )
 		{
 			this.DetailedCollectionType = type;
 			this.GetEnumeratorMethod = getEnumeratorMethod;
 			this.AddMethod = addMethod;
-			this.CountProperty = countProperty;
+			this.CountPropertyGetter = countPropertyGetter;
 			this.ElementType = elementType;
 		}
 	}

@@ -232,4 +232,42 @@ Release 0.5.10 - 2015/2/10
 Release 0.5.11 - 2015/3/1
 
   NEW FEATURE
-  * `MessagePackIgnoreAttribute` to exclude properties. Issue #55.
+  * `MessagePackIgnoreAttribute` to exclude properties. Issue #55 
+
+Release 0.6.0 Alpha1 - 2015/3/2
+
+  BREAKING CHANGES
+  * Non-public types such as internal/Assembly types are not supported even if WinRT or Reflection serializer had worked for them because it had been just bug and non-public types should not be serialized.
+    Note that .NET default serializers and pre-generated serializers for Xamarin are not affected because they had failed to generate serializers for non-public types.
+
+  BUG FIXES
+  * Non-public types causes `TypeLoadException` in .NET and pre-generated assembly, causes compilation error in pre-generated sources, results undefined behavior on other platforms.
+    Non-public types are now rejected with `SerializationException`. This fix leads (probably small) breaking changes.
+
+  NEW FEATURE
+  * Deserializer now uses 'best match' constructor when all members are read-only. Issue #52.
+  * `MessagePackSerializer.UnpackMessagePackObject` API. This is convinient shortcut to deserialize stream as `MessagePackObject` tree.
+
+Release 0.6.0 Beta1 - 2015/04/27
+
+  NEW FEATURE
+  * Add Type Embedding. Issue #47.
+
+  BUG FIXES
+  * MessagePackSerializer.Create now always returns new instance.
+  * Fix build problem related to interface generic parameter variance.
+
+Release 0.6.0 Beta2 - 2015/05/24
+
+  NEW FEATURE
+  * New utility method of SerializationContext to switch back the behavior to previous version's one.
+  * Add corlib only build (MsgPack.Unity3D.Micro). This build only depends mscorlib. This feature is experimental. Related to Issue #70.
+
+  IMPROVEMENTS
+  * Add many workarounds for AOT issues of Mono on iOS (in particular, Unity).
+  * System.DateTime, System.DateTimeOffset, System.Runtime.InteropServices.ComTypes.FILETIME are now serialized native representation by default, it keeps 100-nanosecond resolution, DateTimeKind, and Offset.
+    You can revert the behavior to the previous Unix Epoc via SerializationContext.DefaultDateTimeConversion or [MessagePackDateTimeMember] custom attribute. Issue #74
+  * System.DBNull become serializable now. Issue #72.
+
+  BUG FIXES
+  * Fix System.Object instance causes StackOverflowException. Issue #73

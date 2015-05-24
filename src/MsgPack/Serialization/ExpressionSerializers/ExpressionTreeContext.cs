@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		///		Its type is <see cref="SerializationContext"/>, and it holds dependent serializers.
 		///		This value will not be <c>null</c>.
 		/// </value>
-		public ExpressionConstruct Context
+		public override ExpressionConstruct Context
 		{
 			get { return this._context; }
 		}
@@ -62,6 +62,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		private Delegate _unpackToCore;
 		private Delegate _packUnderyingValueTo;
 		private Delegate _unpackFromUnderlyingValue;
+		private Delegate _addItem;
+		private Delegate _createInstance;
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="ExpressionTreeContext"/> class.
@@ -73,13 +75,20 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			this._context = Expression.Parameter( typeof( SerializationContext ), "context" );
 		}
 
-		protected override void ResetCore( Type targetType )
+		protected override void ResetCore( Type targetType, Type baseClass )
 		{
-			this.This = null;
+			this.This = Expression.Parameter( baseClass, "this" );
 			this.Packer = Expression.Parameter( typeof( Packer ), "packer" );
 			this.PackToTarget = Expression.Parameter( targetType, "objectTree" );
 			this.Unpacker = Expression.Parameter( typeof( Unpacker ), "unpacker" );
 			this.UnpackToTarget = Expression.Parameter( targetType, "collection" );
+			var traits = targetType.GetCollectionTraits();
+			if ( traits.ElementType != null )
+			{
+				this.CollectionToBeAdded = Expression.Parameter( targetType, "collection" );
+				this.ItemToAdd = Expression.Parameter( traits.ElementType, "item" );
+				this.InitialCapacity = Expression.Parameter( typeof( int ), "initialCapacity" );
+			}
 		}
 
 		public IList<ParameterExpression> GetCurrentParameters()
@@ -87,22 +96,19 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return this._currentParamters;
 		}
 
-		public void SetCurrentMethod( Type targetType, SerializerMethod method )
+		public void SetCurrentMethod( SerializerMethod method )
 		{
-			this.This =
-				Expression.Parameter(
-					typeof( ExpressionCallbackMessagePackSerializer<> ).MakeGenericType( targetType ), "this"
-				);
 			this._currentParamters = this.GetParameters( method ).ToArray();
 		}
 
 		public void SetCurrentMethod( Type targetType, EnumSerializerMethod method )
 		{
-			this.This =
-				Expression.Parameter(
-					typeof( ExpressionCallbackEnumMessagePackSerializer<> ).MakeGenericType( targetType ), "this"
-				);
 			this._currentParamters = this.GetParameters( targetType, method ).ToArray();
+		}
+
+		public void SetCurrentMethod( CollectionSerializerMethod method )
+		{
+			this._currentParamters = this.GetParameters( method ).ToArray();
 		}
 
 		/// <summary>
@@ -110,6 +116,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// </summary>
 		/// <typeparam name="TObject">The type of serialization target.</typeparam>
 		/// <param name="method">The method to be created.</param>
+		/// <param name="serializerType">The type of callback serializer.</param>
 		/// <returns>
 		///		The <see cref="Type"/> of delegate which can refer to the generating method.
 		///		This value will not be <c>null</c>.
@@ -117,21 +124,39 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <exception cref="InvalidOperationException">
 		///		<paramref name="method"/> is unknown.
 		/// </exception>
-		public static Type CreateDelegateType<TObject>( SerializerMethod method )
+		public static Type CreateDelegateType<TObject>( SerializerMethod method, Type serializerType )
 		{
 			switch ( method )
 			{
 				case SerializerMethod.PackToCore:
 				{
-					return typeof( Action<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Packer, TObject> );
+					return
+						typeof( Action<,,,> ).MakeGenericType(
+							serializerType,
+							typeof( SerializationContext ),
+							typeof( Packer ),
+							typeof( TObject )
+						);
 				}
 				case SerializerMethod.UnpackFromCore:
 				{
-					return typeof( Func<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Unpacker, TObject> );
+					return
+						typeof( Func<,,,> ).MakeGenericType(
+							serializerType,
+							typeof( SerializationContext ),
+							typeof( Unpacker ),
+							typeof( TObject )
+						);
 				}
 				case SerializerMethod.UnpackToCore:
 				{
-					return typeof( Action<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Unpacker, TObject> );
+					return
+						typeof( Action<,,,> ).MakeGenericType(
+							serializerType,
+							typeof( SerializationContext ),
+							typeof( Unpacker ),
+							typeof( TObject )
+						);
 				}
 				default:
 				{
@@ -183,6 +208,57 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 		}
 
+		/// <summary>
+		///		Creates the type of the delegate.
+		/// </summary>
+		/// <typeparam name="TObject">The type of serialization target.</typeparam>
+		/// <param name="method">The method to be created.</param>
+		/// <param name="serializerType">The type of callback serializer.</param>
+		/// <param name="traits">The collection traits of the type.</param>
+		/// <returns>
+		///		The <see cref="Type"/> of delegate which can refer to the generating method.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		/// <exception cref="InvalidOperationException">
+		///		<paramref name="method"/> is unknown.
+		/// </exception>
+		public static Type CreateDelegateType<TObject>( CollectionSerializerMethod method, Type serializerType, CollectionTraits traits )
+		{
+			switch ( method )
+			{
+				case CollectionSerializerMethod.AddItem:
+				{
+					return
+						typeof( Action<,,,> ).MakeGenericType(
+							serializerType,
+							typeof( SerializationContext ),
+							typeof( TObject ),
+							traits.ElementType
+						);
+				}
+				case CollectionSerializerMethod.CreateInstance:
+				{
+					return
+						typeof( Func<,,,> ).MakeGenericType(
+							serializerType,
+							typeof( SerializationContext ),
+							typeof( int ),
+							typeof( TObject )
+						);
+				}
+				case CollectionSerializerMethod.RestoreSchema:
+				{
+					return
+						typeof( Func<> ).MakeGenericType(
+							typeof(PolymorphismSchema)
+						);
+				}
+				default:
+				{
+					throw new ArgumentOutOfRangeException( "method", method.ToString() );
+				}
+			}
+		}
 		/// <summary>
 		///		Gets the <see cref="ParameterExpression"/>s for specified method.
 		/// </summary>
@@ -255,6 +331,45 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 		}
 
+
+		/// <summary>
+		///		Gets the <see cref="ParameterExpression"/>s for specified method.
+		/// </summary>
+		/// <param name="method">The method to be created.</param>
+		/// <returns>
+		///		The <see cref="ParameterExpression"/>s for specified method.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		private IEnumerable<ParameterExpression> GetParameters( CollectionSerializerMethod method )
+		{
+			switch ( method )
+			{
+				case CollectionSerializerMethod.AddItem:
+				{
+					yield return this.This.Expression as ParameterExpression;
+					yield return this._context.Expression as ParameterExpression;
+					yield return this.CollectionToBeAdded.Expression as ParameterExpression;
+					yield return this.ItemToAdd.Expression as ParameterExpression;
+					break;
+				}
+				case CollectionSerializerMethod.CreateInstance:
+				{
+					yield return this.This.Expression as ParameterExpression;
+					yield return this._context.Expression as ParameterExpression;
+					yield return this.InitialCapacity.Expression as ParameterExpression;
+					break;
+				}
+				case CollectionSerializerMethod.RestoreSchema:
+				{
+					break;
+				}
+				default:
+				{
+					throw new ArgumentOutOfRangeException( "method", method.ToString() );
+				}
+			}
+		}
+
 		/// <summary>
 		///		Sets the specified delegate object for specified method.
 		/// </summary>
@@ -313,49 +428,76 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		}
 
 		/// <summary>
+		///		Sets the specified delegate object for specified method.
+		/// </summary>
+		/// <param name="method">The method to be created.</param>
+		/// <param name="delegate">The delegate which refers the generated method.</param>
+		public void SetDelegate( CollectionSerializerMethod method, Delegate @delegate )
+		{
+			switch ( method )
+			{
+				case CollectionSerializerMethod.AddItem:
+				{
+					this._addItem = @delegate;
+					break;
+				}
+				case CollectionSerializerMethod.CreateInstance:
+				{
+					this._createInstance = @delegate;
+					break;
+				}
+				case CollectionSerializerMethod.RestoreSchema:
+				{
+					// Note: RestoreSchema is not useless in Expression serializer, so nothing to do here.
+					break;
+				}
+				default:
+				{
+					throw new ArgumentOutOfRangeException( "method", method.ToString() );
+				}
+			}
+		}
+
+		/// <summary>
 		///		Gets the delegate which refers created <c>PackToCore(SerializationContext,Packer,T)</c> instance method for <see cref="ExpressionCallbackMessagePackSerializer{T}"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of serialization target.</typeparam>
 		/// <returns>
 		///		The delegate which was set for <c>PackToCore</c> method.
 		/// </returns>
-		public Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T> GetPackToCore<T>()
+		public Delegate GetPackToCore()
 		{
-			return this._packToCore as Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T>;
+			return this._packToCore;
 		}
 
 		/// <summary>
 		///		Gets the delegate which refers created <c>UnpackFromCore(SerializationContext,Unpacker)</c> instance method for <see cref="ExpressionCallbackMessagePackSerializer{T}"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of deserialization target.</typeparam>
 		/// <returns>
 		///		The delegate which was set for <c>UnpackFromCore</c> method.
 		/// </returns>
-		public Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> GetUnpackFromCore<T>()
+		public Delegate GetUnpackFromCore()
 		{
-			return this._unpackFromCore as Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T>;
+			return this._unpackFromCore;
 		}
 
 		/// <summary>
 		///		Gets the delegate which refers created <c>UnpackToCore(SerializationContext,Unpacker,T)</c> instance method for <see cref="ExpressionCallbackMessagePackSerializer{T}"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of deserialization target.</typeparam>
 		/// <returns>
 		///		The delegate which was set for <c>UnpackToCore</c> method.
 		/// </returns>
-		public Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> GetUnpackToCore<T>()
+		public Delegate GetUnpackToCore()
 		{
-			return this._unpackToCore as Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T>;
+			return this._unpackToCore;
 		}
 
 		/// <summary>
 		///		Gets the delegate which refers created <c>PackUnderlyingValueTo(Packer,T)</c> instance method for <see cref="ExpressionCallbackEnumMessagePackSerializer{T}"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of deserialization target.</typeparam>
 		/// <returns>
 		///		The delegate which was set for <c>UnpackToCore</c> method.
 		/// </returns>
-		public Delegate GetPackUnderyingValueTo<T>()
+		public Delegate GetPackUnderyingValueTo()
 		{
 			return this._packUnderyingValueTo;
 		}
@@ -363,13 +505,34 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <summary>
 		///		Gets the delegate which refers created <c>UnpackFromUnderlyingValue(MessagePackObject)</c> instance method for <see cref="ExpressionCallbackEnumMessagePackSerializer{T}"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of deserialization target.</typeparam>
 		/// <returns>
 		///		The delegate which was set for <c>UnpackFromCore</c> method.
 		/// </returns>
-		public Delegate GetUnpackFromUnderlyingValue<T>()
+		public Delegate GetUnpackFromUnderlyingValue()
 		{
 			return this._unpackFromUnderlyingValue;
+		}
+
+		/// <summary>
+		///		Gets the delegate which refers created <c>UnpackToCore(SerializationContext,Unpacker,T)</c> instance method for <see cref="ExpressionCallbackMessagePackSerializer{T}"/>.
+		/// </summary>
+		/// <returns>
+		///		The delegate which was set for <c>UnpackToCore</c> method.
+		/// </returns>
+		public Delegate GetCreateInstance()
+		{
+			return this._createInstance;
+		}
+
+		/// <summary>
+		///		Gets the delegate which refers created <c>UnpackToCore(SerializationContext,Unpacker,T)</c> instance method for <see cref="ExpressionCallbackMessagePackSerializer{T}"/>.
+		/// </summary>
+		/// <returns>
+		///		The delegate which was set for <c>UnpackToCore</c> method.
+		/// </returns>
+		public Delegate GetAddItem()
+		{
+			return this._addItem;
 		}
 	}
 }

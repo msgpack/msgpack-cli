@@ -64,9 +64,9 @@ private void GenerateTypesCore( bool forIos )
 			new Tuple<Object, string, string, bool>( typeof( Collection<DateTime> ), String.Empty, "new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
 			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.StringKeyedCollection`1", new []{ typeof( DateTime ).FullName } ), String.Empty, "new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
 			new Tuple<Object, string, string, bool>( typeof( ObservableCollection<DateTime> ), String.Empty, "new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
-			new Tuple<Object, string, string, bool>( typeof( HashSet<DateTime> ), String.Empty, "new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
+			new Tuple<Object, string, string, bool>( typeof( HashSet<DateTime> ), String.Empty, "new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
 			new Tuple<Object, string, string, bool>( typeof( ICollection<DateTime> ), String.Empty, "new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
-			new Tuple<Object, string, string, bool>( typeof( ISet<DateTime> ), String.Empty, "new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
+			new Tuple<Object, string, string, bool>( typeof( ISet<DateTime> ), String.Empty, "new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
 			new Tuple<Object, string, string, bool>( typeof( IList<DateTime> ), String.Empty, "new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
 			new Tuple<Object, string, string, bool>( typeof( IDictionary<String, DateTime> ), String.Empty, "new Dictionary<String, DateTime>(){ { \"Yesterday\", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { \"Today\", DateTime.UtcNow } }", false ),
 			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.AddOnlyCollection`1", new []{ typeof( DateTime ).FullName } ), String.Empty, "new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
@@ -88,15 +88,15 @@ private void GenerateTypesCore( bool forIos )
 			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.MessagePackObject", new String[ 0 ] ), String.Empty, "new MessagePackObject( 1 )", true ),
 			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.MessagePackObject[]", new String[ 0 ] ), String.Empty, "new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", true ),
 			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( List<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
-			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( Dictionary<,> ).FullName, new [] { "MsgPack.MessagePackObject", "MsgPack.MessagePackObject" } ), String.Empty, "new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( Dictionary<,> ).FullName, new [] { "MsgPack.MessagePackObject", "MsgPack.MessagePackObject" } ), String.Empty, "new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
 			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( Collection<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.StringKeyedCollection`1", new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( ObservableCollection<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
-			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( HashSet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( HashSet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( ICollection<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
-			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( ISet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( ISet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( IList<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
-			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( IDictionary<,> ).FullName, new [] { "MsgPack.MessagePackObject", "MsgPack.MessagePackObject" } ), String.Empty, "new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( IDictionary<,> ).FullName, new [] { "MsgPack.MessagePackObject", "MsgPack.MessagePackObject" } ), String.Empty, "new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
 			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.AddOnlyCollection`1", new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 		};
 
@@ -181,13 +181,13 @@ private void GenerateTypesCore( bool forIos )
 		[Test]
 		public void Test<#= ToFieldName( __item ) #>()
 		{
-			this.TestCoreWithAutoVerify( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void Test<#= ToFieldName( __item ) #>Array()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 <#+
@@ -197,13 +197,13 @@ private void GenerateTypesCore( bool forIos )
 		[Test]
 		public void Test<#= ToFieldName( __item ) #>Null()
 		{
-			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void Test<#= ToFieldName( __item ) #>ArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #>[] ), GetSerializationContext() );
 		}	
 		
 <#+
@@ -245,7 +245,7 @@ private void GenerateTypesCore( bool forIos )
 			{
 				var target = new ComplexTypeGeneratedEnclosure();
 				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( target, GetSerializationContext() );
 			}
 			finally
 			{
@@ -261,7 +261,7 @@ private void GenerateTypesCore( bool forIos )
 			{
 				var target = new ComplexTypeGeneratedEnclosure();
 				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( target, GetSerializationContext() );
 			}
 			finally
 			{
@@ -275,7 +275,7 @@ private void GenerateTypesCore( bool forIos )
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), GetSerializationContext() );
 			}
 			finally
 			{
@@ -289,7 +289,7 @@ private void GenerateTypesCore( bool forIos )
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), GetSerializationContext() );
 			}
 			finally
 			{
@@ -308,7 +308,7 @@ private void GenerateTypesCore( bool forIos )
 			{
 				var target = new ComplexTypeGenerated();
 				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( target, GetSerializationContext() );
 			}
 			finally
 			{
@@ -324,7 +324,7 @@ private void GenerateTypesCore( bool forIos )
 			{
 				var target = new ComplexTypeGenerated();
 				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( target, GetSerializationContext() );
 			}
 			finally
 			{
@@ -338,7 +338,7 @@ private void GenerateTypesCore( bool forIos )
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), GetSerializationContext() );
 			}
 			finally
 			{
@@ -352,7 +352,7 @@ private void GenerateTypesCore( bool forIos )
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), GetSerializationContext() );
 			}
 			finally
 			{
@@ -410,12 +410,12 @@ private void GenerateTypesCore( bool forIos )
 #if MSTEST
 					catch( Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException ae )
 					{
-						throw new Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException( i.ToString(), ae );
+						throw new Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException( String.Format( "[{0}]:{1}", i, ae.Message ), ae );
 					}
 #else
 					catch( AssertionException ae )
 					{
-						throw new AssertionException( i.ToString(), ae );
+						throw new AssertionException( String.Format( "[{0}]:{1}", i, ae.Message ), ae );
 					}
 #endif
 				}

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 //
 #endregion -- License Terms --
 
+using System.Runtime.Serialization;
 using System;
 using System.Linq;
 
@@ -76,7 +77,8 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE && !WINDOWS_PHONE
 				NonSerializedPublicField, NonSerializedNonPublicField,
 #endif
-				CollectionReadOnlyProperty );
+				CollectionReadOnlyProperty
+			);
 		}
 
 		[Test]
@@ -88,27 +90,28 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE && !WINDOWS_PHONE
 				NonSerializedPublicField, NonSerializedNonPublicField,
 #endif
-				CollectionReadOnlyProperty );
+				CollectionReadOnlyProperty
+			);
 		}
 
 		[Test]
 		public void TestAliasInMessagePackMember()
 		{
-			var target = SerializationTarget.GetTargetMembers( typeof( AnnotatedClass ) );
+			var target = SerializationTarget.Prepare( new SerializationContext(), typeof( AnnotatedClass ) ).Members;
 			Assert.That( target.Any( m => m.Contract.Name == "Alias" && m.Contract.Name != m.Member.Name ) );
 		}
 
 		[Test]
 		public void TestAliasInDataMember()
 		{
-			var target = SerializationTarget.GetTargetMembers( typeof( DataMamberClass ) );
+			var target = SerializationTarget.Prepare( new SerializationContext(), typeof( DataMamberClass ) ).Members;
 			Assert.That( target.Any( m => m.Contract.Name == "Alias" && m.Contract.Name != m.Member.Name ) );
 		}
 
 		[Test]
 		public void TestIndexerOverload()
 		{
-			Assert.That( SerializationTarget.GetTargetMembers( typeof( WithIndexerOverload ) ).Any(), Is.False );
+			Assert.Throws<SerializationException>( () => SerializationTarget.Prepare( new SerializationContext(), typeof( WithIndexerOverload ) ) );
 		}
 
 		[Test]
@@ -120,18 +123,8 @@ namespace MsgPack.Serialization
 		private static void TestCore<T>( params string[] expectedMemberNames )
 		{
 			var expected = expectedMemberNames.OrderBy( n => n ).ToArray();
-			var actual = SerializationTarget.GetTargetMembers( typeof( T ) ).OrderBy( m => m.Member.Name ).Select( m => m.Member.Name ).ToArray();
+			var actual = SerializationTarget.Prepare( new SerializationContext(), typeof( T ) ).Members.Where( m => m.Member != null ).OrderBy( m => m.Member.Name ).Select( m => m.Member.Name ).ToArray();
 			Assert.That( actual, Is.EqualTo( expected ), String.Join( ", ", actual ) );
 		}
-
-		//private static void PrintResultInDataContractSerializer<T>( T target )
-		//{
-		//	var serializer = new DataContractSerializer( typeof( T ) );
-		//	using ( var buffer = new System.IO.MemoryStream() )
-		//	{
-		//		serializer.WriteObject( buffer, target );
-		//		Console.WriteLine( System.Text.Encoding.UTF8.GetString( buffer.ToArray() ) );
-		//	}
-		//}
 	}
 }

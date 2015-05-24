@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -69,9 +70,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			this._configuration = configuration;
 		}
 
-		public string GetSerializerFieldName( Type targetType, EnumMemberSerializationMethod enumSerializationMethod )
+		public string GetSerializerFieldName( Type targetType, EnumMemberSerializationMethod enumSerializationMethod, DateTimeMemberConversionMethod dateTimeConversionMethod, PolymorphismSchema polymorphismSchema )
 		{
-			var key = new SerializerFieldKey( targetType, enumSerializationMethod );
+			var key = new SerializerFieldKey( targetType, enumSerializationMethod, dateTimeConversionMethod, polymorphismSchema );
 
 			string fieldName;
 			if ( !this._dependentSerializers.TryGetValue( key, out fieldName ) )
@@ -94,6 +95,8 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			string fieldName;
 			if ( !this._cachedFieldInfos.TryGetValue( key, out fieldName ) )
 			{
+				Contract.Assert( field.DeclaringType != null, "field.DeclaringType != null" );
+
 				fieldName = "_field" + field.DeclaringType.Name + "_" + field.Name + this._cachedFieldInfos.Count.ToString( CultureInfo.InvariantCulture );
 				this._cachedFieldInfos.Add( key, fieldName );
 			}
@@ -112,6 +115,8 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			string fieldName;
 			if ( !this._cachedMethodBases.TryGetValue( key, out fieldName ) )
 			{
+				Contract.Assert( method.DeclaringType != null, "method.DeclaringType != null" );
+
 				fieldName = "_methodBase" + method.DeclaringType.Name + "_" + method.Name + this._cachedMethodBases.Count.ToString( CultureInfo.InvariantCulture );
 				this._cachedMethodBases.Add( key, fieldName );
 			}
@@ -141,7 +146,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				throw new ArgumentNullException( "type" );
 			}
 
-			return type.IsArray || SerializerRepository.Default.Contains( type );
+			return type.IsArray || SerializerRepository.InternalDefault.Contains( type );
 		}
 
 		/// <summary>
@@ -149,7 +154,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		/// </summary>
 		/// <param name="prefix">The prefix of the variable.</param>
 		/// <returns>A unique name of a local variable.</returns>
-		public string GetUniqueVariableName( string prefix )
+		public override string GetUniqueVariableName( string prefix )
 		{
 			int counter;
 			if ( !this._uniqueVariableSuffixes.TryGetValue( prefix, out counter ) )
@@ -181,13 +186,11 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		///		Resets internal states for new type.
 		/// </summary>
 		/// <param name="targetType">Type of the target.</param>
-		protected override void ResetCore( Type targetType )
+		/// <param name="baseClass">Type of base class of the target.</param>
+		protected override void ResetCore( Type targetType, Type baseClass )
 		{
 			var declaringType = new CodeTypeDeclaration( IdentifierUtility.EscapeTypeName( targetType ) + "Serializer" );
-			declaringType.BaseTypes.Add(
-				targetType.GetIsEnum()
-				? typeof( EnumMessagePackSerializer<> ).MakeGenericType( targetType )
-				: typeof( MessagePackSerializer<> ).MakeGenericType( targetType ) );
+			declaringType.BaseTypes.Add( baseClass );
 			declaringType.CustomAttributes.Add(
 				new CodeAttributeDeclaration(
 					new CodeTypeReference( typeof( GeneratedCodeAttribute ) ),
@@ -209,6 +212,13 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			this.PackToTarget = CodeDomConstruct.Parameter( targetType, "objectTree" );
 			this.Unpacker = CodeDomConstruct.Parameter( typeof( Unpacker ), "unpacker" );
 			this.UnpackToTarget = CodeDomConstruct.Parameter( targetType, "collection" );
+			var traits = targetType.GetCollectionTraits();
+			if ( traits.ElementType != null )
+			{
+				this.CollectionToBeAdded = CodeDomConstruct.Parameter( targetType, "collection" );
+				this.ItemToAdd = CodeDomConstruct.Parameter( traits.ElementType, "item" );
+				this.InitialCapacity = CodeDomConstruct.Parameter( typeof( int ), "initialCapacity" );
+			}
 		}
 
 		/// <summary>
@@ -228,6 +238,8 @@ namespace MsgPack.Serialization.CodeDomSerializers
 #endif // !NETFX_35
 		public IEnumerable<string> Generate()
 		{
+			Contract.Assert( this._declaringTypes != null, "_declaringTypes != null" );
+
 			using ( var provider = CodeDomProvider.CreateProvider( this._configuration.Language ) )
 			{
 				var options =
@@ -246,9 +258,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						);
 				Directory.CreateDirectory( directory );
 
-				var result = new List<string>( _declaringTypes.Count );
+				var result = new List<string>( this._declaringTypes.Count );
 
-				foreach ( var declaringType in _declaringTypes )
+				foreach ( var declaringType in this._declaringTypes )
 				{
 					var typeFileName = declaringType.Value.Name;
 					if ( declaringType.Value.TypeParameters.Count > 0 )

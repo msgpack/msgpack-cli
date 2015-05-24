@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,20 +23,20 @@ using System.Collections.Generic;
 
 namespace MsgPack.Serialization
 {
-	public sealed class MillisecondsDateTimeComparer : EqualityComparer<DateTime>
+	public sealed class MillisecondsDateTimeComparer : IEqualityComparer<DateTime>
 	{
 		public static readonly MillisecondsDateTimeComparer Instance = new MillisecondsDateTimeComparer();
 
 		private MillisecondsDateTimeComparer() { }
 
-		public sealed override bool Equals( DateTime x, DateTime y )
+		public bool Equals( DateTime x, DateTime y )
 		{
 			var xms = new DateTime( x.Year, x.Month, x.Day, x.Hour, x.Minute, x.Second, x.Millisecond, x.Kind );
 			var yms = new DateTime( y.Year, y.Month, y.Day, y.Hour, y.Minute, y.Second, y.Millisecond, y.Kind );
 			return xms.Equals( yms );
 		}
 
-		public sealed override int GetHashCode( DateTime obj )
+		public int GetHashCode( DateTime obj )
 		{
 			return new DateTime( obj.Year, obj.Month, obj.Day, obj.Hour, obj.Minute, obj.Second, obj.Millisecond, obj.Kind ).GetHashCode();
 		}

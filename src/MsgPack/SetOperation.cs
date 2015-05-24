@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,7 +25,14 @@
 #if !UNITY
 using System;
 using System.Collections.Generic;
+#if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+using PureAttribute = System.Diagnostics.Contracts.PureAttribute;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
+#endif // !UNITY
 using System.Linq;
 
 
@@ -44,7 +51,9 @@ namespace MsgPack
 #endif
 		{
 			#region CONTRACT
-			Contract.Assert( set != null );
+#if DEBUG
+			Contract.Assert( set != null, "set != null " );
+#endif // DEBUG
 
 			if ( other == null )
 			{
@@ -83,7 +92,9 @@ namespace MsgPack
 #endif
 		{
 			#region CONTRACT
-			Contract.Assert( set != null );
+#if DEBUG
+			Contract.Assert( set != null, "set != null" );
+#endif // DEBUG
 
 			if ( other == null )
 			{
@@ -151,7 +162,9 @@ namespace MsgPack
 #endif
 		{
 			#region CONTRACT
-			Contract.Assert( set != null );
+#if DEBUG
+			Contract.Assert( set != null, "set != null" );
+#endif // DEBUG
 
 			if ( other == null )
 			{
@@ -185,7 +198,9 @@ namespace MsgPack
 #endif
 		{
 			#region CONTRACT
-			Contract.Assert( set != null );
+#if DEBUG
+			Contract.Assert( set != null, "set != null" );
+#endif // DEBUG
 
 			if ( other == null )
 			{
@@ -254,7 +269,9 @@ namespace MsgPack
 #endif
 		{
 			#region CONTRACT
-			Contract.Assert( set != null );
+#if DEBUG
+			Contract.Assert( set != null, "set != null" );
+#endif // DEBUG
 
 			if ( other == null )
 			{
@@ -278,7 +295,9 @@ namespace MsgPack
 #endif
 		{
 			#region CONTRACT
-			Contract.Assert( set != null );
+#if DEBUG
+			Contract.Assert( set != null, "set != null" );
+#endif // DEBUG
 
 			if ( other == null )
 			{

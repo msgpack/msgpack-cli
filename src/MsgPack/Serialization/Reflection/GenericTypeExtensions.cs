@@ -2,7 +2,7 @@
 //
 // NLiblet
 //
-// Copyright (C) 2011 FUJIWARA, Yusuke
+// Copyright (C) 2011-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,7 +25,12 @@
 using System;
 using System.Collections.Generic;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+using PureAttribute = System.Diagnostics.Contracts.PureAttribute;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 using System.Linq;
 #if NETFX_CORE
@@ -55,9 +60,9 @@ namespace MsgPack.Serialization.Reflection
 		public static bool Implements( this Type source, Type genericType )
 		{
 #if !UNITY
-			Contract.Assert( source != null );
-			Contract.Assert( genericType != null );
-			Contract.Assert( genericType.GetIsInterface() );
+			Contract.Assert( source != null, "source != null" );
+			Contract.Assert( genericType != null, "genericType != null" );
+			Contract.Assert( genericType.GetIsInterface(), "genericType.GetIsInterface()" );
 #endif // !UNITY
 
 			return EnumerateGenericIntefaces( source, genericType, false ).Any();
@@ -89,7 +94,7 @@ namespace MsgPack.Serialization.Reflection
 		public static string GetName( this Type source )
 		{
 #if !UNITY
-			Contract.Assert( source != null );
+			Contract.Assert( source != null, "source != null" );
 #endif // !UNITY
 			if ( !source.GetIsGenericType() )
 			{
@@ -120,7 +125,7 @@ namespace MsgPack.Serialization.Reflection
 		public static string GetFullName( this Type source )
 		{
 #if !UNITY
-			Contract.Assert( source != null );
+			Contract.Assert( source != null, "source != null" );
 #endif // !UNITY
 
 			if ( source.IsArray )

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Reflection;
 
-
 namespace MsgPack.Serialization.AbstractSerializers
 {
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Contract class" )]
@@ -42,13 +41,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 		}
 
 #if !NETFX_CORE && !SILVERLIGHT
-		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context )
+		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema )
 		{
 			Contract.Requires( context != null );
 		}
 #endif
 
-		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( TContext codeGenerationContext )
+		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( TContext codeGenerationContext, PolymorphismSchema schema )
 		{
 			Contract.Requires( codeGenerationContext != null );
 			Contract.Ensures( Contract.Result<Func<SerializationContext, MessagePackSerializer<TObject>>>() != null );
@@ -68,10 +67,17 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Requires( Enum.IsDefined( typeof( SerializationMethod ), method ) );
 		}
 
-		protected override void EmitMethodPrologue( TContext context, EnumSerializerMethod enumSerializerMethod )
+		protected override void EmitMethodPrologue( TContext context, EnumSerializerMethod method )
 		{
 			Contract.Requires( context != null );
-			Contract.Requires( Enum.IsDefined( typeof( EnumSerializerMethod ), enumSerializerMethod ) );
+			Contract.Requires( Enum.IsDefined( typeof( EnumSerializerMethod ), method ) );
+		}
+
+		protected override void EmitMethodPrologue( TContext context, CollectionSerializerMethod method, MethodInfo declaration )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( Enum.IsDefined( typeof( CollectionSerializerMethod ), method ) );
+			Contract.Requires( declaration != null );
 		}
 
 		protected override void EmitMethodEpilogue( TContext context, SerializerMethod method, TConstruct construct )
@@ -81,10 +87,17 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Requires( construct != null );
 		}
 
-		protected override void EmitMethodEpilogue( TContext context, EnumSerializerMethod enumSerializerMethod, TConstruct construct )
+		protected override void EmitMethodEpilogue( TContext context, EnumSerializerMethod method, TConstruct construct )
 		{
 			Contract.Requires( context != null );
-			Contract.Requires( Enum.IsDefined( typeof( EnumSerializerMethod ), enumSerializerMethod ) );
+			Contract.Requires( Enum.IsDefined( typeof( EnumSerializerMethod ), method ) );
+			Contract.Requires( construct != null );
+		}
+
+		protected override void EmitMethodEpilogue( TContext context, CollectionSerializerMethod method, TConstruct construct )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( Enum.IsDefined( typeof( CollectionSerializerMethod ), method ) );
 			Contract.Requires( construct != null );
 		}
 
@@ -107,6 +120,38 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
+		protected override TConstruct MakeByteLiteral( TContext context, byte constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( byte ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeSByteLiteral( TContext context, sbyte constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( sbyte ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeInt16Literal( TContext context, short constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( short ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeUInt16Literal( TContext context, ushort constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( ushort ) );
+			return default( TConstruct );
+		}
+
 		protected override TConstruct MakeInt32Literal( TContext context, int constant )
 		{
 			Contract.Requires( context != null );
@@ -115,11 +160,59 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
+		protected override TConstruct MakeUInt32Literal( TContext context, uint constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( uint ) );
+			return default( TConstruct );
+		}
+
 		protected override TConstruct MakeInt64Literal( TContext context, long constant )
 		{
 			Contract.Requires( context != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( long ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeUInt64Literal( TContext context, ulong constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( ulong ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeReal32Literal( TContext context, float constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( float ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeReal64Literal( TContext context, double constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( double ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeBooleanLiteral( TContext context, bool constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( bool ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeCharLiteral( TContext context, char constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( char ) );
 			return default( TConstruct );
 		}
 
@@ -139,7 +232,18 @@ namespace MsgPack.Serialization.AbstractSerializers
 #endif
 			Contract.Requires( constant != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( long ) );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == type );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeDefaultLiteral( TContext context, Type type )
+		{
+			Contract.Requires( context != null );
+#if !NETFX_CORE
+			Contract.Requires( type.IsValueType );
+#endif
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == type );
 			return default( TConstruct );
 		}
 
@@ -301,6 +405,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
+		protected override TConstruct EmitCreateNewArrayExpression( TContext context, Type elementType, int length )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( elementType != null );
+			Contract.Requires( length >= 0 );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == elementType.MakeArrayType() );
+			return default( TConstruct );
+		}
+
 		protected override TConstruct EmitCreateNewArrayExpression( TContext context, Type elementType, int length, IEnumerable<TConstruct> initialElements )
 		{
 			Contract.Requires( context != null );
@@ -309,6 +423,20 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Requires( initialElements != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == elementType.MakeArrayType() );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct EmitSetArrayElementStatement( TContext context, TConstruct array, TConstruct index, TConstruct value )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( array != null );
+			Contract.Requires( array.ContextType.IsArray );
+			Contract.Requires( index != null );
+			Contract.Requires( index.ContextType == typeof( int ) );
+			Contract.Requires( value != null );
+			Contract.Requires( array.ContextType.GetElementType().IsAssignableFrom( value.ContextType ) );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == array.ContextType );
 			return default( TConstruct );
 		}
 
@@ -324,7 +452,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitGetPropretyExpression( TContext context, TConstruct instance, PropertyInfo property )
+		protected override TConstruct EmitGetPropertyExpression( TContext context, TConstruct instance, PropertyInfo property )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( property != null );
@@ -347,7 +475,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitSetProprety( TContext context, TConstruct instance, PropertyInfo property, TConstruct value )
+		protected override TConstruct EmitSetProperty( TContext context, TConstruct instance, PropertyInfo property, TConstruct value )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( property != null );
@@ -414,15 +542,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Requires( finallyStatement != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == tryStatement.ContextType );
-			return default( TConstruct );
-		}
-
-		protected override TConstruct EmitGetSerializerExpression( TContext context, Type targetType, SerializingMember? memberInfo )
-		{
-			Contract.Requires( context != null );
-			Contract.Requires( targetType != null );
-			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( MessagePackSerializer<> ).MakeGenericType( targetType ) );
 			return default( TConstruct );
 		}
 

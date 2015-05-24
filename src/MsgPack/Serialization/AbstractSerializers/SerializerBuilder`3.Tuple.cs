@@ -24,21 +24,22 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
 	partial class SerializerBuilder<TContext, TConstruct, TObject>
 	{
-		private void BuildTupleSerializer( TContext context )
+		private void BuildTupleSerializer( TContext context, IList<PolymorphismSchema> itemSchemaList )
 		{
 			var itemTypes = TupleItems.GetTupleItemTypes( typeof( TObject ) );
 
-			this.BuildTuplePackTo( context, itemTypes );
-			this.BuildTupleUnpackFrom( context, itemTypes );
+			this.BuildTuplePackTo( context, itemTypes, itemSchemaList );
+			this.BuildTupleUnpackFrom( context, itemTypes, itemSchemaList );
 		}
 
-		private void BuildTuplePackTo( TContext context, IList<Type> itemTypes )
+		private void BuildTuplePackTo( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList )
 		{
 			/*
 				 packer.PackArrayHeader( cardinarity );
@@ -56,7 +57,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitSequentialStatements(
 						context,
 						typeof( void ),
-						this.BuildTuplePackToCore( context, itemTypes )
+						this.BuildTuplePackToCore( context, itemTypes, itemSchemaList )
 					);
 			}
 			finally
@@ -65,7 +66,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 		}
 
-		private IEnumerable<TConstruct> BuildTuplePackToCore( TContext context, IList<Type> itemTypes )
+		private IEnumerable<TConstruct> BuildTuplePackToCore( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList )
 		{
 			// Put cardinality as array length.
 			yield return this.EmitPutArrayHeaderExpression( context, this.MakeInt32Literal( context, itemTypes.Count ) );
@@ -102,7 +103,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 						itemTypes[ i ],
 						context.Packer,
 						context.PackToTarget,
-						propertyInvocationChain
+						propertyInvocationChain,
+						itemSchemaList.Count == 0 ? null : itemSchemaList[ i ]
 					)
 				)
 				{
@@ -118,7 +120,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Type itemType,
 			TConstruct currentPacker,
 			TConstruct tuple,
-			IEnumerable<PropertyInfo> propertyInvocationChain )
+			IEnumerable<PropertyInfo> propertyInvocationChain,
+			PolymorphismSchema itemsSchema
+		)
 		{
 			return
 				this.EmitPackItemStatements(
@@ -128,14 +132,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 					NilImplication.Null,
 					null,
 					propertyInvocationChain.Aggregate(
-						tuple, ( propertySource, property ) => this.EmitGetPropretyExpression( context, propertySource, property )
+						tuple, ( propertySource, property ) => this.EmitGetPropertyExpression( context, propertySource, property )
 					),
-					null
+					null,
+					itemsSchema
 				);
 		}
 
 
-		private void BuildTupleUnpackFrom( TContext context, IList<Type> itemTypes )
+		private void BuildTupleUnpackFrom( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList )
 		{
 			/*
 			 * 	checked
@@ -170,7 +175,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitSequentialStatements(
 						context,
 						typeof( TObject ),
-						this.BuildTupleUnpackFromCore( context, itemTypes )
+						this.BuildTupleUnpackFromCore( context, itemTypes, itemSchemaList )
 					);
 			}
 			finally
@@ -179,7 +184,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 		}
 
-		private IEnumerable<TConstruct> BuildTupleUnpackFromCore( TContext context, IList<Type> itemTypes )
+		private IEnumerable<TConstruct> BuildTupleUnpackFromCore( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList )
 		{
 			var tupleTypeList = TupleItems.CreateTupleTypeList( itemTypes );
 			yield return
@@ -215,6 +220,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						null,
 						null,
 						null,
+						itemSchemaList.Count == 0 ? null : itemSchemaList[ i ],
 						unpackedItem =>
 							this.EmitStoreVariableStatement(
 								context,
@@ -257,7 +263,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context,
 					this.EmitNotEqualsExpression(
 						context,
-						this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.ItemsCount ),
+						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.ItemsCount ),
 						this.MakeInt64Literal( context, cardinarity )
 					),
 					this.EmitThrowExpression(

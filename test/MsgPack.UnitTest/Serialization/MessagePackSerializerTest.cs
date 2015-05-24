@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,7 +18,13 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
+using System.IO;
+using System.Linq;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -28,6 +34,7 @@ using TearDownAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.
 using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
+using IgnoreAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.IgnoreAttribute;
 #endif
 
 namespace MsgPack.Serialization
@@ -44,6 +51,7 @@ namespace MsgPack.Serialization
 
 #pragma warning disable 618
 		[Test]
+		[Ignore] // Deprecated, it should be alias of Get
 		public void TestCreate1_WithoutContext_NewInstance()
 		{
 			var first = MessagePackSerializer.Create<Image>();
@@ -54,6 +62,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		[Ignore] // Deprecated, it should be alias of Get
 		public void TestCreate1_WithContext_NewInstance()
 		{
 			var context = new SerializationContext();
@@ -71,6 +80,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		[Ignore] // Deprecated, it should be alias of Get
 		public void TestCreate_WithoutContext_NewInstance()
 		{
 			var first = MessagePackSerializer.Create( typeof( Image ) );
@@ -87,10 +97,13 @@ namespace MsgPack.Serialization
 			Assert.That( first, Is.Not.Null );
 			var second = MessagePackSerializer.Create<Image>();
 			Assert.That( second, Is.Not.Null );
+#if !UNITY
 			Assert.That( first.GetType(), Is.EqualTo( second.GetType() ) );
+#endif // !UNITY
 		}
 
 		[Test]
+		[Ignore] // Deprecated, it should be alias of Get
 		public void TestCreate_WithContext_NewInstance()
 		{
 			var context = new SerializationContext();
@@ -109,7 +122,9 @@ namespace MsgPack.Serialization
 			Assert.That( first, Is.Not.Null );
 			var second = MessagePackSerializer.Create<Image>( context );
 			Assert.That( second, Is.Not.Null );
+#if !UNITY
 			Assert.That( first.GetType(), Is.EqualTo( second.GetType() ) );
+#endif // !UNITY
 		}
 
 		[Test]
@@ -204,6 +219,36 @@ namespace MsgPack.Serialization
 		public void TestGet_WithContext_ContextIsNull_Fail()
 		{
 			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Get( typeof( Image ), null ) );
+		}
+
+		[Test]
+		public void TestUnpackObject()
+		{
+			// Just verify it is OK ... the method always should behave as MessagePackSerializer.Get<MessagePackObject>( new SerializationContext() ).Unpack(stream)
+			var result =
+				MessagePackSerializer.UnpackMessagePackObject(
+					new MemoryStream(
+						new byte[]
+						{
+							MessagePackCode.MinimumFixedArray | 5, // Root (array)
+							MessagePackCode.NilValue, MessagePackCode.FalseValue, 0, // Scalars
+							MessagePackCode.MinimumFixedRaw | 1, ( byte ) 'a',  // Raw
+							MessagePackCode.MinimumFixedMap | 1, // Map
+							MessagePackCode.MinimumFixedRaw | 1, ( byte ) 'k', // Key
+							1 //  Value of map
+						}
+					)
+				);
+
+			Assert.That( result.IsArray );
+			Assert.That( result.AsList().Count, Is.EqualTo( 5 ) );
+			Assert.That( result.AsList()[ 0 ].IsNil );
+			Assert.That( result.AsList()[ 1 ], Is.EqualTo( new MessagePackObject( false ) ) );
+			Assert.That( result.AsList()[ 2 ], Is.EqualTo( new MessagePackObject( 0 ) ) );
+			Assert.That( result.AsList()[ 3 ], Is.EqualTo( new MessagePackObject( "a" ) ) );
+			Assert.That( result.AsList()[ 4 ].AsDictionary().Count, Is.EqualTo( 1 ) );
+			Assert.That( result.AsList()[ 4 ].AsDictionary().First().Key, Is.EqualTo( new MessagePackObject( "k" ) ) );
+			Assert.That( result.AsList()[ 4 ].AsDictionary().First().Value, Is.EqualTo( new MessagePackObject( 1 ) ) );
 		}
 	}
 }

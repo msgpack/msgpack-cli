@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,20 +23,23 @@
 #endif
 
 using System;
-using System.Linq;
+using System.IO;
+using System.Globalization;
+using System.Runtime.Serialization;
 
 using MsgPack.Serialization.ReflectionSerializers;
-#if SILVERLIGHT || NETFX_35 || UNITY
-using System.Collections.Generic;
-#else
+#if !SILVERLIGHT && !NETFX_35 && !UNITY
 using System.Collections.Concurrent;
-#endif // SILVERLIGHT || NETFX_35 || UNITY
+#else // !SILVERLIGHT && !NETFX_35 && !UNITY
+using System.Collections.Generic;
+#endif // !SILVERLIGHT && !NETFX_35 && !UNITY
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
-#if !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
-using System.Globalization;
-#endif // !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
 #if NETFX_CORE || WINDOWS_PHONE
 using System.Linq.Expressions;
 #endif
@@ -98,7 +101,9 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
-			return CreateInternal<T>( context );
+			// Old Create behavior was effectively Get() because the Builder internally register genreated serializer and returned existent one if it had been already registered. 
+			// It was just aweful resource consumption.
+			return Get<T>( context, null );
 		}
 
 		/// <summary>
@@ -204,25 +209,63 @@ namespace MsgPack.Serialization
 			return context.GetSerializer<T>( providerParameter );
 		}
 
-		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context )
+		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context, PolymorphismSchema schema )
 		{
+
 #if !XAMIOS && !XAMDROID && !UNITY
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 #endif // !XAMIOS && !XAMDROID && !UNITY
-#if XAMIOS || XAMDROID || UNITY
-			return CreateReflectionInternal<T>( context );
-#else
+
+#if DEBUG && !UNITY && !XAMDROID && !XAMIOS
+			SerializerDebugging.TraceEvent(
+				"SerializationContext::CreateInternal<{0}>(@{1}, {2})",
+				typeof( T ),
+				context.GetHashCode(),
+				schema == null ? "null" : schema.DebugString
+			);
+
+#endif // DEBUG && !UNITY && !XAMDROID && !XAMIOS
+			Type concreteType = null;
+
+			if ( typeof( T ).GetIsAbstract() || typeof( T ).GetIsInterface() )
+			{
+				// Abstract collection types will be handled correctly.
+				if ( typeof( T ).GetCollectionTraits().CollectionType != CollectionKind.NotCollection )
+				{
+					concreteType = context.DefaultCollectionTypes.GetConcreteType( typeof( T ) );
+				}
+
+				if ( concreteType == null )
+				{
+					// return null for polymoirphic provider.
+					return null;
+				}
+
+				ValidateType( concreteType );
+			}
+			else
+			{
+				ValidateType( typeof( T ) );
+			}
+
+#if !XAMIOS && !XAMDROID && !UNITY
 			ISerializerBuilder<T> builder;
+#endif // !XAMIOS && !XAMDROID && !UNITY
 #if NETFX_CORE || WINDOWS_PHONE
 			builder = new ExpressionTreeSerializerBuilder<T>();
 #elif SILVERLIGHT
 			builder = new DynamicMethodSerializerBuilder<T>();
 #else
+#if !XAMIOS && !XAMDROID && !UNITY
 			switch ( context.EmitterFlavor )
 			{
 				case EmitterFlavor.ReflectionBased:
 				{
-					return CreateReflectionInternal<T>( context );
+#endif // !XAMIOS && !XAMDROID && !UNITY
+					return
+						DefaultSerializers.GenericSerializer.TryCreateAbstractCollectionSerializer( context, typeof( T ), concreteType, schema ) as MessagePackSerializer<T>
+						?? CreateReflectionInternal<T>( context, concreteType ?? typeof( T ), schema );
+#if !XAMIOS && !XAMDROID && !UNITY
 				}
 #if !WINDOWS_PHONE && !NETFX_35
 				case EmitterFlavor.ExpressionBased:
@@ -259,10 +302,11 @@ namespace MsgPack.Serialization
 					break;
 				}
 			}
+#endif // !XAMIOS && !XAMDROID && !UNITY
 #endif // NETFX_CORE else
-
-			return new AutoMessagePackSerializer<T>( context, builder );
-#endif // XAMIOS || XAMDROID || UNITY else
+#if !XAMIOS && !XAMDROID && !UNITY
+			return builder.BuildSerializerInstance( context, concreteType, schema == null ? null : schema.FilterSelf() );
+#endif // !XAMIOS && !XAMDROID && !UNITY
 		}
 
 #if !XAMIOS && !XAMDROID && !UNITY
@@ -328,7 +372,7 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 
 #if XAMIOS || XAMDROID || UNITY
-			return CreateReflectionInternal( context, targetType );
+			return CreateInternal( context, targetType, null );
 #else
 			// MPS.Create should always return new instance, and creator delegate should be cached for performance.
 #if NETFX_CORE
@@ -521,35 +565,41 @@ namespace MsgPack.Serialization
 		}
 
 #if XAMIOS || XAMDROID || UNITY
-		private static readonly System.Reflection.MethodInfo CreateReflectionInternal_1 = 
+		private static readonly System.Reflection.MethodInfo CreateInternal_2 = 
 			typeof( MessagePackSerializer ).GetMethod( 
-				"CreateReflectionInternal", 
+				"CreateInternal", 
 				System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic,
 				null,
-				new []{ typeof( SerializationContext ) },
+				new []{ typeof( SerializationContext ), typeof( PolymorphismSchema ) },
 				null
 			);
 
-		internal static IMessagePackSingleObjectSerializer CreateReflectionInternal( SerializationContext context, Type targetType )
+		internal static IMessagePackSingleObjectSerializer CreateInternal( SerializationContext context, Type targetType, PolymorphismSchema schema )
 		{
 #if UNITY_ANDROID || UNITY
 			return
 				(
 					Delegate.CreateDelegate( 
-						typeof( Func<SerializationContext, object> ),
-						CreateReflectionInternal_1.MakeGenericMethod( targetType )
+						typeof( Func<SerializationContext, PolymorphismSchema, object> ),
+						CreateInternal_2.MakeGenericMethod( targetType )
 					)
-				as Func<SerializationContext, object> )( context ) as IMessagePackSingleObjectSerializer;
+				as Func<SerializationContext, PolymorphismSchema, object> )( context, schema ) as IMessagePackSingleObjectSerializer;
 #else
 			return 
-				( CreateReflectionInternal_1.MakeGenericMethod( targetType ).CreateDelegate( typeof( Func<SerializationContext,object> ) ) 
-				as Func<SerializationContext, object> )( context ) as IMessagePackSingleObjectSerializer;
+				( CreateInternal_2.MakeGenericMethod( targetType ).CreateDelegate( typeof( Func<SerializationContext, PolymorphismSchema, object> ) ) 
+				as Func<SerializationContext, PolymorphismSchema, object> )( context, schema ) as IMessagePackSingleObjectSerializer;
 #endif
 		}
 #endif // XAMIOS || XAMDROID || UNITY
 
-		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context )
+		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context, Type concreteType, PolymorphismSchema schema )
 		{
+			if ( concreteType.GetIsAbstract() || concreteType.GetIsInterface() )
+			{
+				// return null for polymoirphic provider.
+				return null;
+			}
+
 			var serializer = context.Serializers.Get<T>( context );
 
 			if ( serializer != null )
@@ -559,30 +609,37 @@ namespace MsgPack.Serialization
 				return serializer;
 			}
 
+			ValidateType( typeof( T ) );
 			var traits = typeof( T ).GetCollectionTraits();
 			switch ( traits.CollectionType )
 			{
 				case CollectionKind.Array:
-				{
-					return ReflectionSerializerHelper.CreateArraySerializer<T>( context, EnsureConcreteTypeRegistered( context, typeof( T ) ), traits );
-				}
 				case CollectionKind.Map:
 				{
-					return ReflectionSerializerHelper.CreateMapSerializer<T>( context, EnsureConcreteTypeRegistered( context, typeof( T ) ), traits );
+					return 
+#if !UNITY
+						ReflectionSerializerHelper.CreateCollectionSerializer<T>( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ) );
+#else
+						Wrap<T>( 
+							context,
+							ReflectionSerializerHelper.CreateCollectionSerializer<T>( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ) )
+						);
+#endif // !UNITY
 				}
 				default:
 				{
 					if ( typeof( T ).GetIsEnum() )
 					{
-						return ReflectionSerializerHelper.CreateReflectionEnuMessagePackSerializer<T>( context );
+						return ReflectionSerializerHelper.CreateReflectionEnumMessagePackSerializer<T>( context );
 					}
 #if !WINDOWS_PHONE && !NETFX_35 && !UNITY
-					if ( ( typeof( T ).GetAssembly().Equals( typeof( object ).GetAssembly() ) ||
-								typeof( T ).GetAssembly().Equals( typeof( Enumerable ).GetAssembly() ) )
-							  && typeof( T ).GetIsPublic() &&
-							  typeof( T ).Name.StartsWith( "Tuple`", StringComparison.Ordinal ) )
+					if ( TupleItems.IsTuple( typeof( T ) ) )
 					{
-						return new ReflectionTupleMessagePackSerializer<T>( context );
+						return
+							new ReflectionTupleMessagePackSerializer<T>(
+								context,
+								( schema ?? PolymorphismSchema.Default ).ChildSchemaList
+							);
 					}
 #endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
 
@@ -591,20 +648,48 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static Type EnsureConcreteTypeRegistered( SerializationContext context, Type mayBeAbstractType )
+		private static void ValidateType( Type type )
 		{
-			if ( !mayBeAbstractType.GetIsAbstract() && !mayBeAbstractType.GetIsInterface() )
+			if ( !type.GetIsVisible() )
 			{
-				return mayBeAbstractType;
+				throw new SerializationException(
+					String.Format( CultureInfo.CurrentCulture, "Non-public type '{0}' cannot be serialized.", type ) );
 			}
+		}
 
-			var concreteType = context.DefaultCollectionTypes.GetConcreteType( mayBeAbstractType );
-			if ( concreteType == null )
-			{
-				throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( mayBeAbstractType );
-			}
+#if UNITY
+		internal static MessagePackSerializer<T> Wrap<T>( SerializationContext context, IMessagePackSingleObjectSerializer nonGeneric )
+		{
+			return
+				nonGeneric == null
+				? null
+				: nonGeneric is ICustomizableEnumSerializer
+				? new EnumTypedMessagePackSerializerWrapper<T>( context, nonGeneric )
+				: new TypedMessagePackSerializerWrapper<T>( context, nonGeneric );
+		}
+#endif // UNITY
 
-			return concreteType;
+		// For stable behavior, use singleton concrete deserializer and private context.
+		private static readonly MessagePackSerializer<MessagePackObject> _singleTonMpoDeserializer =
+			new DefaultSerializers.MsgPack_MessagePackObjectMessagePackSerializer( new SerializationContext() );
+
+		/// <summary>
+		///		Directly deserialize specified MessagePack <see cref="Stream"/> as <see cref="MessagePackObject"/> tree.
+		/// </summary>
+		/// <param name="stream">The stream which contains deserializing data.</param>
+		/// <returns>A <see cref="MessagePackObject"/> which is root of the deserialized MessagePack object tree.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="stream"/> is <c>null</c>.
+		/// </exception>
+		/// <remarks>
+		///		This method is convinient wrapper for <see cref="MessagePackSerializer.Get{T}(SerializationContext)"/> for <see cref="MessagePackObject"/>.
+		///		<note>
+		///			You cannot override this method behavior because this method uses private <see cref="SerializationContext"/> instead of default context which is able to be accessed via <see cref="SerializationContext.Default"/>.
+		///		</note>
+		/// </remarks>
+		public static MessagePackObject UnpackMessagePackObject( Stream stream )
+		{
+			return _singleTonMpoDeserializer.Unpack( stream );
 		}
 	}
 }

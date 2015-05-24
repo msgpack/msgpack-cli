@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -88,12 +88,43 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
+		protected override void EmitMethodPrologue( TContext context, CollectionSerializerMethod method, MethodInfo declaration )
+		{
+			switch ( method )
+			{
+				case CollectionSerializerMethod.AddItem:
+				{
+					context.IL = context.Emitter.GetAddItemMethodILGenerator( declaration );
+					break;
+				}
+				case CollectionSerializerMethod.CreateInstance:
+				{
+					context.IL = context.Emitter.GetCreateInstanceMethodILGenerator( declaration );
+					break;
+				}
+				case CollectionSerializerMethod.RestoreSchema:
+				{
+					context.IL = context.Emitter.GetRestoreSchemaMethodILGenerator();
+					break;
+				}
+				default:
+				{
+					throw new ArgumentOutOfRangeException( "method", method.ToString() );
+				}
+			}
+		}
+
 		protected override void EmitMethodEpilogue( TContext context, SerializerMethod method, ILConstruct construct )
 		{
 			EmitMethodEpilogue( context, construct );
 		}
 
-		protected override void EmitMethodEpilogue( TContext context, EnumSerializerMethod enumSerializerMethod, ILConstruct construct )
+		protected override void EmitMethodEpilogue( TContext context, EnumSerializerMethod method, ILConstruct construct )
+		{
+			EmitMethodEpilogue( context, construct );
+		}
+
+		protected override void EmitMethodEpilogue( TContext context, CollectionSerializerMethod method, ILConstruct construct )
 		{
 			EmitMethodEpilogue( context, construct );
 		}
@@ -112,6 +143,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			finally
 			{
 				context.IL.FlushTrace();
+				SerializerDebugging.FlushTraceData();
 			}
 		}
 
@@ -125,60 +157,90 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Literal( contextType, default( object ), il => il.EmitLdnull() );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Many case switch" )]
+		protected override ILConstruct MakeByteLiteral( TContext context, byte constant )
+		{
+			return MakeIntegerLiteral( typeof( byte ), constant );
+		}
+
+		protected override ILConstruct MakeSByteLiteral( TContext context, sbyte constant )
+		{
+			return MakeIntegerLiteral( typeof( sbyte ), constant );
+		}
+
+		protected override ILConstruct MakeInt16Literal( TContext context, short constant )
+		{
+			return MakeIntegerLiteral( typeof( short ), constant );
+		}
+
+		protected override ILConstruct MakeUInt16Literal( TContext context, ushort constant )
+		{
+			return MakeIntegerLiteral( typeof( ushort ), constant );
+		}
+
 		protected override ILConstruct MakeInt32Literal( TContext context, int constant )
+		{
+			return MakeIntegerLiteral( typeof( int ), constant );
+		}
+
+		protected override ILConstruct MakeUInt32Literal( TContext context, uint constant )
+		{
+			return MakeIntegerLiteral( typeof( uint ), unchecked( ( int )constant ) );
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Many case switch" )]
+		private static ILConstruct MakeIntegerLiteral( Type contextType, int constant )
 		{
 			switch ( constant )
 			{
 				case 0:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_0() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_0() );
 				}
 				case 1:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_1() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_1() );
 				}
 				case 2:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_2() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_2() );
 				}
 				case 3:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_3() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_3() );
 				}
 				case 4:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_4() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_4() );
 				}
 				case 5:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_5() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_5() );
 				}
 				case 6:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_6() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_6() );
 				}
 				case 7:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_7() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_7() );
 				}
 				case 8:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_8() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_8() );
 				}
 				case -1:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_M1() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_M1() );
 				}
 				default:
 				{
 					if ( SByte.MinValue <= constant && constant <= SByte.MaxValue )
 					{
-						return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_S( unchecked( ( byte )constant ) ) );
+						return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_S( unchecked( ( byte )constant ) ) );
 					}
 					else
 					{
-						return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4( constant ) );
+						return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4( constant ) );
 					}
 				}
 			}
@@ -187,6 +249,31 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override ILConstruct MakeInt64Literal( TContext context, long constant )
 		{
 			return ILConstruct.Literal( typeof( long ), constant, il => il.EmitLdc_I8( constant ) );
+		}
+
+		protected override ILConstruct MakeUInt64Literal( TContext context, ulong constant )
+		{
+			return ILConstruct.Literal( typeof( ulong ), constant, il => il.EmitLdc_I8( unchecked( ( long )constant ) ) );
+		}
+
+		protected override ILConstruct MakeReal32Literal( TContext context, float constant )
+		{
+			return ILConstruct.Literal( typeof( float ), constant, il => il.EmitLdc_R4( constant ) );
+		}
+
+		protected override ILConstruct MakeReal64Literal( TContext context, double constant )
+		{
+			return ILConstruct.Literal( typeof( double ), constant, il => il.EmitLdc_R8( constant ) );
+		}
+
+		protected override ILConstruct MakeBooleanLiteral( TContext context, bool constant )
+		{
+			return MakeIntegerLiteral( typeof( bool ), constant ? 1 : 0 );
+		}
+
+		protected override ILConstruct MakeCharLiteral( TContext context, char constant )
+		{
+			return MakeIntegerLiteral( typeof( char ), constant );
 		}
 
 		protected override ILConstruct MakeStringLiteral( TContext context, string constant )
@@ -252,6 +339,22 @@ namespace MsgPack.Serialization.EmittingSerializers
 					);
 				}
 			}
+		}
+
+		protected override ILConstruct MakeDefaultLiteral( TContext context, Type type )
+		{
+			return
+				ILConstruct.Literal(
+					type,
+					"default(" + type + ")",
+					il =>
+					{
+						var temp = il.DeclareLocal( type );
+						il.EmitAnyLdloca( temp );
+						il.EmitInitobj( type );
+						il.EmitAnyLdloc( temp );
+					}
+				);
 		}
 
 		protected override ILConstruct EmitThisReferenceExpression( TContext context )
@@ -536,6 +639,39 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Asserted internally" )]
+		protected override ILConstruct EmitCreateNewArrayExpression( TContext context, Type elementType, int length )
+		{
+			var array =
+				ILConstruct.Variable(
+					elementType.MakeArrayType(),
+					"array"
+				);
+
+			return
+				ILConstruct.Composite(
+					ILConstruct.Sequence(
+						array.ContextType,
+						new[]
+						{
+							array,
+							ILConstruct.Instruction( 
+								"NewArray",
+								array.ContextType,
+								false,
+								il =>
+								{
+									il.EmitNewarr( elementType, length );
+									array.StoreValue( il );
+								}
+							)
+						}
+					),
+					array
+				);
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitCreateNewArrayExpression( TContext context, Type elementType, int length, IEnumerable<ILConstruct> initialElements )
 		{
 			var array =
@@ -576,13 +712,42 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		protected override ILConstruct EmitSetArrayElementStatement( TContext context, ILConstruct array, ILConstruct index, ILConstruct value )
+		{
+			return
+				ILConstruct.Instruction(
+					"SetArrayElement",
+					array.ContextType,
+					false,
+					il =>
+					{
+						il.EmitAnyStelem(
+							value.ContextType,
+							il0 =>
+							{
+								array.LoadValue( il0, false );
+							},
+							il0 =>
+							{
+								index.LoadValue( il0, false );
+							},
+							il0 =>
+							{
+								value.LoadValue( il0, true );
+							}
+						);
+					}
+				);
+		}
+
 		protected override ILConstruct EmitInvokeMethodExpression( TContext context, ILConstruct instance, MethodInfo method, IEnumerable<ILConstruct> arguments )
 		{
 			return ILConstruct.Invoke( instance, method, arguments );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override ILConstruct EmitGetPropretyExpression( TContext context, ILConstruct instance, PropertyInfo property )
+		protected override ILConstruct EmitGetPropertyExpression( TContext context, ILConstruct instance, PropertyInfo property )
 		{
 			return ILConstruct.Invoke( instance, property.GetGetMethod( true ), ILConstruct.NoArguments );
 		}
@@ -593,7 +758,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override ILConstruct EmitSetProprety( TContext context, ILConstruct instance, PropertyInfo property, ILConstruct value )
+		protected override ILConstruct EmitSetProperty( TContext context, ILConstruct instance, PropertyInfo property, ILConstruct value )
 		{
 #if DEBUG
 			// ReSharper disable PossibleNullReferenceException
@@ -676,11 +841,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally")]
-		protected override ILConstruct EmitStringSwitchStatement ( TContext context, ILConstruct target, IDictionary<string, ILConstruct> cases, ILConstruct defaultCase ) {
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
+		protected override ILConstruct EmitStringSwitchStatement( TContext context, ILConstruct target, IDictionary<string, ILConstruct> cases, ILConstruct defaultCase )
+		{
 			// Simple if statements
 			ILConstruct @else = defaultCase;
-			foreach (var @case in cases) {
+			foreach ( var @case in cases )
+			{
 				@else =
 					this.EmitConditionalExpression(
 						context,
@@ -689,7 +856,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 							null,
 							Metadata._String.op_Equality,
 							target,
-							this.MakeStringLiteral(context, @case.Key)
+							this.MakeStringLiteral( context, @case.Key )
 						),
 						@case.Value,
 						@else
@@ -856,9 +1023,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return enumValue;
 		}
 
-		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( TContext codeGenerationContext )
+		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( TContext codeGenerationContext, PolymorphismSchema schema )
 		{
-			return context => codeGenerationContext.Emitter.CreateInstance<TObject>( context );
+			return context => codeGenerationContext.Emitter.CreateInstance<TObject>( context, schema );
 		}
 
 		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateEnumSerializerConstructor( TContext codeGenerationContext )

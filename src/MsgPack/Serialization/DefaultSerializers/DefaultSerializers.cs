@@ -31,64 +31,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 	// This file generated from DefaultSerializers.tt T4Template.
 	// Do not modify this file. Edit DefaultMarshalers.tt instead.
 
-	internal sealed class System_DateTimeMessagePackSerializer : MessagePackSerializer< System.DateTime >
-	{
-		public System_DateTimeMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		protected internal sealed override void PackToCore( Packer packer, System.DateTime value )
-		{
-			packer.Pack( MessagePackConvert.FromDateTime( value ) );
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		protected internal sealed override  System.DateTime UnpackFromCore( Unpacker unpacker )
-		{
-			try
-			{
-				return MessagePackConvert.ToDateTime( unpacker.LastReadData.AsInt64() ); 
-			}
-			catch( ArgumentException ex )
-			{
-				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
-			}
-			catch( InvalidOperationException ex )
-			{
-				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
-			}
-		}
-	}
-
-	internal sealed class System_DateTimeOffsetMessagePackSerializer : MessagePackSerializer< System.DateTimeOffset >
-	{
-		public System_DateTimeOffsetMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		protected internal sealed override void PackToCore( Packer packer, System.DateTimeOffset value )
-		{
-			packer.Pack( MessagePackConvert.FromDateTimeOffset( value ) );
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		protected internal sealed override  System.DateTimeOffset UnpackFromCore( Unpacker unpacker )
-		{
-			try
-			{
-				return MessagePackConvert.ToDateTimeOffset( unpacker.LastReadData.AsInt64() ); 
-			}
-			catch( ArgumentException ex )
-			{
-				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
-			}
-			catch( InvalidOperationException ex )
-			{
-				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
-			}
-		}
-	}
-
 	internal sealed class System_BooleanMessagePackSerializer : MessagePackSerializer< System.Boolean >
 	{
 		public System_BooleanMessagePackSerializer( SerializationContext ownerContext )
@@ -480,6 +422,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	}
 
 #if !SILVERLIGHT && !NETFX_CORE
+#if !CORLIB_ONLY
 	internal sealed class System_Collections_Specialized_BitVector32MessagePackSerializer : MessagePackSerializer< System.Collections.Specialized.BitVector32 >
 	{
 		public System_Collections_Specialized_BitVector32MessagePackSerializer( SerializationContext ownerContext )
@@ -508,8 +451,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 	}
 #endif // !SILVERLIGHT && !NETFX_CORE
+#endif // !CORLIB_ONLY
 
 #if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !CORLIB_ONLY
 	internal sealed class System_Numerics_BigIntegerMessagePackSerializer : MessagePackSerializer< System.Numerics.BigInteger >
 	{
 		public System_Numerics_BigIntegerMessagePackSerializer( SerializationContext ownerContext )
@@ -539,4 +484,5 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 	}
 #endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !CORLIB_ONLY
 }

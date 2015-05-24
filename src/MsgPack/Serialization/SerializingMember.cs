@@ -60,30 +60,41 @@ namespace MsgPack.Serialization
 				this.Member.GetCustomAttribute<MessagePackEnumMemberAttribute>();
 			if ( messagePackEnumMemberAttribute != null)
 			{
-				var serializationMethod = messagePackEnumMemberAttribute.SerializationMethod;
+				return messagePackEnumMemberAttribute.SerializationMethod;
 #else
 			var messagePackEnumMemberAttributes =
 				this.Member.GetCustomAttributes( typeof( MessagePackEnumMemberAttribute ), true );
 			if ( messagePackEnumMemberAttributes.Length > 0 )
 			{
-				var serializationMethod =
+				return
 					// ReSharper disable once PossibleNullReferenceException
 					( messagePackEnumMemberAttributes[ 0 ] as MessagePackEnumMemberAttribute ).SerializationMethod;
-#endif // NETFX_CORE 
-				switch ( serializationMethod )
-				{
-					case EnumMemberSerializationMethod.ByName:
-					{
-						return EnumMemberSerializationMethod.ByName;
-					}
-					case EnumMemberSerializationMethod.ByUnderlyingValue:
-					{
-						return EnumMemberSerializationMethod.ByUnderlyingValue;
-					}
-				}
+#endif // NETFX_CORE
 			}
 
 			return EnumMemberSerializationMethod.Default;
+		}
+
+		public DateTimeMemberConversionMethod GetDateTimeMemberConversionMethod()
+		{
+#if NETFX_CORE
+			var messagePackDateTimeMemberAttribute = 
+				this.Member.GetCustomAttribute<MessagePackDateTimeMemberAttribute>();
+			if ( messagePackDateTimeMemberAttribute != null)
+			{
+				return messagePackDateTimeMemberAttribute.DateTimeConversionMethod;
+#else
+			var messagePackDateTimeMemberAttribute =
+				this.Member.GetCustomAttributes( typeof( MessagePackDateTimeMemberAttribute ), true );
+			if ( messagePackDateTimeMemberAttribute.Length > 0 )
+			{
+				return
+					// ReSharper disable once PossibleNullReferenceException
+					( messagePackDateTimeMemberAttribute[ 0 ] as MessagePackDateTimeMemberAttribute ).DateTimeConversionMethod;
+#endif // NETFX_CORE
+			}
+
+			return DateTimeMemberConversionMethod.Default;
 		}
 	}
 }

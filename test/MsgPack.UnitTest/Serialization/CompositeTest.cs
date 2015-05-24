@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -153,7 +153,7 @@ namespace MsgPack.Serialization
 			root.Files = new FileItem[ 0 ];
 
 			var serializer = 
-				new AutoMessagePackSerializer<DirectoryItem>( 
+				generator.BuildSerializerInstance(
 					new SerializationContext
 					{
 						EmitterFlavor = emittingFlavor, 
@@ -164,7 +164,8 @@ namespace MsgPack.Serialization
 						GeneratorOption = SerializationMethodGeneratorOption.CanDump
 #endif
 					}, 
-					generator 
+					typeof( DirectoryItem ),
+					PolymorphismSchema.Default
 				);
 			using ( var memoryStream = new MemoryStream() )
 			{

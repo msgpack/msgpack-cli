@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,6 +27,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 	/// </summary>
 	internal class DynamicMethodEmittingContext : ILEmittingContext
 	{
+		private readonly ILConstruct _context;
+
 		/// <summary>
 		///		Gets the code construct which represents 'context' parameter of generated methods.
 		/// </summary>
@@ -35,7 +37,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		Its type is <see cref="SerializationContext"/>, and it holds dependent serializers.
 		///		This value will not be <c>null</c>.
 		/// </value>
-		public ILConstruct Context { get; private set; }
+		public override ILConstruct Context { get { return this._context; } }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="DynamicMethodEmittingContext"/> class.
@@ -52,8 +54,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Func<SerializerEmitter> emitterFactory, Func<EnumSerializerEmitter> enumEmitterFactory )
 			: base( context, emitterFactory, enumEmitterFactory )
 		{
-			this.Context = ILConstruct.Argument( 0, typeof( SerializationContext ), "context" );
-			this.Reset( targetType );
+			this._context = ILConstruct.Argument( 0, typeof( SerializationContext ), "context" );
+			this.Reset( targetType, null );
 		}
 	}
 }

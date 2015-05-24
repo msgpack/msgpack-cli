@@ -28,6 +28,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 #endif // !NETFX_CORE
 using MsgPack.Serialization.AbstractSerializers;
+
 #if NETFX_CORE
 using MsgPack.Serialization.Reflection;
 #endif // NETFX_CORE
@@ -40,6 +41,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 	/// <typeparam name="TObject">The type of the serializing object.</typeparam>
 	internal sealed class ExpressionTreeSerializerBuilder<TObject> : SerializerBuilder<ExpressionTreeContext, ExpressionConstruct, TObject>
 	{
+		private static readonly Type SerializerClass =
+			ExpressionTreeSerializerBuilderHelpers.GetSerializerClass( typeof( TObject ), CollectionTraitsOfThis );
 #if !NETFX_CORE && !SILVERLIGHT
 		private readonly TypeBuilder _typeBuilder;
 #endif
@@ -61,15 +64,22 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override void EmitMethodPrologue( ExpressionTreeContext context, SerializerMethod method )
 		{
-			context.Reset( typeof( TObject ) );
-			context.SetCurrentMethod( typeof( TObject ), method );
+			context.Reset( typeof( TObject ), BaseClass );
+			context.SetCurrentMethod( method );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override void EmitMethodPrologue( ExpressionTreeContext context, EnumSerializerMethod method )
 		{
-			context.Reset( typeof( TObject ) );
+			context.Reset( typeof( TObject ), BaseClass );
 			context.SetCurrentMethod( typeof( TObject ), method );
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		protected override void EmitMethodPrologue( ExpressionTreeContext context, CollectionSerializerMethod method, MethodInfo declaration )
+		{
+			context.Reset( typeof( TObject ), BaseClass );
+			context.SetCurrentMethod( method );
 		}
 
 		protected override void EmitMethodEpilogue( ExpressionTreeContext context, SerializerMethod method, ExpressionConstruct construct )
@@ -79,7 +89,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				return;
 			}
 
-			context.SetDelegate( method, this.EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method ), method, construct ) );
+			context.SetDelegate( method, this.EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method, SerializerClass ), method, construct ) );
 
 		}
 
@@ -91,6 +101,16 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 
 			context.SetDelegate( method, this.EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method ), method, construct ) );
+		}
+
+		protected override void EmitMethodEpilogue( ExpressionTreeContext context, CollectionSerializerMethod method, ExpressionConstruct construct )
+		{
+			if ( construct == null )
+			{
+				return;
+			}
+
+			context.SetDelegate( method, this.EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method, SerializerClass, CollectionTraitsOfThis ), method, construct ) );
 		}
 
 #if NETFX_CORE || SILVERLIGHT
@@ -135,7 +155,32 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return Expression.Constant( null, contextType );
 		}
 
+		protected override ExpressionConstruct MakeByteLiteral( ExpressionTreeContext context, byte constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeSByteLiteral( ExpressionTreeContext context, sbyte constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeInt16Literal( ExpressionTreeContext context, short constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeUInt16Literal( ExpressionTreeContext context, ushort constant )
+		{
+			return Expression.Constant( constant );
+		}
+
 		protected override ExpressionConstruct MakeInt32Literal( ExpressionTreeContext context, int constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeUInt32Literal( ExpressionTreeContext context, uint constant )
 		{
 			return Expression.Constant( constant );
 		}
@@ -145,6 +190,32 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return Expression.Constant( constant );
 		}
 
+		protected override ExpressionConstruct MakeUInt64Literal( ExpressionTreeContext context, ulong constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeReal32Literal( ExpressionTreeContext context, float constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeReal64Literal( ExpressionTreeContext context, double constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeBooleanLiteral( ExpressionTreeContext context, bool constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeCharLiteral( ExpressionTreeContext context, char constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+
 		protected override ExpressionConstruct MakeStringLiteral( ExpressionTreeContext context, string constant )
 		{
 			return Expression.Constant( constant );
@@ -153,6 +224,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		protected override ExpressionConstruct MakeEnumLiteral( ExpressionTreeContext context, Type type, object constant )
 		{
 			return Expression.Constant( constant, type );
+		}
+
+		protected override ExpressionConstruct MakeDefaultLiteral( ExpressionTreeContext context, Type type )
+		{
+			return Expression.Default( type );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
@@ -328,7 +404,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					: Expression.Call( instance, method, arguments.Select( c => c.Expression ) );
 		}
 
-		protected override ExpressionConstruct EmitGetPropretyExpression(
+		protected override ExpressionConstruct EmitGetPropertyExpression(
 			ExpressionTreeContext context, ExpressionConstruct instance, PropertyInfo property
 		)
 		{
@@ -340,7 +416,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return Expression.Field( instance, field );
 		}
 
-		protected override ExpressionConstruct EmitSetProprety(
+		protected override ExpressionConstruct EmitSetProperty(
 			ExpressionTreeContext context, ExpressionConstruct instance, PropertyInfo property, ExpressionConstruct value
 		)
 		{
@@ -394,42 +470,26 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		}
 
 		protected override ExpressionConstruct EmitCreateNewArrayExpression(
+			ExpressionTreeContext context, Type elementType, int length
+		)
+		{
+			return Expression.NewArrayBounds( elementType, Expression.Constant( length ) );
+		}
+
+		protected override ExpressionConstruct EmitCreateNewArrayExpression(
 			ExpressionTreeContext context, Type elementType, int length, IEnumerable<ExpressionConstruct> initialElements
 		)
 		{
 			return Expression.NewArrayInit( elementType, initialElements.Select( c => c.Expression ) );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override ExpressionConstruct EmitGetSerializerExpression( ExpressionTreeContext context, Type targetType, SerializingMember? memberInfo )
+		protected override ExpressionConstruct EmitSetArrayElementStatement( ExpressionTreeContext context, ExpressionConstruct array, ExpressionConstruct index, ExpressionConstruct value )
 		{
 			return
-				memberInfo == null || !targetType.GetIsEnum()
-					? Expression.Call(
-						context.Context,
-						Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType )
-					)
-					: this.EmitInvokeMethodExpression(
-						context,
-						context.Context,
-						Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
-						this.EmitBoxExpression(
-							context,
-							typeof( EnumSerializationMethod ),
-							this.EmitInvokeMethodExpression(
-								context,
-								null,
-								Metadata._EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethodMethod,
-								context.Context,
-								this.EmitTypeOfExpression( context, targetType ),
-								this.MakeEnumLiteral(
-									context,
-									typeof( EnumMemberSerializationMethod ),
-									memberInfo.Value.GetEnumMemberSerializationMethod()
-								)
-							)
-						)
-					);
+				Expression.Assign(
+					Expression.ArrayAccess( array, index ),
+					value
+				);
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
@@ -442,7 +502,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		{
 #if DEBUG
 			Contract.Assert(
-				elseExpression == null || ( thenExpression.ContextType == elseExpression.ContextType ),
+				elseExpression == null
+				|| thenExpression.ContextType == typeof( void )
+				|| elseExpression.ContextType == typeof( void )
+				|| thenExpression.ContextType == elseExpression.ContextType,
 				thenExpression.ContextType + " != " + ( elseExpression == null ? "(null)" : elseExpression.ContextType.FullName )
 			);
 #endif
@@ -450,7 +513,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return
 				elseExpression == null
 				? Expression.IfThen( conditionExpression, thenExpression )
-				: thenExpression.ContextType == typeof( void )
+				: ( thenExpression.ContextType == typeof( void ) || elseExpression.ContextType == typeof( void ) )
 				? Expression.IfThenElse( conditionExpression, thenExpression, elseExpression )
 				: Expression.Condition( conditionExpression, thenExpression, elseExpression );
 		}
@@ -470,7 +533,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				);
 		}
 
-		protected override ExpressionConstruct EmitStringSwitchStatement ( ExpressionTreeContext context, ExpressionConstruct target, IDictionary<string, ExpressionConstruct> cases, ExpressionConstruct defaultCase ) {
+		protected override ExpressionConstruct EmitStringSwitchStatement( ExpressionTreeContext context, ExpressionConstruct target, IDictionary<string, ExpressionConstruct> cases, ExpressionConstruct defaultCase )
+		{
 			return
 				Expression.Switch(
 					typeof( void ),
@@ -552,7 +616,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( ExpressionTreeContext codeGenerationContext )
+		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( ExpressionTreeContext codeGenerationContext, PolymorphismSchema schema )
 		{
 #if !NETFX_CORE && !SILVERLIGHT
 			if ( SerializerDebugging.DumpEnabled )
@@ -560,19 +624,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				this._typeBuilder.CreateType();
 			}
 #endif
-
-			// Get at this point to prevent unexpected context change.
-			var packToCore = codeGenerationContext.GetPackToCore<TObject>();
-			var unpackFromCore = codeGenerationContext.GetUnpackFromCore<TObject>();
-			var unpackToCore = codeGenerationContext.GetUnpackToCore<TObject>();
-			return
-				context =>
-					new ExpressionCallbackMessagePackSerializer<TObject>(
-						context,
-						packToCore,
-						unpackFromCore,
-						unpackToCore
-					);
+			return ExpressionTreeSerializerBuilderHelpers.CreateFactory<TObject>( codeGenerationContext, CollectionTraitsOfThis, schema );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
@@ -586,14 +638,14 @@ namespace MsgPack.Serialization.ExpressionSerializers
 #endif
 
 			// Get at this point to prevent unexpected context change.
-			var packUnderyingValueTo = codeGenerationContext.GetPackUnderyingValueTo<TObject>();
-			var unpackFromUnderlyingValue = codeGenerationContext.GetUnpackFromUnderlyingValue<TObject>();
+			var packUnderyingValueTo = codeGenerationContext.GetPackUnderyingValueTo();
+			var unpackFromUnderlyingValue = codeGenerationContext.GetUnpackFromUnderlyingValue();
 
 			var targetType = typeof( ExpressionCallbackEnumMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
 
 			return
 				context =>
-					Activator.CreateInstance(
+					ReflectionExtensions.CreateInstancePreservingExceptionType<MessagePackSerializer<TObject>>(
 						targetType,
 						context,
 						EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(
@@ -603,7 +655,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						),
 						packUnderyingValueTo,
 						unpackFromUnderlyingValue
-					) as MessagePackSerializer<TObject>;
+					);
 		}
 
 		protected override ExpressionTreeContext CreateCodeGenerationContextForSerializerCreation( SerializationContext context )

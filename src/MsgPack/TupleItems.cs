@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,7 +25,13 @@
 #if !UNITY
 using System;
 using System.Collections.Generic;
+#if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
+#endif // !UNITY
 using System.Linq;
 #if NETFX_CORE
 using System.Reflection;
@@ -78,7 +84,9 @@ namespace MsgPack
 
 		public static IList<Type> GetTupleItemTypes( Type tupleType )
 		{
-			Contract.Assert( tupleType.Name.StartsWith( "Tuple`" ) && tupleType.GetAssembly().Equals( typeof( Tuple ).GetAssembly() ) );
+#if DEBUG
+			Contract.Assert( tupleType.Name.StartsWith( "Tuple`" ) && tupleType.GetAssembly().Equals( typeof( Tuple ).GetAssembly() ), "tupleType.Name.StartsWith( \"Tuple`\" ) && tupleType.GetAssembly().Equals( typeof( Tuple ).GetAssembly() )" );
+#endif // DEBUG
 			var arguments = tupleType.GetGenericArguments();
 			List<Type> itemTypes = new List<Type>( tupleType.GetGenericArguments().Length );
 			GetTupleItemTypes( arguments, itemTypes );
@@ -97,13 +105,25 @@ namespace MsgPack
 			{
 				var trest = itemTypes[ 7 ];
 #if !NETFX_CORE
-				Contract.Assert( trest.Name.StartsWith( "Tuple`" ) && trest.Assembly == typeof( Tuple ).Assembly );
+#if DEBUG
+				Contract.Assert( trest.Name.StartsWith( "Tuple`" ) && trest.Assembly == typeof( Tuple ).Assembly, "trest.Name.StartsWith( \"Tuple`\" ) && trest.Assembly == typeof( Tuple ).Assembly" );
+#endif // DEBUG
 				GetTupleItemTypes( trest.GetGenericArguments(), result );
 #else
 				Contract.Assert( trest.Name.StartsWith( "Tuple`" ) && trest.GetTypeInfo().Assembly.Equals( typeof( Tuple ).GetTypeInfo().Assembly ) );
 				GetTupleItemTypes( trest.GenericTypeArguments, result );
 #endif
 			}
+		}
+
+		public static bool IsTuple( Type type )
+		{
+			var assembly = type.GetAssembly();
+			return
+				( assembly.Equals( typeof( object ).GetAssembly() ) ||
+				assembly.Equals( typeof( Enumerable ).GetAssembly() ) )
+				&& type.GetIsPublic() &&
+				type.Name.StartsWith( "Tuple`", StringComparison.Ordinal );
 		}
 	}
 }

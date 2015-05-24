@@ -109,7 +109,7 @@ namespace MsgPack
 		{
 			Assert.That( actual.Offset, Is.EqualTo( TimeSpan.Zero ) );
 			var epoc = new DateTimeOffset( 1970, 1, 1, 0, 0, 0, TimeSpan.Zero );
-			Assert.That( actual, Is.EqualTo( new DateTimeOffset( epoc.Ticks + millisecondsOffset * TicksToMilliseconds, TimeSpan.Zero ) ) );
+			Assert.That( actual.Ticks, Is.EqualTo( new DateTimeOffset( epoc.Ticks + millisecondsOffset * TicksToMilliseconds, TimeSpan.Zero ).Ticks ) );
 		}
 
 
@@ -128,7 +128,7 @@ namespace MsgPack
 				);
 
 			Assert.That( actual.Offset, Is.EqualTo( TimeSpan.Zero ) );
-			Assert.That( actual, Is.EqualTo( expectedInMilliseconds ) );
+			Assert.That( actual.Ticks, Is.EqualTo( expectedInMilliseconds.Ticks ) );
 		}
 
 

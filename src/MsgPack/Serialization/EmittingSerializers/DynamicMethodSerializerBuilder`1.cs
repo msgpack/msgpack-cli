@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Linq;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
@@ -39,7 +40,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				new DynamicMethodEmittingContext(
 					context,
 					typeof( TObject ),
-					() => SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( TObject ), EmitterFlavor.ContextBased ),
+					() => SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( TObject ), BaseClass, EmitterFlavor.ContextBased ),
 					() => SerializationMethodGeneratorManager.Get().CreateEnumEmitter( typeof( TObject ), EmitterFlavor.ContextBased )
 				);
 		}
@@ -64,39 +65,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 					unpacker,
 					collection
 				);
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override ILConstruct EmitGetSerializerExpression( DynamicMethodEmittingContext context, Type targetType, SerializingMember? memberInfo )
-		{
-			return
-				memberInfo == null || !targetType.GetIsEnum()
-					? this.EmitInvokeMethodExpression(
-						context,
-						context.Context,
-						Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType )
-					)
-					: this.EmitInvokeMethodExpression(
-						context,
-						context.Context,
-						Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
-						this.EmitBoxExpression( 
-							context,
-							typeof( EnumSerializationMethod ),
-							this.EmitInvokeMethodExpression( 
-								context,
-								null,
-								Metadata._EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethodMethod,
-								context.Context,
-								this.EmitTypeOfExpression( context, targetType ),
-								this.MakeEnumLiteral(
-									context,
-									typeof( EnumMemberSerializationMethod ),
-									memberInfo.Value.GetEnumMemberSerializationMethod()
-								)
-							)
-						)
-					);
 		}
 	}
 }

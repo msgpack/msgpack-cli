@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,31 +41,173 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// 	Emits the method prologue of general serializer.
 		///  </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="serializerMethod">The kind of implementing general serializer method.</param>
-		protected abstract void EmitMethodPrologue( TContext context, SerializerMethod serializerMethod );
+		/// <param name="method">The kind of implementing general serializer method.</param>
+		protected abstract void EmitMethodPrologue( TContext context, SerializerMethod method );
 
 		///  <summary>
 		/// 	Emits the method prologue of enum serializer.
 		///  </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="enumSerializerMethod">The kind of implementing enum serializer method.</param>
-		protected abstract void EmitMethodPrologue( TContext context, EnumSerializerMethod enumSerializerMethod );
+		/// <param name="method">The kind of implementing enum serializer method.</param>
+		protected abstract void EmitMethodPrologue( TContext context, EnumSerializerMethod method );
+
+		///  <summary>
+		/// 	Emits the method prologue of general serializer.
+		///  </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="method">The kind of implementing general serializer method.</param>
+		/// <param name="declaration">The method declaration to be overridden.</param>
+		protected abstract void EmitMethodPrologue( TContext context, CollectionSerializerMethod method, MethodInfo declaration );
 
 		///  <summary>
 		/// 	Emits the method epiloigue of general serializer.
 		///  </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="serializerMethod">The kind of implementing general serializer method.</param>
+		/// <param name="method">The kind of implementing general serializer method.</param>
 		/// <param name="construct">The construct which represent method statements in order. Null entry should be ignored.</param>
-		protected abstract void EmitMethodEpilogue( TContext context, SerializerMethod serializerMethod, TConstruct construct );
+		protected abstract void EmitMethodEpilogue( TContext context, SerializerMethod method, TConstruct construct );
 
 		///  <summary>
 		/// 	Emits the method epiloigue of enum serializer.
 		///  </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="enumSerializerMethod">The kind of implementing enum serializer method.</param>
+		/// <param name="method">The kind of implementing enum serializer method.</param>
 		/// <param name="construct">The construct which represent method statements in order. Null entry should be ignored.</param>
-		protected abstract void EmitMethodEpilogue( TContext context, EnumSerializerMethod enumSerializerMethod, TConstruct construct );
+		protected abstract void EmitMethodEpilogue( TContext context, EnumSerializerMethod method, TConstruct construct );
+
+		///  <summary>
+		/// 	Emits the method epiloigue of enum serializer.
+		///  </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="method">The kind of implementing general serializer method.</param>
+		/// <param name="construct">The construct which represent method statements in order. Null entry should be ignored.</param>
+		protected abstract void EmitMethodEpilogue( TContext context, CollectionSerializerMethod method, TConstruct construct );
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Well patterned" )]
+		private TConstruct MakeDefaultParameterValueLiteral( TContext context, TConstruct targetVariable, Type literalType, object literal, bool hasDefault )
+		{
+			// Supports only C# literals
+			if ( literalType == typeof( byte ) )
+			{
+				return this.MakeByteLiteral( context, !hasDefault ? default( byte ) : ( byte )literal );
+			}
+
+			if ( literalType == typeof( sbyte ) )
+			{
+				return this.MakeSByteLiteral( context, !hasDefault ? default( sbyte ) : ( sbyte )literal );
+			}
+
+			if ( literalType == typeof( short ) )
+			{
+				return this.MakeInt16Literal( context, !hasDefault ? default( short ) : ( short )literal );
+			}
+
+			if ( literalType == typeof( ushort ) )
+			{
+				return this.MakeUInt16Literal( context, !hasDefault ? default( ushort ) : ( ushort )literal );
+			}
+
+			if ( literalType == typeof( int ) )
+			{
+				return this.MakeInt32Literal( context, !hasDefault ? default( int ) : ( int )literal );
+			}
+
+			if ( literalType == typeof( uint ) )
+			{
+				return this.MakeUInt32Literal( context, !hasDefault ? default( uint ) : ( uint )literal );
+			}
+
+			if ( literalType == typeof( long ) )
+			{
+				return this.MakeInt64Literal( context, !hasDefault ? default( long ) : ( long )literal );
+			}
+
+			if ( literalType == typeof( ulong ) )
+			{
+				return this.MakeUInt64Literal( context, !hasDefault ? default( ulong ) : ( ulong )literal );
+			}
+
+			if ( literalType == typeof( float ) )
+			{
+				return this.MakeReal32Literal( context, !hasDefault ? default( float ) : ( float )literal );
+			}
+
+			if ( literalType == typeof( double ) )
+			{
+				return this.MakeReal64Literal( context, !hasDefault ? default( double ) : ( double )literal );
+			}
+
+			if ( literalType == typeof( decimal ) )
+			{
+				return this.MakeDecimalLiteral( context, targetVariable, !hasDefault ? default( decimal ) : ( decimal )literal );
+			}
+
+			if ( literalType == typeof( bool ) )
+			{
+				return this.MakeBooleanLiteral( context, hasDefault && ( bool )literal );
+			}
+
+			if ( literalType == typeof( char ) )
+			{
+				return this.MakeCharLiteral( context, !hasDefault ? default( char ) : ( char )literal );
+			}
+
+			if ( literalType.GetIsEnum() )
+			{
+				return this.MakeEnumLiteral( context, literalType, !hasDefault ? Enum.ToObject( literalType, 0 ) : literal );
+			}
+
+			if ( literal != null && hasDefault )
+			{
+				if ( literalType == typeof( string ) )
+				{
+					return this.MakeStringLiteral( context, literal as string );
+				}
+
+				// Unknown literal.
+				if ( literalType.GetIsValueType() )
+				{
+					throw new NotSupportedException(
+						String.Format( CultureInfo.CurrentCulture, "Literal for value type '{0}' is not supported.", literalType )
+					);
+				}
+				else
+				{
+					throw new NotSupportedException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Literal for reference type '{0}' is not supported except null reference.",
+							literalType
+						)
+					);
+				}
+			}
+			else if ( literalType.GetIsValueType() )
+			{
+				return this.MakeDefaultLiteral( context, literalType );
+			}
+			else
+			{
+				return this.MakeNullLiteral( context, literalType );
+			}
+		}
+
+		// for C# decimal opt parameter ... [DecimalConstant(...)]
+		private TConstruct MakeDecimalLiteral( TContext context, TConstruct targetVariable, decimal constant )
+		{
+			var bits = Decimal.GetBits( constant );
+			return
+				this.EmitCreateNewObjectExpression(
+					context,
+					targetVariable,
+					Metadata._Decimal.Constructor,
+					this.MakeInt32Literal( context, bits[ 0 ] ), // lo
+					this.MakeInt32Literal( context, bits[ 1 ] ), // mid
+					this.MakeInt32Literal( context, bits[ 2 ] ), // high
+					this.MakeBooleanLiteral( context, ( bits[ 3 ] & 0x80000000 ) != 0 ), // sign
+					this.MakeByteLiteral( context, unchecked( ( byte )( bits[ 3 ] >> 16 & 0xFF ) ) ) // scale
+				);
+		}
 
 		/// <summary>
 		///		Emits anonymous <c>null</c> reference literal.
@@ -72,7 +218,39 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeNullLiteral( TContext context, Type contextType );
 
 		/// <summary>
-		///		Emits the constant <see cref="Int32"/> value reference.
+		///		Emits the constant <see cref="Byte"/> value.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeByteLiteral( TContext context, byte constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="SByte"/> value.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeSByteLiteral( TContext context, sbyte constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="Int16"/> value.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeInt16Literal( TContext context, short constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="UInt16"/> value.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeUInt16Literal( TContext context, ushort constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="Int32"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -80,7 +258,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeInt32Literal( TContext context, int constant );
 
 		/// <summary>
-		///		Emits the constant <see cref="Int64"/> value reference.
+		///		Emits the constant <see cref="UInt32"/> value.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeUInt32Literal( TContext context, uint constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="Int64"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -88,7 +274,47 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeInt64Literal( TContext context, long constant );
 
 		/// <summary>
-		///		Emits the constant <see cref="String"/> value reference.
+		///		Emits the constant <see cref="UInt64"/> value.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeUInt64Literal( TContext context, ulong constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="Single"/> value.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeReal32Literal( TContext context, float constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="Double"/> value.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeReal64Literal( TContext context, double constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="Boolean"/> value.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeBooleanLiteral( TContext context, bool constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="Char"/> value.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeCharLiteral( TContext context, char constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="String"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -96,14 +322,22 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeStringLiteral( TContext context, string constant );
 
 		/// <summary>
-		///		Emits the constant enum value reference.
+		///		Emits the constant enum value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="type">The type the enum.</param>
+		/// <param name="type">The type of the enum.</param>
 		/// <param name="constant">The constant value.</param>
 		/// <returns>The generated construct.</returns>
 		/// <exception cref="ArgumentException"><paramref name="type"/> is not enum.</exception>
 		protected abstract TConstruct MakeEnumLiteral( TContext context, Type type, object constant ); // boxing is better than complex unboxing issue
+
+		/// <summary>
+		///		Emits the constant default(T) value of value type.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="type">The type of the valueType.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeDefaultLiteral( TContext context, Type type );
 
 		/// <summary>
 		///		Emits the loading this reference expression.
@@ -331,7 +565,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			if ( !withReflection )
 			{
-				return this.EmitGetPropretyExpression( context, instance, property );
+				return this.EmitGetPropertyExpression( context, instance, property );
 			}
 
 			/*
@@ -358,7 +592,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="instance">The instance which stores instance member value.</param>
 		/// <param name="property">The property to be accessed.</param>
 		/// <returns>The generated construct.</returns>
-		protected abstract TConstruct EmitGetPropretyExpression( TContext context, TConstruct instance, PropertyInfo property );
+		protected abstract TConstruct EmitGetPropertyExpression( TContext context, TConstruct instance, PropertyInfo property );
 
 		private TConstruct EmitGetField( TContext context, TConstruct instance, FieldInfo field, bool withReflection )
 		{
@@ -428,7 +662,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				var setter = asProperty.GetSetMethod( true );
 				if ( setter != null && setter.GetIsPublic() )
 				{
-					return this.EmitSetProprety( context, instance, asProperty, value, false );
+					return this.EmitSetProperty( context, instance, asProperty, value, false );
 				}
 
 				getCollection = this.EmitGetProperty( context, instance, asProperty, !asProperty.GetHasPublicGetter() );
@@ -448,17 +682,27 @@ namespace MsgPack.Serialization.AbstractSerializers
 					 *	}
 					 */
 					return
-						this.EmitForEachLoop(
+						this.EmitStoreCollectionItemsEmitSetCollectionMemberIfNullAndSettable(
 							context,
-							traits,
+							instance,
 							value,
-							current =>
-								this.EmitAppendCollectionItem(
+							member.GetMemberValueType(),
+							asField,
+							asProperty,
+							traits.AddMethod == null
+								? null
+								: this.EmitForEachLoop(
 									context,
-									member,
 									traits,
-									getCollection,
-									current
+									value,
+									current =>
+										this.EmitAppendCollectionItem(
+											context,
+											member,
+											traits,
+											getCollection,
+											current
+										)
 								)
 						);
 				}
@@ -473,68 +717,134 @@ namespace MsgPack.Serialization.AbstractSerializers
 					Type keyType, valueType;
 					GetDictionaryKeyValueType( traits.ElementType, out keyType, out valueType );
 					return
-						this.EmitForEachLoop(
+						this.EmitStoreCollectionItemsEmitSetCollectionMemberIfNullAndSettable(
 							context,
-							traits,
+							instance,
 							value,
-						// ReSharper disable ImplicitlyCapturedClosure
-							current =>
-								this.EmitAppendDictionaryItem(
+							member.GetMemberValueType(),
+							asField,
+							asProperty,
+							traits.AddMethod == null
+								? null
+								: this.EmitForEachLoop(
 									context,
 									traits,
-									getCollection,
-									keyType,
-									this.EmitGetPropretyExpression(
-										context,
-										current,
+									value,
+									// ReSharper disable ImplicitlyCapturedClosure
+									current =>
+										this.EmitAppendDictionaryItem(
+											context,
+											traits,
+											getCollection,
+											keyType,
+											this.EmitGetPropertyExpression(
+												context,
+												current,
 #if !NETFX_CORE
-									traits.ElementType == typeof( DictionaryEntry )
-										? Metadata._DictionaryEntry.Key
-										: traits.ElementType.GetProperty( "Key" )
+												traits.ElementType == typeof( DictionaryEntry )
+													? Metadata._DictionaryEntry.Key
+													: traits.ElementType.GetProperty( "Key" )
 #else
-										traits.ElementType.GetProperty( "Key" )
+												traits.ElementType.GetProperty( "Key" )
 #endif // !NETFX_CORE
-									),
-									valueType,
-									this.EmitGetPropretyExpression(
-										context,
-										current,
+											),
+											valueType,
+											this.EmitGetPropertyExpression(
+												context,
+												current,
 #if !NETFX_CORE
-									traits.ElementType == typeof( DictionaryEntry )
-										? Metadata._DictionaryEntry.Value
-										: traits.ElementType.GetProperty( "Value" )
+												traits.ElementType == typeof( DictionaryEntry )
+													? Metadata._DictionaryEntry.Value
+													: traits.ElementType.GetProperty( "Value" )
 #else
-										traits.ElementType.GetProperty( "Value" )
+												traits.ElementType.GetProperty( "Value" )
 #endif // !NETFX_CORE
-									),
-									false
+												),
+											false
+										)
+									// ReSharper restore ImplicitlyCapturedClosure
 								)
-						// ReSharper restore ImplicitlyCapturedClosure
 						);
 				}
-				default:
-				{
-					// Try use reflection
-					if ( asField != null )
-					{
-						return this.EmitSetField( context, instance, asField, value, true );
-					}
-
-					if ( asProperty.GetSetMethod( true ) != null )
-					{
-						return this.EmitSetProprety( context, instance, asProperty, value, true );
-					}
-
-					throw new SerializationException(
-						String.Format(
-							CultureInfo.CurrentCulture,
-							"Member '{0}' is read only and its elementType ('{1}') is not an appendable collection",
-							member.Name,
-							member.GetMemberValueType()
-						)
-					);
-				}
 			}
+
+			// Try use reflection
+			if ( asField != null )
+			{
+				return this.EmitSetField( context, instance, asField, value, true );
+			}
+
+			if ( asProperty.GetSetMethod( true ) != null )
+			{
+				return this.EmitSetProperty( context, instance, asProperty, value, true );
+			}
+
+			throw new SerializationException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					"Member '{0}' is read only and its elementType ('{1}') is not an appendable collection",
+					member.Name,
+					member.GetMemberValueType()
+				)
+			);
+		}
+
+		private TConstruct EmitStoreCollectionItemsEmitSetCollectionMemberIfNullAndSettable(
+			TContext context,
+			TConstruct instance,
+			TConstruct collection,
+			Type collectionType,
+			FieldInfo asField,
+			PropertyInfo asProperty,
+			TConstruct storeCollectionItems // null for not appendable like String
+		)
+		{
+			if ( storeCollectionItems != null && ( asField != null && asField.IsInitOnly ) || ( asProperty != null && asProperty.GetSetMethod( true ) == null ) )
+			{
+				return storeCollectionItems;
+			}
+
+			/*
+			 * #if APPENDABLE
+			 *	if ( instance.MEMBER == null )
+			 *  {
+			 *		instance.MEMBER = collection:
+			 *  }
+			 *  else
+			 *  {
+			 *		(APPANED)
+			 *  }
+			 * #else
+			 *  instance.MEMBER = collection:
+			 */
+
+			var invokeSetter =
+				asField != null
+					? this.EmitSetField( context, instance, asField, collection, !asField.GetHasPublicSetter() )
+					: this.EmitSetProperty( context, instance, asProperty, collection, !asProperty.GetHasPublicSetter() );
+
+			if ( storeCollectionItems == null )
+			{
+				return invokeSetter;
+			}
+
+			return
+				this.EmitSequentialStatements(
+					context,
+					storeCollectionItems.ContextType,
+					this.EmitConditionalExpression(
+						context,
+						this.EmitEqualsExpression(
+							context,
+							asField != null
+								? this.EmitGetFieldExpression( context, instance, asField )
+								: this.EmitGetPropertyExpression( context, instance, asProperty ),
+							this.MakeNullLiteral( context, collectionType )
+						),
+						invokeSetter, // then
+						storeCollectionItems // else
+					)
+				);
 		}
 
 		/// <summary>
@@ -545,7 +855,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct EmitMethodOfExpression( TContext context, MethodBase method );
 
-		private TConstruct EmitSetProprety(
+		private TConstruct EmitSetProperty(
 			TContext context,
 			TConstruct instance,
 			PropertyInfo property,
@@ -555,7 +865,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			if ( !withReflection )
 			{
-				return EmitSetProprety( context, instance, property, value );
+				return this.EmitSetProperty( context, instance, property, value );
 			}
 
 			/*
@@ -589,7 +899,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="property">The property to be accessed.</param>
 		/// <param name="value">The value to be stored.</param>
 		/// <returns>The generated construct.</returns>
-		protected abstract TConstruct EmitSetProprety( TContext context, TConstruct instance, PropertyInfo property, TConstruct value );
+		protected abstract TConstruct EmitSetProperty( TContext context, TConstruct instance, PropertyInfo property, TConstruct value );
 
 		/// <summary>
 		///		Emits the 'fieldof' expression.
@@ -608,7 +918,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			if ( !withReflection )
 			{
-				return EmitSetField( context, instance, field, value );
+				return this.EmitSetField( context, instance, field, value );
 			}
 
 			/*
@@ -717,19 +1027,27 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context,
 					null,
 					Metadata._String.Format_P,
-					new[]
-					{
-						this.EmitGetPropretyExpression( context, null, Metadata._CultureInfo.InvariantCulture ),
-						this.MakeStringLiteral( context, format ),
-						this.EmitCreateNewArrayExpression(
-							context,
-							typeof( object ),
-							arguments.Length,
-							arguments.Select( a => a.ContextType.GetIsValueType() ? this.EmitBoxExpression( context, a.ContextType, a ) : a )
-						)
-					}
+					this.EmitGetPropertyExpression( context, null, Metadata._CultureInfo.InvariantCulture ),
+					this.MakeStringLiteral( context, format ),
+					this.EmitCreateNewArrayExpression(
+						context,
+						typeof( object ),
+						arguments.Length,
+						arguments.Select( a => a.ContextType.GetIsValueType() ? this.EmitBoxExpression( context, a.ContextType, a ) : a )
+					)
 				);
 		}
+
+		/// <summary>
+		///		Emits the create new array expression.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="elementType">The elementType of the array element.</param>
+		/// <param name="length">The length of the array.</param>
+		/// <returns>The generated code construct.</returns>
+		protected abstract TConstruct EmitCreateNewArrayExpression(
+			TContext context, Type elementType, int length
+		);
 
 		/// <summary>
 		///		Emits the create new array expression.
@@ -743,17 +1061,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TContext context, Type elementType, int length, IEnumerable<TConstruct> initialElements
 		);
 
-		/// <summary>
-		///		Emits the code which gets collection count.
-		/// </summary>
+		///  <summary>
+		/// 		Emits the set array element expression.
+		///  </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="collection">The collection reference.</param>
-		/// <param name="traits">The collection traits.</param>
+		/// <param name="array">The array to be set.</param>
+		/// <param name="index">The index of the array element to be set.</param>
+		/// <param name="value">The value to be set.</param>
 		/// <returns>The generated code construct.</returns>
-		private TConstruct EmitGetCollectionCountExpression( TContext context, TConstruct collection, CollectionTraits traits )
-		{
-			return this.EmitGetPropretyExpression( context, collection, traits.CountProperty );
-		}
+		protected abstract TConstruct EmitSetArrayElementStatement( TContext context, TConstruct array, TConstruct index, TConstruct value );
 
 		/// <summary>
 		///		Emits the get serializer expression.
@@ -761,11 +1077,103 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="context">The generation context.</param>
 		/// <param name="targetType">Type of the target of the serializer.</param>
 		/// <param name="memberInfo">The metadata of the packing/unpacking member.</param>
+		/// <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
 		/// <returns>The generated code construct.</returns>
 		/// <remarks>
 		///		The serializer reference methodology is implication specific.
 		/// </remarks>
-		protected abstract TConstruct EmitGetSerializerExpression( TContext context, Type targetType, SerializingMember? memberInfo );
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		protected virtual TConstruct EmitGetSerializerExpression(
+			TContext context,
+			Type targetType,
+			SerializingMember? memberInfo,
+			PolymorphismSchema itemsSchema
+		)
+		{
+			if ( memberInfo != null && targetType.GetIsEnum() )
+			{
+				return
+					this.EmitInvokeMethodExpression(
+						context,
+						context.Context,
+						Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
+						this.EmitBoxExpression(
+							context,
+							typeof( EnumSerializationMethod ),
+							this.EmitInvokeMethodExpression(
+								context,
+								null,
+								Metadata._EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethodMethod,
+								context.Context,
+								this.EmitTypeOfExpression( context, targetType ),
+								this.MakeEnumLiteral(
+									context,
+									typeof( EnumMemberSerializationMethod ),
+									memberInfo.Value.GetEnumMemberSerializationMethod()
+								)
+							)
+						)
+					);
+			}
+			else if ( memberInfo != null && DateTimeMessagePackSerializerHelpers.IsDateTime( targetType ) )
+			{
+				return
+					this.EmitInvokeMethodExpression(
+						context,
+						context.Context,
+						Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
+						this.EmitBoxExpression(
+							context,
+							typeof( DateTimeConversionMethod ),
+							this.EmitInvokeMethodExpression(
+								context,
+								null,
+								Metadata._DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethodMethod,
+								context.Context,
+								this.MakeEnumLiteral(
+									context,
+									typeof( DateTimeMemberConversionMethod ),
+									memberInfo.Value.GetDateTimeMemberConversionMethod()
+								)
+							)
+						)
+					);
+			}
+			else
+			{
+				// Check by try to get serializer now.
+				var schemaForMember = itemsSchema ??
+									( memberInfo != null
+										? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo )
+										: PolymorphismSchema.Default );
+				context.SerializationContext.GetSerializer( targetType, schemaForMember );
+
+				var schema = this.DeclareLocal( context, typeof( PolymorphismSchema ), "__schema" );
+				return
+					this.EmitSequentialStatements(
+						context,
+						typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
+						new[] { schema }
+						.Concat(
+							this.EmitConstructPolymorphismSchema(
+								context,
+								schema,
+								schemaForMember
+							)
+						).Concat(
+							new[]
+							{
+								this.EmitInvokeMethodExpression(
+									context,
+									context.Context,
+									Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
+									schema
+								)
+							}
+						)
+					);
+			}
+		}
 
 		/// <summary>
 		/// Emits the pack item expression.
@@ -777,8 +1185,17 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="memberName">Name of the member.</param>
 		/// <param name="item">The item to be packed.</param>
 		/// <param name="memberInfo">The metadata of packing member. <c>null</c> for non-object member (collection or tuple items).</param>
+		/// <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
 		/// <returns>The generated code construct.</returns>
-		private IEnumerable<TConstruct> EmitPackItemStatements( TContext context, TConstruct packer, Type itemType, NilImplication nilImplication, string memberName, TConstruct item, SerializingMember? memberInfo )
+		private IEnumerable<TConstruct> EmitPackItemStatements(
+			TContext context,
+			TConstruct packer,
+			Type itemType,
+			NilImplication nilImplication,
+			string memberName, TConstruct item,
+			SerializingMember? memberInfo,
+			PolymorphismSchema itemsSchema
+		)
 		{
 			var nilImplicationConstruct =
 				this._nilImplicationHandler.OnPacking(
@@ -796,7 +1213,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			yield return
 				this.EmitInvokeVoidMethod(
 					context,
-					this.EmitGetSerializerExpression( context, itemType, memberInfo ),
+					this.EmitGetSerializerExpression( context, itemType, memberInfo, itemsSchema ),
 					typeof( MessagePackSerializer<> )
 						.MakeGenericType( itemType )
 						.GetMethods()
@@ -895,6 +1312,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		This value will be <c>null</c> for tuples and collections.
 		/// </param>
 		/// <param name="memberInfo">The metadata of unpacking member.</param>
+		/// <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
 		/// <param name="storeValueStatementEmitter">
 		///		The delegate which generates statement for storing unpacked value.
 		///		1st parameter is unpacked value, and return value is generated statement.
@@ -910,6 +1328,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct itemsCount,
 			TConstruct unpacked,
 			SerializingMember? memberInfo,
+			PolymorphismSchema itemsSchema,
 			Func<TConstruct, TConstruct> storeValueStatementEmitter
 		)
 		{
@@ -918,7 +1337,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context,
 					typeof( void ),
 					this.EmitUnpackItemValueExpressionCore(
-						context, itemType, nilImplication, unpacker, itemIndex, memberName, itemsCount, unpacked, memberInfo, storeValueStatementEmitter
+						context, itemType, nilImplication, unpacker, itemIndex, memberName, itemsCount, unpacked, memberInfo, itemsSchema, storeValueStatementEmitter
 					)
 				);
 		}
@@ -941,6 +1360,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		This value will be <c>null</c> for tuples and collections.
 		/// </param>
 		/// <param name="memberInfo">The metadata of unpacking member.</param>
+		/// <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
 		/// <param name="storeValueStatementEmitter">
 		///		The delegate which generates statement for storing unpacked value.
 		///		1st parameter is unpacked value, and return value is generated statement.
@@ -956,6 +1376,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct itemsCount,
 			TConstruct unpacked,
 			SerializingMember? memberInfo,
+			PolymorphismSchema itemsSchema,
 			Func<TConstruct, TConstruct> storeValueStatementEmitter
 		)
 		{
@@ -1039,11 +1460,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 				{
 					this.EmitNotExpression(
 						context,
-						this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsArrayHeader )
+						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.IsArrayHeader )
 					),
 					this.EmitNotExpression(
 						context,
-						this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsMapHeader )
+						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.IsMapHeader )
 					)
 				};
 
@@ -1083,7 +1504,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.EmitStoreVariableStatement(
 							context,
 							nullable,
-							this.EmitGetPropretyExpression(
+							this.EmitGetPropertyExpression(
 									context,
 									unpacker,
 									Metadata._Unpacker.LastReadData
@@ -1101,7 +1522,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					) : this.EmitAndConditionalExpression(
 						context,
 						isNotInCollectionCondition,
-						this.EmitDeserializeItemExpression( context, unpacker, nullableType, nullable, memberInfo ),
+						this.EmitDeserializeItemExpression( context, unpacker, nullableType, nullable, memberInfo, itemsSchema ),
 						this.EmitUsingStatement(
 							context,
 							typeof( Unpacker ),
@@ -1111,7 +1532,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								Metadata._Unpacker.ReadSubtree
 							),
 							subtreeUnpacker =>
-								this.EmitDeserializeItemExpression( context, subtreeUnpacker, nullableType, nullable, memberInfo )
+								this.EmitDeserializeItemExpression( context, subtreeUnpacker, nullableType, nullable, memberInfo, itemsSchema )
 						)
 					)
 				);
@@ -1120,7 +1541,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			var unpackedItem =
 				( Nullable.GetUnderlyingType( nullable.ContextType ) != null
 				  && Nullable.GetUnderlyingType( itemType ) == null )
-					? this.EmitGetPropretyExpression( context, nullable, nullable.ContextType.GetProperty( "Value" ) )
+					? this.EmitGetPropertyExpression( context, nullable, nullable.ContextType.GetProperty( "Value" ) )
 					: nullable;
 			var store =
 				storeValueStatementEmitter( unpackedItem );
@@ -1163,11 +1584,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitConditionalExpression(
 					context,
 					( !isNativelyNullable || Nullable.GetUnderlyingType( itemType ) != null )
-						? this.EmitGetPropretyExpression( context, nullable, nullableType.GetProperty( "HasValue" ) )
+						? this.EmitGetPropertyExpression( context, nullable, nullableType.GetProperty( "HasValue" ) )
 						: itemType == typeof( MessagePackObject )
 						? this.EmitNotExpression(
 							context,
-							this.EmitGetPropretyExpression( context, nullable, Metadata._MessagePackObject.IsNil )
+							this.EmitGetPropertyExpression( context, nullable, Metadata._MessagePackObject.IsNil )
 						) : this.EmitNotEqualsExpression( context, nullable, this.MakeNullLiteral( context, itemType ) ),
 					store,
 					expressionWhenNil
@@ -1239,9 +1660,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="itemType">Type of the item to be deserialized.</param>
 		/// <param name="unpacked">The variable which stores unpacked item.</param>
 		/// <param name="memberInfo">The metadata of unpacking member.</param>
+		/// <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
 		/// <returns>The expression which returns deserialized item.</returns>
 		private TConstruct EmitDeserializeItemExpression(
-			TContext context, TConstruct unpacker, Type itemType, TConstruct unpacked, SerializingMember? memberInfo
+			TContext context, TConstruct unpacker, Type itemType, TConstruct unpacked, SerializingMember? memberInfo, PolymorphismSchema itemsSchema
 		)
 		{
 			return
@@ -1250,7 +1672,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					unpacked,
 					this.EmitInvokeMethodExpression(
 						context,
-						this.EmitGetSerializerExpression( context, itemType, memberInfo ),
+						this.EmitGetSerializerExpression( context, itemType, memberInfo, itemsSchema ),
 						typeof( MessagePackSerializer<> ).MakeGenericType( itemType ).GetMethod( "UnpackFrom" ),
 						unpacker
 					)
@@ -1295,7 +1717,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="cases">The case statements. The keys are case condition, and values are actual statement.</param>
 		/// <param name="defaultCase">Default case expression.</param>
 		/// <returns>The switch statement.</returns>
-		protected abstract TConstruct EmitStringSwitchStatement ( TContext context, TConstruct target, IDictionary<string, TConstruct> cases, TConstruct defaultCase );
+		protected abstract TConstruct EmitStringSwitchStatement( TContext context, TConstruct target, IDictionary<string, TConstruct> cases, TConstruct defaultCase );
 
 		/// <summary>
 		/// 	Emits the return statement
@@ -1436,22 +1858,539 @@ namespace MsgPack.Serialization.AbstractSerializers
 		}
 
 		/// <summary>
-		///		Retrieves a constructor with <see cref="Int32"/> elementType capacity parameter or default constructor of the <typeparamref name="TObject"/>.
+		///		Determines the collection constructor arguments.
 		/// </summary>
-		/// <param name="instanceType">The target elementType.</param>
-		/// <returns>A constructor of the <paramref name="instanceType"/>.</returns>
-		private static ConstructorInfo GetCollectionConstructor( Type instanceType )
+		/// <param name="context">The context.</param>
+		/// <param name="constructor">The constructor.</param>
+		/// <returns>
+		///		An array of constructs representing constructor arguments.
+		/// </returns>
+		/// <exception cref="System.NotSupportedException">
+		///		The <paramref name="constructor"/> has unsupported signature.
+		/// </exception>
+		private TConstruct[] DetermineCollectionConstructorArguments( TContext context, ConstructorInfo constructor )
 		{
-			var ctor =
-				instanceType.GetConstructor( UnpackHelpers.CollectionConstructorWithCapacityParameterTypes )
-				?? instanceType.GetConstructor( ReflectionAbstractions.EmptyTypes );
-
-			if ( ctor == null )
+			var parameters = constructor.GetParameters();
+			switch ( parameters.Length )
 			{
-				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( instanceType );
+				case 0:
+				{
+					return NoConstructs;
+				}
+				case 1:
+				{
+					return new[] { this.GetConstructorArgument( context, parameters[ 0 ] ) };
+				}
+				case 2:
+				{
+					return new[] { this.GetConstructorArgument( context, parameters[ 0 ] ), this.GetConstructorArgument( context, parameters[ 1 ] ) };
+				}
+				default:
+				{
+					throw new NotSupportedException(
+						String.Format( CultureInfo.CurrentCulture, "Constructor signature '{0}' is not supported.", constructor )
+					);
+				}
+			}
+		}
+
+
+		/// <summary>
+		///		Gets the construt for constructor argument.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="parameter">The parameter of the constructor parameter.</param>
+		/// <returns>The construt for constructor argument.</returns>
+		private TConstruct GetConstructorArgument( TContext context, ParameterInfo parameter )
+		{
+			return
+				parameter.ParameterType == typeof( int )
+				? context.InitialCapacity
+				: this.EmitGetEqualityComparer( context );
+		}
+
+
+		/// <summary>
+		///		Emits the construct to get equality comparer via <see cref="UnpackHelpers"/>.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <returns>
+		///		The construct to get equality comparer via <see cref="UnpackHelpers"/>.
+		/// </returns>
+		private TConstruct EmitGetEqualityComparer( TContext context )
+		{
+			Type comparisonType;
+			switch ( CollectionTraitsOfThis.DetailedCollectionType )
+			{
+				case CollectionDetailedKind.Array:
+				case CollectionDetailedKind.GenericCollection:
+				case CollectionDetailedKind.GenericEnumerable:
+				case CollectionDetailedKind.GenericList:
+#if !NETFX_35 && !UNITY
+				case CollectionDetailedKind.GenericSet:
+#endif // !NETFX_35 && !UNITY
+				{
+					comparisonType = CollectionTraitsOfThis.ElementType;
+					break;
+				}
+				case CollectionDetailedKind.GenericDictionary:
+				{
+					comparisonType = CollectionTraitsOfThis.ElementType.GetGenericArguments()[ 0 ];
+					break;
+				}
+				default:
+				{
+					// non-generic
+					comparisonType = typeof( object );
+					break;
+				}
 			}
 
-			return ctor;
+			return
+				this.EmitInvokeMethodExpression(
+					context,
+					null,
+					Metadata._UnpackHelpers.GetEqualityComparer_1Method.MakeGenericMethod( comparisonType )
+				);
+		}
+
+		/// <summary>
+		///		Emits <see cref="PolymorphismSchema"/> construction sequence.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="storage">The local variable which the schema to be stored.</param>
+		/// <param name="schema">The <see cref="PolymorphismSchema"/> which contains emitting data.</param>
+		/// <returns>
+		///		Constructs to emit construct a copy of <paramref name="schema"/>.
+		/// </returns>
+		protected IEnumerable<TConstruct> EmitConstructPolymorphismSchema(
+			TContext context,
+			TConstruct storage,
+			PolymorphismSchema schema
+		)
+		{
+			if ( schema == null )
+			{
+				yield return
+					this.EmitStoreVariableStatement(
+						context,
+						storage,
+						this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
+					);
+				yield break;
+			}
+
+			switch ( schema.ChildrenType )
+			{
+				case PolymorphismSchemaChildrenType.CollectionItems:
+				{
+					/*
+					 * __itemsTypeMap = new Dictionary<byte, Type>();
+					 * __itemsTypeMap.Add( b, t );
+					 * :
+					 * __itemsSchema = new PolymorphismSchema( __itemType, __itemsTypeMap, null ); // OR null
+					 * __map = new Dictionary<byte, Type>();
+					 * __map.Add( b, t );
+					 * :
+					 * storage = new PolymorphismSchema( __type, __map, __itemsSchema );
+					 */
+					var itemsSchemaVariableName = context.GetUniqueVariableName( "itemsSchema" );
+					var itemsSchema =
+						schema.ItemSchema.UseDefault
+							? this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
+							: this.DeclareLocal( context, typeof( PolymorphismSchema ), itemsSchemaVariableName );
+					if ( !schema.ItemSchema.UseDefault )
+					{
+						yield return itemsSchema;
+
+						foreach (
+							var instruction in
+								this.EmitConstructLeafPolymorphismSchema( context, itemsSchema, schema.ItemSchema, itemsSchemaVariableName )
+						)
+						{
+							yield return instruction;
+						}
+					}
+
+					if ( schema.UseDefault )
+					{
+						yield return
+							this.EmitStoreVariableStatement(
+								context,
+								storage,
+								this.EmitInvokeMethodExpression(
+									context,
+									null,
+									PolymorphismSchema.ForContextSpecifiedCollectionMethod,
+									this.EmitTypeOfExpression( context, schema.TargetType ),
+									itemsSchema
+								)
+							);
+					}
+					else if ( schema.UseTypeEmbedding )
+					{
+						yield return
+							this.EmitStoreVariableStatement(
+								context,
+								storage,
+								this.EmitInvokeMethodExpression(
+									context,
+									null,
+									PolymorphismSchema.ForPolymorphicCollectionTypeEmbeddingMethod,
+									this.EmitTypeOfExpression( context, schema.TargetType ),
+									itemsSchema
+								)
+							);
+					}
+					else
+					{
+						var typeMap =
+							this.DeclareLocal(
+								context,
+								typeof( Dictionary<byte, Type> ),
+								context.GetUniqueVariableName( "typeMap" )
+							);
+
+						yield return typeMap;
+						yield return
+							this.EmitStoreVariableStatement(
+								context,
+								typeMap,
+								this.EmitCreateNewObjectExpression(
+									context,
+									typeMap,
+									PolymorphismSchema.CodeTypeMapConstructor,
+									this.MakeInt32Literal( context, schema.CodeTypeMapping.Count )
+								)
+							);
+
+
+						foreach ( var instruction in this.EmitConstructTypeCodeMappingForPolymorphismSchema( context, schema, typeMap ) )
+						{
+							yield return instruction;
+						}
+
+						yield return
+							this.EmitStoreVariableStatement(
+								context,
+								storage,
+								this.EmitInvokeMethodExpression(
+									context,
+									null,
+									PolymorphismSchema.ForPolymorphicCollectionCodeTypeMappingMethod,
+									this.EmitTypeOfExpression( context, schema.TargetType ),
+									typeMap,
+									itemsSchema
+								)
+							);
+					}
+					break;
+				}
+				case PolymorphismSchemaChildrenType.DictionaryKeyValues:
+				{
+					/*
+					 * __keysTypeMap = new Dictionary<byte, Type>();
+					 * __keysTypeMap.Add( b, t );
+					 * :
+					 * __keysSchema = new PolymorphismSchema( __keyType, __keysTypeMap ); // OR null
+					 * __valuesTypeMap = new Dictionary<byte, Type>();
+					 * __valuesTypeMap.Add( b, t );
+					 * :
+					 * __valuesSchema = new PolymorphismSchema( __valueType, __valuesTypeMap ); // OR null
+					 * __map = new Dictionary<byte, Type>();
+					 * __map.Add( b, t );
+					 * :
+					 * storage = new PolymorphismSchema( __type, __map, __keysSchema, __valuesSchema );
+					 */
+					var keysSchemaVariableName = context.GetUniqueVariableName( "keysSchema" );
+					var keysSchema =
+						schema.KeySchema.UseDefault
+							? this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
+							: this.DeclareLocal( context, typeof( PolymorphismSchema ), keysSchemaVariableName );
+					if ( !schema.KeySchema.UseDefault )
+					{
+						yield return keysSchema;
+						foreach (
+							var instruction in
+								this.EmitConstructLeafPolymorphismSchema( context, keysSchema, schema.KeySchema, keysSchemaVariableName )
+						)
+						{
+							yield return instruction;
+						}
+					}
+
+					var valuesSchemaVariableName = context.GetUniqueVariableName( "valuesSchema" );
+					var valuesSchema =
+						schema.ItemSchema.UseDefault
+							? this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
+							: this.DeclareLocal( context, typeof( PolymorphismSchema ), valuesSchemaVariableName );
+					if ( !schema.ItemSchema.UseDefault )
+					{
+						yield return valuesSchema;
+						foreach (
+							var instruction in
+								this.EmitConstructLeafPolymorphismSchema( context, valuesSchema, schema.ItemSchema, valuesSchemaVariableName )
+						)
+						{
+							yield return instruction;
+						}
+					}
+
+					if ( schema.UseDefault )
+					{
+						yield return
+							this.EmitStoreVariableStatement(
+								context,
+								storage,
+								this.EmitInvokeMethodExpression(
+									context,
+									null,
+									PolymorphismSchema.ForContextSpecifiedDictionaryMethod,
+									this.EmitTypeOfExpression( context, schema.TargetType ),
+									keysSchema,
+									valuesSchema
+								)
+							);
+					}
+					else if ( schema.UseTypeEmbedding )
+					{
+						yield return
+							this.EmitStoreVariableStatement(
+								context,
+								storage,
+								this.EmitInvokeMethodExpression(
+									context,
+									null,
+									PolymorphismSchema.ForPolymorphicDictionaryTypeEmbeddingMethod,
+									this.EmitTypeOfExpression( context, schema.TargetType ),
+									keysSchema,
+									valuesSchema
+								)
+							);
+					}
+					else
+					{
+						var typeMap =
+							this.DeclareLocal(
+								context,
+								typeof( Dictionary<byte, Type> ),
+								context.GetUniqueVariableName( "typeMap" )
+							);
+
+						yield return typeMap;
+						yield return
+							this.EmitStoreVariableStatement(
+								context,
+								typeMap,
+								this.EmitCreateNewObjectExpression(
+									context,
+									typeMap,
+									PolymorphismSchema.CodeTypeMapConstructor,
+									this.MakeInt32Literal( context, schema.CodeTypeMapping.Count )
+								)
+							);
+
+						foreach ( var instruction in this.EmitConstructTypeCodeMappingForPolymorphismSchema( context, schema, typeMap ) )
+						{
+							yield return instruction;
+						}
+
+						yield return
+							this.EmitStoreVariableStatement(
+								context,
+								storage,
+								this.EmitInvokeMethodExpression(
+									context,
+									null,
+									PolymorphismSchema.ForPolymorphicDictionaryCodeTypeMappingMethod,
+									this.EmitTypeOfExpression( context, schema.TargetType ),
+									typeMap,
+									keysSchema,
+									valuesSchema
+								)
+							);
+					}
+					break;
+				}
+#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+				case PolymorphismSchemaChildrenType.TupleItems:
+				{
+					if ( schema.ChildSchemaList.Count == 0 )
+					{
+						yield return
+							this.EmitStoreVariableStatement(
+								context,
+								storage,
+								this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
+							);
+					}
+
+					/*
+					 * tupleItemsSchema = new PolymorphismSchema[__arity__];
+					 * for(var i = 0; i < __arity__; i++ )
+					 * {
+					 *   __itemsTypeMap = new Dictionary<byte, Type>();
+					 *   __itemsTypeMap.Add( b, t );
+					 *   :
+					 *   itemsSchema = new PolymorphismSchema( __itemType, __itemsTypeMap, null ); // OR null
+					 *   tupleItemsSchema[i] = itemsSchema;
+					 * }
+					 * __map = new Dictionary<byte, Type>();
+					 * __map.Add( b, t );
+					 * :
+					 * storage = new PolymorphismSchema( __type, __map, __itemsSchema );
+					 */
+					var tupleItems = TupleItems.GetTupleItemTypes( schema.TargetType );
+					var tupleItemsSchema =
+						this.DeclareLocal(
+							context,
+							typeof( PolymorphismSchema[] ),
+							context.GetUniqueVariableName( "tupleItemsSchema" )
+						);
+
+					yield return tupleItemsSchema;
+
+					yield return
+						this.EmitStoreVariableStatement(
+							context,
+							tupleItemsSchema,
+							this.EmitCreateNewArrayExpression( context, typeof( PolymorphismSchema ), tupleItems.Count )
+						);
+					for ( var i = 0; i < tupleItems.Count; i++ )
+					{
+						var variableName = context.GetUniqueVariableName( "tupleItemSchema" );
+						var itemSchema = this.DeclareLocal( context, typeof( PolymorphismSchema ), variableName );
+						yield return itemSchema;
+						foreach ( var statement in this.EmitConstructLeafPolymorphismSchema( context, itemSchema, schema.ChildSchemaList[ i ], variableName ) )
+						{
+							yield return statement;
+						}
+
+						yield return this.EmitSetArrayElementStatement( context, tupleItemsSchema, this.MakeInt32Literal( context, i ), itemSchema );
+					}
+
+					yield return
+						this.EmitStoreVariableStatement(
+							context,
+							storage,
+							this.EmitInvokeMethodExpression(
+								context,
+								null,
+								PolymorphismSchema.ForPolymorphicTupleMethod,
+								this.EmitTypeOfExpression( context, schema.TargetType ),
+								tupleItemsSchema
+							)
+						);
+					break;
+				}
+#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+				default:
+				{
+					foreach ( var instruction in
+						this.EmitConstructLeafPolymorphismSchema( context, storage, schema, String.Empty ) )
+					{
+						yield return instruction;
+					}
+
+					break;
+				}
+			}
+		}
+
+		private IEnumerable<TConstruct> EmitConstructLeafPolymorphismSchema( TContext context, TConstruct storage, PolymorphismSchema currentSchema, string prefix )
+		{
+			/*
+			 * __itemsTypeMap = new Dictionary<byte, Type>();
+			 * __itemsTypeMap.Add( b, t );
+			 * :
+			 * __itemsSchema = new PolymorphismSchema( __itemType, __itemsTypeMap, null ); // OR null
+			 * __map = new Dictionary<byte, Type>();
+			 * __map.Add( b, t );
+			 * :
+			 * storage = new PolymorphismSchema( __type, __map, __itemsSchema );
+			 */
+			if ( currentSchema.UseDefault )
+			{
+				yield return
+					this.EmitStoreVariableStatement(
+						context,
+						storage,
+						this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
+					);
+			}
+			else if ( currentSchema.UseTypeEmbedding )
+			{
+				yield return
+					this.EmitStoreVariableStatement(
+						context,
+						storage,
+						this.EmitInvokeMethodExpression(
+							context,
+							null,
+							PolymorphismSchema.ForPolymorphicObjectTypeEmbeddingMethod,
+							this.EmitTypeOfExpression( context, currentSchema.TargetType )
+						)
+					);
+			}
+			else
+			{
+				var typeMap =
+					this.DeclareLocal(
+						context,
+						typeof( Dictionary<byte, Type> ),
+						context.GetUniqueVariableName( String.IsNullOrEmpty( prefix ) ? "typeMap" : ( prefix + "TypeMap" ) )
+					);
+
+				yield return typeMap;
+
+				foreach ( var instruction in this.EmitConstructTypeCodeMappingForPolymorphismSchema( context, currentSchema, typeMap ) )
+				{
+					yield return instruction;
+				}
+
+				yield return
+					this.EmitStoreVariableStatement(
+						context,
+						storage,
+						this.EmitInvokeMethodExpression(
+							context,
+							null,
+							PolymorphismSchema.ForPolymorphicObjectCodeTypeMappingMethod,
+							this.EmitTypeOfExpression( context, currentSchema.TargetType ),
+							typeMap
+						)
+					);
+			}
+		}
+
+		private IEnumerable<TConstruct> EmitConstructTypeCodeMappingForPolymorphismSchema(
+			TContext context,
+			PolymorphismSchema currentSchema,
+			TConstruct typeMap )
+		{
+			yield return
+				this.EmitStoreVariableStatement(
+					context,
+					typeMap,
+					this.EmitCreateNewObjectExpression(
+						context,
+						typeMap,
+						PolymorphismSchema.CodeTypeMapConstructor,
+						this.MakeInt32Literal( context, currentSchema.CodeTypeMapping.Count )
+					)
+				);
+
+			foreach ( var entry in currentSchema.CodeTypeMapping )
+			{
+				yield return
+					this.EmitInvokeMethodExpression(
+						context,
+						typeMap,
+						PolymorphismSchema.AddToCodeTypeMapMethod,
+						this.MakeByteLiteral( context, entry.Key ),
+						this.EmitTypeOfExpression( context, entry.Value )
+					);
+			}
 		}
 
 		/// <summary>
@@ -1472,6 +2411,5 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.Counter = counter;
 			}
 		}
-
 	}
 }

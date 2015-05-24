@@ -54,8 +54,8 @@ private void WriteUnpackCore( Type type, bool isNullable )
 {
 #>
 #if DEBUG && !UNITY
-Contract.Assert( source != null );
-Contract.Assert( buffer != null );
+Contract.Assert( source != null, "source != null" );
+Contract.Assert( buffer != null, "buffer != null" );
 #endif // DEBUG && !UNITY
 
 var header = source.ReadByte();
@@ -277,7 +277,7 @@ private void WriteUnpackString()
 {
 #>
 #if DEBUG && !UNITY
-Contract.Assert( encoding != null );
+Contract.Assert( encoding != null, "encoding != null" );
 #endif // DEBUG && !UNITY
 <#+
 	WriteUnpackRawLength( typeof( String ).FullName, "result" );
@@ -347,8 +347,8 @@ private void WriteUnpackRawLength( string typeName, string resultVariable )
 #>
 #region UnpackRawLength
 #if DEBUG && !UNITY
-Contract.Assert( source != null );
-Contract.Assert( buffer != null );
+Contract.Assert( source != null, "source != null" );
+Contract.Assert( buffer != null, "buffer != null" );
 #endif // DEBUG && !UNITY
 
 var header = source.ReadByte();
@@ -440,8 +440,8 @@ private void WriteUnpackObject()
 {
 #>
 #if DEBUG && !UNITY
-Contract.Assert( source != null );
-Contract.Assert( buffer != null );
+Contract.Assert( source != null, "source != null" );
+Contract.Assert( buffer != null, "buffer != null" );
 #endif // DEBUG && !UNITY
 
 var header = source.ReadByte();
@@ -845,8 +845,8 @@ private void WriteUnpackArrayLength()
 #>
 #region UnpackArrayLength
 #if DEBUG && !UNITY
-Contract.Assert( source != null );
-Contract.Assert( buffer != null );
+Contract.Assert( source != null, "source != null" );
+Contract.Assert( buffer != null, "buffer != null" );
 #endif // DEBUG && !UNITY
 
 var header = source.ReadByte();
@@ -920,8 +920,8 @@ private void WriteUnpackMapLength()
 #>
 #region UnpackMapLength
 #if DEBUG && !UNITY
-Contract.Assert( source != null );
-Contract.Assert( buffer != null );
+Contract.Assert( source != null, "source != null" );
+Contract.Assert( buffer != null, "buffer != null" );
 #endif // DEBUG && !UNITY
 
 var header = source.ReadByte();
@@ -994,8 +994,8 @@ private void WriteUnpackExtendedTypeObject()
 	#>
 #region UnpackExt
 #if DEBUG && !UNITY
-Contract.Assert( source != null );
-Contract.Assert( buffer != null );
+Contract.Assert( source != null, "source != null" );
+Contract.Assert( buffer != null, "buffer != null" );
 #endif // DEBUG && !UNITY
 
 var header = source.ReadByte();

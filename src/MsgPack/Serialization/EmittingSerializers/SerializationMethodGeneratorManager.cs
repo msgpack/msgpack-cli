@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -98,23 +98,26 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		Creates new <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
 		/// </summary>
 		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="baseClass">Type of the base class of the serializer.</param>
 		/// <param name="emitterFlavor"><see cref="EmitterFlavor"/>.</param>
 		/// <returns>New <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.</returns>
-		public SerializerEmitter CreateEmitter( Type targetType, EmitterFlavor emitterFlavor )
+		public SerializerEmitter CreateEmitter( Type targetType, Type baseClass, EmitterFlavor emitterFlavor )
 		{
 			Contract.Requires( targetType != null );
+			Contract.Requires( baseClass != null );
 			Contract.Ensures( Contract.Result<SerializerEmitter>() != null );
 
-			return this.CreateEmitterCore( targetType, emitterFlavor );
+			return this.CreateEmitterCore( targetType, baseClass, emitterFlavor );
 		}
 
 		/// <summary>
 		///		Creates new <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
 		/// </summary>
 		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="baseClass">Type of the base class of the serializer.</param>
 		/// <param name="emitterFlavor"><see cref="EmitterFlavor"/>.</param>
 		/// <returns>New <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.</returns>
-		protected abstract SerializerEmitter CreateEmitterCore( Type targetType, EmitterFlavor emitterFlavor );
+		protected abstract SerializerEmitter CreateEmitterCore( Type targetType, Type baseClass, EmitterFlavor emitterFlavor );
 
 
 		/// <summary>

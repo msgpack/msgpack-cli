@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -489,7 +489,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestIssue13_StringListMapAsMpoDictionary()
 		{
-			var target = MessagePackSerializer.CreateInternal<Dictionary<MessagePackObject, MessagePackObject>>( SerializationContext.Default );
+			var target = MessagePackSerializer.Get<Dictionary<MessagePackObject, MessagePackObject>>( SerializationContext.Default, PolymorphismSchema.Default );
 			using ( var buffer = new MemoryStream( Convert.FromBase64String( "gadyZXN1bHRzkss/8AAAAAAAAMtAAAAAAAAAAA==" ) ) )
 			{
 				var result = target.Unpack( buffer );

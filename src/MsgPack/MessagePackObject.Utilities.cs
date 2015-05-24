@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,7 +27,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 using System.Globalization;
 using System.Linq;
@@ -276,7 +280,7 @@ namespace MsgPack
 						return false;
 					}
 
-					return asArray.SequenceEqual( otherAsArray );
+					return asArray.SequenceEqual( otherAsArray, MessagePackObjectEqualityComparer.Instance );
 				}
 			}
 
@@ -331,7 +335,9 @@ namespace MsgPack
 				}
 			}
 
-			Debug.Assert( false, String.Format( "Unknown handle type this:'{0}'(value: '{1}'), other:'{2}'(value: '{3}')", this._handleOrTypeCode.GetType(), this._handleOrTypeCode, other._handleOrTypeCode.GetType(), other._handleOrTypeCode ) );
+#if DEBUG && !UNITY
+			Contract.Assert( false, String.Format( "Unknown handle type this:'{0}'(value: '{1}'), other:'{2}'(value: '{3}')", this._handleOrTypeCode.GetType(), this._handleOrTypeCode, other._handleOrTypeCode.GetType(), other._handleOrTypeCode ) );
+#endif // DEBUG && !UNITY
 			return this._handleOrTypeCode.Equals( other._handleOrTypeCode );
 		}
 
@@ -1182,9 +1188,9 @@ namespace MsgPack
 			try
 			{
 				var asMessagePackString = this._handleOrTypeCode as MessagePackString;
-#if !UNITY
-				Contract.Assert( asMessagePackString != null );
-#endif // !UNITY
+#if !UNITY && DEBUG
+				Contract.Assert( asMessagePackString != null, "asMessagePackString != null" );
+#endif // !UNITY && DEBUG
 
 				if ( encoding is UTF8Encoding )
 				{
@@ -1231,9 +1237,9 @@ namespace MsgPack
 			try
 			{
 				MessagePackString asMessagePackString = this._handleOrTypeCode as MessagePackString;
-#if !UNITY
-				Contract.Assert( asMessagePackString != null );
-#endif // !UNITY
+#if !UNITY && DEBUG
+				Contract.Assert( asMessagePackString != null, "asMessagePackString != null" );
+#endif // !UNITY && DEBUG
 
 				if ( asMessagePackString.UnsafeGetString() != null )
 				{

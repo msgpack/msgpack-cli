@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,7 +26,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 #if !UNITY
+#if XAMIOS || XAMDROID
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID
 #endif // !UNITY
 using System.Linq;
 using System.Reflection;
@@ -104,7 +108,6 @@ namespace MsgPack
 		}
 #endif // DEBUG
 
-#if !NETFX_35
 		public static Assembly GetAssembly( this Type source )
 		{
 #if NETFX_CORE
@@ -113,7 +116,6 @@ namespace MsgPack
 			return source.Assembly;
 #endif
 		}
-#endif // NETFX_35
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Wrong detection" )]
 		public static bool GetIsPublic( this Type source )
@@ -183,7 +185,7 @@ namespace MsgPack
 
 		public static IEnumerable<ConstructorInfo> GetConstructors( this Type source )
 		{
-			return source.GetTypeInfo().DeclaredConstructors;
+			return source.GetTypeInfo().DeclaredConstructors.Where( c => c.IsPublic );
 		}
 
 		public static Type[] GetGenericArguments( this Type source )
@@ -261,6 +263,13 @@ namespace MsgPack
 			return Attribute.GetCustomAttribute( source, typeof( T ) ) as T;
 		}
 
+#if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
+		public static bool IsDefined( this MemberInfo source, Type attributeType )
+		{
+			return Attribute.IsDefined( source, attributeType );
+		}
+#endif // NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
+
 #if !SILVERLIGHT
 		public static Type GetAttributeType( this CustomAttributeData source )
 		{
@@ -280,12 +289,33 @@ namespace MsgPack
 #endif // !SILVERLIGHT
 #endif // NETFX_CORE
 
+		public static string GetCultureName( this AssemblyName source )
+		{
+#if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
+			return source.CultureInfo.Name;
+#else
+			return source.CultureName;
+#endif
+		}
+
 #if NETFX_35 || UNITY
 		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this MemberInfo source )
 		{
 			return CustomAttributeData.GetCustomAttributes( source );
 		}
+
+		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this ParameterInfo source )
+		{
+			return CustomAttributeData.GetCustomAttributes( source );
+		}
 #endif // NETFX_35 || UNITY
+
+#if NETFX_CORE
+		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this ParameterInfo source )
+		{
+			return source.CustomAttributes;
+		}
+#endif // NETFX_CORE
 
 #if SILVERLIGHT
 		public static IEnumerable<Attribute> GetCustomAttributesData( this MemberInfo source )
@@ -355,11 +385,20 @@ namespace MsgPack
 		}
 #endif // SILVERLIGHT
 
-#if NETFX_40
+#if NETFX_35 || NETFX_40 || UNITY
 		public static Delegate CreateDelegate( this MethodInfo source, Type delegateType )
 		{
 			return Delegate.CreateDelegate( delegateType, source );
 		}
-#endif // NETFX_40
+#endif // NETFX_35 || NETFX_40 || UNITY
+
+		public static bool GetHasDefaultValue( this ParameterInfo source )
+		{
+#if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
+			return source.DefaultValue != DBNull.Value;
+#else
+			return source.HasDefaultValue;
+#endif
+		}
 	}
 }

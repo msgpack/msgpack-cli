@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -181,4 +181,97 @@ namespace MsgPack.Serialization
 			return clone;
 		}
 	}
+
+#if UNITY
+	internal abstract class UnityEnumMessagePackSerializer : NonGenericMessagePackSerializer, ICustomizableEnumSerializer
+	{
+		private readonly Type _underlyingType;
+		private EnumSerializationMethod _serializationMethod; // not readonly -- changed in cloned instance in GetCopyAs()
+
+		protected UnityEnumMessagePackSerializer( SerializationContext ownerContext, Type targetType, EnumSerializationMethod serializationMethod )
+			: base( ownerContext, targetType )
+		{
+			if ( !targetType.GetIsEnum() )
+			{
+				throw new InvalidOperationException(
+					String.Format( CultureInfo.CurrentCulture, "Type '{0}' is not enum.", targetType )
+				);
+			}
+
+			this._serializationMethod = serializationMethod;
+			this._underlyingType = Enum.GetUnderlyingType( targetType );
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		protected internal sealed override void PackToCore( Packer packer, object objectTree )
+		{
+			if ( this._serializationMethod == EnumSerializationMethod.ByUnderlyingValue )
+			{
+				this.PackUnderlyingValueTo( packer, objectTree );
+			}
+			else
+			{
+				packer.PackString( objectTree.ToString() );
+			}
+		}
+
+		protected internal abstract void PackUnderlyingValueTo( Packer packer, object enumValue );
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		protected internal sealed override object UnpackFromCore( Unpacker unpacker )
+		{
+			if ( unpacker.LastReadData.IsRaw )
+			{
+				var asString = unpacker.LastReadData.AsString();
+
+				try
+				{
+					return Enum.Parse( this.TargetType, asString, false );
+				}
+				catch ( ArgumentException ex )
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Name '{0}' is not member of enum type '{1}'.",
+							asString,
+							this.TargetType
+							),
+						ex
+					);
+				}
+			}
+			else if ( unpacker.LastReadData.IsTypeOf( this._underlyingType ).GetValueOrDefault() )
+			{
+				return this.UnpackFromUnderlyingValue( unpacker.LastReadData );
+			}
+			else
+			{
+				throw new SerializationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"Type '{0}' is not underlying type of enum type '{1}'.",
+						unpacker.LastReadData.UnderlyingType,
+						this.TargetType
+					)
+				);
+			}
+		}
+
+		protected internal abstract object UnpackFromUnderlyingValue( MessagePackObject messagePackObject );
+
+		ICustomizableEnumSerializer ICustomizableEnumSerializer.GetCopyAs( EnumSerializationMethod method )
+		{
+			if ( method == this._serializationMethod )
+			{
+				return this;
+			}
+
+			var clone = this.MemberwiseClone() as UnityEnumMessagePackSerializer;
+			// ReSharper disable once PossibleNullReferenceException
+			clone._serializationMethod = method;
+			return clone;
+		}
+	}
+#endif // UNITY
 }

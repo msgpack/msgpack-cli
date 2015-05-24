@@ -47,6 +47,10 @@ using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
 #endif
 
+#if UNITY
+using MsgPack.Serialization;
+#endif // UNITY
+
 namespace MsgPack
 {
 	/// <summary>
@@ -80,32 +84,44 @@ namespace MsgPack
 		{
 			try
 			{
-#if !NETFX_CORE
+#if UNITY
+				this._defaultConstructor = () => ReflectionExtensions.CreateInstancePreservingExceptionType<T>( typeof( T ) );
+#elif !NETFX_CORE
 				this._defaultConstructor = Expression.Lambda<Func<T>>( Expression.New( typeof( T ).GetConstructor( _emptyTypes ) ) ).Compile();
 #else
 				this._defaultConstructor = Expression.Lambda<Func<T>>( Expression.New( typeof( T ).GetTypeInfo().DeclaredConstructors.Single( c => c.GetParameters().Length == 0 ) ) ).Compile();
-#endif
+#endif // if UNITY elif !NETFX_CORE
 				var message = Expression.Parameter( typeof( string ), "message" );
 				var innerException = Expression.Parameter( typeof( Exception ), "innerException" );
+
+#if !UNITY
 				this._messageConstructor =
 					Expression.Lambda<Func<string, T>>(
 #if !NETFX_CORE
 						Expression.New( typeof( T ).GetConstructor( _messageConstructorParameterTypes ), message ),
 #else
 						Expression.New( typeof( T ).GetTypeInfo().DeclaredConstructors.Single( c => c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( _messageConstructorParameterTypes ) ), message ),
-#endif
+#endif // !NETFX_CORE
 						message
 					).Compile();
+#else
+				this._messageConstructor = msg => ReflectionExtensions.CreateInstancePreservingExceptionType<T>( typeof( T ), msg );
+#endif // !UNITY
+
+#if !UNITY
 				this._innerExceptionConstructor =
 					Expression.Lambda<Func<string, Exception, T>>(
 #if !NETFX_CORE
 						Expression.New( typeof( T ).GetConstructor( _innerExceptionConstructorParameterTypes ), message, innerException ),
 #else
 						Expression.New( typeof( T ).GetTypeInfo().DeclaredConstructors.Single( c => c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( _innerExceptionConstructorParameterTypes ) ), message, innerException ),
-#endif
+#endif // !NETFX_CORE
 						message,
 						innerException
 					).Compile();
+#else
+				this._innerExceptionConstructor = ( msg, inner ) => ReflectionExtensions.CreateInstancePreservingExceptionType<T>( typeof( T ), msg, inner );
+#endif // !UNITY
 			}
 			catch ( Exception ex )
 			{
