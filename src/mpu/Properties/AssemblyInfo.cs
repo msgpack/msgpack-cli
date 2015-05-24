@@ -25,6 +25,6 @@ using System.Reflection;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2014" )]
 
-[assembly: AssemblyFileVersion( "0.6.1941.926" )]
+[assembly: AssemblyFileVersion( "0.6.1969.613" )]
 
 
