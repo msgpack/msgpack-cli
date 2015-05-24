@@ -4474,12 +4474,35 @@
             <param name="instanceType">The target elementType.</param>
             <returns>A default constructor of the <paramref name="instanceType"/>.</returns>
         </member>
-        <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.GetCollectionConstructor(System.Type)">
+        <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.DetermineCollectionConstructorArguments(`0,System.Reflection.ConstructorInfo)">
             <summary>
-            	Retrieves a constructor with <see cref="T:System.Int32"/> elementType capacity parameter or default constructor of the <typeparamref name="TObject"/>.
+            	Determines the collection constructor arguments.
             </summary>
-            <param name="instanceType">The target elementType.</param>
-            <returns>A constructor of the <paramref name="instanceType"/>.</returns>
+            <param name="context">The context.</param>
+            <param name="constructor">The constructor.</param>
+            <returns>
+            	An array of constructs representing constructor arguments.
+            </returns>
+            <exception cref="T:System.NotSupportedException">
+            	The <paramref name="constructor"/> has unsupported signature.
+            </exception>
+        </member>
+        <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.GetConstructorArgument(`0,System.Reflection.ParameterInfo)">
+            <summary>
+            	Gets the construt for constructor argument.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="parameter">The parameter of the constructor parameter.</param>
+            <returns>The construt for constructor argument.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.EmitGetEqualityComparer(`0)">
+            <summary>
+            	Emits the construct to get equality comparer via <see cref="T:MsgPack.Serialization.UnpackHelpers"/>.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>
+            	The construct to get equality comparer via <see cref="T:MsgPack.Serialization.UnpackHelpers"/>.
+            </returns>
         </member>
         <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.EmitConstructPolymorphismSchema(`0,`1,MsgPack.Serialization.PolymorphismSchema)">
             <summary>
@@ -4640,6 +4663,11 @@
         <member name="F:MsgPack.Serialization.AbstractSerializers.SerializerFieldKey.EnumSerializationMethod">
             <summary>
             	Enum serialization method for specific member.
+            </summary>
+        </member>
+        <member name="F:MsgPack.Serialization.AbstractSerializers.SerializerFieldKey.DateTimeConversionMethod">
+            <summary>
+            	DateTime conversion method for specific member.
             </summary>
         </member>
         <member name="P:MsgPack.Serialization.AbstractSerializers.SerializerFieldKey.PolymorphismSchema">
@@ -4857,6 +4885,18 @@
             	It causes compilation error because some of overriding members have accessbility <c>FamilyOrAssembly</c>(<c>protected internal</c> in C#),
             	so the generated source code must have the accessibility when and only when they will be same assembly as MsgPack library itself.
             </remarks>
+        </member>
+        <member name="T:MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder">
+            <summary>
+            	Defines non-generic portion of <see cref="T:MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder`1"/>.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder`1">
+            <summary>
+            	Code DOM based implementation of <see cref="T:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3"/>.
+            	This type supports pre-generation.
+            </summary>
+            <typeparam name="TObject">Serialization target type.</typeparam>
         </member>
         <member name="T:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer`2">
             <summary>
@@ -5111,6 +5151,25 @@
             <exception cref="T:System.NotSupportedException">
             	<typeparamref name="T"/> is abstract type.
             </exception>
+        </member>
+        <member name="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackNil">
+            <summary>
+            	Unpacks the nil value.
+            </summary>
+            <returns>
+            	A valid value of <typeparamref name="T"/> which represents 'null' state.
+            </returns>
+            <remarks>
+            	<para>
+            		This method is invoked from <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackFrom(MsgPack.Unpacker)"/> method when the current <see cref="P:MsgPack.Unpacker.LastReadData"/> is <see cref="P:MsgPack.MessagePackObject.IsNil">nil</see>.
+            	</para>
+            	<para>
+            		The implementation of this class returns <c>null</c> for nullable types (that is, all reference types and <see cref="T:System.Nullable`1"/>); otherwise, throws <see cref="T:System.Runtime.Serialization.SerializationException"/>.
+            	</para>
+            	<para>
+            		Custom serializers can override this method to provide custom nil representation. For example, built-in <see cref="T:System.DBNull"/> serializer overrides this method to return <see cref="F:System.DBNull.Value"/> instead of <c>null</c>.
+            	</para>
+            </remarks>
         </member>
         <member name="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackFromCore(MsgPack.Unpacker)">
             <summary>
@@ -5785,6 +5844,73 @@
             	The nil implication.
             </value>
         </member>
+        <member name="T:MsgPack.Serialization.DateTimeConversionMethod">
+            <summary>
+            	Defines behavior of built-in serializers to conversion of <see cref="T:System.DateTime"/> value.
+            </summary>
+        </member>
+        <member name="F:MsgPack.Serialization.DateTimeConversionMethod.Native">
+            <summary>
+            	Uses <see cref="P:System.DateTime.Ticks"/> context, that is, Gregorian 0000-01-01 based, 100 nano seconds resolution. This value also preserves <see cref="T:System.DateTimeKind"/>.
+            </summary>
+            <remarks>
+            	As of 0.6, this value has been become default. This option prevents accidental data loss.
+            </remarks>
+        </member>
+        <member name="F:MsgPack.Serialization.DateTimeConversionMethod.UnixEpoc">
+            <summary>
+            	Uses Unix epoc context, that is, Gregirian 1970-01-01 based, milliseconds resolution.
+            </summary>
+            <remarks>
+            	Many binding such as Java uses this resolution, so this option gives maximom interoperability.
+            </remarks>
+        </member>
+        <member name="T:MsgPack.Serialization.DateTimeMemberConversionMethod">
+            <summary>
+            	Defines behavior of built-in serializers to conversion of <see cref="T:System.DateTime"/> value for specific member.
+            </summary>
+        </member>
+        <member name="F:MsgPack.Serialization.DateTimeMemberConversionMethod.Default">
+            <summary>
+            	Uses systems default <see cref="T:MsgPack.Serialization.DateTimeConversionMethod"/> value.
+            </summary>
+            <remarks>
+            	The systems default <see cref="F:MsgPack.Serialization.DateTimeConversionMethod.Native"/>.
+            </remarks>
+        </member>
+        <member name="F:MsgPack.Serialization.DateTimeMemberConversionMethod.Native">
+            <summary>
+            	Uses <see cref="P:System.DateTime.Ticks"/> context, that is, Gregorian 0000-01-01 based, 100 nano seconds resolution. This value also preserves <see cref="T:System.DateTimeKind"/>.
+            </summary>
+            <remarks>
+            	As of 0.6, this value has been become default. This option prevents accidental data loss.
+            </remarks>
+        </member>
+        <member name="F:MsgPack.Serialization.DateTimeMemberConversionMethod.UnixEpoc">
+            <summary>
+            	Uses Unix epoc context, that is, Gregirian 1970-01-01 based, milliseconds resolution.
+            </summary>
+            <remarks>
+            	Many binding such as Java uses this resolution, so this option gives maximom interoperability.
+            </remarks>
+        </member>
+        <member name="T:MsgPack.Serialization.DateTimeMessagePackSerializerHelpers">
+            <summary>
+            	<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+            	Helper methods for date time message pack serializer.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.DateTimeMemberConversionMethod)">
+            <summary>
+            	Determines <see cref="T:MsgPack.Serialization.DateTimeConversionMethod"/> for the target.
+            </summary>
+            <param name="context">Context information.</param>
+            <param name="dateTimeMemberConversionMethod">The method argued by the member.</param>
+            <returns>Determined <see cref="T:MsgPack.Serialization.DateTimeConversionMethod"/> for the target.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="context"/> is <c>null</c>.
+            </exception>
+        </member>
         <member name="T:MsgPack.Serialization.DefaultConcreteTypeRepository">
             <summary>
             	Repository of known concrete collection type for abstract collection type.
@@ -5818,7 +5944,7 @@
             			<description><see cref="T:System.Collections.Generic.List`1"/></description>
             		</item>
             		<item>
-            			<term><see cref="!:ISet&lt;T&gt;"/> (.NET 4 or lator)</term>
+            			<term><c>ISet{T}</c> (.NET 4 or lator)</term>
             			<description><see cref="T:System.Collections.Generic.HashSet`1"/></description>
             		</item>
             		<item>
@@ -5892,6 +6018,44 @@
             	Implements non-generic or common portion of abstract collection serializers.
             </summary>
         </member>
+        <member name="T:MsgPack.Serialization.DefaultSerializers.DateTimeMessagePackSerializerProvider">
+            <summary>
+            	Provides runtime selection ability for <see cref="T:System.DateTime"/> serialization.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.MessagePackSerializerProvider">
+            <summary>
+            	Defines basic features and interfaces for serializer provider which is stored in repository and controlls returning serializer with its own parameter.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.MessagePackSerializerProvider.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MsgPack.Serialization.MessagePackSerializerProvider"/> class.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.MessagePackSerializerProvider.Get(MsgPack.Serialization.SerializationContext,System.Object)">
+            <summary>
+            	Gets a serializer instance for specified parameter.
+            </summary>
+            <param name="context">A serialization context which holds global settings.</param>
+            <param name="providerParameter">A provider specific parameter.</param>
+            <returns>A serializer object for specified parameter.</returns>
+        </member>
+        <member name="T:MsgPack.Serialization.DefaultSerializers.DateTimeOffsetMessagePackSerializer">
+            <summary>
+            	<see cref="T:System.DateTimeOffset"/> serializer using Unix Epoc or native representation.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.DefaultSerializers.DateTimeOffsetMessagePackSerializerProvider">
+            <summary>
+            	Provides runtime selection ability for <see cref="T:System.DateTimeOffset"/> serialization.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.DefaultSerializers.FileTimeMessagePackSerializerProvider">
+            <summary>
+            	Provides runtime selection ability for <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME"/> serialization.
+            </summary>
+        </member>
         <member name="T:MsgPack.Serialization.DefaultSerializers.GenericSerializer">
             <summary>
             	Defines serializer factory for well known structured types.
@@ -5915,6 +6079,16 @@
             <returns>A deserialized value.</returns>
             <exception cref="T:System.Runtime.Serialization.SerializationException"><paramref name="source"/> is not expected type.</exception>
         </member>
+        <member name="T:MsgPack.Serialization.DefaultSerializers.NativeDateTimeMessagePackSerializer">
+            <summary>
+            	<see cref="T:System.DateTime"/> serializer using native representation.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.DefaultSerializers.NativeFileTimeMessagePackSerializer">
+            <summary>
+            	<see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME"/> serializer using native representation.
+            </summary>
+        </member>
         <member name="T:MsgPack.Serialization.DefaultSerializers.System_Collections_Generic_Dictionary_2MessagePackSerializer`2">
             <summary>
             	Provides default implementation for <see cref="T:System.Collections.Generic.Dictionary`2"/>.
@@ -5927,6 +6101,16 @@
             	Provides default implementation for <see cref="T:System.Collections.Generic.List`1"/>.
             </summary>
             <typeparam name="T">The type of items of the <see cref="T:System.Collections.Generic.List`1"/>.</typeparam>
+        </member>
+        <member name="T:MsgPack.Serialization.DefaultSerializers.UnixEpocDateTimeMessagePackSerializer">
+            <summary>
+            	<see cref="T:System.DateTime"/> serializer using Unix Epoc representation.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.DefaultSerializers.UnixEpocFileTimeMessagePackSerializer">
+            <summary>
+            	<see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME"/> serializer using native representation.
+            </summary>
         </member>
         <member name="T:MsgPack.Serialization.EmitterFlavor">
             <summary>
@@ -6539,12 +6723,13 @@
             <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
             <returns>A delegate for serializer constructor.</returns>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.RegisterSerializer(System.Type,MsgPack.Serialization.EnumMemberSerializationMethod,MsgPack.Serialization.PolymorphismSchema,System.Func{System.Collections.Generic.IEnumerable{MsgPack.Serialization.EmittingSerializers.ILConstruct}})">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.RegisterSerializer(System.Type,MsgPack.Serialization.EnumMemberSerializationMethod,MsgPack.Serialization.DateTimeMemberConversionMethod,MsgPack.Serialization.PolymorphismSchema,System.Func{System.Collections.Generic.IEnumerable{MsgPack.Serialization.EmittingSerializers.ILConstruct}})">
             <summary>
             	Regisgters <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> of target type usage to the current emitting session.
             </summary>
             <param name="targetType">The type of the member to be serialized/deserialized.</param>
             <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
+            <param name="dateTimeConversionMethod">The date time conversion method of the member to be serialized/deserialized.</param>
             <param name="polymorphismSchema">The schema for polymorphism support.</param>
             <param name="schemaRegenerationCodeProvider">The delegate to provide constructs to emit schema regeneration codes.</param>
             <returns>
@@ -6649,12 +6834,13 @@
             	This value will not be <c>null</c>.
             </returns>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter.RegisterSerializer(System.Type,MsgPack.Serialization.EnumMemberSerializationMethod,MsgPack.Serialization.PolymorphismSchema,System.Func{System.Collections.Generic.IEnumerable{MsgPack.Serialization.EmittingSerializers.ILConstruct}})">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter.RegisterSerializer(System.Type,MsgPack.Serialization.EnumMemberSerializationMethod,MsgPack.Serialization.DateTimeMemberConversionMethod,MsgPack.Serialization.PolymorphismSchema,System.Func{System.Collections.Generic.IEnumerable{MsgPack.Serialization.EmittingSerializers.ILConstruct}})">
             <summary>
             	Regisgters <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> of target type usage to the current emitting session.
             </summary>
             <param name="targetType">The type of the member to be serialized/deserialized.</param>
             <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
+            <param name="dateTimeConversionMethod">The date time conversion method of the member to be serialized/deserialized.</param>
             <param name="polymorphismSchema">The schema for polymorphism support.</param>
             <param name="schemaRegenerationCodeProvider">The delegate to provide constructs to emit schema regeneration codes.</param>
             <returns>
@@ -6906,12 +7092,13 @@
             	This value will not be <c>null</c>.
             </returns>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter.RegisterSerializer(System.Type,MsgPack.Serialization.EnumMemberSerializationMethod,MsgPack.Serialization.PolymorphismSchema,System.Func{System.Collections.Generic.IEnumerable{MsgPack.Serialization.EmittingSerializers.ILConstruct}})">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter.RegisterSerializer(System.Type,MsgPack.Serialization.EnumMemberSerializationMethod,MsgPack.Serialization.DateTimeMemberConversionMethod,MsgPack.Serialization.PolymorphismSchema,System.Func{System.Collections.Generic.IEnumerable{MsgPack.Serialization.EmittingSerializers.ILConstruct}})">
             <summary>
             	Regisgters <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> of target type usage to the current emitting session.
             </summary>
             <param name="targetType">The type of the member to be serialized/deserialized.</param>
             <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
+            <param name="dateTimeConversionMethod">The date time conversion method of the member to be serialized/deserialized.</param>
             <param name="polymorphismSchema">The schema for polymorphism support.</param>
             <param name="schemaRegenerationCodeProvider">The delegate to provide constructs to emit schema regeneration codes.</param>
             <returns>
@@ -6965,24 +7152,6 @@
             	Implements <see cref="T:MsgPack.Serialization.MessagePackSerializerProvider"/> for enums.
             	This class accepts <see cref="T:MsgPack.Serialization.EnumSerializationMethod"/> as a provider parameter.
             </summary>
-        </member>
-        <member name="T:MsgPack.Serialization.MessagePackSerializerProvider">
-            <summary>
-            	Defines basic features and interfaces for serializer provider which is stored in repository and controlls returning serializer with its own parameter.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.MessagePackSerializerProvider.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:MsgPack.Serialization.MessagePackSerializerProvider"/> class.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.MessagePackSerializerProvider.Get(MsgPack.Serialization.SerializationContext,System.Object)">
-            <summary>
-            	Gets a serializer instance for specified parameter.
-            </summary>
-            <param name="context">A serialization context which holds global settings.</param>
-            <param name="providerParameter">A provider specific parameter.</param>
-            <returns>A serializer object for specified parameter.</returns>
         </member>
         <member name="M:MsgPack.Serialization.EnumMessagePackSerializerProvider.#ctor(System.Type,MsgPack.Serialization.ICustomizableEnumSerializer)">
             <summary>
@@ -7070,6 +7239,28 @@
             	The serialization context to support lazy retrieval.
             </param>
             <param name="providerParameter">A provider parameter to be passed in future.</param>
+        </member>
+        <member name="T:MsgPack.Serialization.MessagePackDateTimeMemberAttribute">
+            <summary>
+            	Marks that this <see cref="T:System.DateTime"/> or <see cref="T:System.DateTimeOffset"/> typed member has special characteristics on MessagePack serialization.
+            </summary>
+            <remarks>
+            	If this attributes is used for incompatible typed members, this attribute will be ignored.
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.MessagePackDateTimeMemberAttribute.#ctor">
+            <summary>
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.MessagePackDateTimeMemberAttribute"/> class.
+            </summary>
+        </member>
+        <member name="P:MsgPack.Serialization.MessagePackDateTimeMemberAttribute.DateTimeConversionMethod">
+            <summary>
+            	Gets or sets the default serialization method for this enum typed member.
+            </summary>
+            <value>
+            	The default serialization method for this enum typed member.
+            	Note that the method for the enum type will be overrided with this.
+            </value>
         </member>
         <member name="T:MsgPack.Serialization.MessagePackDeserializationConstructorAttribute">
             <summary>
@@ -8887,9 +9078,45 @@
             	Represents serialization context information for internal serialization logic.
             </summary>
         </member>
+        <member name="M:MsgPack.Serialization.SerializationContext.ConfigureClassic">
+            <summary>
+            	Configures <see cref="P:MsgPack.Serialization.SerializationContext.Default"/> as new classic <see cref="T:MsgPack.Serialization.SerializationContext"/> instance.
+            </summary>
+            <returns>The previously set context as <see cref="P:MsgPack.Serialization.SerializationContext.Default"/>.</returns>
+            <seealso cref="M:MsgPack.Serialization.SerializationContext.CreateClassicContext"/>
+        </member>
+        <member name="M:MsgPack.Serialization.SerializationContext.CreateClassicContext">
+            <summary>
+            	Creates a new <see cref="T:MsgPack.Serialization.SerializationContext"/> which is configured as same as 0.5.
+            </summary>
+            <returns>
+            	A new <see cref="T:MsgPack.Serialization.SerializationContext"/> which is configured as same as 0.5.
+            </returns>
+            <remarks>
+            	There are breaking changes of <see cref="T:MsgPack.Serialization.SerializationContext"/> properties to improve API usability and to prevent accidental failure.
+            	This method returns a <see cref="T:MsgPack.Serialization.SerializationContext"/> which configured as classic style settings as follows:
+            	<list type="table">
+            		<listheader>
+            			<term></term>
+            			<description>Default (as of 0.6)</description>
+            			<description>Classic (before 0.6)</description>
+            		</listheader>
+            		<item>
+            			<term>Packed object members order (if members are not marked with <see cref="T:MsgPack.Serialization.MessagePackMemberAttribute"/>  nor <c>System.Runtime.Serialization.DataMemberAttribute</c> and serializer uses <see cref="F:SerializationMethod.Array"/>)</term>
+            			<description>As declared (metadata table order)</description>
+            			<description>As lexicographical</description>
+            		</item>
+            		<item>
+            			<term><see cref="T:System.DateTime"/> value</term>
+            			<description>Native representation (100-nano ticks, preserving <see cref="T:System.DateTimeKind"/>.)</description>
+            			<description>UTC, milliseconds Unix epoc.</description>
+            		</item>
+            	</list>
+            </remarks>
+        </member>
         <member name="M:MsgPack.Serialization.SerializationContext.#ctor">
             <summary>
-            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.SerializationContext"/> class with copy of <see cref="P:MsgPack.Serialization.SerializerRepository.Default"/>.
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.SerializationContext"/> class with copy of <see cref="M:MsgPack.Serialization.SerializerRepository.GetDefault"/>.
             </summary>
         </member>
         <member name="M:MsgPack.Serialization.SerializationContext.#ctor(MsgPack.PackerCompatibilityOptions)">
@@ -9064,6 +9291,19 @@
             <value>
             	<c>true</c> if runtime generation is disabled; otherwise, <c>false</c>.
             </value>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializationContext.DefaultDateTimeConversionMethod">
+            <summary>
+            	Gets or sets the default <see cref="T:System.DateTime"/> conversion methods of built-in serializers.
+            </summary>
+            <value>
+            	The default <see cref="T:System.DateTime"/> conversion methods of built-in serializers. The default is <see cref="F:DateTimeConversionMethod.Native"/>.
+            </value>
+            <remarks>
+            	As of 0.6, <see cref="T:System.DateTime"/> value is serialized as its native representation instead of interoperable UTC milliseconds Unix epoc.
+            	This behavior solves some debugging problem and interop issues, but breaks compability.
+            	If you want to change this behavior, set this value to <see cref="F:DateTimeConversionMethod.UnixEpoc"/>.
+            </remarks>
         </member>
         <member name="P:MsgPack.Serialization.SerializationContext.TypeEmbeddingSettings">
             <summary>
@@ -9938,6 +10178,31 @@
             <param name="serializer">The invocation target <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/>.</param>
             <param name="unpacker">The unpacker to be passed to the method.</param>
             <returns>A deserialized value.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.UnpackHelpers.GetCollectionConstructor(System.Type)">
+            <summary>
+            	Retrieves a most appropriate constructor with <see cref="T:System.Int32"/> capacity parameter and <see cref="T:System.Collections.Generic.IEqualityComparer`1"/> comparer parameter or both of them, &gt;or default constructor of the <paramref name="instanceType"/>.
+            </summary>
+            <param name="instanceType">The target collection type to be instanciated.</param>
+            <returns>A constructor of the <paramref name="instanceType"/>.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.UnpackHelpers.IsIEqualityComparer(System.Type)">
+            <summary>
+            	Determines the type is <see cref="T:System.Collections.Generic.IEqualityComparer`1"/>.
+            </summary>
+            <param name="type">The type should be <see cref="T:System.Collections.Generic.IEqualityComparer`1"/>.</param>
+            <returns>
+            	<c>true</c>, if <paramref name="type"/> is open <see cref="T:System.Collections.Generic.IEqualityComparer`1"/> generic type; <c>false</c>, otherwise.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.UnpackHelpers.GetEqualityComparer``1">
+            <summary>
+            	Gets an <see cref="T:System.Collections.Generic.IEqualityComparer`1"/> with platform safe fashion.
+            </summary>
+            <typeparam name="T">The type to be compared.</typeparam>
+            <returns>
+            	An <see cref="T:System.Collections.Generic.IEqualityComparer`1"/> instance.
+            </returns>
         </member>
         <member name="M:MsgPack.Serialization.UnpackHelpers.UnpackBooleanValue(MsgPack.Unpacker,System.Type,System.String)">
             <summary>
