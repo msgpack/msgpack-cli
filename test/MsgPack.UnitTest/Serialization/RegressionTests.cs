@@ -70,6 +70,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestIssue73()
 		{
+			SerializationContext.ConfigureClassic();
 			var value =
 				new Dictionary<string,object> { { "1", new object() }, { "2", new object() } };
 			var serializer = MessagePackSerializer.Get<Dictionary<string, object>>( new SerializationContext() );
