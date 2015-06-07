@@ -266,9 +266,6 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\DefaultSerializers.cs">
       <Link>Serialization\DefaultSerializers\DefaultSerializers.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs">
-      <Link>Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\GenericSerializer.cs">
       <Link>Serialization\DefaultSerializers\GenericSerializer.cs</Link>
     </Compile>
@@ -298,9 +295,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NativeDateTimeMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\NativeDateTimeMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NullableMessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\NullableMessagePackSerializer`1.cs</Link>
@@ -367,9 +361,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\UnixEpocDateTimeMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\UnixEpocDateTimeMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\EmitterFlavor.cs">
       <Link>Serialization\EmitterFlavor.cs</Link>

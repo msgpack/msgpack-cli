@@ -271,3 +271,8 @@ Release 0.6.0 Beta2 - 2015/05/24
 
   BUG FIXES
   * Fix System.Object instance causes StackOverflowException. Issue #73
+
+Release 0.6.0 Beta3 - 2015/06/14
+
+  BUG FIXES
+  * Remove FILETIME dependency to avoid build error in Xamarin/Unity. Issue #87

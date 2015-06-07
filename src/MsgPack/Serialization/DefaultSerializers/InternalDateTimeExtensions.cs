@@ -18,10 +18,14 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
-#if !SILVERLIGHT || WINDOWS_PHONE
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
 using System.Runtime.InteropServices.ComTypes;
-#endif // !SILVERLIGHT || WINDOWS_PHONE
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -66,7 +70,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		// End porting
 #endif // SILVERLIGHT
 
-#if !SILVERLIGHT || WINDOWS_PHONE
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
 		private static readonly DateTime _fileTimeEpocUtc = new DateTime( 1601, 1, 1, 0, 0, 0, DateTimeKind.Utc );
 
 		public static DateTime ToDateTime( this FILETIME source )
@@ -88,6 +92,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 					dwLowDateTime = unchecked( ( int ) ( value & 0xffffffff ) )
 				};
 		}
-#endif // !SILVERLIGHT || WINDOWS_PHONE
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
 	}
 }
