@@ -5,6 +5,7 @@ param([Switch]$Rebuild)
 
 [string]$sln = 'MsgPack.sln'
 [string]$slnCompat = 'MsgPack.compats.sln'
+[string]$slnWindows = 'MsgPack.Windows.sln'
 
 [string]$nuspec = 'MsgPack.nuspec'
 
@@ -34,6 +35,7 @@ if ( ![IO.Directory]::Exists( ".\MsgPack-CLI\mpu" ) )
 # build
 &$builder $sln $buildOptions
 &$builder $slnCompat $buildOptions
+&$builder $slnWindows $buildOptions
 
 $winFile = New-Object IO.FileInfo( ".\bin\portable-net45+win+wpa81\MsgPack.dll" )
 $xamarinFile = New-Object IO.FileInfo( ".\bin\monotouch\MsgPack.dll" )
