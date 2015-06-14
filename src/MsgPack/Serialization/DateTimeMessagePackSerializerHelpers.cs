@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 #if !CORLIB_ONLY
 using System.ComponentModel;
@@ -81,10 +85,10 @@ namespace MsgPack.Serialization
 			return
 				dateTimeType == typeof( DateTime )
 				|| dateTimeType == typeof( DateTime? )
-#if !SILVERLIGHT || WINDOWS_PHONE
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
 				|| dateTimeType == typeof( FILETIME )
 				|| dateTimeType == typeof( FILETIME? )
-#endif // !SILVERLIGHT || WINDOWS_PHONE
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
 				// DateTimeOffset? is not have to be treat specially.
 				|| dateTimeType == typeof( DateTimeOffset );
 		}

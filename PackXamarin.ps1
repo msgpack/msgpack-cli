@@ -16,3 +16,4 @@ if( $Rebuild )
 $buildOptions += '/p:Configuration=Release'
 # build
 &$builder $sln $buildOptions
+Copy-Item .\bin\MonoTouch10 .\bin\Xamarin.iOS10 -Recurse
