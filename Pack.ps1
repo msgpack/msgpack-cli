@@ -38,7 +38,7 @@ if ( ![IO.Directory]::Exists( ".\MsgPack-CLI\mpu" ) )
 &$builder $slnWindows $buildOptions
 
 $winFile = New-Object IO.FileInfo( ".\bin\portable-net45+win+wpa81\MsgPack.dll" )
-$xamarinFile = New-Object IO.FileInfo( ".\bin\monotouch\MsgPack.dll" )
+$xamarinFile = New-Object IO.FileInfo( ".\bin\MonoTouch10\MsgPack.dll" )
 if( ( $winFile.LastWriteTime - $xamarinFile.LastWriteTime ).Days -ne 0 )
 {
 	# It might that I forgot building in xamarin when winRT build and xamarin build last write time are differ more than 1day.

@@ -25,12 +25,12 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\monotouch</OutputPath>
+    <OutputPath>..\..\bin\MonoTouch10\</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <DefineConstants>XAMIOS</DefineConstants>
-    <DocumentationFile>..\..\bin\monotouch\MsgPack.xml</DocumentationFile>
+    <DocumentationFile>..\..\bin\MonoTouch10\MsgPack.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

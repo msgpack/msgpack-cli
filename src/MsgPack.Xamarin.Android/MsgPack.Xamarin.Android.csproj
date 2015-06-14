@@ -31,13 +31,13 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\monoandroid</OutputPath>
+    <OutputPath>..\..\bin\MonoAndroid10\</OutputPath>
     <DefineConstants>__MOBILE__;__ANDROID__;XAMDROID;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-    <DocumentationFile>..\..\bin\monoandroid\MsgPack.xml</DocumentationFile>
+    <DocumentationFile>..\..\bin\MonoAndroid10\MsgPack.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
