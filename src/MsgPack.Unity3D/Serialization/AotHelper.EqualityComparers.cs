@@ -446,12 +446,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.AppDomainManagerInitializationOptions? left, System.AppDomainManagerInitializationOptions? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -460,7 +460,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.AppDomainManagerInitializationOptions? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -485,12 +485,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.AttributeTargets? left, System.AttributeTargets? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -499,7 +499,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.AttributeTargets? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -524,12 +524,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Base64FormattingOptions? left, System.Base64FormattingOptions? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -538,7 +538,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Base64FormattingOptions? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -563,12 +563,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Boolean? left, System.Boolean? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -577,7 +577,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Boolean? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -602,12 +602,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Byte? left, System.Byte? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -616,7 +616,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Byte? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -641,12 +641,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Char? left, System.Char? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -655,7 +655,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Char? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -680,12 +680,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.ConsoleColor? left, System.ConsoleColor? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -694,7 +694,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.ConsoleColor? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -719,12 +719,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.ConsoleKey? left, System.ConsoleKey? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -733,7 +733,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.ConsoleKey? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -758,12 +758,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.ConsoleKeyInfo? left, System.ConsoleKeyInfo? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -772,7 +772,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.ConsoleKeyInfo? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -797,12 +797,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.ConsoleModifiers? left, System.ConsoleModifiers? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -811,7 +811,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.ConsoleModifiers? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -836,12 +836,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.ConsoleSpecialKey? left, System.ConsoleSpecialKey? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -850,7 +850,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.ConsoleSpecialKey? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -875,12 +875,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.DateTime? left, System.DateTime? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -889,7 +889,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.DateTime? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -914,12 +914,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.DateTimeKind? left, System.DateTimeKind? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -928,7 +928,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.DateTimeKind? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -953,12 +953,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.DateTimeOffset? left, System.DateTimeOffset? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -967,7 +967,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.DateTimeOffset? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -992,12 +992,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.DayOfWeek? left, System.DayOfWeek? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1006,7 +1006,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.DayOfWeek? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1031,12 +1031,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Decimal? left, System.Decimal? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1045,7 +1045,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Decimal? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1070,12 +1070,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Double? left, System.Double? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1084,7 +1084,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Double? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1109,12 +1109,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.EnvironmentVariableTarget? left, System.EnvironmentVariableTarget? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1123,7 +1123,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.EnvironmentVariableTarget? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1148,12 +1148,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.GCCollectionMode? left, System.GCCollectionMode? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1162,7 +1162,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.GCCollectionMode? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1187,12 +1187,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.GCNotificationStatus? left, System.GCNotificationStatus? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1201,7 +1201,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.GCNotificationStatus? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1226,12 +1226,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Guid? left, System.Guid? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1240,7 +1240,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Guid? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1265,12 +1265,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Int16? left, System.Int16? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1279,7 +1279,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Int16? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1304,12 +1304,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Int32? left, System.Int32? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1318,7 +1318,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Int32? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1343,12 +1343,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Int64? left, System.Int64? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1357,7 +1357,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Int64? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1382,12 +1382,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.IntPtr? left, System.IntPtr? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1396,7 +1396,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.IntPtr? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1421,12 +1421,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.LoaderOptimization? left, System.LoaderOptimization? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1435,7 +1435,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.LoaderOptimization? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1460,12 +1460,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.MidpointRounding? left, System.MidpointRounding? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1474,7 +1474,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.MidpointRounding? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1499,12 +1499,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.ModuleHandle? left, System.ModuleHandle? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1513,7 +1513,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.ModuleHandle? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1538,12 +1538,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.PlatformID? left, System.PlatformID? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1552,7 +1552,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.PlatformID? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1577,12 +1577,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.RuntimeFieldHandle? left, System.RuntimeFieldHandle? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1591,7 +1591,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.RuntimeFieldHandle? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1616,12 +1616,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.RuntimeMethodHandle? left, System.RuntimeMethodHandle? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1630,7 +1630,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.RuntimeMethodHandle? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1655,12 +1655,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.RuntimeTypeHandle? left, System.RuntimeTypeHandle? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1669,7 +1669,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.RuntimeTypeHandle? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1694,12 +1694,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.SByte? left, System.SByte? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1708,7 +1708,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.SByte? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1733,12 +1733,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Single? left, System.Single? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1747,7 +1747,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Single? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1772,12 +1772,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.StringComparison? left, System.StringComparison? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1786,7 +1786,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.StringComparison? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1811,12 +1811,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.StringSplitOptions? left, System.StringSplitOptions? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1825,7 +1825,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.StringSplitOptions? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1850,12 +1850,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.TimeSpan? left, System.TimeSpan? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1864,7 +1864,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.TimeSpan? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1889,12 +1889,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.TypeCode? left, System.TypeCode? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1903,7 +1903,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.TypeCode? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1928,12 +1928,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.UInt16? left, System.UInt16? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1942,7 +1942,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.UInt16? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -1967,12 +1967,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.UInt32? left, System.UInt32? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -1981,7 +1981,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.UInt32? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2006,12 +2006,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.UInt64? left, System.UInt64? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2020,7 +2020,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.UInt64? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2045,12 +2045,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.UIntPtr? left, System.UIntPtr? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2059,7 +2059,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.UIntPtr? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2084,12 +2084,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Collections.DictionaryEntry? left, System.Collections.DictionaryEntry? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2098,7 +2098,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Collections.DictionaryEntry? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2123,12 +2123,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Diagnostics.DebuggerBrowsableState? left, System.Diagnostics.DebuggerBrowsableState? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2137,7 +2137,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Diagnostics.DebuggerBrowsableState? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2162,12 +2162,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Diagnostics.SymbolStore.SymAddressKind? left, System.Diagnostics.SymbolStore.SymAddressKind? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2176,7 +2176,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Diagnostics.SymbolStore.SymAddressKind? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2201,12 +2201,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Diagnostics.SymbolStore.SymbolToken? left, System.Diagnostics.SymbolStore.SymbolToken? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2215,7 +2215,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Diagnostics.SymbolStore.SymbolToken? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2240,12 +2240,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Globalization.CalendarAlgorithmType? left, System.Globalization.CalendarAlgorithmType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2254,7 +2254,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Globalization.CalendarAlgorithmType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2279,12 +2279,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Globalization.CalendarWeekRule? left, System.Globalization.CalendarWeekRule? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2293,7 +2293,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Globalization.CalendarWeekRule? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2318,12 +2318,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Globalization.CompareOptions? left, System.Globalization.CompareOptions? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2332,7 +2332,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Globalization.CompareOptions? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2357,12 +2357,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Globalization.CultureTypes? left, System.Globalization.CultureTypes? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2371,7 +2371,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Globalization.CultureTypes? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2396,12 +2396,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Globalization.DateTimeStyles? left, System.Globalization.DateTimeStyles? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2410,7 +2410,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Globalization.DateTimeStyles? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2435,12 +2435,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Globalization.DigitShapes? left, System.Globalization.DigitShapes? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2449,7 +2449,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Globalization.DigitShapes? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2474,12 +2474,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Globalization.GregorianCalendarTypes? left, System.Globalization.GregorianCalendarTypes? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2488,7 +2488,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Globalization.GregorianCalendarTypes? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2513,12 +2513,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Globalization.NumberStyles? left, System.Globalization.NumberStyles? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2527,7 +2527,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Globalization.NumberStyles? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2552,12 +2552,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Globalization.UnicodeCategory? left, System.Globalization.UnicodeCategory? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2566,7 +2566,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Globalization.UnicodeCategory? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2591,12 +2591,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.IO.DriveType? left, System.IO.DriveType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2605,7 +2605,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.IO.DriveType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2630,12 +2630,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.IO.FileAccess? left, System.IO.FileAccess? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2644,7 +2644,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.IO.FileAccess? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2669,12 +2669,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.IO.FileAttributes? left, System.IO.FileAttributes? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2683,7 +2683,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.IO.FileAttributes? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2708,12 +2708,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.IO.FileMode? left, System.IO.FileMode? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2722,7 +2722,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.IO.FileMode? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2747,12 +2747,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.IO.FileOptions? left, System.IO.FileOptions? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2761,7 +2761,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.IO.FileOptions? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2786,12 +2786,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.IO.FileShare? left, System.IO.FileShare? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2800,7 +2800,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.IO.FileShare? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 #if !CORLIB_ONLY
@@ -2826,12 +2826,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.IO.HandleInheritability? left, System.IO.HandleInheritability? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2840,7 +2840,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.IO.HandleInheritability? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 #endif // !CORLIB_ONLY
@@ -2866,12 +2866,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.IO.SearchOption? left, System.IO.SearchOption? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2880,7 +2880,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.IO.SearchOption? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -2905,12 +2905,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.IO.SeekOrigin? left, System.IO.SeekOrigin? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2919,7 +2919,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.IO.SeekOrigin? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 #if !CORLIB_ONLY
@@ -2945,12 +2945,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.IO.Pipes.PipeAccessRights? left, System.IO.Pipes.PipeAccessRights? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -2959,7 +2959,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.IO.Pipes.PipeAccessRights? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 #endif // !CORLIB_ONLY
@@ -2986,12 +2986,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.IO.Pipes.PipeDirection? left, System.IO.Pipes.PipeDirection? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3000,7 +3000,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.IO.Pipes.PipeDirection? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 #endif // !CORLIB_ONLY
@@ -3027,12 +3027,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.IO.Pipes.PipeOptions? left, System.IO.Pipes.PipeOptions? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3041,7 +3041,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.IO.Pipes.PipeOptions? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 #endif // !CORLIB_ONLY
@@ -3068,12 +3068,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.IO.Pipes.PipeTransmissionMode? left, System.IO.Pipes.PipeTransmissionMode? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3082,7 +3082,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.IO.Pipes.PipeTransmissionMode? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 #endif // !CORLIB_ONLY
@@ -3108,12 +3108,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.AssemblyNameFlags? left, System.Reflection.AssemblyNameFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3122,7 +3122,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.AssemblyNameFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3147,12 +3147,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.BindingFlags? left, System.Reflection.BindingFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3161,7 +3161,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.BindingFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3186,12 +3186,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.CallingConventions? left, System.Reflection.CallingConventions? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3200,7 +3200,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.CallingConventions? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3225,12 +3225,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.CustomAttributeNamedArgument? left, System.Reflection.CustomAttributeNamedArgument? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3239,7 +3239,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.CustomAttributeNamedArgument? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3264,12 +3264,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.CustomAttributeTypedArgument? left, System.Reflection.CustomAttributeTypedArgument? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3278,7 +3278,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.CustomAttributeTypedArgument? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3303,12 +3303,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.EventAttributes? left, System.Reflection.EventAttributes? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3317,7 +3317,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.EventAttributes? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3342,12 +3342,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.ExceptionHandlingClauseOptions? left, System.Reflection.ExceptionHandlingClauseOptions? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3356,7 +3356,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.ExceptionHandlingClauseOptions? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3381,12 +3381,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.FieldAttributes? left, System.Reflection.FieldAttributes? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3395,7 +3395,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.FieldAttributes? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3420,12 +3420,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.GenericParameterAttributes? left, System.Reflection.GenericParameterAttributes? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3434,7 +3434,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.GenericParameterAttributes? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3459,12 +3459,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.ImageFileMachine? left, System.Reflection.ImageFileMachine? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3473,7 +3473,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.ImageFileMachine? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3498,12 +3498,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.InterfaceMapping? left, System.Reflection.InterfaceMapping? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3512,7 +3512,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.InterfaceMapping? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3537,12 +3537,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.MemberTypes? left, System.Reflection.MemberTypes? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3551,7 +3551,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.MemberTypes? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3576,12 +3576,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.MethodAttributes? left, System.Reflection.MethodAttributes? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3590,7 +3590,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.MethodAttributes? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3615,12 +3615,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.MethodImplAttributes? left, System.Reflection.MethodImplAttributes? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3629,7 +3629,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.MethodImplAttributes? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3654,12 +3654,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.ParameterAttributes? left, System.Reflection.ParameterAttributes? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3668,7 +3668,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.ParameterAttributes? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3693,12 +3693,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.ParameterModifier? left, System.Reflection.ParameterModifier? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3707,7 +3707,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.ParameterModifier? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3732,12 +3732,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.PortableExecutableKinds? left, System.Reflection.PortableExecutableKinds? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3746,7 +3746,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.PortableExecutableKinds? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3771,12 +3771,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.ProcessorArchitecture? left, System.Reflection.ProcessorArchitecture? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3785,7 +3785,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.ProcessorArchitecture? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3810,12 +3810,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.PropertyAttributes? left, System.Reflection.PropertyAttributes? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3824,7 +3824,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.PropertyAttributes? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3849,12 +3849,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.ResourceAttributes? left, System.Reflection.ResourceAttributes? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3863,7 +3863,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.ResourceAttributes? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3888,12 +3888,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.ResourceLocation? left, System.Reflection.ResourceLocation? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3902,7 +3902,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.ResourceLocation? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3927,12 +3927,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Reflection.TypeAttributes? left, System.Reflection.TypeAttributes? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3941,7 +3941,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Reflection.TypeAttributes? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -3966,12 +3966,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Resources.UltimateResourceFallbackLocation? left, System.Resources.UltimateResourceFallbackLocation? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -3980,7 +3980,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Resources.UltimateResourceFallbackLocation? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4005,12 +4005,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.GCLatencyMode? left, System.Runtime.GCLatencyMode? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4019,7 +4019,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.GCLatencyMode? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4044,12 +4044,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.CompilerServices.CompilationRelaxations? left, System.Runtime.CompilerServices.CompilationRelaxations? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4058,7 +4058,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.CompilerServices.CompilationRelaxations? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4083,12 +4083,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.CompilerServices.LoadHint? left, System.Runtime.CompilerServices.LoadHint? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4097,7 +4097,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.CompilerServices.LoadHint? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4122,12 +4122,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.CompilerServices.MethodCodeType? left, System.Runtime.CompilerServices.MethodCodeType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4136,7 +4136,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.CompilerServices.MethodCodeType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4161,12 +4161,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.CompilerServices.MethodImplOptions? left, System.Runtime.CompilerServices.MethodImplOptions? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4175,7 +4175,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.CompilerServices.MethodImplOptions? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4200,12 +4200,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.ConstrainedExecution.Cer? left, System.Runtime.ConstrainedExecution.Cer? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4214,7 +4214,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.ConstrainedExecution.Cer? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4239,12 +4239,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.ConstrainedExecution.Consistency? left, System.Runtime.ConstrainedExecution.Consistency? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4253,7 +4253,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.ConstrainedExecution.Consistency? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4278,12 +4278,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.ArrayWithOffset? left, System.Runtime.InteropServices.ArrayWithOffset? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4292,7 +4292,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.ArrayWithOffset? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4317,12 +4317,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.AssemblyRegistrationFlags? left, System.Runtime.InteropServices.AssemblyRegistrationFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4331,7 +4331,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.AssemblyRegistrationFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4356,12 +4356,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.CallingConvention? left, System.Runtime.InteropServices.CallingConvention? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4370,7 +4370,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.CallingConvention? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4395,12 +4395,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.CharSet? left, System.Runtime.InteropServices.CharSet? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4409,7 +4409,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.CharSet? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4434,12 +4434,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.ClassInterfaceType? left, System.Runtime.InteropServices.ClassInterfaceType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4448,7 +4448,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.ClassInterfaceType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4473,12 +4473,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.ComInterfaceType? left, System.Runtime.InteropServices.ComInterfaceType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4487,7 +4487,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.ComInterfaceType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4512,12 +4512,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.ComMemberType? left, System.Runtime.InteropServices.ComMemberType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4526,7 +4526,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.ComMemberType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4551,12 +4551,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.ExporterEventKind? left, System.Runtime.InteropServices.ExporterEventKind? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4565,7 +4565,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.ExporterEventKind? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4590,12 +4590,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.GCHandle? left, System.Runtime.InteropServices.GCHandle? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4604,7 +4604,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.GCHandle? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4629,12 +4629,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.GCHandleType? left, System.Runtime.InteropServices.GCHandleType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4643,7 +4643,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.GCHandleType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4668,12 +4668,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.HandleRef? left, System.Runtime.InteropServices.HandleRef? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4682,7 +4682,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.HandleRef? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4707,12 +4707,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.ImporterEventKind? left, System.Runtime.InteropServices.ImporterEventKind? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4721,7 +4721,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.ImporterEventKind? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4746,12 +4746,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.LayoutKind? left, System.Runtime.InteropServices.LayoutKind? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4760,7 +4760,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.LayoutKind? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4785,12 +4785,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.RegistrationClassContext? left, System.Runtime.InteropServices.RegistrationClassContext? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4799,7 +4799,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.RegistrationClassContext? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4824,12 +4824,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.RegistrationConnectionType? left, System.Runtime.InteropServices.RegistrationConnectionType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4838,7 +4838,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.RegistrationConnectionType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4863,12 +4863,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.TypeLibExporterFlags? left, System.Runtime.InteropServices.TypeLibExporterFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4877,7 +4877,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.TypeLibExporterFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4902,12 +4902,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.TypeLibFuncFlags? left, System.Runtime.InteropServices.TypeLibFuncFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4916,7 +4916,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.TypeLibFuncFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4941,12 +4941,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.TypeLibImporterFlags? left, System.Runtime.InteropServices.TypeLibImporterFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4955,7 +4955,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.TypeLibImporterFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -4980,12 +4980,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.TypeLibTypeFlags? left, System.Runtime.InteropServices.TypeLibTypeFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -4994,7 +4994,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.TypeLibTypeFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5019,12 +5019,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.TypeLibVarFlags? left, System.Runtime.InteropServices.TypeLibVarFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5033,7 +5033,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.TypeLibVarFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5058,12 +5058,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.UnmanagedType? left, System.Runtime.InteropServices.UnmanagedType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5072,7 +5072,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.UnmanagedType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5097,12 +5097,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.InteropServices.VarEnum? left, System.Runtime.InteropServices.VarEnum? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5111,7 +5111,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.InteropServices.VarEnum? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5136,12 +5136,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.Remoting.CustomErrorsModes? left, System.Runtime.Remoting.CustomErrorsModes? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5150,7 +5150,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.Remoting.CustomErrorsModes? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5175,12 +5175,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.Remoting.WellKnownObjectMode? left, System.Runtime.Remoting.WellKnownObjectMode? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5189,7 +5189,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.Remoting.WellKnownObjectMode? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5214,12 +5214,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.Remoting.Activation.ActivatorLevel? left, System.Runtime.Remoting.Activation.ActivatorLevel? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5228,7 +5228,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.Remoting.Activation.ActivatorLevel? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5253,12 +5253,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.Remoting.Channels.ServerProcessing? left, System.Runtime.Remoting.Channels.ServerProcessing? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5267,7 +5267,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.Remoting.Channels.ServerProcessing? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5292,12 +5292,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.Remoting.Lifetime.LeaseState? left, System.Runtime.Remoting.Lifetime.LeaseState? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5306,7 +5306,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.Remoting.Lifetime.LeaseState? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5331,12 +5331,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.Remoting.Metadata.SoapOption? left, System.Runtime.Remoting.Metadata.SoapOption? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5345,7 +5345,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.Remoting.Metadata.SoapOption? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5370,12 +5370,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.Remoting.Metadata.XmlFieldOrderOption? left, System.Runtime.Remoting.Metadata.XmlFieldOrderOption? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5384,7 +5384,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.Remoting.Metadata.XmlFieldOrderOption? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5409,12 +5409,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.Serialization.SerializationEntry? left, System.Runtime.Serialization.SerializationEntry? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5423,7 +5423,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.Serialization.SerializationEntry? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5448,12 +5448,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.Serialization.StreamingContext? left, System.Runtime.Serialization.StreamingContext? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5462,7 +5462,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.Serialization.StreamingContext? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5487,12 +5487,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.Serialization.StreamingContextStates? left, System.Runtime.Serialization.StreamingContextStates? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5501,7 +5501,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.Serialization.StreamingContextStates? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5526,12 +5526,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.Serialization.Formatters.FormatterAssemblyStyle? left, System.Runtime.Serialization.Formatters.FormatterAssemblyStyle? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5540,7 +5540,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.Serialization.Formatters.FormatterAssemblyStyle? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5565,12 +5565,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.Serialization.Formatters.FormatterTypeStyle? left, System.Runtime.Serialization.Formatters.FormatterTypeStyle? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5579,7 +5579,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.Serialization.Formatters.FormatterTypeStyle? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5604,12 +5604,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.Serialization.Formatters.TypeFilterLevel? left, System.Runtime.Serialization.Formatters.TypeFilterLevel? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5618,7 +5618,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.Serialization.Formatters.TypeFilterLevel? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5643,12 +5643,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Runtime.Versioning.ResourceScope? left, System.Runtime.Versioning.ResourceScope? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5657,7 +5657,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Runtime.Versioning.ResourceScope? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5682,12 +5682,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.HostSecurityManagerOptions? left, System.Security.HostSecurityManagerOptions? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5696,7 +5696,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.HostSecurityManagerOptions? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5721,12 +5721,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.PolicyLevelType? left, System.Security.PolicyLevelType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5735,7 +5735,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.PolicyLevelType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5760,12 +5760,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.SecurityZone? left, System.Security.SecurityZone? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5774,7 +5774,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.SecurityZone? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5799,12 +5799,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.AccessControlActions? left, System.Security.AccessControl.AccessControlActions? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5813,7 +5813,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.AccessControlActions? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5838,12 +5838,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.AccessControlModification? left, System.Security.AccessControl.AccessControlModification? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5852,7 +5852,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.AccessControlModification? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5877,12 +5877,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.AccessControlSections? left, System.Security.AccessControl.AccessControlSections? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5891,7 +5891,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.AccessControlSections? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5916,12 +5916,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.AccessControlType? left, System.Security.AccessControl.AccessControlType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5930,7 +5930,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.AccessControlType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5955,12 +5955,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.AceFlags? left, System.Security.AccessControl.AceFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -5969,7 +5969,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.AceFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -5994,12 +5994,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.AceQualifier? left, System.Security.AccessControl.AceQualifier? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6008,7 +6008,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.AceQualifier? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6033,12 +6033,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.AceType? left, System.Security.AccessControl.AceType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6047,7 +6047,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.AceType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6072,12 +6072,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.AuditFlags? left, System.Security.AccessControl.AuditFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6086,7 +6086,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.AuditFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6111,12 +6111,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.CompoundAceType? left, System.Security.AccessControl.CompoundAceType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6125,7 +6125,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.CompoundAceType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6150,12 +6150,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.ControlFlags? left, System.Security.AccessControl.ControlFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6164,7 +6164,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.ControlFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6189,12 +6189,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.CryptoKeyRights? left, System.Security.AccessControl.CryptoKeyRights? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6203,7 +6203,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.CryptoKeyRights? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6228,12 +6228,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.EventWaitHandleRights? left, System.Security.AccessControl.EventWaitHandleRights? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6242,7 +6242,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.EventWaitHandleRights? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6267,12 +6267,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.FileSystemRights? left, System.Security.AccessControl.FileSystemRights? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6281,7 +6281,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.FileSystemRights? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6306,12 +6306,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.InheritanceFlags? left, System.Security.AccessControl.InheritanceFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6320,7 +6320,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.InheritanceFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6345,12 +6345,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.MutexRights? left, System.Security.AccessControl.MutexRights? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6359,7 +6359,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.MutexRights? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6384,12 +6384,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.ObjectAceFlags? left, System.Security.AccessControl.ObjectAceFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6398,7 +6398,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.ObjectAceFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6423,12 +6423,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.PropagationFlags? left, System.Security.AccessControl.PropagationFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6437,7 +6437,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.PropagationFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6462,12 +6462,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.RegistryRights? left, System.Security.AccessControl.RegistryRights? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6476,7 +6476,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.RegistryRights? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6501,12 +6501,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.ResourceType? left, System.Security.AccessControl.ResourceType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6515,7 +6515,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.ResourceType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6540,12 +6540,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.AccessControl.SecurityInfos? left, System.Security.AccessControl.SecurityInfos? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6554,7 +6554,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.AccessControl.SecurityInfos? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6579,12 +6579,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Cryptography.CipherMode? left, System.Security.Cryptography.CipherMode? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6593,7 +6593,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Cryptography.CipherMode? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6618,12 +6618,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Cryptography.CryptoStreamMode? left, System.Security.Cryptography.CryptoStreamMode? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6632,7 +6632,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Cryptography.CryptoStreamMode? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6657,12 +6657,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Cryptography.CspProviderFlags? left, System.Security.Cryptography.CspProviderFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6671,7 +6671,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Cryptography.CspProviderFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6696,12 +6696,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Cryptography.DSAParameters? left, System.Security.Cryptography.DSAParameters? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6710,7 +6710,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Cryptography.DSAParameters? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6735,12 +6735,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Cryptography.FromBase64TransformMode? left, System.Security.Cryptography.FromBase64TransformMode? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6749,7 +6749,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Cryptography.FromBase64TransformMode? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6774,12 +6774,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Cryptography.KeyNumber? left, System.Security.Cryptography.KeyNumber? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6788,7 +6788,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Cryptography.KeyNumber? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6813,12 +6813,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Cryptography.PaddingMode? left, System.Security.Cryptography.PaddingMode? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6827,7 +6827,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Cryptography.PaddingMode? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6852,12 +6852,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Cryptography.RSAParameters? left, System.Security.Cryptography.RSAParameters? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6866,7 +6866,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Cryptography.RSAParameters? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6891,12 +6891,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Cryptography.X509Certificates.X509ContentType? left, System.Security.Cryptography.X509Certificates.X509ContentType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6905,7 +6905,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Cryptography.X509Certificates.X509ContentType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6930,12 +6930,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Cryptography.X509Certificates.X509KeyStorageFlags? left, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6944,7 +6944,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Cryptography.X509Certificates.X509KeyStorageFlags? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -6969,12 +6969,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Policy.ApplicationVersionMatch? left, System.Security.Policy.ApplicationVersionMatch? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -6983,7 +6983,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Policy.ApplicationVersionMatch? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -7008,12 +7008,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Policy.PolicyStatementAttribute? left, System.Security.Policy.PolicyStatementAttribute? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7022,7 +7022,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Policy.PolicyStatementAttribute? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -7047,12 +7047,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Policy.TrustManagerUIContext? left, System.Security.Policy.TrustManagerUIContext? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7061,7 +7061,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Policy.TrustManagerUIContext? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -7086,12 +7086,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Principal.PrincipalPolicy? left, System.Security.Principal.PrincipalPolicy? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7100,7 +7100,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Principal.PrincipalPolicy? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -7125,12 +7125,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Principal.TokenAccessLevels? left, System.Security.Principal.TokenAccessLevels? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7139,7 +7139,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Principal.TokenAccessLevels? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -7164,12 +7164,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Principal.TokenImpersonationLevel? left, System.Security.Principal.TokenImpersonationLevel? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7178,7 +7178,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Principal.TokenImpersonationLevel? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -7203,12 +7203,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Principal.WellKnownSidType? left, System.Security.Principal.WellKnownSidType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7217,7 +7217,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Principal.WellKnownSidType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -7242,12 +7242,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Principal.WindowsAccountType? left, System.Security.Principal.WindowsAccountType? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7256,7 +7256,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Principal.WindowsAccountType? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -7281,12 +7281,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Security.Principal.WindowsBuiltInRole? left, System.Security.Principal.WindowsBuiltInRole? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7295,7 +7295,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Security.Principal.WindowsBuiltInRole? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -7320,12 +7320,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Text.NormalizationForm? left, System.Text.NormalizationForm? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7334,7 +7334,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Text.NormalizationForm? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -7359,12 +7359,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Threading.ApartmentState? left, System.Threading.ApartmentState? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7373,7 +7373,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Threading.ApartmentState? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -7398,12 +7398,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Threading.AsyncFlowControl? left, System.Threading.AsyncFlowControl? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7412,7 +7412,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Threading.AsyncFlowControl? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -7437,12 +7437,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Threading.EventResetMode? left, System.Threading.EventResetMode? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7451,7 +7451,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Threading.EventResetMode? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -7476,12 +7476,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Threading.LockCookie? left, System.Threading.LockCookie? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7490,7 +7490,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Threading.LockCookie? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 #if !CORLIB_ONLY
@@ -7516,12 +7516,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Threading.LockRecursionPolicy? left, System.Threading.LockRecursionPolicy? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7530,7 +7530,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Threading.LockRecursionPolicy? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 #endif // !CORLIB_ONLY
@@ -7556,12 +7556,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Threading.NativeOverlapped? left, System.Threading.NativeOverlapped? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7570,7 +7570,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Threading.NativeOverlapped? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -7595,12 +7595,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Threading.ThreadPriority? left, System.Threading.ThreadPriority? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7609,7 +7609,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Threading.ThreadPriority? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 
@@ -7634,12 +7634,12 @@ namespace MsgPack.Serialization
 
 			public bool Equals( System.Threading.ThreadState? left, System.Threading.ThreadState? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -7648,7 +7648,7 @@ namespace MsgPack.Serialization
 
 			public int GetHashCode( System.Threading.ThreadState? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 	}

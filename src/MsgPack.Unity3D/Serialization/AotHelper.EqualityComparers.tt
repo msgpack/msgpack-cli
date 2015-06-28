@@ -222,12 +222,12 @@ foreach ( var valueType in valueTypes )
 
 			public bool Equals( <#= valueType.Type.FullName #>? left, <#= valueType.Type.FullName #>? right )
 			{
-				if ( left == null )
+				if ( !left.HasValue )
 				{
-					return right == null;
+					return !right.HasValue;
 				}
 
-				if ( right == null )
+				if ( !right.HasValue )
 				{
 					return false;
 				}
@@ -249,7 +249,7 @@ foreach ( var valueType in valueTypes )
 
 			public int GetHashCode( <#= valueType.Type.FullName #>? obj )
 			{
-				return obj == null ? 0 : obj.GetHashCode();
+				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
 <#
