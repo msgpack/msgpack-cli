@@ -23,9 +23,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 using System.Linq;
 
 namespace MsgPack.Serialization
@@ -104,9 +104,9 @@ namespace MsgPack.Serialization
 		/// <param name="targetType">The type of the serialization target.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for non-collection object which uses type embedding based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForPolymorphicObject( Type targetType )
 		{
 			return new PolymorphismSchema( targetType, PolymorphismType.RuntimeType, PolymorphismSchemaChildrenType.None );
@@ -119,9 +119,9 @@ namespace MsgPack.Serialization
 		/// <param name="codeTypeMapping">The code-type mapping which maps between ext-type codes and .NET <see cref="Type"/>s.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for non-collection object which uses ext-type code mapping based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForPolymorphicObject( Type targetType, IDictionary<byte, Type> codeTypeMapping )
 		{
 			return
@@ -142,9 +142,9 @@ namespace MsgPack.Serialization
 		/// <param name="itemSchema">The schema for collection items of the serialization target collection.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for collection object which uses declared type or context specified concrete type.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForContextSpecifiedCollection( Type targetType, PolymorphismSchema itemSchema )
 		{
 			return
@@ -163,9 +163,9 @@ namespace MsgPack.Serialization
 		/// <param name="itemSchema">The schema for collection items of the serialization target collection.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for collection object which uses type embedding based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForPolymorphicCollection( Type targetType, PolymorphismSchema itemSchema )
 		{
 			return
@@ -185,9 +185,9 @@ namespace MsgPack.Serialization
 		/// <param name="itemSchema">The schema for collection items of the serialization target collection.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for collection object which uses ext-type code mapping based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForPolymorphicCollection(
 			Type targetType,
 			IDictionary<byte, Type> codeTypeMapping,
@@ -214,9 +214,9 @@ namespace MsgPack.Serialization
 		/// <param name="valueSchema">The schema for dictionary values of the serialization target dictionary.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for dictionary object which uses declared type or context specified concrete type.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForContextSpecifiedDictionary(
 			Type targetType,
 			PolymorphismSchema keySchema,
@@ -240,9 +240,9 @@ namespace MsgPack.Serialization
 		/// <param name="valueSchema">The schema for dictionary values of the serialization target dictionary.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for dictionary object which uses type embedding based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForPolymorphicDictionary(
 			Type targetType,
 			PolymorphismSchema keySchema,
@@ -268,9 +268,9 @@ namespace MsgPack.Serialization
 		/// <param name="valueSchema">The schema for dictionary values of the serialization target dictionary.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for dictionary object which uses ext-type code mapping based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForPolymorphicDictionary(
 			Type targetType,
 			IDictionary<byte, Type> codeTypeMapping,

@@ -18,10 +18,14 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 
 namespace MsgPack.Serialization
 {
@@ -35,9 +39,9 @@ namespace MsgPack.Serialization
 		///		The generated method IL can be dumped to the current directory.
 		///		It is intended for the runtime, you cannot use this option.
 		/// </summary>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 		CanDump,
 
 		/// <summary>

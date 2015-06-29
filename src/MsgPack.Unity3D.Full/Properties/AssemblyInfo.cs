@@ -23,8 +23,8 @@ using System.Runtime.CompilerServices;
 using System.Security;
 
 [assembly: AssemblyTitle( "MessagePack for CLI(.NET/Mono)" )]
-[assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library for Unity3D stripping mode." )]
-[assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010-2014" )]
+[assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library for Unity3D with Full .NET 2.0 mode." )]
+[assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010-2015" )]
 
 
 [assembly: AssemblyFileVersion( "0.6.1990.830" )]

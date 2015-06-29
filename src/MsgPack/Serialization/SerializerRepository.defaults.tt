@@ -230,9 +230,9 @@ var __notInUnities =
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 using System.Collections.Specialized;
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 using System.Globalization;
 #if !WINDOWS_PHONE && !NETFX_35 && !UNITY
 using System.Numerics;
@@ -327,7 +327,7 @@ foreach( Type __type in __structTypes )
 	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 <#
 	}
 #>
@@ -337,7 +337,7 @@ foreach( Type __type in __structTypes )
 	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 <#
 	}
 
@@ -414,7 +414,7 @@ foreach( Type __type in __classTypes )
 	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 <#
 	}
 	
@@ -434,7 +434,7 @@ foreach( Type __type in __classTypes )
 	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 <#
 	}
 

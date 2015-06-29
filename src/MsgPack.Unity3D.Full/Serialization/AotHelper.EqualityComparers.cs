@@ -154,30 +154,30 @@ namespace MsgPack.Serialization
 			result.Add( typeof( System.IO.FileOptions? ).TypeHandle, new NullableSystem_IO_FileOptionsEqualityComparer() );
 			result.Add( typeof( System.IO.FileShare ).TypeHandle, new System_IO_FileShareEqualityComparer() );
 			result.Add( typeof( System.IO.FileShare? ).TypeHandle, new NullableSystem_IO_FileShareEqualityComparer() );
-#if !CORLIB_ONLY
+#if MSGPACK_UNITY_FULL
 			result.Add( typeof( System.IO.HandleInheritability ).TypeHandle, new System_IO_HandleInheritabilityEqualityComparer() );
 			result.Add( typeof( System.IO.HandleInheritability? ).TypeHandle, new NullableSystem_IO_HandleInheritabilityEqualityComparer() );
-#endif // !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
 			result.Add( typeof( System.IO.SearchOption ).TypeHandle, new System_IO_SearchOptionEqualityComparer() );
 			result.Add( typeof( System.IO.SearchOption? ).TypeHandle, new NullableSystem_IO_SearchOptionEqualityComparer() );
 			result.Add( typeof( System.IO.SeekOrigin ).TypeHandle, new System_IO_SeekOriginEqualityComparer() );
 			result.Add( typeof( System.IO.SeekOrigin? ).TypeHandle, new NullableSystem_IO_SeekOriginEqualityComparer() );
-#if !CORLIB_ONLY
+#if MSGPACK_UNITY_FULL
 			result.Add( typeof( System.IO.Pipes.PipeAccessRights ).TypeHandle, new System_IO_Pipes_PipeAccessRightsEqualityComparer() );
 			result.Add( typeof( System.IO.Pipes.PipeAccessRights? ).TypeHandle, new NullableSystem_IO_Pipes_PipeAccessRightsEqualityComparer() );
-#endif // !CORLIB_ONLY
-#if !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
+#if MSGPACK_UNITY_FULL
 			result.Add( typeof( System.IO.Pipes.PipeDirection ).TypeHandle, new System_IO_Pipes_PipeDirectionEqualityComparer() );
 			result.Add( typeof( System.IO.Pipes.PipeDirection? ).TypeHandle, new NullableSystem_IO_Pipes_PipeDirectionEqualityComparer() );
-#endif // !CORLIB_ONLY
-#if !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
+#if MSGPACK_UNITY_FULL
 			result.Add( typeof( System.IO.Pipes.PipeOptions ).TypeHandle, new System_IO_Pipes_PipeOptionsEqualityComparer() );
 			result.Add( typeof( System.IO.Pipes.PipeOptions? ).TypeHandle, new NullableSystem_IO_Pipes_PipeOptionsEqualityComparer() );
-#endif // !CORLIB_ONLY
-#if !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
+#if MSGPACK_UNITY_FULL
 			result.Add( typeof( System.IO.Pipes.PipeTransmissionMode ).TypeHandle, new System_IO_Pipes_PipeTransmissionModeEqualityComparer() );
 			result.Add( typeof( System.IO.Pipes.PipeTransmissionMode? ).TypeHandle, new NullableSystem_IO_Pipes_PipeTransmissionModeEqualityComparer() );
-#endif // !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
 			result.Add( typeof( System.Reflection.AssemblyNameFlags ).TypeHandle, new System_Reflection_AssemblyNameFlagsEqualityComparer() );
 			result.Add( typeof( System.Reflection.AssemblyNameFlags? ).TypeHandle, new NullableSystem_Reflection_AssemblyNameFlagsEqualityComparer() );
 			result.Add( typeof( System.Reflection.BindingFlags ).TypeHandle, new System_Reflection_BindingFlagsEqualityComparer() );
@@ -404,10 +404,10 @@ namespace MsgPack.Serialization
 			result.Add( typeof( System.Threading.EventResetMode? ).TypeHandle, new NullableSystem_Threading_EventResetModeEqualityComparer() );
 			result.Add( typeof( System.Threading.LockCookie ).TypeHandle, new System_Threading_LockCookieEqualityComparer() );
 			result.Add( typeof( System.Threading.LockCookie? ).TypeHandle, new NullableSystem_Threading_LockCookieEqualityComparer() );
-#if !CORLIB_ONLY
+#if MSGPACK_UNITY_FULL
 			result.Add( typeof( System.Threading.LockRecursionPolicy ).TypeHandle, new System_Threading_LockRecursionPolicyEqualityComparer() );
 			result.Add( typeof( System.Threading.LockRecursionPolicy? ).TypeHandle, new NullableSystem_Threading_LockRecursionPolicyEqualityComparer() );
-#endif // !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
 			result.Add( typeof( System.Threading.NativeOverlapped ).TypeHandle, new System_Threading_NativeOverlappedEqualityComparer() );
 			result.Add( typeof( System.Threading.NativeOverlapped? ).TypeHandle, new NullableSystem_Threading_NativeOverlappedEqualityComparer() );
 			result.Add( typeof( System.Threading.ThreadPriority ).TypeHandle, new System_Threading_ThreadPriorityEqualityComparer() );
@@ -415,9 +415,9 @@ namespace MsgPack.Serialization
 			result.Add( typeof( System.Threading.ThreadState ).TypeHandle, new System_Threading_ThreadStateEqualityComparer() );
 			result.Add( typeof( System.Threading.ThreadState? ).TypeHandle, new NullableSystem_Threading_ThreadStateEqualityComparer() );
 			result.Add( typeof( System.Object ).TypeHandle, new BoxingGenericEqualityComparer<System.Object>() );
-#if !CORLIB_ONLY
+#if MSGPACK_UNITY_FULL
 			result.Add( typeof( System.Uri ).TypeHandle, new BoxingGenericEqualityComparer<System.Uri>() );
-#endif // !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
 			result.Add( typeof( System.Version ).TypeHandle, new BoxingGenericEqualityComparer<System.Version>() );
 			result.Add( typeof( System.String ).TypeHandle, System.StringComparer.Ordinal );
 			result.Add( typeof( MsgPack.MessagePackObject ).TypeHandle, MsgPack.MessagePackObjectEqualityComparer.Instance );
@@ -2803,7 +2803,7 @@ namespace MsgPack.Serialization
 				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
-#if !CORLIB_ONLY
+#if MSGPACK_UNITY_FULL
 
 		private sealed class System_IO_HandleInheritabilityEqualityComparer : IEqualityComparer<System.IO.HandleInheritability>
 		{
@@ -2843,7 +2843,7 @@ namespace MsgPack.Serialization
 				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
-#endif // !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
 
 		private sealed class System_IO_SearchOptionEqualityComparer : IEqualityComparer<System.IO.SearchOption>
 		{
@@ -2922,7 +2922,7 @@ namespace MsgPack.Serialization
 				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
-#if !CORLIB_ONLY
+#if MSGPACK_UNITY_FULL
 
 		private sealed class System_IO_Pipes_PipeAccessRightsEqualityComparer : IEqualityComparer<System.IO.Pipes.PipeAccessRights>
 		{
@@ -2962,8 +2962,8 @@ namespace MsgPack.Serialization
 				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
-#endif // !CORLIB_ONLY
-#if !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
+#if MSGPACK_UNITY_FULL
 
 		private sealed class System_IO_Pipes_PipeDirectionEqualityComparer : IEqualityComparer<System.IO.Pipes.PipeDirection>
 		{
@@ -3003,8 +3003,8 @@ namespace MsgPack.Serialization
 				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
-#endif // !CORLIB_ONLY
-#if !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
+#if MSGPACK_UNITY_FULL
 
 		private sealed class System_IO_Pipes_PipeOptionsEqualityComparer : IEqualityComparer<System.IO.Pipes.PipeOptions>
 		{
@@ -3044,8 +3044,8 @@ namespace MsgPack.Serialization
 				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
-#endif // !CORLIB_ONLY
-#if !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
+#if MSGPACK_UNITY_FULL
 
 		private sealed class System_IO_Pipes_PipeTransmissionModeEqualityComparer : IEqualityComparer<System.IO.Pipes.PipeTransmissionMode>
 		{
@@ -3085,7 +3085,7 @@ namespace MsgPack.Serialization
 				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
-#endif // !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
 
 		private sealed class System_Reflection_AssemblyNameFlagsEqualityComparer : IEqualityComparer<System.Reflection.AssemblyNameFlags>
 		{
@@ -7493,7 +7493,7 @@ namespace MsgPack.Serialization
 				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
-#if !CORLIB_ONLY
+#if MSGPACK_UNITY_FULL
 
 		private sealed class System_Threading_LockRecursionPolicyEqualityComparer : IEqualityComparer<System.Threading.LockRecursionPolicy>
 		{
@@ -7533,7 +7533,7 @@ namespace MsgPack.Serialization
 				return !obj.HasValue ? 0 : obj.GetHashCode();
 			}
 		}
-#endif // !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
 
 		private sealed class System_Threading_NativeOverlappedEqualityComparer : IEqualityComparer<System.Threading.NativeOverlapped>
 		{

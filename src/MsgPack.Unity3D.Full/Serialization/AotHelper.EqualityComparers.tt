@@ -139,7 +139,7 @@ foreach ( var valueType in valueTypes )
 	if ( valueType.Type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
-#if !CORLIB_ONLY
+#if MSGPACK_UNITY_FULL
 <#
 	}
 #>
@@ -149,7 +149,7 @@ foreach ( var valueType in valueTypes )
 	if ( valueType.Type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
-#endif // !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
 <#
 	}
 }
@@ -160,7 +160,7 @@ foreach ( var knownComparer in knownComparers )
 	if ( typeof( object ).Assembly.GetType( knownComparer.TypeName, false ) == null && !knownComparer.TypeName.StartsWith( "MsgPack." ) )
 	{
 #>
-#if !CORLIB_ONLY
+#if MSGPACK_UNITY_FULL
 <#
 	}
 #>
@@ -169,7 +169,7 @@ foreach ( var knownComparer in knownComparers )
 	if ( typeof( object ).Assembly.GetType( knownComparer.TypeName, false ) == null && !knownComparer.TypeName.StartsWith( "MsgPack." ) )
 	{
 #>
-#endif // !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
 <#
 	}
 }
@@ -183,7 +183,7 @@ foreach ( var valueType in valueTypes )
 	if ( valueType.Type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
-#if !CORLIB_ONLY
+#if MSGPACK_UNITY_FULL
 <#
 	}
 #>
@@ -256,7 +256,7 @@ foreach ( var valueType in valueTypes )
 	if ( valueType.Type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
-#endif // !CORLIB_ONLY
+#endif // MSGPACK_UNITY_FULL
 <#
 	}
 }

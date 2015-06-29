@@ -422,7 +422,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	}
 
 #if !SILVERLIGHT && !NETFX_CORE
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 	internal sealed class System_Collections_Specialized_BitVector32MessagePackSerializer : MessagePackSerializer< System.Collections.Specialized.BitVector32 >
 	{
 		public System_Collections_Specialized_BitVector32MessagePackSerializer( SerializationContext ownerContext )
@@ -451,10 +451,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 	}
 #endif // !SILVERLIGHT && !NETFX_CORE
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 
 #if !WINDOWS_PHONE && !NETFX_35 && !UNITY
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 	internal sealed class System_Numerics_BigIntegerMessagePackSerializer : MessagePackSerializer< System.Numerics.BigInteger >
 	{
 		public System_Numerics_BigIntegerMessagePackSerializer( SerializationContext ownerContext )
@@ -484,5 +484,5 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 	}
 #endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 }

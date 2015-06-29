@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;UNITY_IPHONE;CORLIB_ONLY;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNITY_IPHONE;MSGPACK_UNITY_FULL;CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\MsgPack.XML</DocumentationFile>
@@ -26,11 +26,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\MsgPack-CLI\unity3d-micro\</OutputPath>
-    <DefineConstants>TRACE;UNITY_IPHONE;CORLIB_ONLY</DefineConstants>
+    <OutputPath>..\..\MsgPack-CLI\unity3d-full\</OutputPath>
+    <DefineConstants>TRACE;UNITY_IPHONE;MSGPACK_UNITY_FULL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\MsgPack-CLI\unity3d-micro\MsgPack.XML</DocumentationFile>
+    <DocumentationFile>..\..\MsgPack-CLI\unity3d-full\MsgPack.XML</DocumentationFile>
     <NoWarn>3001,3002</NoWarn>
   </PropertyGroup>
   <ItemGroup>
@@ -39,21 +39,6 @@
     </Compile>
     <Compile Include="..\CommonAssemblyInfo.Pack.cs">
       <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.Unity3D\Serialization\AotHelper.cs">
-      <Link>Serialization\AotHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.Unity3D\Serialization\AotHelper.EqualityComparers.cs">
-      <Link>Serialization\AotHelper.EqualityComparers.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.Unity3D\Serialization\EnumTypedMessagePackSerializerWrapper`1.cs">
-      <Link>Serialization\EnumTypedMessagePackSerializerWrapper`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.Unity3D\Serialization\NonGenericMessagePackSerializer.cs">
-      <Link>Serialization\NonGenericMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.Unity3D\Serialization\TypedMessagePackSerializerWrapper`1.cs">
-      <Link>Serialization\TypedMessagePackSerializerWrapper`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.Xamarin.iOS\MPContract.cs">
       <Link>MPContract.cs</Link>
@@ -325,8 +310,17 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_List_1MessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\System_Collections_Generic_List_1MessagePackSerializer`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs">
+      <Link>Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs">
+      <Link>Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_QueueMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_Collections_QueueMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_StackMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_Collections_StackMessagePackSerializer.cs</Link>
@@ -345,6 +339,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Text_StringBuilderMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_Text_StringBuilderMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs</Link>
@@ -628,16 +625,33 @@
     <Compile Include="..\MsgPack\UnpackingStreamReader.cs">
       <Link>UnpackingStreamReader.cs</Link>
     </Compile>
-    <Compile Include="MicroCorLibHelper.cs" />
+    <Compile Include="CorLibOnlyHelper.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CorLibOnlyHelper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\AotHelper.cs" />
+    <Compile Include="Serialization\AotHelper.EqualityComparers.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AotHelper.EqualityComparers.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\EnumTypedMessagePackSerializerWrapper`1.cs" />
+    <Compile Include="Serialization\NonGenericMessagePackSerializer.cs" />
+    <Compile Include="Serialization\TypedMessagePackSerializerWrapper`1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\MsgPack\remarks.xml">
       <Link>remarks.xml</Link>
     </None>
-    <None Include="MicroCorLibHelper.tt">
+    <None Include="CorLibOnlyHelper.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MicroCorLibHelper.cs</LastGenOutput>
+      <LastGenOutput>CorLibOnlyHelper.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\AotHelper.EqualityComparers.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AotHelper.EqualityComparers.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -647,6 +661,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

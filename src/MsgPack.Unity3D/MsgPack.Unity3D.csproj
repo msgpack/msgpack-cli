@@ -49,15 +49,29 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\CommonAssemblyInfo.Pack.cs">
       <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.Unity3D.Full\CorLibOnlyHelper.cs">
+      <Link>CorLibOnlyHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.Unity3D.Full\Serialization\AotHelper.cs">
+      <Link>Serialization\AotHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.Unity3D.Full\Serialization\AotHelper.EqualityComparers.cs">
+      <Link>Serialization\AotHelper.EqualityComparers.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.Unity3D.Full\Serialization\EnumTypedMessagePackSerializerWrapper`1.cs">
+      <Link>Serialization\EnumTypedMessagePackSerializerWrapper`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.Unity3D.Full\Serialization\NonGenericMessagePackSerializer.cs">
+      <Link>Serialization\NonGenericMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.Unity3D.Full\Serialization\TypedMessagePackSerializerWrapper`1.cs">
+      <Link>Serialization\TypedMessagePackSerializerWrapper`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.Xamarin.iOS\MPContract.cs">
       <Link>MPContract.cs</Link>
@@ -329,17 +343,8 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_List_1MessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\System_Collections_Generic_List_1MessagePackSerializer`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs">
-      <Link>Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs">
-      <Link>Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_QueueMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_Collections_QueueMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_StackMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_Collections_StackMessagePackSerializer.cs</Link>
@@ -358,9 +363,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Text_StringBuilderMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_Text_StringBuilderMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs</Link>
@@ -645,23 +647,10 @@
       <Link>UnpackingStreamReader.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\AotHelper.cs" />
-    <Compile Include="Serialization\AotHelper.EqualityComparers.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AotHelper.EqualityComparers.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Serialization\EnumTypedMessagePackSerializerWrapper`1.cs" />
-    <Compile Include="Serialization\NonGenericMessagePackSerializer.cs" />
-    <Compile Include="Serialization\TypedMessagePackSerializerWrapper`1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\MsgPack\remarks.xml">
       <Link>remarks.xml</Link>
-    </None>
-    <None Include="Serialization\AotHelper.EqualityComparers.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AotHelper.EqualityComparers.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

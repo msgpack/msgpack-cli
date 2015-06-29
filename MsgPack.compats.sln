@@ -37,11 +37,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.UnitTest.Unity3D", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NUnitLite", "NUnitLite", "{767C2A1C-53F8-4048-BE02-CB4393B1CEB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitLiteRunner", "..\..\Yusuke\Documents\git\msgpack-cli\test\NUnitLiteRunner\NUnitLiteRunner.csproj", "{12047296-B817-4C1A-B01B-5E619F72E407}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitLiteRunner", "test\NUnitLiteRunner\NUnitLiteRunner.csproj", "{12047296-B817-4C1A-B01B-5E619F72E407}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunitlite-3.5", "..\..\Yusuke\Documents\git\msgpack-cli\test\NUnitLite\src\framework\nunitlite-3.5.csproj", "{43B24DC5-16D6-45EF-93F1-B021B785A892}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunitlite-3.5", "test\NUnitLite\src\framework\nunitlite-3.5.csproj", "{43B24DC5-16D6-45EF-93F1-B021B785A892}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.Unity3D.Micro", "src\MsgPack.Unity3D.Micro\MsgPack.Unity3D.Micro.csproj", "{B752BA0A-72A8-4EE8-AF44-D4F5A55A6121}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.Unity3D.Full", "src\MsgPack.Unity3D.Full\MsgPack.Unity3D.Full.csproj", "{B752BA0A-72A8-4EE8-AF44-D4F5A55A6121}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

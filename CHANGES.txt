@@ -276,3 +276,11 @@ Release 0.6.0 Beta3 - 2015/06/14
 
   BUG FIXES
   * Remove FILETIME dependency to avoid build error in Xamarin/Unity. Issue #87
+
+Release 0.6 - 2015/06/29
+
+  BREAKING CHANGES / IMPROVEMENTS
+  * Unity3D DLL now only depends on mscorlib.dll. This breaks compabitlity because the library cannot recognize Stack<T>, Queue<T> and NameValueCollection. If you want to these types support, use Unity3D.Full drop instead.
+
+  BUG FIXES
+  * Fix Unity source code to avoid nullable equality operator. Issue #88

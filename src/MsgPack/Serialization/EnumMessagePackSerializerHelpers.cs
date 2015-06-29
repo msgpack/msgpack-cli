@@ -18,10 +18,14 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 #if NETFX_CORE
 using System.Reflection;
 #endif
@@ -32,9 +36,9 @@ namespace MsgPack.Serialization
 	///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 	///		Helper methods for enum message pack serializer.
 	/// </summary>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 	[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 	public static class EnumMessagePackSerializerHelpers
 	{
 		/// <summary>

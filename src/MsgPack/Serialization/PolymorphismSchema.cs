@@ -25,9 +25,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 using System.Diagnostics;
 using System.Linq;
 
@@ -41,9 +41,9 @@ namespace MsgPack.Serialization
 	///			A provider parameter to support polymorphism.
 	///		</para>
 	/// </summary>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 	[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 	[DebuggerDisplay("{DebugString}")]
 	public sealed partial class PolymorphismSchema
 	{

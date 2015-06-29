@@ -34,9 +34,9 @@ using System.Diagnostics.Contracts;
 #endif // !UNITY
 using System.Globalization;
 
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 using Int64Stack = System.Collections.Generic.Stack<System.Int64>;
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 
 namespace MsgPack
 {

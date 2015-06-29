@@ -239,7 +239,7 @@ foreach( Type __type in __types )
 	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 <#
 	}
 #>
@@ -389,7 +389,7 @@ foreach( var ctor in ctors )
 	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 <#
 	}
 }

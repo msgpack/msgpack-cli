@@ -33,9 +33,9 @@
 #endif
 
 using System;
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 
 namespace MsgPack.Serialization
 {
@@ -88,9 +88,9 @@ namespace MsgPack.Serialization
 <#
 		}
 #>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static <#= type.Name #> Unpack<#= type.Name #>Value( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -130,9 +130,9 @@ namespace MsgPack.Serialization
 <#
 		}
 #>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static <#= type.Name #>? UnpackNullable<#= type.Name #>Value( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -166,9 +166,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack string type value from underlying stream.
 		/// </exception>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static string UnpackStringValue( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -198,9 +198,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack byte array type value from underlying stream.
 		/// </exception>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static byte[] UnpackBinaryValue( Unpacker unpacker, Type objectType, String memberName )
 		{

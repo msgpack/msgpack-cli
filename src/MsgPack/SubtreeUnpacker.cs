@@ -32,10 +32,10 @@ using System.Diagnostics.Contracts;
 #endif // XAMIOS || XAMDROID
 #endif // !UNITY
 
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 using BooleanStack = System.Collections.Generic.Stack<System.Boolean>;
 using Int64Stack = System.Collections.Generic.Stack<System.Int64>;
-#endif
+#endif // !UNITY || MSGPACK_UNITY_FULL
 
 
 namespace MsgPack

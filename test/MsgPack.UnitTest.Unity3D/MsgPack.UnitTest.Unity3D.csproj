@@ -2506,13 +2506,13 @@
     <Compile Include="Serialization\AotWorkarounds.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Yusuke\Documents\git\msgpack-cli\test\NUnitLite\src\framework\nunitlite-3.5.csproj">
+    <ProjectReference Include="..\..\src\MsgPack.Unity3D.Full\MsgPack.Unity3D.Full.csproj">
+      <Project>{b752ba0a-72a8-4ee8-af44-d4f5a55a6121}</Project>
+      <Name>MsgPack.Unity3D.Full</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NUnitLite\src\framework\nunitlite-3.5.csproj">
       <Project>{43b24dc5-16d6-45ef-93f1-b021b785a892}</Project>
       <Name>nunitlite-3.5</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\MsgPack.Unity3D\MsgPack.Unity3D.csproj">
-      <Project>{04774100-60ee-4fd5-aced-593394dff7b7}</Project>
-      <Name>MsgPack.Unity3D</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

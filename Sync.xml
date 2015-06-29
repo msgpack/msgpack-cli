@@ -59,27 +59,28 @@
     <Preserve Path="Properties\AssemblyInfo.cs" />
   </Project>
 
-  <Project Name="MsgPack.Unity3D" Base="MsgPack.Xamarin.iOS">
+  <Project Name="MsgPack.Unity3D.Full" Base="MsgPack.Xamarin.iOS">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve Path="Serialization\AotHelper*.tt" />
     <Preserve Path="Serialization\AotHelper*.cs" />
     <Preserve Path="Serialization\NonGenericMessagePackSerializer.cs" />
     <Preserve Path="Serialization\TypedMessagePackSerializerWrapper`1.cs" />
     <Preserve Path="Serialization\EnumTypedMessagePackSerializerWrapper`1.cs" />
+    <Preserve Path="CorLibOnlyHelper*.tt" />
+    <Preserve Path="CorLibOnlyHelper*.cs" />
     <Exclude Path="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
     <Exclude Path="UnsafeNativeMethods.cs" />
     <Exclude Path="Validation.cs" />
   </Project>
 
-  <Project Name="MsgPack.Unity3D.Micro" Base="MsgPack.Unity3D">
+  <Project Name="MsgPack.Unity3D" Base="MsgPack.Unity3D.Full">
     <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Preserve Path="MicroCorLibHelper*.tt" />
-    <Preserve Path="MicroCorLibHelper*.cs" />
     <Exclude Path="Serialization\AotHelper*.tt" />
     <Exclude Path="Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs" />
+    <Exclude Path="CorLibOnlyHelper*.tt" />
   </Project>
 
   <Project Name="MsgPack.WinRT.Portable" Base="MsgPack">

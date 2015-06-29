@@ -23,9 +23,9 @@
 #endif
 
 using System;
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 #if !SILVERLIGHT || WINDOWS_PHONE
 using System.Runtime.InteropServices.ComTypes;
 #endif // !SILVERLIGHT || WINDOWS_PHONE
@@ -36,9 +36,9 @@ namespace MsgPack.Serialization
 	///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 	///		Helper methods for date time message pack serializer.
 	/// </summary>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 	[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 	public static class DateTimeMessagePackSerializerHelpers
 	{
 		/// <summary>
@@ -50,9 +50,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="context"/> is <c>null</c>.
 		/// </exception>
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static DateTimeConversionMethod DetermineDateTimeConversionMethod(
 			SerializationContext context,
 			DateTimeMemberConversionMethod dateTimeMemberConversionMethod 

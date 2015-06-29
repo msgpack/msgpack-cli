@@ -42,13 +42,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\build\msgpack-cli-latest\src\MsgPack.Unity3D\MsgPack.Unity3D.csproj">
-      <Project>{04774100-60ee-4fd5-aced-593394dff7b7}</Project>
-      <Name>MsgPack.Unity3D</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\..\build\msgpack-cli-latest\test\MsgPack.UnitTest.Unity3D\MsgPack.UnitTest.Unity3D.csproj">
       <Project>{804fbeb9-c62f-4788-8eb5-47c17b45a096}</Project>
       <Name>MsgPack.UnitTest.Unity3D</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\MsgPack.Unity3D.Full\MsgPack.Unity3D.Full.csproj">
+      <Project>{b752ba0a-72a8-4ee8-af44-d4f5a55a6121}</Project>
+      <Name>MsgPack.Unity3D.Full</Name>
     </ProjectReference>
     <ProjectReference Include="..\NUnitLite\src\framework\nunitlite-3.5.csproj">
       <Project>{43b24dc5-16d6-45ef-93f1-b021b785a892}</Project>
