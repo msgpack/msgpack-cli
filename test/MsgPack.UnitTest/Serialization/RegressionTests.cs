@@ -70,13 +70,20 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestIssue73()
 		{
-			SerializationContext.ConfigureClassic();
-			var value =
-				new Dictionary<string,object> { { "1", new object() }, { "2", new object() } };
-			var serializer = MessagePackSerializer.Get<Dictionary<string, object>>( new SerializationContext() );
-			using ( var buffer = new MemoryStream() )
+			var original = SerializationContext.ConfigureClassic();
+			try
 			{
-				Assert.Throws<SerializationException>( () => serializer.Pack( buffer, value ) );
+				var value =
+					new Dictionary<string, object> { { "1", new object() }, { "2", new object() } };
+				var serializer = MessagePackSerializer.Get<Dictionary<string, object>>( new SerializationContext() );
+				using ( var buffer = new MemoryStream() )
+				{
+					Assert.Throws<SerializationException>( () => serializer.Pack( buffer, value ) );
+				}
+			}
+			finally
+			{
+				SerializationContext.Default = original;
 			}
 		}
 	}
