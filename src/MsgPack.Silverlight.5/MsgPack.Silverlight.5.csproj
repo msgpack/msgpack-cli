@@ -349,6 +349,9 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MultidimensionalArraySerializer`1.cs">
+      <Link>Serialization\DefaultSerializers\MultidimensionalArraySerializer`1.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NativeDateTimeMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\NativeDateTimeMessagePackSerializer.cs</Link>
     </Compile>

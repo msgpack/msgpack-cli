@@ -45,18 +45,36 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if DEBUG && !UNITY
 			Contract.Assert( targetType.IsArray, "targetType.IsArray" );
 #endif // DEBUG && !UNITY
-			return
-				( GetPrimitiveArraySerializer( context, targetType )
+
+			// Check the T is SZArray -- Type.GetArrayRank() returns 1 for single dimension, non-zero based arrays, so use (SZArrayType).IsAssinableFrom() instead.
+			if ( targetType.GetElementType().MakeArrayType().IsAssignableFrom( targetType ) )
+			{
+				return
+					( GetPrimitiveArraySerializer( context, targetType )
 #if !UNITY
-				?? ReflectionExtensions.CreateInstancePreservingExceptionType(
-					typeof( ArraySerializer<> ).MakeGenericType( targetType.GetElementType() ),
-					context,
-					itemsSchema
-				)
+					?? ReflectionExtensions.CreateInstancePreservingExceptionType(
+							typeof( ArraySerializer<> ).MakeGenericType( targetType.GetElementType() ),
+							context,
+							itemsSchema
+						)
 #else
-				?? new UnityArraySerializer( context, targetType.GetElementType(), itemsSchema )
+					?? new UnityArraySerializer( context, targetType.GetElementType(), itemsSchema )
 #endif
-				) as IMessagePackSingleObjectSerializer;
+					) as IMessagePackSingleObjectSerializer;
+			}
+			else
+			{
+				return
+#if !UNITY
+					ReflectionExtensions.CreateInstancePreservingExceptionType(
+						typeof( MultidimensionalArraySerializer<,> ).MakeGenericType( targetType, targetType.GetElementType() ),
+						context,
+						itemsSchema
+					) as IMessagePackSingleObjectSerializer;
+#else
+					new UnityMultidimensionalArraySerializer( context, targetType.GetElementType(), itemsSchema );
+#endif
+			}
 		}
 
 		private static object GetPrimitiveArraySerializer( SerializationContext context, Type targetType )

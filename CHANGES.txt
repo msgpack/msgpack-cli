@@ -282,5 +282,8 @@ Release 0.6 - 2015/06/29
   BREAKING CHANGES / IMPROVEMENTS
   * Unity3D DLL now only depends on mscorlib.dll. This breaks compabitlity because the library cannot recognize Stack<T>, Queue<T> and NameValueCollection. If you want to these types support, use Unity3D.Full drop instead.
 
+  IMPROVEMENTS
+  * Non-SZ arrays (multidimensional arrays and vector with non-zero based) are supproted. Issue #81.
+
   BUG FIXES
   * Fix Unity source code to avoid nullable equality operator. Issue #88

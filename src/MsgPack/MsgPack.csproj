@@ -195,6 +195,9 @@
     <Compile Include="Serialization\DefaultSerializers\DateTimeOffsetMessagePackSerializerProvider.cs" />
     <Compile Include="Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs" />
     <Compile Include="Serialization\DefaultSerializers\InternalDateTimeExtensions.cs" />
+    <Compile Include="Serialization\DefaultSerializers\MultidimensionalArraySerializer`1.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Serialization\DefaultSerializers\NativeDateTimeMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_DBNullMessagePackSerializer.cs" />
