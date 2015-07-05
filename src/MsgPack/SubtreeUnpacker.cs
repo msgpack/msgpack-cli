@@ -51,6 +51,7 @@ namespace MsgPack
 		private readonly BooleanStack _isMap;
 		private readonly Int64Stack _unpacked;
 		private readonly Int64Stack _itemsCount;
+		private State _state;
 
 		public override long ItemsCount
 		{
@@ -113,24 +114,31 @@ namespace MsgPack
 				this._unpacked.Push( 0 );
 				this._isMap.Push( root.InternalCollectionType == ItemsUnpacker.CollectionType.Map );
 			}
+
+			this._state = State.InHead;
 		}
 
 		protected override void Dispose( bool disposing )
 		{
 			if ( disposing )
 			{
-				// Drain...
-				while ( this.ReadCore() )
+				if ( this._state != State.Disposed )
 				{
-					// nop
-				}
-				if ( this._parent != null )
-				{
-					this._parent.EndReadSubtree();
-				}
-				else
-				{
-					this._root.EndReadSubtree();
+					// Drain...
+					while ( this.ReadCore() )
+					{
+						// nop
+					}
+					if ( this._parent != null )
+					{
+						this._parent.EndReadSubtree();
+					}
+					else
+					{
+						this._root.EndReadSubtree();
+					}
+
+					this._state = State.Disposed;
 				}
 			}
 
@@ -149,7 +157,13 @@ namespace MsgPack
 
 		protected override Unpacker ReadSubtreeCore()
 		{
-			if ( this._unpacked.Count == 0 )
+			if ( this._state == State.InHead )
+			{
+				// Duplicate call -- just return me.
+				return this;
+			}
+
+			if ( this._unpacked.Count == 0  )
 			{
 				throw new InvalidOperationException( "This unpacker is located in the tail." );
 			}
@@ -194,6 +208,7 @@ namespace MsgPack
 				}
 			}
 
+			this._state = State.InProgress;
 			return true;
 		}
 
@@ -241,6 +256,13 @@ namespace MsgPack
 
 				this._unpacked.Push( this._unpacked.Pop() + 1 );
 			}
+		}
+
+		private enum State
+		{
+			InHead = 0,
+			InProgress,
+			Disposed
 		}
 	}
 }

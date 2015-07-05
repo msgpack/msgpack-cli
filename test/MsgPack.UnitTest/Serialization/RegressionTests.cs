@@ -86,5 +86,35 @@ namespace MsgPack.Serialization
 				SerializationContext.Default = original;
 			}
 		}
+
+		[Test]
+		public void TestIssue92_EmptyAsMpo()
+		{
+			var bytes = new byte[] { 0x82, 0xA1, 0x74, 0x81, 0xA1, 0x74, 0x04, 0xA4, 0x64, 0x61, 0x74, 0x61, 0x80 };
+			using ( var buffer = new MemoryStream( bytes ) )
+			{
+				var serializer = MessagePackSerializer.Get<Dictionary<string, MessagePackObject>>( new SerializationContext() );
+				var d = serializer.Unpack( buffer );
+			}
+		}
+
+		[Test]
+		public void TestIssue92_EmptyAsCollection()
+		{
+			var value = new int[][] { new[] { 1, 2 }, new int[ 0 ] };
+			var serializer = MessagePackSerializer.Get<int[][]>( new SerializationContext() );
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, value );
+				Console.WriteLine( Binary.ToHexString( buffer.ToArray() ) );
+				buffer.Position = 0;
+				var a = serializer.Unpack( buffer );
+				Assert.That( a.Length, Is.EqualTo( 2 ) );
+				Assert.That( a[ 0 ].Length, Is.EqualTo( 2 ) );
+				Assert.That( a[ 0 ][ 0 ], Is.EqualTo( 1 ) );
+				Assert.That( a[ 0 ][ 1 ], Is.EqualTo( 2 ) );
+				Assert.That( a[ 1 ].Length, Is.EqualTo( 0 ) );
+			}
+		}
 	}
 }
