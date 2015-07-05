@@ -289,4 +289,3 @@ Release 0.6.0 Beta4 - 2015/07/05
   * Fix Unity source code to avoid nullable equality operator. Issue #88
   * Fix MessagePackObject deserializer cannot handle empty collection correctly. Issue #92.
   * Fix disposing "subtree" Unpacker twice causes Exception.
-
