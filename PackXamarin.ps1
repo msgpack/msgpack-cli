@@ -14,6 +14,11 @@ if( $Rebuild )
 }
 
 $buildOptions += '/p:Configuration=Release'
+# cleanup
+if ( [IO.Directory]::Exists( ".\bin\Xamarin.iOS10" ) )
+{
+	Remove-Item .\bin\Xamarin.iOS10 -Recurse
+}
 # build
 &$builder $sln $buildOptions
 Copy-Item .\bin\MonoTouch10 .\bin\Xamarin.iOS10 -Recurse
