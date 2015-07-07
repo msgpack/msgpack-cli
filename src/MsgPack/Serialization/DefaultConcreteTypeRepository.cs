@@ -47,7 +47,7 @@ namespace MsgPack.Serialization
 #if NETFX_35 || WINDOWS_PHONE
 					8
 #else
-					9
+					12
 #endif
  )
 				{
@@ -61,6 +61,11 @@ namespace MsgPack.Serialization
 					{ typeof( IDictionary ).TypeHandle, typeof( MessagePackObjectDictionary ) },
 #if !NETFX_35 && !UNITY
 					{ typeof( ISet<> ).TypeHandle, typeof( HashSet<> ) },
+#if !NETFX_40
+					{ typeof( IReadOnlyCollection<> ).TypeHandle, typeof( List<> ) },
+					{ typeof( IReadOnlyList<> ).TypeHandle, typeof( List<> ) },
+					{ typeof( IReadOnlyDictionary<,> ).TypeHandle, typeof( Dictionary<,> ) }
+#endif // !NETFX_40
 #endif // !NETFX_35 && !UNITY
 				} );
 		}
