@@ -99,10 +99,13 @@ namespace MsgPack.Serialization
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( ISet<> ) ), Is.EqualTo( typeof( HashSet<> ) ) );
 #endif
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( ICollection<> ) ), Is.EqualTo( typeof( List<> ) ) );
-			Assert.That( context.DefaultCollectionTypes.Get( typeof( IEnumerable<> ) ), Is.EqualTo( typeof( List<> ) ) );
-			Assert.That( context.DefaultCollectionTypes.Get( typeof( IDictionary<,> ) ), Is.EqualTo( typeof( Dictionary<,> ) ) );
-			Assert.That( context.DefaultCollectionTypes.Get( typeof( IList ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
-			Assert.That( context.DefaultCollectionTypes.Get( typeof( ICollection ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
+		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IReadOnlyCollection<> ) ), Is.EqualTo( typeof( List<> ) ) );
+		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IEnumerable<> ) ), Is.EqualTo( typeof( List<> ) ) );
+		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IDictionary<,> ) ), Is.EqualTo( typeof( Dictionary<,> ) ) );
+		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IReadOnlyDictionary<,> ) ), Is.EqualTo( typeof( Dictionary<,> ) ) );
+		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IList ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
+		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IReadOnlyList<> ) ), Is.EqualTo( typeof( List<> ) ) );
+		    Assert.That( context.DefaultCollectionTypes.Get( typeof( ICollection ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( IEnumerable ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( IDictionary ) ), Is.EqualTo( typeof( MessagePackObjectDictionary ) ) );
 		}
