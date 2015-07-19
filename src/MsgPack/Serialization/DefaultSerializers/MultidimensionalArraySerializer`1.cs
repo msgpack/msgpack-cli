@@ -200,9 +200,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 #if SILVERLIGHT
 				// Simulate lowerbounds because Array.Initialize() in Silverlight does not support lowerbounds.
+				var inflatedLengths = new int[ lengths.Length ];
 				for ( var i = 0; i < lowerBounds.Length; i++ )
 				{
-					lengths[ i ] += lowerBounds[ i ];
+					inflatedLengths[ i ] = lengths[ i ] + lowerBounds[ i ];
 				}
 
 #endif // SILVERLIGHT
@@ -229,7 +230,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 							lengths,
 							lowerBounds
 #else
-							lengths
+							inflatedLengths
 #endif // !SILVERLIGHT
 						);
 
