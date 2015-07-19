@@ -3026,6 +3026,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\AddOnlyCollection`1.cs">
       <Link>Serialization\AddOnlyCollection`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\AppendableReadOnlyCollections.cs">
+      <Link>Serialization\AppendableReadOnlyCollections.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs</Link>
     </Compile>

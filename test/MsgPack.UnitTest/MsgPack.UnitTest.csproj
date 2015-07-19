@@ -1222,6 +1222,7 @@
     <Compile Include="gen\map\System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer.cs" />
     <Compile Include="gen\map\System_DayOfWeekSerializer.cs" />
     <Compile Include="Serialization\PerformanceTest.cs" />
+    <Compile Include="Serialization\AppendableReadOnlyCollections.cs" />
     <Compile Include="Serialization\ReflectionBasedNilImplicationTest.cs">
       <DependentUpon>ReflectionBasedNilImplicationTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>

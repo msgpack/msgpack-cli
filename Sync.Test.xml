@@ -76,6 +76,7 @@
     <Preserve Path="gen\*" />
     <Preserve Path="gen\array\*" />
     <Preserve Path="gen\map\*" />
+    <Exclude Path="Serialization\AppendableReadOnlyCollections.cs" />
     <Exclude Path="Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\ArrayExpressionBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\ExpressionBasedNilImplicationTest.cs" />

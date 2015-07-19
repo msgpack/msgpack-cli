@@ -1798,6 +1798,90 @@ namespace MsgPack.Serialization
 			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractNonCollection>( context ) );
 		}
 
+#if !NETFX_35 && !UNITY
+		[Test]
+		public void TestReadOnlyCollectionInterfaceDefault()
+		{
+			TestCollectionInterfaceCore<IReadOnlyCollection<int>>(
+				new byte[] { 0x91, 0x1 },
+				result =>
+				{
+					Assert.That( result, Is.InstanceOf<List<int>>() );
+					Assert.That( result.Count, Is.EqualTo( 1 ) );
+					Assert.That( result.First(), Is.EqualTo( 1 ) );
+				},
+				null
+			);
+			TestCollectionInterfaceCore<IReadOnlyList<int>>(
+				new byte[] { 0x91, 0x1 },
+				result =>
+				{
+					Assert.That( result, Is.InstanceOf<List<int>>() );
+					Assert.That( result.Count, Is.EqualTo( 1 ) );
+					Assert.That( result.First(), Is.EqualTo( 1 ) );
+				},
+				null
+			);
+			TestCollectionInterfaceCore<IReadOnlyDictionary<int, int>>(
+				new byte[] { 0x81, 0x1, 0x2 },
+				result =>
+				{
+					Assert.That( result, Is.InstanceOf<Dictionary<int, int>>() );
+					Assert.That( result.Count, Is.EqualTo( 1 ) );
+					Assert.That( result.ContainsKey( 1 ) );
+					Assert.That( result[ 1 ], Is.EqualTo( 2 ) );
+				},
+				null
+			);
+		}
+
+		[Test]
+		public void TestReadOnlyCollectionInterfaceExplicit()
+		{
+			TestCollectionInterfaceCore<IReadOnlyCollection<int>>(
+				new byte[] { 0x91, 0x1 },
+				result =>
+				{
+					Assert.That( result, Is.InstanceOf<List<int>>() );
+					Assert.That( result.Count, Is.EqualTo( 1 ) );
+					Assert.That( result.First(), Is.EqualTo( 1 ) );
+				},
+				context => context.DefaultCollectionTypes.Register( typeof( IReadOnlyCollection<int> ), typeof( AppendableReadOnlyCollection<int> ) )
+			);
+			TestCollectionInterfaceCore<IReadOnlyList<int>>(
+				new byte[] { 0x91, 0x1 },
+				result =>
+				{
+					Assert.That( result, Is.InstanceOf<List<int>>() );
+					Assert.That( result.Count, Is.EqualTo( 1 ) );
+					Assert.That( result.First(), Is.EqualTo( 1 ) );
+				},
+				context => context.DefaultCollectionTypes.Register( typeof( IReadOnlyList<int> ), typeof( AppendableReadOnlyList<int> ) )
+			);
+			TestCollectionInterfaceCore<IReadOnlyDictionary<int, int>>(
+				new byte[] { 0x81, 0x1, 0x2 },
+				result =>
+				{
+					Assert.That( result, Is.InstanceOf<Dictionary<int, int>>() );
+					Assert.That( result.Count, Is.EqualTo( 1 ) );
+					Assert.That( result.ContainsKey( 1 ) );
+					Assert.That( result[ 1 ], Is.EqualTo( 2 ) );
+				},
+				context => context.DefaultCollectionTypes.Register( typeof( IReadOnlyDictionary<int, int> ), typeof( AppendableReadOnlyDictionary<int, int> ) )
+			);
+		}
+
+		private static void TestCollectionInterfaceCore<T>( byte[] data, Action<T> assertion, Action<SerializationContext> registration )
+		{
+			using ( var buffer = new MemoryStream(data) )
+			{
+				var serializer = MessagePackSerializer.Get<T>( NewSerializationContext( PackerCompatibilityOptions.None ) );
+				var result = serializer.Unpack( buffer );
+				assertion( result );
+			}
+		}
+#endif // !NETFX_35 && !UNITY
+
 		private void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer )
 		{
 			TestCore( value, unpacking, comparer, null );
