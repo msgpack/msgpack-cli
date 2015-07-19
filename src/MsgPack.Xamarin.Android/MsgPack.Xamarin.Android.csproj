@@ -679,7 +679,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="..\MsgPack\remarks.xml">
       <Link>remarks.xml</Link>

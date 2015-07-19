@@ -165,13 +165,11 @@ namespace SyncProjects
 					}
 				}
 
+				// Avoid empty ItemGroups
+				projectXml.Root.Elements( Ns + "ItemGroup" ).Where( ig => !ig.HasElements ).Remove();
+
 				projectXml.Save( projectFilePath );
 			}
-		}
-
-		private static IEnumerable<ItemGroup> ToItemGroups( XContainer projectXml )
-		{
-			return projectXml.Elements( Ns + "ItemGroup" ).Select( e => new ItemGroup( e ) );
 		}
 
 		private static void CopyItemGroup( string elementName, IEnumerable<XElement> sourceItems, XElement destinationItemGroup, string relativePath, IEnumerable<string> includings, IEnumerable<string> excludings, IEnumerable<string> preservings )

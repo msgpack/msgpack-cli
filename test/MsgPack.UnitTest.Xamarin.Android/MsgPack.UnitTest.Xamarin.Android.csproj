@@ -60,7 +60,6 @@
       <Name>MsgPack.Xamarin.Android</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="..\..\src\MsgPack.snk">
       <Link>MsgPack.snk</Link>
