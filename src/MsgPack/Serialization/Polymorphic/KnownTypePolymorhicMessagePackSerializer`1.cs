@@ -24,8 +24,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -105,40 +105,37 @@ namespace MsgPack.Serialization.Polymorphic
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes", Justification = "Avoided via ownsStream: false" )]
 		protected internal override void PackToCore( Packer packer, T objectTree )
 		{
-			using ( var buffer = new MemoryStream() )
-			{
-				using ( var valuePacker = Packer.Create( buffer, this.PackerCompatibilityOptions, false ) )
-				{
-					this.GetActualTypeSerializer( objectTree.GetType() ).PackTo( valuePacker, objectTree );
-				}
-
-				packer.PackExtendedTypeValue(
-					this._typeCodeMap[ objectTree.GetType().TypeHandle ],
-					buffer.ToArray()
-				);
-			}
+			TypeInfoEncoder.Encode( this.OwnerContext, packer, this._typeCodeMap[ objectTree.GetType().TypeHandle ] );
+			this.GetActualTypeSerializer( objectTree.GetType() ).PackTo( packer, objectTree );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
-			// It is not reasonable to identify other forms.
-			var ext = unpacker.LastReadData.AsMessagePackExtendedTypeObject();
-			RuntimeTypeHandle typeHandle;
-			if ( !this._typeHandleMap.TryGetValue( ext.TypeCode, out typeHandle ) )
-			{
-				throw new SerializationException(
-					String.Format( CultureInfo.CurrentCulture, "Unknown extension type {0}.", ext.TypeCode )
-				);
-			}
+			return
+				TypeInfoEncoder.Decode(
+					this.OwnerContext,
+					unpacker,
+					TypeInfoEncoding.KnownType,
+					ext =>
+					{
+						if ( ext.Body.Length != 2 )
+						{
+							throw SerializationExceptions.NewUnknownTypeEmbedding();
+						}
 
-			using ( var buffer = new MemoryStream( ext.Body ) )
-			{
-				return
-					( T )this.GetActualTypeSerializer(
-						Type.GetTypeFromHandle( typeHandle )
-					).Unpack( buffer );
-			}
+						RuntimeTypeHandle typeHandle;
+						if ( !this._typeHandleMap.TryGetValue( ext.Body[ 1 ], out typeHandle ) )
+						{
+							throw new SerializationException(
+								String.Format( CultureInfo.CurrentCulture, "Unknown type {0:X2}.", ext.Body[ 1 ] )
+								);
+						}
+
+						return Type.GetTypeFromHandle( typeHandle );
+					},
+					( t, u ) => ( T ) this.GetActualTypeSerializer( t ).UnpackFrom( u )
+				);
 		}
 
 		object IPolymorphicDeserializer.PolymorphicUnpackFrom( Unpacker unpacker )

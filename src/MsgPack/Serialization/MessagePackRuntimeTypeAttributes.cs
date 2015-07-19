@@ -56,11 +56,6 @@ namespace MsgPack.Serialization
 		public MessagePackRuntimeTypeAttribute()
 		{
 		}
-
-		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
-		{
-			return context.TypeEmbeddingSettings.TypeEmbeddingIdentifier;
-		}
 	}
 
 	/// <summary>
@@ -92,11 +87,6 @@ namespace MsgPack.Serialization
 		/// </summary>
 		public MessagePackRuntimeCollectionItemTypeAttribute()
 		{
-		}
-
-		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
-		{
-			return context.TypeEmbeddingSettings.TypeEmbeddingIdentifier;
 		}
 	}
 
@@ -130,11 +120,6 @@ namespace MsgPack.Serialization
 		public MessagePackRuntimeDictionaryKeyTypeAttribute()
 		{
 		}
-
-		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
-		{
-			return context.TypeEmbeddingSettings.TypeEmbeddingIdentifier;
-		}
 	}
 
 	/// <summary>
@@ -161,11 +146,6 @@ namespace MsgPack.Serialization
 			get { return PolymorphismTarget.TupleItem; }
 		}
 
-
-		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
-		{
-			return context.TypeEmbeddingSettings.TypeEmbeddingIdentifier;
-		}
 	}
 
 

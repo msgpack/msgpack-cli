@@ -73,7 +73,7 @@ namespace MsgPack.Serialization
 			this.BindingType = bindingType;
 		}
 
-		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
+		byte IPolymorphicKnownTypeAttribute.GetBindingCode( SerializationContext context )
 		{
 			if ( this.BindingCode > 127 )
 			{
@@ -130,7 +130,7 @@ namespace MsgPack.Serialization
 			this.BindingType = bindingType;
 		}
 
-		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
+		byte IPolymorphicKnownTypeAttribute.GetBindingCode( SerializationContext context )
 		{
 			if ( this.BindingCode > 127 )
 			{
@@ -187,7 +187,7 @@ namespace MsgPack.Serialization
 			this.BindingType = bindingType;
 		}
 
-		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
+		byte IPolymorphicKnownTypeAttribute.GetBindingCode( SerializationContext context )
 		{
 			if ( this.BindingCode > 127 )
 			{
@@ -234,7 +234,7 @@ namespace MsgPack.Serialization
 		public Type BindingType { get; private set; }
 
 
-		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
+		byte IPolymorphicKnownTypeAttribute.GetBindingCode( SerializationContext context )
 		{
 			if ( this.BindingCode > 127 )
 			{

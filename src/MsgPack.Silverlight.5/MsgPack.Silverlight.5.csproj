@@ -121,6 +121,12 @@
     <Compile Include="..\MsgPack\IUnpackable.cs">
       <Link>IUnpackable.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\KnownExtTypeCode.cs">
+      <Link>KnownExtTypeCode.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\KnownExtTypeName.cs">
+      <Link>KnownExtTypeName.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\MessageNotSupportedException.cs">
       <Link>MessageNotSupportedException.cs</Link>
     </Compile>
@@ -586,6 +592,9 @@
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilder`1.cs">
       <Link>Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilder`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\ExtTypeCodeMapping.cs">
+      <Link>Serialization\ExtTypeCodeMapping.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\FromExpression.cs">
       <Link>Serialization\FromExpression.cs</Link>
     </Compile>
@@ -817,8 +826,8 @@
     <Compile Include="..\MsgPack\Serialization\SerializationContext.cs">
       <Link>Serialization\SerializationContext.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\SerializationContext.TypeEmbedding.cs">
-      <Link>Serialization\SerializationContext.TypeEmbedding.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\SerializationContext.ExtTypeCodes.cs">
+      <Link>Serialization\SerializationContext.ExtTypeCodes.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializationExceptions.cs">
       <Link>Serialization\SerializationExceptions.cs</Link>
@@ -849,9 +858,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Tracer.cs">
       <Link>Serialization\Tracer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\TypeEmbeddingSettings.cs">
-      <Link>Serialization\TypeEmbeddingSettings.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\TypeKeyRepository.cs">
       <Link>Serialization\TypeKeyRepository.cs</Link>

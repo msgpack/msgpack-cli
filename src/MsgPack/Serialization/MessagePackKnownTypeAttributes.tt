@@ -153,7 +153,7 @@ foreach( var item in
 	}
 #>
 
-		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
+		byte IPolymorphicKnownTypeAttribute.GetBindingCode( SerializationContext context )
 		{
 			if ( this.BindingCode > 127 )
 			{

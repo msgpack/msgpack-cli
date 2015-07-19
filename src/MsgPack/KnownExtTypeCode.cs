@@ -1,48 +1,59 @@
-﻿#region -- License Terms --
-// 
+#region -- License Terms --
+//
 // MessagePack for CLI
-// 
+//
 // Copyright (C) 2015 FUJIWARA, Yusuke
-// 
+//
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
 //    You may obtain a copy of the License at
-// 
+//
 //        http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //    Unless required by applicable law or agreed to in writing, software
 //    distributed under the License is distributed on an "AS IS" BASIS,
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-// 
+//
 #endregion -- License Terms --
 
 using System;
 
-namespace MsgPack.Serialization
+namespace MsgPack
 {
 	/// <summary>
-	///		Holds various settings related to .NET type embedding.
+	///		Defines known ext type code for MessagePack for CLI.
 	/// </summary>
-	public sealed class TypeEmbeddingSettings
+	/// <remarks>
+	///		Note that values in this class are not guaranteed as interoperable with other implementations.
+	///		These are just known by MessagePack for CLI implementation.
+	/// </remarks>
+	public static class KnownExtTypeCode
 	{
 		/// <summary>
-		///		The default type code for token which indicates the enclosing array holds complex object with encoded .NET type information.
-		/// </summary>
-		/// <remarks>
-		///		Currently, this value is <c>127</c>(<c>0x7F</c>).
-		/// </remarks>
-		public const byte DefaultTypeEmbeddingIdentifier = 127;
-
-		/// <summary>
-		///		Gets or sets the type code for token which indicates the enclosing array holds complex object with encoded .NET type information.
+		///		Gets the ext type code which represents "Library Defined Type".
 		/// </summary>
 		/// <value>
-		///		The type code for the token. Default is <see cref="DefaultTypeEmbeddingIdentifier"/>.
+		///		0.
 		/// </value>
-		public byte TypeEmbeddingIdentifier { get; set; }
+		/// <remarks>
+		///		"Library Defined Type" will be used to embed native or coded type information in MessagePack stream.
+		/// </remarks>
+		public static byte LibraryDefinedType
+		{
+			get { return 0; }
+		}
 
-		internal TypeEmbeddingSettings() { }
+		/// <summary>
+		///		Gets the ext type code which represents multidimensional array.
+		/// </summary>
+		/// <value>
+		///		0x1.
+		/// </value>
+		public static byte MultidimensionalArray
+		{
+			get { return 0x1; }
+		}
 	}
 }

@@ -24,17 +24,17 @@ namespace MsgPack.Serialization
 {
 	partial class SerializationContext
 	{
-		private readonly TypeEmbeddingSettings _typeEmbeddingSettings = new TypeEmbeddingSettings();
+		private readonly ExtTypeCodeMapping _extTypeCodes = new ExtTypeCodeMapping();
 
 		/// <summary>
-		///		Gets the type embedding settings.
+		///		Gets the current mapping table of ext type code.
 		/// </summary>
 		/// <value>
-		///		The type embedding settings. This value will not be <c>null</c>.
+		///		The <see cref="ExtTypeCodeMapping"/> which maps between known ext type names and ext type codes.
 		/// </value>
-		public TypeEmbeddingSettings TypeEmbeddingSettings
+		public ExtTypeCodeMapping ExtTypeCodeMapping
 		{
-			get { return this._typeEmbeddingSettings; }
+			get { return this._extTypeCodes; }
 		}
 	}
 }

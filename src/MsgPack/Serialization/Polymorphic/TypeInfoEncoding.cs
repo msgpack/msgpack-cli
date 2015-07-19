@@ -25,13 +25,14 @@ namespace MsgPack.Serialization.Polymorphic
 	/// <summary>
 	///		Represents type info encoding.
 	/// </summary>
-	internal enum TypeInfoEncoding
+	internal enum TypeInfoEncoding : byte
 	{
-		RawCompressed = 0
+		KnownType = 0,
+		RawCompressed = 1
 	}
 
 	internal static class TypeInfoEncodingBytes
 	{
-		public static readonly byte[] RawCompressed = new byte[] { 0 };
+		public static readonly byte[] RawCompressed = new byte[] { 1 };
 	}
 }

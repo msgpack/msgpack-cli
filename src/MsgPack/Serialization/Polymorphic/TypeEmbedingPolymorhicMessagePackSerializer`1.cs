@@ -20,6 +20,7 @@
 
 using System;
 using System.Globalization;
+using System.IO;
 using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.Polymorphic
@@ -59,59 +60,36 @@ namespace MsgPack.Serialization.Polymorphic
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, T objectTree )
 		{
-			packer.PackArrayHeader( 3 );
-			packer.PackExtendedTypeValue(
-				this.OwnerContext.TypeEmbeddingSettings.TypeEmbeddingIdentifier,
-				TypeInfoEncodingBytes.RawCompressed
-			);
-			TypeInfoEncoder.Encode( packer, objectTree.GetType() );
-
+			TypeInfoEncoder.Encode( this.OwnerContext, packer, objectTree.GetType() );
 			this.GetActualTypeSerializer( objectTree.GetType() ).PackTo( packer, objectTree );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
-			// It is not reasonable to identify other forms.
-			if ( !unpacker.IsArrayHeader || UnpackHelpers.GetItemsCount( unpacker ) != 3 )
-			{
-				throw SerializationExceptions.NewUnknownTypeEmbedding();
-			}
+			return
+				TypeInfoEncoder.Decode(
+					this.OwnerContext,
+					unpacker,
+					TypeInfoEncoding.RawCompressed,
+					ext =>
+					{
+						using ( var buffer = new MemoryStream( ext.Body ) )
+						{
+							buffer.Seek( 1, SeekOrigin.Current );
+							using ( var typeInfoUnpacker = Unpacker.Create( buffer ) )
+							{
+								if ( !typeInfoUnpacker.Read() )
+								{
+									throw SerializationExceptions.NewUnexpectedEndOfStream();
+								}
 
-			using ( var subTreeUnpacker = unpacker.ReadSubtree() )
-			{
-				if ( !subTreeUnpacker.Read() )
-				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
-				}
-				var header = subTreeUnpacker.LastReadData.AsMessagePackExtendedTypeObject();
-				if ( header.TypeCode != this.OwnerContext.TypeEmbeddingSettings.TypeEmbeddingIdentifier )
-				{
-					throw new SerializationException(
-						String.Format( CultureInfo.CurrentCulture, "Unknown extension type {0}.", header.TypeCode )
-					);
-				}
-
-				if ( header.Body.Length != TypeInfoEncodingBytes.RawCompressed.Length
-					|| header.Body[ 0 ] != TypeInfoEncodingBytes.RawCompressed[ 0 ] )
-				{
-					throw new SerializationException( "Unknown type info encoding type." );
-				}
-
-				if ( !subTreeUnpacker.Read() )
-				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
-				}
-
-				var objectType = TypeInfoEncoder.Decode( subTreeUnpacker );
-
-				if ( !subTreeUnpacker.Read() )
-				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
-				}
-
-				return ( T )this.GetActualTypeSerializer( objectType ).UnpackFrom( subTreeUnpacker );
-			}
+								return TypeInfoEncoder.Decode( typeInfoUnpacker );
+							}
+						}
+					},
+					( t, u ) => ( T ) this.GetActualTypeSerializer( t ).UnpackFrom( u ) 
+				);
 		}
 
 		object IPolymorphicDeserializer.PolymorphicUnpackFrom( Unpacker unpacker )

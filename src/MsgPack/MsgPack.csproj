@@ -129,6 +129,8 @@
     <Compile Include="IUnpackable.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="KnownExtTypeCode.cs" />
+    <Compile Include="KnownExtTypeName.cs" />
     <Compile Include="MessagePackExtendedTypeObject.cs" />
     <Compile Include="MessagePackObjectDictionary.Enumerator.cs" />
     <Compile Include="MessagePackObjectDictionary.KeySet.cs" />
@@ -261,7 +263,7 @@
     <Compile Include="Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerOnUnpackedParameter.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerParameter.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
-    <Compile Include="Serialization\SerializationContext.TypeEmbedding.cs" />
+    <Compile Include="Serialization\SerializationContext.ExtTypeCodes.cs" />
     <Compile Include="Serialization\SerializationTarget.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs">
       <SubType>Code</SubType>
@@ -436,10 +438,10 @@
     <Compile Include="Serialization\SerializerRepository.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />
     <Compile Include="Serialization\Tracer.cs" />
-    <Compile Include="Serialization\TypeEmbeddingSettings.cs" />
     <Compile Include="Serialization\Polymorphic\TypeInfoEncoding.cs" />
     <Compile Include="Serialization\Polymorphic\TypeEmbedingPolymorhicMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\Polymorphic\TypeInfoEncoder.cs" />
+    <Compile Include="Serialization\ExtTypeCodeMapping.cs" />
     <Compile Include="Serialization\TypeKeyRepository.cs" />
     <Compile Include="Serialization\MessagePackSerializer.cs" />
     <Compile Include="Serialization\UnpackHelpers.cs" />

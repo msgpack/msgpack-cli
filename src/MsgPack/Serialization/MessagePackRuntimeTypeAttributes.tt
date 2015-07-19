@@ -137,11 +137,6 @@ foreach( var item in
 <#
 	}
 #>
-
-		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
-		{
-			return context.TypeEmbeddingSettings.TypeEmbeddingIdentifier;
-		}
 	}
 
 <#

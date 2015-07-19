@@ -35,9 +35,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class UnityMultidimensionalArraySerializer : NonGenericMessagePackSerializer
 #endif // !UNITY
 	{
-#warning TODO: Ext
-		private const int MultidimensionalArray = 1;
-
 #if !UNITY
 		private readonly MessagePackSerializer<TItem> _itemSerializer;
 		private readonly MessagePackSerializer<int[]> _int32ArraySerializer;
@@ -102,7 +99,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				bodyPacker.PackArrayHeader( 2 );
 				this._int32ArraySerializer.PackTo( bodyPacker, lengths );
 				this._int32ArraySerializer.PackTo( bodyPacker, lowerBounds );
-				packer.PackExtendedTypeValue( MultidimensionalArray, buffer.ToArray() );
+				packer.PackExtendedTypeValue( this.OwnerContext.ExtTypeCodeMapping[ KnownExtTypeName.MultidimensionalArray ], buffer.ToArray() );
 			}
 
 			packer.PackArrayHeader( totalLength );
@@ -167,13 +164,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 					throw new SerializationException( "Multidimensional array must be encoded as ext type.", ex );
 				}
 
-				if ( metadata.TypeCode != MultidimensionalArray )
+				if ( metadata.TypeCode != this.OwnerContext.ExtTypeCodeMapping[ KnownExtTypeName.MultidimensionalArray ] )
 				{
 					throw new SerializationException(
 						String.Format(
 							CultureInfo.CurrentCulture,
-							"Multidimensional array must be encoded as ext type {0}.",
-							MultidimensionalArray
+							"Multidimensional array must be encoded as ext type 0x{0:X2}.",
+							this.OwnerContext.ExtTypeCodeMapping[ KnownExtTypeName.MultidimensionalArray ]
 							)
 						);
 				}
