@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -99,13 +99,19 @@ namespace MsgPack.Serialization
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( ISet<> ) ), Is.EqualTo( typeof( HashSet<> ) ) );
 #endif
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( ICollection<> ) ), Is.EqualTo( typeof( List<> ) ) );
+#if !NETFX_35 && !UNITY && !NETFX_40
 		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IReadOnlyCollection<> ) ), Is.EqualTo( typeof( List<> ) ) );
-		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IEnumerable<> ) ), Is.EqualTo( typeof( List<> ) ) );
+#endif // !NETFX_35 && !UNITY && !NETFX_40
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( IEnumerable<> ) ), Is.EqualTo( typeof( List<> ) ) );
 		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IDictionary<,> ) ), Is.EqualTo( typeof( Dictionary<,> ) ) );
+#if !NETFX_35 && !UNITY && !NETFX_40
 		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IReadOnlyDictionary<,> ) ), Is.EqualTo( typeof( Dictionary<,> ) ) );
+#endif // !NETFX_35 && !UNITY && !NETFX_40
 		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IList ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
+#if !NETFX_35 && !UNITY && !NETFX_40
 		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IReadOnlyList<> ) ), Is.EqualTo( typeof( List<> ) ) );
-		    Assert.That( context.DefaultCollectionTypes.Get( typeof( ICollection ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
+#endif // !NETFX_35 && !UNITY && !NETFX_40
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( ICollection ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( IEnumerable ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( IDictionary ) ), Is.EqualTo( typeof( MessagePackObjectDictionary ) ) );
 		}

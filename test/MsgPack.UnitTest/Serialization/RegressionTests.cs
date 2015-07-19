@@ -106,7 +106,6 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream() )
 			{
 				serializer.Pack( buffer, value );
-				Console.WriteLine( Binary.ToHexString( buffer.ToArray() ) );
 				buffer.Position = 0;
 				var a = serializer.Unpack( buffer );
 				Assert.That( a.Length, Is.EqualTo( 2 ) );
