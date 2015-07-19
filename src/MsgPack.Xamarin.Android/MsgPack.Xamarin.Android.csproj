@@ -173,11 +173,17 @@
     <Compile Include="..\MsgPack\Serialization\CollectionKind.cs">
       <Link>Serialization\CollectionKind.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\CollectionMessagePackSerializerBase`2.cs">
+      <Link>Serialization\CollectionSerializers\CollectionMessagePackSerializerBase`2.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\CollectionMessagePackSerializer`2.cs">
       <Link>Serialization\CollectionSerializers\CollectionMessagePackSerializer`2.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\CollectionSerializerHelpers.cs">
       <Link>Serialization\CollectionSerializers\CollectionSerializerHelpers.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\DictionaryMessagePackSerializerBase`3.cs">
+      <Link>Serialization\CollectionSerializers\DictionaryMessagePackSerializerBase`3.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\DictionaryMessagePackSerializer`3.cs">
       <Link>Serialization\CollectionSerializers\DictionaryMessagePackSerializer`3.cs</Link>
@@ -205,6 +211,12 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\NonGenericListMessagePackSerializer`1.cs">
       <Link>Serialization\CollectionSerializers\NonGenericListMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs">
+      <Link>Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs">
+      <Link>Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionTraits.cs">
       <Link>Serialization\CollectionTraits.cs</Link>
@@ -247,6 +259,12 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\AbstractNonGenericListMessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\AbstractNonGenericListMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\AbstractReadOnlyCollectionMessagePackSerializer`2.cs">
+      <Link>Serialization\DefaultSerializers\AbstractReadOnlyCollectionMessagePackSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\AbstractReadOnlyDictionaryMessagePackSerializer`3.cs">
+      <Link>Serialization\DefaultSerializers\AbstractReadOnlyDictionaryMessagePackSerializer`3.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ArraySegmentMessageSerializer.cs">
       <Link>Serialization\DefaultSerializers\ArraySegmentMessageSerializer.cs</Link>

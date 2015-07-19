@@ -40,11 +40,11 @@ namespace MsgPack.Serialization
 		/// </summary>
 		DictionaryKeyValues,
 
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !NETFX_35 && !UNITY
 		/// <summary>
 		///		Tuple items, so chidren count is equal to tuple's arity.
 		/// </summary>
 		TupleItems
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !NETFX_35 && !UNITY
 	}
 }

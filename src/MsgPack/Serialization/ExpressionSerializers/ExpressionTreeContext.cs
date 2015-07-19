@@ -87,6 +87,15 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			{
 				this.CollectionToBeAdded = Expression.Parameter( targetType, "collection" );
 				this.ItemToAdd = Expression.Parameter( traits.ElementType, "item" );
+				if ( traits.DetailedCollectionType == CollectionDetailedKind.GenericDictionary
+#if !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+					|| traits.DetailedCollectionType == CollectionDetailedKind.GenericReadOnlyDictionary
+#endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+				)
+				{
+					this.KeyToAdd = Expression.Parameter( traits.ElementType.GetGenericArguments()[ 0 ], "key" );
+					this.ValueToAdd = Expression.Parameter( traits.ElementType.GetGenericArguments()[ 1 ], "value" );
+				}
 				this.InitialCapacity = Expression.Parameter( typeof( int ), "initialCapacity" );
 			}
 		}
@@ -106,9 +115,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			this._currentParamters = this.GetParameters( targetType, method ).ToArray();
 		}
 
-		public void SetCurrentMethod( CollectionSerializerMethod method )
+		public void SetCurrentMethod( CollectionSerializerMethod method, CollectionTraits traits )
 		{
-			this._currentParamters = this.GetParameters( method ).ToArray();
+			this._currentParamters = this.GetParameters( method, traits ).ToArray();
 		}
 
 		/// <summary>
@@ -228,13 +237,31 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			{
 				case CollectionSerializerMethod.AddItem:
 				{
-					return
-						typeof( Action<,,,> ).MakeGenericType(
-							serializerType,
-							typeof( SerializationContext ),
-							typeof( TObject ),
-							traits.ElementType
-						);
+					if ( traits.DetailedCollectionType == CollectionDetailedKind.GenericDictionary 
+#if !NETFX_40  && !( SILVERLIGHT && !WINDOWS_PHONE )
+						|| traits.DetailedCollectionType == CollectionDetailedKind.GenericReadOnlyDictionary
+#endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+					)
+					{
+						return
+							typeof( Action<,,,,> ).MakeGenericType(
+								serializerType,
+								typeof( SerializationContext ),
+								typeof( TObject ),
+								traits.ElementType.GetGenericArguments()[ 0 ],
+								traits.ElementType.GetGenericArguments()[ 1 ]
+							);
+					}
+					else
+					{
+						return
+							typeof( Action<,,,> ).MakeGenericType(
+								serializerType,
+								typeof( SerializationContext ),
+								typeof( TObject ),
+								traits.ElementType
+							);
+					}
 				}
 				case CollectionSerializerMethod.CreateInstance:
 				{
@@ -336,11 +363,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		///		Gets the <see cref="ParameterExpression"/>s for specified method.
 		/// </summary>
 		/// <param name="method">The method to be created.</param>
+		/// <param name="traits">The traits of the collection.</param>
 		/// <returns>
 		///		The <see cref="ParameterExpression"/>s for specified method.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		private IEnumerable<ParameterExpression> GetParameters( CollectionSerializerMethod method )
+		private IEnumerable<ParameterExpression> GetParameters( CollectionSerializerMethod method, CollectionTraits traits )
 		{
 			switch ( method )
 			{
@@ -349,7 +377,19 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					yield return this.This.Expression as ParameterExpression;
 					yield return this._context.Expression as ParameterExpression;
 					yield return this.CollectionToBeAdded.Expression as ParameterExpression;
-					yield return this.ItemToAdd.Expression as ParameterExpression;
+					if ( traits.DetailedCollectionType == CollectionDetailedKind.GenericDictionary
+#if !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+						|| traits.DetailedCollectionType == CollectionDetailedKind.GenericReadOnlyDictionary
+#endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+					)
+					{
+						yield return this.KeyToAdd.Expression as ParameterExpression;
+						yield return this.ValueToAdd.Expression as ParameterExpression;
+					}
+					else
+					{
+						yield return this.ItemToAdd.Expression as ParameterExpression;
+					}
 					break;
 				}
 				case CollectionSerializerMethod.CreateInstance:

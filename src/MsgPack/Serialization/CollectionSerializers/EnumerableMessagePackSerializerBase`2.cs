@@ -146,7 +146,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// </exception>
 		protected virtual void AddItem( TCollection collection, TItem item )
 		{
-			throw SerializationExceptions.NewUnpackToIsNotSupported( typeof( TCollection), null ); 
+			throw SerializationExceptions.NewUnpackToIsNotSupported( typeof( TCollection ), null ); 
 		}
 	}
 

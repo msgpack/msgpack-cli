@@ -26,19 +26,20 @@ using MsgPack.Serialization.CollectionSerializers;
 namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
-	///		A helper <see cref="DictionaryMessagePackSerializer{TDictionary, TKey, TValue}"/> for <see cref="DynamicMethodSerializerBuilder{TObject}"/>.
+	///		A helper <see cref="CollectionMessagePackSerializer{TCollection, TItem}"/> for <see cref="DynamicMethodSerializerBuilder{TObject}"/>.
 	/// </summary>
-	/// <typeparam name="TDictionary">The type of the dictionary.</typeparam>
-	/// <typeparam name="TKey">The type of the key of collection.</typeparam>
-	/// <typeparam name="TValue">The type of the value of collection.</typeparam>
-	internal class CallbackDictionaryMessagePackSerializer<TDictionary, TKey, TValue> :
-		DictionaryMessagePackSerializer<TDictionary, TKey, TValue>
-		where TDictionary : IDictionary<TKey, TValue>
+	/// <typeparam name="TCollection">The type of the collection.</typeparam>
+	/// <typeparam name="TItem">The type of the item of collection.</typeparam>
+	internal class CallbackReadOnlyCollectionMessagePackSerializer<TCollection, TItem> :
+		ReadOnlyCollectionMessagePackSerializer<TCollection, TItem>
+		where TCollection : IReadOnlyCollection<TItem>
 	{
-		private readonly Func<SerializationContext, int, TDictionary> _createInstance;
+		private readonly Func<SerializationContext, int, TCollection> _createInstance;
+
+		private readonly Action<SerializationContext, TCollection, TItem> _addItem;
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="CallbackDictionaryMessagePackSerializer{TDictionary, TKey, TValue}"/> class.
+		///		Initializes a new instance of the <see cref="CallbackCollectionMessagePackSerializer{TCollection, TItem}"/> class.
 		/// </summary>
 		/// <param name="ownerContext">A <see cref="SerializationContext"/> which owns this serializer.</param>
 		/// <param name="schema">
@@ -46,22 +47,37 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		<c>null</c> will be considered as <see cref="PolymorphismSchema.Default"/>.
 		/// </param>
 		/// <param name="createInstance">The delegate to <c>CreateInstance</c> method body. This value must not be <c>null</c>.</param>
+		/// <param name="addItem">The delegate to <c>AddItem</c> method body. This value can be <c>null</c>.</param>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="ownerContext"/> is <c>null</c>.
 		/// </exception>
-		public CallbackDictionaryMessagePackSerializer(
+		public CallbackReadOnlyCollectionMessagePackSerializer(
 			SerializationContext ownerContext,
 			PolymorphismSchema schema,
-			Func<SerializationContext, int, TDictionary> createInstance
+			Func<SerializationContext, int, TCollection> createInstance,
+			Action<SerializationContext, TCollection, TItem> addItem
 		)
 			: base( ownerContext, schema )
 		{
 			this._createInstance = createInstance;
+			this._addItem = addItem;
 		}
 
-		protected override TDictionary CreateInstance( int initialCapacity )
+		protected override TCollection CreateInstance( int initialCapacity )
 		{
 			return this._createInstance( this.OwnerContext, initialCapacity );
+		}
+
+		protected override void AddItem( TCollection collection, TItem item )
+		{
+			if ( this._addItem != null )
+			{
+				this._addItem( this.OwnerContext, collection, item );
+			}
+			else
+			{
+				base.AddItem( collection, item );
+			}
 		}
 	}
 }

@@ -289,7 +289,7 @@ namespace MsgPack.Serialization
 				);
 		}
 
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !NETFX_35 && !UNITY
 		// Tuple items
 
 		/// <summary>
@@ -326,7 +326,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentException( "An arity of itemSchemaList does not match for an arity of the tuple.", "itemSchemaList" );
 			}
 		}
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !NETFX_35 && !UNITY
 
 		internal PolymorphismSchema FilterSelf()
 		{

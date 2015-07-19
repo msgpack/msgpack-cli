@@ -79,7 +79,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		protected override void EmitMethodPrologue( ExpressionTreeContext context, CollectionSerializerMethod method, MethodInfo declaration )
 		{
 			context.Reset( typeof( TObject ), BaseClass );
-			context.SetCurrentMethod( method );
+			context.SetCurrentMethod( method, CollectionTraitsOfThis );
 		}
 
 		protected override void EmitMethodEpilogue( ExpressionTreeContext context, SerializerMethod method, ExpressionConstruct construct )

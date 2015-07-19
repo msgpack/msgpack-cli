@@ -126,6 +126,15 @@ namespace MsgPack.Serialization.EmittingSerializers
 			{
 				this.CollectionToBeAdded = ILConstruct.Argument( 1, targetType, "collection" );
 				this.ItemToAdd = ILConstruct.Argument( 2, traits.ElementType, "item" );
+				if ( traits.DetailedCollectionType == CollectionDetailedKind.GenericDictionary
+#if !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
+					|| traits.DetailedCollectionType == CollectionDetailedKind.GenericReadOnlyDictionary
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
+ )
+				{
+					this.KeyToAdd = ILConstruct.Argument( 2, traits.ElementType.GetGenericArguments()[ 0 ], "key" );
+					this.ValueToAdd = ILConstruct.Argument( 3, traits.ElementType.GetGenericArguments()[ 1 ], "value" );
+				}
 				this.InitialCapacity = ILConstruct.Argument( 1, typeof( int ), "initialCapacity" );
 			}
 			this._emitter = null;

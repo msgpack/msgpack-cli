@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -37,10 +38,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 	/// </summary>
 	internal sealed class FieldBasedSerializerEmitter : SerializerEmitter
 	{
-		private static readonly Type[] UnpackFromCoreParameterTypes = { typeof( Unpacker ) };
-		private static readonly Type[] CreateInstanceParameterTypes = { typeof( int ) };
 		private static readonly Type[] ConstructorParameterTypes = { typeof( SerializationContext ) };
-		private static readonly Type[] CollectionConstructorParameterTypes = { typeof( SerializationContext ), typeof ( PolymorphismSchema ) };
+		private static readonly Type[] CollectionConstructorParameterTypes = { typeof( SerializationContext ), typeof( PolymorphismSchema ) };
 
 		private readonly Dictionary<SerializerFieldKey, SerializerFieldInfo> _serializers;
 		private readonly Dictionary<RuntimeFieldHandle, FieldBuilder> _fieldInfos;
@@ -48,7 +47,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private readonly ConstructorBuilder _defaultConstructorBuilder;
 		private readonly ConstructorBuilder _contextConstructorBuilder;
 		private readonly TypeBuilder _typeBuilder;
-		private readonly Type _targetType;
 		private MethodBuilder _packMethodBuilder;
 		private MethodBuilder _unpackFromMethodBuilder;
 		private MethodBuilder _unpackToMethodBuilder;
@@ -74,7 +72,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			string typeName =
 #if !NETFX_35
-				String.Join(
+ String.Join(
 					Type.Delimiter.ToString( CultureInfo.InvariantCulture ),
 					typeof( SerializerEmitter ).Namespace,
 					"Generated",
@@ -102,7 +100,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this._defaultConstructorBuilder = this._typeBuilder.DefineConstructor( MethodAttributes.Public, CallingConventions.Standard, Type.EmptyTypes );
 			this._contextConstructorBuilder = this._typeBuilder.DefineConstructor( MethodAttributes.Public, CallingConventions.Standard, ConstructorParameterTypes );
 
-			this._targetType = targetType;
 			this._traits = targetType.GetCollectionTraits();
 			var baseType = this._typeBuilder.BaseType;
 #if DEBUG
@@ -132,28 +129,30 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			if ( SerializerDebugging.TraceEnabled )
 			{
-				SerializerDebugging.TraceEvent( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._packMethodBuilder );
+				SerializerDebugging.TraceEvent( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, "PackToCore" );
 			}
 
 			if ( this._packMethodBuilder == null )
 			{
-				this._packMethodBuilder =
-					this._typeBuilder.DefineMethod(
-						"PackToCore",
-						MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final | MethodAttributes.HideBySig,
-						CallingConventions.HasThis,
-						typeof( void ),
-						new[] { typeof( Packer ), this._targetType }
-					);
 #if DEBUG
 				Contract.Assert( this._typeBuilder.BaseType != null, "this._typeBuilder.BaseType != null" );
-#endif
+#endif // DEBUG
+				var baseMethod =
+					this._typeBuilder.BaseType.GetMethod(
+						"PackToCore",
+						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+					);
+				this._packMethodBuilder =
+					this._typeBuilder.DefineMethod(
+						baseMethod.Name,
+						( baseMethod.Attributes | MethodAttributes.Final ) & ( ~MethodAttributes.Abstract ),
+						baseMethod.CallingConvention,
+						baseMethod.ReturnType,
+						baseMethod.GetParameters().Select( p => p.ParameterType ).ToArray()
+					);
 				this._typeBuilder.DefineMethodOverride(
 					this._packMethodBuilder,
-					this._typeBuilder.BaseType.GetMethod(
-						this._packMethodBuilder.Name,
-						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-					)
+					baseMethod
 				);
 			}
 			return new TracingILGenerator( this._packMethodBuilder, SerializerDebugging.ILTraceWriter, this._isDebuggable );
@@ -170,28 +169,30 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			if ( SerializerDebugging.TraceEnabled )
 			{
-				SerializerDebugging.TraceEvent( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._unpackFromMethodBuilder );
+				SerializerDebugging.TraceEvent( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, "UnpackFromCore" );
 			}
 
 			if ( this._unpackFromMethodBuilder == null )
 			{
-				this._unpackFromMethodBuilder =
-					this._typeBuilder.DefineMethod(
-						"UnpackFromCore",
-						MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final | MethodAttributes.HideBySig,
-						CallingConventions.HasThis,
-						this._targetType,
-						UnpackFromCoreParameterTypes
-					);
 #if DEBUG
 				Contract.Assert( this._typeBuilder.BaseType != null, "this._typeBuilder.BaseType != null" );
-#endif
+#endif // DEBUG
+				var baseMethod =
+					this._typeBuilder.BaseType.GetMethod(
+						"UnpackFromCore",
+						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+					);
+				this._unpackFromMethodBuilder =
+					this._typeBuilder.DefineMethod(
+						baseMethod.Name,
+						( baseMethod.Attributes | MethodAttributes.Final ) & ( ~MethodAttributes.Abstract ),
+						baseMethod.CallingConvention,
+						baseMethod.ReturnType,
+						baseMethod.GetParameters().Select( p => p.ParameterType ).ToArray()
+					);
 				this._typeBuilder.DefineMethodOverride(
 					this._unpackFromMethodBuilder,
-					this._typeBuilder.BaseType.GetMethod(
-						this._unpackFromMethodBuilder.Name,
-						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-					)
+					baseMethod
 				);
 			}
 
@@ -210,28 +211,30 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			if ( SerializerDebugging.TraceEnabled )
 			{
-				SerializerDebugging.TraceEvent( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._createInstanceMethodBuilder );
+				SerializerDebugging.TraceEvent( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, "CreateInstance" );
 			}
 
 			if ( this._createInstanceMethodBuilder == null )
 			{
-				this._createInstanceMethodBuilder =
-					this._typeBuilder.DefineMethod(
-						"CreateInstance",
-						MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final | MethodAttributes.HideBySig,
-						CallingConventions.HasThis,
-						this._targetType,
-						CreateInstanceParameterTypes
-					);
 #if DEBUG
 				Contract.Assert( this._typeBuilder.BaseType != null, "this._typeBuilder.BaseType != null" );
-#endif
+#endif // DEBUG
+				var baseMethod =
+					this._typeBuilder.BaseType.GetMethod(
+						"CreateInstance",
+						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+					);
+				this._createInstanceMethodBuilder =
+					this._typeBuilder.DefineMethod(
+						baseMethod.Name,
+						( baseMethod.Attributes | MethodAttributes.Final ) & ( ~MethodAttributes.Abstract ),
+						baseMethod.CallingConvention,
+						baseMethod.ReturnType,
+						baseMethod.GetParameters().Select( p => p.ParameterType ).ToArray()
+					);
 				this._typeBuilder.DefineMethodOverride(
 					this._createInstanceMethodBuilder,
-					this._typeBuilder.BaseType.GetMethod(
-						this._createInstanceMethodBuilder.Name,
-						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-					)
+					baseMethod
 				);
 			}
 
@@ -250,23 +253,25 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			if ( this._addItemMethodBuilder == null )
 			{
-				this._addItemMethodBuilder =
-					this._typeBuilder.DefineMethod(
-						"AddItem",
-						MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final | MethodAttributes.HideBySig,
-						CallingConventions.HasThis,
-						null,
-						new[] { this._targetType, this._traits.ElementType }
-					);
 #if DEBUG
 				Contract.Assert( this._typeBuilder.BaseType != null, "this._typeBuilder.BaseType != null" );
-#endif
+#endif // DEBUG
+				var baseMethod =
+					this._typeBuilder.BaseType.GetMethod(
+						"AddItem",
+						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+					);
+				this._addItemMethodBuilder =
+					this._typeBuilder.DefineMethod(
+						baseMethod.Name,
+						( baseMethod.Attributes | MethodAttributes.Final ) & ( ~MethodAttributes.Abstract ),
+						baseMethod.CallingConvention,
+						baseMethod.ReturnType,
+						baseMethod.GetParameters().Select( p => p.ParameterType ).ToArray()
+					);
 				this._typeBuilder.DefineMethodOverride(
 					this._addItemMethodBuilder,
-					this._typeBuilder.BaseType.GetMethod(
-						this._addItemMethodBuilder.Name,
-						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-					)
+					baseMethod
 				);
 			}
 
@@ -289,7 +294,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			if ( SerializerDebugging.TraceEnabled )
 			{
-				SerializerDebugging.TraceEvent( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._restoreSchemaMethodBuilder );
+				SerializerDebugging.TraceEvent( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, "RestoreSchema" );
 			}
 
 			if ( this._restoreSchemaMethodBuilder == null )
@@ -317,28 +322,30 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			if ( SerializerDebugging.TraceEnabled )
 			{
-				SerializerDebugging.TraceEvent( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._unpackToMethodBuilder );
+				SerializerDebugging.TraceEvent( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, "UnpackToCore" );
 			}
 
 			if ( this._unpackToMethodBuilder == null )
 			{
-				this._unpackToMethodBuilder =
-					this._typeBuilder.DefineMethod(
-						"UnpackToCore",
-						MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final,
-						CallingConventions.HasThis,
-						null,
-						new[] { typeof( Unpacker ), this._targetType }
-					);
 #if DEBUG
 				Contract.Assert( this._typeBuilder.BaseType != null, "this._typeBuilder.BaseType != null" );
-#endif
+#endif // DEBUG
+				var baseMethod =
+					this._typeBuilder.BaseType.GetMethod(
+						"UnpackToCore",
+						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+					);
+				this._unpackToMethodBuilder =
+					this._typeBuilder.DefineMethod(
+						baseMethod.Name,
+						( baseMethod.Attributes | MethodAttributes.Final ) & ( ~MethodAttributes.Abstract ),
+						baseMethod.CallingConvention,
+						baseMethod.ReturnType,
+						baseMethod.GetParameters().Select( p => p.ParameterType ).ToArray()
+					);
 				this._typeBuilder.DefineMethodOverride(
 					this._unpackToMethodBuilder,
-					this._typeBuilder.BaseType.GetMethod(
-						this._unpackToMethodBuilder.Name,
-						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-					) 
+					baseMethod
 				);
 			}
 
@@ -421,7 +428,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 						{
 							il.EmitLdarg_1();
 							il.EmitTypeOf( targetType );
-							il.EmitAnyLdc_I4( ( int ) entry.Key.EnumSerializationMethod );
+							il.EmitAnyLdc_I4( ( int )entry.Key.EnumSerializationMethod );
 							il.EmitCall( Metadata._EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethodMethod );
 							il.EmitBox( typeof( EnumSerializationMethod ) );
 						}
@@ -504,7 +511,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			EnumMemberSerializationMethod enumMemberSerializationMethod,
 			DateTimeMemberConversionMethod dateTimeConversionMethod,
 			PolymorphismSchema polymorphismSchema,
-			Func<IEnumerable<ILConstruct>> schemaRegenerationCodeProvider 
+			Func<IEnumerable<ILConstruct>> schemaRegenerationCodeProvider
 		)
 		{
 			if ( this._typeBuilder.IsCreated() )

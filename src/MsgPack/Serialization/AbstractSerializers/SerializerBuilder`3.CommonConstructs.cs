@@ -25,6 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
@@ -1798,10 +1799,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 			}
 
+#if DEBUG
+			Contract.Assert( traits.AddMethod.DeclaringType != null, "traits.AddMethod.DeclaringType != null" );
+#endif // DEBUG
 			return
 				this.EmitInvokeVoidMethod(
 					context,
-					collection,
+					traits.AddMethod.DeclaringType.IsAssignableFrom( collection.ContextType )
+					? collection
+					: this.EmitUnboxAnyExpression( context, traits.AddMethod.DeclaringType, collection ),
 					traits.AddMethod,
 					unpackedItem
 				);
@@ -1809,10 +1815,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private TConstruct EmitAppendDictionaryItem( TContext context, CollectionTraits traits, TConstruct dictionary, Type keyType, TConstruct key, Type valueType, TConstruct value, bool withBoxing )
 		{
+#if DEBUG
+			Contract.Assert( traits.AddMethod.DeclaringType != null, "traits.AddMethod.DeclaringType != null" );
+#endif // DEBUG
 			return
 				this.EmitInvokeVoidMethod(
 					context,
-					dictionary,
+					traits.AddMethod.DeclaringType.IsAssignableFrom( dictionary.ContextType )
+					? dictionary
+					: this.EmitUnboxAnyExpression( context, traits.AddMethod.DeclaringType, dictionary ),
 					traits.AddMethod,
 					withBoxing
 					? this.EmitBoxExpression( context, keyType, key )
@@ -1928,12 +1939,19 @@ namespace MsgPack.Serialization.AbstractSerializers
 				case CollectionDetailedKind.GenericList:
 #if !NETFX_35 && !UNITY
 				case CollectionDetailedKind.GenericSet:
+#if !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+				case CollectionDetailedKind.GenericReadOnlyCollection:
+				case CollectionDetailedKind.GenericReadOnlyList:
+#endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 #endif // !NETFX_35 && !UNITY
 				{
 					comparisonType = CollectionTraitsOfThis.ElementType;
 					break;
 				}
 				case CollectionDetailedKind.GenericDictionary:
+#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+				case CollectionDetailedKind.GenericReadOnlyDictionary:
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				{
 					comparisonType = CollectionTraitsOfThis.ElementType.GetGenericArguments()[ 0 ];
 					break;

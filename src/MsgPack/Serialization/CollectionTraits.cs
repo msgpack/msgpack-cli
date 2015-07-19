@@ -52,6 +52,10 @@ namespace MsgPack.Serialization
 					case CollectionDetailedKind.GenericCollection:
 					case CollectionDetailedKind.GenericEnumerable:
 					case CollectionDetailedKind.GenericList:
+#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+					case CollectionDetailedKind.GenericReadOnlyCollection:
+					case CollectionDetailedKind.GenericReadOnlyList:
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 #if !NETFX_35 && !UNITY
 					case CollectionDetailedKind.GenericSet:
 #endif // !NETFX_35 && !UNITY
@@ -62,6 +66,9 @@ namespace MsgPack.Serialization
 						return CollectionKind.Array;
 					}
 					case CollectionDetailedKind.GenericDictionary:
+#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+					case CollectionDetailedKind.GenericReadOnlyDictionary:
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 					case CollectionDetailedKind.NonGenericDictionary:
 					{
 						return CollectionKind.Map;

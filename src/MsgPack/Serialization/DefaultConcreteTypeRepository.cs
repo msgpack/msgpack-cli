@@ -44,12 +44,14 @@ namespace MsgPack.Serialization
 		{
 			this._defaultCollectionTypes = new TypeKeyRepository(
 				new Dictionary<RuntimeTypeHandle, object>(
-#if NETFX_35 || WINDOWS_PHONE
+#if NETFX_35 || ( SILVERLIGHT && !WINDOWS_PHONE )
 					8
+#elif NETFX_40
+					9
 #else
 					12
 #endif
- )
+				)
 				{
 					{ typeof( IEnumerable<> ).TypeHandle, typeof( List<> ) },
 					{ typeof( ICollection<> ).TypeHandle, typeof( List<> ) },
@@ -61,13 +63,14 @@ namespace MsgPack.Serialization
 					{ typeof( IDictionary ).TypeHandle, typeof( MessagePackObjectDictionary ) },
 #if !NETFX_35 && !UNITY
 					{ typeof( ISet<> ).TypeHandle, typeof( HashSet<> ) },
-#if !NETFX_40
+#if !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 					{ typeof( IReadOnlyCollection<> ).TypeHandle, typeof( List<> ) },
 					{ typeof( IReadOnlyList<> ).TypeHandle, typeof( List<> ) },
-					{ typeof( IReadOnlyDictionary<,> ).TypeHandle, typeof( Dictionary<,> ) }
-#endif // !NETFX_40
+					{ typeof( IReadOnlyDictionary<,> ).TypeHandle, typeof( Dictionary<,> ) },
+#endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 #endif // !NETFX_35 && !UNITY
-				} );
+				}
+			);
 		}
 
 		/// <summary>

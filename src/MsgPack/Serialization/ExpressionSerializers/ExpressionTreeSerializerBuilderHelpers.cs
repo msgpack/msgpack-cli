@@ -54,6 +54,23 @@ namespace MsgPack.Serialization.ExpressionSerializers
 							keyValuePairGenericArguments[ 1 ]
 						);
 				}
+#if !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+				case CollectionDetailedKind.GenericReadOnlyCollection:
+				case CollectionDetailedKind.GenericReadOnlyList:
+				{
+					return typeof( ExpressionCallbackReadOnlyCollectionMessagePackSerializer<,> ).MakeGenericType( targetType, traits.ElementType );
+				}
+				case CollectionDetailedKind.GenericReadOnlyDictionary:
+				{
+					var keyValuePairGenericArguments = traits.ElementType.GetGenericArguments();
+					return
+						typeof( ExpressionCallbackReadOnlyDictionaryMessagePackSerializer<,,> ).MakeGenericType(
+							targetType,
+							keyValuePairGenericArguments[ 0 ],
+							keyValuePairGenericArguments[ 1 ]
+						);
+				}
+#endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.NonGenericEnumerable:
 				{
 					return typeof( ExpressionCallbackNonGenericEnumerableMessagePackSerializer<> ).MakeGenericType( targetType );
@@ -133,7 +150,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 					return
 						context =>
-							factory.Create( context, schema, createInstance ) as MessagePackSerializer<TObject>;
+							factory.Create( context, schema, createInstance, addItem ) as MessagePackSerializer<TObject>;
 				}
 				case CollectionDetailedKind.NonGenericDictionary:
 				{
@@ -147,7 +164,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 					return
 						context =>
-							factory.Create( context, schema, createInstance ) as MessagePackSerializer<TObject>;
+							factory.Create( context, schema, createInstance, addItem ) as MessagePackSerializer<TObject>;
 				}
 				case CollectionDetailedKind.GenericEnumerable:
 				{
@@ -164,9 +181,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 							factory.Create( context, schema, createInstance, unpackFromCore, addItem ) as MessagePackSerializer<TObject>;
 				}
 				case CollectionDetailedKind.GenericCollection:
-#if !NETFX_35 && !UNITY
 				case CollectionDetailedKind.GenericSet:
-#endif // !NETFX_35 && !UNITY
 				case CollectionDetailedKind.GenericList:
 				{
 					var factory =
@@ -179,8 +194,25 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 					return
 						context =>
-							factory.Create( context, schema, createInstance ) as MessagePackSerializer<TObject>;
+							factory.Create( context, schema, createInstance, addItem ) as MessagePackSerializer<TObject>;
 				}
+#if !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+				case CollectionDetailedKind.GenericReadOnlyCollection:
+				case CollectionDetailedKind.GenericReadOnlyList:
+				{
+					var factory =
+						ReflectionExtensions.CreateInstancePreservingExceptionType<ICollectionCallbackSerializerFactory>(
+							typeof( ReadOnlyCollectionCallbackSerializerFactory<,> ).MakeGenericType( typeof( TObject ), traits.ElementType )
+						);
+#if DEBUG
+					Contract.Assert( factory != null );
+#endif // DEBUG
+
+					return
+						context =>
+							factory.Create( context, schema, createInstance, addItem ) as MessagePackSerializer<TObject>;
+				}
+#endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericDictionary:
 				{
 					var keyValuePairGenericArguments = traits.ElementType.GetGenericArguments();
@@ -198,8 +230,29 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 					return
 						context =>
-							factory.Create( context, schema, createInstance ) as MessagePackSerializer<TObject>;
+							factory.Create( context, schema, createInstance, addItem ) as MessagePackSerializer<TObject>;
 				}
+#if !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+				case CollectionDetailedKind.GenericReadOnlyDictionary:
+				{
+					var keyValuePairGenericArguments = traits.ElementType.GetGenericArguments();
+					var factory =
+						ReflectionExtensions.CreateInstancePreservingExceptionType<ICollectionCallbackSerializerFactory>(
+							typeof( ReadOnlyDictionaryCallbackSerializerFactory<,,> ).MakeGenericType(
+								typeof( TObject ),
+								keyValuePairGenericArguments[ 0 ],
+								keyValuePairGenericArguments[ 1 ]
+							)
+						);
+#if DEBUG
+					Contract.Assert( factory != null );
+#endif // DEBUG
+
+					return
+						context =>
+							factory.Create( context, schema, createInstance, addItem ) as MessagePackSerializer<TObject>;
+				}
+#endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				default:
 				{
 					var factory =
@@ -384,36 +437,40 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			object Create(
 				SerializationContext context,
 				PolymorphismSchema schema,
-				Delegate createInstance
+				Delegate createInstance,
+				Delegate addItem
 			);
 		}
 
-		private abstract class CollectionCallbackSerializerFactoryBase<TCollection, TSerializer> : ICollectionCallbackSerializerFactory
+		private abstract class CollectionCallbackSerializerFactoryBase<TCollection, TItem, TSerializer> : ICollectionCallbackSerializerFactory
 		{
 			protected abstract object Create(
 				SerializationContext context,
 				PolymorphismSchema schema,
-				Func<TSerializer, SerializationContext, int, TCollection> createInstance
+				Func<TSerializer, SerializationContext, int, TCollection> createInstance,
+				Action<TSerializer, SerializationContext, TCollection, TItem> addItem
 			);
 
 			public object Create(
 				SerializationContext context,
 				PolymorphismSchema schema,
-				Delegate createInstance
+				Delegate createInstance,
+				Delegate addItem
 			)
 			{
 				return
 					this.Create(
 						context,
 						schema,
-						( Func<TSerializer, SerializationContext, int, TCollection> )createInstance
+						( Func<TSerializer, SerializationContext, int, TCollection> )createInstance,
+						( Action<TSerializer, SerializationContext, TCollection, TItem> )addItem
 					);
 
 			}
 		}
 
 		private sealed class CollectionCallbackSerializerFactory<TCollection, TItem>
-			: CollectionCallbackSerializerFactoryBase<TCollection, ExpressionCallbackCollectionMessagePackSerializer<TCollection, TItem>>
+			: CollectionCallbackSerializerFactoryBase<TCollection, TItem, ExpressionCallbackCollectionMessagePackSerializer<TCollection, TItem>>
 			where TCollection : ICollection<TItem>
 		{
 			public CollectionCallbackSerializerFactory() { }
@@ -421,7 +478,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			protected override object Create(
 				SerializationContext context,
 				PolymorphismSchema schema,
-				Func<ExpressionCallbackCollectionMessagePackSerializer<TCollection, TItem>, SerializationContext, int, TCollection> createInstance
+				Func<ExpressionCallbackCollectionMessagePackSerializer<TCollection, TItem>, SerializationContext, int, TCollection> createInstance,
+				Action<ExpressionCallbackCollectionMessagePackSerializer<TCollection, TItem>, SerializationContext, TCollection, TItem> addItem
 			)
 			{
 				return
@@ -433,8 +491,33 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 		}
 
+#if !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+		private sealed class ReadOnlyCollectionCallbackSerializerFactory<TCollection, TItem>
+			: CollectionCallbackSerializerFactoryBase<TCollection, TItem, ExpressionCallbackReadOnlyCollectionMessagePackSerializer<TCollection, TItem>>
+			where TCollection : IReadOnlyCollection<TItem>
+		{
+			public ReadOnlyCollectionCallbackSerializerFactory() { }
+
+			protected override object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Func<ExpressionCallbackReadOnlyCollectionMessagePackSerializer<TCollection, TItem>, SerializationContext, int, TCollection> createInstance,
+				Action<ExpressionCallbackReadOnlyCollectionMessagePackSerializer<TCollection, TItem>, SerializationContext, TCollection, TItem> addItem
+			)
+			{
+				return
+					new ExpressionCallbackReadOnlyCollectionMessagePackSerializer<TCollection, TItem>(
+						context,
+						schema,
+						createInstance,
+						addItem
+					);
+			}
+		}
+#endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+
 		private sealed class NonGenericListCallbackSerializerFactory<TCollection>
-			: CollectionCallbackSerializerFactoryBase<TCollection, ExpressionCallbackNonGenericListMessagePackSerializer<TCollection>>
+			: CollectionCallbackSerializerFactoryBase<TCollection, object, ExpressionCallbackNonGenericListMessagePackSerializer<TCollection>>
 			where TCollection : IList
 		{
 			public NonGenericListCallbackSerializerFactory() { }
@@ -442,7 +525,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			protected override object Create(
 				SerializationContext context,
 				PolymorphismSchema schema,
-				Func<ExpressionCallbackNonGenericListMessagePackSerializer<TCollection>, SerializationContext, int, TCollection> createInstance
+				Func<ExpressionCallbackNonGenericListMessagePackSerializer<TCollection>, SerializationContext, int, TCollection> createInstance,
+				Action<ExpressionCallbackNonGenericListMessagePackSerializer<TCollection>, SerializationContext, TCollection, object> addItem
 			)
 			{
 				return
@@ -455,7 +539,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		}
 
 		private sealed class NonGenericDictionaryCallbackSerializerFactory<TDictionary>
-			: CollectionCallbackSerializerFactoryBase<TDictionary, ExpressionCallbackNonGenericDictionaryMessagePackSerializer<TDictionary>>
+			: CollectionCallbackSerializerFactoryBase<TDictionary, DictionaryEntry, ExpressionCallbackNonGenericDictionaryMessagePackSerializer<TDictionary>>
 			where TDictionary : IDictionary
 		{
 			public NonGenericDictionaryCallbackSerializerFactory() { }
@@ -463,7 +547,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			protected override object Create(
 				SerializationContext context,
 				PolymorphismSchema schema,
-				Func<ExpressionCallbackNonGenericDictionaryMessagePackSerializer<TDictionary>, SerializationContext, int, TDictionary> createInstance
+				Func<ExpressionCallbackNonGenericDictionaryMessagePackSerializer<TDictionary>, SerializationContext, int, TDictionary> createInstance,
+				Action<ExpressionCallbackNonGenericDictionaryMessagePackSerializer<TDictionary>, SerializationContext, TDictionary, DictionaryEntry> addItem
 			)
 			{
 				return
@@ -497,7 +582,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			public object Create(
 				SerializationContext context,
 				PolymorphismSchema schema,
-				Delegate createInstance
+				Delegate createInstance,
+				Delegate addItem
 			)
 			{
 				return
@@ -508,5 +594,45 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					);
 			}
 		}
+
+#if !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+		private sealed class ReadOnlyDictionaryCallbackSerializerFactory<TDictionary, TKey, TValue> : ICollectionCallbackSerializerFactory
+			where TDictionary : IReadOnlyDictionary<TKey, TValue>
+		{
+			public ReadOnlyDictionaryCallbackSerializerFactory() { }
+
+			private static object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Func<ExpressionCallbackReadOnlyDictionaryMessagePackSerializer<TDictionary, TKey, TValue>, SerializationContext, int, TDictionary> createInstance,
+				Action<ExpressionCallbackReadOnlyDictionaryMessagePackSerializer<TDictionary, TKey, TValue>, SerializationContext, TDictionary, TKey, TValue> addItem
+			)
+			{
+				return
+					new ExpressionCallbackReadOnlyDictionaryMessagePackSerializer<TDictionary, TKey, TValue>(
+						context,
+						schema,
+						createInstance,
+						addItem
+					);
+			}
+
+			public object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Delegate createInstance,
+				Delegate addItem
+			)
+			{
+				return
+					Create(
+						context,
+						schema,
+						( Func<ExpressionCallbackReadOnlyDictionaryMessagePackSerializer<TDictionary, TKey, TValue>, SerializationContext, int, TDictionary> )createInstance,
+						( Action<ExpressionCallbackReadOnlyDictionaryMessagePackSerializer<TDictionary, TKey, TValue>, SerializationContext, TDictionary, TKey, TValue> )addItem
+					);
+			}
+		}
+#endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 	}
 }

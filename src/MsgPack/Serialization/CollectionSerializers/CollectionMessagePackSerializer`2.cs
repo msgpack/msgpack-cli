@@ -23,22 +23,21 @@
 #endif
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 #if UNITY
+using System.Collections;
 using System.Reflection;
 #endif // UNITY
-using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.CollectionSerializers
 {
 	/// <summary>
-	///		Provides common implementation of <see cref="EnumerableMessagePackSerializerBase{TCollection, TItem}"/> 
+	///		Provides common implementation of <see cref="CollectionMessagePackSerializerBase{TCollection, TItem}"/> 
 	///		for collection types which implement <see cref="ICollection{T}"/>.
 	/// </summary>
 	/// <typeparam name="TCollection">The type of the collection.</typeparam>
 	/// <typeparam name="TItem">The type of the item of collection.</typeparam>
-	public abstract class CollectionMessagePackSerializer<TCollection, TItem> : EnumerableMessagePackSerializerBase<TCollection, TItem>
+	public abstract class CollectionMessagePackSerializer<TCollection, TItem> : CollectionMessagePackSerializerBase<TCollection, TItem>
 		where TCollection : ICollection<TItem>
 	{
 		/// <summary>
@@ -56,75 +55,19 @@ namespace MsgPack.Serialization.CollectionSerializers
 			: base( ownerContext, schema ) { }
 
 		/// <summary>
-		///		Serializes specified object with specified <see cref="Packer"/>.
+		///		Returns count of the collection.
 		/// </summary>
-		/// <param name="packer"><see cref="Packer"/> which packs values in <paramref name="objectTree"/>. This value will not be <c>null</c>.</param>
-		/// <param name="objectTree">Object to be serialized.</param>
-		/// <exception cref="SerializationException">
-		///		<typeparamref name="TCollection"/> is not serializable etc.
-		/// </exception>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
-		protected internal sealed override void PackToCore( Packer packer, TCollection objectTree )
+		/// <param name="collection">A collection. This value will not be <c>null</c>.</param>
+		/// <returns>The count of the <paramref name="collection"/>.</returns>
+		protected override int GetCount( TCollection collection )
 		{
 #if ( !UNITY && !XAMIOS ) || AOT_CHECK
-			packer.PackArrayHeader( objectTree.Count );
-			var itemSerializer = this.ItemSerializer;
-			foreach ( var item in objectTree )
-			{
-				itemSerializer.PackTo( packer, item );
-			}
+			return collection.Count;
 #else
 			// .constraind call for TCollection.get_Count/TCollection.GetEnumerator() causes AOT error.
 			// So use cast and invoke as normal call (it might cause boxing, but most collection should be reference type).
-			packer.PackArrayHeader( ( objectTree as ICollection<TItem> ).Count );
-			var itemSerializer = this.ItemSerializer;
-			foreach ( var item in objectTree as IEnumerable<TItem> )
-			{
-				itemSerializer.PackTo( packer, item );
-			}
+			return ( collection as ICollection<TItem> ).Count;
 #endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
-		}
-
-
-
-		/// <summary>
-		///		Deserializes object with specified <see cref="Unpacker"/>.
-		/// </summary>
-		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
-		/// <returns>Deserialized object.</returns>
-		/// <exception cref="SerializationException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
-		/// </exception>
-		/// <exception cref="MessageTypeException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
-		/// </exception>
-		/// <exception cref="InvalidMessagePackStreamException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
-		/// </exception>
-		/// <exception cref="NotSupportedException">
-		///		<typeparamref name="TCollection"/> is abstract type.
-		/// </exception>
-		/// <remarks>
-		///		This method invokes <see cref="EnumerableMessagePackSerializerBase{TCollection,TItem}.CreateInstance(int)"/>, and then fill deserialized items to resultong collection.
-		/// </remarks>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected internal sealed override TCollection UnpackFromCore( Unpacker unpacker )
-		{
-			if ( !unpacker.IsArrayHeader )
-			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
-			}
-
-			return this.InternalUnpackFromCore( unpacker );
-		}
-
-		internal virtual TCollection InternalUnpackFromCore( Unpacker unpacker )
-		{
-			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
-			var collection = this.CreateInstance( itemsCount );
-			this.UnpackToCore( unpacker, collection, itemsCount );
-			return collection;
 		}
 
 		/// <summary>

@@ -31,11 +31,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 	/// <typeparam name="TDictionary">The type of the dictionary.</typeparam>
 	/// <typeparam name="TKey">The type of the key of collection.</typeparam>
 	/// <typeparam name="TValue">The type of the value of collection.</typeparam>
-	internal class CallbackDictionaryMessagePackSerializer<TDictionary, TKey, TValue> :
-		DictionaryMessagePackSerializer<TDictionary, TKey, TValue>
-		where TDictionary : IDictionary<TKey, TValue>
+	internal class CallbackReadOnlyDictionaryMessagePackSerializer<TDictionary, TKey, TValue> :
+		ReadOnlyDictionaryMessagePackSerializer<TDictionary, TKey, TValue>
+		where TDictionary : IReadOnlyDictionary<TKey, TValue>
 	{
 		private readonly Func<SerializationContext, int, TDictionary> _createInstance;
+
+		private readonly Action<SerializationContext, TDictionary, TKey, TValue> _addItem;
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="CallbackDictionaryMessagePackSerializer{TDictionary, TKey, TValue}"/> class.
@@ -46,22 +48,37 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		<c>null</c> will be considered as <see cref="PolymorphismSchema.Default"/>.
 		/// </param>
 		/// <param name="createInstance">The delegate to <c>CreateInstance</c> method body. This value must not be <c>null</c>.</param>
+		/// <param name="addItem">The delegate to <c>AddItem</c> method body. This value can be <c>null</c>.</param>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="ownerContext"/> is <c>null</c>.
 		/// </exception>
-		public CallbackDictionaryMessagePackSerializer(
+		public CallbackReadOnlyDictionaryMessagePackSerializer(
 			SerializationContext ownerContext,
 			PolymorphismSchema schema,
-			Func<SerializationContext, int, TDictionary> createInstance
+			Func<SerializationContext, int, TDictionary> createInstance,
+			Action<SerializationContext, TDictionary, TKey, TValue> addItem
 		)
 			: base( ownerContext, schema )
 		{
 			this._createInstance = createInstance;
+			this._addItem = addItem;
 		}
 
 		protected override TDictionary CreateInstance( int initialCapacity )
 		{
 			return this._createInstance( this.OwnerContext, initialCapacity );
+		}
+
+		protected override void AddItem( TDictionary dictionary, TKey key, TValue value )
+		{
+			if ( this._addItem != null )
+			{
+				this._addItem( this.OwnerContext, dictionary, key, value );
+			}
+			else
+			{
+				base.AddItem( dictionary, key, value );
+			}
 		}
 	}
 }

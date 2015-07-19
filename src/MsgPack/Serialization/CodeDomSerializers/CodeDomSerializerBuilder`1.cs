@@ -191,8 +191,23 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							Name = "AddItem",
 						};
 					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( TObject ), "collection" ) );
-					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( CollectionTraitsOfThis.ElementType, "item" ) );
-
+					if ( CollectionTraitsOfThis.DetailedCollectionType == CollectionDetailedKind.GenericDictionary
+#if !NETFX_35 && !NETFX_40
+						|| CollectionTraitsOfThis.DetailedCollectionType == CollectionDetailedKind.GenericReadOnlyDictionary
+#endif // !NETFX_35 && !NETFX_40 
+					)
+					{
+						codeMethod.Parameters.Add(
+							new CodeParameterDeclarationExpression( CollectionTraitsOfThis.ElementType.GetGenericArguments()[ 0 ], "key" ) 
+						);
+						codeMethod.Parameters.Add(
+							new CodeParameterDeclarationExpression( CollectionTraitsOfThis.ElementType.GetGenericArguments()[ 1 ], "value" ) 
+						);
+					}
+					else
+					{
+						codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( CollectionTraitsOfThis.ElementType, "item" ) );
+					}
 					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
 					codeMethod.Attributes = MemberAttributes.Family | MemberAttributes.Override;
 					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags

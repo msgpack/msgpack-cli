@@ -69,7 +69,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			if ( SerializerDebugging.TraceEnabled )
 			{
-				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), this._packToMethod );
+				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), "PackToCore" );
 			}
 
 			if ( this._packToMethod == null )
@@ -96,7 +96,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			if ( SerializerDebugging.TraceEnabled )
 			{
-				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackFromMethod );
+				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), "UnpackFromCore" );
 			}
 
 			if ( this._unpackFromMethod == null )
@@ -122,7 +122,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			if ( SerializerDebugging.TraceEnabled )
 			{
-				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackToMethod );
+				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), "UnpackToCore" );
 			}
 
 			if ( this._unpackToMethod == null )
@@ -148,7 +148,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			if ( SerializerDebugging.TraceEnabled )
 			{
-				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), this._addItemMethod );
+				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), "AddItem" );
 			}
 
 			if ( this._addItemMethod == null )
@@ -157,7 +157,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 					new DynamicMethod(
 						"AddItem",
 						null,
-						new[] { typeof( SerializationContext ), this._targetType, this._traits.ElementType }
+						( this._traits.DetailedCollectionType == CollectionDetailedKind.GenericDictionary
+#if !NETFX_40 && !NETFX_35 && !SILVERLIGHT
+							|| this._traits.DetailedCollectionType == CollectionDetailedKind.GenericReadOnlyDictionary
+#endif // !NETFX_40 && !NETFX_35 && !SILVERLIGHT
+						)
+						? new[] { typeof( SerializationContext ), this._targetType, this._traits.ElementType.GetGenericArguments()[ 0 ], this._traits.ElementType.GetGenericArguments()[ 1 ] }
+						: new[] { typeof( SerializationContext ), this._targetType, this._traits.ElementType }
 					);
 			}
 
@@ -176,7 +182,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			if ( SerializerDebugging.TraceEnabled )
 			{
-				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), this._createInstanceMethod );
+				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), "CreateInstance" );
 			}
 
 			if ( this._createInstanceMethod == null )
@@ -203,7 +209,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			if ( SerializerDebugging.TraceEnabled )
 			{
-				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), this._restoreSchemaMethod );
+				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), "RestoreSchema" );
 			}
 
 			if ( this._restoreSchemaMethod == null )
@@ -277,7 +283,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 					return
 						( context, schema ) =>
-							factory.Create( context, schema, createInstanceMethod ) as MessagePackSerializer<T>;
+							factory.Create( context, schema, createInstanceMethod, addItemMethod ) as MessagePackSerializer<T>;
 				}
 				case CollectionDetailedKind.NonGenericDictionary:
 				{
@@ -291,7 +297,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 					return
 						( context, schema ) =>
-							factory.Create( context, schema, createInstanceMethod ) as MessagePackSerializer<T>;
+							factory.Create( context, schema, createInstanceMethod, addItemMethod ) as MessagePackSerializer<T>;
 				}
 				case CollectionDetailedKind.GenericEnumerable:
 				{
@@ -323,7 +329,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 					return
 						( context, schema ) =>
-							factory.Create( context, schema, createInstanceMethod ) as MessagePackSerializer<T>;
+							factory.Create( context, schema, createInstanceMethod, addItemMethod ) as MessagePackSerializer<T>;
 				}
 				case CollectionDetailedKind.GenericDictionary:
 				{
@@ -342,8 +348,44 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 					return
 						( context, schema ) =>
-							factory.Create( context, schema, createInstanceMethod ) as MessagePackSerializer<T>;
+							factory.Create( context, schema, createInstanceMethod, addItemMethod ) as MessagePackSerializer<T>;
 				}
+#if !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
+				case CollectionDetailedKind.GenericReadOnlyCollection:
+				case CollectionDetailedKind.GenericReadOnlyList:
+				{
+					var factory =
+						ReflectionExtensions.CreateInstancePreservingExceptionType<ICollectionCallbackSerializerFactory>(
+							typeof( ReadOnlyCollectionCallbackSerializerFactory<,> ).MakeGenericType( typeof( T ), traits.ElementType )
+						);
+#if DEBUG
+					Contract.Assert( factory != null );
+#endif // DEBUG
+
+					return
+						( context, schema ) =>
+							factory.Create( context, schema, createInstanceMethod, addItemMethod ) as MessagePackSerializer<T>;
+				}
+				case CollectionDetailedKind.GenericReadOnlyDictionary:
+				{
+					var keyValuePairGenericArguments = traits.ElementType.GetGenericArguments();
+					var factory =
+						ReflectionExtensions.CreateInstancePreservingExceptionType<ICollectionCallbackSerializerFactory>(
+							typeof( ReadOnlyDictionaryCallbackSerializerFactory<,,> ).MakeGenericType(
+								typeof( T ),
+								keyValuePairGenericArguments[ 0 ],
+								keyValuePairGenericArguments[ 1 ]
+							)
+						);
+#if DEBUG
+					Contract.Assert( factory != null );
+#endif // DEBUG
+
+					return
+						( context, schema ) =>
+							factory.Create( context, schema, createInstanceMethod, addItemMethod ) as MessagePackSerializer<T>;
+				}
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
 				default:
 				{
 					var packTo =
@@ -519,22 +561,25 @@ namespace MsgPack.Serialization.EmittingSerializers
 			object Create(
 				SerializationContext context,
 				PolymorphismSchema schema,
-				DynamicMethod createInstance
+				DynamicMethod createInstance,
+				DynamicMethod addItem
 			);
 		}
 
-		private abstract class CollectionCallbackSerializerFactoryBase<TCollection> : ICollectionCallbackSerializerFactory
+		private abstract class CollectionCallbackSerializerFactoryBase<TCollection, TItem> : ICollectionCallbackSerializerFactory
 		{
 			protected abstract object Create(
 				SerializationContext context,
 				PolymorphismSchema schema,
-				Func<SerializationContext, int, TCollection> createInstance
+				Func<SerializationContext, int, TCollection> createInstance,
+				Action<SerializationContext, TCollection, TItem> addItem
 			);
 
 			public object Create(
 				SerializationContext context,
 				PolymorphismSchema schema,
-				DynamicMethod createInstance
+				DynamicMethod createInstance,
+				DynamicMethod addItem
 			)
 			{
 				return
@@ -543,13 +588,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 						schema,
 						( Func<SerializationContext, int, TCollection> )createInstance.CreateDelegate(
 							typeof( Func<,,> ).MakeGenericType( typeof( SerializationContext ), typeof( int ), typeof( TCollection ) )
+						),
+						addItem == null
+						? null
+						: ( Action<SerializationContext, TCollection, TItem> )addItem.CreateDelegate(
+							typeof( Action<,,> ).MakeGenericType( typeof( SerializationContext ), typeof( TCollection ), typeof( TItem ) )
 						)
 					);
 
 			}
 		}
 
-		private sealed class CollectionCallbackSerializerFactory<TCollection, TItem> : CollectionCallbackSerializerFactoryBase<TCollection>
+		private sealed class CollectionCallbackSerializerFactory<TCollection, TItem> : CollectionCallbackSerializerFactoryBase<TCollection, TItem>
 			where TCollection : ICollection<TItem>
 		{
 			public CollectionCallbackSerializerFactory() { }
@@ -557,7 +607,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			protected override object Create(
 				SerializationContext context,
 				PolymorphismSchema schema,
-				Func<SerializationContext, int, TCollection> createInstance
+				Func<SerializationContext, int, TCollection> createInstance,
+				Action<SerializationContext, TCollection, TItem> addItem
 			)
 			{
 				return
@@ -569,7 +620,32 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
-		private sealed class NonGenericListCallbackSerializerFactory<TCollection> : CollectionCallbackSerializerFactoryBase<TCollection>
+#if !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
+		private sealed class ReadOnlyCollectionCallbackSerializerFactory<TCollection, TItem> : CollectionCallbackSerializerFactoryBase<TCollection, TItem>
+			where TCollection : IReadOnlyCollection<TItem>
+		{
+			public ReadOnlyCollectionCallbackSerializerFactory() { }
+
+			protected override object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Func<SerializationContext, int, TCollection> createInstance,
+				Action<SerializationContext, TCollection, TItem> addItem
+			)
+			{
+				return
+					new CallbackReadOnlyCollectionMessagePackSerializer<TCollection, TItem>(
+						context,
+						schema,
+						createInstance,
+						addItem
+					);
+			}
+		}
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
+
+
+		private sealed class NonGenericListCallbackSerializerFactory<TCollection> : CollectionCallbackSerializerFactoryBase<TCollection, object>
 			where TCollection : IList
 		{
 			public NonGenericListCallbackSerializerFactory() { }
@@ -577,7 +653,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			protected override object Create(
 				SerializationContext context,
 				PolymorphismSchema schema,
-				Func<SerializationContext, int, TCollection> createInstance
+				Func<SerializationContext, int, TCollection> createInstance,
+				Action<SerializationContext, TCollection, object> addItem
 			)
 			{
 				return
@@ -589,7 +666,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
-		private sealed class NonGenericDictionaryCallbackSerializerFactory<TDictionary> : CollectionCallbackSerializerFactoryBase<TDictionary>
+		private sealed class NonGenericDictionaryCallbackSerializerFactory<TDictionary> : CollectionCallbackSerializerFactoryBase<TDictionary, DictionaryEntry>
 			where TDictionary : IDictionary
 		{
 			public NonGenericDictionaryCallbackSerializerFactory() { }
@@ -597,7 +674,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			protected override object Create(
 				SerializationContext context,
 				PolymorphismSchema schema,
-				Func<SerializationContext, int, TDictionary> createInstance
+				Func<SerializationContext, int, TDictionary> createInstance,
+				Action<SerializationContext, TDictionary, DictionaryEntry> addItem
 			)
 			{
 				return
@@ -631,7 +709,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			public object Create(
 				SerializationContext context,
 				PolymorphismSchema schema,
-				DynamicMethod createInstance
+				DynamicMethod createInstance,
+				DynamicMethod addItem
 			)
 			{
 				return
@@ -644,5 +723,51 @@ namespace MsgPack.Serialization.EmittingSerializers
 					);
 			}
 		}
+
+#if !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
+		private sealed class ReadOnlyDictionaryCallbackSerializerFactory<TDictionary, TKey, TValue> : ICollectionCallbackSerializerFactory
+			where TDictionary : IReadOnlyDictionary<TKey, TValue>
+		{
+			public ReadOnlyDictionaryCallbackSerializerFactory() { }
+
+			private static object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				Func<SerializationContext, int, TDictionary> createInstance,
+				Action<SerializationContext, TDictionary, TKey, TValue> addItem
+			)
+			{
+				return
+					new CallbackReadOnlyDictionaryMessagePackSerializer<TDictionary, TKey, TValue>(
+						context,
+						schema,
+						createInstance,
+						addItem
+					);
+			}
+
+			public object Create(
+				SerializationContext context,
+				PolymorphismSchema schema,
+				DynamicMethod createInstance,
+				DynamicMethod addItem
+			)
+			{
+				return
+					Create(
+						context,
+						schema,
+						( Func<SerializationContext, int, TDictionary> )createInstance.CreateDelegate(
+							typeof( Func<,,> ).MakeGenericType( typeof( SerializationContext ), typeof( int ), typeof( TDictionary ) )
+						),
+						addItem == null
+						? null
+						: ( Action<SerializationContext, TDictionary, TKey, TValue> )addItem.CreateDelegate(
+							typeof( Action<,,,> ).MakeGenericType( typeof( SerializationContext ), typeof( TDictionary ), typeof( TKey ), typeof( TValue ) )
+						)
+					);
+			}
+		}
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
 	}
 }

@@ -43,12 +43,23 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Assert( CollectionTraitsOfThis.DetailedCollectionType != CollectionDetailedKind.Array );
 #endif // DEBUG
 			bool isUnpackFromRequired;
+			bool isAddItemRequired;
 			Type declaringType;
-			DetermineSerializationStrategy( out isUnpackFromRequired, out declaringType );
+			DetermineSerializationStrategy( out isUnpackFromRequired, out isAddItemRequired, out declaringType );
 
-			if ( isUnpackFromRequired && CollectionTraitsOfThis.AddMethod != null )
+			if ( isAddItemRequired )
 			{
-				this.BuildCollectionAddItem( context, declaringType );
+				// For IEnumerable implements and IReadOnlyXXX implements
+				if ( CollectionTraitsOfThis.AddMethod != null )
+				{
+					// For standard path.
+					this.BuildCollectionAddItem( context, declaringType, CollectionTraitsOfThis );
+				}
+				else
+				{
+					// For concrete collection path.
+					this.BuildCollectionAddItem( context, declaringType, concreteType.GetCollectionTraits() );
+				}
 			}
 
 			if ( isUnpackFromRequired )
@@ -61,7 +72,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			this.BuildRestoreSchema( context, schema );
 		}
 
-		private static void DetermineSerializationStrategy( out bool isUnpackFromRequired, out Type declaringType )
+		private static void DetermineSerializationStrategy( out bool isUnpackFromRequired, out bool isAddItemRequired, out Type declaringType )
 		{
 			switch ( CollectionTraitsOfThis.DetailedCollectionType )
 			{
@@ -69,6 +80,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				case CollectionDetailedKind.NonGenericCollection:
 				{
 					isUnpackFromRequired = true;
+					isAddItemRequired = true;
 					declaringType =
 						typeof( NonGenericEnumerableMessagePackSerializerBase<> ).MakeGenericType(
 							typeof( TObject )
@@ -78,6 +90,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				case CollectionDetailedKind.NonGenericList:
 				{
 					isUnpackFromRequired = false;
+					isAddItemRequired = false;
 					declaringType =
 						typeof( NonGenericEnumerableMessagePackSerializerBase<> ).MakeGenericType(
 							typeof( TObject )
@@ -87,6 +100,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				case CollectionDetailedKind.NonGenericDictionary:
 				{
 					isUnpackFromRequired = false;
+					isAddItemRequired = false;
 					declaringType =
 						typeof( NonGenericDictionaryMessagePackSerializer<> ).MakeGenericType(
 							typeof( TObject )
@@ -96,6 +110,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				case CollectionDetailedKind.GenericEnumerable:
 				{
 					isUnpackFromRequired = true;
+					isAddItemRequired = true;
 					declaringType =
 						typeof( EnumerableMessagePackSerializerBase<,> ).MakeGenericType(
 							typeof( TObject ),
@@ -106,6 +121,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				case CollectionDetailedKind.GenericDictionary:
 				{
 					isUnpackFromRequired = false;
+					isAddItemRequired = false;
 					var keyValurPairGenericArguments = CollectionTraitsOfThis.ElementType.GetGenericArguments();
 					declaringType =
 						typeof( DictionaryMessagePackSerializer<,,> ).MakeGenericType(
@@ -115,9 +131,37 @@ namespace MsgPack.Serialization.AbstractSerializers
 						);
 					break;
 				}
+#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+				case CollectionDetailedKind.GenericReadOnlyDictionary:
+				{
+					isUnpackFromRequired = false;
+					isAddItemRequired = true;
+					var keyValurPairGenericArguments = CollectionTraitsOfThis.ElementType.GetGenericArguments();
+					declaringType =
+						typeof( ReadOnlyDictionaryMessagePackSerializer<,,> ).MakeGenericType(
+							typeof( TObject ),
+							keyValurPairGenericArguments[ 0 ],
+							keyValurPairGenericArguments[ 1 ]
+						);
+					break;
+				}
+				case CollectionDetailedKind.GenericReadOnlyList:
+				case CollectionDetailedKind.GenericReadOnlyCollection:
+				{
+					isUnpackFromRequired = false;
+					isAddItemRequired = true;
+					declaringType =
+						typeof( ReadOnlyCollectionMessagePackSerializer<,> ).MakeGenericType(
+							typeof( TObject ),
+							CollectionTraitsOfThis.ElementType
+						); 
+					break;
+				}
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				default:
 				{
 					isUnpackFromRequired = false;
+					isAddItemRequired = false;
 					declaringType =
 						typeof( EnumerableMessagePackSerializerBase<,> ).MakeGenericType(
 							typeof( TObject ),
@@ -128,7 +172,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			} // switch
 		}
 
-		private void BuildCollectionAddItem( TContext context, Type declaringType )
+		private void BuildCollectionAddItem( TContext context, Type declaringType, CollectionTraits traits )
 		{
 			var addItem = GetCollectionSerializerMethod( "AddItem", declaringType );
 			this.EmitMethodPrologue( context, CollectionSerializerMethod.AddItem, addItem );
@@ -136,10 +180,21 @@ namespace MsgPack.Serialization.AbstractSerializers
 			try
 			{
 				construct =
-					this.EmitAppendCollectionItem(
+					traits.CollectionType == CollectionKind.Map
+					? this.EmitAppendDictionaryItem(
+						context,
+						traits,
+						context.CollectionToBeAdded,
+						addItem.GetParameters()[ 0 ].ParameterType,
+						context.KeyToAdd,
+						addItem.GetParameters()[ 1 ].ParameterType,
+						context.ValueToAdd,
+						false
+					)
+					: this.EmitAppendCollectionItem(
 						context,
 						null,
-						CollectionTraitsOfThis,
+						traits,
 						context.CollectionToBeAdded,
 						context.ItemToAdd
 					);

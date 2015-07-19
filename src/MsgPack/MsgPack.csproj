@@ -170,7 +170,9 @@
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Collection.cs" />
     <Compile Include="Serialization\CodeDomSerializers\CodeDomSerializerBuilder.cs" />
     <Compile Include="Serialization\CollectionDetailedKind.cs" />
+    <Compile Include="Serialization\CollectionSerializers\CollectionMessagePackSerializerBase`2.cs" />
     <Compile Include="Serialization\CollectionSerializers\CollectionSerializerHelpers.cs" />
+    <Compile Include="Serialization\CollectionSerializers\DictionaryMessagePackSerializerBase`3.cs" />
     <Compile Include="Serialization\CollectionSerializers\NonGenericDictionaryMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\CollectionSerializers\NonGenericListMessagePackSerializer`1.cs" />
@@ -181,6 +183,8 @@
     <Compile Include="Serialization\CollectionSerializers\EnumerableMessagePackSerializerBase`2.cs" />
     <Compile Include="Serialization\CollectionSerializers\EnumerableMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\CollectionSerializers\ICollectionInstanceFactory.cs" />
+    <Compile Include="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
+    <Compile Include="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Compile Include="Serialization\DateTimeConversionMethod.cs" />
     <Compile Include="Serialization\DateTimeMemberConversionMethod.cs" />
     <Compile Include="Serialization\DateTimeMessagePackSerializerHelpers.cs" />
@@ -192,6 +196,8 @@
     <Compile Include="Serialization\DefaultSerializers\AbstractNonGenericListMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\AbstractCollectionMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\DefaultSerializers\AbstractDictionaryMessagePackSerializer`3.cs" />
+    <Compile Include="Serialization\DefaultSerializers\AbstractReadOnlyCollectionMessagePackSerializer`2.cs" />
+    <Compile Include="Serialization\DefaultSerializers\AbstractReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Compile Include="Serialization\DefaultSerializers\DateTimeMessagePackSerializerProvider.cs" />
     <Compile Include="Serialization\DefaultSerializers\DateTimeOffsetMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\DateTimeOffsetMessagePackSerializerProvider.cs" />
@@ -214,6 +220,8 @@
     <Compile Include="Serialization\EmittingSerializers\CallbackNonGenericDictionaryMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\EmittingSerializers\CallbackNonGenericEnumerableMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\EmittingSerializers\CallbackNonGenericListMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\EmittingSerializers\CallbackReadOnlyCollectionMessagePackSerializer`2.cs" />
+    <Compile Include="Serialization\EmittingSerializers\CallbackReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackCollectionMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackDictionaryMessagePackSerializer`3.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackEnumerableMessagePackSerializer`2.cs" />
@@ -221,6 +229,8 @@
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackNonGenericDictionaryMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackNonGenericEnumerableMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackNonGenericListMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyCollectionMessagePackSerializer`2.cs" />
+    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilderHelpers.cs" />
     <Compile Include="Serialization\INilImplicationHandlerOnUnpackedParameter.cs" />
     <Compile Include="Serialization\INilImplicationHandlerParameter.cs" />

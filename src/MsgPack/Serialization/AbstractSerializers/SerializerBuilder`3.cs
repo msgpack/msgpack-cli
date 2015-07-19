@@ -80,6 +80,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 					BaseClass = typeof( CollectionMessagePackSerializer<,> ).MakeGenericType( typeof( TObject ), traits.ElementType );
 					break;
 				}
+#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+				case CollectionDetailedKind.GenericReadOnlyCollection:
+				case CollectionDetailedKind.GenericReadOnlyList:
+				{
+					BaseClass = typeof( ReadOnlyCollectionMessagePackSerializer<,> ).MakeGenericType( typeof( TObject ), traits.ElementType );
+					break;
+				}
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericDictionary:
 				{
 					var keyValuePairGenericArguments = traits.ElementType.GetGenericArguments();
@@ -91,6 +99,19 @@ namespace MsgPack.Serialization.AbstractSerializers
 						);
 					break;
 				}
+#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+				case CollectionDetailedKind.GenericReadOnlyDictionary:
+				{
+					var keyValuePairGenericArguments = traits.ElementType.GetGenericArguments();
+					BaseClass =
+						typeof( ReadOnlyDictionaryMessagePackSerializer<,,> ).MakeGenericType(
+							typeof( TObject ),
+							keyValuePairGenericArguments[ 0 ],
+							keyValuePairGenericArguments[ 1 ]
+						);
+					break;
+				}
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.NonGenericEnumerable:
 				{
 					BaseClass = typeof( NonGenericEnumerableMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
@@ -113,6 +134,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 				default:
 				{
+#if DEBUG && !UNITY
+					Contract.Assert(
+						traits.DetailedCollectionType == CollectionDetailedKind.NotCollection,
+						"Unknown type:" + traits.DetailedCollectionType 
+					);
+#endif // DEBUG && !UNITY
 					BaseClass =
 						typeof( TObject ).GetIsEnum()
 							? typeof( EnumMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) )

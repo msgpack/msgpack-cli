@@ -19,7 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-using System.Linq;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {

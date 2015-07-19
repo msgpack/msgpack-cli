@@ -94,13 +94,13 @@ namespace MsgPack.Serialization
 		internal static readonly MethodInfo ForPolymorphicDictionaryCodeTypeMappingMethod =
 			typeof( PolymorphismSchema ).GetMethod( "ForPolymorphicDictionary", new[] { typeof( Type ), typeof( IDictionary<byte, Type> ), typeof( PolymorphismSchema ), typeof( PolymorphismSchema ) } );
 
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !NETFX_35 && !UNITY
 		/// <summary>
 		///		ForPolymorphicTuple( Type targetType, PolymorphismSchema[] itemSchemaList )
 		/// </summary>
 		internal static readonly MethodInfo ForPolymorphicTupleMethod =
 			typeof( PolymorphismSchema ).GetMethod( "ForPolymorphicTuple", new[] { typeof( Type ), typeof( PolymorphismSchema[]) } );
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !NETFX_35 && !UNITY
 
 		internal static readonly ConstructorInfo CodeTypeMapConstructor =
 			typeof( Dictionary<,> ).MakeGenericType( typeof( byte ), typeof( Type ) )
@@ -164,7 +164,7 @@ namespace MsgPack.Serialization
 
 					break;
 				}
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !NETFX_35 && !UNITY
 				case PolymorphismSchemaChildrenType.TupleItems:
 				{
 					buffer.Append( ", TupleItemsSchema:[" );
@@ -192,7 +192,7 @@ namespace MsgPack.Serialization
 
 					break;
 				}
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !NETFX_35 && !UNITY
 			}
 
 			buffer.Append( '}' );
@@ -281,7 +281,7 @@ namespace MsgPack.Serialization
 				}
 				default:
 				{
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !NETFX_35 && !UNITY
 					if ( TupleItems.IsTuple( member.Member.GetMemberValueType() ) )
 					{
 						if ( table.TupleItems.Count == 0 )
@@ -309,7 +309,7 @@ namespace MsgPack.Serialization
 							);
 					}
 					else
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !NETFX_35 && !UNITY
 					{
 						if ( !table.Member.Exists )
 						{
@@ -333,25 +333,25 @@ namespace MsgPack.Serialization
 			public readonly TypeTableEntry Member;
 			public readonly TypeTableEntry CollectionItem;
 			public readonly TypeTableEntry DictionaryKey;
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !NETFX_35 && !UNITY
 			public readonly IList<TypeTableEntry> TupleItems;
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !NETFX_35 && !UNITY
 
 			private TypeTable(
 				TypeTableEntry member,
 				TypeTableEntry collectionItem,
 				TypeTableEntry dictionaryKey
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !NETFX_35 && !UNITY
 				, IList<TypeTableEntry> tupleItems
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !NETFX_35 && !UNITY
 			)
 			{
 				this.Member = member;
 				this.CollectionItem = collectionItem;
 				this.DictionaryKey = dictionaryKey;
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !NETFX_35 && !UNITY
 				this.TupleItems = tupleItems;
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !NETFX_35 && !UNITY
 			}
 
 			public static TypeTable Create( SerializationContext context, MemberInfo member )
@@ -361,18 +361,18 @@ namespace MsgPack.Serialization
 						TypeTableEntry.Create( context, member, PolymorphismTarget.Member ),
 						TypeTableEntry.Create( context, member, PolymorphismTarget.CollectionItem ),
 						TypeTableEntry.Create( context, member, PolymorphismTarget.DictionaryKey )
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !NETFX_35 && !UNITY
 						, TypeTableEntry.CreateTupleItems( context, member )
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !NETFX_35 && !UNITY
 					);
 			}
 		}
 
 		private sealed class TypeTableEntry
 		{
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !NETFX_35 && !UNITY
 			private static readonly TypeTableEntry[] EmptyEntries = new TypeTableEntry[ 0 ];
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !NETFX_35 && !UNITY
 
 			private readonly Dictionary<byte, Type> _knownTypeMapping = new Dictionary<byte, Type>();
 
@@ -413,7 +413,7 @@ namespace MsgPack.Serialization
 				return result;
 			}
 
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !NETFX_35 && !UNITY
 			public static TypeTableEntry[] CreateTupleItems( SerializationContext context, MemberInfo member )
 			{
 				if ( !TupleItems.IsTuple( member.GetMemberValueType() ) )
@@ -435,7 +435,7 @@ namespace MsgPack.Serialization
 
 				return result;
 			}
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !NETFX_35 && !UNITY
 
 			private void Interpret( SerializationContext context, IPolymorphicHelperAttribute attribute, string memberName, int tupleItemNumber )
 			{

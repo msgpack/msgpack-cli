@@ -273,6 +273,20 @@ namespace MsgPack.Serialization.DefaultSerializers
 					return new AbstractCollectionMessagePackSerializer( context, abstractType, concreteType, traits, schema );
 #endif
 				}
+#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+				case CollectionDetailedKind.GenericReadOnlyList:
+				case CollectionDetailedKind.GenericReadOnlyCollection:
+				{
+#if !UNITY
+					return
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantSerializerFactory>(
+							typeof( ReadOnlyCollectionSerializerFactory<,> ).MakeGenericType( abstractType, traits.ElementType )
+						).Create( context, concreteType, schema );
+#else
+					return new AbstractCollectionMessagePackSerializer( context, abstractType, concreteType, traits, schema );
+#endif
+				}
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericEnumerable:
 				{
 #if !UNITY
@@ -300,6 +314,24 @@ namespace MsgPack.Serialization.DefaultSerializers
 					return new AbstractDictionaryMessagePackSerializer( context, abstractType, concreteType, genericArgumentOfKeyValuePair[ 0 ], genericArgumentOfKeyValuePair[ 1 ], traits, schema );
 #endif
 				}
+#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+				case CollectionDetailedKind.GenericReadOnlyDictionary:
+				{
+					var genericArgumentOfKeyValuePair = traits.ElementType.GetGenericArguments();
+#if !UNITY
+					return
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantSerializerFactory>(
+							typeof( ReadOnlyDictionarySerializerFactory<,,> ).MakeGenericType(
+								abstractType,
+								genericArgumentOfKeyValuePair[ 0 ],
+								genericArgumentOfKeyValuePair[ 1 ]
+							)
+						).Create( context, concreteType, schema );
+#else
+					return new AbstractDictionaryMessagePackSerializer( context, abstractType, concreteType, genericArgumentOfKeyValuePair[ 0 ], genericArgumentOfKeyValuePair[ 1 ], traits, schema );
+#endif
+				}
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.NonGenericList:
 				{
 #if !UNITY
@@ -508,6 +540,19 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+		private sealed class ReadOnlyCollectionSerializerFactory<TCollection, TItem> : IVariantSerializerFactory
+			where TCollection : IReadOnlyCollection<TItem>
+		{
+			public ReadOnlyCollectionSerializerFactory() { }
+
+			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
+			{
+				return new AbstractReadOnlyCollectionMessagePackSerializer<TCollection, TItem>( context, targetType, schema );
+			}
+		}
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+
 		private sealed class DictionarySerializerFactory<TDictionary, TKey, TValue> : IVariantSerializerFactory
 			where TDictionary : IDictionary<TKey, TValue>
 		{
@@ -518,6 +563,19 @@ namespace MsgPack.Serialization.DefaultSerializers
 				return new AbstractDictionaryMessagePackSerializer<TDictionary, TKey, TValue>( context, targetType, schema );
 			}
 		}
+
+#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+		private sealed class ReadOnlyDictionarySerializerFactory<TDictionary, TKey, TValue> : IVariantSerializerFactory
+			where TDictionary : IReadOnlyDictionary<TKey, TValue>
+		{
+			public ReadOnlyDictionarySerializerFactory() { }
+
+			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
+			{
+				return new AbstractReadOnlyDictionaryMessagePackSerializer<TDictionary, TKey, TValue>( context, targetType, schema );
+			}
+		}
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 		// ReSharper restore MemberHidesStaticFromOuterClass
 #endif // !UNITY
 	}

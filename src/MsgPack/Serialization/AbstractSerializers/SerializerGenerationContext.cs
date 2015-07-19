@@ -104,6 +104,24 @@ namespace MsgPack.Serialization.AbstractSerializers
 		public TConstruct ItemToAdd { get; protected set; }
 
 		/// <summary>
+		///		Gets the code construct which represents the argument for the key to be added to the dictionary.
+		/// </summary>
+		/// <returns>
+		///		The code construct which represents the argument for the key to be added to the dictionary.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		public TConstruct KeyToAdd { get; protected set; }
+
+		/// <summary>
+		///		Gets the code construct which represents the argument for the value to be added to the dictionary.
+		/// </summary>
+		/// <returns>
+		///		The code construct which represents the argument for the key to be added to the dictionary.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		public TConstruct ValueToAdd { get; protected set; }
+
+		/// <summary>
 		///		Gets the code construct which represents the argument for the initial capacity of the new collection.
 		/// </summary>
 		/// <returns>
