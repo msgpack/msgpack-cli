@@ -2003,11 +2003,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 				case PolymorphismSchemaChildrenType.CollectionItems:
 				{
 					/*
-					 * __itemsTypeMap = new Dictionary<byte, Type>();
+					 * __itemsTypeMap = new Dictionary<string, Type>();
 					 * __itemsTypeMap.Add( b, t );
 					 * :
 					 * __itemsSchema = new PolymorphismSchema( __itemType, __itemsTypeMap, null ); // OR null
-					 * __map = new Dictionary<byte, Type>();
+					 * __map = new Dictionary<string, Type>();
 					 * __map.Add( b, t );
 					 * :
 					 * storage = new PolymorphismSchema( __type, __map, __itemsSchema );
@@ -2065,7 +2065,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						var typeMap =
 							this.DeclareLocal(
 								context,
-								typeof( Dictionary<byte, Type> ),
+								typeof( Dictionary<string, Type> ),
 								context.GetUniqueVariableName( "typeMap" )
 							);
 
@@ -2107,15 +2107,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 				case PolymorphismSchemaChildrenType.DictionaryKeyValues:
 				{
 					/*
-					 * __keysTypeMap = new Dictionary<byte, Type>();
+					 * __keysTypeMap = new Dictionary<string, Type>();
 					 * __keysTypeMap.Add( b, t );
 					 * :
 					 * __keysSchema = new PolymorphismSchema( __keyType, __keysTypeMap ); // OR null
-					 * __valuesTypeMap = new Dictionary<byte, Type>();
+					 * __valuesTypeMap = new Dictionary<string, Type>();
 					 * __valuesTypeMap.Add( b, t );
 					 * :
 					 * __valuesSchema = new PolymorphismSchema( __valueType, __valuesTypeMap ); // OR null
-					 * __map = new Dictionary<byte, Type>();
+					 * __map = new Dictionary<string, Type>();
 					 * __map.Add( b, t );
 					 * :
 					 * storage = new PolymorphismSchema( __type, __map, __keysSchema, __valuesSchema );
@@ -2191,7 +2191,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						var typeMap =
 							this.DeclareLocal(
 								context,
-								typeof( Dictionary<byte, Type> ),
+								typeof( Dictionary<string, Type> ),
 								context.GetUniqueVariableName( "typeMap" )
 							);
 
@@ -2247,13 +2247,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 					 * tupleItemsSchema = new PolymorphismSchema[__arity__];
 					 * for(var i = 0; i < __arity__; i++ )
 					 * {
-					 *   __itemsTypeMap = new Dictionary<byte, Type>();
+					 *   __itemsTypeMap = new Dictionary<string, Type>();
 					 *   __itemsTypeMap.Add( b, t );
 					 *   :
 					 *   itemsSchema = new PolymorphismSchema( __itemType, __itemsTypeMap, null ); // OR null
 					 *   tupleItemsSchema[i] = itemsSchema;
 					 * }
-					 * __map = new Dictionary<byte, Type>();
+					 * __map = new Dictionary<string, Type>();
 					 * __map.Add( b, t );
 					 * :
 					 * storage = new PolymorphismSchema( __type, __map, __itemsSchema );
@@ -2318,11 +2318,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 		private IEnumerable<TConstruct> EmitConstructLeafPolymorphismSchema( TContext context, TConstruct storage, PolymorphismSchema currentSchema, string prefix )
 		{
 			/*
-			 * __itemsTypeMap = new Dictionary<byte, Type>();
+			 * __itemsTypeMap = new Dictionary<string, Type>();
 			 * __itemsTypeMap.Add( b, t );
 			 * :
 			 * __itemsSchema = new PolymorphismSchema( __itemType, __itemsTypeMap, null ); // OR null
-			 * __map = new Dictionary<byte, Type>();
+			 * __map = new Dictionary<string, Type>();
 			 * __map.Add( b, t );
 			 * :
 			 * storage = new PolymorphismSchema( __type, __map, __itemsSchema );
@@ -2355,7 +2355,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				var typeMap =
 					this.DeclareLocal(
 						context,
-						typeof( Dictionary<byte, Type> ),
+						typeof( Dictionary<string, Type> ),
 						context.GetUniqueVariableName( String.IsNullOrEmpty( prefix ) ? "typeMap" : ( prefix + "TypeMap" ) )
 					);
 
@@ -2405,7 +2405,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						typeMap,
 						PolymorphismSchema.AddToCodeTypeMapMethod,
-						this.MakeByteLiteral( context, entry.Key ),
+						this.MakeStringLiteral( context, entry.Key ),
 						this.EmitTypeOfExpression( context, entry.Value )
 					);
 			}

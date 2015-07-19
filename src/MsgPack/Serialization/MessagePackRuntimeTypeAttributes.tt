@@ -109,12 +109,19 @@ foreach( var item in
 	/// 	so deserializer will be able to deserialize object which is actual type when serialized instead of interoperability.
 	/// 	Because non-.NET enviroments (Java, Ruby, Go, etc.) cannot interpret .NET native type identifier, 
 	///		you should not use this attribute when the serialized stream will be possible to be used from non-.NET environment.
-	///		The typed object will be encoded as 3 elements array as follows, so your deserializer can skip type information as needed:
-	///		[ &lt;ext1 - 127(customizable via SerializationContext.TypeEmbeddingSettings) &lt;kind&gt;&gt;, &lt;type-info&gt;, &lt;actual-value (array or map)&gt;]
+	///		The typed object will be encoded as 2 elements array as follows, so your deserializer can skip type information as needed:
+	///		[ &lt;type-info&gt;, &lt;actual-value (array or map)&gt;]
 	///		In this point, type-info will be encoded as compressed assembly qualified name as follows:
 	///		[ &lt;compressed type full name&gt;, &lt;assembly simple name&gt;, &lt;version binary&gt;, &lt;culture string&gt;, &lt;public key token binary&gt;]
 	///		If the type full name starts with its assembly simple name, then the prefix matched to assembly simple name will be omitted 
 	///		(as a result, compressed type name starts with dot).
+	///		<note>
+	///			You should use this attribute CAREFULLY when you deserialize data from outside, because this feature can inject arbitary process in your code through
+	///			constructor and some virtual methods if exist.
+	///			It is highly recommended avoid using <see cref="Object" /> type as member's declaring type, 
+	///			you should specify your base class which and derived typed are fully controled under your organization instead.
+	///			It mitigate chance of potential exploits.
+	///		</note>
 	/// </remarks>
 	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property<#= item.AllowMulitiple ? ", AllowMultiple = true" : String.Empty #> )]
 	public sealed <#= item.OmitConstructor ? "partial " : String.Empty #>class <#= typeName #> : Attribute, IPolymorphicRuntimeTypeAttribute

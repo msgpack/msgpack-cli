@@ -443,7 +443,9 @@
     <Compile Include="Dummies\System.Threading.Tasks\Task.cs" />
     <Compile Include="Dummies\System.Threading.Tasks\TaskFactory.cs" />
     <Compile Include="gen\array\MsgPack_ImageSerializer.cs" />
-    <Compile Include="gen\array\MsgPack_Serialization_AbstractClassCollectionKnownTypeSerializer.cs" />
+    <Compile Include="gen\array\MsgPack_Serialization_AbstractClassCollectionKnownTypeSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="gen\array\MsgPack_Serialization_AbstractClassCollectionNoAttributeSerializer.cs" />
     <Compile Include="gen\array\MsgPack_Serialization_AbstractClassCollectionRuntimeTypeSerializer.cs" />
     <Compile Include="gen\array\MsgPack_Serialization_AbstractClassDictKeyKnownTypeSerializer.cs" />
@@ -502,7 +504,9 @@
     <Compile Include="gen\array\MsgPack_Serialization_InterfaceDictKeyRuntimeTypeSerializer.cs" />
     <Compile Include="gen\array\MsgPack_Serialization_InterfaceListItemKnownTypeSerializer.cs" />
     <Compile Include="gen\array\MsgPack_Serialization_InterfaceListItemRuntimeTypeSerializer.cs" />
-    <Compile Include="gen\array\MsgPack_Serialization_InterfaceMemberKnownTypeSerializer.cs" />
+    <Compile Include="gen\array\MsgPack_Serialization_InterfaceMemberKnownTypeSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="gen\array\MsgPack_Serialization_InterfaceMemberRuntimeTypeSerializer.cs" />
     <Compile Include="gen\array\MsgPack_Serialization_ListValueType_1_System_Int32_Serializer.cs" />
     <Compile Include="gen\array\MsgPack_Serialization_OuterSerializer.cs" />

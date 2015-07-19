@@ -21,9 +21,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             MsgPack.Serialization.PolymorphismSchema keysSchema0 = default(MsgPack.Serialization.PolymorphismSchema);
-            System.Collections.Generic.Dictionary<byte, System.Type> keysSchemaTypeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
-            keysSchemaTypeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(1);
-            keysSchemaTypeMap0.Add(1, typeof(MsgPack.Serialization.FileEntry));
+            System.Collections.Generic.Dictionary<string, System.Type> keysSchemaTypeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
+            keysSchemaTypeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(1);
+            keysSchemaTypeMap0.Add("1", typeof(MsgPack.Serialization.FileEntry));
             keysSchema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.AbstractFileSystemEntry), keysSchemaTypeMap0);
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForContextSpecifiedDictionary(typeof(System.Collections.Generic.IDictionary<MsgPack.Serialization.AbstractFileSystemEntry, string>), keysSchema0, null);
             this._serializer0 = context.GetSerializer<System.Collections.Generic.IDictionary<MsgPack.Serialization.AbstractFileSystemEntry, string>>(schema0);

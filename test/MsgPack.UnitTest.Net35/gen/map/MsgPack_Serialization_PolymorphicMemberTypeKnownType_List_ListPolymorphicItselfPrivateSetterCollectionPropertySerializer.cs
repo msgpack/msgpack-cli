@@ -24,19 +24,19 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
         public MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfPrivateSetterCollectionPropertySerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
-            System.Collections.Generic.Dictionary<byte, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
-            typeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            typeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            typeMap0.Add(0, typeof(System.Collections.ObjectModel.Collection<string>));
-            typeMap0.Add(1, typeof(System.Collections.Generic.List<string>));
+            System.Collections.Generic.Dictionary<string, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
+            typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
+            typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
+            typeMap0.Add("1", typeof(System.Collections.Generic.List<string>));
+            typeMap0.Add("0", typeof(System.Collections.ObjectModel.Collection<string>));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicCollection(typeof(System.Collections.Generic.IList<string>), typeMap0, null);
             this._serializer0 = context.GetSerializer<string>(schema0);
             MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
-            System.Collections.Generic.Dictionary<byte, System.Type> typeMap1 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
-            typeMap1 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            typeMap1 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            typeMap1.Add(0, typeof(System.Collections.ObjectModel.Collection<string>));
-            typeMap1.Add(1, typeof(System.Collections.Generic.List<string>));
+            System.Collections.Generic.Dictionary<string, System.Type> typeMap1 = default(System.Collections.Generic.Dictionary<string, System.Type>);
+            typeMap1 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
+            typeMap1 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
+            typeMap1.Add("1", typeof(System.Collections.Generic.List<string>));
+            typeMap1.Add("0", typeof(System.Collections.ObjectModel.Collection<string>));
             schema1 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicCollection(typeof(System.Collections.Generic.IList<string>), typeMap1, null);
             this._serializer1 = context.GetSerializer<System.Collections.Generic.IList<string>>(schema1);
             this._methodBasePolymorphicMemberTypeKnownType_List_ListPolymorphicItselfPrivateSetterCollectionProperty_set_ListPolymorphicItself0 = typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfPrivateSetterCollectionProperty).GetMethod("set_ListPolymorphicItself", (System.Reflection.BindingFlags.Instance 

@@ -87,7 +87,6 @@ namespace MsgPack.Serialization
 			this._syncRoot = new object();
 			this._index = new Dictionary<string, byte>( 2 );
 			this._types = new Dictionary<byte, string>( 2 );
-			this.Add( KnownExtTypeName.LibraryDefinedType, KnownExtTypeCode.LibraryDefinedType );
 			this.Add( KnownExtTypeName.MultidimensionalArray, KnownExtTypeCode.MultidimensionalArray );
 		}
 

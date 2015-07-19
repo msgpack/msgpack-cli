@@ -20,11 +20,11 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         public MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWritePropertySerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
-            System.Collections.Generic.Dictionary<byte, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
-            typeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            typeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            typeMap0.Add(0, typeof(System.Collections.Generic.Dictionary<string, string>));
-            typeMap0.Add(1, typeof(System.Collections.Generic.SortedDictionary<string, string>));
+            System.Collections.Generic.Dictionary<string, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
+            typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
+            typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
+            typeMap0.Add("0", typeof(System.Collections.Generic.Dictionary<string, string>));
+            typeMap0.Add("1", typeof(System.Collections.Generic.SortedDictionary<string, string>));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicDictionary(typeof(System.Collections.Generic.IDictionary<string, string>), typeMap0, null, null);
             this._serializer0 = context.GetSerializer<System.Collections.Generic.IDictionary<string, string>>(schema0);
         }

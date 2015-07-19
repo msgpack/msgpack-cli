@@ -41,12 +41,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             MsgPack.Serialization.PolymorphismSchema schema3 = default(MsgPack.Serialization.PolymorphismSchema);
             schema3 = null;
             this._serializer3 = context.GetSerializer<System.Uri>(schema3);
-            MsgPack.Serialization.PolymorphismSchema schema4 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema4 = null;
-            this._serializer4 = context.GetSerializer<System.DateTime>(schema4);
-            MsgPack.Serialization.PolymorphismSchema schema5 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema5 = null;
-            this._serializer5 = context.GetSerializer<System.Nullable<System.DateTime>>(schema5);
+            this._serializer4 = context.GetSerializer<System.DateTime>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
+            this._serializer5 = context.GetSerializer<System.Nullable<System.DateTime>>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeWithNonSerialized objectTree) {

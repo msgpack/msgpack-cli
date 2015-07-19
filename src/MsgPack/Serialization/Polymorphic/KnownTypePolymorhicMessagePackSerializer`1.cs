@@ -38,8 +38,8 @@ namespace MsgPack.Serialization.Polymorphic
 	internal sealed class KnownTypePolymorhicMessagePackSerializer<T> : MessagePackSerializer<T>, IPolymorphicDeserializer
 	{
 		private readonly PolymorphismSchema _schema;
-		private readonly IDictionary<byte, RuntimeTypeHandle> _typeHandleMap;
-		private readonly IDictionary<RuntimeTypeHandle, byte> _typeCodeMap;
+		private readonly IDictionary<string, RuntimeTypeHandle> _typeHandleMap;
+		private readonly IDictionary<RuntimeTypeHandle, string> _typeCodeMap;
 
 		public KnownTypePolymorhicMessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema schema )
 			: base( ownerContext )
@@ -54,14 +54,14 @@ namespace MsgPack.Serialization.Polymorphic
 			this._typeCodeMap = BuildTypeHandleTypeCodeMap( schema.CodeTypeMapping );
 		}
 
-		private static IDictionary<byte, RuntimeTypeHandle> BuildTypeCodeTypeHandleMap( IDictionary<byte, Type> typeMap )
+		private static IDictionary<string, RuntimeTypeHandle> BuildTypeCodeTypeHandleMap( IDictionary<string, Type> typeMap )
 		{
 			return typeMap.ToDictionary( kv => kv.Key, kv => kv.Value.TypeHandle );
 		}
 
-		private static IDictionary<RuntimeTypeHandle, byte> BuildTypeHandleTypeCodeMap( IDictionary<byte, Type> typeMap )
+		private static IDictionary<RuntimeTypeHandle, string> BuildTypeHandleTypeCodeMap( IDictionary<string, Type> typeMap )
 		{
-			var result = new Dictionary<RuntimeTypeHandle, byte>( typeMap.Count );
+			var result = new Dictionary<RuntimeTypeHandle, string>( typeMap.Count );
 			foreach ( var typeHandleTypeCodeMapping in typeMap.GroupBy( kv => kv.Value ) )
 			{
 				if ( typeHandleTypeCodeMapping.Count() > 1 )
@@ -117,19 +117,16 @@ namespace MsgPack.Serialization.Polymorphic
 					this.OwnerContext,
 					unpacker,
 					TypeInfoEncoding.KnownType,
-					ext =>
+					u =>
 					{
-						if ( ext.Body.Length != 2 )
-						{
-							throw SerializationExceptions.NewUnknownTypeEmbedding();
-						}
+						var typeCode = u.LastReadData.AsString();
 
 						RuntimeTypeHandle typeHandle;
-						if ( !this._typeHandleMap.TryGetValue( ext.Body[ 1 ], out typeHandle ) )
+						if ( !this._typeHandleMap.TryGetValue( typeCode, out typeHandle ) )
 						{
 							throw new SerializationException(
-								String.Format( CultureInfo.CurrentCulture, "Unknown type {0:X2}.", ext.Body[ 1 ] )
-								);
+								String.Format( CultureInfo.CurrentCulture, "Unknown type {0}.", StringEscape.ForDisplay( typeCode ) )
+							);
 						}
 
 						return Type.GetTypeFromHandle( typeHandle );

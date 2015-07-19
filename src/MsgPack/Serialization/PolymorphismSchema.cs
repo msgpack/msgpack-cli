@@ -63,7 +63,7 @@ namespace MsgPack.Serialization
 		/// </value>
 		internal PolymorphismType PolymorphismType { get; private set; }
 
-		private readonly ReadOnlyDictionary<byte, Type> _codeTypeMapping;
+		private readonly ReadOnlyDictionary<string, Type> _codeTypeMapping;
 
 		/// <summary>
 		///		Gets the code type mapping which maps between ext-type codes and .NET <see cref="Type"/>s.
@@ -71,7 +71,7 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		The code type mapping which maps between ext-type codes and .NET <see cref="Type"/>s.
 		/// </value>
-		internal IDictionary<byte, Type> CodeTypeMapping { get { return this._codeTypeMapping; } }
+		internal IDictionary<string, Type> CodeTypeMapping { get { return this._codeTypeMapping; } }
 
 		internal bool UseDefault { get { return this.PolymorphismType == PolymorphismType.None; } }
 		internal bool UseTypeEmbedding { get { return this.PolymorphismType == PolymorphismType.RuntimeType; } }

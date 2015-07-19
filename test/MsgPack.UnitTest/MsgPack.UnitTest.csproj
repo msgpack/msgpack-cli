@@ -124,153 +124,10 @@
     </Compile>
     <Compile Include="ExceptionTest.cs" />
     <Compile Include="GenericExceptionTester.cs" />
-    <Compile Include="Image.cs" />
-    <Compile Include="MessagePackConvertTest.cs" />
-    <Compile Include="MessagePackExtendedTypeObjectTest.cs" />
-    <Compile Include="MessagePackObjectDictionaryTest.cs" />
-    <Compile Include="MessagePackObjectTest.Conversion.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MessagePackObjectTest.Conversion.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MessagePackObjectTest.Equals.cs" />
-    <Compile Include="MessagePackObjectTest.Equals.Integer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MessagePackObjectTest.Equals.Integer.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MessagePackObjectTest.Equals.Real.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MessagePackObjectTest.Equals.Real.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MessagePackObjectTest.Exceptionals.Conversion.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MessagePackObjectTest.Exceptionals.Conversion.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MessagePackObjectTest.Exceptionals.cs" />
-    <Compile Include="MessagePackObjectTest.IPackable.cs" />
-    <Compile Include="MessagePackObjectTest.IsTypeOf.Array.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MessagePackObjectTest.IsTypeOf.Array.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MessagePackObjectTest.IsTypeOf.cs" />
-    <Compile Include="MessagePackObjectTest.IsTypeOf.Integer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MessagePackObjectTest.IsTypeOf.Integer.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MessagePackObjectTest.IsTypeOf.Map.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MessagePackObjectTest.IsTypeOf.Map.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MessagePackObjectTest.IsTypeOf.Raw.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MessagePackObjectTest.IsTypeOf.Raw.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MessagePackObjectTest.Miscs.cs" />
-    <Compile Include="MessagePackObjectTest.Objects.cs" />
-    <Compile Include="MessagePackObjectTest.RuntimeSerialization.cs" />
-    <Compile Include="MessagePackObjectTest.Strings.cs" />
-    <Compile Include="MessagePackStringTest.cs" />
-    <Compile Include="MessageUnpackableTest.cs" />
-    <Compile Include="PackerTest.Miscs.cs" />
-    <Compile Include="PackerTest.Pack.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PackerTest.Pack.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PackerTest.PackObject.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PackerTest.PackObject.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PackerTest.PackT.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PackerTest.PackT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PackerTest.Pack.Miscs.cs" />
-    <Compile Include="PackUnpackTest.cs" />
-    <Compile Include="PackUnpackTest.Scalar.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PackUnpackTest.Scalar.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\AddOnlyCollection`1.cs" />
-    <Compile Include="Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ArrayContextBasedAutoMessagePackSerializerTest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Serialization\ArrayContextBasedEnumSerializationTest.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ArrayContextBasedEnumSerializationTest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Serialization\ArrayExpressionBasedEnumSerializationTest.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ArrayExpressionBasedEnumSerializationTest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs">
-      <DependentUpon>ArrayReflectionBasedAutoMessagePackSerializerTest.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Serialization\ArrayReflectionBasedEnumSerializationTest.cs">
-      <DependentUpon>ArrayReflectionBasedEnumSerializationTest.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Serialization\ArrayFieldBasedEnumSerializationTest.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ArrayFieldBasedEnumSerializationTest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ArrayGenerationBasedAutoMessagePackSerializerTest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Serialization\ArrayGenerationBasedEnumSerializationTest.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ArrayGenerationBasedEnumSerializationTest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Serialization\ArraySegmentEqualityComparer`1.cs" />
-    <Compile Include="Serialization\AutoMessagePackSerializerTest.Types.cs">
-      <DependentUpon>AutoMessagePackSerializerTest.Types.tt</DependentUpon>
-      <SubType>Code</SubType>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="Serialization\ComplexType.cs" />
-    <Compile Include="Serialization\ComplexTypeWithDataContractWithOrder.cs" />
-    <Compile Include="Serialization\ComplexTypeWithOneBaseOrder.cs" />
-    <Compile Include="Serialization\ComplexTypeWithoutAnyAttribute.cs" />
-    <Compile Include="Serialization\ComplexTypeWithTwoMember.cs" />
-    <Compile Include="Serialization\CompositeTest.cs" />
-    <Compile Include="Serialization\DataContractAndNonSerializedMixedTarget.cs" />
-    <Compile Include="Serialization\DataMemberAttributeNamedPropertyTestTarget.cs" />
-    <Compile Include="Serialization\ContextBasedNilImplicationTest.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ContextBasedNilImplicationTest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs" />
-    <Compile Include="Serialization\EnumSerializationTest.EnumDefinitions.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EnumSerializationTest.EnumDefinitions.tt</DependentUpon>
-    </Compile>
     <Compile Include="gen\array\MsgPack_ImageSerializer.cs" />
-    <Compile Include="gen\array\MsgPack_Serialization_AbstractClassCollectionKnownTypeSerializer.cs" />
+    <Compile Include="gen\array\MsgPack_Serialization_AbstractClassCollectionKnownTypeSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="gen\array\MsgPack_Serialization_AbstractClassCollectionNoAttributeSerializer.cs" />
     <Compile Include="gen\array\MsgPack_Serialization_AbstractClassCollectionRuntimeTypeSerializer.cs" />
     <Compile Include="gen\array\MsgPack_Serialization_AbstractClassDictKeyKnownTypeSerializer.cs" />
@@ -1221,6 +1078,151 @@
     <Compile Include="gen\map\System_Collections_ObjectModel_ObservableCollection_1_System_ObjectArray_Serializer.cs" />
     <Compile Include="gen\map\System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer.cs" />
     <Compile Include="gen\map\System_DayOfWeekSerializer.cs" />
+    <Compile Include="Image.cs" />
+    <Compile Include="MessagePackConvertTest.cs" />
+    <Compile Include="MessagePackExtendedTypeObjectTest.cs" />
+    <Compile Include="MessagePackObjectDictionaryTest.cs" />
+    <Compile Include="MessagePackObjectTest.Conversion.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.Conversion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePackObjectTest.Equals.cs" />
+    <Compile Include="MessagePackObjectTest.Equals.Integer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.Equals.Integer.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePackObjectTest.Equals.Real.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.Equals.Real.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePackObjectTest.Exceptionals.Conversion.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.Exceptionals.Conversion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePackObjectTest.Exceptionals.cs" />
+    <Compile Include="MessagePackObjectTest.IPackable.cs" />
+    <Compile Include="MessagePackObjectTest.IsTypeOf.Array.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.IsTypeOf.Array.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePackObjectTest.IsTypeOf.cs" />
+    <Compile Include="MessagePackObjectTest.IsTypeOf.Integer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.IsTypeOf.Integer.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePackObjectTest.IsTypeOf.Map.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.IsTypeOf.Map.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePackObjectTest.IsTypeOf.Raw.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.IsTypeOf.Raw.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePackObjectTest.Miscs.cs" />
+    <Compile Include="MessagePackObjectTest.Objects.cs" />
+    <Compile Include="MessagePackObjectTest.RuntimeSerialization.cs" />
+    <Compile Include="MessagePackObjectTest.Strings.cs" />
+    <Compile Include="MessagePackStringTest.cs" />
+    <Compile Include="MessageUnpackableTest.cs" />
+    <Compile Include="PackerTest.Miscs.cs" />
+    <Compile Include="PackerTest.Pack.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PackerTest.Pack.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PackerTest.PackObject.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PackerTest.PackObject.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PackerTest.PackT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PackerTest.PackT.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PackerTest.Pack.Miscs.cs" />
+    <Compile Include="PackUnpackTest.cs" />
+    <Compile Include="PackUnpackTest.Scalar.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PackUnpackTest.Scalar.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\AddOnlyCollection`1.cs" />
+    <Compile Include="Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayContextBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\ArrayContextBasedEnumSerializationTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayContextBasedEnumSerializationTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\ArrayExpressionBasedEnumSerializationTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayExpressionBasedEnumSerializationTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs">
+      <DependentUpon>ArrayReflectionBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Serialization\ArrayReflectionBasedEnumSerializationTest.cs">
+      <DependentUpon>ArrayReflectionBasedEnumSerializationTest.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Serialization\ArrayFieldBasedEnumSerializationTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayFieldBasedEnumSerializationTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayGenerationBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\ArrayGenerationBasedEnumSerializationTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayGenerationBasedEnumSerializationTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\ArraySegmentEqualityComparer`1.cs" />
+    <Compile Include="Serialization\AutoMessagePackSerializerTest.Types.cs">
+      <DependentUpon>AutoMessagePackSerializerTest.Types.tt</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Serialization\ComplexType.cs" />
+    <Compile Include="Serialization\ComplexTypeWithDataContractWithOrder.cs" />
+    <Compile Include="Serialization\ComplexTypeWithOneBaseOrder.cs" />
+    <Compile Include="Serialization\ComplexTypeWithoutAnyAttribute.cs" />
+    <Compile Include="Serialization\ComplexTypeWithTwoMember.cs" />
+    <Compile Include="Serialization\CompositeTest.cs" />
+    <Compile Include="Serialization\DataContractAndNonSerializedMixedTarget.cs" />
+    <Compile Include="Serialization\DataMemberAttributeNamedPropertyTestTarget.cs" />
+    <Compile Include="Serialization\ContextBasedNilImplicationTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContextBasedNilImplicationTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs" />
+    <Compile Include="Serialization\EnumSerializationTest.EnumDefinitions.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EnumSerializationTest.EnumDefinitions.tt</DependentUpon>
+    </Compile>
     <Compile Include="Serialization\PerformanceTest.cs" />
     <Compile Include="Serialization\AppendableReadOnlyCollections.cs" />
     <Compile Include="Serialization\ReflectionBasedNilImplicationTest.cs">

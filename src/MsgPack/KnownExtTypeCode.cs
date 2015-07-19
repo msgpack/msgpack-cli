@@ -32,20 +32,6 @@ namespace MsgPack
 	public static class KnownExtTypeCode
 	{
 		/// <summary>
-		///		Gets the ext type code which represents "Library Defined Type".
-		/// </summary>
-		/// <value>
-		///		0.
-		/// </value>
-		/// <remarks>
-		///		"Library Defined Type" will be used to embed native or coded type information in MessagePack stream.
-		/// </remarks>
-		public static byte LibraryDefinedType
-		{
-			get { return 0; }
-		}
-
-		/// <summary>
 		///		Gets the ext type code which represents multidimensional array.
 		/// </summary>
 		/// <value>
@@ -53,7 +39,7 @@ namespace MsgPack
 		/// </value>
 		public static byte MultidimensionalArray
 		{
-			get { return 0x1; }
+			get { return 0x71; }
 		}
 	}
 }

@@ -32,8 +32,10 @@ namespace MsgPack.Serialization
 	/// 	
 	/// </summary>
 	/// <remarks>
-	/// 	When you apply this attribute to a member, the member will be serialized using MessagePack ext-type,
-	/// 	so deserializer will be able to deserialize object which is actual type when serialized with interoperability.
+	/// 	When you apply this attribute to a member, the member
+	///		will be serialized as 2 element array as [ &lt;type-code&gt;, &lt;actual-value (array or map)&gt;] format 
+	///		where the type-code is utf-8 encoded string representing type in your application (system) context.
+	///		When you interop with other launages, the deserializer will be able to deserialize object which is actual type when serialized with interoperability.
 	///		<note>
 	///			You must use one-to-one relationship between type-code and the type.
 	///		</note>
@@ -47,40 +49,30 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Gets the ext-type code to be bound.
+		///		Gets a type code to be bound.
 		/// </summary>
 		/// <value>
-		///		The ext-type code to be bound.
+		///		A type code to be bound.
 		/// </value>
-		public byte BindingCode { get; private set; }
+		public string TypeCode { get; private set; }
 
 		/// <summary>
-		///		Gets the type of the binding <see cref="Type"/> for <see cref="BindingCode"/>.
+		///		Gets the type of the binding <see cref="Type"/> for <see cref="TypeCode"/>.
 		/// </summary>
 		/// <value>
-		///		The binding <see cref="Type"/> for <see cref="BindingCode"/>.
+		///		The binding <see cref="Type"/> for <see cref="TypeCode"/>.
 		/// </value>
 		public Type BindingType { get; private set; }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackKnownTypeAttribute"/> class.
 		/// </summary>
-		/// <param name="bindingCode">The ext-type code to be bound.</param>
-		/// <param name="bindingType">The binding <see cref="Type"/> for <paramref name="bindingCode"/>.</param>
-		public MessagePackKnownTypeAttribute( byte bindingCode, Type bindingType )
+		/// <param name="typeCode">A string type code to be bound.</param>
+		/// <param name="bindingType">The binding <see cref="Type"/> for <paramref name="typeCode"/>.</param>
+		public MessagePackKnownTypeAttribute( string typeCode, Type bindingType )
 		{
-			this.BindingCode = bindingCode;
+			this.TypeCode = typeCode;
 			this.BindingType = bindingType;
-		}
-
-		byte IPolymorphicKnownTypeAttribute.GetBindingCode( SerializationContext context )
-		{
-			if ( this.BindingCode > 127 )
-			{
-				throw new SerializationException( "BindingCode must be under 128(0x80)." );
-			}
-
-			return this.BindingCode;
 		}
 	}
 
@@ -89,8 +81,10 @@ namespace MsgPack.Serialization
 	/// 	
 	/// </summary>
 	/// <remarks>
-	/// 	When you apply this attribute to a member, the items/values of the collection/dictionary will be serialized using MessagePack ext-type,
-	/// 	so deserializer will be able to deserialize object which is actual type when serialized with interoperability.
+	/// 	When you apply this attribute to a member, the items/values of the collection/dictionary
+	///		will be serialized as 2 element array as [ &lt;type-code&gt;, &lt;actual-value (array or map)&gt;] format 
+	///		where the type-code is utf-8 encoded string representing type in your application (system) context.
+	///		When you interop with other launages, the deserializer will be able to deserialize object which is actual type when serialized with interoperability.
 	///		<note>
 	///			You must use one-to-one relationship between type-code and the type.
 	///		</note>
@@ -104,40 +98,30 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Gets the ext-type code to be bound.
+		///		Gets a type code to be bound.
 		/// </summary>
 		/// <value>
-		///		The ext-type code to be bound.
+		///		A type code to be bound.
 		/// </value>
-		public byte BindingCode { get; private set; }
+		public string TypeCode { get; private set; }
 
 		/// <summary>
-		///		Gets the type of the binding <see cref="Type"/> for <see cref="BindingCode"/>.
+		///		Gets the type of the binding <see cref="Type"/> for <see cref="TypeCode"/>.
 		/// </summary>
 		/// <value>
-		///		The binding <see cref="Type"/> for <see cref="BindingCode"/>.
+		///		The binding <see cref="Type"/> for <see cref="TypeCode"/>.
 		/// </value>
 		public Type BindingType { get; private set; }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackKnownCollectionItemTypeAttribute"/> class.
 		/// </summary>
-		/// <param name="bindingCode">The ext-type code to be bound.</param>
-		/// <param name="bindingType">The binding <see cref="Type"/> for <paramref name="bindingCode"/>.</param>
-		public MessagePackKnownCollectionItemTypeAttribute( byte bindingCode, Type bindingType )
+		/// <param name="typeCode">A string type code to be bound.</param>
+		/// <param name="bindingType">The binding <see cref="Type"/> for <paramref name="typeCode"/>.</param>
+		public MessagePackKnownCollectionItemTypeAttribute( string typeCode, Type bindingType )
 		{
-			this.BindingCode = bindingCode;
+			this.TypeCode = typeCode;
 			this.BindingType = bindingType;
-		}
-
-		byte IPolymorphicKnownTypeAttribute.GetBindingCode( SerializationContext context )
-		{
-			if ( this.BindingCode > 127 )
-			{
-				throw new SerializationException( "BindingCode must be under 128(0x80)." );
-			}
-
-			return this.BindingCode;
 		}
 	}
 
@@ -146,8 +130,10 @@ namespace MsgPack.Serialization
 	/// 	
 	/// </summary>
 	/// <remarks>
-	/// 	When you apply this attribute to a member, the keys of the dictionary will be serialized using MessagePack ext-type,
-	/// 	so deserializer will be able to deserialize object which is actual type when serialized with interoperability.
+	/// 	When you apply this attribute to a member, the keys of the dictionary
+	///		will be serialized as 2 element array as [ &lt;type-code&gt;, &lt;actual-value (array or map)&gt;] format 
+	///		where the type-code is utf-8 encoded string representing type in your application (system) context.
+	///		When you interop with other launages, the deserializer will be able to deserialize object which is actual type when serialized with interoperability.
 	///		<note>
 	///			You must use one-to-one relationship between type-code and the type.
 	///		</note>
@@ -161,40 +147,30 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Gets the ext-type code to be bound.
+		///		Gets a type code to be bound.
 		/// </summary>
 		/// <value>
-		///		The ext-type code to be bound.
+		///		A type code to be bound.
 		/// </value>
-		public byte BindingCode { get; private set; }
+		public string TypeCode { get; private set; }
 
 		/// <summary>
-		///		Gets the type of the binding <see cref="Type"/> for <see cref="BindingCode"/>.
+		///		Gets the type of the binding <see cref="Type"/> for <see cref="TypeCode"/>.
 		/// </summary>
 		/// <value>
-		///		The binding <see cref="Type"/> for <see cref="BindingCode"/>.
+		///		The binding <see cref="Type"/> for <see cref="TypeCode"/>.
 		/// </value>
 		public Type BindingType { get; private set; }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackKnownDictionaryKeyTypeAttribute"/> class.
 		/// </summary>
-		/// <param name="bindingCode">The ext-type code to be bound.</param>
-		/// <param name="bindingType">The binding <see cref="Type"/> for <paramref name="bindingCode"/>.</param>
-		public MessagePackKnownDictionaryKeyTypeAttribute( byte bindingCode, Type bindingType )
+		/// <param name="typeCode">A string type code to be bound.</param>
+		/// <param name="bindingType">The binding <see cref="Type"/> for <paramref name="typeCode"/>.</param>
+		public MessagePackKnownDictionaryKeyTypeAttribute( string typeCode, Type bindingType )
 		{
-			this.BindingCode = bindingCode;
+			this.TypeCode = typeCode;
 			this.BindingType = bindingType;
-		}
-
-		byte IPolymorphicKnownTypeAttribute.GetBindingCode( SerializationContext context )
-		{
-			if ( this.BindingCode > 127 )
-			{
-				throw new SerializationException( "BindingCode must be under 128(0x80)." );
-			}
-
-			return this.BindingCode;
 		}
 	}
 
@@ -203,8 +179,10 @@ namespace MsgPack.Serialization
 	/// 	
 	/// </summary>
 	/// <remarks>
-	/// 	When you apply this attribute to a member, the item of tuple will be serialized using MessagePack ext-type,
-	/// 	so deserializer will be able to deserialize object which is actual type when serialized with interoperability.
+	/// 	When you apply this attribute to a member, the item of tuple,
+	///		will be serialized as 2 element array as [ &lt;type-code&gt;, &lt;actual-value (array or map)&gt;] format 
+	///		where the type-code is utf-8 encoded string representing type in your application (system) context.
+	///		When you interop with other launages, the deserializer will be able to deserialize object which is actual type when serialized with interoperability.
 	///		<note>
 	///			You must use one-to-one relationship between type-code and the type.
 	///		</note>
@@ -218,31 +196,21 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Gets the ext-type code to be bound.
+		///		Gets a type code to be bound.
 		/// </summary>
 		/// <value>
-		///		The ext-type code to be bound.
+		///		A type code to be bound.
 		/// </value>
-		public byte BindingCode { get; private set; }
+		public string TypeCode { get; private set; }
 
 		/// <summary>
-		///		Gets the type of the binding <see cref="Type"/> for <see cref="BindingCode"/>.
+		///		Gets the type of the binding <see cref="Type"/> for <see cref="TypeCode"/>.
 		/// </summary>
 		/// <value>
-		///		The binding <see cref="Type"/> for <see cref="BindingCode"/>.
+		///		The binding <see cref="Type"/> for <see cref="TypeCode"/>.
 		/// </value>
 		public Type BindingType { get; private set; }
 
-
-		byte IPolymorphicKnownTypeAttribute.GetBindingCode( SerializationContext context )
-		{
-			if ( this.BindingCode > 127 )
-			{
-				throw new SerializationException( "BindingCode must be under 128(0x80)." );
-			}
-
-			return this.BindingCode;
-		}
 	}
 
 
@@ -268,12 +236,12 @@ namespace MsgPack.Serialization
 		///		Initializes a new instance of the <see cref="MessagePackKnownTupleItemTypeAttribute"/> class.
 		/// </summary>
 		/// <param name="itemNumber">The 1-based target item number of the tuple. The attribute which has invalid value should be ignored.</param>
-		/// <param name="bindingCode">The ext-type code to be bound.</param>
-		/// <param name="bindingType">The binding <see cref="Type"/> for <paramref name="bindingCode"/>.</param>
-		public MessagePackKnownTupleItemTypeAttribute( int itemNumber, byte bindingCode, Type bindingType )
+		/// <param name="typeCode">A string type code to be bound.</param>
+		/// <param name="bindingType">The binding <see cref="Type"/> for <paramref name="typeCode"/>.</param>
+		public MessagePackKnownTupleItemTypeAttribute( int itemNumber, string typeCode, Type bindingType )
 		{
 			this.ItemNumber = itemNumber;
-			this.BindingCode = bindingCode;
+			this.TypeCode = typeCode;
 			this.BindingType = bindingType;
 		}
 	}

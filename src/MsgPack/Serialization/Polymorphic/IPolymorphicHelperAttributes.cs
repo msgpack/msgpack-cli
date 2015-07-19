@@ -36,7 +36,7 @@ namespace MsgPack.Serialization.Polymorphic
 	internal interface IPolymorphicKnownTypeAttribute : IPolymorphicHelperAttribute
 	{
 		Type BindingType { get; }
-		byte GetBindingCode( SerializationContext context );
+		string TypeCode { get; }
 	}
 
 	/// <summary>

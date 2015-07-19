@@ -32,20 +32,6 @@ namespace MsgPack
 	public static class KnownExtTypeName
 	{
 		/// <summary>
-		///		Gets the ext type name which represents "Library Defined Type".
-		/// </summary>
-		/// <value>
-		///		"LibraryDefinedType".
-		/// </value>
-		/// <remarks>
-		///		"Library Defined Type" will be used to embed native or coded type information in MessagePack stream.
-		/// </remarks>
-		public static string LibraryDefinedType
-		{
-			get { return "LibraryDefinedType"; }
-		}
-
-		/// <summary>
 		///		Gets the ext type name which represents multidimensional array.
 		/// </summary>
 		/// <value>

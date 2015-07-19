@@ -32,7 +32,7 @@ namespace MsgPack.Serialization
 {
 	partial class PolymorphismSchema
 	{
-		private static readonly Dictionary<byte, Type> EmptyMap = new Dictionary<byte, Type>( 0 );
+		private static readonly Dictionary<string, Type> EmptyMap = new Dictionary<string, Type>( 0 );
 		private static readonly PolymorphismSchema[] EmptyChildren = new PolymorphismSchema[ 0 ];
 
 		// Internal only, for Default
@@ -40,7 +40,7 @@ namespace MsgPack.Serialization
 		{
 			this.TargetType = null;
 			this.PolymorphismType = PolymorphismType.None;
-			this._codeTypeMapping = new ReadOnlyDictionary<byte, Type>( EmptyMap );
+			this._codeTypeMapping = new ReadOnlyDictionary<string, Type>( EmptyMap );
 			this.ChildrenType = PolymorphismSchemaChildrenType.None;
 			this._children = new ReadOnlyCollection<PolymorphismSchema>( EmptyChildren );
 		}
@@ -54,7 +54,7 @@ namespace MsgPack.Serialization
 			: this(
 				targetType,
 				polymorphismType,
-				new ReadOnlyDictionary<byte, Type>( EmptyMap ),
+				new ReadOnlyDictionary<string, Type>( EmptyMap ),
 				childrenType,
 				new ReadOnlyCollection<PolymorphismSchema>(
 					( childItemSchemaList ?? EmptyChildren ).Select( x => x ?? Default ).ToArray()
@@ -64,13 +64,13 @@ namespace MsgPack.Serialization
 		private PolymorphismSchema(
 			Type targetType,
 			PolymorphismType polymorphismType,
-			IDictionary<byte, Type> codeTypeMapping,
+			IDictionary<string, Type> codeTypeMapping,
 			PolymorphismSchemaChildrenType childrenType,
 			params PolymorphismSchema[] childItemSchemaList )
 			: this(
 				targetType,
 				polymorphismType,
-				new ReadOnlyDictionary<byte, Type>( codeTypeMapping ),
+				new ReadOnlyDictionary<string, Type>( codeTypeMapping ),
 				childrenType,
 				new ReadOnlyCollection<PolymorphismSchema>(
 					( childItemSchemaList ?? EmptyChildren ).Select( x => x ?? Default ).ToArray()
@@ -80,7 +80,7 @@ namespace MsgPack.Serialization
 		private PolymorphismSchema(
 			Type targetType,
 			PolymorphismType polymorphismType,
-			ReadOnlyDictionary<byte, Type> codeTypeMapping,
+			ReadOnlyDictionary<string, Type> codeTypeMapping,
 			PolymorphismSchemaChildrenType childrenType,
 			ReadOnlyCollection<PolymorphismSchema> childItemSchemaList )
 		{
@@ -122,7 +122,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		public static PolymorphismSchema ForPolymorphicObject( Type targetType, IDictionary<byte, Type> codeTypeMapping )
+		public static PolymorphismSchema ForPolymorphicObject( Type targetType, IDictionary<string, Type> codeTypeMapping )
 		{
 			return
 				new PolymorphismSchema(
@@ -190,7 +190,7 @@ namespace MsgPack.Serialization
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForPolymorphicCollection(
 			Type targetType,
-			IDictionary<byte, Type> codeTypeMapping,
+			IDictionary<string, Type> codeTypeMapping,
 			PolymorphismSchema itemSchema 
 		)
 		{
@@ -273,7 +273,7 @@ namespace MsgPack.Serialization
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForPolymorphicDictionary(
 			Type targetType,
-			IDictionary<byte, Type> codeTypeMapping,
+			IDictionary<string, Type> codeTypeMapping,
 			PolymorphismSchema keySchema,
 			PolymorphismSchema valueSchema 
 		)

@@ -462,6 +462,7 @@
     </Compile>
     <Compile Include="SetOperation.cs" />
     <Compile Include="StreamPacker.cs" />
+    <Compile Include="StringEscape.cs" />
     <Compile Include="SubtreeUnpacker.cs" />
     <Compile Include="TupleItems.cs" />
     <Compile Include="Unpacking.cs">

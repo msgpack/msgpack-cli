@@ -20,7 +20,6 @@
 
 using System;
 using System.Globalization;
-using System.IO;
 using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.Polymorphic
@@ -50,7 +49,7 @@ namespace MsgPack.Serialization.Polymorphic
 			if ( result == null )
 			{
 				throw new SerializationException(
-					String.Format( CultureInfo.CurrentCulture, "Cannot get serializer for actual type {0} from context.", actualType ) 
+					String.Format( CultureInfo.CurrentCulture, "Cannot get serializer for actual type {0} from context.", actualType )
 				);
 			}
 
@@ -72,23 +71,9 @@ namespace MsgPack.Serialization.Polymorphic
 					this.OwnerContext,
 					unpacker,
 					TypeInfoEncoding.RawCompressed,
-					ext =>
-					{
-						using ( var buffer = new MemoryStream( ext.Body ) )
-						{
-							buffer.Seek( 1, SeekOrigin.Current );
-							using ( var typeInfoUnpacker = Unpacker.Create( buffer ) )
-							{
-								if ( !typeInfoUnpacker.Read() )
-								{
-									throw SerializationExceptions.NewUnexpectedEndOfStream();
-								}
-
-								return TypeInfoEncoder.Decode( typeInfoUnpacker );
-							}
-						}
-					},
-					( t, u ) => ( T ) this.GetActualTypeSerializer( t ).UnpackFrom( u ) 
+					// ReSharper disable once ConvertClosureToMethodGroup
+					u => TypeInfoEncoder.DecodeRuntimeTypeInfo( u ), // Lamda capture is more efficient.
+					( t, u ) => ( T )this.GetActualTypeSerializer( t ).UnpackFrom( u )
 				);
 		}
 

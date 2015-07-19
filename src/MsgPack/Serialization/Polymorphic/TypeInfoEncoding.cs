@@ -30,9 +30,4 @@ namespace MsgPack.Serialization.Polymorphic
 		KnownType = 0,
 		RawCompressed = 1
 	}
-
-	internal static class TypeInfoEncodingBytes
-	{
-		public static readonly byte[] RawCompressed = new byte[] { 1 };
-	}
 }

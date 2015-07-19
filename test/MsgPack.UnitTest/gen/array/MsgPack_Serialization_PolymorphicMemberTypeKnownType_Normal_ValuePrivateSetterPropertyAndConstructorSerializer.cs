@@ -23,12 +23,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         
         public MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructorSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
-            MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema0 = null;
-            this._serializer0 = context.GetSerializer<System.DateTime>(schema0);
-            MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema1 = null;
-            this._serializer1 = context.GetSerializer<System.Nullable<System.DateTime>>(schema1);
+            this._serializer0 = context.GetSerializer<System.DateTime>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
+            this._serializer1 = context.GetSerializer<System.Nullable<System.DateTime>>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
             this._methodBasePolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor_set_Value0 = typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor).GetMethod("set_Value", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
                         typeof(System.DateTime)}, null);

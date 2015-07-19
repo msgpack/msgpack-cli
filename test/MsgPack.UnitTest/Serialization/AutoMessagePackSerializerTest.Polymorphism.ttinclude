@@ -57,7 +57,7 @@ private IEnumerable<TestTargetType> GeneratePolymorphismTestPartsCore( bool gene
 						).Concat(
 							member.ActualTypes.Select(
 								( t, i ) =>
-									String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownCollectionItemType( {0}, typeof( {1} ) )]", i, t ) 
+									String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownCollectionItemType( \"{0}\", typeof( {1} ) )]", i, t ) 
 							)
 						);
 				}
@@ -70,7 +70,7 @@ private IEnumerable<TestTargetType> GeneratePolymorphismTestPartsCore( bool gene
 						).Concat(
 							member.ActualTypes.Select(
 								( t, i ) =>
-									String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownDictionaryKeyType( {0}, typeof( {1} ) )]", i, t ) 
+									String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownDictionaryKeyType( \"{0}\", typeof( {1} ) )]", i, t ) 
 								)
 						);
 				}
@@ -81,9 +81,9 @@ private IEnumerable<TestTargetType> GeneratePolymorphismTestPartsCore( bool gene
 							? new[] { "[MessagePackRuntimeType]" }
 							: new string[ 0 ]
 						).Concat(
-							member.ActualTypes.Select( ( t, i ) => String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownDictionaryKeyType( {0}, typeof( {1} ) )]", i, t ) ) 
+							member.ActualTypes.Select( ( t, i ) => String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownDictionaryKeyType( \"{0}\", typeof( {1} ) )]", i, t ) ) 
 						).Concat(
-							member.ActualTypes.Select( ( t, i ) => String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownCollectionItemType( {0}, typeof( {1} ) )]", i, t ) )
+							member.ActualTypes.Select( ( t, i ) => String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownCollectionItemType( \"{0}\", typeof( {1} ) )]", i, t ) )
 						);
 				}
 				case PolymorphismTargets.TupleItem:
@@ -97,14 +97,14 @@ private IEnumerable<TestTargetType> GeneratePolymorphismTestPartsCore( bool gene
 								kv =>
 									kv.Value.Select(
 										( t, i ) =>
-											String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownTupleItemType( {0}, {1}, typeof( {2} ) )]", kv.Key, i, t )
+											String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownTupleItemType( {0}, \"{1}\", typeof( {2} ) )]", kv.Key, i, t )
 									)
 							)
 						);
 				}
 				case PolymorphismTargets.Member:
 				{
-					return member.ActualTypes.Select( ( t, i ) => String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownType( {0}, typeof( {1} ) )]", i, t ) );
+					return member.ActualTypes.Select( ( t, i ) => String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownType( \"{0}\", typeof( {1} ) )]", i, t ) );
 				}
 				default:
 				{
@@ -742,17 +742,17 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 		{
 			new { Name = "NormalVanilla",	Type = "string",			InitialValue = @"""ABC""",										Attributes = new string[ 0 ], IsTuple = false },
 			new { Name = "NormalRuntime",	Type = "FileSystemEntry",	InitialValue = @"new FileEntry { Name = ""File"", Size = 1 }",	Attributes = new [] { "[MessagePackRuntimeType]" }, IsTuple = false },
-			new { Name = "NormalKnown",		Type = "FileSystemEntry",	InitialValue = @"new FileEntry { Name = ""File"", Size = 2 }",	Attributes = new [] { "[MessagePackKnownType( 1, typeof( FileEntry ) )]", "[MessagePackKnownType( 2, typeof( DirectoryEntry ) )]" }, IsTuple = false },
+			new { Name = "NormalKnown",		Type = "FileSystemEntry",	InitialValue = @"new FileEntry { Name = ""File"", Size = 2 }",	Attributes = new [] { "[MessagePackKnownType( \"1\", typeof( FileEntry ) )]", "[MessagePackKnownType( \"2\", typeof( DirectoryEntry ) )]" }, IsTuple = false },
 			new { Name = "ObjectRuntime",	Type = "Object",			InitialValue = @"new FileEntry { Name = ""File"", Size = 3 }",	Attributes = new [] { "[MessagePackRuntimeType]" }, IsTuple = false },
 			new { Name = "ListVanilla",						Type = "IList<string>",				InitialValue = @"new List<string> { ""ABC"" }",													Attributes = new string[ 0 ], IsTuple = false },
-			new { Name = "ListKnownItem",					Type = "IList<FileSystemEntry>",	InitialValue = @"new List<FileSystemEntry> { new FileEntry { Name = ""File"", Size = 1 } }",	Attributes = new [] { "[MessagePackKnownCollectionItemType( 1, typeof( FileEntry ) )]", "[MessagePackKnownCollectionItemType( 2, typeof( DirectoryEntry ) )]" }, IsTuple = false },
-			new { Name = "ListKnwonContainerRuntimeItem",	Type = "IList<FileSystemEntry>",	InitialValue = @"new List<FileSystemEntry> { new FileEntry { Name = ""File"", Size = 2 } }",	Attributes = new [] { "[MessagePackKnownType( 1, typeof( Collection<FileSystemEntry> ) )]", "[MessagePackKnownType( 2, typeof( List<FileSystemEntry> ) )]", "[MessagePackRuntimeCollectionItemType]" }, IsTuple = false },
+			new { Name = "ListKnownItem",					Type = "IList<FileSystemEntry>",	InitialValue = @"new List<FileSystemEntry> { new FileEntry { Name = ""File"", Size = 1 } }",	Attributes = new [] { "[MessagePackKnownCollectionItemType( \"1\", typeof( FileEntry ) )]", "[MessagePackKnownCollectionItemType( \"2\", typeof( DirectoryEntry ) )]" }, IsTuple = false },
+			new { Name = "ListKnwonContainerRuntimeItem",	Type = "IList<FileSystemEntry>",	InitialValue = @"new List<FileSystemEntry> { new FileEntry { Name = ""File"", Size = 2 } }",	Attributes = new [] { "[MessagePackKnownType( \"1\", typeof( Collection<FileSystemEntry> ) )]", "[MessagePackKnownType( \"2\", typeof( List<FileSystemEntry> ) )]", "[MessagePackRuntimeCollectionItemType]" }, IsTuple = false },
 			new { Name = "ListObjectRuntimeItem",			Type = "IList<object>",				InitialValue = @"new List<object> { new FileEntry { Name = ""File"", Size = 3 } }",				Attributes = new [] { "[MessagePackRuntimeCollectionItemType]" }, IsTuple = false },
 			new { Name = "DictionaryVanilla",						Type = "IDictionary<string, string>",			InitialValue = @"new Dictionary<string, string> { { ""Key"", ""ABC"" } }",												Attributes = new string[ 0 ], IsTuple = false },
-			new { Name = "DictionaryKnownValue",					Type = "IDictionary<string, FileSystemEntry>",	InitialValue = @"new Dictionary<string, FileSystemEntry> { { ""Key"", new FileEntry { Name = ""File"", Size = 1 } } }",	Attributes = new [] { "[MessagePackKnownCollectionItemType( 1, typeof( FileEntry ) )]", "[MessagePackKnownCollectionItemType( 2, typeof( DirectoryEntry ) )]" }, IsTuple = false },
-			new { Name = "DictionaryKnownContainerRuntimeValue",	Type = "IDictionary<string, FileSystemEntry>",	InitialValue = @"new Dictionary<string, FileSystemEntry> { { ""Key"", new FileEntry { Name = ""File"", Size = 2 } } }",	Attributes = new [] { "[MessagePackKnownType( 1, typeof( SortedDictionary<string, FileSystemEntry> ) )]", "[MessagePackKnownType( 2, typeof( Dictionary<string, FileSystemEntry> ) )]", "[MessagePackRuntimeCollectionItemType]" }, IsTuple = false },
+			new { Name = "DictionaryKnownValue",					Type = "IDictionary<string, FileSystemEntry>",	InitialValue = @"new Dictionary<string, FileSystemEntry> { { ""Key"", new FileEntry { Name = ""File"", Size = 1 } } }",	Attributes = new [] { "[MessagePackKnownCollectionItemType( \"1\", typeof( FileEntry ) )]", "[MessagePackKnownCollectionItemType( \"2\", typeof( DirectoryEntry ) )]" }, IsTuple = false },
+			new { Name = "DictionaryKnownContainerRuntimeValue",	Type = "IDictionary<string, FileSystemEntry>",	InitialValue = @"new Dictionary<string, FileSystemEntry> { { ""Key"", new FileEntry { Name = ""File"", Size = 2 } } }",	Attributes = new [] { "[MessagePackKnownType( \"1\", typeof( SortedDictionary<string, FileSystemEntry> ) )]", "[MessagePackKnownType( \"2\", typeof( Dictionary<string, FileSystemEntry> ) )]", "[MessagePackRuntimeCollectionItemType]" }, IsTuple = false },
 			new { Name = "DictionaryObjectRuntimeValue",			Type = "IDictionary<string, object>",			InitialValue = @"new Dictionary<string, object> { { ""Key"", new FileEntry { Name = ""File"", Size = 3 } } }",			Attributes = new [] { "[MessagePackRuntimeCollectionItemType]" }, IsTuple = false },
-			new { Name = "Tuple",	Type = "Tuple<string, FileSystemEntry, FileSystemEntry, object>", InitialValue = @"Tuple.Create<string, FileSystemEntry, FileSystemEntry, object>( ""ABC"", new FileEntry { Name = ""File"", Size = 1 }, new FileEntry { Name = ""File"", Size = 3 }, new FileEntry { Name = ""File"", Size = 3 } )", Attributes = new [] { "[MessagePackKnownTupleItemType( 2, 1, typeof( FileEntry ) )]", "[MessagePackKnownTupleItemType( 2, 2, typeof( DirectoryEntry ) )]", "[MessagePackRuntimeTupleItemType( 3 )]","[MessagePackRuntimeTupleItemType( 4 )]" }, IsTuple = true },
+			new { Name = "Tuple",	Type = "Tuple<string, FileSystemEntry, FileSystemEntry, object>", InitialValue = @"Tuple.Create<string, FileSystemEntry, FileSystemEntry, object>( ""ABC"", new FileEntry { Name = ""File"", Size = 1 }, new FileEntry { Name = ""File"", Size = 3 }, new FileEntry { Name = ""File"", Size = 3 } )", Attributes = new [] { "[MessagePackKnownTupleItemType( 2, \"1\", typeof( FileEntry ) )]", "[MessagePackKnownTupleItemType( 2, \"2\", typeof( DirectoryEntry ) )]", "[MessagePackRuntimeTupleItemType( 3 )]","[MessagePackRuntimeTupleItemType( 4 )]" }, IsTuple = true },
 		};
 
 	const string typeName = "PolymorphicMemberTypeMixed";
@@ -932,7 +932,7 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 				new [] 
 				{
 					new { Name = "NoAttribute",	Attribute = default( string ) },
-					new { Name = "KnownType",	Attribute = String.Format( CultureInfo.InvariantCulture, "[MessagePackKnown{0}Type( 1, typeof( FileEntry ) )]", pattern.Qualifier ) }, 
+					new { Name = "KnownType",	Attribute = String.Format( CultureInfo.InvariantCulture, "[MessagePackKnown{0}Type( \"1\", typeof( FileEntry ) )]", pattern.Qualifier ) }, 
 					new { Name = "RuntimeType",	Attribute = String.Format( CultureInfo.InvariantCulture, "[MessagePackRuntime{0}Type]", pattern.Qualifier ) },
 				}
 			)
@@ -993,7 +993,7 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 			new [] 
 			{
 				new { Name = "NoAttribute",	Attribute = default( string ) },
-				new { Name = "KnownType",	Attribute = "[MessagePackKnownType( 1, typeof( EchoKeyedCollection<string, string> ) )]" }, 
+				new { Name = "KnownType",	Attribute = "[MessagePackKnownType( \"1\", typeof( EchoKeyedCollection<string, string> ) )]" }, 
 				new { Name = "RuntimeType", Attribute = "[MessagePackRuntimeType]" },
 			}
 		)
@@ -1024,8 +1024,8 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 
 		public class TupleAbstractType
 		{
-			[MessagePackKnownTupleItemType( 1, 1, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 1, typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "1", typeof( FileEntry ) )]
 			[MessagePackRuntimeTupleItemType( 3 )]
 			[MessagePackRuntimeTupleItemType( 4 )]
 			public Tuple<AbstractFileSystemEntry, IFileSystemEntry, AbstractFileSystemEntry, IFileSystemEntry> Value { get; set; }
@@ -1122,7 +1122,7 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 	for ( var i = 0; i < testCase.Known; i++ )
 	{
 #>
-			[MessagePackKnownTupleItemType( 1, 1, typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( FileEntry ) )]
 <#+
 	}
 
@@ -1249,7 +1249,7 @@ private void GenerateAttributeErrorTestClass( string typeName, int knownAttribut
 	for ( var i = 0; i < knownAttributeCount; i++ )
 	{
 #>
-			[MessagePackKnown<#= attributeQualifier #>Type( 1, typeof( <#= knownType #> ) )]
+			[MessagePackKnown<#= attributeQualifier #>Type( "1", typeof( <#= knownType #> ) )]
 <#+
 	}
 

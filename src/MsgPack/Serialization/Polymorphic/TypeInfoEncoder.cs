@@ -23,7 +23,6 @@
 #endif
 
 using System;
-using System.Diagnostics;
 #if !UNITY
 #if XAMIOS || XAMDROID
 using Contract = MsgPack.MPContract;
@@ -32,7 +31,6 @@ using System.Diagnostics.Contracts;
 #endif // XAMIOS || XAMDROID
 #endif // !UNITY
 using System.Globalization;
-using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
 
@@ -45,16 +43,17 @@ namespace MsgPack.Serialization.Polymorphic
 	{
 		private const string Elipsis = ".";
 
-		public static void Encode( SerializationContext context, Packer packer, byte typeId )
+		public static void Encode( SerializationContext context, Packer packer, string typeCode )
 		{
-			Encode( context, packer, new[] { ( byte ) TypeInfoEncoding.KnownType, typeId } );
+			packer.PackArrayHeader( 2 );
+			packer.PackString( typeCode );
 		}
 
 		public static void Encode( SerializationContext context, Packer packer, Type type )
 		{
 			var assemblyName =
 #if !SILVERLIGHT
-				type.GetAssembly().GetName();
+ type.GetAssembly().GetName();
 #else
 				new AssemblyName( type.GetAssembly().FullName );
 #endif // !SILVERLIGHT
@@ -64,48 +63,33 @@ namespace MsgPack.Serialization.Polymorphic
 			Contract.Assert( type.Namespace != null, "type.Namespace != null" );
 #endif // DEBUG && !UNITY
 
-			using ( var buffer = new MemoryStream() )
-			{
-				buffer.Write( TypeInfoEncodingBytes.RawCompressed, 0, TypeInfoEncodingBytes.RawCompressed.Length );
-
-				using ( var typeInfoPacker = Packer.Create( buffer ) )
-				{
-					var compressedTypeName =
-						type.Namespace.StartsWith( assemblyName.Name, StringComparison.Ordinal )
-							? Elipsis + type.FullName.Substring( assemblyName.Name.Length )
-							: type.FullName;
-					var version = new byte[ 16 ];
-					Buffer.BlockCopy( BitConverter.GetBytes( assemblyName.Version.Major ), 0, version, 0, 4 );
-					Buffer.BlockCopy( BitConverter.GetBytes( assemblyName.Version.Minor ), 0, version, 4, 4 );
-					Buffer.BlockCopy( BitConverter.GetBytes( assemblyName.Version.Build ), 0, version, 8, 4 );
-					Buffer.BlockCopy( BitConverter.GetBytes( assemblyName.Version.Revision ), 0, version, 12, 4 );
-
-					typeInfoPacker.PackArrayHeader( 5 )
-						.Pack( compressedTypeName )
-						.Pack( assemblyName.Name )
-						.Pack( version )
-#if !XAMIOS && !XAMDROID
-.Pack( assemblyName.GetCultureName() )
-#else
-					.Pack( assemblyName.GetCultureName() == "neutral" ? null : assemblyName.GetCultureName() )
-#endif // !XAMIOS && !XAMDROID
-.Pack( assemblyName.GetPublicKeyToken() );
-
-					Encode( context, packer, buffer.ToArray() );
-				}
-			}
-		}
-
-		private static void Encode( SerializationContext context, Packer packer, byte[] typeInfo )
-		{
 			packer.PackArrayHeader( 2 );
-			packer.PackExtendedTypeValue(
-				context.ExtTypeCodeMapping[ KnownExtTypeName.LibraryDefinedType ],
-				typeInfo
-			);
+			packer.PackArrayHeader( 6 );
+
+			packer.Pack( ( byte )TypeInfoEncoding.RawCompressed );
+			var compressedTypeName =
+				type.Namespace.StartsWith( assemblyName.Name, StringComparison.Ordinal )
+					? Elipsis + type.FullName.Substring( assemblyName.Name.Length )
+					: type.FullName;
+			var version = new byte[ 16 ];
+			Buffer.BlockCopy( BitConverter.GetBytes( assemblyName.Version.Major ), 0, version, 0, 4 );
+			Buffer.BlockCopy( BitConverter.GetBytes( assemblyName.Version.Minor ), 0, version, 4, 4 );
+			Buffer.BlockCopy( BitConverter.GetBytes( assemblyName.Version.Build ), 0, version, 8, 4 );
+			Buffer.BlockCopy( BitConverter.GetBytes( assemblyName.Version.Revision ), 0, version, 12, 4 );
+
+			packer
+				.Pack( compressedTypeName )
+				.Pack( assemblyName.Name )
+				.Pack( version )
+#if !XAMIOS && !XAMDROID
+				.Pack( assemblyName.GetCultureName() )
+#else
+				.Pack( assemblyName.GetCultureName() == "neutral" ? null : assemblyName.GetCultureName() )
+#endif // !XAMIOS && !XAMDROID
+				.Pack( assemblyName.GetPublicKeyToken() );
 		}
 
-		public static T Decode<T>( SerializationContext context, Unpacker unpacker, TypeInfoEncoding encodingKind, Func<MessagePackExtendedTypeObject,Type> typeFinder, Func<Type,Unpacker,T> unpacking  )
+		public static T Decode<T>( SerializationContext context, Unpacker unpacker, TypeInfoEncoding encodingKind, Func<Unpacker, Type> typeFinder, Func<Type, Unpacker, T> unpacking )
 		{
 			if ( !unpacker.IsArrayHeader || UnpackHelpers.GetItemsCount( unpacker ) != 2 )
 			{
@@ -119,29 +103,7 @@ namespace MsgPack.Serialization.Polymorphic
 					throw SerializationExceptions.NewUnexpectedEndOfStream();
 				}
 
-				// It is not reasonable to identify other forms.
-				var ext = subTreeUnpacker.LastReadData.AsMessagePackExtendedTypeObject();
-
-				if ( ext.TypeCode != context.ExtTypeCodeMapping[ KnownExtTypeName.LibraryDefinedType ] )
-				{
-					throw new SerializationException(
-						String.Format( CultureInfo.CurrentCulture, "Unknown extension type {0:X2}.", ext.TypeCode )
-					);
-				}
-
-				if ( ext.Body.Length == 0 )
-				{
-					throw SerializationExceptions.NewUnknownTypeEmbedding();
-				}
-
-				if ( ext.Body[ 0 ] != ( byte )encodingKind )
-				{
-					throw new SerializationException(
-						String.Format( CultureInfo.CurrentCulture, "Unknown type encoding kind {0:X2}.", ext.Body[ 0 ] )
-					);
-				}
-
-				var type = typeFinder( ext );
+				var type = typeFinder( subTreeUnpacker );
 
 				if ( !subTreeUnpacker.Read() )
 				{
@@ -152,70 +114,85 @@ namespace MsgPack.Serialization.Polymorphic
 			}
 		}
 
-		public static Type Decode( Unpacker unpacker )
+		public static Type DecodeRuntimeTypeInfo( Unpacker unpacker )
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
 				throw new SerializationException( "Type info must be non-nil array." );
 			}
 
-			if ( unpacker.ItemsCount != 5 )
+			if ( unpacker.ItemsCount != 6 )
 			{
 				throw new SerializationException( "Components count of type info is not valid." );
 			}
 
-			string compressedTypeName;
-			if ( !unpacker.ReadString( out compressedTypeName ) )
+			using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 			{
-				throw new SerializationException( "Failed to decode type name component." );
-			}
+				byte encodeType;
+				if ( !subTreeUnpacker.ReadByte( out encodeType ) )
+				{
+					throw new SerializationException( "Failed to decode encode type component." );
+				}
 
-			string assemblySimpleName;
-			if ( !unpacker.ReadString( out assemblySimpleName ) )
-			{
-				throw new SerializationException( "Failed to decode assembly name component." );
-			}
+				if ( encodeType != ( byte )TypeInfoEncoding.RawCompressed )
+				{
+					throw new SerializationException(
+						String.Format( CultureInfo.InvariantCulture, "Unknown encoded type : {0}", encodeType )
+					);
+				}
 
-			byte[] version;
-			if ( !unpacker.ReadBinary( out version ) )
-			{
-				throw new SerializationException( "Failed to decode version component." );
-			}
+				string compressedTypeName;
+				if ( !subTreeUnpacker.ReadString( out compressedTypeName ) )
+				{
+					throw new SerializationException( "Failed to decode type name component." );
+				}
 
-			string culture;
-			if ( !unpacker.ReadString( out culture ) )
-			{
-				throw new SerializationException( "Failed to decode culture component." );
-			}
+				string assemblySimpleName;
+				if ( !subTreeUnpacker.ReadString( out assemblySimpleName ) )
+				{
+					throw new SerializationException( "Failed to decode assembly name component." );
+				}
 
-			byte[] publicKeyToken;
-			if ( !unpacker.ReadBinary( out publicKeyToken ) )
-			{
-				throw new SerializationException( "Failed to decode public key token component." );
-			}
+				byte[] version;
+				if ( !subTreeUnpacker.ReadBinary( out version ) )
+				{
+					throw new SerializationException( "Failed to decode version component." );
+				}
+
+				string culture;
+				if ( !subTreeUnpacker.ReadString( out culture ) )
+				{
+					throw new SerializationException( "Failed to decode culture component." );
+				}
+
+				byte[] publicKeyToken;
+				if ( !subTreeUnpacker.ReadBinary( out publicKeyToken ) )
+				{
+					throw new SerializationException( "Failed to decode public key token component." );
+				}
 
 #if !NETFX_CORE
-			var assemblyName =
-				new AssemblyName
-				{
-					Name = assemblySimpleName,
-					Version =
-						new Version(
+				var assemblyName =
+					new AssemblyName
+					{
+						Name = assemblySimpleName,
+						Version =
+							new Version(
 							BitConverter.ToInt32( version, 0 ),
 							BitConverter.ToInt32( version, 4 ),
 							BitConverter.ToInt32( version, 8 ),
 							BitConverter.ToInt32( version, 12 )
 						),
-					CultureInfo = 
-						String.IsNullOrEmpty( culture ) 
-						? null 
+						CultureInfo =
+							String.IsNullOrEmpty( culture )
+								? null
 #if !WINDOWS_PHONE && !SILVERLIGHT
-						: CultureInfo.GetCultureInfo( culture ),
+ : CultureInfo.GetCultureInfo( culture ),
 #else
-						: new CultureInfo( culture ),
+								: new CultureInfo( culture ),
 #endif //  !WINDOWS_PHONE
-				};
-			assemblyName.SetPublicKeyToken( publicKeyToken );
+					};
+				assemblyName.SetPublicKeyToken( publicKeyToken );
 #else
 			var assemblyName = 
 				new AssemblyName( 
@@ -235,20 +212,21 @@ namespace MsgPack.Serialization.Polymorphic
 				);
 #endif // !NETFX_CORE
 
-			return
-				Assembly.Load(
-					assemblyName
+				return
+					Assembly.Load(
+						assemblyName
 #if SILVERLIGHT
 					.ToString()
 #endif // SILVERLIGHT
-				).GetType(
-					compressedTypeName.StartsWith( Elipsis, StringComparison.Ordinal )
-					? assemblySimpleName + compressedTypeName
-					: compressedTypeName
+ ).GetType(
+						compressedTypeName.StartsWith( Elipsis, StringComparison.Ordinal )
+							? assemblySimpleName + compressedTypeName
+							: compressedTypeName
 #if !NETFX_CORE
-					, throwOnError: true
+, throwOnError: true
 #endif // !NETFX_CORE
-				);
+ );
+			}
 		}
 	}
 }

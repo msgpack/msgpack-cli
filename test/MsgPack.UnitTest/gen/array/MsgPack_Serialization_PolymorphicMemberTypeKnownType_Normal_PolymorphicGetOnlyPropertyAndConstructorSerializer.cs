@@ -20,10 +20,10 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         public MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicGetOnlyPropertyAndConstructorSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
-            System.Collections.Generic.Dictionary<byte, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
-            typeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            typeMap0.Add(0, typeof(MsgPack.Serialization.FileEntry));
-            typeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
+            System.Collections.Generic.Dictionary<string, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
+            typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
+            typeMap0.Add("1", typeof(MsgPack.Serialization.DirectoryEntry));
+            typeMap0.Add("0", typeof(MsgPack.Serialization.FileEntry));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), typeMap0);
             this._serializer0 = context.GetSerializer<MsgPack.Serialization.FileSystemEntry>(schema0);
         }

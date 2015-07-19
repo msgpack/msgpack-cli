@@ -880,6 +880,9 @@
     <Compile Include="..\MsgPack\StreamPacker.cs">
       <Link>StreamPacker.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\StringEscape.cs">
+      <Link>StringEscape.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\SubtreeUnpacker.cs">
       <Link>SubtreeUnpacker.cs</Link>
     </Compile>

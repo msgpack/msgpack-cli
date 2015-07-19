@@ -56,7 +56,7 @@ namespace MsgPack.Serialization
 		///		ForPolymorphicObject( Type targetType, IDictionary{byte, Type} codeTypeMapping )
 		/// </summary>
 		internal static readonly MethodInfo ForPolymorphicObjectCodeTypeMappingMethod =
-			typeof( PolymorphismSchema ).GetMethod( "ForPolymorphicObject", new[] { typeof( Type ), typeof( IDictionary<byte, Type> ) } );
+			typeof( PolymorphismSchema ).GetMethod( "ForPolymorphicObject", new[] { typeof( Type ), typeof( IDictionary<string, Type> ) } );
 
 		/// <summary>
 		///		ForContextSpecifiedCollection( Type targetType, PolymorphismSchema itemsSchema )
@@ -74,7 +74,7 @@ namespace MsgPack.Serialization
 		///		ForPolymorphicCollection( Type targetType, IDictionary{byte, Type} codeTypeMapping, PolymorphismSchema itemsSchema )
 		/// </summary>
 		internal static readonly MethodInfo ForPolymorphicCollectionCodeTypeMappingMethod =
-			typeof( PolymorphismSchema ).GetMethod( "ForPolymorphicCollection", new[] { typeof( Type ), typeof( IDictionary<byte, Type> ), typeof( PolymorphismSchema ) } );
+			typeof( PolymorphismSchema ).GetMethod( "ForPolymorphicCollection", new[] { typeof( Type ), typeof( IDictionary<string, Type> ), typeof( PolymorphismSchema ) } );
 
 		/// <summary>
 		///		ForContextSpecifiedDictionary( Type targetType, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
@@ -92,7 +92,7 @@ namespace MsgPack.Serialization
 		///		ForPolymorphicDictionary( Type targetType, IDictionary{byte, Type} codeTypeMapping, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
 		/// </summary>
 		internal static readonly MethodInfo ForPolymorphicDictionaryCodeTypeMappingMethod =
-			typeof( PolymorphismSchema ).GetMethod( "ForPolymorphicDictionary", new[] { typeof( Type ), typeof( IDictionary<byte, Type> ), typeof( PolymorphismSchema ), typeof( PolymorphismSchema ) } );
+			typeof( PolymorphismSchema ).GetMethod( "ForPolymorphicDictionary", new[] { typeof( Type ), typeof( IDictionary<string, Type> ), typeof( PolymorphismSchema ), typeof( PolymorphismSchema ) } );
 
 #if !NETFX_35 && !UNITY
 		/// <summary>
@@ -103,12 +103,12 @@ namespace MsgPack.Serialization
 #endif // !NETFX_35 && !UNITY
 
 		internal static readonly ConstructorInfo CodeTypeMapConstructor =
-			typeof( Dictionary<,> ).MakeGenericType( typeof( byte ), typeof( Type ) )
+			typeof( Dictionary<,> ).MakeGenericType( typeof( string ), typeof( Type ) )
 				.GetConstructor( new[] { typeof( int ) } );
 
 		internal static readonly MethodInfo AddToCodeTypeMapMethod =
-			typeof( Dictionary<,> ).MakeGenericType( typeof( byte ), typeof( Type ) )
-				.GetMethod( "Add", new[] { typeof( byte ), typeof( Type ) } );
+			typeof( Dictionary<,> ).MakeGenericType( typeof( string ), typeof( Type ) )
+				.GetMethod( "Add", new[] { typeof( string ), typeof( Type ) } );
 
 
 		internal string DebugString
@@ -226,7 +226,7 @@ namespace MsgPack.Serialization
 			var member = memberMayBeNull;
 #endif // !UNITY
 
-			var table = TypeTable.Create( context, member.Member );
+			var table = TypeTable.Create( member.Member );
 
 			var traits = member.Member.GetMemberValueType().GetCollectionTraits();
 			switch ( traits.CollectionType )
@@ -354,15 +354,15 @@ namespace MsgPack.Serialization
 #endif // !NETFX_35 && !UNITY
 			}
 
-			public static TypeTable Create( SerializationContext context, MemberInfo member )
+			public static TypeTable Create( MemberInfo member )
 			{
 				return
 					new TypeTable(
-						TypeTableEntry.Create( context, member, PolymorphismTarget.Member ),
-						TypeTableEntry.Create( context, member, PolymorphismTarget.CollectionItem ),
-						TypeTableEntry.Create( context, member, PolymorphismTarget.DictionaryKey )
+						TypeTableEntry.Create( member, PolymorphismTarget.Member ),
+						TypeTableEntry.Create( member, PolymorphismTarget.CollectionItem ),
+						TypeTableEntry.Create( member, PolymorphismTarget.DictionaryKey )
 #if !NETFX_35 && !UNITY
-						, TypeTableEntry.CreateTupleItems( context, member )
+						, TypeTableEntry.CreateTupleItems( member )
 #endif // !NETFX_35 && !UNITY
 					);
 			}
@@ -374,9 +374,9 @@ namespace MsgPack.Serialization
 			private static readonly TypeTableEntry[] EmptyEntries = new TypeTableEntry[ 0 ];
 #endif // !NETFX_35 && !UNITY
 
-			private readonly Dictionary<byte, Type> _knownTypeMapping = new Dictionary<byte, Type>();
+			private readonly Dictionary<string, Type> _knownTypeMapping = new Dictionary<string, Type>();
 
-			public IDictionary<byte, Type> CodeTypeMapping { get { return this._knownTypeMapping; } }
+			public IDictionary<string, Type> CodeTypeMapping { get { return this._knownTypeMapping; } }
 
 			private bool _useTypeEmbedding;
 
@@ -397,7 +397,7 @@ namespace MsgPack.Serialization
 
 			private TypeTableEntry() { }
 
-			public static TypeTableEntry Create( SerializationContext context, MemberInfo member, PolymorphismTarget targetType )
+			public static TypeTableEntry Create( MemberInfo member, PolymorphismTarget targetType )
 			{
 				var result = new TypeTableEntry();
 				foreach (
@@ -407,14 +407,14 @@ namespace MsgPack.Serialization
 							.Where( a => a.Target == targetType )
 				)
 				{
-					result.Interpret( context, attribute, member.ToString(), -1 );
+					result.Interpret( attribute, member.ToString(), -1 );
 				}
 
 				return result;
 			}
 
 #if !NETFX_35 && !UNITY
-			public static TypeTableEntry[] CreateTupleItems( SerializationContext context, MemberInfo member )
+			public static TypeTableEntry[] CreateTupleItems( MemberInfo member )
 			{
 				if ( !TupleItems.IsTuple( member.GetMemberValueType() ) )
 				{
@@ -430,14 +430,14 @@ namespace MsgPack.Serialization
 							.OrderBy( a => a.ItemNumber )
 				)
 				{
-					result[ attribute.ItemNumber - 1 ].Interpret( context, attribute, member.ToString(), attribute.ItemNumber );
+					result[ attribute.ItemNumber - 1 ].Interpret( attribute, member.ToString(), attribute.ItemNumber );
 				}
 
 				return result;
 			}
 #endif // !NETFX_35 && !UNITY
 
-			private void Interpret( SerializationContext context, IPolymorphicHelperAttribute attribute, string memberName, int tupleItemNumber )
+			private void Interpret( IPolymorphicHelperAttribute attribute, string memberName, int tupleItemNumber )
 			{
 				var asKnown = attribute as IPolymorphicKnownTypeAttribute;
 				if ( asKnown != null )
@@ -449,16 +449,16 @@ namespace MsgPack.Serialization
 						);
 					}
 
-					var bindingCode = asKnown.GetBindingCode( context );
+					var typeCode = asKnown.TypeCode;
 					try
 					{
-						this._knownTypeMapping.Add( bindingCode, asKnown.BindingType );
+						this._knownTypeMapping.Add( typeCode, asKnown.BindingType );
 						return;
 					}
 					catch ( ArgumentException )
 					{
 						throw new SerializationException(
-							GetCannotDuplicateKnownTypeCodeErrorMessage( attribute, bindingCode, memberName, tupleItemNumber )
+							GetCannotDuplicateKnownTypeCodeErrorMessage( attribute, typeCode, memberName, tupleItemNumber )
 						);
 					}
 				}
@@ -544,7 +544,7 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			private static string GetCannotDuplicateKnownTypeCodeErrorMessage( IPolymorphicHelperAttribute attribute, byte bindingCode, string memberName, int tupleItemNumber )
+			private static string GetCannotDuplicateKnownTypeCodeErrorMessage( IPolymorphicHelperAttribute attribute, string typeCode, string memberName, int tupleItemNumber )
 			{
 				switch ( attribute.Target )
 				{
@@ -554,7 +554,7 @@ namespace MsgPack.Serialization
 							String.Format(
 								CultureInfo.CurrentCulture,
 								"Cannot specify multiple types for ext-type code '{0}' for collection items of member '{1}'.",
-								bindingCode,
+								StringEscape.ForDisplay( typeCode ),
 								memberName
 							);
 					}
@@ -564,7 +564,7 @@ namespace MsgPack.Serialization
 							String.Format(
 								CultureInfo.CurrentCulture,
 								"Cannot specify multiple types for ext-type code '{0}' for dictionary keys of member '{1}'.",
-								bindingCode,
+								StringEscape.ForDisplay( typeCode ),
 								memberName
 							);
 					}
@@ -574,7 +574,7 @@ namespace MsgPack.Serialization
 							String.Format(
 								CultureInfo.CurrentCulture,
 								"Cannot specify multiple types for ext-type code '{0}' for #{1} item of tuple type member '{2}'.",
-								bindingCode,
+								StringEscape.ForDisplay( typeCode ),
 								tupleItemNumber,
 								memberName
 							);
@@ -585,7 +585,7 @@ namespace MsgPack.Serialization
 							String.Format(
 								CultureInfo.CurrentCulture,
 								"Cannot specify multiple types for ext-type code '{0}' for member '{1}'.",
-								bindingCode,
+								StringEscape.ForDisplay( typeCode ),
 								memberName
 							);
 					}

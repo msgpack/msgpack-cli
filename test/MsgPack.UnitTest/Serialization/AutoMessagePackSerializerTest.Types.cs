@@ -2047,8 +2047,8 @@ namespace MsgPack.Serialization
 		{
 			private FileSystemEntry _Polymorphic;
 
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownType( "1", typeof( DirectoryEntry ) )]
 			public FileSystemEntry Polymorphic
 			{
 				get { return this._Polymorphic; }
@@ -2075,8 +2075,8 @@ namespace MsgPack.Serialization
 		{
 			private object _Polymorphic;
 
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownType( "1", typeof( DirectoryEntry ) )]
 			public object Polymorphic
 			{
 				get { return this._Polymorphic; }
@@ -2101,8 +2101,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField
 		{
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownType( "1", typeof( DirectoryEntry ) )]
 			public  FileSystemEntry Polymorphic;
 
 			private PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField( FileSystemEntry Polymorphic ) 
@@ -2123,8 +2123,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject
 		{
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownType( "1", typeof( DirectoryEntry ) )]
 			public  object Polymorphic;
 
 			private PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject( object Polymorphic ) 
@@ -2147,8 +2147,8 @@ namespace MsgPack.Serialization
 		{
 			private FileSystemEntry _Polymorphic;
 
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownType( "1", typeof( DirectoryEntry ) )]
 			public FileSystemEntry Polymorphic
 			{
 				get { return this._Polymorphic; }
@@ -2165,8 +2165,8 @@ namespace MsgPack.Serialization
 		{
 			private object _Polymorphic;
 
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownType( "1", typeof( DirectoryEntry ) )]
 			public object Polymorphic
 			{
 				get { return this._Polymorphic; }
@@ -2183,8 +2183,8 @@ namespace MsgPack.Serialization
 		{
 			private FileSystemEntry _Polymorphic;
 
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownType( "1", typeof( DirectoryEntry ) )]
 			public FileSystemEntry Polymorphic
 			{
 				get { return this._Polymorphic; }
@@ -2202,8 +2202,8 @@ namespace MsgPack.Serialization
 		{
 			private object _Polymorphic;
 
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownType( "1", typeof( DirectoryEntry ) )]
 			public object Polymorphic
 			{
 				get { return this._Polymorphic; }
@@ -2219,8 +2219,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Normal_PolymorphicReadOnlyFieldAndConstructor
 		{
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownType( "1", typeof( DirectoryEntry ) )]
 			public readonly FileSystemEntry Polymorphic;
 
 			public PolymorphicMemberTypeKnownType_Normal_PolymorphicReadOnlyFieldAndConstructor( FileSystemEntry Polymorphic ) 
@@ -2232,8 +2232,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObject
 		{
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownType( "1", typeof( DirectoryEntry ) )]
 			public readonly object Polymorphic;
 
 			public PolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObject( object Polymorphic ) 
@@ -2367,8 +2367,8 @@ namespace MsgPack.Serialization
 		{
 			private IList<FileSystemEntry> _ListPolymorphicItem;
 
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
@@ -2393,8 +2393,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteField
 		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public  IList<FileSystemEntry> ListPolymorphicItem;
 
 			private PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteField( IList<FileSystemEntry> ListPolymorphicItem ) 
@@ -2417,8 +2417,8 @@ namespace MsgPack.Serialization
 		{
 			private IList<FileSystemEntry> _ListPolymorphicItem;
 
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
@@ -2444,8 +2444,8 @@ namespace MsgPack.Serialization
 		{
 			private IList<FileSystemEntry> _ListPolymorphicItem;
 
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
@@ -2470,8 +2470,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField
 		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public readonly IList<FileSystemEntry> ListPolymorphicItem;
 
 			private PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField( IList<FileSystemEntry> ListPolymorphicItem ) 
@@ -2494,8 +2494,8 @@ namespace MsgPack.Serialization
 		{
 			private IList<object> _ListObjectItem;
 
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IList<object> ListObjectItem
 			{
 				get { return this._ListObjectItem; }
@@ -2520,8 +2520,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteField
 		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public  IList<object> ListObjectItem;
 
 			private PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteField( IList<object> ListObjectItem ) 
@@ -2544,8 +2544,8 @@ namespace MsgPack.Serialization
 		{
 			private IList<object> _ListObjectItem;
 
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IList<object> ListObjectItem
 			{
 				get { return this._ListObjectItem; }
@@ -2571,8 +2571,8 @@ namespace MsgPack.Serialization
 		{
 			private IList<object> _ListObjectItem;
 
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IList<object> ListObjectItem
 			{
 				get { return this._ListObjectItem; }
@@ -2597,8 +2597,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField
 		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public readonly IList<object> ListObjectItem;
 
 			private PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField( IList<object> ListObjectItem ) 
@@ -2621,8 +2621,8 @@ namespace MsgPack.Serialization
 		{
 			private IList<string> _ListPolymorphicItself;
 
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
+			[MessagePackKnownType( "0", typeof( Collection<string> ) )]
+			[MessagePackKnownType( "1", typeof( List<string> ) )]
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
@@ -2647,8 +2647,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteField
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
+			[MessagePackKnownType( "0", typeof( Collection<string> ) )]
+			[MessagePackKnownType( "1", typeof( List<string> ) )]
 			public  IList<string> ListPolymorphicItself;
 
 			private PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteField( IList<string> ListPolymorphicItself ) 
@@ -2671,8 +2671,8 @@ namespace MsgPack.Serialization
 		{
 			private IList<string> _ListPolymorphicItself;
 
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
+			[MessagePackKnownType( "0", typeof( Collection<string> ) )]
+			[MessagePackKnownType( "1", typeof( List<string> ) )]
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
@@ -2698,8 +2698,8 @@ namespace MsgPack.Serialization
 		{
 			private IList<string> _ListPolymorphicItself;
 
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
+			[MessagePackKnownType( "0", typeof( Collection<string> ) )]
+			[MessagePackKnownType( "1", typeof( List<string> ) )]
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
@@ -2724,8 +2724,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
+			[MessagePackKnownType( "0", typeof( Collection<string> ) )]
+			[MessagePackKnownType( "1", typeof( List<string> ) )]
 			public readonly IList<string> ListPolymorphicItself;
 
 			private PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField( IList<string> ListPolymorphicItself ) 
@@ -2748,8 +2748,8 @@ namespace MsgPack.Serialization
 		{
 			private object _ListObjectItself;
 
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
+			[MessagePackKnownType( "0", typeof( Collection<string> ) )]
+			[MessagePackKnownType( "1", typeof( List<string> ) )]
 			public object ListObjectItself
 			{
 				get { return this._ListObjectItself; }
@@ -2774,8 +2774,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteField
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
+			[MessagePackKnownType( "0", typeof( Collection<string> ) )]
+			[MessagePackKnownType( "1", typeof( List<string> ) )]
 			public  object ListObjectItself;
 
 			private PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteField( object ListObjectItself ) 
@@ -2798,8 +2798,8 @@ namespace MsgPack.Serialization
 		{
 			private object _ListObjectItself;
 
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
+			[MessagePackKnownType( "0", typeof( Collection<string> ) )]
+			[MessagePackKnownType( "1", typeof( List<string> ) )]
 			public object ListObjectItself
 			{
 				get { return this._ListObjectItself; }
@@ -2825,8 +2825,8 @@ namespace MsgPack.Serialization
 		{
 			private object _ListObjectItself;
 
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
+			[MessagePackKnownType( "0", typeof( Collection<string> ) )]
+			[MessagePackKnownType( "1", typeof( List<string> ) )]
 			public object ListObjectItself
 			{
 				get { return this._ListObjectItself; }
@@ -2851,8 +2851,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_List_ListObjectItselfReadOnlyCollectionField
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
+			[MessagePackKnownType( "0", typeof( Collection<string> ) )]
+			[MessagePackKnownType( "1", typeof( List<string> ) )]
 			public readonly object ListObjectItself;
 
 			private PolymorphicMemberTypeKnownType_List_ListObjectItselfReadOnlyCollectionField( object ListObjectItself ) 
@@ -2995,8 +2995,8 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<FileSystemEntry, string> _DictPolymorphicKeyAndStaticItem;
 
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<FileSystemEntry, string> DictPolymorphicKeyAndStaticItem
 			{
 				get { return this._DictPolymorphicKeyAndStaticItem; }
@@ -3021,8 +3021,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField
 		{
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
 			public  IDictionary<FileSystemEntry, string> DictPolymorphicKeyAndStaticItem;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField( IDictionary<FileSystemEntry, string> DictPolymorphicKeyAndStaticItem ) 
@@ -3045,8 +3045,8 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<FileSystemEntry, string> _DictPolymorphicKeyAndStaticItem;
 
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<FileSystemEntry, string> DictPolymorphicKeyAndStaticItem
 			{
 				get { return this._DictPolymorphicKeyAndStaticItem; }
@@ -3072,8 +3072,8 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<FileSystemEntry, string> _DictPolymorphicKeyAndStaticItem;
 
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<FileSystemEntry, string> DictPolymorphicKeyAndStaticItem
 			{
 				get { return this._DictPolymorphicKeyAndStaticItem; }
@@ -3098,8 +3098,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField
 		{
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
 			public readonly IDictionary<FileSystemEntry, string> DictPolymorphicKeyAndStaticItem;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField( IDictionary<FileSystemEntry, string> DictPolymorphicKeyAndStaticItem ) 
@@ -3122,8 +3122,8 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<object, string> _DictObjectKeyAndStaticItem;
 
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<object, string> DictObjectKeyAndStaticItem
 			{
 				get { return this._DictObjectKeyAndStaticItem; }
@@ -3148,8 +3148,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteField
 		{
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
 			public  IDictionary<object, string> DictObjectKeyAndStaticItem;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteField( IDictionary<object, string> DictObjectKeyAndStaticItem ) 
@@ -3172,8 +3172,8 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<object, string> _DictObjectKeyAndStaticItem;
 
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<object, string> DictObjectKeyAndStaticItem
 			{
 				get { return this._DictObjectKeyAndStaticItem; }
@@ -3199,8 +3199,8 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<object, string> _DictObjectKeyAndStaticItem;
 
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<object, string> DictObjectKeyAndStaticItem
 			{
 				get { return this._DictObjectKeyAndStaticItem; }
@@ -3225,8 +3225,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField
 		{
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
 			public readonly IDictionary<object, string> DictObjectKeyAndStaticItem;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField( IDictionary<object, string> DictObjectKeyAndStaticItem ) 
@@ -3249,8 +3249,8 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<string, FileSystemEntry> _DictStaticKeyAndPolymorphicItem;
 
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<string, FileSystemEntry> DictStaticKeyAndPolymorphicItem
 			{
 				get { return this._DictStaticKeyAndPolymorphicItem; }
@@ -3275,8 +3275,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField
 		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public  IDictionary<string, FileSystemEntry> DictStaticKeyAndPolymorphicItem;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField( IDictionary<string, FileSystemEntry> DictStaticKeyAndPolymorphicItem ) 
@@ -3299,8 +3299,8 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<string, FileSystemEntry> _DictStaticKeyAndPolymorphicItem;
 
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<string, FileSystemEntry> DictStaticKeyAndPolymorphicItem
 			{
 				get { return this._DictStaticKeyAndPolymorphicItem; }
@@ -3326,8 +3326,8 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<string, FileSystemEntry> _DictStaticKeyAndPolymorphicItem;
 
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<string, FileSystemEntry> DictStaticKeyAndPolymorphicItem
 			{
 				get { return this._DictStaticKeyAndPolymorphicItem; }
@@ -3352,8 +3352,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField
 		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public readonly IDictionary<string, FileSystemEntry> DictStaticKeyAndPolymorphicItem;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField( IDictionary<string, FileSystemEntry> DictStaticKeyAndPolymorphicItem ) 
@@ -3376,8 +3376,8 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<string, object> _DictStaticKeyAndObjectItem;
 
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<string, object> DictStaticKeyAndObjectItem
 			{
 				get { return this._DictStaticKeyAndObjectItem; }
@@ -3402,8 +3402,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteField
 		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public  IDictionary<string, object> DictStaticKeyAndObjectItem;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteField( IDictionary<string, object> DictStaticKeyAndObjectItem ) 
@@ -3426,8 +3426,8 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<string, object> _DictStaticKeyAndObjectItem;
 
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<string, object> DictStaticKeyAndObjectItem
 			{
 				get { return this._DictStaticKeyAndObjectItem; }
@@ -3453,8 +3453,8 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<string, object> _DictStaticKeyAndObjectItem;
 
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<string, object> DictStaticKeyAndObjectItem
 			{
 				get { return this._DictStaticKeyAndObjectItem; }
@@ -3479,8 +3479,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField
 		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public readonly IDictionary<string, object> DictStaticKeyAndObjectItem;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField( IDictionary<string, object> DictStaticKeyAndObjectItem ) 
@@ -3503,10 +3503,10 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<FileSystemEntry, FileSystemEntry> _DictPolymorphicKeyAndItem;
 
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictPolymorphicKeyAndItem
 			{
 				get { return this._DictPolymorphicKeyAndItem; }
@@ -3531,10 +3531,10 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteField
 		{
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public  IDictionary<FileSystemEntry, FileSystemEntry> DictPolymorphicKeyAndItem;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteField( IDictionary<FileSystemEntry, FileSystemEntry> DictPolymorphicKeyAndItem ) 
@@ -3557,10 +3557,10 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<FileSystemEntry, FileSystemEntry> _DictPolymorphicKeyAndItem;
 
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictPolymorphicKeyAndItem
 			{
 				get { return this._DictPolymorphicKeyAndItem; }
@@ -3586,10 +3586,10 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<FileSystemEntry, FileSystemEntry> _DictPolymorphicKeyAndItem;
 
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictPolymorphicKeyAndItem
 			{
 				get { return this._DictPolymorphicKeyAndItem; }
@@ -3614,10 +3614,10 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField
 		{
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictPolymorphicKeyAndItem;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField( IDictionary<FileSystemEntry, FileSystemEntry> DictPolymorphicKeyAndItem ) 
@@ -3640,10 +3640,10 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<object, object> _DictObjectKeyAndItem;
 
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<object, object> DictObjectKeyAndItem
 			{
 				get { return this._DictObjectKeyAndItem; }
@@ -3668,10 +3668,10 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField
 		{
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public  IDictionary<object, object> DictObjectKeyAndItem;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField( IDictionary<object, object> DictObjectKeyAndItem ) 
@@ -3694,10 +3694,10 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<object, object> _DictObjectKeyAndItem;
 
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<object, object> DictObjectKeyAndItem
 			{
 				get { return this._DictObjectKeyAndItem; }
@@ -3723,10 +3723,10 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<object, object> _DictObjectKeyAndItem;
 
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public IDictionary<object, object> DictObjectKeyAndItem
 			{
 				get { return this._DictObjectKeyAndItem; }
@@ -3751,10 +3751,10 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadOnlyCollectionField
 		{
-			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( DirectoryEntry ) )]
 			public readonly IDictionary<object, object> DictObjectKeyAndItem;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadOnlyCollectionField( IDictionary<object, object> DictObjectKeyAndItem ) 
@@ -3777,8 +3777,8 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<string, string> _DictPolymorphicItself;
 
-			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
-			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			[MessagePackKnownType( "0", typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( "1", typeof( SortedDictionary<string, string> ) )]
 			public IDictionary<string, string> DictPolymorphicItself
 			{
 				get { return this._DictPolymorphicItself; }
@@ -3803,8 +3803,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteField
 		{
-			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
-			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			[MessagePackKnownType( "0", typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( "1", typeof( SortedDictionary<string, string> ) )]
 			public  IDictionary<string, string> DictPolymorphicItself;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteField( IDictionary<string, string> DictPolymorphicItself ) 
@@ -3827,8 +3827,8 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<string, string> _DictPolymorphicItself;
 
-			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
-			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			[MessagePackKnownType( "0", typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( "1", typeof( SortedDictionary<string, string> ) )]
 			public IDictionary<string, string> DictPolymorphicItself
 			{
 				get { return this._DictPolymorphicItself; }
@@ -3854,8 +3854,8 @@ namespace MsgPack.Serialization
 		{
 			private IDictionary<string, string> _DictPolymorphicItself;
 
-			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
-			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			[MessagePackKnownType( "0", typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( "1", typeof( SortedDictionary<string, string> ) )]
 			public IDictionary<string, string> DictPolymorphicItself
 			{
 				get { return this._DictPolymorphicItself; }
@@ -3880,8 +3880,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField
 		{
-			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
-			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			[MessagePackKnownType( "0", typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( "1", typeof( SortedDictionary<string, string> ) )]
 			public readonly IDictionary<string, string> DictPolymorphicItself;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField( IDictionary<string, string> DictPolymorphicItself ) 
@@ -3904,8 +3904,8 @@ namespace MsgPack.Serialization
 		{
 			private object _DictObjectItself;
 
-			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
-			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			[MessagePackKnownType( "0", typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( "1", typeof( SortedDictionary<string, string> ) )]
 			public object DictObjectItself
 			{
 				get { return this._DictObjectItself; }
@@ -3930,8 +3930,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteField
 		{
-			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
-			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			[MessagePackKnownType( "0", typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( "1", typeof( SortedDictionary<string, string> ) )]
 			public  object DictObjectItself;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteField( object DictObjectItself ) 
@@ -3954,8 +3954,8 @@ namespace MsgPack.Serialization
 		{
 			private object _DictObjectItself;
 
-			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
-			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			[MessagePackKnownType( "0", typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( "1", typeof( SortedDictionary<string, string> ) )]
 			public object DictObjectItself
 			{
 				get { return this._DictObjectItself; }
@@ -3981,8 +3981,8 @@ namespace MsgPack.Serialization
 		{
 			private object _DictObjectItself;
 
-			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
-			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			[MessagePackKnownType( "0", typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( "1", typeof( SortedDictionary<string, string> ) )]
 			public object DictObjectItself
 			{
 				get { return this._DictObjectItself; }
@@ -4007,8 +4007,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadOnlyCollectionField
 		{
-			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
-			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			[MessagePackKnownType( "0", typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( "1", typeof( SortedDictionary<string, string> ) )]
 			public readonly object DictObjectItself;
 
 			private PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadOnlyCollectionField( object DictObjectItself ) 
@@ -4125,8 +4125,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
 
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
@@ -4151,8 +4151,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
 			public  Tuple<FileSystemEntry> Tuple1Polymorphic;
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
@@ -4175,8 +4175,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
 
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
@@ -4193,8 +4193,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
 
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
@@ -4210,8 +4210,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
 			public readonly Tuple<FileSystemEntry> Tuple1Polymorphic;
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
@@ -4225,8 +4225,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<object> _Tuple1ObjectItem;
 
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
 			public Tuple<object> Tuple1ObjectItem
 			{
 				get { return this._Tuple1ObjectItem; }
@@ -4251,8 +4251,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteField
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
 			public  Tuple<object> Tuple1ObjectItem;
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteField( Tuple<object> Tuple1ObjectItem ) 
@@ -4275,8 +4275,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<object> _Tuple1ObjectItem;
 
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
 			public Tuple<object> Tuple1ObjectItem
 			{
 				get { return this._Tuple1ObjectItem; }
@@ -4293,8 +4293,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<object> _Tuple1ObjectItem;
 
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
 			public Tuple<object> Tuple1ObjectItem
 			{
 				get { return this._Tuple1ObjectItem; }
@@ -4310,8 +4310,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
 			public readonly Tuple<object> Tuple1ObjectItem;
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor( Tuple<object> Tuple1ObjectItem ) 
@@ -4510,8 +4510,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
 
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
@@ -4536,8 +4536,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
 			public  Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic;
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
@@ -4560,8 +4560,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
 
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
@@ -4578,8 +4578,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
 
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
@@ -4595,8 +4595,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
 			public readonly Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic;
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
@@ -4610,8 +4610,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
 
-			[MessagePackKnownTupleItemType( 7, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "1", typeof( DirectoryEntry ) )]
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
@@ -4636,8 +4636,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField
 		{
-			[MessagePackKnownTupleItemType( 7, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "1", typeof( DirectoryEntry ) )]
 			public  Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic;
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
@@ -4660,8 +4660,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
 
-			[MessagePackKnownTupleItemType( 7, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "1", typeof( DirectoryEntry ) )]
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
@@ -4678,8 +4678,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
 
-			[MessagePackKnownTupleItemType( 7, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "1", typeof( DirectoryEntry ) )]
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
@@ -4695,8 +4695,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 7, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "1", typeof( DirectoryEntry ) )]
 			public readonly Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic;
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
@@ -4710,8 +4710,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7MidPolymorphic;
 
-			[MessagePackKnownTupleItemType( 4, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "1", typeof( DirectoryEntry ) )]
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7MidPolymorphic
 			{
 				get { return this._Tuple7MidPolymorphic; }
@@ -4736,8 +4736,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteField
 		{
-			[MessagePackKnownTupleItemType( 4, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "1", typeof( DirectoryEntry ) )]
 			public  Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7MidPolymorphic;
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteField( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7MidPolymorphic ) 
@@ -4760,8 +4760,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7MidPolymorphic;
 
-			[MessagePackKnownTupleItemType( 4, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "1", typeof( DirectoryEntry ) )]
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7MidPolymorphic
 			{
 				get { return this._Tuple7MidPolymorphic; }
@@ -4778,8 +4778,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7MidPolymorphic;
 
-			[MessagePackKnownTupleItemType( 4, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "1", typeof( DirectoryEntry ) )]
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7MidPolymorphic
 			{
 				get { return this._Tuple7MidPolymorphic; }
@@ -4795,8 +4795,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 4, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "1", typeof( DirectoryEntry ) )]
 			public readonly Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7MidPolymorphic;
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7MidPolymorphic ) 
@@ -4810,20 +4810,20 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
 
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "1", typeof( DirectoryEntry ) )]
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
@@ -4848,20 +4848,20 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "1", typeof( DirectoryEntry ) )]
 			public  Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic;
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
@@ -4884,20 +4884,20 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
 
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "1", typeof( DirectoryEntry ) )]
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
@@ -4914,20 +4914,20 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
 
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "1", typeof( DirectoryEntry ) )]
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
@@ -4943,20 +4943,20 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "1", typeof( DirectoryEntry ) )]
 			public readonly Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic;
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
@@ -5060,8 +5060,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
 
-			[MessagePackKnownTupleItemType( 8, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 8, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "1", typeof( DirectoryEntry ) )]
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
@@ -5086,8 +5086,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField
 		{
-			[MessagePackKnownTupleItemType( 8, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 8, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "1", typeof( DirectoryEntry ) )]
 			public  Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic;
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
@@ -5110,8 +5110,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
 
-			[MessagePackKnownTupleItemType( 8, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 8, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "1", typeof( DirectoryEntry ) )]
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
@@ -5128,8 +5128,8 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
 
-			[MessagePackKnownTupleItemType( 8, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 8, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "1", typeof( DirectoryEntry ) )]
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
@@ -5145,8 +5145,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 8, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 8, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "1", typeof( DirectoryEntry ) )]
 			public readonly Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic;
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
@@ -5160,22 +5160,22 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
 
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 8, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 8, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "1", typeof( DirectoryEntry ) )]
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
@@ -5200,22 +5200,22 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 8, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 8, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "1", typeof( DirectoryEntry ) )]
 			public  Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic;
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
@@ -5238,22 +5238,22 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
 
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 8, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 8, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "1", typeof( DirectoryEntry ) )]
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
@@ -5270,22 +5270,22 @@ namespace MsgPack.Serialization
 		{
 			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
 
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 8, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 8, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "1", typeof( DirectoryEntry ) )]
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
@@ -5301,22 +5301,22 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 3, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 4, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 5, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 6, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 7, 1, typeof( DirectoryEntry ) )]
-			[MessagePackKnownTupleItemType( 8, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 8, 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 3, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 4, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 5, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 6, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 7, "1", typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "0", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 8, "1", typeof( DirectoryEntry ) )]
 			public readonly Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic;
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
@@ -9159,34 +9159,34 @@ namespace MsgPack.Serialization
 			public string NormalVanilla { get; set; }
 			[MessagePackRuntimeType]
 			public FileSystemEntry NormalRuntime { get; set; }
-			[MessagePackKnownType( 1, typeof( FileEntry ) )]
-			[MessagePackKnownType( 2, typeof( DirectoryEntry ) )]
+			[MessagePackKnownType( "1", typeof( FileEntry ) )]
+			[MessagePackKnownType( "2", typeof( DirectoryEntry ) )]
 			public FileSystemEntry NormalKnown { get; set; }
 			[MessagePackRuntimeType]
 			public Object ObjectRuntime { get; set; }
 			public IList<string> ListVanilla { get; set; }
-			[MessagePackKnownCollectionItemType( 1, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 2, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "2", typeof( DirectoryEntry ) )]
 			public IList<FileSystemEntry> ListKnownItem { get; set; }
-			[MessagePackKnownType( 1, typeof( Collection<FileSystemEntry> ) )]
-			[MessagePackKnownType( 2, typeof( List<FileSystemEntry> ) )]
+			[MessagePackKnownType( "1", typeof( Collection<FileSystemEntry> ) )]
+			[MessagePackKnownType( "2", typeof( List<FileSystemEntry> ) )]
 			[MessagePackRuntimeCollectionItemType]
 			public IList<FileSystemEntry> ListKnwonContainerRuntimeItem { get; set; }
 			[MessagePackRuntimeCollectionItemType]
 			public IList<object> ListObjectRuntimeItem { get; set; }
 			public IDictionary<string, string> DictionaryVanilla { get; set; }
-			[MessagePackKnownCollectionItemType( 1, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 2, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "2", typeof( DirectoryEntry ) )]
 			public IDictionary<string, FileSystemEntry> DictionaryKnownValue { get; set; }
-			[MessagePackKnownType( 1, typeof( SortedDictionary<string, FileSystemEntry> ) )]
-			[MessagePackKnownType( 2, typeof( Dictionary<string, FileSystemEntry> ) )]
+			[MessagePackKnownType( "1", typeof( SortedDictionary<string, FileSystemEntry> ) )]
+			[MessagePackKnownType( "2", typeof( Dictionary<string, FileSystemEntry> ) )]
 			[MessagePackRuntimeCollectionItemType]
 			public IDictionary<string, FileSystemEntry> DictionaryKnownContainerRuntimeValue { get; set; }
 			[MessagePackRuntimeCollectionItemType]
 			public IDictionary<string, object> DictionaryObjectRuntimeValue { get; set; }
 #if !NETFX_35 && !UNITY
-			[MessagePackKnownTupleItemType( 2, 1, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 2, typeof( DirectoryEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "1", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "2", typeof( DirectoryEntry ) )]
 			[MessagePackRuntimeTupleItemType( 3 )]
 			[MessagePackRuntimeTupleItemType( 4 )]
 			public Tuple<string, FileSystemEntry, FileSystemEntry, object> Tuple { get; set; }
@@ -9204,7 +9204,7 @@ namespace MsgPack.Serialization
 
 		public class AbstractClassMemberKnownType
 		{
-			[MessagePackKnownType( 1, typeof( FileEntry ) )]
+			[MessagePackKnownType( "1", typeof( FileEntry ) )]
 			public AbstractFileSystemEntry Value { get; set; }
 
 			public AbstractClassMemberKnownType() { }
@@ -9227,7 +9227,7 @@ namespace MsgPack.Serialization
 
 		public class AbstractClassListItemKnownType
 		{
-			[MessagePackKnownCollectionItemType( 1, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( FileEntry ) )]
 			public IList<AbstractFileSystemEntry> Value { get; set; }
 
 			public AbstractClassListItemKnownType() { }
@@ -9250,7 +9250,7 @@ namespace MsgPack.Serialization
 
 		public class AbstractClassDictKeyKnownType
 		{
-			[MessagePackKnownDictionaryKeyType( 1, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( FileEntry ) )]
 			public IDictionary<AbstractFileSystemEntry, string> Value { get; set; }
 
 			public AbstractClassDictKeyKnownType() { }
@@ -9273,7 +9273,7 @@ namespace MsgPack.Serialization
 
 		public class InterfaceMemberKnownType
 		{
-			[MessagePackKnownType( 1, typeof( FileEntry ) )]
+			[MessagePackKnownType( "1", typeof( FileEntry ) )]
 			public IFileSystemEntry Value { get; set; }
 
 			public InterfaceMemberKnownType() { }
@@ -9296,7 +9296,7 @@ namespace MsgPack.Serialization
 
 		public class InterfaceListItemKnownType
 		{
-			[MessagePackKnownCollectionItemType( 1, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( FileEntry ) )]
 			public IList<IFileSystemEntry> Value { get; set; }
 
 			public InterfaceListItemKnownType() { }
@@ -9319,7 +9319,7 @@ namespace MsgPack.Serialization
 
 		public class InterfaceDictKeyKnownType
 		{
-			[MessagePackKnownDictionaryKeyType( 1, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( FileEntry ) )]
 			public IDictionary<IFileSystemEntry, string> Value { get; set; }
 
 			public InterfaceDictKeyKnownType() { }
@@ -9351,7 +9351,7 @@ namespace MsgPack.Serialization
 
 		public class AbstractClassCollectionKnownType
 		{
-			[MessagePackKnownType( 1, typeof( EchoKeyedCollection<string, string> ) )]
+			[MessagePackKnownType( "1", typeof( EchoKeyedCollection<string, string> ) )]
 			public KeyedCollection<string, string> Value { get; set; }
 
 			public AbstractClassCollectionKnownType() { }
@@ -9374,7 +9374,7 @@ namespace MsgPack.Serialization
 
 		public class InterfaceCollectionKnownType
 		{
-			[MessagePackKnownType( 1, typeof( EchoKeyedCollection<string, string> ) )]
+			[MessagePackKnownType( "1", typeof( EchoKeyedCollection<string, string> ) )]
 			public IList<string> Value { get; set; }
 
 			public InterfaceCollectionKnownType() { }
@@ -9391,8 +9391,8 @@ namespace MsgPack.Serialization
 
 		public class TupleAbstractType
 		{
-			[MessagePackKnownTupleItemType( 1, 1, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 2, 1, typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 2, "1", typeof( FileEntry ) )]
 			[MessagePackRuntimeTupleItemType( 3 )]
 			[MessagePackRuntimeTupleItemType( 4 )]
 			public Tuple<AbstractFileSystemEntry, IFileSystemEntry, AbstractFileSystemEntry, IFileSystemEntry> Value { get; set; }
@@ -9404,8 +9404,8 @@ namespace MsgPack.Serialization
 
 		public class DuplicatedKnownMember
 		{
-			[MessagePackKnownType( 1, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( FileEntry ) )]
+			[MessagePackKnownType( "1", typeof( FileEntry ) )]
+			[MessagePackKnownType( "1", typeof( FileEntry ) )]
 			public FileSystemEntry Value  { get; set; }
 
 			public DuplicatedKnownMember() { }
@@ -9413,8 +9413,8 @@ namespace MsgPack.Serialization
 
 		public class DuplicatedKnownCollectionItem
 		{
-			[MessagePackKnownCollectionItemType( 1, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( FileEntry ) )]
 			public IList<FileSystemEntry> Value  { get; set; }
 
 			public DuplicatedKnownCollectionItem() { }
@@ -9422,8 +9422,8 @@ namespace MsgPack.Serialization
 
 		public class DuplicatedKnownDictionaryKey
 		{
-			[MessagePackKnownDictionaryKeyType( 1, typeof( FileEntry ) )]
-			[MessagePackKnownDictionaryKeyType( 1, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( FileEntry ) )]
 			public IDictionary<FileSystemEntry, string> Value  { get; set; }
 
 			public DuplicatedKnownDictionaryKey() { }
@@ -9431,8 +9431,8 @@ namespace MsgPack.Serialization
 #if !NETFX_35 && !UNITY
 		public class DuplicatedKnownTupleItem
 		{
-			[MessagePackKnownTupleItemType( 1, 1, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( FileEntry ) )]
 			public Tuple<FileSystemEntry> Value  { get; set; }
 
 			public DuplicatedKnownTupleItem() { }
@@ -9441,7 +9441,7 @@ namespace MsgPack.Serialization
 
 		public class KnownAndRuntimeMember
 		{
-			[MessagePackKnownType( 1, typeof( FileEntry ) )]
+			[MessagePackKnownType( "1", typeof( FileEntry ) )]
 			[MessagePackRuntimeType]
 			public FileSystemEntry Value  { get; set; }
 
@@ -9450,7 +9450,7 @@ namespace MsgPack.Serialization
 
 		public class KnownAndRuntimeCollectionItem
 		{
-			[MessagePackKnownCollectionItemType( 1, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( "1", typeof( FileEntry ) )]
 			[MessagePackRuntimeCollectionItemType]
 			public IList<FileSystemEntry> Value  { get; set; }
 
@@ -9459,7 +9459,7 @@ namespace MsgPack.Serialization
 
 		public class KnownAndRuntimeDictionaryKey
 		{
-			[MessagePackKnownDictionaryKeyType( 1, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( "1", typeof( FileEntry ) )]
 			[MessagePackRuntimeDictionaryKeyType]
 			public IDictionary<FileSystemEntry, string> Value  { get; set; }
 
@@ -9468,7 +9468,7 @@ namespace MsgPack.Serialization
 #if !NETFX_35 && !UNITY
 		public class KnownAndRuntimeTupleItem
 		{
-			[MessagePackKnownTupleItemType( 1, 1, typeof( FileEntry ) )]
+			[MessagePackKnownTupleItemType( 1, "1", typeof( FileEntry ) )]
 			[MessagePackRuntimeTupleItemType( 1 )]
 			public Tuple<FileSystemEntry> Value  { get; set; }
 

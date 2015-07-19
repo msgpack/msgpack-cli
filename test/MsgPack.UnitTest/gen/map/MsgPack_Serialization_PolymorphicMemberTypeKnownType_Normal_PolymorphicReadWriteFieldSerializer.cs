@@ -22,17 +22,17 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
         public MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteFieldSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
-            System.Collections.Generic.Dictionary<byte, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
-            typeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            typeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
-            typeMap0.Add(0, typeof(MsgPack.Serialization.FileEntry));
+            System.Collections.Generic.Dictionary<string, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
+            typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
+            typeMap0.Add("0", typeof(MsgPack.Serialization.FileEntry));
+            typeMap0.Add("1", typeof(MsgPack.Serialization.DirectoryEntry));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), typeMap0);
             this._serializer0 = context.GetSerializer<string>(schema0);
             MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
-            System.Collections.Generic.Dictionary<byte, System.Type> typeMap1 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
-            typeMap1 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            typeMap1.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
-            typeMap1.Add(0, typeof(MsgPack.Serialization.FileEntry));
+            System.Collections.Generic.Dictionary<string, System.Type> typeMap1 = default(System.Collections.Generic.Dictionary<string, System.Type>);
+            typeMap1 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
+            typeMap1.Add("0", typeof(MsgPack.Serialization.FileEntry));
+            typeMap1.Add("1", typeof(MsgPack.Serialization.DirectoryEntry));
             schema1 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), typeMap1);
             this._serializer1 = context.GetSerializer<MsgPack.Serialization.FileSystemEntry>(schema1);
         }
