@@ -660,9 +660,6 @@
     <Compile Include="Serialization\TypedMessagePackSerializerWrapper`1.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\MsgPack\remarks.xml">
-      <Link>remarks.xml</Link>
-    </None>
     <None Include="CorLibOnlyHelper.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CorLibOnlyHelper.cs</LastGenOutput>
