@@ -28,11 +28,11 @@ namespace MsgPack.Serialization.Polymorphic
 	///		Implements polymorphic serializer which uses open types and non-interoperable ext-type tag and .NET type information.
 	/// </summary>
 	/// <typeparam name="T">The base type of the polymorhic member.</typeparam>
-	internal sealed class TypeEmbedingPolymorhicMessagePackSerializer<T> : MessagePackSerializer<T>, IPolymorphicDeserializer
+	internal sealed class TypeEmbedingPolymorphicMessagePackSerializer<T> : MessagePackSerializer<T>, IPolymorphicDeserializer
 	{
 		private readonly PolymorphismSchema _schema;
 
-		public TypeEmbedingPolymorhicMessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema schema )
+		public TypeEmbedingPolymorphicMessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema schema )
 			: base( ownerContext )
 		{
 			if ( typeof( T ).GetIsValueType() )

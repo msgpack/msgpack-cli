@@ -24,10 +24,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
+
+using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.Polymorphic
 {
@@ -35,13 +36,13 @@ namespace MsgPack.Serialization.Polymorphic
 	///		Implements polymorphic serializer which uses closed known types and interoperable ext-type feature.
 	/// </summary>
 	/// <typeparam name="T">The base type of the polymorhic member.</typeparam>
-	internal sealed class KnownTypePolymorhicMessagePackSerializer<T> : MessagePackSerializer<T>, IPolymorphicDeserializer
+	internal sealed class KnownTypePolymorphicMessagePackSerializer<T> : MessagePackSerializer<T>, IPolymorphicDeserializer
 	{
 		private readonly PolymorphismSchema _schema;
 		private readonly IDictionary<string, RuntimeTypeHandle> _typeHandleMap;
 		private readonly IDictionary<RuntimeTypeHandle, string> _typeCodeMap;
 
-		public KnownTypePolymorhicMessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema schema )
+		public KnownTypePolymorphicMessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema schema )
 			: base( ownerContext )
 		{
 			if ( typeof( T ).GetIsValueType() )
@@ -105,6 +106,19 @@ namespace MsgPack.Serialization.Polymorphic
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes", Justification = "Avoided via ownsStream: false" )]
 		protected internal override void PackToCore( Packer packer, T objectTree )
 		{
+			string typeCode;
+			if ( !this._typeCodeMap.TryGetValue( objectTree.GetType().TypeHandle, out typeCode ) )
+			{
+				throw new SerializationException( 
+					String.Format( 
+						CultureInfo.CurrentCulture, 
+						"Type '{0}' in assembly '{1}' is not defined as known types.",
+						objectTree.GetType().GetFullName(), 
+						objectTree.GetType().GetAssembly()
+					) 
+				);
+			}
+
 			TypeInfoEncoder.Encode( this.OwnerContext, packer, this._typeCodeMap[ objectTree.GetType().TypeHandle ] );
 			this.GetActualTypeSerializer( objectTree.GetType() ).PackTo( packer, objectTree );
 		}

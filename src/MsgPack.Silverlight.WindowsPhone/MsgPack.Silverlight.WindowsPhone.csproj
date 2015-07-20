@@ -688,14 +688,14 @@
     <Compile Include="..\MsgPack\Serialization\Polymorphic\IPolymorphicHelperAttributes.cs">
       <Link>Serialization\Polymorphic\IPolymorphicHelperAttributes.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Polymorphic\KnownTypePolymorhicMessagePackSerializer`1.cs">
-      <Link>Serialization\Polymorphic\KnownTypePolymorhicMessagePackSerializer`1.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\KnownTypePolymorphicMessagePackSerializer`1.cs">
+      <Link>Serialization\Polymorphic\KnownTypePolymorphicMessagePackSerializer`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Polymorphic\PolymorphicSerializerProvider`1.cs">
       <Link>Serialization\Polymorphic\PolymorphicSerializerProvider`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Polymorphic\TypeEmbedingPolymorhicMessagePackSerializer`1.cs">
-      <Link>Serialization\Polymorphic\TypeEmbedingPolymorhicMessagePackSerializer`1.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\TypeEmbedingPolymorphicMessagePackSerializer`1.cs">
+      <Link>Serialization\Polymorphic\TypeEmbedingPolymorphicMessagePackSerializer`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Polymorphic\TypeInfoEncoder.cs">
       <Link>Serialization\Polymorphic\TypeInfoEncoder.cs</Link>

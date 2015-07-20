@@ -248,7 +248,7 @@
     <Compile Include="Serialization\Metadata\_DateTimeMessagePackSerializerHelpers.cs" />
     <Compile Include="Serialization\Polymorphic\IPolymorphicHelperAttributes.cs" />
     <Compile Include="Serialization\Polymorphic\IPolymorphicDeserializer.cs" />
-    <Compile Include="Serialization\Polymorphic\KnownTypePolymorhicMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\Polymorphic\KnownTypePolymorphicMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\MessagePackDeserializationConstructorAttribute.cs" />
     <Compile Include="Serialization\MessagePackIgnoreAttribute.cs" />
     <Compile Include="Serialization\Metadata\_Decimal.cs" />
@@ -449,7 +449,7 @@
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />
     <Compile Include="Serialization\Tracer.cs" />
     <Compile Include="Serialization\Polymorphic\TypeInfoEncoding.cs" />
-    <Compile Include="Serialization\Polymorphic\TypeEmbedingPolymorhicMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\Polymorphic\TypeEmbedingPolymorphicMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\Polymorphic\TypeInfoEncoder.cs" />
     <Compile Include="Serialization\ExtTypeCodeMapping.cs" />
     <Compile Include="Serialization\TypeKeyRepository.cs" />

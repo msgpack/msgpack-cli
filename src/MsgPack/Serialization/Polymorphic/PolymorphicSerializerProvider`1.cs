@@ -65,11 +65,11 @@ namespace MsgPack.Serialization.Polymorphic
 
 			if ( schema.UseTypeEmbedding )
 			{
-				return new TypeEmbedingPolymorhicMessagePackSerializer<T>( context, schema );
+				return new TypeEmbedingPolymorphicMessagePackSerializer<T>( context, schema );
 			}
 			else
 			{
-				return new KnownTypePolymorhicMessagePackSerializer<T>( context, schema );
+				return new KnownTypePolymorphicMessagePackSerializer<T>( context, schema );
 			}
 		}
 	}
