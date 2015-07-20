@@ -280,7 +280,7 @@ Release 0.6.0 Beta3 - 2015/06/14
 Release 0.6.0 Beta4 - 2015/07/05
 
   BREAKING CHANGES / IMPROVEMENTS
-  * Unity3D DLL now only depends on mscorlib.dll. This breaks compabitlity because the library cannot recognize Stack<T>, Queue<T> and NameValueCollection. If you want to these types support, use Unity3D.Full drop instead.
+  * Unity3D DLL now only depends on mscorlib.dll. This breaks compabitlity because the library cannot recognize Stack<T>, Queue<T>, NameValueCollection, and System.Uri. If you want to these types support, use Unity3D.Full drop instead.
 
   IMPROVEMENTS
   * Non-SZ arrays (multidimensional arrays and vector with non-zero based) are supproted. Issue #81.
@@ -289,3 +289,15 @@ Release 0.6.0 Beta4 - 2015/07/05
   * Fix Unity source code to avoid nullable equality operator. Issue #88
   * Fix MessagePackObject deserializer cannot handle empty collection correctly. Issue #92.
   * Fix disposing "subtree" Unpacker twice causes Exception.
+
+Release 0.6.0 Beta5 - 2015/07/20
+
+  BREAKING CHANGES / IMPROVEMENTS
+  * Internal type-info encoding has changed, so encoded type-info is NOT compatible with 0.6.0 beta1-beta4.
+
+  IMPROVEMENTS
+  * Add built-in support for IReadOnlyCollection<T>, IReadOnlyList<T>, IReadOnlyDictionary<TKey, TValue>, based upon issue #91 and PR #93. Thank you @drewnoakes!
+  * Improve exception message for known type mapping error. Issue #95,
+
+  BUG FIXES
+  * Non-SZ arrays are not deserialized correctly in WP/Silverlight.
