@@ -39,9 +39,9 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE
 
 		[Test]
-		public void TestExtraField_NotExtensible_Array_FieldBased_Fail()
+		public void TestExtraField_NotExtensible_Array_FieldBased_Classic_Fail()
 		{
-			TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.FieldBased );
+			TestExtraFieldCore( SerializationMethod.Array, EmitterFlavor.FieldBased, PackerCompatibilityOptions.Classic );
 		}
 
 		[Test]
@@ -59,9 +59,9 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE
 
 		[Test]
-		public void TestExtraField_NotExtensible_Array_ContextBased_Fail()
+		public void TestExtraField_NotExtensible_Array_ContextBased_Classic_Fail()
 		{
-			TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ContextBased );
+			TestExtraFieldCore( SerializationMethod.Array, EmitterFlavor.ContextBased, PackerCompatibilityOptions.Classic );
 		}
 
 		[Test]
@@ -79,9 +79,9 @@ namespace MsgPack.Serialization
 #if !NETFX_35
 
 		[Test]
-		public void TestExtraField_NotExtensible_Array_ExpressionBased_Fail()
+		public void TestExtraField_NotExtensible_Array_ExpressionBased_Classic_Fail()
 		{
-			TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ExpressionBased );
+			TestExtraFieldCore( SerializationMethod.Array, EmitterFlavor.ExpressionBased, PackerCompatibilityOptions.Classic );
 		}
 
 		[Test]
@@ -99,9 +99,15 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE
 
 		[Test]
-		public void TestExtraField_NotExtensible_Map_FieldBased_Fail()
+		public void TestExtraField_NotExtensible_Map_FieldBased_Classic_Fail()
 		{
-			TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.FieldBased );
+			TestExtraFieldCore( SerializationMethod.Map, EmitterFlavor.FieldBased, PackerCompatibilityOptions.Classic );
+		}
+
+		[Test]
+		public void TestExtraField_NotExtensible_Map_FieldBased_None_Fail ()
+		{
+			TestExtraFieldCore( SerializationMethod.Map, EmitterFlavor.FieldBased, PackerCompatibilityOptions.None );
 		}
 
 		[Test]
@@ -125,9 +131,15 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE
 
 		[Test]
-		public void TestExtraField_NotExtensible_Map_ContextBased_Fail()
+		public void TestExtraField_NotExtensible_Map_ContextBased_Classic_Fail()
 		{
-			TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ContextBased );
+			TestExtraFieldCore( SerializationMethod.Map, EmitterFlavor.ContextBased, PackerCompatibilityOptions.Classic );
+		}
+
+		[Test]
+		public void TestExtraField_NotExtensible_Map_ContextBased_None_Fail ()
+		{
+			TestExtraFieldCore( SerializationMethod.Map, EmitterFlavor.ContextBased, PackerCompatibilityOptions.None );
 		}
 
 		[Test]
@@ -151,9 +163,15 @@ namespace MsgPack.Serialization
 #if !NETFX_35
 
 		[Test]
-		public void TestExtraField_NotExtensible_Map_ExpressionBased_Fail()
+		public void TestExtraField_NotExtensible_Map_ExpressionBased_Classic_Fail()
 		{
-			TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ExpressionBased );
+			TestExtraFieldCore( SerializationMethod.Map, EmitterFlavor.ExpressionBased, PackerCompatibilityOptions.Classic );
+		}
+
+		[Test]
+		public void TestExtraField_NotExtensible_Map_ExpressionBased_None_Fail ()
+		{
+			TestExtraFieldCore( SerializationMethod.Map, EmitterFlavor.ExpressionBased, PackerCompatibilityOptions.None );
 		}
 
 		[Test]
@@ -174,15 +192,5 @@ namespace MsgPack.Serialization
 			TestFieldSwappedCore( EmitterFlavor.ExpressionBased );
 		}
 #endif // !NETFX_35
-	}
-
-	public class VersioningTestTarget
-	{
-		[MessagePackMember( 0 )]
-		public Int32 Field1 { get; set; }
-		[MessagePackMember( 1 )]
-		public Int32 Field2 { get; set; }
-		[MessagePackMember( 2 )]
-		public String Field3 { get; set; }
 	}
 }

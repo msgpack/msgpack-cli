@@ -51,9 +51,9 @@ namespace MsgPack.Serialization
 #endif // !XAMIOS && !UNITY_IPHONE
 		}
 
-		private static void TestExtraFieldCore<T>( SerializationMethod method, EmitterFlavor flavor )
+		private static void TestExtraFieldCore( SerializationMethod method, EmitterFlavor flavor, PackerCompatibilityOptions compat )
 		{
-			var serializer = CreateSerializer<T>( flavor );
+			var serializer = CreateSerializer<VersioningTestTarget>(flavor);
 
 			using ( var stream = new MemoryStream() )
 			{
@@ -63,23 +63,33 @@ namespace MsgPack.Serialization
 				}
 				else
 				{
-					var packer = Packer.Create( stream, false );
-					packer.PackMapHeader( 5 );
+					const string String10 = "1234567890";	// packed as MinimumFixedRaw or Bin8
+					const string String40 = "1234567890123456789012345678901234567890"; // packed as Bin8 or Str8
+					var packer = Packer.Create( stream, compat, false );
+					packer.PackMapHeader( 7 );
 					packer.Pack( "Field1" );
 					packer.Pack( 1 );
-					packer.Pack( "Extra" );
-					packer.PackNull();
-					packer.Pack( "Field2" );
+					packer.Pack("Extra1");
+					packer.Pack(String40);
+					packer.Pack("Extra2");
+					packer.Pack(System.Text.UTF8Encoding.Default.GetBytes(String40));
+					packer.Pack("Field2");
 					packer.Pack( -1 );
-					packer.Pack( "Field3" );
+					packer.Pack("Extra3");
+					packer.Pack(String10);
+					packer.Pack("Field3");
 					packer.Pack( "a" );
-					packer.Pack( "Extra" );
+					packer.Pack( "Extra4" );
 					packer.PackNull();
 				}
 
 				stream.Position = 0;
 
-				serializer.Unpack( stream );
+				var result = serializer.Unpack( stream );
+
+				Assert.That(result.Field1, Is.EqualTo(1));
+				Assert.That(result.Field2, Is.EqualTo(-1));
+				Assert.That(result.Field3, Is.EqualTo("a"));
 			}
 		}
 
@@ -157,7 +167,7 @@ namespace MsgPack.Serialization
 				packer.Pack( "Field2" );
 				packer.Pack( -1 );
 				packer.Pack( "Extra" );
-				packer.Pack( 2 ); // Issue6 
+				packer.Pack( 2 ); // Issue6
 
 				stream.Position = 0;
 
@@ -168,5 +178,15 @@ namespace MsgPack.Serialization
 				Assert.That( result.Field3, Is.Null );
 			}
 		}
+	}
+
+
+	public class VersioningTestTarget {
+		[MessagePackMember(0)]
+		public Int32 Field1 { get; set; }
+		[MessagePackMember(1)]
+		public Int32 Field2 { get; set; }
+		[MessagePackMember(2)]
+		public String Field3 { get; set; }
 	}
 }
