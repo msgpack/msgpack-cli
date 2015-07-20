@@ -464,7 +464,7 @@ namespace MsgPack.Serialization
 			// Assert is not polluted.
 			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
 			Assert.That( resultCS.Single(), Is.EqualTo( filePathCS ) );
-			Console.WriteLine( File.ReadAllText( filePathCS ) );
+			//Console.WriteLine( File.ReadAllText( filePathCS ) );
 			var linesCS = File.ReadAllLines( filePathCS );
 			// BracingStyle, IndentString
 			Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"^\t+[^\{\s]+.+\{\s*$" ) ) );
