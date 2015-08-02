@@ -232,14 +232,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 #endif
 		}
 
-		protected override EnumSerializerEmitter CreateEnumEmitterCore( Type targetType, EmitterFlavor emitterFlavor )
+		protected override EnumSerializerEmitter CreateEnumEmitterCore( SerializationContext context, Type targetType, EmitterFlavor emitterFlavor )
 		{
 #if !WINDOWS_PHONE
 			switch ( emitterFlavor )
 			{
 				case EmitterFlavor.FieldBased:
 				{
-					return new FieldBasedEnumSerializerEmitter( this._module, this._isExternalAssemblyBuilder ? default( int? ) : Interlocked.Increment( ref this._typeSequence ), targetType, this._isDebuggable );
+					return new FieldBasedEnumSerializerEmitter( context, this._module, this._isExternalAssemblyBuilder ? default( int? ) : Interlocked.Increment( ref this._typeSequence ), targetType, this._isDebuggable );
 				}
 				default:
 				{

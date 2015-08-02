@@ -57,7 +57,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					this._context,
 					type,
 					() => this._generatorManager.CreateEmitter( type, serializerBaseClass, EmitterFlavor.FieldBased ),
-					() => this._generatorManager.CreateEnumEmitter( type, EmitterFlavor.FieldBased ) 
+					() => this._generatorManager.CreateEnumEmitter( this._context, type, EmitterFlavor.FieldBased ) 
 				);
 		}
 

@@ -124,7 +124,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					context,
 					typeof( TObject ),
 					() => SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( TObject ), BaseClass, EmitterFlavor.FieldBased ),
-					() => SerializationMethodGeneratorManager.Get().CreateEnumEmitter( typeof( TObject ), EmitterFlavor.FieldBased )
+					() => SerializationMethodGeneratorManager.Get().CreateEnumEmitter( context, typeof( TObject ), EmitterFlavor.FieldBased )
 				);
 		}
 
@@ -146,9 +146,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 					BaseClass
 				);
 
-			this.BuildSerializer( emittingContext, concreteType, itemSchema );
-			// Finish type creation, and discard returned ctor.
-			emittingContext.Emitter.CreateConstructor<TObject>();
+			if ( !typeof( TObject ).GetIsEnum() )
+			{
+				this.BuildSerializer( emittingContext, concreteType, itemSchema );
+				// Finish type creation, and discard returned ctor.
+				emittingContext.Emitter.CreateConstructor<TObject>();
+			}
+			else
+			{
+				this.BuildEnumSerializer( emittingContext );
+				// Finish type creation, and discard returned ctor.
+				emittingContext.EnumEmitter.CreateConstructor<TObject>();
+			}
 		}
 #endif
 	}

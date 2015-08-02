@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 //
 #endregion -- License Terms --
 using System;
+using System.CodeDom.Compiler;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -403,6 +404,39 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		#region -- Issue102 --
+
+		[Test]
+		public void TestGenerateAssembly_DefaultEnumSerializationMethod_IsReflected()
+		{
+			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
+			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
+			var result =
+				SerializerGenerator.GenerateAssembly(
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue }, typeof( TestEnumType )
+				);
+			// Assert is not polluted.
+			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType ) ), Is.False );
+			Assert.That( result, Is.EqualTo( filePath ) );
+
+			try
+			{
+				TestOnWorkerAppDomain(
+					filePath,
+					PackerCompatibilityOptions.Classic,
+					EnumSerializationMethod.ByUnderlyingValue,
+					TestEnumType.One,
+					new byte[] { ( byte )TestEnumType.One }
+				);
+			}
+			finally
+			{
+				File.Delete( filePath );
+			}
+		}
+
+		#endregion -- Issue102--
+
 		[Test]
 		public void TestGenerateCode_WithDefault_CSFileGeneratedOnAppBase()
 		{
@@ -410,7 +444,7 @@ namespace MsgPack.Serialization
 				Path.GetFullPath(
 					String.Join(
 						Path.DirectorySeparatorChar.ToString(),
-						new []
+						new[]
 						{
 							".",
 							"MsgPack",
@@ -423,17 +457,28 @@ namespace MsgPack.Serialization
 			var resultCS =
 				SerializerGenerator.GenerateCode(
 					typeof( GeneratorTestObject )
-				);
-			// Assert is not polluted.
-			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
-			Assert.That( resultCS.Single(), Is.EqualTo( filePathCS ) );
-			var linesCS = File.ReadAllLines( filePathCS );
-			// BracingStyle, IndentString
-			Assert.That( !linesCS.Any( l => Regex.IsMatch( l, @"^\t+if.+\{\s*$" ) ) );
-			// Nemespace
-			Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"^\s*namespace\s+MsgPack\.Serialization\.GeneratedSerializers\s+" ) ) );
-			// Array
-			Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"\.PackArrayHeader" ) ) );
+				).ToArray();
+			try
+			{
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+				Assert.That( resultCS.Single(), Is.EqualTo( filePathCS ) );
+				var linesCS = File.ReadAllLines( filePathCS );
+				// BracingStyle, IndentString
+				Assert.That( !linesCS.Any( l => Regex.IsMatch( l, @"^\t+if.+\{\s*$" ) ) );
+				// Nemespace
+				Assert.That(
+					linesCS.Any( l => Regex.IsMatch( l, @"^\s*namespace\s+MsgPack\.Serialization\.GeneratedSerializers\s+" ) ) );
+				// Array
+				Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"\.PackArrayHeader" ) ) );
+			}
+			finally
+			{
+				foreach ( var file in resultCS )
+				{
+					File.Delete( file );
+				}
+			}
 		}
 
 		[Test]
@@ -443,7 +488,7 @@ namespace MsgPack.Serialization
 			var filePathCS =
 				String.Join(
 					Path.DirectorySeparatorChar.ToString(),
-					new []
+					new[]
 					{
 						directory,
 						"Test",
@@ -460,71 +505,77 @@ namespace MsgPack.Serialization
 						OutputDirectory = directory,
 					},
 					typeof( GeneratorTestObject )
-				);
-			// Assert is not polluted.
-			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
-			Assert.That( resultCS.Single(), Is.EqualTo( filePathCS ) );
-			//Console.WriteLine( File.ReadAllText( filePathCS ) );
-			var linesCS = File.ReadAllLines( filePathCS );
-			// BracingStyle, IndentString
-			Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"^\t+[^\{\s]+.+\{\s*$" ) ) );
-			// Nemespace
-			Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"^\s*namespace\s+Test\s+" ) ) );
-			// Map
-			Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"\.PackMapHeader" ) ) );
+				).ToArray();
+			try 
+			{ 
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+				Assert.That( resultCS.Single(), Is.EqualTo( filePathCS ) );
+				//Console.WriteLine( File.ReadAllText( filePathCS ) );
+				var linesCS = File.ReadAllLines( filePathCS );
+				// BracingStyle, IndentString
+				Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"^\t+[^\{\s]+.+\{\s*$" ) ) );
+				// Nemespace
+				Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"^\s*namespace\s+Test\s+" ) ) );
+				// Map
+				Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"\.PackMapHeader" ) ) );
 
-			// Language
-			var filePathVB =
-				String.Join(
-					Path.DirectorySeparatorChar.ToString(),
-					new []
+				// Language
+				var filePathVB =
+					String.Join(
+						Path.DirectorySeparatorChar.ToString(),
+						new[]
+						{
+							directory,
+							"MsgPack",
+							"Serialization",
+							"GeneratedSerializers",
+							IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.vb"
+						}
+					);
+				var resultVB =
+					SerializerGenerator.GenerateCode(
+						new SerializerCodeGenerationConfiguration
+						{
+							Language = "VB",
+							OutputDirectory = directory,
+						},
+						typeof( GeneratorTestObject )
+					).ToArray();
+				try
+				{
+					// Assert is not polluted.
+					Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+					Assert.That( resultVB.Single(), Is.EqualTo( filePathVB ) );
+					var linesVB = File.ReadAllLines( filePathVB );
+					// CheckVB
+					Assert.That( linesVB.Any( l => Regex.IsMatch( l, @"^\s*End Sub\s*$" ) ) );
+				}
+				finally
+				{
+					foreach ( var file in resultVB )
 					{
-						directory,
-						"MsgPack",
-						"Serialization",
-						"GeneratedSerializers",
-						IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.vb"
+						File.Delete( file );
 					}
-				);
-			var resultVB =
-				SerializerGenerator.GenerateCode(
-					new SerializerCodeGenerationConfiguration
-					{
-						Language = "VB",
-						OutputDirectory = directory,
-					},
-					typeof( GeneratorTestObject )
-				);
-			// Assert is not polluted.
-			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
-			Assert.That( resultVB.Single(), Is.EqualTo( filePathVB ) );
-			var linesVB = File.ReadAllLines( filePathVB );
-			// CheckVB
-			Assert.That( linesVB.Any( l => Regex.IsMatch( l, @"^\s*End Sub\s*$" ) ) );
+				}
+			}
+			finally
+			{
+				foreach ( var file in resultCS )
+				{
+					File.Delete( file );
+				}
+			}
 		}
 
 		[Test]
 		public void TestGenerateCode_ComplexType_ChildGeneratorsAreNotContainedAutomatically()
 		{
-			var filePathCS1 =
+			var filePathCS =
 				Path.GetFullPath(
 					String.Join(
 						Path.DirectorySeparatorChar.ToString(),
-						new []
-						{
-							".",
-							"MsgPack",
-							"Serialization",
-							"GeneratedSerializers",
-							IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.cs"
-						}
-					)
-				);
-			var filePathCS2 =
-				Path.GetFullPath(
-					String.Join(
-						Path.DirectorySeparatorChar.ToString(),
-						new []
+						new[]
 						{
 							".",
 							"MsgPack",
@@ -537,11 +588,21 @@ namespace MsgPack.Serialization
 			var resultCS =
 				SerializerGenerator.GenerateCode(
 					typeof( RootGeneratorTestObject )
-				).ToArray();
-			// Assert is not polluted.
-			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestObject ) ), Is.False );
-			Assert.That( resultCS.Length, Is.EqualTo( 1 ) );
-			Assert.That( resultCS[ 0 ], Is.EqualTo( filePathCS2 ) );
+					).ToArray();
+			try
+			{
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestObject ) ), Is.False );
+				Assert.That( resultCS.Length, Is.EqualTo( 1 ) );
+				Assert.That( resultCS[ 0 ], Is.EqualTo( filePathCS ) );
+			}
+			finally
+			{
+				foreach ( var file in resultCS )
+				{
+					File.Delete( file );
+				}
+			}
 		}
 
 		[Test]
@@ -551,7 +612,7 @@ namespace MsgPack.Serialization
 				Path.GetFullPath(
 					String.Join(
 						Path.DirectorySeparatorChar.ToString(),
-						new []
+						new[]
 						{
 							".",
 							"MsgPack",
@@ -565,7 +626,7 @@ namespace MsgPack.Serialization
 				Path.GetFullPath(
 					String.Join(
 						Path.DirectorySeparatorChar.ToString(),
-						new []
+						new[]
 						{
 							".",
 							"MsgPack",
@@ -579,14 +640,56 @@ namespace MsgPack.Serialization
 				SerializerGenerator.GenerateCode(
 					typeof( GeneratorTestObject ),
 					typeof( AnotherGeneratorTestObject )
-				).ToArray();
-			// Assert is not polluted.
-			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
-			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestObject ) ), Is.False );
-			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestObject ) ), Is.False );
-			Assert.That( resultCS.Length, Is.EqualTo( 2 ) );
-			Assert.That( resultCS, Contains.Item( filePathCS1 ).And.Contains( filePathCS2 ) );
+					).ToArray();
+			try
+			{
+					// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestObject ) ), Is.False );
+				Assert.That( resultCS.Length, Is.EqualTo( 2 ) );
+				Assert.That( resultCS, Contains.Item( filePathCS1 ).And.Contains( filePathCS2 ) );
+			}
+			finally
+			{
+				File.Delete( resultCS[ 0 ] );
+			}
 		}
+
+		#region -- Issue102 --
+
+		[Test]
+		public void TestGenerateCode_DefaultEnumSerializationMethod_IsReflected()
+		{
+			var resultCS =
+				SerializerGenerator.GenerateCode(
+					new SerializerCodeGenerationConfiguration { EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue },
+					typeof( TestEnumType )
+				).ToArray();
+			try
+			{
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType ) ), Is.False );
+				Assert.That( resultCS.Length, Is.EqualTo( 1 ) );
+
+				TestOnWorkerAppDomainWithCompile(
+					resultCS[ 0 ],
+					PackerCompatibilityOptions.Classic,
+					EnumSerializationMethod.ByUnderlyingValue,
+					TestEnumType.One,
+					new byte[] { ( byte )TestEnumType.One }
+				);
+			}
+			finally
+			{
+				foreach ( var file in resultCS )
+				{
+					File.Delete( file );
+				}
+			}
+		}
+
+		#endregion -- Issue102--
 
 		private static void TestOnWorkerAppDomain( string geneartedAssemblyFilePath, PackerCompatibilityOptions packerCompatibilityOptions, byte[] bytesValue, byte[] expectedPackedValue, TestType testType )
 		{
@@ -601,6 +704,65 @@ namespace MsgPack.Serialization
 			finally
 			{
 				AppDomain.Unload( workerDomain );
+			}
+		}
+
+		private static void TestOnWorkerAppDomain( string geneartedAssemblyFilePath, PackerCompatibilityOptions packerCompatibilityOptions, EnumSerializationMethod enumSerializationMethod, TestEnumType enumValue, byte[] expectedPackedValue )
+		{
+			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
+			var workerDomain = AppDomain.CreateDomain( "Worker", null, appDomainSetUp );
+			try
+			{
+				var testerProxy =
+					workerDomain.CreateInstanceAndUnwrap( typeof( Tester ).Assembly.FullName, typeof( Tester ).FullName ) as Tester;
+				testerProxy.DoTest( geneartedAssemblyFilePath, ( int )packerCompatibilityOptions, ( int )enumSerializationMethod, enumValue, expectedPackedValue, 1 );
+			}
+			finally
+			{
+				AppDomain.Unload( workerDomain );
+			}
+		}
+
+		private static void TestOnWorkerAppDomainWithCompile( string geneartedSourceFilePath, PackerCompatibilityOptions packerCompatibilityOptions, EnumSerializationMethod enumSerializationMethod, TestEnumType enumValue, byte[] expectedPackedValue )
+		{
+			var parameters = new CompilerParameters();
+			parameters.ReferencedAssemblies.Add( typeof( GeneratedCodeAttribute ).Assembly.Location );
+			parameters.ReferencedAssemblies.Add( typeof( MessagePackObject ).Assembly.Location );
+			parameters.ReferencedAssemblies.Add( Assembly.GetExecutingAssembly().Location );
+			var result =
+				CodeDomProvider.CreateProvider( "C#" ).CompileAssemblyFromFile( parameters, geneartedSourceFilePath );
+
+			Assert.That( result.Errors.Count, Is.EqualTo( 0 ), String.Join( Environment.NewLine, result.Output.OfType<string>().ToArray() ) );
+
+			try
+			{
+				var appDomainSetUp =
+					new AppDomainSetup
+					{
+						ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase
+					};
+				var workerDomain = AppDomain.CreateDomain( "Worker", null, appDomainSetUp );
+				try
+				{
+					var testerProxy =
+						workerDomain.CreateInstanceAndUnwrap( typeof( Tester ).Assembly.FullName, typeof( Tester ).FullName ) as Tester;
+					testerProxy.DoTest(
+						result.PathToAssembly,
+						( int ) packerCompatibilityOptions,
+						( int ) enumSerializationMethod,
+						enumValue,
+						expectedPackedValue,
+						1 
+					);
+				}
+				finally
+				{
+					AppDomain.Unload( workerDomain );
+				}
+			}
+			finally
+			{
+				File.Delete( result.PathToAssembly );
 			}
 		}
 
@@ -658,7 +820,28 @@ namespace MsgPack.Serialization
 					Is.EqualTo( expectedPackedValue ),
 					"{0} != {1}",
 					Binary.ToHexString( binary ),
-					Binary.ToHexString( expectedPackedValue ) );
+					Binary.ToHexString( expectedPackedValue )
+				);
+			}
+
+			public void DoTest( string testAssemblyFile, int packerCompatiblityOptions, int enumSerializationMethod, TestEnumType enumValue, byte[] expectedPackedValue, int expectedSerializerTypeCounts )
+			{
+				var assembly = Assembly.LoadFrom( testAssemblyFile );
+				var types = assembly.GetTypes().Where( t => typeof( IMessagePackSerializer ).IsAssignableFrom( t ) ).ToList();
+				Assert.That( types.Count, Is.EqualTo( expectedSerializerTypeCounts ), String.Join( ", ", types.Select( t => t.ToString() ).ToArray() ) );
+
+				var context = new SerializationContext( ( PackerCompatibilityOptions )packerCompatiblityOptions );
+
+				byte[] binary;
+				var serializer = Activator.CreateInstance( types.Single( t => typeof( MessagePackSerializer<TestEnumType> ).IsAssignableFrom( t ) ), context ) as MessagePackSerializer<TestEnumType>;
+				binary = serializer.PackSingleObject( enumValue );
+				Assert.That(
+					binary,
+					Is.EqualTo( expectedPackedValue ),
+					"{0} != {1}",
+					Binary.ToHexString( binary ),
+					Binary.ToHexString( expectedPackedValue ) 
+				);
 			}
 		}
 	}
@@ -668,7 +851,7 @@ namespace MsgPack.Serialization
 	{
 		GeneratorTestObject,
 		RootGeneratorTestObject,
-		AnotherGeneratorTestObject
+		AnotherGeneratorTestObject,
 	}
 
 	public sealed class GeneratorTestObject
@@ -685,5 +868,12 @@ namespace MsgPack.Serialization
 	public sealed class AnotherGeneratorTestObject
 	{
 		public byte[] Val { get; set; }
+	}
+
+	[Serializable]
+	public enum TestEnumType
+	{
+		Zero = 0,
+		One = 1
 	}
 }

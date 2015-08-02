@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -35,8 +35,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 	/// </summary>
 	internal sealed class FieldBasedEnumSerializerEmitter : EnumSerializerEmitter
 	{
-		private readonly Type[] _constructorParameterTypes;
+		private static readonly Type[] ContextConstructorParameterTypes =
+				{
+					typeof( SerializationContext )
+				};
+		private static readonly Type[] ContextAndEnumSerializationMethodConstructorParameterTypes =
+				{
+					typeof( SerializationContext ),
+					typeof( EnumSerializationMethod )
+				};
 		private readonly ConstructorBuilder _contextConstructorBuilder;
+		private readonly ConstructorBuilder _contextAndEnumSerializationMethodConstructorBuilder;
+		private readonly EnumSerializationMethod _defaultEnumSerializationMethod;
 		private readonly TypeBuilder _typeBuilder;
 		private readonly MethodBuilder _packUnderlyingValueToMethodBuilder;
 		private readonly MethodBuilder _unpackFromUnderlyingValueMethodBuilder;
@@ -45,30 +55,24 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <summary>
 		/// Initializes a new instance of the <see cref="FieldBasedSerializerEmitter"/> class.
 		/// </summary>
+		/// <param name="context">A <see cref="SerializationContext"/>.</param>
 		/// <param name="host">The host <see cref="ModuleBuilder"/>.</param>
 		/// <param name="sequence">The sequence number to name new type.</param>
 		/// <param name="targetType">Type of the serialization target.</param>
 		/// <param name="isDebuggable">Set to <c>true</c> when <paramref name="host"/> is debuggable.</param>
-		public FieldBasedEnumSerializerEmitter( ModuleBuilder host, int? sequence, Type targetType, bool isDebuggable )
+		public FieldBasedEnumSerializerEmitter( SerializationContext context, ModuleBuilder host, int? sequence, Type targetType, bool isDebuggable )
 		{
 			Contract.Requires( host != null );
 			Contract.Requires( targetType != null );
 
-			this._constructorParameterTypes =
-				new[]
-				{
-					typeof( SerializationContext ),
-					typeof( EnumSerializationMethod )
-				};
-
 			string typeName =
 #if !NETFX_35
- String.Join(
+				String.Join(
 					Type.Delimiter.ToString( CultureInfo.InvariantCulture ),
 					typeof( SerializerEmitter ).Namespace,
 					"Generated",
 					IdentifierUtility.EscapeTypeName( targetType ) + "Serializer" + sequence
-					);
+				);
 #else
 				String.Join(
 					Type.Delimiter.ToString(),
@@ -89,11 +93,19 @@ namespace MsgPack.Serialization.EmittingSerializers
 					typeof( EnumMessagePackSerializer<> ).MakeGenericType( targetType )
 				);
 
-			this._contextConstructorBuilder = this._typeBuilder.DefineConstructor(
-				MethodAttributes.Public,
-				CallingConventions.Standard,
-				this._constructorParameterTypes
-			);
+			this._contextConstructorBuilder = 
+				this._typeBuilder.DefineConstructor(
+					MethodAttributes.Public,
+					CallingConventions.Standard,
+					ContextConstructorParameterTypes
+				);
+			this._defaultEnumSerializationMethod = context.EnumSerializationMethod;
+			this._contextAndEnumSerializationMethodConstructorBuilder =
+				this._typeBuilder.DefineConstructor(
+					MethodAttributes.Public,
+					CallingConventions.Standard,
+					ContextAndEnumSerializationMethodConstructorParameterTypes
+				);
 
 			this._packUnderlyingValueToMethodBuilder =
 				this._typeBuilder.DefineMethod(
@@ -165,30 +177,47 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			if ( !this._typeBuilder.IsCreated() )
 			{
+
+				Contract.Assert( this._typeBuilder.BaseType != null );
+				
 				/*
-				 *	.ctor( PackerCompatibilityOptions c, EnumSerializerMethod method ) 
+				 *	.ctor( SerializationContext c ) 
+				 *	  : this( c, DEFAULT_METHOD )
+				 *	{
+				 *	}
+				 */
+				var il1 = new TracingILGenerator( this._contextConstructorBuilder, TextWriter.Null, this._isDebuggable );
+				// : this( c, DEFAULT_METHOD )
+				il1.EmitLdarg_0();
+				il1.EmitLdarg_1();
+				il1.EmitAnyLdc_I4( ( int ) this._defaultEnumSerializationMethod );
+
+				il1.EmitCallConstructor( this._contextAndEnumSerializationMethodConstructorBuilder );
+
+				il1.EmitRet();
+
+				/*
+				 *	.ctor( SerializationContext c, EnumSerializerMethod method ) 
 				 *	  : base( c, method )
 				 *	{
 				 *	}
 				 */
-				var il = new TracingILGenerator( this._contextConstructorBuilder, TextWriter.Null, this._isDebuggable );
+				var il2 = new TracingILGenerator( this._contextAndEnumSerializationMethodConstructorBuilder, TextWriter.Null, this._isDebuggable );
 				// : base( c, method )
-				il.EmitLdarg_0();
-				il.EmitLdarg_1();
-				il.EmitLdarg_2();
+				il2.EmitLdarg_0();
+				il2.EmitLdarg_1();
+				il2.EmitLdarg_2();
 
-				Contract.Assert( this._typeBuilder.BaseType != null );
-
-				il.EmitCallConstructor(
+				il2.EmitCallConstructor(
 					this._typeBuilder.BaseType.GetConstructor(
-						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, this._constructorParameterTypes, null
+						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, ContextAndEnumSerializationMethodConstructorParameterTypes, null
 					)
 				);
 
-				il.EmitRet();
+				il2.EmitRet();
 			}
 
-			var ctor = this._typeBuilder.CreateType().GetConstructor( this._constructorParameterTypes );
+			var ctor = this._typeBuilder.CreateType().GetConstructor( ContextAndEnumSerializationMethodConstructorParameterTypes );
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 			var methodParameter = Expression.Parameter( typeof( EnumSerializationMethod ), "method" );
 #if DEBUG

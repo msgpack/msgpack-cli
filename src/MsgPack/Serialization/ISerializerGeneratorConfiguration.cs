@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -45,6 +45,15 @@ namespace MsgPack.Serialization
 		/// </value>
 		/// <exception cref="ArgumentOutOfRangeException">Specified value is not valid  <see cref="SerializationMethod"/>.</exception>
 		SerializationMethod SerializationMethod { get; set; }
+
+		/// <summary>
+		///		Gets or sets the default enum serialization method for generating enum type serializers.
+		/// </summary>
+		/// <value>
+		///		A value of <see cref="EnumSerializationMethod"/>.
+		/// </value>
+		/// <exception cref="ArgumentOutOfRangeException">Specified value is not valid  <see cref="EnumSerializationMethod"/>.</exception>
+		EnumSerializationMethod EnumSerializationMethod { get; set; }
 
 		/// <summary>
 		///		Validates this instance state.

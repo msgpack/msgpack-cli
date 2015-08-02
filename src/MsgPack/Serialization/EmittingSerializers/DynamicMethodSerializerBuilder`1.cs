@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					context,
 					typeof( TObject ),
 					() => SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( TObject ), BaseClass, EmitterFlavor.ContextBased ),
-					() => SerializationMethodGeneratorManager.Get().CreateEnumEmitter( typeof( TObject ), EmitterFlavor.ContextBased )
+					() => SerializationMethodGeneratorManager.Get().CreateEnumEmitter( context, typeof( TObject ), EmitterFlavor.ContextBased )
 				);
 		}
 

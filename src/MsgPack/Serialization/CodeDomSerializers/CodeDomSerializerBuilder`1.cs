@@ -1030,7 +1030,15 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 			asCodeDomContext.Reset( typeof( TObject ), BaseClass );
 
-			this.BuildSerializer( asCodeDomContext, concreteType, itemSchema );
+			if ( !typeof( TObject ).GetIsEnum() )
+			{
+				this.BuildSerializer( asCodeDomContext, concreteType, itemSchema );
+			}
+			else
+			{
+				this.BuildEnumSerializer( asCodeDomContext );
+			}
+
 			this.Finish( asCodeDomContext, typeof( TObject ).GetIsEnum() );
 		}
 
@@ -1055,7 +1063,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 			return
 				Expression.Lambda<Func<SerializationContext, MessagePackSerializer<TObject>>>(
-					Expression.New( targetType.GetConstructors().Single(), contextParameter ),
+					Expression.New( targetType.GetConstructors().Single( c => c.GetParameters().Length == 1 ), contextParameter ),
 					contextParameter
 				).Compile();
 		}
@@ -1210,6 +1218,39 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 
 			// ctor
+			if ( isEnum )
+			{
+				var ctor1 =
+					new CodeConstructor
+					{
+						Attributes = MemberAttributes.Public
+					};
+				ctor1.Parameters.Add( new CodeParameterDeclarationExpression( typeof( SerializationContext ), "context" ) );
+				ctor1.ChainedConstructorArgs.Add( new CodeArgumentReferenceExpression( "context" ) );
+				ctor1.ChainedConstructorArgs.Add(
+					new CodeFieldReferenceExpression(
+						new CodeTypeReferenceExpression( typeof( EnumSerializationMethod ) ),
+						EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(
+							context.SerializationContext,
+							typeof( TObject ),
+							EnumMemberSerializationMethod.Default
+						).ToString()
+					)
+				);
+				context.DeclaringType.Members.Add( ctor1 );
+
+				var ctor2 =
+					new CodeConstructor
+					{
+						Attributes = MemberAttributes.Public
+					};
+				ctor2.Parameters.Add( new CodeParameterDeclarationExpression( typeof( SerializationContext ), "context" ) );
+				ctor2.Parameters.Add( new CodeParameterDeclarationExpression( typeof( EnumSerializationMethod ), "enumSerializationMethod" ) );
+				ctor2.BaseConstructorArgs.Add( new CodeArgumentReferenceExpression( "context" ) );
+				ctor2.BaseConstructorArgs.Add( new CodeArgumentReferenceExpression( "enumSerializationMethod" ) );
+				context.DeclaringType.Members.Add( ctor2 );
+			}
+			else
 			{
 				var ctor =
 					new CodeConstructor
@@ -1221,20 +1262,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				var contextArgument = new CodeArgumentReferenceExpression( "context" );
 				ctor.BaseConstructorArgs.Add( contextArgument );
 
-				if ( isEnum )
-				{
-					ctor.BaseConstructorArgs.Add(
-						new CodeFieldReferenceExpression(
-							new CodeTypeReferenceExpression( typeof( EnumSerializationMethod ) ),
-							EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(
-								context.SerializationContext,
-								typeof( TObject ),
-								EnumMemberSerializationMethod.Default
-							).ToString()
-						)
-					);
-				}
-				else if (
+				if (
 					BaseClass.GetConstructors( BindingFlags.NonPublic | BindingFlags.Instance )
 						.Any( c => c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( CollectionSerializerHelpers.CollectionConstructorTypes ) )
 					)
@@ -1427,7 +1455,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					);
 				}
 				context.DeclaringType.Members.Add( ctor );
-			}
+			} // else of isEnum
 
 			// __Condition
 			{

@@ -2,7 +2,7 @@
 //
 // NLiblet
 //
-// Copyright (C) 2011 FUJIWARA, Yusuke
+// Copyright (C) 2011-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -1155,7 +1155,7 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( method != null );
 
 #if !WINDOWS_PHONE
-			bool isMethodBuilder = method is MethodBuilder;
+			bool isMethodBuilder = method is MethodBuilder || method is ConstructorBuilder;
 #endif
 
 			/*

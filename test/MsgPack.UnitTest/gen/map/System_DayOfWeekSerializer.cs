@@ -16,7 +16,11 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
     public class System_DayOfWeekSerializer : MsgPack.Serialization.EnumMessagePackSerializer<System.DayOfWeek> {
         
         public System_DayOfWeekSerializer(MsgPack.Serialization.SerializationContext context) : 
-                base(context, MsgPack.Serialization.EnumSerializationMethod.ByName) {
+                this(context, MsgPack.Serialization.EnumSerializationMethod.ByName) {
+        }
+        
+        public System_DayOfWeekSerializer(MsgPack.Serialization.SerializationContext context, MsgPack.Serialization.EnumSerializationMethod enumSerializationMethod) : 
+                base(context, enumSerializationMethod) {
         }
         
         protected internal override void PackUnderlyingValueTo(MsgPack.Packer packer, System.DayOfWeek enumValue) {
