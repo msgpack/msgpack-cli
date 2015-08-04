@@ -198,6 +198,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			var itemSchema = ( schema ?? PolymorphismSchema.Default );
 			switch ( DetermineImmutableCollectionType(targetType) )
 			{
+				case ImmutableCollectionType.ImmutableArray:
 				case ImmutableCollectionType.ImmutableList:
 				case ImmutableCollectionType.ImmutableHashSet:
 				case ImmutableCollectionType.ImmutableSortedSet:
@@ -251,6 +252,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			switch ( targetType.GetGenericTypeDefinition().Name )
 			{
+				case "ImmutableArray`1":
+				{
+					return ImmutableCollectionType.ImmutableArray;
+				}
 				case "ImmutableList`1":
 				{
 					return ImmutableCollectionType.ImmutableList;
@@ -691,6 +696,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private enum ImmutableCollectionType
 		{
 			Unknown = 0,
+			ImmutableArray,
 			ImmutableDictionary,
 			ImmutableHashSet,
 			ImmutableList,

@@ -174,6 +174,54 @@ namespace MsgPack.Serialization
 
 
 		[Test]
+		public void ImmutableArrayTest_0_Success()
+		{
+			var collection = ImmutableArray.Create<int>();
+			var target = this.CreateTarget<ImmutableArray<int>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, collection );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				Assert.That( unpacked.ToArray(), Is.EqualTo( collection.ToArray() ) );
+			}
+		}
+
+		[Test]
+		public void ImmutableArrayTest_1_Success()
+		{
+			var collection = ImmutableArray.Create<int>();
+			collection = collection.Add( 0 );
+			var target = this.CreateTarget<ImmutableArray<int>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, collection );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				Assert.That( unpacked.ToArray(), Is.EqualTo( collection.ToArray() ) );
+			}
+		}
+
+		[Test]
+		public void ImmutableArrayTest_2_Success()
+		{
+			var collection = ImmutableArray.Create<int>();
+			collection = collection.Add( 0 );
+			collection = collection.Add( 1 );
+			var target = this.CreateTarget<ImmutableArray<int>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, collection );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				Assert.That( unpacked.ToArray(), Is.EqualTo( collection.ToArray() ) );
+			}
+		}
+
+		[Test]
 		public void ImmutableListTest_0_Success()
 		{
 			var collection = ImmutableList.Create<int>();

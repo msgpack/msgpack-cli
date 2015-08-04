@@ -179,6 +179,7 @@ namespace MsgPack.Serialization
 	foreach ( var type in
 		new []
 		{
+			"ImmutableArray`1",
 			"ImmutableList`1",
 			"ImmutableStack`1",
 			"ImmutableQueue`1",
