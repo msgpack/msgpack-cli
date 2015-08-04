@@ -31,6 +31,7 @@ using System.Security;
 using System.Text;
 
 using MsgPack.Serialization.AbstractSerializers;
+using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization.CodeDomSerializers
 {
@@ -135,18 +136,19 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		///		Determines that whether built-in serializer for specified type exists or not.
 		/// </summary>
 		/// <param name="type">The type for check.</param>
+		/// <param name="traits">The known <see cref="CollectionTraits"/> of the <paramref name="type"/>.</param>
 		/// <returns>
 		///   <c>true</c> if built-in serializer for specified type exists; <c>false</c>, otherwise.
 		/// </returns>
 		/// <exception cref="System.NotImplementedException"></exception>
-		public bool BuiltInSerializerExists( Type type )
+		public bool BuiltInSerializerExists( Type type, CollectionTraits traits )
 		{
 			if ( type == null )
 			{
 				throw new ArgumentNullException( "type" );
 			}
 
-			return type.IsArray || SerializerRepository.InternalDefault.Contains( type );
+			return GenericSerializer.IsSupported( type, traits, this._configuration.PreferReflectionBasedSerializer ) || SerializerRepository.InternalDefault.Contains( type );
 		}
 
 		/// <summary>

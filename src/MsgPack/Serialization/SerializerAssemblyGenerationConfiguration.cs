@@ -117,6 +117,14 @@ namespace MsgPack.Serialization
 		public AssemblyName AssemblyName { get; set; }
 
 		/// <summary>
+		///		Gets or sets a value indicating whether prefer reflection based collection serializers instead of dyhnamic generated serializers.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if prefer reflection based collection serializers instead of dyhnamic generated serializers; otherwise, <c>false</c>.
+		/// </value>
+		public bool PreferReflectionBasedSerializer { get; set; }
+
+		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializerAssemblyGenerationConfiguration"/> class.
 		/// </summary>
 		public SerializerAssemblyGenerationConfiguration()

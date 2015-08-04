@@ -28,14 +28,17 @@ namespace MsgPack.Serialization
 	internal class PreGeneratedSerializerGenerator
 	{
 		// To test generated serializers, enable this test and run, then copy bin/Debug/MsgPack contents to project's Serialization/GeneratedSerializers/ directory.
-		// [Test]
+		//[Test]
 		public void GenerateFiles()
 		{
+			// Note: if you face to PathTooLongException here, specify OutputDirectory of bellow object initializers.
+
 			SerializerGenerator.GenerateCode(
 				new SerializerCodeGenerationConfiguration
 				{
 					Namespace = "MsgPack.Serialization.GeneratedSerializers.ArrayBased",
 					SerializationMethod = SerializationMethod.Array,
+					//OutputDirectory = "\\temp-gen",
 					IsInternalToMsgPackLibrary = true // because of InternalsVisibleTo
 				},
 				PreGeneratedSerializerActivator.KnownTypes
@@ -45,6 +48,7 @@ namespace MsgPack.Serialization
 				{
 					Namespace = "MsgPack.Serialization.GeneratedSerializers.MapBased",
 					SerializationMethod = SerializationMethod.Map,
+					//OutputDirectory = "\\temp-gen",
 					IsInternalToMsgPackLibrary = true // because of InternalsVisibleTo
 				},
 				PreGeneratedSerializerActivator.KnownTypes

@@ -196,27 +196,27 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			var itemSchema = ( schema ?? PolymorphismSchema.Default );
-			switch ( targetType.GetGenericTypeDefinition().Name )
+			switch ( DetermineImmutableCollectionType(targetType) )
 			{
-				case "ImmutableList`1":
-				case "ImmutableHashSet`1":
-				case "ImmutableSortedSet`1":
-				case "ImmutableQueue`1":
+				case ImmutableCollectionType.ImmutableList:
+				case ImmutableCollectionType.ImmutableHashSet:
+				case ImmutableCollectionType.ImmutableSortedSet:
+				case ImmutableCollectionType.ImmutableQueue:
 				{
 					return
 						ReflectionExtensions.CreateInstancePreservingExceptionType<IGenericBuiltInSerializerFactory>(
 							typeof( ImmutableCollectionSerializerFactory<,> ).MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] )
 						).Create( context, itemSchema );
 				}
-				case "ImmutableStack`1":
+				case ImmutableCollectionType.ImmutableStack:
 				{
 					return
 						ReflectionExtensions.CreateInstancePreservingExceptionType<IGenericBuiltInSerializerFactory>(
 							typeof( ImmutableStackSerializerFactory<,> ).MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] )
 						).Create( context, itemSchema );
 				}
-				case "ImmutableDictionary`2":
-				case "ImmutableSortedDictionary`2":
+				case ImmutableCollectionType.ImmutableDictionary:
+				case ImmutableCollectionType.ImmutableSortedDictionary:
 				{
 					return
 						ReflectionExtensions.CreateInstancePreservingExceptionType<IGenericBuiltInSerializerFactory>(
@@ -235,6 +235,62 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 #endif // NETFX_35 || NETFX_40 || SILVERLIGHT
 		}
+
+#if !NETFX_35 && !NETFX_40 && !SILVERLIGHT
+		private static ImmutableCollectionType DetermineImmutableCollectionType( Type targetType )
+		{
+			if ( targetType.Namespace != "System.Collections.Immutable" )
+			{
+				return ImmutableCollectionType.Unknown;
+			}
+
+			if ( !targetType.GetIsGenericType() )
+			{
+				return ImmutableCollectionType.Unknown;
+			}
+
+			switch ( targetType.GetGenericTypeDefinition().Name )
+			{
+				case "ImmutableList`1":
+				{
+					return ImmutableCollectionType.ImmutableList;
+				}
+				case "ImmutableHashSet`1":
+				{
+					return ImmutableCollectionType.ImmutableHashSet;
+				}
+				case "ImmutableSortedSet`1":
+				{
+					return ImmutableCollectionType.ImmutableSortedSet;
+				}
+				case "ImmutableQueue`1":
+				{
+					return ImmutableCollectionType.ImmutableQueue;
+				}
+				case "ImmutableStack`1":
+				{
+					return ImmutableCollectionType.ImmutableStack;
+				}
+				case "ImmutableDictionary`2":
+				{
+					return ImmutableCollectionType.ImmutableDictionary;
+				}
+				case "ImmutableSortedDictionary`2":
+				{
+					return ImmutableCollectionType.ImmutableSortedDictionary;
+				}
+				default:
+				{
+#if DEBUG && !UNITY
+					Contract.Assert( false, "Unknown type:" + targetType );
+#endif // DEBUG && !UNITY
+					// ReSharper disable HeuristicUnreachableCode
+					return ImmutableCollectionType.Unknown;
+					// ReSharper restore HeuristicUnreachableCode
+				}
+			}
+		}
+#endif // !NETFX_35 && !NETFX_40 && !SILVERLIGHT
 #endif // !UNITY
 
 		public static IMessagePackSingleObjectSerializer TryCreateAbstractCollectionSerializer( SerializationContext context, Type abstractType, Type concreteType, PolymorphismSchema schema )
@@ -381,6 +437,58 @@ namespace MsgPack.Serialization.DefaultSerializers
 					return null;
 				}
 			}
+		}
+
+
+		/// <summary>
+		///		Determines whether the specified type is supported from this class.
+		/// </summary>
+		/// <param name="type">The type to be determined.</param>
+		/// <param name="traits">The known <see cref="CollectionTraits"/> of the <paramref name="type"/>.</param>
+		/// <param name="preferReflectionBasedSerializer"><c>true</c> to prefer reflection based collection serializers instead of dyhnamic generated serializers.</param>
+		/// <returns><c>true</c> when the <paramref name="type"/> is supported; otherwise, <c>false</c>.</returns>
+		internal static bool IsSupported( Type type, CollectionTraits traits, bool preferReflectionBasedSerializer )
+		{
+			if ( type.IsArray )
+			{
+				return true;
+			}
+
+			if ( Nullable.GetUnderlyingType( type ) != null )
+			{
+				return true;
+			}
+
+			if ( type.GetIsGenericType() )
+			{
+				var typeDefinition = type.GetGenericTypeDefinition();
+				if ( typeDefinition == typeof( List<> ) )
+				{
+					return true;
+				}
+
+				if ( typeDefinition == typeof( Dictionary<,> ) )
+				{
+					return true;
+				}
+			}
+
+#if !UNITY && !NETFX_35 && !NETFX_40 && !SILVERLIGHT
+			// ImmutableCollections does not support above platforms.
+			if ( DetermineImmutableCollectionType( type ) != ImmutableCollectionType.Unknown )
+			{
+				return true;
+			}
+#endif // !UNITY && !NETFX_35 && !NETFX_40 && !SILVERLIGHT
+
+			if ( preferReflectionBasedSerializer )
+			{
+				return
+					traits.DetailedCollectionType != CollectionDetailedKind.NotCollection
+					&& traits.DetailedCollectionType != CollectionDetailedKind.Unserializable;
+			}
+
+			return false;
 		}
 
 #if !UNITY
@@ -578,5 +686,19 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 		// ReSharper restore MemberHidesStaticFromOuterClass
 #endif // !UNITY
+
+#if !NETFX_35 && !NETFX_40 && !SILVERLIGHT
+		private enum ImmutableCollectionType
+		{
+			Unknown = 0,
+			ImmutableDictionary,
+			ImmutableHashSet,
+			ImmutableList,
+			ImmutableQueue,
+			ImmutableSortedDictionary,
+			ImmutableSortedSet,
+			ImmutableStack,
+		}
+#endif // !NETFX_35 && !NETFX_40 && !SILVERLIGHT
 	}
 }

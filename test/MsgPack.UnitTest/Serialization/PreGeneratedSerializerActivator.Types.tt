@@ -101,15 +101,6 @@ namespace MsgPack.Serialization
 			result.Add( typeof( SimpleCollection<#= "<" + collectionElementType + "[]>" #> ) ); 
 			result.Add( typeof( Collection<#= "<" + collectionElementType + ">" #> ) ); 
 			result.Add( typeof( Collection<#= "<" + collectionElementType + "[]>" #> ) ); 
-<#
-		if ( collectionElementType != "MessagePackObject" )
-		{
-#>
-			result.Add( typeof( List<#= "<" + collectionElementType + ">" #> ) ); 
-<#
-		}
-#>
-			result.Add( typeof( List<#= "<" + collectionElementType + "[]>" #> ) ); 
 			result.Add( typeof( HashSet<#= "<" + collectionElementType + ">" #> ) ); 
 			result.Add( typeof( HashSet<#= "<" + collectionElementType + "[]>" #> ) ); 
 #if !NETFX_35
@@ -120,12 +111,7 @@ namespace MsgPack.Serialization
 			result.Add( typeof( StringKeyedCollection<#= "<" + collectionElementType + "[]>" #> ) ); 
 <#
 	}
-#>
-			result.Add( typeof( Dictionary<MessagePackObject, MessagePackObject> ) );
-			result.Add( typeof( Dictionary<object, object> ) );
-			result.Add( typeof( Dictionary<String, DateTime> ) );
-			result.Add( typeof( Dictionary<String, int> ) );
-<#
+
 	foreach ( var targetType in targetTypes )
 	{
 #>

@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 
 using MsgPack.Serialization.AbstractSerializers;
+using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
@@ -34,14 +35,16 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private readonly SerializationContext _context;
 		private readonly SerializationMethodGeneratorManager _generatorManager;
 		private readonly AssemblyBuilder _assemblyBuilder;
+		private readonly bool _preferReflectionBasedSerializer;
 
-		public AssemblyBuilderCodeGenerationContext( SerializationContext context, AssemblyBuilder assemblyBuilder )
+		public AssemblyBuilderCodeGenerationContext( SerializationContext context, AssemblyBuilder assemblyBuilder, bool preferReflectionBasedSerializer )
 		{
 			this._context = context;
 			this._assemblyBuilder = assemblyBuilder;
 
 			DefaultSerializationMethodGeneratorManager.SetUpAssemblyBuilderAttributes( assemblyBuilder, false );
 			this._generatorManager = SerializationMethodGeneratorManager.Get( assemblyBuilder );
+			this._preferReflectionBasedSerializer = preferReflectionBasedSerializer;
 		}
 
 		/// <summary>
@@ -65,18 +68,19 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		Determines that whether built-in serializer for specified type exists or not.
 		/// </summary>
 		/// <param name="type">The type for check.</param>
+		/// <param name="traits">The known <see cref="CollectionTraits"/> of the <paramref name="type"/>.</param>
 		/// <returns>
 		///   <c>true</c> if built-in serializer for specified type exists; <c>false</c>, otherwise.
 		/// </returns>
 		/// <exception cref="System.NotImplementedException"></exception>
-		public bool BuiltInSerializerExists( Type type )
+		public bool BuiltInSerializerExists( Type type, CollectionTraits traits )
 		{
 			if ( type == null )
 			{
 				throw new ArgumentNullException( "type" );
 			}
 
-			return type.IsArray || SerializerRepository.InternalDefault.Contains( type );
+			return GenericSerializer.IsSupported( type, traits, this._preferReflectionBasedSerializer  ) || SerializerRepository.InternalDefault.Contains( type );
 		}
 
 		/// <summary>

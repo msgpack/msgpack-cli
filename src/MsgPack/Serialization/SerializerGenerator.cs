@@ -379,7 +379,12 @@ namespace MsgPack.Serialization
 				return
 					new AssemblyBuilderCodeGenerationContext(
 						context,
-						AppDomain.CurrentDomain.DefineDynamicAssembly( configuration.AssemblyName, AssemblyBuilderAccess.RunAndSave, configuration.OutputDirectory )
+						AppDomain.CurrentDomain.DefineDynamicAssembly(
+							configuration.AssemblyName,
+							AssemblyBuilderAccess.RunAndSave,
+							configuration.OutputDirectory
+						),
+						configuration.PreferReflectionBasedSerializer
 					);
 			}
 

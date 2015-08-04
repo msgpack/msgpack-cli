@@ -302,7 +302,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				throw new ArgumentNullException( "context" );
 			}
 
-			if ( context.BuiltInSerializerExists( typeof( TObject ) ) )
+			if ( context.BuiltInSerializerExists( typeof( TObject ), CollectionTraitsOfThis ) )
 			{
 				// nothing to do.
 				return;

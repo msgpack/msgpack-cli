@@ -33,13 +33,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Determines that whether built-in serializer for specified type exists or not.
 		/// </summary>
 		/// <param name="type">The type for check.</param>
+		/// <param name="traits">The known <see cref="CollectionTraits"/> of the <paramref name="type"/>.</param>
 		/// <returns>
 		///		<c>true</c> if built-in serializer for specified type exists; <c>false</c>, otherwise.
 		/// </returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="type"/> is <c>null</c>.
 		/// </exception>
-		bool BuiltInSerializerExists( Type type );
+		bool BuiltInSerializerExists( Type type, CollectionTraits traits );
 
 		/// <summary>
 		///		Generates codes for this context.

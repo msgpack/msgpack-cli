@@ -40,8 +40,6 @@ namespace MsgPack.Serialization
 			result.Add( typeof( SimpleCollection<System.Object[]> ) ); 
 			result.Add( typeof( Collection<System.Object> ) ); 
 			result.Add( typeof( Collection<System.Object[]> ) ); 
-			result.Add( typeof( List<System.Object> ) ); 
-			result.Add( typeof( List<System.Object[]> ) ); 
 			result.Add( typeof( HashSet<System.Object> ) ); 
 			result.Add( typeof( HashSet<System.Object[]> ) ); 
 #if !NETFX_35
@@ -56,8 +54,6 @@ namespace MsgPack.Serialization
 			result.Add( typeof( SimpleCollection<System.DateTime[]> ) ); 
 			result.Add( typeof( Collection<System.DateTime> ) ); 
 			result.Add( typeof( Collection<System.DateTime[]> ) ); 
-			result.Add( typeof( List<System.DateTime> ) ); 
-			result.Add( typeof( List<System.DateTime[]> ) ); 
 			result.Add( typeof( HashSet<System.DateTime> ) ); 
 			result.Add( typeof( HashSet<System.DateTime[]> ) ); 
 #if !NETFX_35
@@ -72,7 +68,6 @@ namespace MsgPack.Serialization
 			result.Add( typeof( SimpleCollection<MessagePackObject[]> ) ); 
 			result.Add( typeof( Collection<MessagePackObject> ) ); 
 			result.Add( typeof( Collection<MessagePackObject[]> ) ); 
-			result.Add( typeof( List<MessagePackObject[]> ) ); 
 			result.Add( typeof( HashSet<MessagePackObject> ) ); 
 			result.Add( typeof( HashSet<MessagePackObject[]> ) ); 
 #if !NETFX_35
@@ -87,8 +82,6 @@ namespace MsgPack.Serialization
 			result.Add( typeof( SimpleCollection<System.Int32[]> ) ); 
 			result.Add( typeof( Collection<System.Int32> ) ); 
 			result.Add( typeof( Collection<System.Int32[]> ) ); 
-			result.Add( typeof( List<System.Int32> ) ); 
-			result.Add( typeof( List<System.Int32[]> ) ); 
 			result.Add( typeof( HashSet<System.Int32> ) ); 
 			result.Add( typeof( HashSet<System.Int32[]> ) ); 
 #if !NETFX_35
@@ -97,10 +90,6 @@ namespace MsgPack.Serialization
 #endif // !NETFX_35
 			result.Add( typeof( StringKeyedCollection<System.Int32> ) ); 
 			result.Add( typeof( StringKeyedCollection<System.Int32[]> ) ); 
-			result.Add( typeof( Dictionary<MessagePackObject, MessagePackObject> ) );
-			result.Add( typeof( Dictionary<object, object> ) );
-			result.Add( typeof( Dictionary<String, DateTime> ) );
-			result.Add( typeof( Dictionary<String, int> ) );
 			result.Add( typeof( ComplexType ) ); 
 			result.Add( typeof( ComplexTypeGenerated ) ); 
 			result.Add( typeof( ComplexTypeGeneratedEnclosure ) ); 

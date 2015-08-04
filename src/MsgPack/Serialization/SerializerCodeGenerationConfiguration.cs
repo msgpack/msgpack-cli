@@ -177,6 +177,14 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
+		///		Gets or sets a value indicating whether prefer reflection based collection serializers instead of dyhnamic generated serializers.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if prefer reflection based collection serializers instead of dyhnamic generated serializers; otherwise, <c>false</c>.
+		/// </value>
+		public bool PreferReflectionBasedSerializer { get; set; }
+
+		/// <summary>
 		///		Gets or sets a value indicating whether the generated serializers will be internal to MsgPack library itself.
 		/// </summary>
 		/// <value>
