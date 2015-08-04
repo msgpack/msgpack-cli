@@ -16,7 +16,11 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
     public class MsgPack_Serialization_EnumByUnderlyingValueSerializer : MsgPack.Serialization.EnumMessagePackSerializer<MsgPack.Serialization.EnumByUnderlyingValue> {
         
         public MsgPack_Serialization_EnumByUnderlyingValueSerializer(MsgPack.Serialization.SerializationContext context) : 
-                base(context, MsgPack.Serialization.EnumSerializationMethod.ByUnderlyingValue) {
+                this(context, MsgPack.Serialization.EnumSerializationMethod.ByUnderlyingValue) {
+        }
+        
+        public MsgPack_Serialization_EnumByUnderlyingValueSerializer(MsgPack.Serialization.SerializationContext context, MsgPack.Serialization.EnumSerializationMethod enumSerializationMethod) : 
+                base(context, enumSerializationMethod) {
         }
         
         protected internal override void PackUnderlyingValueTo(MsgPack.Packer packer, MsgPack.Serialization.EnumByUnderlyingValue enumValue) {

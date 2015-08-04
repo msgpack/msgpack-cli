@@ -16,7 +16,11 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
     public class MsgPack_Serialization_EnumInt32FlagsSerializer : MsgPack.Serialization.EnumMessagePackSerializer<MsgPack.Serialization.EnumInt32Flags> {
         
         public MsgPack_Serialization_EnumInt32FlagsSerializer(MsgPack.Serialization.SerializationContext context) : 
-                base(context, MsgPack.Serialization.EnumSerializationMethod.ByName) {
+                this(context, MsgPack.Serialization.EnumSerializationMethod.ByName) {
+        }
+        
+        public MsgPack_Serialization_EnumInt32FlagsSerializer(MsgPack.Serialization.SerializationContext context, MsgPack.Serialization.EnumSerializationMethod enumSerializationMethod) : 
+                base(context, enumSerializationMethod) {
         }
         
         protected internal override void PackUnderlyingValueTo(MsgPack.Packer packer, MsgPack.Serialization.EnumInt32Flags enumValue) {
