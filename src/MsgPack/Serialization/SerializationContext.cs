@@ -443,7 +443,9 @@ namespace MsgPack.Serialization
 
 		internal bool ContainsSerializer( Type rootType )
 		{
-			return this._serializers.Contains( rootType );
+			return
+				this._serializers.Contains( rootType )
+				|| ( rootType.IsGenericType && this._serializers.Contains( rootType.GetGenericTypeDefinition() ) );
 		}
 
 		/// <summary>
