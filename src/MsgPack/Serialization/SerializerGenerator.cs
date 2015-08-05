@@ -339,9 +339,26 @@ namespace MsgPack.Serialization
 						SerializationMethod = configuration.SerializationMethod
 					};
 
+				IEnumerable<Type> realTargetTypes;
+				if ( configuration.IsRecursive )
+				{
+					realTargetTypes =
+						targetTypes.SelectMany(
+							t =>
+							new[] { t }.Concat(
+								SerializationTarget.Prepare( context, t ).Members.Select( m => m.Member.GetMemberValueType() )
+							)
+						);
+				}
+				else
+				{
+					realTargetTypes = targetTypes;
+				}
+
 				var generationContext = this.CreateGenerationContext( context, configuration );
 				var generatorFactory = this.CreateGeneratorFactory();
-				foreach ( var targetType in targetTypes.Distinct() )
+
+				foreach ( var targetType in realTargetTypes.Distinct().Where( t => !context.ContainsSerializer( t ) ) )
 				{
 					var generator = generatorFactory( targetType );
 

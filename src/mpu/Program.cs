@@ -83,6 +83,11 @@ namespace mpu
 			var treatWarningsAsErrors = false;
 			var warningLevel = 4;
 			var configuration = new SerializerCodeGenerationConfiguration();
+			var configuration =
+				new SerializerCodeGenerationConfiguration
+				{
+					IsRecursive = true
+				};
 
 			var options =
 				new OptionSet( Localize )
@@ -130,6 +135,10 @@ namespace mpu
 					{
 						"enum-method=", "[serializer, optional] Specify enum serialization method for generated enum serializers. Valid value is ByName or ByUnderlyingType. Default is 'ByName'.",
 						(EnumSerializationMethod value) => configuration.EnumSerializationMethod = value
+					},
+					{
+						"singular", "[serializer, optional] Specify avoid recursive serializer generation for target type(s).",
+						_ => configuration.PreferReflectionBasedSerializer = false
 					},
 					{
 						"indent=", "[serializer, optional] Specify indent string for generated serializers. Default is a horizontal tab charactor (U+0009).",

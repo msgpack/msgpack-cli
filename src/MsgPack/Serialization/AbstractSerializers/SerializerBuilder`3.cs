@@ -61,8 +61,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 			var traits = typeof( TObject ).GetCollectionTraits();
 			CollectionTraitsOfThis = traits;
 #if DEBUG && !UNITY
-			Contract.Assert( traits.DetailedCollectionType != CollectionDetailedKind.Array );
-			Contract.Assert( traits.DetailedCollectionType != CollectionDetailedKind.Unserializable );
+			Contract.Assert(
+				traits.DetailedCollectionType != CollectionDetailedKind.Unserializable,
+				typeof( TObject ) + "(" + traits.DetailedCollectionType + ") != CollectionDetailedKind.Unserializable" 
+			);
 #endif // DEBUG
 			switch ( traits.DetailedCollectionType )
 			{
@@ -132,6 +134,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 					BaseClass = typeof( NonGenericDictionaryMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
 					break;
 				}
+				case CollectionDetailedKind.Array:
+				{
+					BaseClass =
+						typeof( TObject ).GetIsEnum()
+							? typeof( EnumMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) )
+							: typeof( MessagePackSerializer<TObject> );
+					break;
+				}
 				default:
 				{
 #if DEBUG && !UNITY
@@ -167,6 +177,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context, Type concreteType, PolymorphismSchema schema )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert(
+				CollectionTraitsOfThis.DetailedCollectionType != CollectionDetailedKind.Array,
+				typeof( TObject ) + "(" + CollectionTraitsOfThis.DetailedCollectionType + ") != CollectionDetailedKind.Array"
+			);
+#endif // DEBUG
 			Func<SerializationContext, MessagePackSerializer<TObject>> constructor;
 			var codeGenerationContext = this.CreateCodeGenerationContextForSerializerCreation( context );
 			if ( typeof( TObject ).GetIsEnum() )

@@ -117,6 +117,14 @@ namespace MsgPack.Serialization
 		public AssemblyName AssemblyName { get; set; }
 
 		/// <summary>
+		///		Gets or sets a value indicating whether recursively generates dependent types which do not have built-in serializer or not.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if recursively generates dependent types which do not have built-in serializer; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsRecursive { get; set; }
+
+		/// <summary>
 		///		Gets or sets a value indicating whether prefer reflection based collection serializers instead of dyhnamic generated serializers.
 		/// </summary>
 		/// <value>
