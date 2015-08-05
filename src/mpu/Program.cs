@@ -82,10 +82,10 @@ namespace mpu
 			var excludingPattern = default( string );
 			var treatWarningsAsErrors = false;
 			var warningLevel = 4;
-			var configuration = new SerializerCodeGenerationConfiguration();
 			var configuration =
 				new SerializerCodeGenerationConfiguration
 				{
+					PreferReflectionBasedSerializer = true,
 					IsRecursive = true
 				};
 
@@ -138,6 +138,10 @@ namespace mpu
 					},
 					{
 						"singular", "[serializer, optional] Specify avoid recursive serializer generation for target type(s).",
+						_ => configuration.PreferReflectionBasedSerializer = false
+					},
+					{
+						"avoid-reflection-based", "[serializer, optional] Specify avoid built-in reflection based serializer and generates alternative serializers.",
 						_ => configuration.PreferReflectionBasedSerializer = false
 					},
 					{
