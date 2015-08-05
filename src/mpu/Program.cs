@@ -128,6 +128,10 @@ namespace mpu
 						(SerializationMethod value) => configuration.SerializationMethod = value
 					},
 					{
+						"enum-method=", "[serializer, optional] Specify enum serialization method for generated enum serializers. Valid value is ByName or ByUnderlyingType. Default is 'ByName'.",
+						(EnumSerializationMethod value) => configuration.EnumSerializationMethod = value
+					},
+					{
 						"indent=", "[serializer, optional] Specify indent string for generated serializers. Default is a horizontal tab charactor (U+0009).",
 						value => configuration.CodeIndentString = value
 					},
