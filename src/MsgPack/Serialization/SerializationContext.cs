@@ -23,8 +23,6 @@
 #endif
 
 using System;
-using System.Linq;
-using System.Reflection;
 #if !SILVERLIGHT && !NETFX_35 && !UNITY
 using System.Collections.Concurrent;
 #else // !SILVERLIGHT && !NETFX_35 && !UNITY
@@ -37,9 +35,15 @@ using Contract = MsgPack.MPContract;
 using System.Diagnostics.Contracts;
 #endif // XAMIOS || XAMDROID
 #endif // !UNITY
+#if UNITY
+using System.Linq;
+#endif // UNITY
 #if NETFX_CORE
 using System.Linq.Expressions;
 #endif // NETFX_CORE
+#if UNITY || XAMIOS || XAMDROID
+using System.Reflection;
+#endif // UNITY || XAMIOS || XAMDROID
 using System.Threading;
 
 using MsgPack.Serialization.DefaultSerializers;
@@ -354,6 +358,111 @@ namespace MsgPack.Serialization
 			set;
 		}
 
+#if UNITY
+		private readonly object _resolveSerializerSyncRoot = new object();
+#endif // UNITY
+
+		private EventHandler<ResolveSerializerEventArgs> _resolveSerializer;
+
+		// Unity cannot use Interlocked.CompareExchange<T>, so use explicit implementation here.
+		/// <summary>
+		///		Occurs when the context have not find appropriate registered nor built-in serializer for specified type.
+		/// </summary>
+		/// <remarks>
+		///		This event will be occured when the context could not found known serializer from:
+		///		<list type="bullet">
+		///			<item>
+		///				Known built-in serializers for arrays, nullables, and collections, etc.
+		///			</item>
+		///			<item>
+		///				Known default serializers for some known various FCL value types and some reference types.
+		///			</item>
+		///			<item>
+		///				Previously registered or generated serializer.
+		///			</item>
+		///		</list>
+		///		You can instantiate your custom serializer using various <see cref="ResolveSerializerEventArgs" /> properties,
+		///		and then call <see cref="ResolveSerializerEventArgs.SetSerializer{T}"/> to provide toward the context.
+		///		<note>
+		///			You can use <see cref="SerializationContext" /> to get dependent serializers as you like, 
+		///			but you should never explicitly register new serializer(s) explicitly via the context from the event handler and its dependents.
+		///			Instead, you specify the instanciated serializer with <see cref="ResolveSerializerEventArgs.SetSerializer{T}"/> once at a time. 
+		///			Dependent serializer(s) should be registered via next (nested) raise of this event.
+		///		</note>
+		///		<note>
+		///			The context implicitly holds 'lock' for the target type for the requested serializer in the current thread.
+		///			So you should not use any synchronization primitives in the event handler and its dependents,
+		///			or you may face complex dead lock.
+		///			That is, the event handler should be as simple as possible like just instanciate the serializer and set it to the event argument.
+		///		</note>
+		/// </remarks>
+		public event EventHandler<ResolveSerializerEventArgs> ResolveSerializer
+		{
+			add
+			{
+#if UNITY
+				lock( this._resolveSerializerSyncRoot )
+				{
+					this._resolveSerializer += value;
+				}
+#else
+
+				EventHandler<ResolveSerializerEventArgs> expectedHandler;
+				var actualHandler = this._resolveSerializer;
+				do
+				{
+					expectedHandler = actualHandler;
+					var combined = ( EventHandler<ResolveSerializerEventArgs> )Delegate.Combine( expectedHandler, value );
+					actualHandler = Interlocked.CompareExchange( ref this._resolveSerializer, combined, expectedHandler );
+				}
+				while ( expectedHandler != actualHandler );
+#endif
+			}
+			remove
+			{
+#if UNITY
+				lock( this._resolveSerializerSyncRoot )
+				{
+					// ReSharper disable once DelegateSubtraction
+					this._resolveSerializer -= value;
+				}
+#else
+				EventHandler<ResolveSerializerEventArgs> expectedHandler;
+				var actualHandler = this._resolveSerializer;
+				do
+				{
+					expectedHandler = actualHandler;
+					var removed = ( EventHandler<ResolveSerializerEventArgs> )Delegate.Remove( expectedHandler, value );
+					actualHandler = Interlocked.CompareExchange( ref this._resolveSerializer, removed, expectedHandler );
+				}
+				while ( expectedHandler != actualHandler );
+#endif
+			}
+		}
+
+		private MessagePackSerializer<T> OnResolveSerializer<T>( PolymorphismSchema schema )
+		{
+#if UNITY
+			lock( this._resolveSerializerSyncRoot )
+			{
+			var handler = this._resolveSerializer;
+#else
+			var handler = Interlocked.CompareExchange( ref this._resolveSerializer, null, null );
+#endif
+			if ( handler == null )
+			{
+				return null;
+			}
+
+			// Lazily allocate event args memory.
+			var e = new ResolveSerializerEventArgs( this, typeof( T ), schema );
+			handler( this, e );
+			return e.GetFoundSerializer<T>();
+#if UNITY
+			}
+#endif
+		}
+
 		/// <summary>
 		///		Configures <see cref="Default"/> as new classic <see cref="SerializationContext"/> instance.
 		/// </summary>
@@ -572,13 +681,14 @@ namespace MsgPack.Serialization
 								// On debugging, or AOT only envs, use reflection based aproach.
 								serializer =
 									this.GetSerializerWithoutGeneration<T>( schema )
+									?? this.OnResolveSerializer<T>( schema )
 									?? MessagePackSerializer.CreateReflectionInternal<T>( this, this.EnsureConcreteTypeRegistered( typeof( T ) ), schema );
 #if !XAMIOS && !XAMDROID && !UNITY
 							}
 							else
 							{
 								// This thread creating new type serializer.
-								serializer = MessagePackSerializer.CreateInternal<T>( this, schema );
+								serializer = this.OnResolveSerializer<T>( schema ) ?? MessagePackSerializer.CreateInternal<T>( this, schema );
 							}
 #endif // !XAMIOS && !XAMDROID && !UNITY
 						}
@@ -782,11 +892,6 @@ namespace MsgPack.Serialization
 		{
 			public static readonly SerializerGetter Instance = new SerializerGetter();
 
-#if UNITY
-			private static readonly MethodInfo GetSerializer1Method =
-				typeof( SerializationContext ).GetMethods()
-					.Single( m => m.IsGenericMethodDefinition && m.Name == "GetSerializer" && m.GetParameters().Length == 1 );
-#endif // UNITY
 #if !SILVERLIGHT && !NETFX_35 && !UNITY
 			private readonly ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>> _cache =
 				new ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>>();

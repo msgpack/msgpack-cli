@@ -343,6 +343,126 @@ namespace MsgPack.Serialization
 			Assert.That( table.Count, Is.LessThanOrEqualTo( SerializerRepository.DefaultTableCapacity ) );
 		}
 
+		[Test]
+		public void TestResolveSerializer_NotRegistered_Raised()
+		{
+			var context = new SerializationContext();
+			var raised = 0;
+			// ReSharper disable once AccessToModifiedClosure
+			EventHandler<ResolveSerializerEventArgs> handler = ( sender, e ) => { raised++; };
+			context.ResolveSerializer += handler;
+			context.GetSerializer<Image>();
+			Assert.That( raised, Is.EqualTo( 1 ) );
+		}
+
+		[Test]
+		public void TestResolveSerializer_Registered_NotRaised()
+		{
+			var context = new SerializationContext();
+			var raised = 0;
+			// ReSharper disable once AccessToModifiedClosure
+			EventHandler<ResolveSerializerEventArgs> handler = ( sender, e ) => { raised++; };
+			context.ResolveSerializer += handler;
+			context.GetSerializer<Image>();
+			// Re-get will not raise event because already registered.
+			context.GetSerializer<Image>();
+			Assert.That( raised, Is.EqualTo( 1 ) );
+		}
+
+		[Test]
+		public void TestResolveSerializer_AddRemove_Removed()
+		{
+			var context = new SerializationContext();
+			var raised = 0;
+			// ReSharper disable once AccessToModifiedClosure
+			EventHandler<ResolveSerializerEventArgs> handler = ( sender, e ) => { raised++; };
+			context.ResolveSerializer += handler;
+			context.GetSerializer<Image>();
+			Assert.That( raised, Is.EqualTo( 1 ) );
+			
+			// Verify removed with new context
+			context = new SerializationContext();
+			raised = 0;
+			context.ResolveSerializer += handler;
+			context.ResolveSerializer -= handler;
+			context.GetSerializer<Image>();
+			Assert.That( raised, Is.EqualTo( 0 ) );
+		}
+
+		[Test]
+		public void TestResolveSerializer_BuiltIns_NotRaised()
+		{
+			var context = new SerializationContext();
+			var raised = 0;
+			// ReSharper disable once AccessToModifiedClosure
+			context.ResolveSerializer += ( sender, e ) => { raised++; };
+			context.GetSerializer<int[]>();
+			context.GetSerializer<int?>();
+			context.GetSerializer<List<int>>();
+			context.GetSerializer<DateTime>();
+			Assert.That( raised, Is.EqualTo( 0 ) );
+		}
+
+		[Test]
+		public void TestResolveSerializer_SetFound_CanCustomizeSerializer()
+		{
+			var context = new SerializationContext();
+			var raised = 0;
+			// ReSharper disable once AccessToModifiedClosure
+			EventHandler<ResolveSerializerEventArgs> handler =
+				( sender, e ) =>
+				{
+					raised++;
+					e.SetSerializer( new CustomImageSerializer( e.Context ) );
+				};
+			context.ResolveSerializer += handler;
+			context.GetSerializer<Image>();
+			Assert.That( raised, Is.EqualTo( 1 ) );
+		}
+
+		[Test]
+		public void TestResolveSerializer_SetNull_Generated()
+		{
+			var context = new SerializationContext();
+			var raised = 0;
+			// ReSharper disable once AccessToModifiedClosure
+			EventHandler<ResolveSerializerEventArgs> handler = 
+				( sender, e ) =>
+				{
+					raised++;
+					e.SetSerializer<Image>( null );
+				};
+			context.ResolveSerializer += handler;
+			var result = context.GetSerializer<Image>();
+			Assert.That( raised, Is.EqualTo( 1 ) );
+			Assert.That( result, Is.Not.Null );
+			Assert.That( result.GetType().Assembly.IsDynamic );
+		}
+
+
+		[Test]
+		public void TestResolveSerializer_WrongSerializer_Fail()
+		{
+			var context = new SerializationContext();
+			var raised = 0;
+			var registered = false;
+			// ReSharper disable once AccessToModifiedClosure
+			EventHandler<ResolveSerializerEventArgs> handler =
+				( sender, e ) =>
+				{
+					raised++;
+					e.SetSerializer( new NetDateTimeSerializer() );
+					registered = true;
+				};
+			context.ResolveSerializer += handler;
+			Assert.Throws<InvalidOperationException>(
+				() => context.GetSerializer<Image>()
+			);
+			Assert.That( raised, Is.EqualTo( 1 ) );
+			Assert.That( registered, Is.False );
+		}
+
+
 		private sealed class NetDateTimeSerializer : MessagePackSerializer<DateTime>
 		{
 			public NetDateTimeSerializer()
@@ -438,5 +558,24 @@ namespace MsgPack.Serialization
 		private sealed class StringKeyDictionary<T> : Dictionary<String, T>
 		{
 		}
+
+		private sealed class CustomImageSerializer : MessagePackSerializer<Image>
+		{
+			public CustomImageSerializer( SerializationContext context )
+				: base( context ) {}
+
+			protected internal override void PackToCore( Packer packer, Image objectTree )
+			{
+				// Intensionally not implemented
+				throw new NotImplementedException();
+			}
+
+			protected internal override Image UnpackFromCore( Unpacker unpacker )
+			{
+				// Intensionally not implemented
+				throw new NotImplementedException();
+			}
+		}
+
 	}
 }

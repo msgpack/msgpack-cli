@@ -273,6 +273,7 @@
     <Compile Include="Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerOnUnpackedParameter.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerParameter.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\ResolveSerializerEventArgs.cs" />
     <Compile Include="Serialization\SerializationContext.ExtTypeCodes.cs" />
     <Compile Include="Serialization\SerializationTarget.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs">
