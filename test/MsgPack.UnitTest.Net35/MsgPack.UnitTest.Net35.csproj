@@ -380,6 +380,9 @@
     <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Skip.cs">
       <Link>UnpackerTest.Skip.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Skip.Variations.cs">
+      <Link>UnpackerTest.Skip.Variations.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Array.cs">
       <Link>UnpackingTest.Combinations.Array.cs</Link>
     </Compile>

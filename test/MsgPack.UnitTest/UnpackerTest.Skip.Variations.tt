@@ -1,0 +1,287 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ output extension=".cs" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.IO;
+using System.Linq;
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	// ReSharper disable once InconsistentNaming
+	partial class UnpackerTest_Skip
+	{
+<#
+// Constants
+foreach( var testCase in
+	new []
+	{
+		new { Name = "NilValue", Binary = new byte[] { 0xc0 } },
+		new { Name = "TrueValue", Binary = new byte[] { 0xC3 } },
+		new { Name = "FalseValue", Binary = new byte[] { 0xC2 } },
+		new { Name = "SignedInt8", Binary = new byte[] { 0xD0, 1 } },
+		new { Name = "UnsignedInt8", Binary = new byte[] { 0xCC, 1 } },
+		new { Name = "SignedInt16", Binary = new byte[] {  0xD1 }.Concat( Enumerable.Range( 1, 2 ).Reverse().Select( i => ( byte )i ) ).ToArray() },
+		new { Name = "UnsignedInt16", Binary = new byte[] { 0xCD }.Concat( Enumerable.Range( 1, 2 ).Reverse().Select( i => ( byte )i ) ).ToArray() },
+		new { Name = "SignedInt32", Binary = new byte[] { 0xD2 }.Concat( Enumerable.Range( 1, 4 ).Reverse().Select( i => ( byte )i ) ).ToArray() },
+		new { Name = "UnsignedInt32", Binary = new byte[] { 0xCE }.Concat( Enumerable.Range( 1, 4 ).Reverse().Select( i => ( byte )i ) ).ToArray() },
+		new { Name = "SignedInt64", Binary = new byte[] { 0xD3 }.Concat( Enumerable.Range( 1, 8 ).Reverse().Select( i => ( byte )i ) ).ToArray() },
+		new { Name = "UnsignedInt64", Binary = new byte[] { 0xCF }.Concat( Enumerable.Range( 1, 8 ).Reverse().Select( i => ( byte )i ) ).ToArray() },
+		new { Name = "Real32", Binary = new byte[] { 0xCA }.Concat( BitConverter.GetBytes( 0.0f ) ).ToArray() },
+		new { Name = "Real64", Binary = new byte[] { 0xCB}.Concat( BitConverter.GetBytes( 0.0 ) ).ToArray() },
+		new { Name = "FixExt1", Binary = new byte[] { 0xD4, 0x7F, 1 } },
+		new { Name = "FixExt2", Binary = new byte[] { 0xD5, 0x7F }.Concat( Enumerable.Range( 1, 2 ).Reverse().Select( i => ( byte )i ) ).ToArray() },
+		new { Name = "FixExt4", Binary = new byte[] { 0xD6, 0x7F }.Concat( Enumerable.Range( 1, 4 ).Reverse().Select( i => ( byte )i ) ).ToArray() },
+		new { Name = "FixExt8", Binary = new byte[] { 0xD7, 0x7F }.Concat( Enumerable.Range( 1, 8 ).Reverse().Select( i => ( byte )i ) ).ToArray() },
+		new { Name = "FixExt16", Binary = new byte[] { 0xD8, 0x7F }.Concat( Enumerable.Range( 1, 16 ).Reverse().Select( i => ( byte )i ) ).ToArray() },
+	} )
+{
+#>
+
+		[Test]
+		public void Test<#= testCase.Name #>()
+		{
+<#
+	WriteTestBody( testCase.Binary );
+#>
+		}
+<#
+}
+// Fixed Types -- 0, 1, max
+foreach( var testCase in
+	new []
+	{
+		new { Name = "FixInt", Zero = new byte[] { 0x0 }, Min = new byte[] { 0xE0 }, Max = new byte[] { 0x7F } },
+		new { Name = "FixedArray", Zero = new byte[] { 0x90 }, Min = new byte[] { 0x91, 0x41 }, Max = new byte[] { 0x9F }.Concat( Enumerable.Repeat( 0x41, 0xF ).Select( i => ( byte )i ) ).ToArray() },
+		new { Name = "FixedMap", Zero = new byte[] { 0x80 }, Min = new byte[] { 0x81, 0x41, 0x41 }, Max = new byte[] { 0x8F }.Concat( Enumerable.Repeat( 0x41, 0xF * 2 ).Select( i => ( byte )i ) ).ToArray() },
+		new { Name = "FixedRaw", Zero = new byte[] { 0xA0 }, Min = new byte[] { 0xA1, 0x41 }, Max = new byte[] { 0xBF }.Concat( Enumerable.Repeat( 0x41, 0x1F ).Select( i => ( byte )i ) ).ToArray() },
+	} )
+{
+#>
+
+		[Test]
+		public void Test<#= testCase.Name #>_Zero()
+		{
+<#
+	WriteTestBody( testCase.Zero );
+#>
+		}
+
+		[Test]
+		public void Test<#= testCase.Name #>_Min()
+		{
+<#
+	WriteTestBody( testCase.Min );
+#>
+		}
+
+		[Test]
+		public void Test<#= testCase.Name #>_Max()
+		{
+<#
+	WriteTestBody( testCase.Max );
+#>
+		}
+<#
+}
+// Variable Types -- 0, min, max
+foreach( var testCase in
+	new []
+	{
+		new { Name = "Array16", Code = 0xDC, Min = 0x20, Max = 0xFFFF, SizeType = "ushort", IsMap = false },
+		new { Name = "Array32", Code = 0xDD, Min = 0x10000, Max = 0x10001, SizeType = "uint", IsMap = false },
+		new { Name = "Map16", Code = 0xDE, Min = 0x20, Max = 0xFFFF, SizeType = "ushort", IsMap = true },
+		new { Name = "Map32", Code = 0xDF, Min = 0x10000, Max = 0x10001, SizeType = "uint", IsMap = true },
+		new { Name = "Str8", Code = 0xD9, Min = 0x20, Max = 0xFf, SizeType = "byte", IsMap = false },
+		new { Name = "Raw16", Code = 0xDA, Min = 0x100, Max = 0xFFFF, SizeType = "ushort", IsMap = false },
+		new { Name = "Raw32", Code = 0xDB, Min = 0x10000, Max = 0x10001, SizeType = "uint", IsMap = false },
+		new { Name = "Bin8", Code = 0xC4, Min = 0x20, Max = 0xFF, SizeType = "byte", IsMap = false },
+		new { Name = "Bin16", Code = 0xC5, Min = 0x100, Max = 0xFFFF, SizeType = "ushort", IsMap = false },
+		new { Name = "Bin32", Code = 0xC6, Min = 0x10000, Max = 0x10001, SizeType = "uint", IsMap = false },
+	} )
+{
+#>
+
+		[Test]
+		public void Test<#= testCase.Name #>_Zero()
+		{
+<#
+	WriteTestBody( 
+		String.Format( 
+			CultureInfo.InvariantCulture,
+			"new byte[] {{ 0x{0:X2} }}.Concat( {1} ).Concat( new byte[] {{ 0xC2 }} ).ToArray()", 
+			testCase.Code,
+			GetSizeBytesExpression( 0, testCase.SizeType )
+		),
+		"0xC2" 
+	);
+#>
+		}
+
+		[Test]
+		public void Test<#= testCase.Name #>_Min()
+		{
+<#
+	WriteTestBody( 
+		String.Format( 
+			CultureInfo.InvariantCulture,
+			"new byte[] {{ 0x{0:X2} }}.Concat( {2} ).Concat( Enumerable.Repeat( 0x41, 0x{1:X} ).Select( i => ( byte )i ) ).Concat( new byte[] {{ 0xC2 }} ).ToArray()", 
+			testCase.Code,
+			testCase.Min * ( testCase.IsMap ? 2 : 1 ),
+			GetSizeBytesExpression( testCase.Min, testCase.SizeType )
+		),
+		"0xC2" 
+	);
+#>
+		}
+
+		[Test]
+		public void Test<#= testCase.Name #>_Max()
+		{
+<#
+	WriteTestBody( 
+		String.Format( 
+			CultureInfo.InvariantCulture,
+			"new byte[] {{ 0x{0:X2} }}.Concat( {2} ).Concat( Enumerable.Repeat( 0x41, 0x{1:X} ).Select( i => ( byte )i ) ).Concat( new byte[] {{ 0xC2 }} ).ToArray()", 
+			testCase.Code,
+			testCase.Max * ( testCase.IsMap ? 2 : 1 ),
+			GetSizeBytesExpression( testCase.Max, testCase.SizeType )
+		),
+		"0xC2" 
+	);
+#>
+		}
+<#
+}
+
+// Variable Ext Types -- 0, min, max
+foreach( var testCase in
+	new []
+	{
+		new { Name = "Ext8", Code = 0xC7, Min = 1, Max = 0xFF, SizeType = "byte" },
+		new { Name = "Ext16", Code = 0xC8, Min = 0x100, Max = 0xFFFF, SizeType = "ushort" },
+		new { Name = "Ext32", Code = 0xC9, Min = 0x10000, Max = 0x10001, SizeType = "uint" },
+	} )
+{
+#>
+
+		[Test]
+		public void Test<#= testCase.Name #>_Zero()
+		{
+<#
+	WriteTestBody( 
+		String.Format( 
+			CultureInfo.InvariantCulture,
+			"new byte[] {{ 0x{0:X2} }}.Concat( {1} ).Concat( new byte[] {{ 0x7F }} ).Concat( new byte[] {{ 0xC2 }} ).ToArray()", 
+			testCase.Code,
+			GetSizeBytesExpression( 0, testCase.SizeType )
+		),
+		"0xC2" 
+	);
+#>
+		}
+
+		[Test]
+		public void Test<#= testCase.Name #>_Min()
+		{
+<#
+	WriteTestBody( 
+		String.Format( 
+			CultureInfo.InvariantCulture,
+			"new byte[] {{ 0x{0:X2} }}.Concat( {2} ).Concat( new byte[] {{ 0x7F }} ).Concat( Enumerable.Repeat( 0x41, 0x{1:X} ).Select( i => ( byte )i ) ).Concat( new byte[] {{ 0xC2 }} ).ToArray()", 
+			testCase.Code,
+			testCase.Min,
+			GetSizeBytesExpression( testCase.Min, testCase.SizeType )
+		),
+		"0xC2" 
+	);
+#>
+		}
+
+		[Test]
+		public void Test<#= testCase.Name #>_Max()
+		{
+<#
+	WriteTestBody( 
+		String.Format( 
+			CultureInfo.InvariantCulture,
+			"new byte[] {{ 0x{0:X2} }}.Concat( {2} ).Concat( new byte[] {{ 0x7F }} ).Concat( Enumerable.Repeat( 0x41, 0x{1:X} ).Select( i => ( byte )i ) ).Concat( new byte[] {{ 0xC2 }} ).ToArray()", 
+			testCase.Code,
+			testCase.Max,
+			GetSizeBytesExpression( testCase.Max, testCase.SizeType )
+		),
+		"0xC2" 
+	);
+#>
+		}
+<#
+}
+#>
+	}
+}
+<#+
+
+string GetSizeBytesExpression( int size, string sizeType )
+{
+	return
+		sizeType == "byte"
+		? String.Format( CultureInfo.InvariantCulture, "new byte[] {{ 0x{0:X} }}", size )
+		: String.Format( CultureInfo.InvariantCulture, "BitConverter.GetBytes( ( {0} )0x{1:X} ).Reverse()", sizeType, size );
+}
+
+void WriteTestBody( byte[] body )
+{
+	this.WriteTestBody(
+		"new byte[]{ " + String.Join( ", ", body.Select( b => "0x" + b.ToString( "X2", CultureInfo.InvariantCulture ) ).ToArray() ) + ", 0xC2 }",
+		"0xC2"		
+	);
+}
+
+void WriteTestBody( string byteArrayExpression, string centinel )
+{
+#>
+			var binary = <#= byteArrayExpression #>;
+			using ( var buffer = new MemoryStream( binary ) )
+			using ( var target = new ItemsUnpacker( buffer, false ) )
+			{
+				var result = target.Skip();
+				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+				// Verify centinel value still exists in the stream.
+				Assert.That( buffer.ReadByte(), Is.EqualTo( <#= centinel #> ) );
+			}
+<#+	
+}
+#>

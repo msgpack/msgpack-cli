@@ -44,9 +44,9 @@ using System.Diagnostics.Contracts;
 #endif // !UNITY
 using System.Globalization;
 
-#if !CORLIB_ONLY
+#if !UNITY || MSGPACK_UNITY_FULL
 using Int64Stack = System.Collections.Generic.Stack<System.Int64>;
-#endif // !CORLIB_ONLY
+#endif // !UNITY || MSGPACK_UNITY_FULL
 
 namespace MsgPack
 {
@@ -383,6 +383,116 @@ this.PopIndent();
 
 						continue;
 					}
+					case MessagePackCode.FixExt1:
+					{
+						skipped += 1;
+						byte typeCode;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackByte( "typeCode" );
+this.WriteDrainValue( "1" );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						continue;
+					}
+					case MessagePackCode.FixExt2:
+					{
+						skipped += 1;
+						byte typeCode;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackByte( "typeCode" );
+this.WriteDrainValue( "2" );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						continue;
+					}
+					case MessagePackCode.FixExt4:
+					{
+						skipped += 1;
+						byte typeCode;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackByte( "typeCode" );
+this.WriteDrainValue( "4" );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						continue;
+					}
+					case MessagePackCode.FixExt8:
+					{
+						skipped += 1;
+						byte typeCode;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackByte( "typeCode" );
+this.WriteDrainValue( "8" );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						continue;
+					}
+					case MessagePackCode.FixExt16:
+					{
+						skipped += 1;
+						byte typeCode;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackByte( "typeCode" );
+this.WriteDrainValue( "16" );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						continue;
+					}
+					case MessagePackCode.Ext8:
+					{
+						skipped += 1;
+						byte typeCode;
+						byte length;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackByte( "length" );
+this.WriteUnpackByteSubsequent( "typeCode" );
+this.WriteDrainValue( "length" );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						continue;
+					}
+					case MessagePackCode.Ext16:
+					{
+						skipped += 1;
+						byte typeCode;
+						ushort length;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackLength( 2, "length" );
+this.WriteUnpackByteSubsequent( "typeCode" );
+this.WriteDrainValue( "length" );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						continue;
+					}
+					case MessagePackCode.Ext32:
+					{
+						skipped += 1;
+						byte typeCode;
+						uint length;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackLength( 4, "length" );
+this.WriteUnpackByteSubsequent( "typeCode" );
+this.WriteDrainValue( "length" );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						continue;
+					}
 					default:
 					{
 						throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
@@ -482,8 +592,18 @@ else
 
 private void WriteUnpackByte( string lengthVariable )
 {
+	this.WriteUnpackByteCore( lengthVariable, true );
+}
+
+private void WriteUnpackByteSubsequent( string lengthVariable )
+{
+	this.WriteUnpackByteCore( lengthVariable, false );
+}
+
+private void WriteUnpackByteCore( string lengthVariable, bool needsDeclaration )
+{
 #>
-var read = source.Read( buffer, 0, 1 );
+<#= needsDeclaration ? "var" : String.Empty #> read = source.Read( buffer, 0, 1 );
 if ( read == 1 )
 {
 	<#= lengthVariable #> = buffer[0];

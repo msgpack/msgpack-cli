@@ -1340,6 +1340,11 @@
       <DependentUpon>UnpackerTest.Scalar.tt</DependentUpon>
     </Compile>
     <Compile Include="UnpackerTest.Skip.cs" />
+    <Compile Include="UnpackerTest.Skip.Variations.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackerTest.Skip.Variations.tt</DependentUpon>
+    </Compile>
     <Compile Include="UnpackingTest.Combinations.Array.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1654,6 +1659,10 @@
     <None Include="UnpackerTest.Scalar.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackerTest.Scalar.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackerTest.Skip.Variations.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackerTest.Skip.Variations.cs</LastGenOutput>
     </None>
     <None Include="UnpackingTest.Combinations.Array.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

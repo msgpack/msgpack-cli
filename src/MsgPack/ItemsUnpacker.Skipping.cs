@@ -846,6 +846,455 @@ namespace MsgPack
 
 						continue;
 					}
+					case MessagePackCode.FixExt1:
+					{
+						skipped += 1;
+						byte typeCode;
+						var read = source.Read( buffer, 0, 1 );
+						if ( read == 1 )
+						{
+							typeCode = buffer[0];
+							skipped += 1;
+						}
+						else
+						{
+							return null;
+						}
+						#region DrainValue
+						
+						long bytesRead = 0;
+						while( 1 > bytesRead )
+						{
+							var remaining = ( 1 - bytesRead );
+							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							if ( bytesRead < reading )
+							{
+								return null;
+							}
+						}
+						
+						skipped += bytesRead;
+						
+						#endregion DrainValue
+						#region TryPopContextCollection
+						
+						remainingItems--;
+						
+						if( remainingCollections != null )
+						{
+							while ( remainingItems == 0 && remainingCollections.Count > 0 )
+							{
+								if( remainingCollections.Count == 0 )
+								{
+									break;
+								}
+						
+								remainingItems = remainingCollections.Pop();
+								remainingItems--;
+							}
+						}
+						
+						#endregion TryPopContextCollection
+						continue;
+					}
+					case MessagePackCode.FixExt2:
+					{
+						skipped += 1;
+						byte typeCode;
+						var read = source.Read( buffer, 0, 1 );
+						if ( read == 1 )
+						{
+							typeCode = buffer[0];
+							skipped += 1;
+						}
+						else
+						{
+							return null;
+						}
+						#region DrainValue
+						
+						long bytesRead = 0;
+						while( 2 > bytesRead )
+						{
+							var remaining = ( 2 - bytesRead );
+							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							if ( bytesRead < reading )
+							{
+								return null;
+							}
+						}
+						
+						skipped += bytesRead;
+						
+						#endregion DrainValue
+						#region TryPopContextCollection
+						
+						remainingItems--;
+						
+						if( remainingCollections != null )
+						{
+							while ( remainingItems == 0 && remainingCollections.Count > 0 )
+							{
+								if( remainingCollections.Count == 0 )
+								{
+									break;
+								}
+						
+								remainingItems = remainingCollections.Pop();
+								remainingItems--;
+							}
+						}
+						
+						#endregion TryPopContextCollection
+						continue;
+					}
+					case MessagePackCode.FixExt4:
+					{
+						skipped += 1;
+						byte typeCode;
+						var read = source.Read( buffer, 0, 1 );
+						if ( read == 1 )
+						{
+							typeCode = buffer[0];
+							skipped += 1;
+						}
+						else
+						{
+							return null;
+						}
+						#region DrainValue
+						
+						long bytesRead = 0;
+						while( 4 > bytesRead )
+						{
+							var remaining = ( 4 - bytesRead );
+							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							if ( bytesRead < reading )
+							{
+								return null;
+							}
+						}
+						
+						skipped += bytesRead;
+						
+						#endregion DrainValue
+						#region TryPopContextCollection
+						
+						remainingItems--;
+						
+						if( remainingCollections != null )
+						{
+							while ( remainingItems == 0 && remainingCollections.Count > 0 )
+							{
+								if( remainingCollections.Count == 0 )
+								{
+									break;
+								}
+						
+								remainingItems = remainingCollections.Pop();
+								remainingItems--;
+							}
+						}
+						
+						#endregion TryPopContextCollection
+						continue;
+					}
+					case MessagePackCode.FixExt8:
+					{
+						skipped += 1;
+						byte typeCode;
+						var read = source.Read( buffer, 0, 1 );
+						if ( read == 1 )
+						{
+							typeCode = buffer[0];
+							skipped += 1;
+						}
+						else
+						{
+							return null;
+						}
+						#region DrainValue
+						
+						long bytesRead = 0;
+						while( 8 > bytesRead )
+						{
+							var remaining = ( 8 - bytesRead );
+							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							if ( bytesRead < reading )
+							{
+								return null;
+							}
+						}
+						
+						skipped += bytesRead;
+						
+						#endregion DrainValue
+						#region TryPopContextCollection
+						
+						remainingItems--;
+						
+						if( remainingCollections != null )
+						{
+							while ( remainingItems == 0 && remainingCollections.Count > 0 )
+							{
+								if( remainingCollections.Count == 0 )
+								{
+									break;
+								}
+						
+								remainingItems = remainingCollections.Pop();
+								remainingItems--;
+							}
+						}
+						
+						#endregion TryPopContextCollection
+						continue;
+					}
+					case MessagePackCode.FixExt16:
+					{
+						skipped += 1;
+						byte typeCode;
+						var read = source.Read( buffer, 0, 1 );
+						if ( read == 1 )
+						{
+							typeCode = buffer[0];
+							skipped += 1;
+						}
+						else
+						{
+							return null;
+						}
+						#region DrainValue
+						
+						long bytesRead = 0;
+						while( 16 > bytesRead )
+						{
+							var remaining = ( 16 - bytesRead );
+							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							if ( bytesRead < reading )
+							{
+								return null;
+							}
+						}
+						
+						skipped += bytesRead;
+						
+						#endregion DrainValue
+						#region TryPopContextCollection
+						
+						remainingItems--;
+						
+						if( remainingCollections != null )
+						{
+							while ( remainingItems == 0 && remainingCollections.Count > 0 )
+							{
+								if( remainingCollections.Count == 0 )
+								{
+									break;
+								}
+						
+								remainingItems = remainingCollections.Pop();
+								remainingItems--;
+							}
+						}
+						
+						#endregion TryPopContextCollection
+						continue;
+					}
+					case MessagePackCode.Ext8:
+					{
+						skipped += 1;
+						byte typeCode;
+						byte length;
+						var read = source.Read( buffer, 0, 1 );
+						if ( read == 1 )
+						{
+							length = buffer[0];
+							skipped += 1;
+						}
+						else
+						{
+							return null;
+						}
+						 read = source.Read( buffer, 0, 1 );
+						if ( read == 1 )
+						{
+							typeCode = buffer[0];
+							skipped += 1;
+						}
+						else
+						{
+							return null;
+						}
+						#region DrainValue
+						
+						long bytesRead = 0;
+						while( length > bytesRead )
+						{
+							var remaining = ( length - bytesRead );
+							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							if ( bytesRead < reading )
+							{
+								return null;
+							}
+						}
+						
+						skipped += bytesRead;
+						
+						#endregion DrainValue
+						#region TryPopContextCollection
+						
+						remainingItems--;
+						
+						if( remainingCollections != null )
+						{
+							while ( remainingItems == 0 && remainingCollections.Count > 0 )
+							{
+								if( remainingCollections.Count == 0 )
+								{
+									break;
+								}
+						
+								remainingItems = remainingCollections.Pop();
+								remainingItems--;
+							}
+						}
+						
+						#endregion TryPopContextCollection
+						continue;
+					}
+					case MessagePackCode.Ext16:
+					{
+						skipped += 1;
+						byte typeCode;
+						ushort length;
+						var read = source.Read( buffer, 0, 2 );
+						if ( read == 2 )
+						{
+							length = BigEndianBinary.ToUInt16( buffer, 0 );
+							skipped += 2;
+						}
+						else
+						{
+							return null;
+						}
+						 read = source.Read( buffer, 0, 1 );
+						if ( read == 1 )
+						{
+							typeCode = buffer[0];
+							skipped += 1;
+						}
+						else
+						{
+							return null;
+						}
+						#region DrainValue
+						
+						long bytesRead = 0;
+						while( length > bytesRead )
+						{
+							var remaining = ( length - bytesRead );
+							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							if ( bytesRead < reading )
+							{
+								return null;
+							}
+						}
+						
+						skipped += bytesRead;
+						
+						#endregion DrainValue
+						#region TryPopContextCollection
+						
+						remainingItems--;
+						
+						if( remainingCollections != null )
+						{
+							while ( remainingItems == 0 && remainingCollections.Count > 0 )
+							{
+								if( remainingCollections.Count == 0 )
+								{
+									break;
+								}
+						
+								remainingItems = remainingCollections.Pop();
+								remainingItems--;
+							}
+						}
+						
+						#endregion TryPopContextCollection
+						continue;
+					}
+					case MessagePackCode.Ext32:
+					{
+						skipped += 1;
+						byte typeCode;
+						uint length;
+						var read = source.Read( buffer, 0, 4 );
+						if ( read == 4 )
+						{
+							length = BigEndianBinary.ToUInt32( buffer, 0 );
+							skipped += 4;
+						}
+						else
+						{
+							return null;
+						}
+						 read = source.Read( buffer, 0, 1 );
+						if ( read == 1 )
+						{
+							typeCode = buffer[0];
+							skipped += 1;
+						}
+						else
+						{
+							return null;
+						}
+						#region DrainValue
+						
+						long bytesRead = 0;
+						while( length > bytesRead )
+						{
+							var remaining = ( length - bytesRead );
+							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							if ( bytesRead < reading )
+							{
+								return null;
+							}
+						}
+						
+						skipped += bytesRead;
+						
+						#endregion DrainValue
+						#region TryPopContextCollection
+						
+						remainingItems--;
+						
+						if( remainingCollections != null )
+						{
+							while ( remainingItems == 0 && remainingCollections.Count > 0 )
+							{
+								if( remainingCollections.Count == 0 )
+								{
+									break;
+								}
+						
+								remainingItems = remainingCollections.Pop();
+								remainingItems--;
+							}
+						}
+						
+						#endregion TryPopContextCollection
+						continue;
+					}
 					default:
 					{
 						throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
