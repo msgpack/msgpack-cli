@@ -119,7 +119,7 @@ namespace MsgPack.Serialization.Polymorphic
 				);
 			}
 
-			TypeInfoEncoder.Encode( this.OwnerContext, packer, this._typeCodeMap[ objectTree.GetType().TypeHandle ] );
+			TypeInfoEncoder.Encode( packer, this._typeCodeMap[ objectTree.GetType().TypeHandle ] );
 			this.GetActualTypeSerializer( objectTree.GetType() ).PackTo( packer, objectTree );
 		}
 
@@ -128,9 +128,7 @@ namespace MsgPack.Serialization.Polymorphic
 		{
 			return
 				TypeInfoEncoder.Decode(
-					this.OwnerContext,
 					unpacker,
-					TypeInfoEncoding.KnownType,
 					u =>
 					{
 						var typeCode = u.LastReadData.AsString();

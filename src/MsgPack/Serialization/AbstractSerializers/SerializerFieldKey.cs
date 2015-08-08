@@ -62,7 +62,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			// ReSharper disable once ImpureMethodCallOnReadonlyValueField
 			return
-				this.TypeHandle.Equals( other.TypeHandle )
+				other != null
+				&& this.TypeHandle.Equals( other.TypeHandle )
 				&& this.EnumSerializationMethod == other.EnumSerializationMethod
 				&& this.DateTimeConversionMethod == other.DateTimeConversionMethod
 				&& this._schema.Equals( other._schema );
@@ -70,12 +71,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		public override bool Equals( object obj )
 		{
-			if ( !( obj is SerializerFieldKey ) )
-			{
-				return false;
-			}
-
-			return this.Equals( ( SerializerFieldKey )obj );
+			return this.Equals( obj as SerializerFieldKey );
 		}
 
 		public override int GetHashCode()

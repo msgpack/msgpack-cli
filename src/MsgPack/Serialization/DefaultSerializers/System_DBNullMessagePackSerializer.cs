@@ -36,6 +36,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public System_DBNullMessagePackSerializer( SerializationContext ownerContext )
 			: base( ownerContext ) {}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, DBNull objectTree )
 		{
 			packer.PackNull();

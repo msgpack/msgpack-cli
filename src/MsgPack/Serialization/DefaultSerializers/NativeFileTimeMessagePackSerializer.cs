@@ -30,11 +30,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		public NativeFileTimeMessagePackSerializer( SerializationContext ownerContext ) : base( ownerContext ) { }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, FILETIME objectTree )
 		{
 			packer.Pack( objectTree.ToDateTime().ToBinary() );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override FILETIME UnpackFromCore( Unpacker unpacker )
 		{
 			return DateTime.FromBinary( unpacker.LastReadData.AsInt64() ).ToWin32FileTimeUtc();

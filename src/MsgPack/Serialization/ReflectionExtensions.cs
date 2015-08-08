@@ -113,6 +113,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "This method should swallow exception in restoring inner exception of TargetInvocationException." )]
 		private static Exception HoistUpInnerException( TargetInvocationException targetInvocationException )
 		{
 			if ( targetInvocationException.InnerException == null )

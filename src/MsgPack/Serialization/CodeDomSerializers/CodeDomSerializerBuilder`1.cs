@@ -752,7 +752,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							memberInfo == null
 								? DateTimeMemberConversionMethod.Default
 								: memberInfo.Value.GetDateTimeMemberConversionMethod(),
-							itemsSchema ?? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo )
+							itemsSchema ?? PolymorphismSchema.Create( targetType, memberInfo )
 						)
 					)
 				);

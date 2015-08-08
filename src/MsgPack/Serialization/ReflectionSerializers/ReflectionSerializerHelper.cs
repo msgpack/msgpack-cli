@@ -296,7 +296,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				}
 				else
 				{
-					serializers[ i ] = context.GetSerializer( memberType, PolymorphismSchema.Create( context, memberType, member ) );
+					serializers[ i ] = context.GetSerializer( memberType, PolymorphismSchema.Create( memberType, member ) );
 				}
 			}
 		}

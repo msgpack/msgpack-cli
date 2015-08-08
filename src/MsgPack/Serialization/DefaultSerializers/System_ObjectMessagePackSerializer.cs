@@ -29,6 +29,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public System_ObjectMessagePackSerializer( SerializationContext ownerContext )
 			: base( ownerContext ) { }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, object value )
 		{
 			if ( value.GetType() == typeof( object ) )

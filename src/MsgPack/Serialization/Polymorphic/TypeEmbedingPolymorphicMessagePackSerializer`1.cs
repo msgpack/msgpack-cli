@@ -59,7 +59,7 @@ namespace MsgPack.Serialization.Polymorphic
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, T objectTree )
 		{
-			TypeInfoEncoder.Encode( this.OwnerContext, packer, objectTree.GetType() );
+			TypeInfoEncoder.Encode( packer, objectTree.GetType() );
 			this.GetActualTypeSerializer( objectTree.GetType() ).PackTo( packer, objectTree );
 		}
 
@@ -68,9 +68,7 @@ namespace MsgPack.Serialization.Polymorphic
 		{
 			return
 				TypeInfoEncoder.Decode(
-					this.OwnerContext,
 					unpacker,
-					TypeInfoEncoding.RawCompressed,
 					// ReSharper disable once ConvertClosureToMethodGroup
 					u => TypeInfoEncoder.DecodeRuntimeTypeInfo( u ), // Lamda capture is more efficient.
 					( t, u ) => ( T )this.GetActualTypeSerializer( t ).UnpackFrom( u )

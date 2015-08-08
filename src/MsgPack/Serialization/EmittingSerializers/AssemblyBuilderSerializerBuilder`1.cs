@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitGetSerializerExpression( AssemblyBuilderEmittingContext context, Type targetType, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
 		{
-			var realSchema = itemsSchema ?? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo );
+			var realSchema = itemsSchema ?? PolymorphismSchema.Create( targetType, memberInfo );
 			var instructions =
 				context.Emitter.RegisterSerializer(
 					targetType,

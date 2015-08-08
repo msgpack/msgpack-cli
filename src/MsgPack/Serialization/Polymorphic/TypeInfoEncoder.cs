@@ -43,13 +43,13 @@ namespace MsgPack.Serialization.Polymorphic
 	{
 		private const string Elipsis = ".";
 
-		public static void Encode( SerializationContext context, Packer packer, string typeCode )
+		public static void Encode( Packer packer, string typeCode )
 		{
 			packer.PackArrayHeader( 2 );
 			packer.PackString( typeCode );
 		}
 
-		public static void Encode( SerializationContext context, Packer packer, Type type )
+		public static void Encode( Packer packer, Type type )
 		{
 			var assemblyName =
 #if !SILVERLIGHT
@@ -89,7 +89,7 @@ namespace MsgPack.Serialization.Polymorphic
 				.Pack( assemblyName.GetPublicKeyToken() );
 		}
 
-		public static T Decode<T>( SerializationContext context, Unpacker unpacker, TypeInfoEncoding encodingKind, Func<Unpacker, Type> typeFinder, Func<Type, Unpacker, T> unpacking )
+		public static T Decode<T>( Unpacker unpacker, Func<Unpacker, Type> typeFinder, Func<Type, Unpacker, T> unpacking )
 		{
 			if ( !unpacker.IsArrayHeader || UnpackHelpers.GetItemsCount( unpacker ) != 2 )
 			{

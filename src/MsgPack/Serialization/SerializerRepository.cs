@@ -32,6 +32,7 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Repository of known <see cref="MessagePackSerializer{T}"/>s.
 	/// </summary>
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Class coupling caused by default serializers registration." )]
 	public sealed partial class SerializerRepository : IDisposable
 	{
 		private static readonly object SyncRoot = new object();

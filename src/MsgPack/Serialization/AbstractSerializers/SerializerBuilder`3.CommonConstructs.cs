@@ -1145,7 +1145,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				// Check by try to get serializer now.
 				var schemaForMember = itemsSchema ??
 									( memberInfo != null
-										? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo )
+										? PolymorphismSchema.Create( targetType, memberInfo )
 										: PolymorphismSchema.Default );
 				context.SerializationContext.GetSerializer( targetType, schemaForMember );
 

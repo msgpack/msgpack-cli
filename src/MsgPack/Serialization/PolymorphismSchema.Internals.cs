@@ -28,7 +28,7 @@ using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // XAMIOS || XAMDROID
-#endif // !UNITY
+#endif // !UNITYusing System.Globalization;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -199,7 +199,6 @@ namespace MsgPack.Serialization
 		}
 
 		internal static PolymorphismSchema Create(
-			SerializationContext context,
 			Type type,
 #if !UNITY
 			SerializingMember? memberMayBeNull

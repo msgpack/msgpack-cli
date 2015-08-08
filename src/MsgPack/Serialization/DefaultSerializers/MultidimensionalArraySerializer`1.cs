@@ -75,6 +75,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 #endif // !UNITY
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes", Justification = "Avoided via ownsStream: false" )]
 		private void PackArrayCore( Packer packer, Array array )
 		{
 #if !SILVERLIGHT && !NETFX_CORE
@@ -94,7 +95,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			packer.PackArrayHeader( 2 );
 
 			using ( var buffer = new MemoryStream() )
-			using ( var bodyPacker = Packer.Create( buffer ) )
+			using ( var bodyPacker = Packer.Create( buffer, false ) )
 			{
 				bodyPacker.PackArrayHeader( 2 );
 				this._int32ArraySerializer.PackTo( bodyPacker, lengths );
@@ -129,8 +130,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods",
-			MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods",MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes", Justification = "Avoided via ownsStream: false" )]
 #if !UNITY
 		protected internal override TArray UnpackFromCore( Unpacker unpacker )
 #else
@@ -178,7 +179,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				int[] lengths, lowerBounds;
 
 				using ( var arrayMetadata = new MemoryStream( metadata.Body ) )
-				using ( var metadataUnpacker = Unpacker.Create( arrayMetadata ) )
+				using ( var metadataUnpacker = Unpacker.Create( arrayMetadata, false ) )
 				{
 					if ( !metadataUnpacker.Read() )
 					{

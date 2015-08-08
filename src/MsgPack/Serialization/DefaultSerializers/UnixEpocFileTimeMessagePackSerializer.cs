@@ -30,6 +30,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		public UnixEpocFileTimeMessagePackSerializer( SerializationContext ownerContext ) : base( ownerContext ) { }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, FILETIME objectTree )
 		{
 			packer.Pack(
@@ -39,6 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override FILETIME UnpackFromCore( Unpacker unpacker )
 		{
 			return MessagePackConvert.ToDateTime( unpacker.LastReadData.AsInt64() ).ToWin32FileTimeUtc();
