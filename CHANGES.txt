@@ -301,3 +301,16 @@ Release 0.6.0 Beta5 - 2015/07/20
 
   BUG FIXES
   * Non-SZ arrays are not deserialized correctly in WP/Silverlight.
+
+Release 0.6.0 - 2015/08/10
+
+  IMPROVEMENTS
+  * ImmutableArray now supported.
+  * SerializerGenerator now support automatic dependent serializer(s) generation.
+  * Add SerializerContext.ResolveSerializer event to make pre-built serializer registration more robust. Issue #103.
+
+  BUG FIXES
+  * Fix Unpacker does not handle bin types and str8 type in skipping. PR #98, Thank you @webcoyote!
+  * Fix Unpacker does not handle ext types in skipping.
+  * Fix SerializerGenerator and mpu.exe do not handle EnumSerializationMethod. Issue #102.
+  * Fix SerializerGenerator and mpu.exe do not exclude types which are handled with built-in serializers. Issue #104.
