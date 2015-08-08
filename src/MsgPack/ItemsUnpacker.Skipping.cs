@@ -459,6 +459,60 @@ namespace MsgPack
 						#endregion DrainValue
 						continue;
 					}
+					case MessagePackCode.Str8:
+					case MessagePackCode.Bin8:
+					{
+						skipped += 1;
+						byte length;
+						var read = source.Read( buffer, 0, 1 );
+						if ( read == 1 )
+						{
+							length = buffer[0];
+							skipped += 1;
+						}
+						else
+						{
+							return null;
+						}
+						#region DrainValue
+						
+						long bytesRead = 0;
+						while( length > bytesRead )
+						{
+							var remaining = ( length - bytesRead );
+							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							if ( bytesRead < reading )
+							{
+								return null;
+							}
+						}
+						
+						skipped += bytesRead;
+						
+						#endregion DrainValue
+						#region TryPopContextCollection
+						
+						remainingItems--;
+						
+						if( remainingCollections != null )
+						{
+							while ( remainingItems == 0 && remainingCollections.Count > 0 )
+							{
+								if( remainingCollections.Count == 0 )
+								{
+									break;
+								}
+						
+								remainingItems = remainingCollections.Pop();
+								remainingItems--;
+							}
+						}
+						
+						#endregion TryPopContextCollection
+						continue;
+					}
+					case MessagePackCode.Bin16:
 					case MessagePackCode.Raw16:
 					{
 						skipped += 1;
@@ -511,6 +565,7 @@ namespace MsgPack
 						#endregion TryPopContextCollection
 						continue;
 					}
+					case MessagePackCode.Bin32:
 					case MessagePackCode.Raw32:
 					{
 						skipped += 1;

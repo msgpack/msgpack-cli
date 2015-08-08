@@ -229,6 +229,21 @@ this.PopIndent();
 #>
 						continue;
 					}
+					case MessagePackCode.Str8:
+					case MessagePackCode.Bin8:
+					{
+						skipped += 1;
+						byte length;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackByte( "length" );
+this.WriteDrainValue( "length" );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						continue;
+					}
+					case MessagePackCode.Bin16:
 					case MessagePackCode.Raw16:
 					{
 						skipped += 1;
@@ -242,6 +257,7 @@ this.PopIndent();
 #>
 						continue;
 					}
+					case MessagePackCode.Bin32:
 					case MessagePackCode.Raw32:
 					{
 						skipped += 1;
@@ -456,6 +472,22 @@ if ( read == <#= size.ToString( CultureInfo.InvariantCulture ) #> )
 {
 	<#= lengthVariable #> = BigEndianBinary.ToUInt<#= ( size * 8 ).ToString( CultureInfo.InvariantCulture ) #>( buffer, 0 );
 	skipped += <#= size #>;
+}
+else
+{
+	return null;
+}
+<#+
+}
+
+private void WriteUnpackByte( string lengthVariable )
+{
+#>
+var read = source.Read( buffer, 0, 1 );
+if ( read == 1 )
+{
+	<#= lengthVariable #> = buffer[0];
+	skipped += 1;
 }
 else
 {
