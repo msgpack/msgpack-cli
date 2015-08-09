@@ -302,7 +302,7 @@ Release 0.6.0 Beta5 - 2015/07/20
   BUG FIXES
   * Non-SZ arrays are not deserialized correctly in WP/Silverlight.
 
-Release 0.6.0 - 2015/08/10
+Release 0.6.0 - 2015/08/09
 
   IMPROVEMENTS
   * ImmutableArray now supported.
