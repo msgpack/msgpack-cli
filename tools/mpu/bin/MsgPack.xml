@@ -1016,6 +1016,40 @@
             <exception cref="T:System.ArgumentNullException"><paramref name="unpacker"/> is <c>null</c>.</exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">Cannot restore state from the stream.</exception>
         </member>
+        <member name="T:MsgPack.KnownExtTypeCode">
+            <summary>
+            	Defines known ext type code for MessagePack for CLI.
+            </summary>
+            <remarks>
+            	Note that values in this class are not guaranteed as interoperable with other implementations.
+            	These are just known by MessagePack for CLI implementation.
+            </remarks>
+        </member>
+        <member name="P:MsgPack.KnownExtTypeCode.MultidimensionalArray">
+            <summary>
+            	Gets the ext type code which represents multidimensional array.
+            </summary>
+            <value>
+            	0x1.
+            </value>
+        </member>
+        <member name="T:MsgPack.KnownExtTypeName">
+            <summary>
+            	Defines known ext type name for MessagePack for CLI.
+            </summary>
+            <remarks>
+            	Note that values in this class are not guaranteed as interoperable with other implementations.
+            	These are just known by MessagePack for CLI implementation.
+            </remarks>
+        </member>
+        <member name="P:MsgPack.KnownExtTypeName.MultidimensionalArray">
+            <summary>
+            	Gets the ext type name which represents multidimensional array.
+            </summary>
+            <value>
+            	"MultidimensionalArray".
+            </value>
+        </member>
         <member name="T:MsgPack.MessageNotSupportedException">
             <summary>
             	Exception occurs when serialized stream contains structures or features which will never be supported by MsgPack/CLI implementation.
@@ -3701,11 +3735,12 @@
             	Defines common interface for context objects of serializer code generation.
             </summary>
         </member>
-        <member name="M:MsgPack.Serialization.AbstractSerializers.ISerializerCodeGenerationContext.BuiltInSerializerExists(System.Type)">
+        <member name="M:MsgPack.Serialization.AbstractSerializers.ISerializerCodeGenerationContext.BuiltInSerializerExists(System.Type,MsgPack.Serialization.CollectionTraits)">
             <summary>
             	Determines that whether built-in serializer for specified type exists or not.
             </summary>
             <param name="type">The type for check.</param>
+            <param name="traits">The known <see cref="T:MsgPack.Serialization.CollectionTraits"/> of the <paramref name="type"/>.</param>
             <returns>
             	<c>true</c> if built-in serializer for specified type exists; <c>false</c>, otherwise.
             </returns>
@@ -4601,7 +4636,7 @@
             	This class does not support code generation.
             </exception>
             <remarks>
-            	This method will not do anything when <see cref="M:MsgPack.Serialization.AbstractSerializers.ISerializerCodeGenerationContext.BuiltInSerializerExists(System.Type)"/> returns <c>true</c> for <typeparamref name="TObject"/>.
+            	This method will not do anything when <see cref="M:MsgPack.Serialization.AbstractSerializers.ISerializerCodeGenerationContext.BuiltInSerializerExists(System.Type,MsgPack.Serialization.CollectionTraits)"/> returns <c>true</c> for <typeparamref name="TObject"/>.
             </remarks>
         </member>
         <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.BuildSerializerCodeCore(MsgPack.Serialization.AbstractSerializers.ISerializerCodeGenerationContext,System.Type,MsgPack.Serialization.PolymorphismSchema)">
@@ -4788,6 +4823,24 @@
             	This value will not be <c>null</c>.
             </returns>
         </member>
+        <member name="P:MsgPack.Serialization.AbstractSerializers.SerializerGenerationContext`1.KeyToAdd">
+            <summary>
+            	Gets the code construct which represents the argument for the key to be added to the dictionary.
+            </summary>
+            <returns>
+            	The code construct which represents the argument for the key to be added to the dictionary.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="P:MsgPack.Serialization.AbstractSerializers.SerializerGenerationContext`1.ValueToAdd">
+            <summary>
+            	Gets the code construct which represents the argument for the value to be added to the dictionary.
+            </summary>
+            <returns>
+            	The code construct which represents the argument for the key to be added to the dictionary.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
         <member name="P:MsgPack.Serialization.AbstractSerializers.SerializerGenerationContext`1.InitialCapacity">
             <summary>
             	Gets the code construct which represents the argument for the initial capacity of the new collection.
@@ -4821,11 +4874,12 @@
             	The configured nil-implication for tuple items.
             </value>
         </member>
-        <member name="M:MsgPack.Serialization.CodeDomSerializers.CodeDomContext.BuiltInSerializerExists(System.Type)">
+        <member name="M:MsgPack.Serialization.CodeDomSerializers.CodeDomContext.BuiltInSerializerExists(System.Type,MsgPack.Serialization.CollectionTraits)">
             <summary>
             	Determines that whether built-in serializer for specified type exists or not.
             </summary>
             <param name="type">The type for check.</param>
+            <param name="traits">The known <see cref="T:MsgPack.Serialization.CollectionTraits"/> of the <paramref name="type"/>.</param>
             <returns>
               <c>true</c> if built-in serializer for specified type exists; <c>false</c>, otherwise.
             </returns>
@@ -4898,10 +4952,10 @@
             </summary>
             <typeparam name="TObject">Serialization target type.</typeparam>
         </member>
-        <member name="T:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer`2">
+        <member name="T:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializerBase`2">
             <summary>
             	Provides common implementation of <see cref="T:MsgPack.Serialization.CollectionSerializers.EnumerableMessagePackSerializerBase`2"/> 
-            	for collection types which implement <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            	for collection types which implement <see cref="T:System.Collections.Generic.ICollection`1"/> or <c>IReadOnlyCollection{T}</c>.
             </summary>
             <typeparam name="TCollection">The type of the collection.</typeparam>
             <typeparam name="TItem">The type of the item of collection.</typeparam>
@@ -5359,9 +5413,9 @@
             	This implementation always throws it.
             </exception>
         </member>
-        <member name="M:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer`2.#ctor(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.PolymorphismSchema)">
+        <member name="M:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializerBase`2.#ctor(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.PolymorphismSchema)">
             <summary>
-            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer`2"/> class.
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializerBase`2"/> class.
             </summary>
             <param name="ownerContext">A <see cref="T:MsgPack.Serialization.SerializationContext"/> which owns this serializer.</param>
             <param name="schema">
@@ -5372,7 +5426,7 @@
             	<paramref name="ownerContext"/> is <c>null</c>.
             </exception>
         </member>
-        <member name="M:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer`2.PackToCore(MsgPack.Packer,`0)">
+        <member name="M:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializerBase`2.PackToCore(MsgPack.Packer,`0)">
             <summary>
             	Serializes specified object with specified <see cref="T:MsgPack.Packer"/>.
             </summary>
@@ -5382,7 +5436,14 @@
             	<typeparamref name="TCollection"/> is not serializable etc.
             </exception>
         </member>
-        <member name="M:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer`2.UnpackFromCore(MsgPack.Unpacker)">
+        <member name="M:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializerBase`2.GetCount(`0)">
+            <summary>
+            	When overridden in derived class, returns count of the collection.
+            </summary>
+            <param name="collection">A collection. This value will not be <c>null</c>.</param>
+            <returns>The count of the <paramref name="collection"/>.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializerBase`2.UnpackFromCore(MsgPack.Unpacker)">
             <summary>
             	Deserializes object with specified <see cref="T:MsgPack.Unpacker"/>.
             </summary>
@@ -5404,29 +5465,17 @@
             	This method invokes <see cref="M:MsgPack.Serialization.CollectionSerializers.EnumerableMessagePackSerializerBase`2.CreateInstance(System.Int32)"/>, and then fill deserialized items to resultong collection.
             </remarks>
         </member>
-        <member name="M:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer`2.AddItem(`0,`1)">
+        <member name="T:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer`2">
             <summary>
-            	Adds the deserialized item to the collection on <typeparamref name="TCollection"/> specific manner
-            	to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackToCore(MsgPack.Unpacker,`0)"/>.
+            	Provides common implementation of <see cref="T:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializerBase`2"/> 
+            	for collection types which implement <see cref="T:System.Collections.Generic.ICollection`1"/>.
             </summary>
-            <param name="collection">The collection to be added.</param>
-            <param name="item">The item to be added.</param>
+            <typeparam name="TCollection">The type of the collection.</typeparam>
+            <typeparam name="TItem">The type of the item of collection.</typeparam>
         </member>
-        <member name="T:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer`3">
+        <member name="M:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer`2.#ctor(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.PolymorphismSchema)">
             <summary>
-            	Provides basic features for generic dictionary serializers.
-            </summary>
-            <typeparam name="TDictionary">The type of the dictionary.</typeparam>
-            <typeparam name="TKey">The type of the key of dictionary.</typeparam>
-            <typeparam name="TValue">The type of the value of dictionary.</typeparam>
-            <remarks>
-            	This class provides framework to implement variable collection serializer, and this type seals some virtual members to maximize future backward compatibility.
-            	If you cannot use this class, you can implement your own serializer which inherits <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> and implements <see cref="T:MsgPack.Serialization.CollectionSerializers.ICollectionInstanceFactory"/>.
-            </remarks>
-        </member>
-        <member name="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer`3.#ctor(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.PolymorphismSchema)">
-            <summary>
-            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer`3"/> class.
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer`2"/> class.
             </summary>
             <param name="ownerContext">A <see cref="T:MsgPack.Serialization.SerializationContext"/> which owns this serializer.</param>
             <param name="schema">
@@ -5437,7 +5486,47 @@
             	<paramref name="ownerContext"/> is <c>null</c>.
             </exception>
         </member>
-        <member name="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer`3.PackToCore(MsgPack.Packer,`0)">
+        <member name="M:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer`2.GetCount(`0)">
+            <summary>
+            	Returns count of the collection.
+            </summary>
+            <param name="collection">A collection. This value will not be <c>null</c>.</param>
+            <returns>The count of the <paramref name="collection"/>.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer`2.AddItem(`0,`1)">
+            <summary>
+            	Adds the deserialized item to the collection on <typeparamref name="TCollection"/> specific manner
+            	to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackToCore(MsgPack.Unpacker,`0)"/>.
+            </summary>
+            <param name="collection">The collection to be added.</param>
+            <param name="item">The item to be added.</param>
+        </member>
+        <member name="T:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializerBase`3">
+            <summary>
+            	Provides common features for generic dictionary serializers.
+            </summary>
+            <typeparam name="TDictionary">The type of the dictionary.</typeparam>
+            <typeparam name="TKey">The type of the key of dictionary.</typeparam>
+            <typeparam name="TValue">The type of the value of dictionary.</typeparam>
+            <remarks>
+            	This class provides framework to implement variable collection serializer, and this type seals some virtual members to maximize future backward compatibility.
+            	If you cannot use this class, you can implement your own serializer which inherits <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> and implements <see cref="T:MsgPack.Serialization.CollectionSerializers.ICollectionInstanceFactory"/>.
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializerBase`3.#ctor(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.PolymorphismSchema)">
+            <summary>
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializerBase`3"/> class.
+            </summary>
+            <param name="ownerContext">A <see cref="T:MsgPack.Serialization.SerializationContext"/> which owns this serializer.</param>
+            <param name="schema">
+            	The schema for collection itself or its items for the member this instance will be used to. 
+            	<c>null</c> will be considered as <see cref="F:MsgPack.Serialization.PolymorphismSchema.Default"/>.
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="ownerContext"/> is <c>null</c>.
+            </exception>
+        </member>
+        <member name="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializerBase`3.PackToCore(MsgPack.Packer,`0)">
             <summary>
             	Serializes specified object with specified <see cref="T:MsgPack.Packer"/>.
             </summary>
@@ -5447,7 +5536,14 @@
             	<typeparamref name="TDictionary"/> is not serializable etc.
             </exception>
         </member>
-        <member name="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer`3.UnpackFromCore(MsgPack.Unpacker)">
+        <member name="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializerBase`3.GetCount(`0)">
+            <summary>
+            	When overridden in derived class, returns count of the dictionary.
+            </summary>
+            <param name="dictionary">A collection. This value will not be <c>null</c>.</param>
+            <returns>The count of the <paramref name="dictionary"/>.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializerBase`3.UnpackFromCore(MsgPack.Unpacker)">
             <summary>
             	Deserializes object with specified <see cref="T:MsgPack.Unpacker"/>.
             </summary>
@@ -5466,10 +5562,10 @@
             	<typeparamref name="TDictionary"/> is abstract type.
             </exception>
             <remarks>
-            	This method invokes <see cref="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer`3.CreateInstance(System.Int32)"/>, and then fill deserialized items to resultong collection.
+            	This method invokes <see cref="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializerBase`3.CreateInstance(System.Int32)"/>, and then fill deserialized items to resultong collection.
             </remarks>
         </member>
-        <member name="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer`3.CreateInstance(System.Int32)">
+        <member name="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializerBase`3.CreateInstance(System.Int32)">
             <summary>
             	Creates a new collection instance with specified initial capacity.
             </summary>
@@ -5487,7 +5583,7 @@
             </remarks>
             <seealso cref="M:MsgPack.Serialization.CollectionSerializers.ICollectionInstanceFactory.CreateInstance(System.Int32)"/>
         </member>
-        <member name="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer`3.UnpackToCore(MsgPack.Unpacker,`0)">
+        <member name="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializerBase`3.UnpackToCore(MsgPack.Unpacker,`0)">
             <summary>
             	Deserializes collection items with specified <see cref="T:MsgPack.Unpacker"/> and stores them to <paramref name="collection"/>.
             </summary>
@@ -5498,6 +5594,59 @@
             </exception>
             <exception cref="T:System.NotSupportedException">
             	<typeparamref name="TDictionary"/> is not collection.
+            </exception>
+        </member>
+        <member name="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializerBase`3.AddItem(`0,`1,`2)">
+            <summary>
+            	When implemented by derive class, 
+            	adds the deserialized item to the collection on <typeparamref name="TDictionary"/> specific manner
+            	to implement <see cref="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializerBase`3.UnpackToCore(MsgPack.Unpacker,`0)"/>.
+            </summary>
+            <param name="dictionary">The dictionary to be added.</param>
+            <param name="key">The key to be added.</param>
+            <param name="value">The value to be added.</param>
+            <exception cref="T:System.NotSupportedException">
+            	This implementation always throws it.
+            </exception>
+        </member>
+        <member name="T:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer`3">
+            <summary>
+            	Provides basic features for generic <see cref="T:System.Collections.Generic.IDictionary`2"/> serializers.
+            </summary>
+            <typeparam name="TDictionary">The type of the dictionary.</typeparam>
+            <typeparam name="TKey">The type of the key of dictionary.</typeparam>
+            <typeparam name="TValue">The type of the value of dictionary.</typeparam>
+        </member>
+        <member name="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer`3.#ctor(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.PolymorphismSchema)">
+            <summary>
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer`3"/> class.
+            </summary>
+            <param name="ownerContext">A <see cref="T:MsgPack.Serialization.SerializationContext"/> which owns this serializer.</param>
+            <param name="schema">
+            	The schema for collection itself or its items for the member this instance will be used to. 
+            	<c>null</c> will be considered as <see cref="F:MsgPack.Serialization.PolymorphismSchema.Default"/>.
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="ownerContext"/> is <c>null</c>.
+            </exception>
+        </member>
+        <member name="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer`3.GetCount(`0)">
+            <summary>
+            	Returns count of the dictionary.
+            </summary>
+            <param name="dictionary">A collection. This value will not be <c>null</c>.</param>
+            <returns>The count of the <paramref name="dictionary"/>.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer`3.AddItem(`0,`1,`2)">
+            <summary>
+            	Adds the deserialized item to the collection on <typeparamref name="TDictionary"/> specific manner
+            	to implement <see cref="M:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializerBase`3.UnpackToCore(MsgPack.Unpacker,`0)"/>.
+            </summary>
+            <param name="dictionary">The dictionary to be added.</param>
+            <param name="key">The key to be added.</param>
+            <param name="value">The value to be added.</param>
+            <exception cref="T:System.NotSupportedException">
+            	This implementation always throws it.
             </exception>
         </member>
         <member name="T:MsgPack.Serialization.CollectionSerializers.EnumerableMessagePackSerializer`2">
@@ -6061,6 +6210,15 @@
             	Defines serializer factory for well known structured types.
             </summary>
         </member>
+        <member name="M:MsgPack.Serialization.DefaultSerializers.GenericSerializer.IsSupported(System.Type,MsgPack.Serialization.CollectionTraits,System.Boolean)">
+            <summary>
+            	Determines whether the specified type is supported from this class.
+            </summary>
+            <param name="type">The type to be determined.</param>
+            <param name="traits">The known <see cref="T:MsgPack.Serialization.CollectionTraits"/> of the <paramref name="type"/>.</param>
+            <param name="preferReflectionBasedSerializer"><c>true</c> to prefer reflection based collection serializers instead of dyhnamic generated serializers.</param>
+            <returns><c>true</c> when the <paramref name="type"/> is supported; otherwise, <c>false</c>.</returns>
+        </member>
         <member name="T:MsgPack.Serialization.DefaultSerializers.GenericSerializer.IGenericBuiltInSerializerFactory">
             <summary>
             	Defines non-generic factory method for built-in serializers which require generic type argument.
@@ -6225,11 +6383,12 @@
             <param name="serializerBaseClass">The base class of the serializer.</param>
             <returns><see cref="T:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderEmittingContext"/>.</returns>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderCodeGenerationContext.BuiltInSerializerExists(System.Type)">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderCodeGenerationContext.BuiltInSerializerExists(System.Type,MsgPack.Serialization.CollectionTraits)">
             <summary>
             	Determines that whether built-in serializer for specified type exists or not.
             </summary>
             <param name="type">The type for check.</param>
+            <param name="traits">The known <see cref="T:MsgPack.Serialization.CollectionTraits"/> of the <paramref name="type"/>.</param>
             <returns>
               <c>true</c> if built-in serializer for specified type exists; <c>false</c>, otherwise.
             </returns>
@@ -6907,18 +7066,20 @@
             <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
             <returns>New <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</returns>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEnumEmitter(System.Type,MsgPack.Serialization.EmitterFlavor)">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEnumEmitter(MsgPack.Serialization.SerializationContext,System.Type,MsgPack.Serialization.EmitterFlavor)">
             <summary>
             	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
             </summary>
+            <param name="context">The <see cref="T:MsgPack.Serialization.SerializationContext"/>.</param>
             <param name="targetType">The type of the serialization target.</param>
             <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
             <returns>New <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</returns>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEnumEmitterCore(System.Type,MsgPack.Serialization.EmitterFlavor)">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEnumEmitterCore(MsgPack.Serialization.SerializationContext,System.Type,MsgPack.Serialization.EmitterFlavor)">
             <summary>
             	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
             </summary>
+            <param name="context">The <see cref="T:MsgPack.Serialization.SerializationContext"/>.</param>
             <param name="targetType">The type of the serialization target.</param>
             <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
             <returns>New <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</returns>
@@ -7003,10 +7164,11 @@
             	<see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> using instance fields to hold serializers for target members.
             </summary>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedEnumSerializerEmitter.#ctor(System.Reflection.Emit.ModuleBuilder,System.Nullable{System.Int32},System.Type,System.Boolean)">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedEnumSerializerEmitter.#ctor(MsgPack.Serialization.SerializationContext,System.Reflection.Emit.ModuleBuilder,System.Nullable{System.Int32},System.Type,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter"/> class.
             </summary>
+            <param name="context">A <see cref="T:MsgPack.Serialization.SerializationContext"/>.</param>
             <param name="host">The host <see cref="T:System.Reflection.Emit.ModuleBuilder"/>.</param>
             <param name="sequence">The sequence number to name new type.</param>
             <param name="targetType">Type of the serialization target.</param>
@@ -7185,6 +7347,77 @@
             	Enums are serialized with their underlying value. It is more efficient but less torelant to versioning.
             </summary>
         </member>
+        <member name="T:MsgPack.Serialization.ExtTypeCodeMapping">
+            <summary>
+            	Implements mapping table between known ext type codes and names.
+            </summary>
+            <remarks>
+            	Well-known (pre-defined) ext type names are defined in <see cref="T:MsgPack.KnownExtTypeName"/>, and their default mapped codes are found in <see cref="T:MsgPack.KnownExtTypeCode"/>.
+            </remarks>
+            <threadsafety instance="true" static="true"/>
+        </member>
+        <member name="M:MsgPack.Serialization.ExtTypeCodeMapping.Add(System.String,System.Byte)">
+            <summary>
+            	Adds the known ext type mapping.
+            </summary>
+            <param name="name">The name of the ext type.</param>
+            <param name="typeCode">The ext type code to be mapped.</param>
+            <returns>
+            	<c>true</c> if <paramref name="name"/> AND <paramref name="typeCode"/> were not registered and then newly registered; <c>false</c>, otherwise.
+            </returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="name"/> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="name"/> is empty.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="typeCode"/> is greater than 0x7F.</exception>
+        </member>
+        <member name="M:MsgPack.Serialization.ExtTypeCodeMapping.Remove(System.String)">
+            <summary>
+            	Removes the mapping with specified name.
+            </summary>
+            <param name="name">The name of the ext type.</param>
+            <returns>
+            	<c>true</c> if <paramref name="name"/> was registered and has been removed successfully; <c>false</c>, otherwise.
+            </returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="name"/> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="name"/> is empty.</exception>
+        </member>
+        <member name="M:MsgPack.Serialization.ExtTypeCodeMapping.Remove(System.Byte)">
+            <summary>
+            	Removes the mapping with specified code.
+            </summary>
+            <param name="typeCode">The type code of the ext type.</param>
+            <returns>
+            	<c>true</c> if <paramref name="typeCode"/> was registered and has been removed successfully; <c>false</c>, otherwise.
+            </returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="typeCode"/> is greater than 0x7F.</exception>
+        </member>
+        <member name="M:MsgPack.Serialization.ExtTypeCodeMapping.Clear">
+            <summary>
+            	Clears all mappings.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.ExtTypeCodeMapping.GetEnumerator">
+            <summary>
+            	Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>
+            	A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
+            </returns>
+            <remarks>
+            	This method causes internal collection copying, so this makes O(n) time.
+            </remarks>
+        </member>
+        <member name="P:MsgPack.Serialization.ExtTypeCodeMapping.Item(System.String)">
+            <summary>
+            	Gets a mapped byte to the specified ext type name.
+            </summary>
+            <param name="name">The name of the ext type.</param>
+            <returns>
+            	The byte code for specified ext type in the current context.
+            </returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="name"/> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="name"/> is empty.</exception>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException"><paramref name="name"/> is not registered as known ext type name.</exception>
+        </member>
         <member name="T:MsgPack.Serialization.IdentifierUtility">
             <summary>
             	Utilities related to member/type ID.
@@ -7219,6 +7452,31 @@
             	A value of <see cref="P:MsgPack.Serialization.ISerializerGeneratorConfiguration.SerializationMethod"/>.
             </value>
             <exception cref="T:System.ArgumentOutOfRangeException">Specified value is not valid  <see cref="P:MsgPack.Serialization.ISerializerGeneratorConfiguration.SerializationMethod"/>.</exception>
+        </member>
+        <member name="P:MsgPack.Serialization.ISerializerGeneratorConfiguration.EnumSerializationMethod">
+            <summary>
+            	Gets or sets the default enum serialization method for generating enum type serializers.
+            </summary>
+            <value>
+            	A value of <see cref="P:MsgPack.Serialization.ISerializerGeneratorConfiguration.EnumSerializationMethod"/>.
+            </value>
+            <exception cref="T:System.ArgumentOutOfRangeException">Specified value is not valid  <see cref="P:MsgPack.Serialization.ISerializerGeneratorConfiguration.EnumSerializationMethod"/>.</exception>
+        </member>
+        <member name="P:MsgPack.Serialization.ISerializerGeneratorConfiguration.IsRecursive">
+            <summary>
+            	Gets or sets a value indicating whether recursively generates dependent types which do not have built-in serializer or not.
+            </summary>
+            <value>
+            <c>true</c> if recursively generates dependent types which do not have built-in serializer; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:MsgPack.Serialization.ISerializerGeneratorConfiguration.PreferReflectionBasedSerializer">
+            <summary>
+            	Gets or sets a value indicating whether prefer reflection based collection serializers instead of dyhnamic generated serializers.
+            </summary>
+            <value>
+            <c>true</c> if prefer reflection based collection serializers instead of dyhnamic generated serializers; otherwise, <c>false</c>.
+            </value>
         </member>
         <member name="T:MsgPack.Serialization.LazyDelegatingMessagePackSerializer`1">
             <summary>
@@ -7362,8 +7620,10 @@
             	
             </summary>
             <remarks>
-            	When you apply this attribute to a member, the member will be serialized using MessagePack ext-type,
-            	so deserializer will be able to deserialize object which is actual type when serialized with interoperability.
+            	When you apply this attribute to a member, the member
+            	will be serialized as 2 element array as [ &lt;type-code&gt;, &lt;actual-value (array or map)&gt;] format 
+            	where the type-code is utf-8 encoded string representing type in your application (system) context.
+            	When you interop with other launages, the deserializer will be able to deserialize object which is actual type when serialized with interoperability.
             	<note>
             		You must use one-to-one relationship between type-code and the type.
             	</note>
@@ -7379,27 +7639,27 @@
             	Common interfaces among polymorhic helper attributes.
             </summary>
         </member>
-        <member name="M:MsgPack.Serialization.MessagePackKnownTypeAttribute.#ctor(System.Byte,System.Type)">
+        <member name="M:MsgPack.Serialization.MessagePackKnownTypeAttribute.#ctor(System.String,System.Type)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.Serialization.MessagePackKnownTypeAttribute"/> class.
             </summary>
-            <param name="bindingCode">The ext-type code to be bound.</param>
-            <param name="bindingType">The binding <see cref="T:System.Type"/> for <paramref name="bindingCode"/>.</param>
+            <param name="typeCode">A string type code to be bound.</param>
+            <param name="bindingType">The binding <see cref="T:System.Type"/> for <paramref name="typeCode"/>.</param>
         </member>
-        <member name="P:MsgPack.Serialization.MessagePackKnownTypeAttribute.BindingCode">
+        <member name="P:MsgPack.Serialization.MessagePackKnownTypeAttribute.TypeCode">
             <summary>
-            	Gets the ext-type code to be bound.
+            	Gets a type code to be bound.
             </summary>
             <value>
-            	The ext-type code to be bound.
+            	A type code to be bound.
             </value>
         </member>
         <member name="P:MsgPack.Serialization.MessagePackKnownTypeAttribute.BindingType">
             <summary>
-            	Gets the type of the binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownTypeAttribute.BindingCode"/>.
+            	Gets the type of the binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownTypeAttribute.TypeCode"/>.
             </summary>
             <value>
-            	The binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownTypeAttribute.BindingCode"/>.
+            	The binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownTypeAttribute.TypeCode"/>.
             </value>
         </member>
         <member name="T:MsgPack.Serialization.MessagePackKnownCollectionItemTypeAttribute">
@@ -7408,34 +7668,36 @@
             	
             </summary>
             <remarks>
-            	When you apply this attribute to a member, the items/values of the collection/dictionary will be serialized using MessagePack ext-type,
-            	so deserializer will be able to deserialize object which is actual type when serialized with interoperability.
+            	When you apply this attribute to a member, the items/values of the collection/dictionary
+            	will be serialized as 2 element array as [ &lt;type-code&gt;, &lt;actual-value (array or map)&gt;] format 
+            	where the type-code is utf-8 encoded string representing type in your application (system) context.
+            	When you interop with other launages, the deserializer will be able to deserialize object which is actual type when serialized with interoperability.
             	<note>
             		You must use one-to-one relationship between type-code and the type.
             	</note>
             </remarks>
         </member>
-        <member name="M:MsgPack.Serialization.MessagePackKnownCollectionItemTypeAttribute.#ctor(System.Byte,System.Type)">
+        <member name="M:MsgPack.Serialization.MessagePackKnownCollectionItemTypeAttribute.#ctor(System.String,System.Type)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.Serialization.MessagePackKnownCollectionItemTypeAttribute"/> class.
             </summary>
-            <param name="bindingCode">The ext-type code to be bound.</param>
-            <param name="bindingType">The binding <see cref="T:System.Type"/> for <paramref name="bindingCode"/>.</param>
+            <param name="typeCode">A string type code to be bound.</param>
+            <param name="bindingType">The binding <see cref="T:System.Type"/> for <paramref name="typeCode"/>.</param>
         </member>
-        <member name="P:MsgPack.Serialization.MessagePackKnownCollectionItemTypeAttribute.BindingCode">
+        <member name="P:MsgPack.Serialization.MessagePackKnownCollectionItemTypeAttribute.TypeCode">
             <summary>
-            	Gets the ext-type code to be bound.
+            	Gets a type code to be bound.
             </summary>
             <value>
-            	The ext-type code to be bound.
+            	A type code to be bound.
             </value>
         </member>
         <member name="P:MsgPack.Serialization.MessagePackKnownCollectionItemTypeAttribute.BindingType">
             <summary>
-            	Gets the type of the binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownCollectionItemTypeAttribute.BindingCode"/>.
+            	Gets the type of the binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownCollectionItemTypeAttribute.TypeCode"/>.
             </summary>
             <value>
-            	The binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownCollectionItemTypeAttribute.BindingCode"/>.
+            	The binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownCollectionItemTypeAttribute.TypeCode"/>.
             </value>
         </member>
         <member name="T:MsgPack.Serialization.MessagePackKnownDictionaryKeyTypeAttribute">
@@ -7444,34 +7706,36 @@
             	
             </summary>
             <remarks>
-            	When you apply this attribute to a member, the keys of the dictionary will be serialized using MessagePack ext-type,
-            	so deserializer will be able to deserialize object which is actual type when serialized with interoperability.
+            	When you apply this attribute to a member, the keys of the dictionary
+            	will be serialized as 2 element array as [ &lt;type-code&gt;, &lt;actual-value (array or map)&gt;] format 
+            	where the type-code is utf-8 encoded string representing type in your application (system) context.
+            	When you interop with other launages, the deserializer will be able to deserialize object which is actual type when serialized with interoperability.
             	<note>
             		You must use one-to-one relationship between type-code and the type.
             	</note>
             </remarks>
         </member>
-        <member name="M:MsgPack.Serialization.MessagePackKnownDictionaryKeyTypeAttribute.#ctor(System.Byte,System.Type)">
+        <member name="M:MsgPack.Serialization.MessagePackKnownDictionaryKeyTypeAttribute.#ctor(System.String,System.Type)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.Serialization.MessagePackKnownDictionaryKeyTypeAttribute"/> class.
             </summary>
-            <param name="bindingCode">The ext-type code to be bound.</param>
-            <param name="bindingType">The binding <see cref="T:System.Type"/> for <paramref name="bindingCode"/>.</param>
+            <param name="typeCode">A string type code to be bound.</param>
+            <param name="bindingType">The binding <see cref="T:System.Type"/> for <paramref name="typeCode"/>.</param>
         </member>
-        <member name="P:MsgPack.Serialization.MessagePackKnownDictionaryKeyTypeAttribute.BindingCode">
+        <member name="P:MsgPack.Serialization.MessagePackKnownDictionaryKeyTypeAttribute.TypeCode">
             <summary>
-            	Gets the ext-type code to be bound.
+            	Gets a type code to be bound.
             </summary>
             <value>
-            	The ext-type code to be bound.
+            	A type code to be bound.
             </value>
         </member>
         <member name="P:MsgPack.Serialization.MessagePackKnownDictionaryKeyTypeAttribute.BindingType">
             <summary>
-            	Gets the type of the binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownDictionaryKeyTypeAttribute.BindingCode"/>.
+            	Gets the type of the binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownDictionaryKeyTypeAttribute.TypeCode"/>.
             </summary>
             <value>
-            	The binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownDictionaryKeyTypeAttribute.BindingCode"/>.
+            	The binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownDictionaryKeyTypeAttribute.TypeCode"/>.
             </value>
         </member>
         <member name="T:MsgPack.Serialization.MessagePackKnownTupleItemTypeAttribute">
@@ -7480,8 +7744,10 @@
             	
             </summary>
             <remarks>
-            	When you apply this attribute to a member, the item of tuple will be serialized using MessagePack ext-type,
-            	so deserializer will be able to deserialize object which is actual type when serialized with interoperability.
+            	When you apply this attribute to a member, the item of tuple,
+            	will be serialized as 2 element array as [ &lt;type-code&gt;, &lt;actual-value (array or map)&gt;] format 
+            	where the type-code is utf-8 encoded string representing type in your application (system) context.
+            	When you interop with other launages, the deserializer will be able to deserialize object which is actual type when serialized with interoperability.
             	<note>
             		You must use one-to-one relationship between type-code and the type.
             	</note>
@@ -7492,28 +7758,28 @@
             	Common interfaces among *TupleItemTypeAttributes.
             </summary>
         </member>
-        <member name="M:MsgPack.Serialization.MessagePackKnownTupleItemTypeAttribute.#ctor(System.Int32,System.Byte,System.Type)">
+        <member name="M:MsgPack.Serialization.MessagePackKnownTupleItemTypeAttribute.#ctor(System.Int32,System.String,System.Type)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.Serialization.MessagePackKnownTupleItemTypeAttribute"/> class.
             </summary>
             <param name="itemNumber">The 1-based target item number of the tuple. The attribute which has invalid value should be ignored.</param>
-            <param name="bindingCode">The ext-type code to be bound.</param>
-            <param name="bindingType">The binding <see cref="T:System.Type"/> for <paramref name="bindingCode"/>.</param>
+            <param name="typeCode">A string type code to be bound.</param>
+            <param name="bindingType">The binding <see cref="T:System.Type"/> for <paramref name="typeCode"/>.</param>
         </member>
-        <member name="P:MsgPack.Serialization.MessagePackKnownTupleItemTypeAttribute.BindingCode">
+        <member name="P:MsgPack.Serialization.MessagePackKnownTupleItemTypeAttribute.TypeCode">
             <summary>
-            	Gets the ext-type code to be bound.
+            	Gets a type code to be bound.
             </summary>
             <value>
-            	The ext-type code to be bound.
+            	A type code to be bound.
             </value>
         </member>
         <member name="P:MsgPack.Serialization.MessagePackKnownTupleItemTypeAttribute.BindingType">
             <summary>
-            	Gets the type of the binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownTupleItemTypeAttribute.BindingCode"/>.
+            	Gets the type of the binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownTupleItemTypeAttribute.TypeCode"/>.
             </summary>
             <value>
-            	The binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownTupleItemTypeAttribute.BindingCode"/>.
+            	The binding <see cref="T:System.Type"/> for <see cref="P:MsgPack.Serialization.MessagePackKnownTupleItemTypeAttribute.TypeCode"/>.
             </value>
         </member>
         <member name="P:MsgPack.Serialization.MessagePackKnownTupleItemTypeAttribute.ItemNumber">
@@ -7580,12 +7846,19 @@
             	so deserializer will be able to deserialize object which is actual type when serialized instead of interoperability.
             	Because non-.NET enviroments (Java, Ruby, Go, etc.) cannot interpret .NET native type identifier, 
             	you should not use this attribute when the serialized stream will be possible to be used from non-.NET environment.
-            	The typed object will be encoded as 3 elements array as follows, so your deserializer can skip type information as needed:
-            	[ &lt;ext1 - 127(customizable via SerializationContext.TypeEmbeddingSettings) &lt;kind&gt;&gt;, &lt;type-info&gt;, &lt;actual-value (array or map)&gt;]
+            	The typed object will be encoded as 2 elements array as follows, so your deserializer can skip type information as needed:
+            	[ &lt;type-info&gt;, &lt;actual-value (array or map)&gt;]
             	In this point, type-info will be encoded as compressed assembly qualified name as follows:
             	[ &lt;compressed type full name&gt;, &lt;assembly simple name&gt;, &lt;version binary&gt;, &lt;culture string&gt;, &lt;public key token binary&gt;]
             	If the type full name starts with its assembly simple name, then the prefix matched to assembly simple name will be omitted 
             	(as a result, compressed type name starts with dot).
+            	<note>
+            		You should use this attribute CAREFULLY when you deserialize data from outside, because this feature can inject arbitary process in your code through
+            		constructor and some virtual methods if exist.
+            		It is highly recommended avoid using <see cref="T:System.Object"/> type as member's declaring type, 
+            		you should specify your base class which and derived typed are fully controled under your organization instead.
+            		It mitigate chance of potential exploits.
+            	</note>
             </remarks>
         </member>
         <member name="T:MsgPack.Serialization.Polymorphic.IPolymorphicRuntimeTypeAttribute">
@@ -7608,12 +7881,19 @@
             	so deserializer will be able to deserialize object which is actual type when serialized instead of interoperability.
             	Because non-.NET enviroments (Java, Ruby, Go, etc.) cannot interpret .NET native type identifier, 
             	you should not use this attribute when the serialized stream will be possible to be used from non-.NET environment.
-            	The typed object will be encoded as 3 elements array as follows, so your deserializer can skip type information as needed:
-            	[ &lt;ext1 - 127(customizable via SerializationContext.TypeEmbeddingSettings) &lt;kind&gt;&gt;, &lt;type-info&gt;, &lt;actual-value (array or map)&gt;]
+            	The typed object will be encoded as 2 elements array as follows, so your deserializer can skip type information as needed:
+            	[ &lt;type-info&gt;, &lt;actual-value (array or map)&gt;]
             	In this point, type-info will be encoded as compressed assembly qualified name as follows:
             	[ &lt;compressed type full name&gt;, &lt;assembly simple name&gt;, &lt;version binary&gt;, &lt;culture string&gt;, &lt;public key token binary&gt;]
             	If the type full name starts with its assembly simple name, then the prefix matched to assembly simple name will be omitted 
             	(as a result, compressed type name starts with dot).
+            	<note>
+            		You should use this attribute CAREFULLY when you deserialize data from outside, because this feature can inject arbitary process in your code through
+            		constructor and some virtual methods if exist.
+            		It is highly recommended avoid using <see cref="T:System.Object"/> type as member's declaring type, 
+            		you should specify your base class which and derived typed are fully controled under your organization instead.
+            		It mitigate chance of potential exploits.
+            	</note>
             </remarks>
         </member>
         <member name="M:MsgPack.Serialization.MessagePackRuntimeCollectionItemTypeAttribute.#ctor">
@@ -7631,12 +7911,19 @@
             	so deserializer will be able to deserialize object which is actual type when serialized instead of interoperability.
             	Because non-.NET enviroments (Java, Ruby, Go, etc.) cannot interpret .NET native type identifier, 
             	you should not use this attribute when the serialized stream will be possible to be used from non-.NET environment.
-            	The typed object will be encoded as 3 elements array as follows, so your deserializer can skip type information as needed:
-            	[ &lt;ext1 - 127(customizable via SerializationContext.TypeEmbeddingSettings) &lt;kind&gt;&gt;, &lt;type-info&gt;, &lt;actual-value (array or map)&gt;]
+            	The typed object will be encoded as 2 elements array as follows, so your deserializer can skip type information as needed:
+            	[ &lt;type-info&gt;, &lt;actual-value (array or map)&gt;]
             	In this point, type-info will be encoded as compressed assembly qualified name as follows:
             	[ &lt;compressed type full name&gt;, &lt;assembly simple name&gt;, &lt;version binary&gt;, &lt;culture string&gt;, &lt;public key token binary&gt;]
             	If the type full name starts with its assembly simple name, then the prefix matched to assembly simple name will be omitted 
             	(as a result, compressed type name starts with dot).
+            	<note>
+            		You should use this attribute CAREFULLY when you deserialize data from outside, because this feature can inject arbitary process in your code through
+            		constructor and some virtual methods if exist.
+            		It is highly recommended avoid using <see cref="T:System.Object"/> type as member's declaring type, 
+            		you should specify your base class which and derived typed are fully controled under your organization instead.
+            		It mitigate chance of potential exploits.
+            	</note>
             </remarks>
         </member>
         <member name="M:MsgPack.Serialization.MessagePackRuntimeDictionaryKeyTypeAttribute.#ctor">
@@ -7654,12 +7941,19 @@
             	so deserializer will be able to deserialize object which is actual type when serialized instead of interoperability.
             	Because non-.NET enviroments (Java, Ruby, Go, etc.) cannot interpret .NET native type identifier, 
             	you should not use this attribute when the serialized stream will be possible to be used from non-.NET environment.
-            	The typed object will be encoded as 3 elements array as follows, so your deserializer can skip type information as needed:
-            	[ &lt;ext1 - 127(customizable via SerializationContext.TypeEmbeddingSettings) &lt;kind&gt;&gt;, &lt;type-info&gt;, &lt;actual-value (array or map)&gt;]
+            	The typed object will be encoded as 2 elements array as follows, so your deserializer can skip type information as needed:
+            	[ &lt;type-info&gt;, &lt;actual-value (array or map)&gt;]
             	In this point, type-info will be encoded as compressed assembly qualified name as follows:
             	[ &lt;compressed type full name&gt;, &lt;assembly simple name&gt;, &lt;version binary&gt;, &lt;culture string&gt;, &lt;public key token binary&gt;]
             	If the type full name starts with its assembly simple name, then the prefix matched to assembly simple name will be omitted 
             	(as a result, compressed type name starts with dot).
+            	<note>
+            		You should use this attribute CAREFULLY when you deserialize data from outside, because this feature can inject arbitary process in your code through
+            		constructor and some virtual methods if exist.
+            		It is highly recommended avoid using <see cref="T:System.Object"/> type as member's declaring type, 
+            		you should specify your base class which and derived typed are fully controled under your organization instead.
+            		It mitigate chance of potential exploits.
+            	</note>
             </remarks>
         </member>
         <member name="M:MsgPack.Serialization.MessagePackRuntimeTupleItemTypeAttribute.#ctor(System.Int32)">
@@ -8073,7 +8367,7 @@
             	Defines internal protocol betwenn polymorphic serializers and collection serializers to accomplish polymorphism.
             </summary>
         </member>
-        <member name="T:MsgPack.Serialization.Polymorphic.KnownTypePolymorhicMessagePackSerializer`1">
+        <member name="T:MsgPack.Serialization.Polymorphic.KnownTypePolymorphicMessagePackSerializer`1">
             <summary>
             	Implements polymorphic serializer which uses closed known types and interoperable ext-type feature.
             </summary>
@@ -8085,7 +8379,7 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="T:MsgPack.Serialization.Polymorphic.TypeEmbedingPolymorhicMessagePackSerializer`1">
+        <member name="T:MsgPack.Serialization.Polymorphic.TypeEmbedingPolymorphicMessagePackSerializer`1">
             <summary>
             	Implements polymorphic serializer which uses open types and non-interoperable ext-type tag and .NET type information.
             </summary>
@@ -8119,7 +8413,7 @@
             <returns>A new instance of the <see cref="T:MsgPack.Serialization.PolymorphismSchema"/> class for non-collection object which uses type embedding based polymorphism.</returns>
             <exception cref="T:System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
         </member>
-        <member name="M:MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(System.Type,System.Collections.Generic.IDictionary{System.Byte,System.Type})">
+        <member name="M:MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(System.Type,System.Collections.Generic.IDictionary{System.String,System.Type})">
             <summary>
             	Creates a new instance of the <see cref="T:MsgPack.Serialization.PolymorphismSchema"/> class for non-collection object which uses ext-type code mapping based polymorphism.
             </summary>
@@ -8146,7 +8440,7 @@
             <returns>A new instance of the <see cref="T:MsgPack.Serialization.PolymorphismSchema"/> class for collection object which uses type embedding based polymorphism.</returns>
             <exception cref="T:System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
         </member>
-        <member name="M:MsgPack.Serialization.PolymorphismSchema.ForPolymorphicCollection(System.Type,System.Collections.Generic.IDictionary{System.Byte,System.Type},MsgPack.Serialization.PolymorphismSchema)">
+        <member name="M:MsgPack.Serialization.PolymorphismSchema.ForPolymorphicCollection(System.Type,System.Collections.Generic.IDictionary{System.String,System.Type},MsgPack.Serialization.PolymorphismSchema)">
             <summary>
             	Creates a new instance of the <see cref="T:MsgPack.Serialization.PolymorphismSchema"/> class for collection object which uses ext-type code mapping based polymorphism.
             </summary>
@@ -8176,7 +8470,7 @@
             <returns>A new instance of the <see cref="T:MsgPack.Serialization.PolymorphismSchema"/> class for dictionary object which uses type embedding based polymorphism.</returns>
             <exception cref="T:System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
         </member>
-        <member name="M:MsgPack.Serialization.PolymorphismSchema.ForPolymorphicDictionary(System.Type,System.Collections.Generic.IDictionary{System.Byte,System.Type},MsgPack.Serialization.PolymorphismSchema,MsgPack.Serialization.PolymorphismSchema)">
+        <member name="M:MsgPack.Serialization.PolymorphismSchema.ForPolymorphicDictionary(System.Type,System.Collections.Generic.IDictionary{System.String,System.Type},MsgPack.Serialization.PolymorphismSchema,MsgPack.Serialization.PolymorphismSchema)">
             <summary>
             	Creates a new instance of the <see cref="T:MsgPack.Serialization.PolymorphismSchema"/> class for dictionary object which uses ext-type code mapping based polymorphism.
             </summary>
@@ -9040,6 +9334,56 @@
             	When this IL stream is ended with 'ret' then <c>true</c>; otherwise, <c>false</c>.
             </returns>
         </member>
+        <member name="T:MsgPack.Serialization.ResolveSerializerEventArgs">
+            <summary>
+            	Represents event information for <see cref="E:MsgPack.Serialization.SerializationContext.ResolveSerializer"/> event.
+            </summary>
+            <seealso cref="E:MsgPack.Serialization.SerializationContext.ResolveSerializer"/>
+        </member>
+        <member name="M:MsgPack.Serialization.ResolveSerializerEventArgs.GetFoundSerializer``1">
+            <summary>
+            	Gets the found serializer the event subscriber specified.
+            </summary>
+            <returns>
+            	The found serializer the event subscriber specified. <c>null</c> represents default behavior is wanted.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.ResolveSerializerEventArgs.SetSerializer``1(MsgPack.Serialization.MessagePackSerializer{``0})">
+            <summary>
+            	Sets the serializer instance which can handle <see cref="P:MsgPack.Serialization.ResolveSerializerEventArgs.TargetType"/> type instance correctly.
+            </summary>
+            <param name="foundSerializer">The serializer instance which can handle <see cref="P:MsgPack.Serialization.ResolveSerializerEventArgs.TargetType"/> type instance correctly; <c>null</c> when you cannot provide appropriate serializer instance.</param>
+            <remarks>
+            	If you decide to delegate serializer generation to MessagePack for CLI infrastructure, do not call this method in your event handler or specify <c>null</c> for <paramref name="foundSerializer"/>.
+            </remarks>
+        </member>
+        <member name="P:MsgPack.Serialization.ResolveSerializerEventArgs.Context">
+            <summary>
+            	Gets the <see cref="T:MsgPack.Serialization.SerializationContext"/> which raises this event.
+            </summary>
+            <value>
+            	The <see cref="T:MsgPack.Serialization.SerializationContext"/> which raises this event. This value will not be <c>null</c>.
+            </value>
+            <remarks>
+            	A <c>sender</c> parameter of the event handler has same instance for this.
+            </remarks>
+        </member>
+        <member name="P:MsgPack.Serialization.ResolveSerializerEventArgs.TargetType">
+            <summary>
+            	Gets the target type which is getting serializer.
+            </summary>
+            <value>
+            	The target type which is getting serializer. This value will not be <c>null</c>.
+            </value>
+        </member>
+        <member name="P:MsgPack.Serialization.ResolveSerializerEventArgs.PolymorphismSchema">
+            <summary>
+            	Gets the <see cref="P:MsgPack.Serialization.ResolveSerializerEventArgs.PolymorphismSchema"/> which represents polymorphism information for the current member.
+            </summary>
+            <value>
+            	The <see cref="P:MsgPack.Serialization.ResolveSerializerEventArgs.PolymorphismSchema"/> which represents polymorphism information for the current member. This value will not be <c>null</c>.
+            </value>
+        </member>
         <member name="T:MsgPack.Serialization.SerializationCompatibilityOptions">
             <summary>
             	Represents compatibility options of serialization runtime.
@@ -9305,12 +9649,45 @@
             	If you want to change this behavior, set this value to <see cref="F:DateTimeConversionMethod.UnixEpoc"/>.
             </remarks>
         </member>
-        <member name="P:MsgPack.Serialization.SerializationContext.TypeEmbeddingSettings">
+        <member name="E:MsgPack.Serialization.SerializationContext.ResolveSerializer">
             <summary>
-            	Gets the type embedding settings.
+            	Occurs when the context have not find appropriate registered nor built-in serializer for specified type.
+            </summary>
+            <remarks>
+            	This event will be occured when the context could not found known serializer from:
+            	<list type="bullet">
+            		<item>
+            			Known built-in serializers for arrays, nullables, and collections, etc.
+            		</item>
+            		<item>
+            			Known default serializers for some known various FCL value types and some reference types.
+            		</item>
+            		<item>
+            			Previously registered or generated serializer.
+            		</item>
+            	</list>
+            	You can instantiate your custom serializer using various <see cref="T:MsgPack.Serialization.ResolveSerializerEventArgs"/> properties,
+            	and then call <see cref="M:MsgPack.Serialization.ResolveSerializerEventArgs.SetSerializer``1(MsgPack.Serialization.MessagePackSerializer{``0})"/> to provide toward the context.
+            	<note>
+            		You can use <see cref="T:MsgPack.Serialization.SerializationContext"/> to get dependent serializers as you like, 
+            		but you should never explicitly register new serializer(s) explicitly via the context from the event handler and its dependents.
+            		Instead, you specify the instanciated serializer with <see cref="M:MsgPack.Serialization.ResolveSerializerEventArgs.SetSerializer``1(MsgPack.Serialization.MessagePackSerializer{``0})"/> once at a time. 
+            		Dependent serializer(s) should be registered via next (nested) raise of this event.
+            	</note>
+            	<note>
+            		The context implicitly holds 'lock' for the target type for the requested serializer in the current thread.
+            		So you should not use any synchronization primitives in the event handler and its dependents,
+            		or you may face complex dead lock.
+            		That is, the event handler should be as simple as possible like just instanciate the serializer and set it to the event argument.
+            	</note>
+            </remarks>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializationContext.ExtTypeCodeMapping">
+            <summary>
+            	Gets the current mapping table of ext type code.
             </summary>
             <value>
-            	The type embedding settings. This value will not be <c>null</c>.
+            	The <see cref="P:MsgPack.Serialization.SerializationContext.ExtTypeCodeMapping"/> which maps between known ext type names and ext type codes.
             </value>
         </member>
         <member name="T:MsgPack.Serialization.SerializationExceptions">
@@ -9578,6 +9955,15 @@
             </value>
             <exception cref="T:System.ArgumentOutOfRangeException">Specified value is not valid  <see cref="P:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.SerializationMethod"/>.</exception>
         </member>
+        <member name="P:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.EnumSerializationMethod">
+            <summary>
+            	Gets or sets the default enum serialization method for generating enum type serializers.
+            </summary>
+            <value>
+            	A value of <see cref="P:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.EnumSerializationMethod"/>.
+            </value>
+            <exception cref="T:System.ArgumentOutOfRangeException">Specified value is not valid  <see cref="P:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.EnumSerializationMethod"/>.</exception>
+        </member>
         <member name="P:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.AssemblyName">
             <summary>
             	Gets or sets the name of the assembly.
@@ -9585,6 +9971,22 @@
             </summary>
             <value>
             	The name of the assembly.
+            </value>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.IsRecursive">
+            <summary>
+            	Gets or sets a value indicating whether recursively generates dependent types which do not have built-in serializer or not.
+            </summary>
+            <value>
+            <c>true</c> if recursively generates dependent types which do not have built-in serializer; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.PreferReflectionBasedSerializer">
+            <summary>
+            	Gets or sets a value indicating whether prefer reflection based collection serializers instead of dyhnamic generated serializers.
+            </summary>
+            <value>
+            <c>true</c> if prefer reflection based collection serializers instead of dyhnamic generated serializers; otherwise, <c>false</c>.
             </value>
         </member>
         <member name="T:MsgPack.Serialization.SerializerCodeGenerationConfiguration">
@@ -9654,6 +10056,31 @@
             A value of <see cref="P:MsgPack.Serialization.SerializerCodeGenerationConfiguration.SerializationMethod"/>.
             </value>
             <exception cref="T:System.ArgumentOutOfRangeException">Specified value is not valid  <see cref="P:MsgPack.Serialization.SerializerCodeGenerationConfiguration.SerializationMethod"/>.</exception>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializerCodeGenerationConfiguration.EnumSerializationMethod">
+            <summary>
+            	Gets or sets the default enum serialization method for generating enum type serializers.
+            </summary>
+            <value>
+            	A value of <see cref="P:MsgPack.Serialization.SerializerCodeGenerationConfiguration.EnumSerializationMethod"/>.
+            </value>
+            <exception cref="T:System.ArgumentOutOfRangeException">Specified value is not valid  <see cref="P:MsgPack.Serialization.SerializerCodeGenerationConfiguration.EnumSerializationMethod"/>.</exception>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializerCodeGenerationConfiguration.IsRecursive">
+            <summary>
+            	Gets or sets a value indicating whether recursively generates dependent types which do not have built-in serializer or not.
+            </summary>
+            <value>
+            <c>true</c> if recursively generates dependent types which do not have built-in serializer; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializerCodeGenerationConfiguration.PreferReflectionBasedSerializer">
+            <summary>
+            	Gets or sets a value indicating whether prefer reflection based collection serializers instead of dyhnamic generated serializers.
+            </summary>
+            <value>
+            <c>true</c> if prefer reflection based collection serializers instead of dyhnamic generated serializers; otherwise, <c>false</c>.
+            </value>
         </member>
         <member name="P:MsgPack.Serialization.SerializerCodeGenerationConfiguration.IsInternalToMsgPackLibrary">
             <summary>
@@ -10033,27 +10460,6 @@
             <summary>
             	Represents serializing member information.
             </summary>
-        </member>
-        <member name="T:MsgPack.Serialization.TypeEmbeddingSettings">
-            <summary>
-            	Holds various settings related to .NET type embedding.
-            </summary>
-        </member>
-        <member name="F:MsgPack.Serialization.TypeEmbeddingSettings.DefaultTypeEmbeddingIdentifier">
-            <summary>
-            	The default type code for token which indicates the enclosing array holds complex object with encoded .NET type information.
-            </summary>
-            <remarks>
-            	Currently, this value is <c>127</c>(<c>0x7F</c>).
-            </remarks>
-        </member>
-        <member name="P:MsgPack.Serialization.TypeEmbeddingSettings.TypeEmbeddingIdentifier">
-            <summary>
-            	Gets or sets the type code for token which indicates the enclosing array holds complex object with encoded .NET type information.
-            </summary>
-            <value>
-            	The type code for the token. Default is <see cref="F:MsgPack.Serialization.TypeEmbeddingSettings.DefaultTypeEmbeddingIdentifier"/>.
-            </value>
         </member>
         <member name="T:MsgPack.Serialization.UnpackHelpers">
             <summary>
