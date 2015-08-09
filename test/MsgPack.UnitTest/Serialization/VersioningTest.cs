@@ -72,7 +72,7 @@ namespace MsgPack.Serialization
 					packer.Pack("Extra1");
 					packer.Pack(String40);
 					packer.Pack("Extra2");
-					packer.Pack(System.Text.UTF8Encoding.Default.GetBytes(String40));
+					packer.Pack(System.Text.Encoding.UTF8.GetBytes(String40));
 					packer.Pack("Field2");
 					packer.Pack( -1 );
 					packer.Pack("Extra3");

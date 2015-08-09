@@ -35,15 +35,15 @@ using Contract = MsgPack.MPContract;
 using System.Diagnostics.Contracts;
 #endif // XAMIOS || XAMDROID
 #endif // !UNITY
-#if UNITY
+#if UNITY || NETFX_CORE
 using System.Linq;
-#endif // UNITY
+#endif // UNITY || NETFX_CORE
 #if NETFX_CORE
 using System.Linq.Expressions;
 #endif // NETFX_CORE
-#if UNITY || XAMIOS || XAMDROID
+#if UNITY || XAMIOS || XAMDROID || NETFX_CORE
 using System.Reflection;
-#endif // UNITY || XAMIOS || XAMDROID
+#endif // UNITY || XAMIOS || XAMDROID || NETFX_CORE
 using System.Threading;
 
 using MsgPack.Serialization.DefaultSerializers;
@@ -554,7 +554,7 @@ namespace MsgPack.Serialization
 		{
 			return
 				this._serializers.Contains( rootType )
-				|| ( rootType.IsGenericType && this._serializers.Contains( rootType.GetGenericTypeDefinition() ) );
+				|| ( rootType.GetIsGenericType() && this._serializers.Contains( rootType.GetGenericTypeDefinition() ) );
 		}
 
 		/// <summary>
