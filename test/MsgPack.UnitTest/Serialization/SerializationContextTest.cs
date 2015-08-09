@@ -436,7 +436,9 @@ namespace MsgPack.Serialization
 			var result = context.GetSerializer<Image>();
 			Assert.That( raised, Is.EqualTo( 1 ) );
 			Assert.That( result, Is.Not.Null );
+#if !NETFX_35 && !UNITY
 			Assert.That( result.GetType().Assembly.IsDynamic );
+#endif // !NETFX_35 && !UNITY
 		}
 
 
