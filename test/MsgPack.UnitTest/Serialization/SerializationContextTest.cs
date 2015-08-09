@@ -436,9 +436,9 @@ namespace MsgPack.Serialization
 			var result = context.GetSerializer<Image>();
 			Assert.That( raised, Is.EqualTo( 1 ) );
 			Assert.That( result, Is.Not.Null );
-#if !NETFX_35 && !UNITY && !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_35 && !UNITY && !NETFX_CORE && !SILVERLIGHT && !XAMIOS && !XAMDROID
 			Assert.That( result.GetType().GetAssembly().IsDynamic );
-#endif // !NETFX_35 && !UNITY && !NETFX_CORE && !SILVERLIGHT
+#endif // !NETFX_35 && !UNITY && !NETFX_CORE && !SILVERLIGHT && !XAMIOS && !XAMDROID
 		}
 
 
