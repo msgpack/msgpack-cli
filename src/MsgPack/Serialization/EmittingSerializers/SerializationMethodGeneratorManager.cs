@@ -22,6 +22,8 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Reflection.Emit;
 
+using MsgPack.Serialization.AbstractSerializers;
+
 namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
@@ -97,52 +99,52 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <summary>
 		///		Creates new <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
 		/// </summary>
-		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="specification">The specification of the serializer.</param>
 		/// <param name="baseClass">Type of the base class of the serializer.</param>
 		/// <param name="emitterFlavor"><see cref="EmitterFlavor"/>.</param>
 		/// <returns>New <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.</returns>
-		public SerializerEmitter CreateEmitter( Type targetType, Type baseClass, EmitterFlavor emitterFlavor )
+		public SerializerEmitter CreateEmitter( SerializerSpecification specification, Type baseClass, EmitterFlavor emitterFlavor )
 		{
-			Contract.Requires( targetType != null );
+			Contract.Requires( specification != null );
 			Contract.Requires( baseClass != null );
 			Contract.Ensures( Contract.Result<SerializerEmitter>() != null );
 
-			return this.CreateEmitterCore( targetType, baseClass, emitterFlavor );
+			return this.CreateEmitterCore( specification, baseClass, emitterFlavor );
 		}
 
 		/// <summary>
 		///		Creates new <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
 		/// </summary>
-		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="specification">The specification of the serializer.</param>
 		/// <param name="baseClass">Type of the base class of the serializer.</param>
 		/// <param name="emitterFlavor"><see cref="EmitterFlavor"/>.</param>
 		/// <returns>New <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.</returns>
-		protected abstract SerializerEmitter CreateEmitterCore( Type targetType, Type baseClass, EmitterFlavor emitterFlavor );
+		protected abstract SerializerEmitter CreateEmitterCore( SerializerSpecification specification, Type baseClass, EmitterFlavor emitterFlavor );
 
 
 		/// <summary>
 		///		Creates new <see cref="EnumSerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
 		/// </summary>
 		/// <param name="context">The <see cref="SerializationContext"/>.</param>
-		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="specification">The specification of the serializer.</param>
 		/// <param name="emitterFlavor"><see cref="EmitterFlavor"/>.</param>
 		/// <returns>New <see cref="EnumSerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.</returns>
-		public EnumSerializerEmitter CreateEnumEmitter( SerializationContext context, Type targetType, EmitterFlavor emitterFlavor )
+		public EnumSerializerEmitter CreateEnumEmitter( SerializationContext context, SerializerSpecification specification, EmitterFlavor emitterFlavor )
 		{
 			Contract.Requires( context != null );
-			Contract.Requires( targetType != null );
+			Contract.Requires( specification != null );
 			Contract.Ensures( Contract.Result<EnumSerializerEmitter>() != null );
 
-			return this.CreateEnumEmitterCore( context, targetType, emitterFlavor );
+			return this.CreateEnumEmitterCore( context, specification, emitterFlavor );
 		}
 
 		/// <summary>
 		///		Creates new <see cref="EnumSerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
 		/// </summary>
 		/// <param name="context">The <see cref="SerializationContext"/>.</param>
-		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="specification">The specification of the serializer.</param>
 		/// <param name="emitterFlavor"><see cref="EmitterFlavor"/>.</param>
 		/// <returns>New <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.</returns>
-		protected abstract EnumSerializerEmitter CreateEnumEmitterCore( SerializationContext context, Type targetType, EmitterFlavor emitterFlavor );
+		protected abstract EnumSerializerEmitter CreateEnumEmitterCore( SerializationContext context, SerializerSpecification specification, EmitterFlavor emitterFlavor );
 	}
 }

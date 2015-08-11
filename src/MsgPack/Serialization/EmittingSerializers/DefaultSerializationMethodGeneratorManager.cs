@@ -25,6 +25,8 @@ using System.Reflection.Emit;
 using System.Security;
 using System.Threading;
 
+using MsgPack.Serialization.AbstractSerializers;
+
 namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
@@ -38,7 +40,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 #if !WINDOWS_PHONE
 		private static int _assemblySequence = -1;
-		private int _typeSequence = -1;
 #endif
 
 #if !SILVERLIGHT
@@ -87,7 +88,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private readonly AssemblyBuilder _assembly;
 		private readonly ModuleBuilder _module;
 		private readonly bool _isDebuggable;
-		private readonly bool _isExternalAssemblyBuilder;
 #endif
 
 #if WINDOWS_PHONE
@@ -104,7 +104,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private DefaultSerializationMethodGeneratorManager( bool isDebuggable, bool isCollectable, AssemblyBuilder assemblyBuilder )
 		{
 			this._isDebuggable = isDebuggable;
-			this._isExternalAssemblyBuilder = assemblyBuilder != null;
 
 			string assemblyName;
 			if ( assemblyBuilder != null )
@@ -205,26 +204,26 @@ namespace MsgPack.Serialization.EmittingSerializers
 #endif
 
 		/// <summary>
-		///		Creates new <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
+		///		Creates new <see cref="SerializerEmitter" /> which corresponds to the specified <see cref="EmitterFlavor" />.
 		/// </summary>
-		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="specification">The specification of the serializer.</param>
 		/// <param name="baseClass">Type of the base class of the serializer.</param>
-		/// <param name="emitterFlavor"><see cref="EmitterFlavor"/>.</param>
+		/// <param name="emitterFlavor"><see cref="EmitterFlavor" />.</param>
 		/// <returns>
-		///		New <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
+		///		New <see cref="SerializerEmitter" /> which corresponds to the specified <see cref="EmitterFlavor" />.
 		/// </returns>
-		protected override SerializerEmitter CreateEmitterCore( Type targetType, Type baseClass, EmitterFlavor emitterFlavor )
+		protected override SerializerEmitter CreateEmitterCore( SerializerSpecification specification, Type baseClass, EmitterFlavor emitterFlavor )
 		{
 #if !WINDOWS_PHONE
 			switch ( emitterFlavor )
 			{
 				case EmitterFlavor.FieldBased:
 				{
-					return new FieldBasedSerializerEmitter( this._module, this._isExternalAssemblyBuilder ? default( int? ) : Interlocked.Increment( ref this._typeSequence ), targetType, baseClass, this._isDebuggable );
+					return new FieldBasedSerializerEmitter( this._module, specification, baseClass, this._isDebuggable );
 				}
 				default:
 				{
-					return new ContextBasedSerializerEmitter( targetType );
+					return new ContextBasedSerializerEmitter( specification );
 				}
 			}
 #else
@@ -232,18 +231,27 @@ namespace MsgPack.Serialization.EmittingSerializers
 #endif
 		}
 
-		protected override EnumSerializerEmitter CreateEnumEmitterCore( SerializationContext context, Type targetType, EmitterFlavor emitterFlavor )
+		/// <summary>
+		///		Creates new <see cref="EnumSerializerEmitter" /> which corresponds to the specified <see cref="EmitterFlavor" />.
+		/// </summary>
+		/// <param name="context">The <see cref="SerializationContext" />.</param>
+		/// <param name="specification">The specification of the serializer.</param>
+		/// <param name="emitterFlavor"><see cref="EmitterFlavor" />.</param>
+		/// <returns>
+		///		New <see cref="SerializerEmitter" /> which corresponds to the specified <see cref="EmitterFlavor" />.
+		/// </returns>
+		protected override EnumSerializerEmitter CreateEnumEmitterCore( SerializationContext context, SerializerSpecification specification, EmitterFlavor emitterFlavor )
 		{
 #if !WINDOWS_PHONE
 			switch ( emitterFlavor )
 			{
 				case EmitterFlavor.FieldBased:
 				{
-					return new FieldBasedEnumSerializerEmitter( context, this._module, this._isExternalAssemblyBuilder ? default( int? ) : Interlocked.Increment( ref this._typeSequence ), targetType, this._isDebuggable );
+					return new FieldBasedEnumSerializerEmitter( context, this._module, specification, this._isDebuggable );
 				}
 				default:
 				{
-					return new ContextBasedEnumSerializerEmitter( targetType );
+					return new ContextBasedEnumSerializerEmitter( specification );
 				}
 			}
 #else

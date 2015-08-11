@@ -415,12 +415,12 @@ namespace MsgPack.Serialization
 				SerializerGenerator.GenerateAssembly(
 					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue }, typeof( TestEnumType )
 				);
-			// Assert is not polluted.
-			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType ) ), Is.False );
-			Assert.That( result, Is.EqualTo( filePath ) );
-
 			try
 			{
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType ) ), Is.False );
+				Assert.That( result, Is.EqualTo( filePath ) );
+
 				TestOnWorkerAppDomain(
 					filePath,
 					PackerCompatibilityOptions.Classic,
@@ -436,6 +436,65 @@ namespace MsgPack.Serialization
 		}
 
 		#endregion -- Issue102--
+
+		#region -- Issue107 --
+
+		[Test]
+		public void TestGenerateSerializerCodeAssembly_WithDefaultNamespace()
+		{
+			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
+			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
+			var result =
+				SerializerGenerator.GenerateSerializerCodeAssembly(
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, IsRecursive = false },
+					typeof( GeneratorTestObject ),
+					typeof( AnotherGeneratorTestObject )
+				).ToArray();
+			try
+			{
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestObject ) ), Is.False );
+
+				Assert.That( result.Length, Is.EqualTo( 2 ) );
+				// Same path
+				Assert.That( result.Select( r => r.FilePath ), Is.All.EqualTo( filePath ) );
+
+				var one = result.Single( r => r.TargetType == typeof( GeneratorTestObject ) );
+				Assert.That(
+					one.SerializerTypeName,
+					Is.EqualTo( "MsgPack_Serialization_GeneratorTestObjectSerializer" ) 
+				);
+				Assert.That(
+					one.SerializerTypeNamespace,
+					Is.EqualTo( "MsgPack.Serialization.EmittingSerializers.Generated" )
+				);
+				Assert.That(
+					one.SerializerTypeFullName,
+					Is.EqualTo( "MsgPack.Serialization.EmittingSerializers.Generated.MsgPack_Serialization_GeneratorTestObjectSerializer" )
+				);
+
+				var another = result.Single( r => r.TargetType == typeof( AnotherGeneratorTestObject ) );
+				Assert.That(
+					another.SerializerTypeName,
+					Is.EqualTo( "MsgPack_Serialization_AnotherGeneratorTestObjectSerializer" )
+				);
+				Assert.That(
+					another.SerializerTypeNamespace,
+					Is.EqualTo( "MsgPack.Serialization.EmittingSerializers.Generated" )
+				);
+				Assert.That(
+					another.SerializerTypeFullName,
+					Is.EqualTo( "MsgPack.Serialization.EmittingSerializers.Generated.MsgPack_Serialization_AnotherGeneratorTestObjectSerializer" )
+				);
+			}
+			finally
+			{
+				File.Delete( filePath );
+			}
+		}
+
+		#endregion -- Issue107 --
 
 		[Test]
 		public void TestGenerateCode_WithDefault_CSFileGeneratedOnAppBase()
@@ -689,7 +748,121 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		#endregion -- Issue102--
+		#endregion -- Issue102 --
+
+		#region -- Issue107 --
+
+		[Test]
+		public void TestGenerateSerializerSourceCodes_WithoutNamespace_Default()
+		{
+			TestGenerateSerializerSourceCodesCore( null );
+		}
+
+		[Test]
+		public void TestGenerateSerializerSourceCodes_WithNamespace_Used()
+		{
+			TestGenerateSerializerSourceCodesCore( "TestNamespace" );
+		}
+
+		[Test]
+		public void TestGenerateSerializerSourceCodes_WithGlobalNameSpace_Used()
+		{
+			TestGenerateSerializerSourceCodesCore( String.Empty );
+		}
+
+		private static void TestGenerateSerializerSourceCodesCore( string @namespace )
+		{
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = false, Namespace = @namespace };
+			var resultCS =
+				SerializerGenerator.GenerateSerializerSourceCodes(
+					configuration,
+					typeof( GeneratorTestObject ),
+					typeof( AnotherGeneratorTestObject )
+				).ToArray();
+			try
+			{
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestObject ) ), Is.False );
+
+				Assert.That( resultCS.Length, Is.EqualTo( 2 ) );
+
+				var one = resultCS.SingleOrDefault( r => r.TargetType == typeof( GeneratorTestObject ) );
+				Assert.That( one, Is.Not.Null, String.Join( ", ", resultCS.Select( r => r.TargetType ) ) );
+				Assert.That(
+					one.FilePath,
+					Is.EqualTo(
+						Path.GetFullPath(
+							String.Join(
+								Path.DirectorySeparatorChar.ToString(),
+								new[] { "." }
+								.Concat( configuration.Namespace.Split( Type.Delimiter ) )
+								.Concat(
+									new[] { "MsgPack_Serialization_GeneratorTestObjectSerializer.cs" }
+								)
+							)
+						)
+					)
+				);
+				Assert.That(
+					one.SerializerTypeName,
+					Is.EqualTo( "MsgPack_Serialization_GeneratorTestObjectSerializer" )
+				);
+				Assert.That(
+					one.SerializerTypeNamespace,
+					Is.EqualTo( configuration.Namespace )
+				);
+				Assert.That(
+					one.SerializerTypeFullName,
+					Is.EqualTo(
+						( configuration.Namespace.Length > 0 ? configuration.Namespace + "." : String.Empty ) + 
+						"MsgPack_Serialization_GeneratorTestObjectSerializer"
+					)
+				);
+
+				var another = resultCS.SingleOrDefault( r => r.TargetType == typeof( AnotherGeneratorTestObject ) );
+				Assert.That( another, Is.Not.Null, String.Join( ", ", resultCS.Select( r => r.TargetType ) ) );
+				Assert.That(
+					another.FilePath,
+					Is.EqualTo(
+						Path.GetFullPath(
+							String.Join(
+								Path.DirectorySeparatorChar.ToString(),
+								new[] { "." }
+								.Concat( configuration.Namespace.Split( Type.Delimiter ) )
+								.Concat(
+									new[] { "MsgPack_Serialization_AnotherGeneratorTestObjectSerializer.cs" }
+								)
+							)
+						)
+					)
+				);
+				Assert.That(
+					another.SerializerTypeName,
+					Is.EqualTo( "MsgPack_Serialization_AnotherGeneratorTestObjectSerializer" )
+				);
+				Assert.That(
+					another.SerializerTypeNamespace,
+					Is.EqualTo( configuration.Namespace )
+				);
+				Assert.That(
+					another.SerializerTypeFullName,
+					Is.EqualTo(
+						( configuration.Namespace.Length > 0 ? configuration.Namespace + "." : String.Empty ) +
+						"MsgPack_Serialization_AnotherGeneratorTestObjectSerializer"
+					)
+				);
+			}
+			finally
+			{
+				foreach ( var result in resultCS )
+				{
+					File.Delete( result.FilePath );
+				}
+			}
+		}
+
+		#endregion -- Issue107 --
 
 		private static void TestOnWorkerAppDomain( string geneartedAssemblyFilePath, PackerCompatibilityOptions packerCompatibilityOptions, byte[] bytesValue, byte[] expectedPackedValue, TestType testType )
 		{

@@ -20,12 +20,12 @@
 
 using System;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 
+using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -57,40 +57,20 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		/// <param name="context">A <see cref="SerializationContext"/>.</param>
 		/// <param name="host">The host <see cref="ModuleBuilder"/>.</param>
-		/// <param name="sequence">The sequence number to name new type.</param>
-		/// <param name="targetType">Type of the serialization target.</param>
+		/// <param name="specification">The specification of the serializer.</param>
 		/// <param name="isDebuggable">Set to <c>true</c> when <paramref name="host"/> is debuggable.</param>
-		public FieldBasedEnumSerializerEmitter( SerializationContext context, ModuleBuilder host, int? sequence, Type targetType, bool isDebuggable )
+		public FieldBasedEnumSerializerEmitter( SerializationContext context, ModuleBuilder host, SerializerSpecification specification, bool isDebuggable )
 		{
 			Contract.Requires( host != null );
-			Contract.Requires( targetType != null );
+			Contract.Requires( specification != null );
 
-			string typeName =
-#if !NETFX_35
-				String.Join(
-					Type.Delimiter.ToString( CultureInfo.InvariantCulture ),
-					typeof( SerializerEmitter ).Namespace,
-					"Generated",
-					IdentifierUtility.EscapeTypeName( targetType ) + "Serializer" + sequence
-				);
-#else
-				String.Join(
-					Type.Delimiter.ToString(),
-					new string[]
-					{
-						typeof( SerializerEmitter ).Namespace,
-						"Generated",
-						IdentifierUtility.EscapeTypeName( targetType ) + "Serializer" + sequence
-					}
-				);
-#endif
-			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, "Create {0}", typeName );
+			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, "Create {0}", specification.SerializerTypeFullName );
 			this._typeBuilder =
 				host.DefineType(
-					typeName,
+					specification.SerializerTypeFullName,
 					TypeAttributes.Sealed | TypeAttributes.Public | TypeAttributes.UnicodeClass | TypeAttributes.AutoLayout |
 					TypeAttributes.BeforeFieldInit,
-					typeof( EnumMessagePackSerializer<> ).MakeGenericType( targetType )
+					typeof( EnumMessagePackSerializer<> ).MakeGenericType( specification.TargetType )
 				);
 
 			this._contextConstructorBuilder = 
@@ -113,7 +93,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final | MethodAttributes.HideBySig,
 					CallingConventions.HasThis,
 					typeof( void ),
-					new[] { typeof( Packer ), targetType }
+					new[] { typeof( Packer ), specification.TargetType }
 				);
 
 			this._unpackFromUnderlyingValueMethodBuilder =
@@ -121,7 +101,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					"UnpackFromUnderlyingValue",
 					MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final | MethodAttributes.HideBySig,
 					CallingConventions.HasThis,
-					targetType,
+					specification.TargetType,
 					UnpackFromUnderlyingValueParameterTypes
 				);
 

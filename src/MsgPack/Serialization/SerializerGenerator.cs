@@ -237,20 +237,54 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public static string GenerateAssembly( SerializerAssemblyGenerationConfiguration configuration, IEnumerable<Type> targetTypes )
 		{
-			return
-				Path.GetFullPath(
-					Path.Combine(
-						configuration == null ? "." : configuration.OutputDirectory,
-						new SerializerAssemblyGenerationLogic().Generate( targetTypes, configuration ).Single()
-					)
-				);
+			var firstEntry = GenerateSerializerCodeAssembly( configuration, targetTypes ).FirstOrDefault();
+			return firstEntry == null ? null : firstEntry.FilePath;
 		}
 
+		/// <summary>
+		///		Generates an assembly which contains auto-generated serializer types for specified types.
+		/// </summary>
+		/// <param name="configuration">The <see cref="SerializerAssemblyGenerationConfiguration"/> which holds required <see cref="SerializerAssemblyGenerationConfiguration.AssemblyName"/> and optional settings.</param>
+		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
+		/// <returns>
+		///		A <see cref="SerializerCodeGenerationResult"/> collection which correspond to codes generated to <paramref name="targetTypes"/>.
+		///		All <see cref="SerializerCodeGenerationResult.FilePath"/> properties of items will be same and will point to generated DLL file.
+		/// </returns>
+		/// <exception cref="ArgumentNullException"><paramref name="configuration"/> is <c>null</c>. Or, <paramref name="targetTypes"/> is <c>null</c>.</exception>
+		/// <exception cref="InvalidOperationException"><see cref="SerializerAssemblyGenerationConfiguration.AssemblyName"/> of <paramref name="configuration"/> is not set correctly.</exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+		/// <remarks>
+		///		Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are automatically generated.
+		/// </remarks>
+		public static IEnumerable<SerializerCodeGenerationResult> GenerateSerializerCodeAssembly( SerializerAssemblyGenerationConfiguration configuration, params Type[] targetTypes )
+		{
+			return GenerateSerializerCodeAssembly( configuration, targetTypes as IEnumerable<Type> );
+		}
+
+		/// <summary>
+		///		Generates an assembly which contains auto-generated serializer types for specified types.
+		/// </summary>
+		/// <param name="configuration">The <see cref="SerializerAssemblyGenerationConfiguration"/> which holds required <see cref="SerializerAssemblyGenerationConfiguration.AssemblyName"/> and optional settings.</param>
+		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
+		/// <returns>
+		///		A <see cref="SerializerCodeGenerationResult"/> collection which correspond to codes generated to <paramref name="targetTypes"/>.
+		///		All <see cref="SerializerCodeGenerationResult.FilePath"/> properties of items will be same and will point to generated DLL file.
+		/// </returns>
+		/// <exception cref="ArgumentNullException"><paramref name="configuration"/> is <c>null</c>. Or, <paramref name="targetTypes"/> is <c>null</c>.</exception>
+		/// <exception cref="InvalidOperationException"><see cref="SerializerAssemblyGenerationConfiguration.AssemblyName"/> of <paramref name="configuration"/> is not set correctly.</exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+		/// <remarks>
+		///		Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are automatically generated.
+		/// </remarks>
+		public static IEnumerable<SerializerCodeGenerationResult> GenerateSerializerCodeAssembly( SerializerAssemblyGenerationConfiguration configuration, IEnumerable<Type> targetTypes )
+		{
+			return new SerializerAssemblyGenerationLogic().Generate( targetTypes, configuration );
+		}
 		/// <summary>
 		///		Generates source codes which implement auto-generated serializer types for specified types with default configuration.
 		/// </summary>
 		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
-		/// <returns>The file path for generated single module assembly file.</returns>
+		/// <returns>A file path collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
 		/// <remarks>
@@ -266,7 +300,7 @@ namespace MsgPack.Serialization
 		///		Generates source codes which implement auto-generated serializer types for specified types with default configuration.
 		/// </summary>
 		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
-		/// <returns>The file path for generated single module assembly file.</returns>
+		/// <returns>A file path collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
 		/// <remarks>
@@ -283,7 +317,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="configuration">The <see cref="SerializerCodeGenerationConfiguration"/> which holds optional settings. Specifying <c>null</c> means using default settings.</param>
 		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
-		/// <returns>The file path for generated single module assembly file.</returns>
+		/// <returns>A file path collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
 		/// <remarks>
@@ -292,7 +326,7 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public static IEnumerable<string> GenerateCode( SerializerCodeGenerationConfiguration configuration, params Type[] targetTypes )
 		{
-			return GenerateCode( configuration, targetTypes as IEnumerable<Type> );
+			return GenerateSerializerSourceCodes( configuration, targetTypes ).Select( r => r.FilePath );
 		}
 
 		/// <summary>
@@ -300,7 +334,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="configuration">The <see cref="SerializerCodeGenerationConfiguration"/> which holds optional settings. Specifying <c>null</c> means using default settings.</param>
 		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
-		/// <returns>The file path for generated single module assembly file.</returns>
+		/// <returns>A file path collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
 		/// <remarks>
@@ -308,6 +342,72 @@ namespace MsgPack.Serialization
 		///		This method just generate serializer types for specified types.
 		/// </remarks>
 		public static IEnumerable<string> GenerateCode( SerializerCodeGenerationConfiguration configuration, IEnumerable<Type> targetTypes )
+		{
+			return GenerateSerializerSourceCodes( configuration, targetTypes ).Select( r => r.FilePath );
+		}
+
+		/// <summary>
+		///		Generates source codes which implement auto-generated serializer types for specified types with default configuration.
+		/// </summary>
+		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
+		/// <returns>A <see cref="SerializerCodeGenerationResult"/> collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+		/// <remarks>
+		///		Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are NOT generated.
+		///		This method just generate serializer types for specified types.
+		/// </remarks>
+		public static IEnumerable<SerializerCodeGenerationResult> GenerateSerializerSourceCodes( params Type[] targetTypes )
+		{
+			return GenerateSerializerSourceCodes( null, targetTypes as IEnumerable<Type> );
+		}
+
+		/// <summary>
+		///		Generates source codes which implement auto-generated serializer types for specified types with default configuration.
+		/// </summary>
+		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
+		/// <returns>A <see cref="SerializerCodeGenerationResult"/> collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+		/// <remarks>
+		///		Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are NOT generated.
+		///		This method just generate serializer types for specified types.
+		/// </remarks>
+		public static IEnumerable<SerializerCodeGenerationResult> GenerateSerializerSourceCodes( IEnumerable<Type> targetTypes )
+		{
+			return GenerateSerializerSourceCodes( null, targetTypes );
+		}
+
+		/// <summary>
+		///		Generates source codes which implement auto-generated serializer types for specified types with specified configuration.
+		/// </summary>
+		/// <param name="configuration">The <see cref="SerializerCodeGenerationConfiguration"/> which holds optional settings. Specifying <c>null</c> means using default settings.</param>
+		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
+		/// <returns>A <see cref="SerializerCodeGenerationResult"/> collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+		/// <remarks>
+		///		Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are NOT generated.
+		///		This method just generate serializer types for specified types.
+		/// </remarks>
+		public static IEnumerable<SerializerCodeGenerationResult> GenerateSerializerSourceCodes( SerializerCodeGenerationConfiguration configuration, params Type[] targetTypes )
+		{
+			return GenerateSerializerSourceCodes( configuration, targetTypes as IEnumerable<Type> );
+		}
+
+		/// <summary>
+		///		Generates source codes which implement auto-generated serializer types for specified types with specified configuration.
+		/// </summary>
+		/// <param name="configuration">The <see cref="SerializerCodeGenerationConfiguration"/> which holds optional settings. Specifying <c>null</c> means using default settings.</param>
+		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
+		/// <returns>A <see cref="SerializerCodeGenerationResult"/> collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+		/// <remarks>
+		///		Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are NOT generated.
+		///		This method just generate serializer types for specified types.
+		/// </remarks>
+		public static IEnumerable<SerializerCodeGenerationResult> GenerateSerializerSourceCodes( SerializerCodeGenerationConfiguration configuration, IEnumerable<Type> targetTypes )
 		{
 			return new SerializerCodesGenerationLogic().Generate( targetTypes, configuration ?? new SerializerCodeGenerationConfiguration() );
 		}
@@ -317,7 +417,7 @@ namespace MsgPack.Serialization
 		{
 			protected abstract EmitterFlavor EmitterFlavor { get; }
 
-			public IEnumerable<string> Generate( IEnumerable<Type> targetTypes, TConfig configuration )
+			public IEnumerable<SerializerCodeGenerationResult> Generate( IEnumerable<Type> targetTypes, TConfig configuration )
 			{
 				if ( targetTypes == null )
 				{
@@ -401,7 +501,7 @@ namespace MsgPack.Serialization
 							AssemblyBuilderAccess.RunAndSave,
 							configuration.OutputDirectory
 						),
-						configuration.PreferReflectionBasedSerializer
+						configuration
 					);
 			}
 

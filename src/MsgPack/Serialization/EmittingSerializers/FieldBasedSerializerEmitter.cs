@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -60,39 +59,19 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// Initializes a new instance of the <see cref="FieldBasedSerializerEmitter"/> class.
 		/// </summary>
 		/// <param name="host">The host <see cref="ModuleBuilder"/>.</param>
-		/// <param name="sequence">The sequence number to name new type.</param>
-		/// <param name="targetType">Type of the serialization target.</param>
+		/// <param name="specification">The specification of the serializer.</param>
 		/// <param name="baseClass">Type of the base class of the serializer.</param>
 		/// <param name="isDebuggable">Set to <c>true</c> when <paramref name="host"/> is debuggable.</param>
-		public FieldBasedSerializerEmitter( ModuleBuilder host, int? sequence, Type targetType, Type baseClass, bool isDebuggable )
+		public FieldBasedSerializerEmitter( ModuleBuilder host, SerializerSpecification specification, Type baseClass, bool isDebuggable )
 		{
 			Contract.Requires( host != null );
-			Contract.Requires( targetType != null );
+			Contract.Requires( specification != null );
 			Contract.Requires( baseClass != null );
 
-			string typeName =
-#if !NETFX_35
- String.Join(
-					Type.Delimiter.ToString( CultureInfo.InvariantCulture ),
-					typeof( SerializerEmitter ).Namespace,
-					"Generated",
-					IdentifierUtility.EscapeTypeName( targetType ) + "Serializer" + sequence
-				);
-#else
-				String.Join(
-					Type.Delimiter.ToString(),
-					new string[]
-					{
-						typeof( SerializerEmitter ).Namespace,
-						"Generated",
-						IdentifierUtility.EscapeTypeName( targetType ) + "Serializer" + sequence
-					}
-				);
-#endif
-			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, "Create {0}", typeName );
+			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, "Create {0}", specification.SerializerTypeFullName );
 			this._typeBuilder =
 				host.DefineType(
-					typeName,
+					specification.SerializerTypeFullName,
 					TypeAttributes.Sealed | TypeAttributes.Public | TypeAttributes.UnicodeClass | TypeAttributes.AutoLayout | TypeAttributes.BeforeFieldInit,
 					baseClass
 				);
@@ -100,7 +79,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this._defaultConstructorBuilder = this._typeBuilder.DefineConstructor( MethodAttributes.Public, CallingConventions.Standard, Type.EmptyTypes );
 			this._contextConstructorBuilder = this._typeBuilder.DefineConstructor( MethodAttributes.Public, CallingConventions.Standard, ConstructorParameterTypes );
 
-			this._traits = targetType.GetCollectionTraits();
+			this._traits = specification.TargetCollectionTraits;
 			var baseType = this._typeBuilder.BaseType;
 #if DEBUG
 			Contract.Assert( baseType != null, "baseType != null" );

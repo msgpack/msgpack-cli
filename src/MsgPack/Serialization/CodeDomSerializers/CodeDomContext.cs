@@ -243,11 +243,11 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		/// <summary>
 		///		Generates codes for this context.
 		/// </summary>
-		/// <returns>The path of generated files.</returns>
+		/// <returns>A <see cref="SerializerCodeGenerationResult"/> collection which correspond to genereated codes.</returns>
 #if !NETFX_35
 		[SecuritySafeCritical]
 #endif // !NETFX_35
-		public IEnumerable<string> Generate()
+		public IEnumerable<SerializerCodeGenerationResult> Generate()
 		{
 			Contract.Assert( this._declaringTypes != null, "_declaringTypes != null" );
 
@@ -269,7 +269,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						);
 				Directory.CreateDirectory( directory );
 
-				var result = new List<string>( this._declaringTypes.Count );
+				var result = new List<SerializerCodeGenerationResult>( this._declaringTypes.Count );
 
 				foreach ( var declaringType in this._declaringTypes )
 				{
@@ -287,7 +287,17 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					cu.Namespaces.Add( cn );
 
 					var filePath = Path.Combine( directory, typeFileName );
-					result.Add( filePath );
+					result.Add( 
+						new SerializerCodeGenerationResult( 
+							declaringType.Key, 
+							filePath, 
+							String.IsNullOrEmpty( cn.Name )
+							? declaringType.Value.Name
+							: cn.Name + "." + declaringType.Value.Name, 
+							cn.Name, 
+							declaringType.Value.Name
+						)
+					);
 
 					using ( var writer = new StreamWriter( filePath, false, Encoding.UTF8 ) )
 					{

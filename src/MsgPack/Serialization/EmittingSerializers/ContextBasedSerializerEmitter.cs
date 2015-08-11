@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Reflection.Emit;
-
+using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -49,13 +49,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <summary>
 		///		Initializes a new instance of the <see cref="ContextBasedSerializerEmitter"/> class.
 		/// </summary>
-		/// <param name="targetType">Type of the target.</param>
-		public ContextBasedSerializerEmitter( Type targetType )
+		/// <param name="specification">The specification of the serializer.</param>
+		public ContextBasedSerializerEmitter( SerializerSpecification specification )
 		{
-			Contract.Requires( targetType != null );
+			Contract.Requires( specification != null );
 
-			this._targetType = targetType;
-			this._traits = targetType.GetCollectionTraits();
+			this._targetType = specification.TargetType;
+			this._traits = specification.TargetCollectionTraits;
 		}
 
 		/// <summary>

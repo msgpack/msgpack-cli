@@ -20,6 +20,8 @@
 
 using System;
 
+using MsgPack.Serialization.AbstractSerializers;
+
 namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
@@ -39,9 +41,21 @@ namespace MsgPack.Serialization.EmittingSerializers
 				new DynamicMethodEmittingContext(
 					context,
 					typeof( TObject ),
-					() => SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( TObject ), BaseClass, EmitterFlavor.ContextBased ),
-					() => SerializationMethodGeneratorManager.Get().CreateEnumEmitter( context, typeof( TObject ), EmitterFlavor.ContextBased )
-				);
+					() =>
+						SerializationMethodGeneratorManager.Get()
+							.CreateEmitter(
+								SerializerSpecification.CreateAnonymous( typeof( TObject ), CollectionTraitsOfThis ),
+								BaseClass,
+								EmitterFlavor.ContextBased 
+							),
+					() =>
+						SerializationMethodGeneratorManager.Get()
+							.CreateEnumEmitter(
+								context,
+								SerializerSpecification.CreateAnonymous( typeof( TObject ), CollectionTraitsOfThis ),
+								EmitterFlavor.ContextBased 
+							)
+					);
 		}
 
 		protected override ILConstruct EmitThisReferenceExpression( DynamicMethodEmittingContext context )

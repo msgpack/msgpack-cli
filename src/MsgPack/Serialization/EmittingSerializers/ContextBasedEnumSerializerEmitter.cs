@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Reflection.Emit;
-
+using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -32,9 +32,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private readonly Type _targetType;
 		private readonly DynamicMethod _packUnderyingValueToMethod;
 		private readonly DynamicMethod _unpackFromUnderlyingValueMethod;
-		public ContextBasedEnumSerializerEmitter( Type targetType )
+
+		public ContextBasedEnumSerializerEmitter( SerializerSpecification specification )
 		{
-			this._targetType = targetType;
+			this._targetType = specification.TargetType;
 			// NOTE: first argument is dummy to align with FieldBased(its 0th arg is this reference).
 			this._packUnderyingValueToMethod =
 				new DynamicMethod( "PackUnderyingValue", null, new[] { typeof( SerializationContext ), typeof( Packer ), this._targetType } );

@@ -168,6 +168,7 @@
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Collection.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerSpecification.cs" />
     <Compile Include="Serialization\CodeDomSerializers\CodeDomSerializerBuilder.cs" />
     <Compile Include="Serialization\CollectionDetailedKind.cs" />
     <Compile Include="Serialization\CollectionSerializers\CollectionMessagePackSerializerBase`2.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Serialization\DateTimeConversionMethod.cs" />
     <Compile Include="Serialization\DateTimeMemberConversionMethod.cs" />
     <Compile Include="Serialization\DateTimeMessagePackSerializerHelpers.cs" />
+    <Compile Include="Serialization\DefaultSerializerNameResolver.cs" />
     <Compile Include="Serialization\DefaultSerializers\AbstractCollectionSerializerHelper.cs" />
     <Compile Include="Serialization\DefaultSerializers\AbstractNonGenericDictionaryMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\AbstractEnumerableMessagePackSerializer`2.cs" />
@@ -376,6 +378,7 @@
     <Compile Include="Serialization\IMessagePackSerializer.cs" />
     <Compile Include="Serialization\IMessagePackSingleObjectSerializer.cs" />
     <Compile Include="Serialization\Metadata\_CultureInfo.cs" />
+    <Compile Include="Serialization\SerializerCodeGenerationResult.cs" />
     <Compile Include="Serialization\SerializerDebugging.cs" />
     <Compile Include="Serialization\SerializerTypeKeyRepository.cs" />
     <Compile Include="Serialization\LazyDelegatingMessagePackSerializer`1.cs" />

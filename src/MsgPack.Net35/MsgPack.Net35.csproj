@@ -218,6 +218,9 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerMethod.cs">
       <Link>Serialization\AbstractSerializers\SerializerMethod.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerSpecification.cs">
+      <Link>Serialization\AbstractSerializers\SerializerSpecification.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CodeDomSerializers\CodeDomConstruct.cs">
       <Link>Serialization\CodeDomSerializers\CodeDomConstruct.cs</Link>
     </Compile>
@@ -304,6 +307,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultConcreteTypeRepository.cs">
       <Link>Serialization\DefaultConcreteTypeRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializerNameResolver.cs">
+      <Link>Serialization\DefaultSerializerNameResolver.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\AbstractCollectionMessagePackSerializer`2.cs">
       <Link>Serialization\DefaultSerializers\AbstractCollectionMessagePackSerializer`2.cs</Link>
@@ -835,6 +841,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerCodeGenerationConfiguration.cs">
       <Link>Serialization\SerializerCodeGenerationConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializerCodeGenerationResult.cs">
+      <Link>Serialization\SerializerCodeGenerationResult.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerDebugging.cs">
       <Link>Serialization\SerializerDebugging.cs</Link>

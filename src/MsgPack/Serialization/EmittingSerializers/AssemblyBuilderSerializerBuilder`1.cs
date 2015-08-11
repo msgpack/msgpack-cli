@@ -119,12 +119,28 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		protected override AssemblyBuilderEmittingContext CreateCodeGenerationContextForSerializerCreation( SerializationContext context )
 		{
+			string serializerTypeName, serializerTypeNamespace;
+			DefaultSerializerNameResolver.ResolveTypeName(
+				true,
+				typeof( TObject ),
+				this.GetType().Namespace,
+				out serializerTypeName,
+				out serializerTypeNamespace 
+			);
+			var spec =
+				new SerializerSpecification(
+					typeof( TObject ),
+					CollectionTraitsOfThis,
+					serializerTypeName,
+					serializerTypeNamespace
+				);
+
 			return
 				new AssemblyBuilderEmittingContext(
 					context,
 					typeof( TObject ),
-					() => SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( TObject ), BaseClass, EmitterFlavor.FieldBased ),
-					() => SerializationMethodGeneratorManager.Get().CreateEnumEmitter( context, typeof( TObject ), EmitterFlavor.FieldBased )
+					() => SerializationMethodGeneratorManager.Get().CreateEmitter( spec, BaseClass, EmitterFlavor.FieldBased ),
+					() => SerializationMethodGeneratorManager.Get().CreateEnumEmitter( context, spec, EmitterFlavor.FieldBased )
 				);
 		}
 
@@ -143,6 +159,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			var emittingContext =
 				asAssemblyBuilderCodeGenerationContext.CreateEmittingContext(
 					typeof( TObject ),
+					CollectionTraitsOfThis,
 					BaseClass
 				);
 

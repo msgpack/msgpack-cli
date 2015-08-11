@@ -45,10 +45,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <summary>
 		///		Generates codes for this context.
 		/// </summary>
-		/// <returns>The path of generated files.</returns>
+		/// <returns>A <see cref="SerializerCodeGenerationResult"/> collection which correspond to genereated codes.</returns>
 #if !NETFX_35
 		[SecuritySafeCritical]
 #endif // !NETFX_35
-		IEnumerable<string> Generate();
+		IEnumerable<SerializerCodeGenerationResult> Generate();
 	}
 }

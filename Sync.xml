@@ -61,9 +61,11 @@
     <Exclude Path="Serialization\AutoMessagePackSerializer`1.cs" />
     <Exclude Path="Serialization\CallbackEnumMessagePackSerializer.cs" />
     <Exclude Path="Serialization\CallbackMessagePackSerializer`1.cs" />
+    <Exclude Path="Serialization\DefaultSerializerNameResolver.cs" />
     <Exclude Path="Serialization\FromExpression.cs" />
     <Exclude Path="Serialization\FromExpression.*.cs" />
     <Exclude Path="Serialization\SerializerCodeGenerationConfiguration.cs" />
+    <Exclude Path="Serialization\SerializerCodeGenerationResult.cs" />
     <Exclude Path="Serialization\SerializerGenerator.cs" />
     <Exclude Path="Serialization\Tracer.cs" />
     <Exclude File="*.tt" />
@@ -113,6 +115,7 @@
     <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
     <Exclude Path="Serialization\AbstractSerializers\SerializerFieldKey.cs" />
+    <Exclude Path="Serialization\AbstractSerializers\SerializerSpecification.cs" />
     <Exclude Path="Serialization\CodeDomSerializers\*" />
     <Exclude Path="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_Collections_QueueMessagePackSerializer.cs" />
@@ -121,10 +124,12 @@
     <Exclude Path="Serialization\Metadata\_IDisposable.cs" />
     <Exclude Path="Serialization\EmittingSerializers\*" />
     <Preserve Path="Serialization\Reflection\ReflectionHelpers.cs" />
+    <Exclude Path="Serialization\DefaultSerializerNameResolver.cs" />
     <Exclude Path="Serialization\IdentifierUtility.cs" />
     <Exclude Path="Serialization\ISerializerGeneratorConfiguration.cs" />
     <Exclude Path="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
     <Exclude Path="Serialization\SerializerCodeGenerationConfiguration.cs" />
+    <Exclude Path="Serialization\SerializerCodeGenerationResult.cs" />
     <Exclude Path="Serialization\SerializerGenerator.cs" />
     <Exclude Path="Serialization\Reflection\TracingILGenerator.*" />
     <Exclude Path="Serialization\Tracer.cs" />
@@ -137,6 +142,7 @@
     <Exclude File="*.ttinclude" />
     <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
+    <Exclude Path="Serialization\AbstractSerializers\SerializerSpecification.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Exclude Path="Serialization\CodeDomSerializers\*" />
@@ -157,8 +163,10 @@
     <Exclude Path="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Preserve Path="Serialization\LockRecursionPolicy.cs" />
     <Preserve Path="Serialization\ReaderWriterLockSlim.cs" />
+    <Exclude Path="Serialization\DefaultSerializerNameResolver.cs" />
     <Exclude Path="Serialization\ISerializerGeneratorConfiguration.cs" />
     <Exclude Path="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
+    <Exclude Path="Serialization\SerializerCodeGenerationResult.cs" />
     <Exclude Path="Serialization\SerializerCodeGenerationConfiguration.cs" />
     <Exclude Path="Serialization\SerializerGenerator.cs" />
     <Preserve Path="Serialization\SourceLevels.cs" />
