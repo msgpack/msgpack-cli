@@ -308,20 +308,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <exception cref="NotSupportedException">
 		///		This class does not support code generation.
 		/// </exception>
-		/// <remarks>
-		///		This method will not do anything when <see cref="ISerializerCodeGenerationContext.BuiltInSerializerExists"/> returns <c>true</c> for <typeparamref name="TObject"/>.
-		/// </remarks>
 		public void BuildSerializerCode( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema )
 		{
 			if ( context == null )
 			{
 				throw new ArgumentNullException( "context" );
-			}
-
-			if ( context.BuiltInSerializerExists( typeof( TObject ), CollectionTraitsOfThis ) )
-			{
-				// nothing to do.
-				return;
 			}
 
 			this.BuildSerializerCodeCore( context, concreteType, itemSchema );

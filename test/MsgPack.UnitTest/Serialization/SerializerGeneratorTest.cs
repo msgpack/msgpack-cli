@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 using System;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -496,6 +497,35 @@ namespace MsgPack.Serialization
 
 		#endregion -- Issue107 --
 
+
+		#region -- Issue105 --
+
+		[Test]
+		public void TestGenerateSerializerCodeAssembly_WithBuiltInSupportedTypes_Ignored()
+		{
+			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
+			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
+			var result =
+				SerializerGenerator.GenerateSerializerCodeAssembly(
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, IsRecursive = true },
+					typeof( int ),
+					typeof( string ),
+					typeof( DateTime ),
+					typeof( List<int> ),
+					typeof( int[] )
+				).ToArray();
+			try
+			{
+				Assert.That( result.Length, Is.EqualTo( 0 ) );
+			}
+			finally
+			{
+				File.Delete( filePath );
+			}
+		}
+
+		#endregion -- Issue105 --
+
 		[Test]
 		public void TestGenerateCode_WithDefault_CSFileGeneratedOnAppBase()
 		{
@@ -863,6 +893,37 @@ namespace MsgPack.Serialization
 		}
 
 		#endregion -- Issue107 --
+
+		#region -- Issue105 --
+
+		[Test]
+		public void TestGenerateSerializerSourceCodes_WithBuiltInSupportedTypes_Ignored()
+		{
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false };
+			var resultCS =
+				SerializerGenerator.GenerateSerializerSourceCodes(
+					configuration,
+					typeof( int ),
+					typeof( string ),
+					typeof( DateTime ),
+					typeof( List<int> ),
+					typeof( int[] )
+				).ToArray();
+			try
+			{
+				Assert.That( resultCS.Length, Is.EqualTo( 0 ) );
+			}
+			finally
+			{
+				foreach ( var result in resultCS )
+				{
+					File.Delete( result.FilePath );
+				}
+			}
+		}
+
+		#endregion -- Issue105 --
+
 
 		private static void TestOnWorkerAppDomain( string geneartedAssemblyFilePath, PackerCompatibilityOptions packerCompatibilityOptions, byte[] bytesValue, byte[] expectedPackedValue, TestType testType )
 		{

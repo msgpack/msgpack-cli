@@ -37,8 +37,9 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
+
+using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization
 {
@@ -520,6 +521,11 @@ namespace MsgPack.Serialization
 					)
 				);
 			}
+		}
+
+		public static bool BuiltInSerializerExists( ISerializerGeneratorConfiguration configuration, Type type, CollectionTraits traits )
+		{
+			return GenericSerializer.IsSupported( type, traits, configuration.PreferReflectionBasedSerializer ) || SerializerRepository.InternalDefault.Contains( type );
 		}
 	}
 }

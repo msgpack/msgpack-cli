@@ -443,12 +443,15 @@ namespace MsgPack.Serialization
 				if ( configuration.IsRecursive )
 				{
 					realTargetTypes =
-						targetTypes.SelectMany(
+						targetTypes
+						// Avoid exception from prepare
+						.Where( t => !SerializationTarget.BuiltInSerializerExists( configuration, t, t.GetCollectionTraits() ) )
+						.SelectMany(
 							t =>
-							new[] { t }.Concat(
-								SerializationTarget.Prepare( context, t ).Members.Select( m => m.Member.GetMemberValueType() )
-							)
-						);
+								new[] { t }.Concat(
+									SerializationTarget.Prepare( context, t ).Members.Select( m => m.Member.GetMemberValueType() )
+									)
+						).Where( t => !SerializationTarget.BuiltInSerializerExists( configuration, t, t.GetCollectionTraits() ) );
 				}
 				else
 				{
@@ -468,6 +471,9 @@ namespace MsgPack.Serialization
 						concreteType = context.DefaultCollectionTypes.GetConcreteType( targetType );
 					}
 
+#if DEBUG
+					Contract.Assert( !SerializationTarget.BuiltInSerializerExists( configuration, targetType, targetType.GetCollectionTraits() ) );
+#endif // DEBUG
 					generator.BuildSerializerCode( generationContext, concreteType, null );
 				}
 
