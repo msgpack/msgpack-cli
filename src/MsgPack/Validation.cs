@@ -74,7 +74,16 @@ namespace MsgPack
 
 		public static void ValidateNamespace( string @namespace, string parameterName )
 		{
-			ValidateIsNotNullNorEmpty( @namespace, parameterName );
+			if ( @namespace == null )
+			{
+				throw new ArgumentNullException( "namespace" );
+			}
+
+			if ( @namespace.Length == 0 )
+			{
+				// Global is OK.
+				return;
+			}
 
 			var matches = NamespacePattern.Matches( @namespace );
 			if ( matches.Count == 1 && matches[ 0 ].Success && matches[ 0 ].Index == 0 && matches[ 0 ].Length == @namespace.Length )
