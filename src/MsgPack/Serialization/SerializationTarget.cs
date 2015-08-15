@@ -523,9 +523,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if !NETFX_CORE && !SILVERLIGHT
 		public static bool BuiltInSerializerExists( ISerializerGeneratorConfiguration configuration, Type type, CollectionTraits traits )
 		{
 			return GenericSerializer.IsSupported( type, traits, configuration.PreferReflectionBasedSerializer ) || SerializerRepository.InternalDefault.Contains( type );
 		}
+#endif // !NETFX_CORE && !SILVERLIGHT
 	}
 }

@@ -142,7 +142,6 @@
     <Exclude File="*.ttinclude" />
     <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
-    <Exclude Path="Serialization\AbstractSerializers\SerializerSpecification.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Exclude Path="Serialization\CodeDomSerializers\*" />
@@ -163,7 +162,6 @@
     <Exclude Path="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Preserve Path="Serialization\LockRecursionPolicy.cs" />
     <Preserve Path="Serialization\ReaderWriterLockSlim.cs" />
-    <Exclude Path="Serialization\DefaultSerializerNameResolver.cs" />
     <Exclude Path="Serialization\ISerializerGeneratorConfiguration.cs" />
     <Exclude Path="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
     <Exclude Path="Serialization\SerializerCodeGenerationResult.cs" />

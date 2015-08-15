@@ -232,6 +232,9 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerMethod.cs">
       <Link>Serialization\AbstractSerializers\SerializerMethod.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerSpecification.cs">
+      <Link>Serialization\AbstractSerializers\SerializerSpecification.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionDetailedKind.cs">
       <Link>Serialization\CollectionDetailedKind.cs</Link>
     </Compile>
@@ -294,6 +297,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultConcreteTypeRepository.cs">
       <Link>Serialization\DefaultConcreteTypeRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializerNameResolver.cs">
+      <Link>Serialization\DefaultSerializerNameResolver.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\AbstractCollectionMessagePackSerializer`2.cs">
       <Link>Serialization\DefaultSerializers\AbstractCollectionMessagePackSerializer`2.cs</Link>
