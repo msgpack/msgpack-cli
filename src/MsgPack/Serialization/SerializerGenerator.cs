@@ -444,14 +444,7 @@ namespace MsgPack.Serialization
 				{
 					realTargetTypes =
 						targetTypes
-						// Avoid exception from prepare
-						.Where( t => !SerializationTarget.BuiltInSerializerExists( configuration, t, t.GetCollectionTraits() ) )
-						.SelectMany(
-							t =>
-								new[] { t }.Concat(
-									SerializationTarget.Prepare( context, t ).Members.Select( m => m.Member.GetMemberValueType() )
-									)
-						).Where( t => !SerializationTarget.BuiltInSerializerExists( configuration, t, t.GetCollectionTraits() ) );
+						.SelectMany( t =>ExtractElementTypes( context, configuration, t ) );
 				}
 				else
 				{
@@ -461,7 +454,11 @@ namespace MsgPack.Serialization
 				var generationContext = this.CreateGenerationContext( context, configuration );
 				var generatorFactory = this.CreateGeneratorFactory();
 
-				foreach ( var targetType in realTargetTypes.Distinct().Where( t => !context.ContainsSerializer( t ) ) )
+				foreach ( var targetType in 
+					realTargetTypes
+					.Distinct()
+					.Where( t => !SerializationTarget.BuiltInSerializerExists( configuration, t, t.GetCollectionTraits() ) )
+				)
 				{
 					var generator = generatorFactory( targetType );
 
@@ -480,6 +477,40 @@ namespace MsgPack.Serialization
 				Directory.CreateDirectory( configuration.OutputDirectory );
 
 				return generationContext.Generate();
+			}
+
+			private static IEnumerable<Type> ExtractElementTypes( SerializationContext context, ISerializerGeneratorConfiguration configuration, Type type )
+			{
+				if ( !SerializationTarget.BuiltInSerializerExists( configuration, type, type.GetCollectionTraits() ) )
+				{
+					yield return type;
+
+					// Search dependents recursively.
+					foreach ( var dependentType in SerializationTarget.Prepare( context, type ).Members.SelectMany( m => ExtractElementTypes( context, configuration, m.Member.GetMemberValueType() ) ) )
+					{
+						yield return dependentType;
+					}
+				}
+
+				if ( type.IsArray )
+				{
+					var elementType =  type.GetElementType();
+					if ( !SerializationTarget.BuiltInSerializerExists( configuration, elementType, elementType.GetCollectionTraits() ) )
+					{
+						yield return elementType;
+					}
+
+					yield break;
+				}
+
+				if ( type.IsGenericType )
+				{
+					// Search generic arguments recursively.
+					foreach ( var elementType in type.GetGenericArguments().SelectMany( g => ExtractElementTypes( context, configuration, g ) ) )
+					{
+						yield return elementType;
+					}
+				}
 			}
 
 			protected abstract ISerializerCodeGenerationContext CreateGenerationContext( SerializationContext context, TConfig configuration );
