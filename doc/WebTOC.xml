@@ -1,39 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <HelpTOC>
 
-  <HelpTOCNode Id="a8588d53-8712-410d-95e8-0d4ac0baef23" Title="Namespaces" Url="html/R_Project_MessagePackCLI.htm">
-    <HelpTOCNode Id="661c0cf5-c12f-4f01-9296-d9df64ca1cec" Title="MsgPack Namespace" Url="html/N_MsgPack.htm">
-      <HelpTOCNode Id="daaf2681-6f8e-46a9-967e-284b6aa36906" Title="InvalidMessagePackStreamException Class" Url="html/T_MsgPack_InvalidMessagePackStreamException.htm">
-        <HelpTOCNode Title="InvalidMessagePackStreamException Members" Url="html/AllMembers_T_MsgPack_InvalidMessagePackStreamException.htm" />
-        <HelpTOCNode Id="b7c736b9-3f98-4f48-8863-0d983c4ddd48" Title="InvalidMessagePackStreamException Constructor " Url="html/Overload_MsgPack_InvalidMessagePackStreamException__ctor.htm">
+  <HelpTOCNode Id="4badd9fc-a425-455b-a743-3fd1c557447b" Title="MessagePack for CLI 0.6.1" Url="html/R_Project_MessagePackCLI.htm">
+    <HelpTOCNode Id="67e3a3a3-235d-4abd-a4e9-c16e0bb0136a" Title="MsgPack" Url="html/N_MsgPack.htm">
+      <HelpTOCNode Id="81faecf8-bd16-457c-af7c-0873641a3ea1" Title="InvalidMessagePackStreamException Class" Url="html/T_MsgPack_InvalidMessagePackStreamException.htm">
+        <HelpTOCNode Id="4ab6231e-d6db-4928-a661-cf094e4d6c3f" Title="InvalidMessagePackStreamException Constructor " Url="html/Overload_MsgPack_InvalidMessagePackStreamException__ctor.htm">
           <HelpTOCNode Title="InvalidMessagePackStreamException Constructor " Url="html/M_MsgPack_InvalidMessagePackStreamException__ctor.htm" />
           <HelpTOCNode Title="InvalidMessagePackStreamException Constructor (String)" Url="html/M_MsgPack_InvalidMessagePackStreamException__ctor_1.htm" />
           <HelpTOCNode Title="InvalidMessagePackStreamException Constructor (String, Exception)" Url="html/M_MsgPack_InvalidMessagePackStreamException__ctor_2.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="1d0d81e7-5f7f-402f-b136-52765002c702" Title="IPackable Interface" Url="html/T_MsgPack_IPackable.htm">
-        <HelpTOCNode Title="IPackable Members" Url="html/AllMembers_T_MsgPack_IPackable.htm" />
-        <HelpTOCNode Id="78c907ab-0799-49d6-98c5-0d8817a59887" Title="IPackable Methods" Url="html/Methods_T_MsgPack_IPackable.htm">
+      <HelpTOCNode Id="4ea324af-7f8d-449d-84ed-8088a14a57e2" Title="IPackable Interface" Url="html/T_MsgPack_IPackable.htm">
+        <HelpTOCNode Id="8a751be1-c3d4-4be4-b9f6-8324c6d7dbb2" Title="IPackable Methods" Url="html/Methods_T_MsgPack_IPackable.htm">
           <HelpTOCNode Title="PackToMessage Method " Url="html/M_MsgPack_IPackable_PackToMessage.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="905368e9-271c-4b6f-bc93-e057155b754e" Title="IUnpackable Interface" Url="html/T_MsgPack_IUnpackable.htm">
-        <HelpTOCNode Title="IUnpackable Members" Url="html/AllMembers_T_MsgPack_IUnpackable.htm" />
-        <HelpTOCNode Id="527a9aa8-4de5-4586-be7e-a32d3de9947e" Title="IUnpackable Methods" Url="html/Methods_T_MsgPack_IUnpackable.htm">
+      <HelpTOCNode Id="114864ab-8bb0-4676-91f9-9cc8c7a28abb" Title="IUnpackable Interface" Url="html/T_MsgPack_IUnpackable.htm">
+        <HelpTOCNode Id="13a8f0eb-9011-4698-aa91-7fd42f58516a" Title="IUnpackable Methods" Url="html/Methods_T_MsgPack_IUnpackable.htm">
           <HelpTOCNode Title="UnpackFromMessage Method " Url="html/M_MsgPack_IUnpackable_UnpackFromMessage.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="965da57c-4c0c-4449-87ac-872109af48e2" Title="MessageNotSupportedException Class" Url="html/T_MsgPack_MessageNotSupportedException.htm">
-        <HelpTOCNode Title="MessageNotSupportedException Members" Url="html/AllMembers_T_MsgPack_MessageNotSupportedException.htm" />
-        <HelpTOCNode Id="a2300460-eedb-481c-b250-6e774eaaa5eb" Title="MessageNotSupportedException Constructor " Url="html/Overload_MsgPack_MessageNotSupportedException__ctor.htm">
+      <HelpTOCNode Id="c1287d53-a45c-493a-ad94-305780646577" Title="KnownExtTypeCode Class" Url="html/T_MsgPack_KnownExtTypeCode.htm">
+        <HelpTOCNode Id="5780e5c1-e4f1-4f5c-9040-44cb89fb34b9" Title="KnownExtTypeCode Properties" Url="html/Properties_T_MsgPack_KnownExtTypeCode.htm">
+          <HelpTOCNode Title="MultidimensionalArray Property " Url="html/P_MsgPack_KnownExtTypeCode_MultidimensionalArray.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="fd24941d-fcf4-45f7-8529-137fb7828251" Title="KnownExtTypeName Class" Url="html/T_MsgPack_KnownExtTypeName.htm">
+        <HelpTOCNode Id="88e31d76-ace2-41c1-82d6-30c0b0d68836" Title="KnownExtTypeName Properties" Url="html/Properties_T_MsgPack_KnownExtTypeName.htm">
+          <HelpTOCNode Title="MultidimensionalArray Property " Url="html/P_MsgPack_KnownExtTypeName_MultidimensionalArray.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="6c483826-eb32-4ef4-8b8f-ee9bc54f9089" Title="MessageNotSupportedException Class" Url="html/T_MsgPack_MessageNotSupportedException.htm">
+        <HelpTOCNode Id="6ea7c420-8179-4f11-b24a-63ef3166989c" Title="MessageNotSupportedException Constructor " Url="html/Overload_MsgPack_MessageNotSupportedException__ctor.htm">
           <HelpTOCNode Title="MessageNotSupportedException Constructor " Url="html/M_MsgPack_MessageNotSupportedException__ctor.htm" />
           <HelpTOCNode Title="MessageNotSupportedException Constructor (String)" Url="html/M_MsgPack_MessageNotSupportedException__ctor_1.htm" />
           <HelpTOCNode Title="MessageNotSupportedException Constructor (String, Exception)" Url="html/M_MsgPack_MessageNotSupportedException__ctor_2.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="117e9694-76a6-4132-88d8-a1bc0fa602eb" Title="MessagePackConvert Class" Url="html/T_MsgPack_MessagePackConvert.htm">
-        <HelpTOCNode Title="MessagePackConvert Members" Url="html/AllMembers_T_MsgPack_MessagePackConvert.htm" />
-        <HelpTOCNode Id="ccb79a56-2fdb-40f2-bfbb-933a0635a2c3" Title="MessagePackConvert Methods" Url="html/Methods_T_MsgPack_MessagePackConvert.htm">
+      <HelpTOCNode Id="804150f1-0363-4283-8fc6-5909d2b7a78f" Title="MessagePackConvert Class" Url="html/T_MsgPack_MessagePackConvert.htm">
+        <HelpTOCNode Id="164a23f6-1afe-4191-a058-e3ba5b2d847d" Title="MessagePackConvert Methods" Url="html/Methods_T_MsgPack_MessagePackConvert.htm">
           <HelpTOCNode Title="DecodeStringStrict Method " Url="html/M_MsgPack_MessagePackConvert_DecodeStringStrict.htm" />
           <HelpTOCNode Title="EncodeString Method " Url="html/M_MsgPack_MessagePackConvert_EncodeString.htm" />
           <HelpTOCNode Title="FromDateTime Method " Url="html/M_MsgPack_MessagePackConvert_FromDateTime.htm" />
@@ -42,11 +47,14 @@
           <HelpTOCNode Title="ToDateTimeOffset Method " Url="html/M_MsgPack_MessagePackConvert_ToDateTimeOffset.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="a66ef812-0709-4f89-b07c-d40f438ab2ab" Title="MessagePackExtendedTypeObject Structure" Url="html/T_MsgPack_MessagePackExtendedTypeObject.htm">
-        <HelpTOCNode Title="MessagePackExtendedTypeObject Members" Url="html/AllMembers_T_MsgPack_MessagePackExtendedTypeObject.htm" />
+      <HelpTOCNode Id="bc0f59b2-42a1-4732-9148-9b918ab8fe93" Title="MessagePackExtendedTypeObject Structure" Url="html/T_MsgPack_MessagePackExtendedTypeObject.htm">
         <HelpTOCNode Title="MessagePackExtendedTypeObject Constructor " Url="html/M_MsgPack_MessagePackExtendedTypeObject__ctor.htm" />
-        <HelpTOCNode Id="5266633e-65d5-4a2d-ad21-3adbf21fc1c7" Title="MessagePackExtendedTypeObject Methods" Url="html/Methods_T_MsgPack_MessagePackExtendedTypeObject.htm">
-          <HelpTOCNode Id="e3ece4ef-4b8d-4098-b67a-3b02b78570a9" Title="Equals Method " Url="html/Overload_MsgPack_MessagePackExtendedTypeObject_Equals.htm">
+        <HelpTOCNode Id="a758cb8d-d2a4-4070-87de-69bb42b928cb" Title="MessagePackExtendedTypeObject Properties" Url="html/Properties_T_MsgPack_MessagePackExtendedTypeObject.htm">
+          <HelpTOCNode Title="IsValid Property " Url="html/P_MsgPack_MessagePackExtendedTypeObject_IsValid.htm" />
+          <HelpTOCNode Title="TypeCode Property " Url="html/P_MsgPack_MessagePackExtendedTypeObject_TypeCode.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="33211937-0741-4674-b8ba-02d44b4e8c18" Title="MessagePackExtendedTypeObject Methods" Url="html/Methods_T_MsgPack_MessagePackExtendedTypeObject.htm">
+          <HelpTOCNode Id="0772d2d8-c61c-4a3b-83e4-5a008cd92704" Title="Equals Method " Url="html/Overload_MsgPack_MessagePackExtendedTypeObject_Equals.htm">
             <HelpTOCNode Title="Equals Method (Object)" Url="html/M_MsgPack_MessagePackExtendedTypeObject_Equals_1.htm" />
             <HelpTOCNode Title="Equals Method (MessagePackExtendedTypeObject)" Url="html/M_MsgPack_MessagePackExtendedTypeObject_Equals.htm" />
           </HelpTOCNode>
@@ -55,18 +63,13 @@
           <HelpTOCNode Title="ToString Method " Url="html/M_MsgPack_MessagePackExtendedTypeObject_ToString.htm" />
           <HelpTOCNode Title="Unpack Method " Url="html/M_MsgPack_MessagePackExtendedTypeObject_Unpack.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="23aa196d-72f2-42a3-bcde-bcae68cde871" Title="MessagePackExtendedTypeObject Operators" Url="html/Operators_T_MsgPack_MessagePackExtendedTypeObject.htm">
+        <HelpTOCNode Id="e02dadcc-5759-4917-8226-f2b8c2b0a61f" Title="MessagePackExtendedTypeObject Operators" Url="html/Operators_T_MsgPack_MessagePackExtendedTypeObject.htm">
           <HelpTOCNode Title="Equality Operator " Url="html/M_MsgPack_MessagePackExtendedTypeObject_op_Equality.htm" />
           <HelpTOCNode Title="Inequality Operator " Url="html/M_MsgPack_MessagePackExtendedTypeObject_op_Inequality.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="7e8b7d7c-3c1a-4767-800e-8ed34d4f839d" Title="MessagePackExtendedTypeObject Properties" Url="html/Properties_T_MsgPack_MessagePackExtendedTypeObject.htm">
-          <HelpTOCNode Title="IsValid Property " Url="html/P_MsgPack_MessagePackExtendedTypeObject_IsValid.htm" />
-          <HelpTOCNode Title="TypeCode Property " Url="html/P_MsgPack_MessagePackExtendedTypeObject_TypeCode.htm" />
-        </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="9a4fa6d9-0e6c-4994-942f-fc2f56a76b78" Title="MessagePackObject Structure" Url="html/T_MsgPack_MessagePackObject.htm">
-        <HelpTOCNode Title="MessagePackObject Members" Url="html/AllMembers_T_MsgPack_MessagePackObject.htm" />
-        <HelpTOCNode Id="77852df9-5db0-4aef-8744-a86dc4998bc6" Title="MessagePackObject Constructor " Url="html/Overload_MsgPack_MessagePackObject__ctor.htm">
+      <HelpTOCNode Id="12ffdde5-a484-467b-b2dc-b0f0da3abe59" Title="MessagePackObject Structure" Url="html/T_MsgPack_MessagePackObject.htm">
+        <HelpTOCNode Id="a74997b8-d848-4502-9e4d-aa6a204a31fa" Title="MessagePackObject Constructor " Url="html/Overload_MsgPack_MessagePackObject__ctor.htm">
           <HelpTOCNode Title="MessagePackObject Constructor (Boolean)" Url="html/M_MsgPack_MessagePackObject__ctor_3.htm" />
           <HelpTOCNode Title="MessagePackObject Constructor (Byte)" Url="html/M_MsgPack_MessagePackObject__ctor_4.htm" />
           <HelpTOCNode Title="MessagePackObject Constructor (Byte[])" Url="html/M_MsgPack_MessagePackObject__ctor_5.htm" />
@@ -87,10 +90,16 @@
           <HelpTOCNode Title="MessagePackObject Constructor (IList(MessagePackObject), Boolean)" Url="html/M_MsgPack_MessagePackObject__ctor_8.htm" />
           <HelpTOCNode Title="MessagePackObject Constructor (MessagePackObjectDictionary, Boolean)" Url="html/M_MsgPack_MessagePackObject__ctor_2.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="e8a9164c-e715-4b41-9488-79f583c30e4f" Title="MessagePackObject Fields" Url="html/Fields_T_MsgPack_MessagePackObject.htm">
-          <HelpTOCNode Title="Nil Field" Url="html/F_MsgPack_MessagePackObject_Nil.htm" />
+        <HelpTOCNode Id="5977dd5c-c972-4e95-94b1-d37765ba40b3" Title="MessagePackObject Properties" Url="html/Properties_T_MsgPack_MessagePackObject.htm">
+          <HelpTOCNode Title="IsArray Property " Url="html/P_MsgPack_MessagePackObject_IsArray.htm" />
+          <HelpTOCNode Title="IsDictionary Property " Url="html/P_MsgPack_MessagePackObject_IsDictionary.htm" />
+          <HelpTOCNode Title="IsList Property " Url="html/P_MsgPack_MessagePackObject_IsList.htm" />
+          <HelpTOCNode Title="IsMap Property " Url="html/P_MsgPack_MessagePackObject_IsMap.htm" />
+          <HelpTOCNode Title="IsNil Property " Url="html/P_MsgPack_MessagePackObject_IsNil.htm" />
+          <HelpTOCNode Title="IsRaw Property " Url="html/P_MsgPack_MessagePackObject_IsRaw.htm" />
+          <HelpTOCNode Title="UnderlyingType Property " Url="html/P_MsgPack_MessagePackObject_UnderlyingType.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="cd10a290-f750-4af1-b493-80ce556a51d3" Title="MessagePackObject Methods" Url="html/Methods_T_MsgPack_MessagePackObject.htm">
+        <HelpTOCNode Id="5b729996-2d2c-4ffe-a44f-86c6786289fb" Title="MessagePackObject Methods" Url="html/Methods_T_MsgPack_MessagePackObject.htm">
           <HelpTOCNode Title="AsBinary Method " Url="html/M_MsgPack_MessagePackObject_AsBinary.htm" />
           <HelpTOCNode Title="AsBoolean Method " Url="html/M_MsgPack_MessagePackObject_AsBoolean.htm" />
           <HelpTOCNode Title="AsByte Method " Url="html/M_MsgPack_MessagePackObject_AsByte.htm" />
@@ -105,7 +114,7 @@
           <HelpTOCNode Title="AsMessagePackExtendedTypeObject Method " Url="html/M_MsgPack_MessagePackObject_AsMessagePackExtendedTypeObject.htm" />
           <HelpTOCNode Title="AsSByte Method " Url="html/M_MsgPack_MessagePackObject_AsSByte.htm" />
           <HelpTOCNode Title="AsSingle Method " Url="html/M_MsgPack_MessagePackObject_AsSingle.htm" />
-          <HelpTOCNode Id="f03a672d-e6da-4ea1-b386-e05fbffba2c3" Title="AsString Method " Url="html/Overload_MsgPack_MessagePackObject_AsString.htm">
+          <HelpTOCNode Id="85480757-ce11-4029-8301-8e29e45820f6" Title="AsString Method " Url="html/Overload_MsgPack_MessagePackObject_AsString.htm">
             <HelpTOCNode Title="AsString Method " Url="html/M_MsgPack_MessagePackObject_AsString.htm" />
             <HelpTOCNode Title="AsString Method (Encoding)" Url="html/M_MsgPack_MessagePackObject_AsString_1.htm" />
           </HelpTOCNode>
@@ -114,13 +123,13 @@
           <HelpTOCNode Title="AsUInt16 Method " Url="html/M_MsgPack_MessagePackObject_AsUInt16.htm" />
           <HelpTOCNode Title="AsUInt32 Method " Url="html/M_MsgPack_MessagePackObject_AsUInt32.htm" />
           <HelpTOCNode Title="AsUInt64 Method " Url="html/M_MsgPack_MessagePackObject_AsUInt64.htm" />
-          <HelpTOCNode Id="ce079b77-c779-452c-880e-516602e416fd" Title="Equals Method " Url="html/Overload_MsgPack_MessagePackObject_Equals.htm">
+          <HelpTOCNode Id="7ae9c28c-6412-4887-90e9-e0374052b897" Title="Equals Method " Url="html/Overload_MsgPack_MessagePackObject_Equals.htm">
             <HelpTOCNode Title="Equals Method (Object)" Url="html/M_MsgPack_MessagePackObject_Equals_1.htm" />
             <HelpTOCNode Title="Equals Method (MessagePackObject)" Url="html/M_MsgPack_MessagePackObject_Equals.htm" />
           </HelpTOCNode>
           <HelpTOCNode Title="FromObject Method " Url="html/M_MsgPack_MessagePackObject_FromObject.htm" />
           <HelpTOCNode Title="GetHashCode Method " Url="html/M_MsgPack_MessagePackObject_GetHashCode.htm" />
-          <HelpTOCNode Id="9f31a2c8-1bfb-4b23-ab94-40a2692aa63b" Title="IsTypeOf Method " Url="html/Overload_MsgPack_MessagePackObject_IsTypeOf.htm">
+          <HelpTOCNode Id="b3a832e5-c327-4da6-9b29-ac20a8077f3a" Title="IsTypeOf Method " Url="html/Overload_MsgPack_MessagePackObject_IsTypeOf.htm">
             <HelpTOCNode Title="IsTypeOf(T) Method " Url="html/M_MsgPack_MessagePackObject_IsTypeOf__1.htm" />
             <HelpTOCNode Title="IsTypeOf Method (Type)" Url="html/M_MsgPack_MessagePackObject_IsTypeOf.htm" />
           </HelpTOCNode>
@@ -128,25 +137,25 @@
           <HelpTOCNode Title="ToObject Method " Url="html/M_MsgPack_MessagePackObject_ToObject.htm" />
           <HelpTOCNode Title="ToString Method " Url="html/M_MsgPack_MessagePackObject_ToString.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="e858b24e-7d5d-4f22-8dd7-7fd3e0c6e62c" Title="MessagePackObject Operators and Type Conversions" Url="html/Operators_T_MsgPack_MessagePackObject.htm">
+        <HelpTOCNode Id="620b8e47-8f85-4d14-bd39-021917f9ed82" Title="MessagePackObject Operators and Type Conversions" Url="html/Operators_T_MsgPack_MessagePackObject.htm">
           <HelpTOCNode Title="Equality Operator " Url="html/M_MsgPack_MessagePackObject_op_Equality.htm" />
-          <HelpTOCNode Id="05eca114-95d6-4773-a976-a239d537ec89" Title="Explicit Conversion Operators" Url="html/Overload_MsgPack_MessagePackObject_op_Explicit.htm">
-            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to UInt32)" Url="html/M_MsgPack_MessagePackObject_op_Explicit.htm" />
-            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Int64)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_1.htm" />
-            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to UInt64)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_2.htm" />
-            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Int32)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_3.htm" />
-            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to SByte)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_4.htm" />
-            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Int16)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_5.htm" />
-            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to UInt16)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_6.htm" />
-            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Single)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_7.htm" />
-            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to String)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_8.htm" />
-            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Byte[])" Url="html/M_MsgPack_MessagePackObject_op_Explicit_9.htm" />
-            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to MessagePackExtendedTypeObject)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_10.htm" />
-            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Double)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_11.htm" />
-            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Boolean)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_12.htm" />
-            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Byte)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_13.htm" />
+          <HelpTOCNode Id="be772725-7891-4827-8e05-bcd976847eba" Title="Explicit Conversion Operators" Url="html/Overload_MsgPack_MessagePackObject_op_Explicit.htm">
+            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Boolean)" Url="html/M_MsgPack_MessagePackObject_op_Explicit.htm" />
+            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Byte)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_1.htm" />
+            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to SByte)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_2.htm" />
+            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Int16)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_3.htm" />
+            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to UInt16)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_4.htm" />
+            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Int32)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_5.htm" />
+            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to UInt32)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_6.htm" />
+            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Int64)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_7.htm" />
+            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to UInt64)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_8.htm" />
+            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Single)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_9.htm" />
+            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Double)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_10.htm" />
+            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to String)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_11.htm" />
+            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to Byte[])" Url="html/M_MsgPack_MessagePackObject_op_Explicit_12.htm" />
+            <HelpTOCNode Title="Explicit Conversion (MessagePackObject to MessagePackExtendedTypeObject)" Url="html/M_MsgPack_MessagePackObject_op_Explicit_13.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="5ee3d7ba-b37c-4818-8e10-d12847307372" Title="Implicit Conversion Operators" Url="html/Overload_MsgPack_MessagePackObject_op_Implicit.htm">
+          <HelpTOCNode Id="702cbaa6-0174-45fd-ad6d-ea5bb736ee6d" Title="Implicit Conversion Operators" Url="html/Overload_MsgPack_MessagePackObject_op_Implicit.htm">
             <HelpTOCNode Title="Implicit Conversion (Boolean to MessagePackObject)" Url="html/M_MsgPack_MessagePackObject_op_Implicit_2.htm" />
             <HelpTOCNode Title="Implicit Conversion (Byte to MessagePackObject)" Url="html/M_MsgPack_MessagePackObject_op_Implicit_3.htm" />
             <HelpTOCNode Title="Implicit Conversion (Byte[] to MessagePackObject)" Url="html/M_MsgPack_MessagePackObject_op_Implicit_4.htm" />
@@ -165,24 +174,24 @@
           </HelpTOCNode>
           <HelpTOCNode Title="Inequality Operator " Url="html/M_MsgPack_MessagePackObject_op_Inequality.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="ac10a061-67a3-406c-b683-76f77f74b78b" Title="MessagePackObject Properties" Url="html/Properties_T_MsgPack_MessagePackObject.htm">
-          <HelpTOCNode Title="IsArray Property " Url="html/P_MsgPack_MessagePackObject_IsArray.htm" />
-          <HelpTOCNode Title="IsDictionary Property " Url="html/P_MsgPack_MessagePackObject_IsDictionary.htm" />
-          <HelpTOCNode Title="IsList Property " Url="html/P_MsgPack_MessagePackObject_IsList.htm" />
-          <HelpTOCNode Title="IsMap Property " Url="html/P_MsgPack_MessagePackObject_IsMap.htm" />
-          <HelpTOCNode Title="IsNil Property " Url="html/P_MsgPack_MessagePackObject_IsNil.htm" />
-          <HelpTOCNode Title="IsRaw Property " Url="html/P_MsgPack_MessagePackObject_IsRaw.htm" />
-          <HelpTOCNode Title="UnderlyingType Property " Url="html/P_MsgPack_MessagePackObject_UnderlyingType.htm" />
+        <HelpTOCNode Id="4331724a-c965-47a4-8750-cf585f9a6cba" Title="MessagePackObject Fields" Url="html/Fields_T_MsgPack_MessagePackObject.htm">
+          <HelpTOCNode Title="Nil Field" Url="html/F_MsgPack_MessagePackObject_Nil.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="98b1cece-b56a-45a3-891e-4490b725cf15" Title="MessagePackObjectDictionary Class" Url="html/T_MsgPack_MessagePackObjectDictionary.htm">
-        <HelpTOCNode Title="MessagePackObjectDictionary Members" Url="html/AllMembers_T_MsgPack_MessagePackObjectDictionary.htm" />
-        <HelpTOCNode Id="dd467cd2-c3ca-415d-8e27-15909afece76" Title="MessagePackObjectDictionary Constructor " Url="html/Overload_MsgPack_MessagePackObjectDictionary__ctor.htm">
+      <HelpTOCNode Id="cba98016-e209-4596-9f85-2f96ce43a70c" Title="MessagePackObjectDictionary Class" Url="html/T_MsgPack_MessagePackObjectDictionary.htm">
+        <HelpTOCNode Id="d6e2231c-2ad0-471f-b00b-244111858fb4" Title="MessagePackObjectDictionary Constructor " Url="html/Overload_MsgPack_MessagePackObjectDictionary__ctor.htm">
           <HelpTOCNode Title="MessagePackObjectDictionary Constructor " Url="html/M_MsgPack_MessagePackObjectDictionary__ctor.htm" />
           <HelpTOCNode Title="MessagePackObjectDictionary Constructor (Int32)" Url="html/M_MsgPack_MessagePackObjectDictionary__ctor_2.htm" />
           <HelpTOCNode Title="MessagePackObjectDictionary Constructor (IDictionary(MessagePackObject, MessagePackObject))" Url="html/M_MsgPack_MessagePackObjectDictionary__ctor_1.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="de4d722c-17ab-4c93-bba2-07d53b872b16" Title="MessagePackObjectDictionary Methods" Url="html/Methods_T_MsgPack_MessagePackObjectDictionary.htm">
+        <HelpTOCNode Id="6a52929a-03a3-4426-b807-456b1d46c60b" Title="MessagePackObjectDictionary Properties" Url="html/Properties_T_MsgPack_MessagePackObjectDictionary.htm">
+          <HelpTOCNode Title="Count Property " Url="html/P_MsgPack_MessagePackObjectDictionary_Count.htm" />
+          <HelpTOCNode Title="IsFrozen Property " Url="html/P_MsgPack_MessagePackObjectDictionary_IsFrozen.htm" />
+          <HelpTOCNode Title="Item Property " Url="html/P_MsgPack_MessagePackObjectDictionary_Item.htm" />
+          <HelpTOCNode Title="Keys Property " Url="html/P_MsgPack_MessagePackObjectDictionary_Keys.htm" />
+          <HelpTOCNode Title="Values Property " Url="html/P_MsgPack_MessagePackObjectDictionary_Values.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="7ecaf0d7-2716-4b6f-af30-ddd821867fa1" Title="MessagePackObjectDictionary Methods" Url="html/Methods_T_MsgPack_MessagePackObjectDictionary.htm">
           <HelpTOCNode Title="Add Method " Url="html/M_MsgPack_MessagePackObjectDictionary_Add.htm" />
           <HelpTOCNode Title="AsFrozen Method " Url="html/M_MsgPack_MessagePackObjectDictionary_AsFrozen.htm" />
           <HelpTOCNode Title="Clear Method " Url="html/M_MsgPack_MessagePackObjectDictionary_Clear.htm" />
@@ -193,28 +202,22 @@
           <HelpTOCNode Title="Remove Method " Url="html/M_MsgPack_MessagePackObjectDictionary_Remove.htm" />
           <HelpTOCNode Title="TryGetValue Method " Url="html/M_MsgPack_MessagePackObjectDictionary_TryGetValue.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="bfa27390-387c-40ae-bfcd-b37a8c12f13d" Title="MessagePackObjectDictionary Properties" Url="html/Properties_T_MsgPack_MessagePackObjectDictionary.htm">
-          <HelpTOCNode Title="Count Property " Url="html/P_MsgPack_MessagePackObjectDictionary_Count.htm" />
-          <HelpTOCNode Title="IsFrozen Property " Url="html/P_MsgPack_MessagePackObjectDictionary_IsFrozen.htm" />
-          <HelpTOCNode Title="Item Property " Url="html/P_MsgPack_MessagePackObjectDictionary_Item.htm" />
-          <HelpTOCNode Title="Keys Property " Url="html/P_MsgPack_MessagePackObjectDictionary_Keys.htm" />
-          <HelpTOCNode Title="Values Property " Url="html/P_MsgPack_MessagePackObjectDictionary_Values.htm" />
-        </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="0ce13f20-a1e9-467e-b9f5-83223c9d26be" Title="MessagePackObjectDictionary.Enumerator Structure" Url="html/T_MsgPack_MessagePackObjectDictionary_Enumerator.htm">
-        <HelpTOCNode Title="MessagePackObjectDictionary.Enumerator Members" Url="html/AllMembers_T_MsgPack_MessagePackObjectDictionary_Enumerator.htm" />
-        <HelpTOCNode Id="7c6c87f4-6f5c-402a-bf8a-be14c7374402" Title="MessagePackObjectDictionary.Enumerator Methods" Url="html/Methods_T_MsgPack_MessagePackObjectDictionary_Enumerator.htm">
+      <HelpTOCNode Id="d8b377ad-59b8-43de-9b10-692833bef918" Title="MessagePackObjectDictionary.Enumerator Structure" Url="html/T_MsgPack_MessagePackObjectDictionary_Enumerator.htm">
+        <HelpTOCNode Id="6c26278a-004a-4946-8eb3-198db137b59b" Title="Enumerator Properties" Url="html/Properties_T_MsgPack_MessagePackObjectDictionary_Enumerator.htm">
+          <HelpTOCNode Title="Current Property " Url="html/P_MsgPack_MessagePackObjectDictionary_Enumerator_Current.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="a243b473-ef0e-4529-a691-09d1244fd12b" Title="Enumerator Methods" Url="html/Methods_T_MsgPack_MessagePackObjectDictionary_Enumerator.htm">
           <HelpTOCNode Title="Dispose Method " Url="html/M_MsgPack_MessagePackObjectDictionary_Enumerator_Dispose.htm" />
           <HelpTOCNode Title="MoveNext Method " Url="html/M_MsgPack_MessagePackObjectDictionary_Enumerator_MoveNext.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="d68b1678-13ed-4d50-94d4-cffdf640bda2" Title="MessagePackObjectDictionary.Enumerator Properties" Url="html/Properties_T_MsgPack_MessagePackObjectDictionary_Enumerator.htm">
-          <HelpTOCNode Title="Current Property " Url="html/P_MsgPack_MessagePackObjectDictionary_Enumerator_Current.htm" />
-        </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="97e71829-d5ec-43b7-a8d0-8a3b0f6b35b4" Title="MessagePackObjectDictionary.KeySet Class" Url="html/T_MsgPack_MessagePackObjectDictionary_KeySet.htm">
-        <HelpTOCNode Title="MessagePackObjectDictionary.KeySet Members" Url="html/AllMembers_T_MsgPack_MessagePackObjectDictionary_KeySet.htm" />
-        <HelpTOCNode Id="cbfab2cb-f633-4df6-b015-d4aef69cd51e" Title="MessagePackObjectDictionary.KeySet Methods" Url="html/Methods_T_MsgPack_MessagePackObjectDictionary_KeySet.htm">
-          <HelpTOCNode Id="2ba225c5-3925-4ad0-afde-abbd97dcd4a7" Title="CopyTo Method " Url="html/Overload_MsgPack_MessagePackObjectDictionary_KeySet_CopyTo.htm">
+      <HelpTOCNode Id="d44ed67e-d2b0-42ae-ab42-1e3d58f52a63" Title="MessagePackObjectDictionary.KeySet Class" Url="html/T_MsgPack_MessagePackObjectDictionary_KeySet.htm">
+        <HelpTOCNode Id="0e582bab-62ba-48ce-a38a-38f469823044" Title="KeySet Properties" Url="html/Properties_T_MsgPack_MessagePackObjectDictionary_KeySet.htm">
+          <HelpTOCNode Title="Count Property " Url="html/P_MsgPack_MessagePackObjectDictionary_KeySet_Count.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="8639a69d-4e2c-4cef-b69e-aea7b93c2b1f" Title="KeySet Methods" Url="html/Methods_T_MsgPack_MessagePackObjectDictionary_KeySet.htm">
+          <HelpTOCNode Id="c70b2d1a-3948-47f9-a5d7-6cc669ce971f" Title="CopyTo Method " Url="html/Overload_MsgPack_MessagePackObjectDictionary_KeySet_CopyTo.htm">
             <HelpTOCNode Title="CopyTo Method (MessagePackObject[])" Url="html/M_MsgPack_MessagePackObjectDictionary_KeySet_CopyTo.htm" />
             <HelpTOCNode Title="CopyTo Method (MessagePackObject[], Int32)" Url="html/M_MsgPack_MessagePackObjectDictionary_KeySet_CopyTo_1.htm" />
             <HelpTOCNode Title="CopyTo Method (Int32, MessagePackObject[], Int32, Int32)" Url="html/M_MsgPack_MessagePackObjectDictionary_KeySet_CopyTo_2.htm" />
@@ -227,79 +230,76 @@
           <HelpTOCNode Title="Overlaps Method " Url="html/M_MsgPack_MessagePackObjectDictionary_KeySet_Overlaps.htm" />
           <HelpTOCNode Title="SetEquals Method " Url="html/M_MsgPack_MessagePackObjectDictionary_KeySet_SetEquals.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="aec0ae43-3b1e-422c-89a6-54691ef94498" Title="MessagePackObjectDictionary.KeySet Properties" Url="html/Properties_T_MsgPack_MessagePackObjectDictionary_KeySet.htm">
-          <HelpTOCNode Title="Count Property " Url="html/P_MsgPack_MessagePackObjectDictionary_KeySet_Count.htm" />
-        </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="3427ab13-1089-4ef1-957e-a9151e0940cc" Title="MessagePackObjectDictionary.KeySet.Enumerator Structure" Url="html/T_MsgPack_MessagePackObjectDictionary_KeySet_Enumerator.htm">
-        <HelpTOCNode Title="MessagePackObjectDictionary.KeySet.Enumerator Members" Url="html/AllMembers_T_MsgPack_MessagePackObjectDictionary_KeySet_Enumerator.htm" />
-        <HelpTOCNode Id="a37554f9-93fe-4509-b16a-c186a9e69d71" Title="MessagePackObjectDictionary.KeySet.Enumerator Methods" Url="html/Methods_T_MsgPack_MessagePackObjectDictionary_KeySet_Enumerator.htm">
+      <HelpTOCNode Id="9539b5d4-6546-492a-8a8d-c9082d43bf45" Title="MessagePackObjectDictionary.KeySet.Enumerator Structure" Url="html/T_MsgPack_MessagePackObjectDictionary_KeySet_Enumerator.htm">
+        <HelpTOCNode Id="ce84937e-15a4-4462-8a4c-dcff20315415" Title="Enumerator Properties" Url="html/Properties_T_MsgPack_MessagePackObjectDictionary_KeySet_Enumerator.htm">
+          <HelpTOCNode Title="Current Property " Url="html/P_MsgPack_MessagePackObjectDictionary_KeySet_Enumerator_Current.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="650a5071-b195-4429-a002-133444de524f" Title="Enumerator Methods" Url="html/Methods_T_MsgPack_MessagePackObjectDictionary_KeySet_Enumerator.htm">
           <HelpTOCNode Title="Dispose Method " Url="html/M_MsgPack_MessagePackObjectDictionary_KeySet_Enumerator_Dispose.htm" />
           <HelpTOCNode Title="MoveNext Method " Url="html/M_MsgPack_MessagePackObjectDictionary_KeySet_Enumerator_MoveNext.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="1697c468-27c0-446d-97af-111a144952b3" Title="MessagePackObjectDictionary.KeySet.Enumerator Properties" Url="html/Properties_T_MsgPack_MessagePackObjectDictionary_KeySet_Enumerator.htm">
-          <HelpTOCNode Title="Current Property " Url="html/P_MsgPack_MessagePackObjectDictionary_KeySet_Enumerator_Current.htm" />
-        </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="a2d3c9eb-2632-4b50-9a9e-4402875f076e" Title="MessagePackObjectDictionary.ValueCollection Class" Url="html/T_MsgPack_MessagePackObjectDictionary_ValueCollection.htm">
-        <HelpTOCNode Title="MessagePackObjectDictionary.ValueCollection Members" Url="html/AllMembers_T_MsgPack_MessagePackObjectDictionary_ValueCollection.htm" />
-        <HelpTOCNode Id="715d903c-4b9e-4f7a-a681-fa5a8b036aa8" Title="MessagePackObjectDictionary.ValueCollection Methods" Url="html/Methods_T_MsgPack_MessagePackObjectDictionary_ValueCollection.htm">
-          <HelpTOCNode Id="80a6d640-541f-4341-a27d-221135c42d6e" Title="CopyTo Method " Url="html/Overload_MsgPack_MessagePackObjectDictionary_ValueCollection_CopyTo.htm">
+      <HelpTOCNode Id="a7f11fce-cc38-4420-aeeb-ecc8828a1902" Title="MessagePackObjectDictionary.ValueCollection Class" Url="html/T_MsgPack_MessagePackObjectDictionary_ValueCollection.htm">
+        <HelpTOCNode Id="dda8d5e6-4db5-47d5-999f-5ca6af03d333" Title="ValueCollection Properties" Url="html/Properties_T_MsgPack_MessagePackObjectDictionary_ValueCollection.htm">
+          <HelpTOCNode Title="Count Property " Url="html/P_MsgPack_MessagePackObjectDictionary_ValueCollection_Count.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="7242ee22-698a-4e3b-ab83-c8e8844f25be" Title="ValueCollection Methods" Url="html/Methods_T_MsgPack_MessagePackObjectDictionary_ValueCollection.htm">
+          <HelpTOCNode Id="59705110-8c7c-4065-a2af-7303fb37cf0f" Title="CopyTo Method " Url="html/Overload_MsgPack_MessagePackObjectDictionary_ValueCollection_CopyTo.htm">
             <HelpTOCNode Title="CopyTo Method (MessagePackObject[])" Url="html/M_MsgPack_MessagePackObjectDictionary_ValueCollection_CopyTo.htm" />
             <HelpTOCNode Title="CopyTo Method (MessagePackObject[], Int32)" Url="html/M_MsgPack_MessagePackObjectDictionary_ValueCollection_CopyTo_1.htm" />
             <HelpTOCNode Title="CopyTo Method (Int32, MessagePackObject[], Int32, Int32)" Url="html/M_MsgPack_MessagePackObjectDictionary_ValueCollection_CopyTo_2.htm" />
           </HelpTOCNode>
           <HelpTOCNode Title="GetEnumerator Method " Url="html/M_MsgPack_MessagePackObjectDictionary_ValueCollection_GetEnumerator.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="bb6637ff-be99-4501-8d2d-d0f15a86616c" Title="MessagePackObjectDictionary.ValueCollection Properties" Url="html/Properties_T_MsgPack_MessagePackObjectDictionary_ValueCollection.htm">
-          <HelpTOCNode Title="Count Property " Url="html/P_MsgPack_MessagePackObjectDictionary_ValueCollection_Count.htm" />
-        </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="4ad50673-8392-4229-aed5-a73cdbdb0a2f" Title="MessagePackObjectDictionary.ValueCollection.Enumerator Structure" Url="html/T_MsgPack_MessagePackObjectDictionary_ValueCollection_Enumerator.htm">
-        <HelpTOCNode Title="MessagePackObjectDictionary.ValueCollection.Enumerator Members" Url="html/AllMembers_T_MsgPack_MessagePackObjectDictionary_ValueCollection_Enumerator.htm" />
-        <HelpTOCNode Id="2cde4067-b3ac-47bf-9be6-cdd087b6dac2" Title="MessagePackObjectDictionary.ValueCollection.Enumerator Methods" Url="html/Methods_T_MsgPack_MessagePackObjectDictionary_ValueCollection_Enumerator.htm">
+      <HelpTOCNode Id="3997bbfe-9397-4a93-b20a-889e51de8099" Title="MessagePackObjectDictionary.ValueCollection.Enumerator Structure" Url="html/T_MsgPack_MessagePackObjectDictionary_ValueCollection_Enumerator.htm">
+        <HelpTOCNode Id="ffc67298-7da7-4e1c-9d72-30b566de405c" Title="Enumerator Properties" Url="html/Properties_T_MsgPack_MessagePackObjectDictionary_ValueCollection_Enumerator.htm">
+          <HelpTOCNode Title="Current Property " Url="html/P_MsgPack_MessagePackObjectDictionary_ValueCollection_Enumerator_Current.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="6fe737b6-e5ef-492d-b647-1b1a3eeaa359" Title="Enumerator Methods" Url="html/Methods_T_MsgPack_MessagePackObjectDictionary_ValueCollection_Enumerator.htm">
           <HelpTOCNode Title="Dispose Method " Url="html/M_MsgPack_MessagePackObjectDictionary_ValueCollection_Enumerator_Dispose.htm" />
           <HelpTOCNode Title="MoveNext Method " Url="html/M_MsgPack_MessagePackObjectDictionary_ValueCollection_Enumerator_MoveNext.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="1d2b81c8-dc22-45c7-a71d-af80cefcead8" Title="MessagePackObjectDictionary.ValueCollection.Enumerator Properties" Url="html/Properties_T_MsgPack_MessagePackObjectDictionary_ValueCollection_Enumerator.htm">
-          <HelpTOCNode Title="Current Property " Url="html/P_MsgPack_MessagePackObjectDictionary_ValueCollection_Enumerator_Current.htm" />
-        </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="886a302a-8b9b-4d51-a72f-e8b858be7960" Title="MessagePackObjectEqualityComparer Class" Url="html/T_MsgPack_MessagePackObjectEqualityComparer.htm">
-        <HelpTOCNode Title="MessagePackObjectEqualityComparer Members" Url="html/AllMembers_T_MsgPack_MessagePackObjectEqualityComparer.htm" />
+      <HelpTOCNode Id="6ce1171d-d850-4fe3-92b0-482e0e0b5340" Title="MessagePackObjectEqualityComparer Class" Url="html/T_MsgPack_MessagePackObjectEqualityComparer.htm">
         <HelpTOCNode Title="MessagePackObjectEqualityComparer Constructor " Url="html/M_MsgPack_MessagePackObjectEqualityComparer__ctor.htm" />
-        <HelpTOCNode Id="9f5a4b3b-1ada-4b45-bc85-375c7bb37a79" Title="MessagePackObjectEqualityComparer Methods" Url="html/Methods_T_MsgPack_MessagePackObjectEqualityComparer.htm">
+        <HelpTOCNode Id="907fb6be-da4c-420a-ae43-9841844dccd9" Title="MessagePackObjectEqualityComparer Methods" Url="html/Methods_T_MsgPack_MessagePackObjectEqualityComparer.htm">
           <HelpTOCNode Title="Equals Method " Url="html/M_MsgPack_MessagePackObjectEqualityComparer_Equals.htm" />
           <HelpTOCNode Title="GetHashCode Method " Url="html/M_MsgPack_MessagePackObjectEqualityComparer_GetHashCode.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="ad7ef41d-f3ce-4233-80c8-78708d7808b6" Title="MessageTypeException Class" Url="html/T_MsgPack_MessageTypeException.htm">
-        <HelpTOCNode Title="MessageTypeException Members" Url="html/AllMembers_T_MsgPack_MessageTypeException.htm" />
-        <HelpTOCNode Id="c95e0779-3c22-4eb2-a75e-ca9381b6b165" Title="MessageTypeException Constructor " Url="html/Overload_MsgPack_MessageTypeException__ctor.htm">
+      <HelpTOCNode Id="0b8eb74a-b053-4e15-81c7-01b94d4ca5c3" Title="MessageTypeException Class" Url="html/T_MsgPack_MessageTypeException.htm">
+        <HelpTOCNode Id="0c4bfe05-29a4-4750-b0e6-50cc474a2d3d" Title="MessageTypeException Constructor " Url="html/Overload_MsgPack_MessageTypeException__ctor.htm">
           <HelpTOCNode Title="MessageTypeException Constructor " Url="html/M_MsgPack_MessageTypeException__ctor.htm" />
           <HelpTOCNode Title="MessageTypeException Constructor (String)" Url="html/M_MsgPack_MessageTypeException__ctor_2.htm" />
           <HelpTOCNode Title="MessageTypeException Constructor (SerializationInfo, StreamingContext)" Url="html/M_MsgPack_MessageTypeException__ctor_1.htm" />
           <HelpTOCNode Title="MessageTypeException Constructor (String, Exception)" Url="html/M_MsgPack_MessageTypeException__ctor_3.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="54ca7d86-c66e-4400-bf4f-b8477ae969d6" Title="Packer Class" Url="html/T_MsgPack_Packer.htm">
-        <HelpTOCNode Title="Packer Members" Url="html/AllMembers_T_MsgPack_Packer.htm" />
-        <HelpTOCNode Id="86a2e2e0-40aa-4c5e-ad73-e787a772d4f8" Title="Packer Constructor " Url="html/Overload_MsgPack_Packer__ctor.htm">
+      <HelpTOCNode Id="da4e2c90-edf3-47f5-8593-b6480fdf7e9d" Title="Packer Class" Url="html/T_MsgPack_Packer.htm">
+        <HelpTOCNode Id="07c1bd56-4cc7-40f8-b57e-939392f680ce" Title="Packer Constructor " Url="html/Overload_MsgPack_Packer__ctor.htm">
           <HelpTOCNode Title="Packer Constructor " Url="html/M_MsgPack_Packer__ctor.htm" />
           <HelpTOCNode Title="Packer Constructor (PackerCompatibilityOptions)" Url="html/M_MsgPack_Packer__ctor_1.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="36427142-8bb0-422c-ba12-110e1fba382a" Title="Packer Methods" Url="html/Methods_T_MsgPack_Packer.htm">
-          <HelpTOCNode Id="7ebaf3bf-8cd9-4282-8384-4f648fba0250" Title="Create Method " Url="html/Overload_MsgPack_Packer_Create.htm">
+        <HelpTOCNode Id="5dd7cb0f-94a1-4ce7-b22b-db0460561cd0" Title="Packer Properties" Url="html/Properties_T_MsgPack_Packer.htm">
+          <HelpTOCNode Title="CanSeek Property " Url="html/P_MsgPack_Packer_CanSeek.htm" />
+          <HelpTOCNode Title="CompatibilityOptions Property " Url="html/P_MsgPack_Packer_CompatibilityOptions.htm" />
+          <HelpTOCNode Title="DefaultCompatibilityOptions Property " Url="html/P_MsgPack_Packer_DefaultCompatibilityOptions.htm" />
+          <HelpTOCNode Title="Position Property " Url="html/P_MsgPack_Packer_Position.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="6d0dfcc7-2afe-4153-80b6-8913bbbc0021" Title="Packer Methods" Url="html/Methods_T_MsgPack_Packer.htm">
+          <HelpTOCNode Id="3dde8d51-e443-4077-971b-fc9b9560c7f9" Title="Create Method " Url="html/Overload_MsgPack_Packer_Create.htm">
             <HelpTOCNode Title="Create Method (Stream)" Url="html/M_MsgPack_Packer_Create.htm" />
             <HelpTOCNode Title="Create Method (Stream, PackerCompatibilityOptions)" Url="html/M_MsgPack_Packer_Create_1.htm" />
             <HelpTOCNode Title="Create Method (Stream, Boolean)" Url="html/M_MsgPack_Packer_Create_3.htm" />
             <HelpTOCNode Title="Create Method (Stream, PackerCompatibilityOptions, Boolean)" Url="html/M_MsgPack_Packer_Create_2.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="24844f7c-3b01-473e-827a-aebb010918c9" Title="Dispose Method " Url="html/Overload_MsgPack_Packer_Dispose.htm">
+          <HelpTOCNode Id="3861b6fc-447f-4496-a3e4-b9502f0574b4" Title="Dispose Method " Url="html/Overload_MsgPack_Packer_Dispose.htm">
             <HelpTOCNode Title="Dispose Method " Url="html/M_MsgPack_Packer_Dispose.htm" />
             <HelpTOCNode Title="Dispose Method (Boolean)" Url="html/M_MsgPack_Packer_Dispose_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="cfa06590-6722-4ec9-8473-4d3ceab5683b" Title="Pack Method " Url="html/Overload_MsgPack_Packer_Pack.htm">
+          <HelpTOCNode Id="ec1cda39-4229-4ccc-94bd-3767c9f05894" Title="Pack Method " Url="html/Overload_MsgPack_Packer_Pack.htm">
             <HelpTOCNode Title="Pack Method (Boolean)" Url="html/M_MsgPack_Packer_Pack.htm" />
             <HelpTOCNode Title="Pack Method (Byte)" Url="html/M_MsgPack_Packer_Pack_1.htm" />
             <HelpTOCNode Title="Pack Method (Double)" Url="html/M_MsgPack_Packer_Pack_2.htm" />
@@ -323,46 +323,46 @@
             <HelpTOCNode Title="Pack Method (UInt32)" Url="html/M_MsgPack_Packer_Pack_20.htm" />
             <HelpTOCNode Title="Pack Method (UInt64)" Url="html/M_MsgPack_Packer_Pack_21.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="484fbb6c-9a58-444a-973b-434969dfe214" Title="PackArrayHeader Method " Url="html/Overload_MsgPack_Packer_PackArrayHeader.htm">
+          <HelpTOCNode Id="719c9b21-54ba-4792-828d-444f4b6b5077" Title="PackArrayHeader Method " Url="html/Overload_MsgPack_Packer_PackArrayHeader.htm">
             <HelpTOCNode Title="PackArrayHeader(TItem) Method (IList(TItem))" Url="html/M_MsgPack_Packer_PackArrayHeader__1.htm" />
             <HelpTOCNode Title="PackArrayHeader Method (Int32)" Url="html/M_MsgPack_Packer_PackArrayHeader.htm" />
           </HelpTOCNode>
           <HelpTOCNode Title="PackArrayHeaderCore Method " Url="html/M_MsgPack_Packer_PackArrayHeaderCore.htm" />
-          <HelpTOCNode Id="124b17dc-6577-4f42-8bbb-54da983dafc9" Title="PackBinary Method " Url="html/Overload_MsgPack_Packer_PackBinary.htm">
+          <HelpTOCNode Id="10a6f28b-cd6e-46a2-a9e9-87743386210f" Title="PackBinary Method " Url="html/Overload_MsgPack_Packer_PackBinary.htm">
             <HelpTOCNode Title="PackBinary Method (Byte[])" Url="html/M_MsgPack_Packer_PackBinary.htm" />
             <HelpTOCNode Title="PackBinary Method (IEnumerable(Byte))" Url="html/M_MsgPack_Packer_PackBinary_1.htm" />
             <HelpTOCNode Title="PackBinary Method (IList(Byte))" Url="html/M_MsgPack_Packer_PackBinary_2.htm" />
           </HelpTOCNode>
           <HelpTOCNode Title="PackBinaryHeader Method " Url="html/M_MsgPack_Packer_PackBinaryHeader.htm" />
           <HelpTOCNode Title="PackBinaryHeaderCore Method " Url="html/M_MsgPack_Packer_PackBinaryHeaderCore.htm" />
-          <HelpTOCNode Id="61fa41e5-5163-43ad-bf0f-efdd42ff2ef8" Title="PackExtendedTypeValue Method " Url="html/Overload_MsgPack_Packer_PackExtendedTypeValue.htm">
+          <HelpTOCNode Id="165cb213-d147-4da7-b86f-7c638507d465" Title="PackExtendedTypeValue Method " Url="html/Overload_MsgPack_Packer_PackExtendedTypeValue.htm">
             <HelpTOCNode Title="PackExtendedTypeValue Method (MessagePackExtendedTypeObject)" Url="html/M_MsgPack_Packer_PackExtendedTypeValue.htm" />
             <HelpTOCNode Title="PackExtendedTypeValue Method (Byte, Byte[])" Url="html/M_MsgPack_Packer_PackExtendedTypeValue_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="a284b2e0-05e9-4fac-bddc-3b24e13eae58" Title="PackMapHeader Method " Url="html/Overload_MsgPack_Packer_PackMapHeader.htm">
+          <HelpTOCNode Id="c1079105-b0eb-43c5-a333-f3b26b1b7646" Title="PackMapHeader Method " Url="html/Overload_MsgPack_Packer_PackMapHeader.htm">
             <HelpTOCNode Title="PackMapHeader(TKey, TValue) Method (IDictionary(TKey, TValue))" Url="html/M_MsgPack_Packer_PackMapHeader__2.htm" />
             <HelpTOCNode Title="PackMapHeader Method (Int32)" Url="html/M_MsgPack_Packer_PackMapHeader.htm" />
           </HelpTOCNode>
           <HelpTOCNode Title="PackMapHeaderCore Method " Url="html/M_MsgPack_Packer_PackMapHeaderCore.htm" />
           <HelpTOCNode Title="PackNull Method " Url="html/M_MsgPack_Packer_PackNull.htm" />
-          <HelpTOCNode Id="72239a90-1252-43b1-bdc1-b86e59d63a4b" Title="PackRaw Method " Url="html/Overload_MsgPack_Packer_PackRaw.htm">
+          <HelpTOCNode Id="39bf5f6f-9961-46f2-98cf-1c31f0c97c5f" Title="PackRaw Method " Url="html/Overload_MsgPack_Packer_PackRaw.htm">
             <HelpTOCNode Title="PackRaw Method (Byte[])" Url="html/M_MsgPack_Packer_PackRaw.htm" />
             <HelpTOCNode Title="PackRaw Method (IEnumerable(Byte))" Url="html/M_MsgPack_Packer_PackRaw_1.htm" />
             <HelpTOCNode Title="PackRaw Method (IList(Byte))" Url="html/M_MsgPack_Packer_PackRaw_2.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="ec126052-d90e-4385-8514-e09e5fd92c76" Title="PackRawBody Method " Url="html/Overload_MsgPack_Packer_PackRawBody.htm">
+          <HelpTOCNode Id="13be341c-af65-4672-8d27-6774ed6eb521" Title="PackRawBody Method " Url="html/Overload_MsgPack_Packer_PackRawBody.htm">
             <HelpTOCNode Title="PackRawBody Method (Byte[])" Url="html/M_MsgPack_Packer_PackRawBody.htm" />
             <HelpTOCNode Title="PackRawBody Method (IEnumerable(Byte))" Url="html/M_MsgPack_Packer_PackRawBody_1.htm" />
           </HelpTOCNode>
           <HelpTOCNode Title="PackRawHeader Method " Url="html/M_MsgPack_Packer_PackRawHeader.htm" />
           <HelpTOCNode Title="PackRawHeaderCore Method " Url="html/M_MsgPack_Packer_PackRawHeaderCore.htm" />
-          <HelpTOCNode Id="6a6c76be-59c9-4579-a38b-15a38a38128d" Title="PackString Method " Url="html/Overload_MsgPack_Packer_PackString.htm">
+          <HelpTOCNode Id="dd9ab891-006a-4341-9328-fe417c308372" Title="PackString Method " Url="html/Overload_MsgPack_Packer_PackString.htm">
             <HelpTOCNode Title="PackString Method (IEnumerable(Char))" Url="html/M_MsgPack_Packer_PackString.htm" />
             <HelpTOCNode Title="PackString Method (String)" Url="html/M_MsgPack_Packer_PackString_2.htm" />
             <HelpTOCNode Title="PackString Method (IEnumerable(Char), Encoding)" Url="html/M_MsgPack_Packer_PackString_1.htm" />
             <HelpTOCNode Title="PackString Method (String, Encoding)" Url="html/M_MsgPack_Packer_PackString_3.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="a1ac5772-1f3a-4206-9bf7-d00e981a3116" Title="PackStringCore Method " Url="html/Overload_MsgPack_Packer_PackStringCore.htm">
+          <HelpTOCNode Id="292169f3-6393-495d-9b9a-c7feb5281a99" Title="PackStringCore Method " Url="html/Overload_MsgPack_Packer_PackStringCore.htm">
             <HelpTOCNode Title="PackStringCore Method (IEnumerable(Char), Encoding)" Url="html/M_MsgPack_Packer_PackStringCore.htm" />
             <HelpTOCNode Title="PackStringCore Method (String, Encoding)" Url="html/M_MsgPack_Packer_PackStringCore_1.htm" />
           </HelpTOCNode>
@@ -379,78 +379,77 @@
           <HelpTOCNode Title="TryPackUInt32 Method " Url="html/M_MsgPack_Packer_TryPackUInt32.htm" />
           <HelpTOCNode Title="TryPackUInt64 Method " Url="html/M_MsgPack_Packer_TryPackUInt64.htm" />
           <HelpTOCNode Title="WriteByte Method " Url="html/M_MsgPack_Packer_WriteByte.htm" />
-          <HelpTOCNode Id="e241e9d9-aa54-44a9-87e7-a8f64a7e2706" Title="WriteBytes Method " Url="html/Overload_MsgPack_Packer_WriteBytes.htm">
+          <HelpTOCNode Id="518a0df9-0127-4f1d-b954-687822abc98e" Title="WriteBytes Method " Url="html/Overload_MsgPack_Packer_WriteBytes.htm">
             <HelpTOCNode Title="WriteBytes Method (ICollection(Byte))" Url="html/M_MsgPack_Packer_WriteBytes_1.htm" />
             <HelpTOCNode Title="WriteBytes Method (Byte[], Boolean)" Url="html/M_MsgPack_Packer_WriteBytes.htm" />
           </HelpTOCNode>
         </HelpTOCNode>
-        <HelpTOCNode Id="621745eb-824e-4e2d-a201-9da612c990a0" Title="Packer Properties" Url="html/Properties_T_MsgPack_Packer.htm">
-          <HelpTOCNode Title="CanSeek Property " Url="html/P_MsgPack_Packer_CanSeek.htm" />
-          <HelpTOCNode Title="CompatibilityOptions Property " Url="html/P_MsgPack_Packer_CompatibilityOptions.htm" />
-          <HelpTOCNode Title="DefaultCompatibilityOptions Property " Url="html/P_MsgPack_Packer_DefaultCompatibilityOptions.htm" />
-          <HelpTOCNode Title="Position Property " Url="html/P_MsgPack_Packer_Position.htm" />
-        </HelpTOCNode>
       </HelpTOCNode>
       <HelpTOCNode Title="PackerCompatibilityOptions Enumeration" Url="html/T_MsgPack_PackerCompatibilityOptions.htm" />
-      <HelpTOCNode Id="ccd065d3-c94d-41e2-a3f8-4cd407bf82c2" Title="PackerUnpackerExtensions Class" Url="html/T_MsgPack_PackerUnpackerExtensions.htm">
-        <HelpTOCNode Title="PackerUnpackerExtensions Members" Url="html/AllMembers_T_MsgPack_PackerUnpackerExtensions.htm" />
-        <HelpTOCNode Id="c5bc9e90-a716-422d-a8af-a6b6f460ebff" Title="PackerUnpackerExtensions Methods" Url="html/Methods_T_MsgPack_PackerUnpackerExtensions.htm">
-          <HelpTOCNode Id="0902acc0-0573-4380-9b0d-23817ce9b652" Title="Pack Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_Pack.htm">
+      <HelpTOCNode Id="5d99a6d3-6ad4-4675-adcd-aa6589e6c7fd" Title="PackerUnpackerExtensions Class" Url="html/T_MsgPack_PackerUnpackerExtensions.htm">
+        <HelpTOCNode Id="75a1cef5-22eb-44a1-97a5-fb3d64aef119" Title="PackerUnpackerExtensions Methods" Url="html/Methods_T_MsgPack_PackerUnpackerExtensions.htm">
+          <HelpTOCNode Id="f351700e-7b0c-4f86-ab3c-6bc088d7e602" Title="Pack Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_Pack.htm">
             <HelpTOCNode Title="Pack(T) Method (Packer, IEnumerable(T))" Url="html/M_MsgPack_PackerUnpackerExtensions_Pack__1.htm" />
             <HelpTOCNode Title="Pack(T) Method (Packer, T)" Url="html/M_MsgPack_PackerUnpackerExtensions_Pack__1_2.htm" />
             <HelpTOCNode Title="Pack(T) Method (Packer, IEnumerable(T), SerializationContext)" Url="html/M_MsgPack_PackerUnpackerExtensions_Pack__1_1.htm" />
             <HelpTOCNode Title="Pack(T) Method (Packer, T, SerializationContext)" Url="html/M_MsgPack_PackerUnpackerExtensions_Pack__1_3.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="588e0d83-5a53-40d1-9ae9-19b9606f373c" Title="PackArray Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackArray.htm">
+          <HelpTOCNode Id="0a61f063-7073-4087-9ee8-455b17cbfcfa" Title="PackArray Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackArray.htm">
             <HelpTOCNode Title="PackArray(T) Method (Packer, IEnumerable(T))" Url="html/M_MsgPack_PackerUnpackerExtensions_PackArray__1.htm" />
             <HelpTOCNode Title="PackArray(T) Method (Packer, IEnumerable(T), SerializationContext)" Url="html/M_MsgPack_PackerUnpackerExtensions_PackArray__1_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="6801ae39-c3a7-44db-9dce-6ddddaa9fa2a" Title="PackCollection Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackCollection.htm">
+          <HelpTOCNode Id="7b141815-0bb7-4d6a-830d-f849e11a928f" Title="PackCollection Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackCollection.htm">
             <HelpTOCNode Title="PackCollection(T) Method (Packer, IEnumerable(T))" Url="html/M_MsgPack_PackerUnpackerExtensions_PackCollection__1.htm" />
             <HelpTOCNode Title="PackCollection(T) Method (Packer, IEnumerable(T), SerializationContext)" Url="html/M_MsgPack_PackerUnpackerExtensions_PackCollection__1_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="977403c7-8e51-4a03-a11d-ad15b0171ee0" Title="PackDictionary Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackDictionary.htm">
+          <HelpTOCNode Id="2cc18b68-5e2d-44cb-a9b2-7399a6e055c3" Title="PackDictionary Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackDictionary.htm">
             <HelpTOCNode Title="PackDictionary(TKey, TValue) Method (Packer, IDictionary(TKey, TValue))" Url="html/M_MsgPack_PackerUnpackerExtensions_PackDictionary__2.htm" />
             <HelpTOCNode Title="PackDictionary(TKey, TValue) Method (Packer, IDictionary(TKey, TValue), SerializationContext)" Url="html/M_MsgPack_PackerUnpackerExtensions_PackDictionary__2_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="885340ee-a6a2-4aac-93cf-9e90e99cefdf" Title="PackMap Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackMap.htm">
+          <HelpTOCNode Id="6f2e21d3-a647-430e-9d8a-526b76bebca2" Title="PackMap Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackMap.htm">
             <HelpTOCNode Title="PackMap(TKey, TValue) Method (Packer, IDictionary(TKey, TValue))" Url="html/M_MsgPack_PackerUnpackerExtensions_PackMap__2.htm" />
             <HelpTOCNode Title="PackMap(TKey, TValue) Method (Packer, IDictionary(TKey, TValue), SerializationContext)" Url="html/M_MsgPack_PackerUnpackerExtensions_PackMap__2_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="5d7adfc4-580a-4a07-92cc-5e3cb8215f9b" Title="PackObject Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackObject.htm">
+          <HelpTOCNode Id="55546e25-25a2-4631-ba0a-64c165a55712" Title="PackObject Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackObject.htm">
             <HelpTOCNode Title="PackObject Method (Packer, Object)" Url="html/M_MsgPack_PackerUnpackerExtensions_PackObject.htm" />
             <HelpTOCNode Title="PackObject Method (Packer, Object, SerializationContext)" Url="html/M_MsgPack_PackerUnpackerExtensions_PackObject_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="05a48241-99e5-4236-baea-0434e8667277" Title="Unpack Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_Unpack.htm">
+          <HelpTOCNode Id="04c7dab5-5304-4bf4-9086-4788d25b2ba8" Title="Unpack Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_Unpack.htm">
             <HelpTOCNode Title="Unpack(T) Method (Unpacker)" Url="html/M_MsgPack_PackerUnpackerExtensions_Unpack__1.htm" />
             <HelpTOCNode Title="Unpack(T) Method (Unpacker, SerializationContext)" Url="html/M_MsgPack_PackerUnpackerExtensions_Unpack__1_1.htm" />
           </HelpTOCNode>
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="47f3b760-33c9-4ec6-9402-78e707f3d83e" Title="PackingOptions Class" Url="html/T_MsgPack_PackingOptions.htm">
-        <HelpTOCNode Title="PackingOptions Members" Url="html/AllMembers_T_MsgPack_PackingOptions.htm" />
+      <HelpTOCNode Id="b7b7534e-be0a-4ae7-8d07-8fb68956b180" Title="PackingOptions Class" Url="html/T_MsgPack_PackingOptions.htm">
         <HelpTOCNode Title="PackingOptions Constructor " Url="html/M_MsgPack_PackingOptions__ctor.htm" />
-        <HelpTOCNode Id="95e715f0-25b4-4d3a-92ac-98277422820a" Title="PackingOptions Properties" Url="html/Properties_T_MsgPack_PackingOptions.htm">
+        <HelpTOCNode Id="55b49d92-e4fe-499a-90dc-84dff69542ed" Title="PackingOptions Properties" Url="html/Properties_T_MsgPack_PackingOptions.htm">
           <HelpTOCNode Title="StringEncoding Property " Url="html/P_MsgPack_PackingOptions_StringEncoding.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="8a879300-044a-4412-ac63-ea4d630ac169" Title="UnassignedMessageTypeException Class" Url="html/T_MsgPack_UnassignedMessageTypeException.htm">
-        <HelpTOCNode Title="UnassignedMessageTypeException Members" Url="html/AllMembers_T_MsgPack_UnassignedMessageTypeException.htm" />
-        <HelpTOCNode Id="daf25670-13e4-4abf-a388-1d9439619bb3" Title="UnassignedMessageTypeException Constructor " Url="html/Overload_MsgPack_UnassignedMessageTypeException__ctor.htm">
+      <HelpTOCNode Id="372378d2-9eea-4e5a-99d6-40ca3212564c" Title="UnassignedMessageTypeException Class" Url="html/T_MsgPack_UnassignedMessageTypeException.htm">
+        <HelpTOCNode Id="996ea070-039e-478a-819a-44635a3ff01d" Title="UnassignedMessageTypeException Constructor " Url="html/Overload_MsgPack_UnassignedMessageTypeException__ctor.htm">
           <HelpTOCNode Title="UnassignedMessageTypeException Constructor " Url="html/M_MsgPack_UnassignedMessageTypeException__ctor.htm" />
           <HelpTOCNode Title="UnassignedMessageTypeException Constructor (String)" Url="html/M_MsgPack_UnassignedMessageTypeException__ctor_1.htm" />
           <HelpTOCNode Title="UnassignedMessageTypeException Constructor (String, Exception)" Url="html/M_MsgPack_UnassignedMessageTypeException__ctor_2.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="bbe9b829-eb3c-44d3-b052-d951d4bde964" Title="Unpacker Class" Url="html/T_MsgPack_Unpacker.htm">
-        <HelpTOCNode Title="Unpacker Members" Url="html/AllMembers_T_MsgPack_Unpacker.htm" />
+      <HelpTOCNode Id="e7ef7e5a-4540-418c-9c70-d87064379888" Title="Unpacker Class" Url="html/T_MsgPack_Unpacker.htm">
         <HelpTOCNode Title="Unpacker Constructor " Url="html/M_MsgPack_Unpacker__ctor.htm" />
-        <HelpTOCNode Id="0e04484e-582c-4723-af16-c7293a75241d" Title="Unpacker Methods" Url="html/Methods_T_MsgPack_Unpacker.htm">
-          <HelpTOCNode Id="e6ba3f9c-7eee-4002-9493-35cf61f9d41d" Title="Create Method " Url="html/Overload_MsgPack_Unpacker_Create.htm">
+        <HelpTOCNode Id="35e8edab-eccb-4d91-a49d-2ac4b4d768a9" Title="Unpacker Properties" Url="html/Properties_T_MsgPack_Unpacker.htm">
+          <HelpTOCNode Title="Data Property " Url="html/P_MsgPack_Unpacker_Data.htm" />
+          <HelpTOCNode Title="IsArrayHeader Property " Url="html/P_MsgPack_Unpacker_IsArrayHeader.htm" />
+          <HelpTOCNode Title="IsCollectionHeader Property " Url="html/P_MsgPack_Unpacker_IsCollectionHeader.htm" />
+          <HelpTOCNode Title="IsMapHeader Property " Url="html/P_MsgPack_Unpacker_IsMapHeader.htm" />
+          <HelpTOCNode Title="ItemsCount Property " Url="html/P_MsgPack_Unpacker_ItemsCount.htm" />
+          <HelpTOCNode Title="LastReadData Property " Url="html/P_MsgPack_Unpacker_LastReadData.htm" />
+          <HelpTOCNode Title="UnderlyingStream Property " Url="html/P_MsgPack_Unpacker_UnderlyingStream.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="7066fe7e-f319-4937-820c-0554023df2da" Title="Unpacker Methods" Url="html/Methods_T_MsgPack_Unpacker.htm">
+          <HelpTOCNode Id="7f444250-0cb0-40fd-a49f-cfa458091618" Title="Create Method " Url="html/Overload_MsgPack_Unpacker_Create.htm">
             <HelpTOCNode Title="Create Method (Stream)" Url="html/M_MsgPack_Unpacker_Create.htm" />
             <HelpTOCNode Title="Create Method (Stream, Boolean)" Url="html/M_MsgPack_Unpacker_Create_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="f7a7c717-9b95-4ebc-9253-7a961b3e4a44" Title="Dispose Method " Url="html/Overload_MsgPack_Unpacker_Dispose.htm">
+          <HelpTOCNode Id="30110884-7dfe-4e75-b6ae-e1fe7f946467" Title="Dispose Method " Url="html/Overload_MsgPack_Unpacker_Dispose.htm">
             <HelpTOCNode Title="Dispose Method " Url="html/M_MsgPack_Unpacker_Dispose.htm" />
             <HelpTOCNode Title="Dispose Method (Boolean)" Url="html/M_MsgPack_Unpacker_Dispose_1.htm" />
           </HelpTOCNode>
@@ -496,113 +495,102 @@
           <HelpTOCNode Title="UnpackSubtree Method " Url="html/M_MsgPack_Unpacker_UnpackSubtree.htm" />
           <HelpTOCNode Title="UnpackSubtreeData Method " Url="html/M_MsgPack_Unpacker_UnpackSubtreeData.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="7c74e0da-50a7-4f51-bf47-58fdb22ae028" Title="Unpacker Properties" Url="html/Properties_T_MsgPack_Unpacker.htm">
-          <HelpTOCNode Title="Data Property " Url="html/P_MsgPack_Unpacker_Data.htm" />
-          <HelpTOCNode Title="IsArrayHeader Property " Url="html/P_MsgPack_Unpacker_IsArrayHeader.htm" />
-          <HelpTOCNode Title="IsCollectionHeader Property " Url="html/P_MsgPack_Unpacker_IsCollectionHeader.htm" />
-          <HelpTOCNode Title="IsMapHeader Property " Url="html/P_MsgPack_Unpacker_IsMapHeader.htm" />
-          <HelpTOCNode Title="ItemsCount Property " Url="html/P_MsgPack_Unpacker_ItemsCount.htm" />
-          <HelpTOCNode Title="LastReadData Property " Url="html/P_MsgPack_Unpacker_LastReadData.htm" />
-          <HelpTOCNode Title="UnderlyingStream Property " Url="html/P_MsgPack_Unpacker_UnderlyingStream.htm" />
-        </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="4a58e442-c440-4346-a45b-f4b4d9ee40a6" Title="UnpackException Class" Url="html/T_MsgPack_UnpackException.htm">
-        <HelpTOCNode Title="UnpackException Members" Url="html/AllMembers_T_MsgPack_UnpackException.htm" />
-        <HelpTOCNode Id="6a7a8bbd-cffe-4d5f-bf61-771cd63fbd4f" Title="UnpackException Constructor " Url="html/Overload_MsgPack_UnpackException__ctor.htm">
+      <HelpTOCNode Id="b9b5a9a8-408d-4636-b096-76e9c5c8a3ec" Title="UnpackException Class" Url="html/T_MsgPack_UnpackException.htm">
+        <HelpTOCNode Id="74edc1c6-ddec-4c61-8048-5fd3d5bc7c6d" Title="UnpackException Constructor " Url="html/Overload_MsgPack_UnpackException__ctor.htm">
           <HelpTOCNode Title="UnpackException Constructor " Url="html/M_MsgPack_UnpackException__ctor.htm" />
           <HelpTOCNode Title="UnpackException Constructor (String)" Url="html/M_MsgPack_UnpackException__ctor_1.htm" />
           <HelpTOCNode Title="UnpackException Constructor (String, Exception)" Url="html/M_MsgPack_UnpackException__ctor_2.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="ca7f009f-bd00-4ad7-bc04-610bf914074f" Title="Unpacking Class" Url="html/T_MsgPack_Unpacking.htm">
-        <HelpTOCNode Title="Unpacking Members" Url="html/AllMembers_T_MsgPack_Unpacking.htm" />
-        <HelpTOCNode Id="50cba948-33ed-4725-8fd8-a590d79064b2" Title="Unpacking Methods" Url="html/Methods_T_MsgPack_Unpacking.htm">
-          <HelpTOCNode Id="8ae6ddd9-80c6-4fff-a4ce-1b1fde8ebe73" Title="UnpackArray Method " Url="html/Overload_MsgPack_Unpacking_UnpackArray.htm">
+      <HelpTOCNode Id="cf9b7282-ac06-4de8-897d-0404038f738b" Title="Unpacking Class" Url="html/T_MsgPack_Unpacking.htm">
+        <HelpTOCNode Id="1e9aad06-2302-4a6e-9360-2220e3d91586" Title="Unpacking Methods" Url="html/Methods_T_MsgPack_Unpacking.htm">
+          <HelpTOCNode Id="36517979-acfb-4ebc-a39f-a5e1bdcedba7" Title="UnpackArray Method " Url="html/Overload_MsgPack_Unpacking_UnpackArray.htm">
             <HelpTOCNode Title="UnpackArray Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackArray.htm" />
             <HelpTOCNode Title="UnpackArray Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackArray_2.htm" />
             <HelpTOCNode Title="UnpackArray Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackArray_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="bfdf6573-e04f-4b4c-bd21-16955ef3909d" Title="UnpackArrayLength Method " Url="html/Overload_MsgPack_Unpacking_UnpackArrayLength.htm">
+          <HelpTOCNode Id="a65ad4bd-efbd-4d57-b89d-63e1f23034e6" Title="UnpackArrayLength Method " Url="html/Overload_MsgPack_Unpacking_UnpackArrayLength.htm">
             <HelpTOCNode Title="UnpackArrayLength Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackArrayLength.htm" />
             <HelpTOCNode Title="UnpackArrayLength Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackArrayLength_2.htm" />
             <HelpTOCNode Title="UnpackArrayLength Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackArrayLength_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="ddb6fe8a-507a-492d-b55f-458ffa3e4fdd" Title="UnpackBinary Method " Url="html/Overload_MsgPack_Unpacking_UnpackBinary.htm">
+          <HelpTOCNode Id="809504b6-06b0-4161-a17f-1749b6227fdb" Title="UnpackBinary Method " Url="html/Overload_MsgPack_Unpacking_UnpackBinary.htm">
             <HelpTOCNode Title="UnpackBinary Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackBinary.htm" />
             <HelpTOCNode Title="UnpackBinary Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackBinary_2.htm" />
             <HelpTOCNode Title="UnpackBinary Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackBinary_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="7155a0ea-17a4-4b72-a368-b4715cfd8694" Title="UnpackBoolean Method " Url="html/Overload_MsgPack_Unpacking_UnpackBoolean.htm">
+          <HelpTOCNode Id="e3f8f0b7-f3b4-4cbb-a431-66def33f1f57" Title="UnpackBoolean Method " Url="html/Overload_MsgPack_Unpacking_UnpackBoolean.htm">
             <HelpTOCNode Title="UnpackBoolean Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackBoolean.htm" />
             <HelpTOCNode Title="UnpackBoolean Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackBoolean_2.htm" />
             <HelpTOCNode Title="UnpackBoolean Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackBoolean_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="1dce2db3-ba1f-432c-b3c1-b1497643e2a9" Title="UnpackByte Method " Url="html/Overload_MsgPack_Unpacking_UnpackByte.htm">
+          <HelpTOCNode Id="dee8efc4-b682-424b-96d6-38cc2ae32cc0" Title="UnpackByte Method " Url="html/Overload_MsgPack_Unpacking_UnpackByte.htm">
             <HelpTOCNode Title="UnpackByte Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackByte.htm" />
             <HelpTOCNode Title="UnpackByte Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackByte_2.htm" />
             <HelpTOCNode Title="UnpackByte Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackByte_1.htm" />
           </HelpTOCNode>
           <HelpTOCNode Title="UnpackByteStream Method " Url="html/M_MsgPack_Unpacking_UnpackByteStream.htm" />
-          <HelpTOCNode Id="3b658e8c-a4d4-4958-9e5e-8b9d7ad79333" Title="UnpackCharStream Method " Url="html/Overload_MsgPack_Unpacking_UnpackCharStream.htm">
+          <HelpTOCNode Id="7d3446f8-e40b-4030-ab04-0c6c1d5a29ca" Title="UnpackCharStream Method " Url="html/Overload_MsgPack_Unpacking_UnpackCharStream.htm">
             <HelpTOCNode Title="UnpackCharStream Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackCharStream.htm" />
             <HelpTOCNode Title="UnpackCharStream Method (Stream, Encoding)" Url="html/M_MsgPack_Unpacking_UnpackCharStream_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="92b42dba-b247-40a8-894d-36c288dfba4a" Title="UnpackDictionary Method " Url="html/Overload_MsgPack_Unpacking_UnpackDictionary.htm">
+          <HelpTOCNode Id="1b7ad59d-30bc-4132-bc8e-a22c9617ad96" Title="UnpackDictionary Method " Url="html/Overload_MsgPack_Unpacking_UnpackDictionary.htm">
             <HelpTOCNode Title="UnpackDictionary Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackDictionary.htm" />
             <HelpTOCNode Title="UnpackDictionary Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackDictionary_2.htm" />
             <HelpTOCNode Title="UnpackDictionary Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackDictionary_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="415da1db-bc71-410b-822b-09a8177cc92b" Title="UnpackDictionaryCount Method " Url="html/Overload_MsgPack_Unpacking_UnpackDictionaryCount.htm">
+          <HelpTOCNode Id="8328856f-405c-466d-a085-d9fa334d70fe" Title="UnpackDictionaryCount Method " Url="html/Overload_MsgPack_Unpacking_UnpackDictionaryCount.htm">
             <HelpTOCNode Title="UnpackDictionaryCount Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackDictionaryCount.htm" />
             <HelpTOCNode Title="UnpackDictionaryCount Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackDictionaryCount_2.htm" />
             <HelpTOCNode Title="UnpackDictionaryCount Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackDictionaryCount_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="a266c1cd-24cb-411e-9313-a2084e85e63d" Title="UnpackDouble Method " Url="html/Overload_MsgPack_Unpacking_UnpackDouble.htm">
+          <HelpTOCNode Id="f0e6cc8d-0488-460f-aa10-4f81a8b163b0" Title="UnpackDouble Method " Url="html/Overload_MsgPack_Unpacking_UnpackDouble.htm">
             <HelpTOCNode Title="UnpackDouble Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackDouble.htm" />
             <HelpTOCNode Title="UnpackDouble Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackDouble_2.htm" />
             <HelpTOCNode Title="UnpackDouble Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackDouble_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="2e392902-6028-49d8-9c6b-bca5b7a19a92" Title="UnpackExtendedTypeObject Method " Url="html/Overload_MsgPack_Unpacking_UnpackExtendedTypeObject.htm">
+          <HelpTOCNode Id="cb1ad083-5a37-4a38-a999-dab1e11f0cd7" Title="UnpackExtendedTypeObject Method " Url="html/Overload_MsgPack_Unpacking_UnpackExtendedTypeObject.htm">
             <HelpTOCNode Title="UnpackExtendedTypeObject Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackExtendedTypeObject.htm" />
             <HelpTOCNode Title="UnpackExtendedTypeObject Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackExtendedTypeObject_2.htm" />
             <HelpTOCNode Title="UnpackExtendedTypeObject Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackExtendedTypeObject_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="e53e1348-3c3a-480b-8fcb-0b04aaefaa62" Title="UnpackInt16 Method " Url="html/Overload_MsgPack_Unpacking_UnpackInt16.htm">
+          <HelpTOCNode Id="ffa351df-e9f5-43af-baf4-1d9218beefe5" Title="UnpackInt16 Method " Url="html/Overload_MsgPack_Unpacking_UnpackInt16.htm">
             <HelpTOCNode Title="UnpackInt16 Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackInt16.htm" />
             <HelpTOCNode Title="UnpackInt16 Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackInt16_2.htm" />
             <HelpTOCNode Title="UnpackInt16 Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackInt16_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="9b201fe8-c9ff-49ef-a06f-61500e20fece" Title="UnpackInt32 Method " Url="html/Overload_MsgPack_Unpacking_UnpackInt32.htm">
+          <HelpTOCNode Id="e6f7c629-6d11-453e-8b4d-1bb9b29440fa" Title="UnpackInt32 Method " Url="html/Overload_MsgPack_Unpacking_UnpackInt32.htm">
             <HelpTOCNode Title="UnpackInt32 Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackInt32.htm" />
             <HelpTOCNode Title="UnpackInt32 Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackInt32_2.htm" />
             <HelpTOCNode Title="UnpackInt32 Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackInt32_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="987b1232-333a-4d12-87a5-d5841eb21a9e" Title="UnpackInt64 Method " Url="html/Overload_MsgPack_Unpacking_UnpackInt64.htm">
+          <HelpTOCNode Id="5efd1355-fca1-44b8-ad55-f571e506d17a" Title="UnpackInt64 Method " Url="html/Overload_MsgPack_Unpacking_UnpackInt64.htm">
             <HelpTOCNode Title="UnpackInt64 Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackInt64.htm" />
             <HelpTOCNode Title="UnpackInt64 Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackInt64_2.htm" />
             <HelpTOCNode Title="UnpackInt64 Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackInt64_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="0e320019-4a0d-48f9-93d0-aacd0568c858" Title="UnpackNull Method " Url="html/Overload_MsgPack_Unpacking_UnpackNull.htm">
+          <HelpTOCNode Id="bec6d5b3-16ca-4c94-8809-498ab82af182" Title="UnpackNull Method " Url="html/Overload_MsgPack_Unpacking_UnpackNull.htm">
             <HelpTOCNode Title="UnpackNull Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackNull.htm" />
             <HelpTOCNode Title="UnpackNull Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackNull_2.htm" />
             <HelpTOCNode Title="UnpackNull Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackNull_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="fc9f0083-d5d3-4567-ad76-1c20eb5daba1" Title="UnpackObject Method " Url="html/Overload_MsgPack_Unpacking_UnpackObject.htm">
+          <HelpTOCNode Id="da489d80-611c-4143-9f64-1a50b048e3f5" Title="UnpackObject Method " Url="html/Overload_MsgPack_Unpacking_UnpackObject.htm">
             <HelpTOCNode Title="UnpackObject Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackObject.htm" />
             <HelpTOCNode Title="UnpackObject Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackObject_2.htm" />
             <HelpTOCNode Title="UnpackObject Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackObject_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="790824eb-f702-4822-a1f2-349694295de4" Title="UnpackSByte Method " Url="html/Overload_MsgPack_Unpacking_UnpackSByte.htm">
+          <HelpTOCNode Id="74413bf0-31e2-4f12-83be-aeb960c781c9" Title="UnpackSByte Method " Url="html/Overload_MsgPack_Unpacking_UnpackSByte.htm">
             <HelpTOCNode Title="UnpackSByte Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackSByte.htm" />
             <HelpTOCNode Title="UnpackSByte Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackSByte_2.htm" />
             <HelpTOCNode Title="UnpackSByte Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackSByte_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="38396249-83b8-4bf0-a05f-1a68313a9675" Title="UnpackSingle Method " Url="html/Overload_MsgPack_Unpacking_UnpackSingle.htm">
+          <HelpTOCNode Id="2d8b3a54-cd56-4257-b1d9-49a854afc4a1" Title="UnpackSingle Method " Url="html/Overload_MsgPack_Unpacking_UnpackSingle.htm">
             <HelpTOCNode Title="UnpackSingle Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackSingle.htm" />
             <HelpTOCNode Title="UnpackSingle Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackSingle_2.htm" />
             <HelpTOCNode Title="UnpackSingle Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackSingle_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="c1069cf2-072d-4bcb-88ce-0985b3de9e92" Title="UnpackString Method " Url="html/Overload_MsgPack_Unpacking_UnpackString.htm">
+          <HelpTOCNode Id="93f797d4-f9de-4a33-b695-2721699e93c1" Title="UnpackString Method " Url="html/Overload_MsgPack_Unpacking_UnpackString.htm">
             <HelpTOCNode Title="UnpackString Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackString.htm" />
             <HelpTOCNode Title="UnpackString Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackString_4.htm" />
             <HelpTOCNode Title="UnpackString Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackString_1.htm" />
@@ -610,140 +598,205 @@
             <HelpTOCNode Title="UnpackString Method (Stream, Encoding)" Url="html/M_MsgPack_Unpacking_UnpackString_5.htm" />
             <HelpTOCNode Title="UnpackString Method (Byte[], Int32, Encoding)" Url="html/M_MsgPack_Unpacking_UnpackString_2.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="ee29d4cb-8efe-4851-a6b1-531bb77a4e26" Title="UnpackUInt16 Method " Url="html/Overload_MsgPack_Unpacking_UnpackUInt16.htm">
+          <HelpTOCNode Id="9569866e-4fa4-474e-8a52-f5651f176d4b" Title="UnpackUInt16 Method " Url="html/Overload_MsgPack_Unpacking_UnpackUInt16.htm">
             <HelpTOCNode Title="UnpackUInt16 Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackUInt16.htm" />
             <HelpTOCNode Title="UnpackUInt16 Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackUInt16_2.htm" />
             <HelpTOCNode Title="UnpackUInt16 Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackUInt16_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="6d37ed6d-7a83-4f91-b8ad-afef2ade6922" Title="UnpackUInt32 Method " Url="html/Overload_MsgPack_Unpacking_UnpackUInt32.htm">
+          <HelpTOCNode Id="badfb3b6-4d34-4062-af92-da954bde3f37" Title="UnpackUInt32 Method " Url="html/Overload_MsgPack_Unpacking_UnpackUInt32.htm">
             <HelpTOCNode Title="UnpackUInt32 Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackUInt32.htm" />
             <HelpTOCNode Title="UnpackUInt32 Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackUInt32_2.htm" />
             <HelpTOCNode Title="UnpackUInt32 Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackUInt32_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="38e95978-5430-4381-9141-c40a79eb6c9e" Title="UnpackUInt64 Method " Url="html/Overload_MsgPack_Unpacking_UnpackUInt64.htm">
+          <HelpTOCNode Id="fd696601-2cc9-4e0c-b777-c5aff5e4560e" Title="UnpackUInt64 Method " Url="html/Overload_MsgPack_Unpacking_UnpackUInt64.htm">
             <HelpTOCNode Title="UnpackUInt64 Method (Byte[])" Url="html/M_MsgPack_Unpacking_UnpackUInt64.htm" />
             <HelpTOCNode Title="UnpackUInt64 Method (Stream)" Url="html/M_MsgPack_Unpacking_UnpackUInt64_2.htm" />
             <HelpTOCNode Title="UnpackUInt64 Method (Byte[], Int32)" Url="html/M_MsgPack_Unpacking_UnpackUInt64_1.htm" />
           </HelpTOCNode>
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="081deec3-64ce-4619-b974-7ac8d2c6dc46" Title="UnpackingResult(T) Structure" Url="html/T_MsgPack_UnpackingResult_1.htm">
-        <HelpTOCNode Title="UnpackingResult(T) Members" Url="html/AllMembers_T_MsgPack_UnpackingResult_1.htm" />
-        <HelpTOCNode Id="eae4bd94-2014-40ce-b06e-22fcca2ac545" Title="UnpackingResult(T) Methods" Url="html/Methods_T_MsgPack_UnpackingResult_1.htm">
-          <HelpTOCNode Id="a0514ce6-5345-4eaf-b47a-36982433fa44" Title="Equals Method " Url="html/Overload_MsgPack_UnpackingResult_1_Equals.htm">
+      <HelpTOCNode Id="40457400-6d9e-4da5-856d-68461e6fb3e1" Title="UnpackingResult(T) Structure" Url="html/T_MsgPack_UnpackingResult_1.htm">
+        <HelpTOCNode Id="eb4dfada-eca0-4107-b4cf-c2c4c4624306" Title="UnpackingResult(T) Properties" Url="html/Properties_T_MsgPack_UnpackingResult_1.htm">
+          <HelpTOCNode Title="ReadCount Property " Url="html/P_MsgPack_UnpackingResult_1_ReadCount.htm" />
+          <HelpTOCNode Title="Value Property " Url="html/P_MsgPack_UnpackingResult_1_Value.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="908aaf08-ed0a-4b3c-b42e-b525e3d3d40b" Title="UnpackingResult(T) Methods" Url="html/Methods_T_MsgPack_UnpackingResult_1.htm">
+          <HelpTOCNode Id="d66ef179-7bb3-4101-879d-d50f109987c0" Title="Equals Method " Url="html/Overload_MsgPack_UnpackingResult_1_Equals.htm">
             <HelpTOCNode Title="Equals Method (Object)" Url="html/M_MsgPack_UnpackingResult_1_Equals_1.htm" />
             <HelpTOCNode Title="Equals Method (UnpackingResult(T))" Url="html/M_MsgPack_UnpackingResult_1_Equals.htm" />
           </HelpTOCNode>
           <HelpTOCNode Title="GetHashCode Method " Url="html/M_MsgPack_UnpackingResult_1_GetHashCode.htm" />
           <HelpTOCNode Title="ToString Method " Url="html/M_MsgPack_UnpackingResult_1_ToString.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="755fa7f6-20e9-430c-8302-119e71e2c8dc" Title="UnpackingResult(T) Operators" Url="html/Operators_T_MsgPack_UnpackingResult_1.htm">
+        <HelpTOCNode Id="6d81f133-0131-4863-a147-7ebf72ae8830" Title="UnpackingResult(T) Operators" Url="html/Operators_T_MsgPack_UnpackingResult_1.htm">
           <HelpTOCNode Title="Equality Operator " Url="html/M_MsgPack_UnpackingResult_1_op_Equality.htm" />
           <HelpTOCNode Title="Inequality Operator " Url="html/M_MsgPack_UnpackingResult_1_op_Inequality.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="8aa1b656-5083-4897-a8d7-a949e78ca52b" Title="UnpackingResult(T) Properties" Url="html/Properties_T_MsgPack_UnpackingResult_1.htm">
-          <HelpTOCNode Title="ReadCount Property " Url="html/P_MsgPack_UnpackingResult_1_ReadCount.htm" />
-          <HelpTOCNode Title="Value Property " Url="html/P_MsgPack_UnpackingResult_1_Value.htm" />
-        </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="e452189c-58dc-4d1c-a95c-c746293cb678" Title="UnpackingStream Class" Url="html/T_MsgPack_UnpackingStream.htm">
-        <HelpTOCNode Title="UnpackingStream Members" Url="html/AllMembers_T_MsgPack_UnpackingStream.htm" />
-        <HelpTOCNode Id="3532a247-9a1f-4309-805f-d8c4c93c1e4c" Title="UnpackingStream Methods" Url="html/Methods_T_MsgPack_UnpackingStream.htm">
-          <HelpTOCNode Title="Flush Method " Url="html/M_MsgPack_UnpackingStream_Flush.htm" />
-          <HelpTOCNode Title="Read Method " Url="html/M_MsgPack_UnpackingStream_Read.htm" />
-          <HelpTOCNode Title="SetLength Method " Url="html/M_MsgPack_UnpackingStream_SetLength.htm" />
-          <HelpTOCNode Title="Write Method " Url="html/M_MsgPack_UnpackingStream_Write.htm" />
-        </HelpTOCNode>
-        <HelpTOCNode Id="f47acbae-dd0d-4731-b80d-e4c91ad77f50" Title="UnpackingStream Properties" Url="html/Properties_T_MsgPack_UnpackingStream.htm">
+      <HelpTOCNode Id="27890320-276d-4b1e-889c-73465740d436" Title="UnpackingStream Class" Url="html/T_MsgPack_UnpackingStream.htm">
+        <HelpTOCNode Id="14e0ff70-38b6-42c5-b131-f743b23dedc0" Title="UnpackingStream Properties" Url="html/Properties_T_MsgPack_UnpackingStream.htm">
           <HelpTOCNode Title="CanRead Property " Url="html/P_MsgPack_UnpackingStream_CanRead.htm" />
           <HelpTOCNode Title="CanTimeout Property " Url="html/P_MsgPack_UnpackingStream_CanTimeout.htm" />
           <HelpTOCNode Title="CanWrite Property " Url="html/P_MsgPack_UnpackingStream_CanWrite.htm" />
           <HelpTOCNode Title="Length Property " Url="html/P_MsgPack_UnpackingStream_Length.htm" />
         </HelpTOCNode>
+        <HelpTOCNode Id="a4f6fbb9-55f4-4972-b936-1176d290fe4a" Title="UnpackingStream Methods" Url="html/Methods_T_MsgPack_UnpackingStream.htm">
+          <HelpTOCNode Title="Flush Method " Url="html/M_MsgPack_UnpackingStream_Flush.htm" />
+          <HelpTOCNode Title="Read Method " Url="html/M_MsgPack_UnpackingStream_Read.htm" />
+          <HelpTOCNode Title="SetLength Method " Url="html/M_MsgPack_UnpackingStream_SetLength.htm" />
+          <HelpTOCNode Title="Write Method " Url="html/M_MsgPack_UnpackingStream_Write.htm" />
+        </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="fccdc51f-7b7a-4627-b85b-2ebb72ff6f28" Title="UnpackingStreamReader Class" Url="html/T_MsgPack_UnpackingStreamReader.htm">
-        <HelpTOCNode Title="UnpackingStreamReader Members" Url="html/AllMembers_T_MsgPack_UnpackingStreamReader.htm" />
-        <HelpTOCNode Id="481d72e9-708c-474c-8471-ce83c1fd9b20" Title="UnpackingStreamReader Properties" Url="html/Properties_T_MsgPack_UnpackingStreamReader.htm">
+      <HelpTOCNode Id="3a2747e7-5ca8-4b08-8cc3-e11162a1f62b" Title="UnpackingStreamReader Class" Url="html/T_MsgPack_UnpackingStreamReader.htm">
+        <HelpTOCNode Id="ccfd1aa0-88dc-4795-b76b-033041badbbf" Title="UnpackingStreamReader Properties" Url="html/Properties_T_MsgPack_UnpackingStreamReader.htm">
           <HelpTOCNode Title="ByteLength Property " Url="html/P_MsgPack_UnpackingStreamReader_ByteLength.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="bc4a12dc-66b1-4df9-955c-d2aea8a9a2ce" Title="MsgPack.Serialization Namespace" Url="html/N_MsgPack_Serialization.htm">
-      <HelpTOCNode Id="2e08216e-68b6-45b7-b2a5-ecff6460c97c" Title="DefaultConcreteTypeRepository Class" Url="html/T_MsgPack_Serialization_DefaultConcreteTypeRepository.htm">
-        <HelpTOCNode Title="DefaultConcreteTypeRepository Members" Url="html/AllMembers_T_MsgPack_Serialization_DefaultConcreteTypeRepository.htm" />
-        <HelpTOCNode Id="2354cb44-63a4-4aab-80df-a0dd1d56ec16" Title="DefaultConcreteTypeRepository Methods" Url="html/Methods_T_MsgPack_Serialization_DefaultConcreteTypeRepository.htm">
+    <HelpTOCNode Id="b0d723bc-06fa-4f5c-9c56-64de406cc9b8" Title="MsgPack.Serialization" Url="html/N_MsgPack_Serialization.htm">
+      <HelpTOCNode Title="DateTimeConversionMethod Enumeration" Url="html/T_MsgPack_Serialization_DateTimeConversionMethod.htm" />
+      <HelpTOCNode Title="DateTimeMemberConversionMethod Enumeration" Url="html/T_MsgPack_Serialization_DateTimeMemberConversionMethod.htm" />
+      <HelpTOCNode Id="2549f34c-15fb-4eab-be73-3f1dd73b3a13" Title="DateTimeMessagePackSerializerHelpers Class" Url="html/T_MsgPack_Serialization_DateTimeMessagePackSerializerHelpers.htm">
+        <HelpTOCNode Id="f26531bd-7cb9-40cc-9240-a03842cd917b" Title="DateTimeMessagePackSerializerHelpers Methods" Url="html/Methods_T_MsgPack_Serialization_DateTimeMessagePackSerializerHelpers.htm">
+          <HelpTOCNode Title="DetermineDateTimeConversionMethod Method " Url="html/M_MsgPack_Serialization_DateTimeMessagePackSerializerHelpers_DetermineDateTimeConversionMethod.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="9dbaddca-a616-4601-904a-287a32f6d18b" Title="DefaultConcreteTypeRepository Class" Url="html/T_MsgPack_Serialization_DefaultConcreteTypeRepository.htm">
+        <HelpTOCNode Id="910e8509-a9dd-4754-b99b-edb05945928d" Title="DefaultConcreteTypeRepository Methods" Url="html/Methods_T_MsgPack_Serialization_DefaultConcreteTypeRepository.htm">
           <HelpTOCNode Title="Get Method " Url="html/M_MsgPack_Serialization_DefaultConcreteTypeRepository_Get.htm" />
           <HelpTOCNode Title="Register Method " Url="html/M_MsgPack_Serialization_DefaultConcreteTypeRepository_Register.htm" />
           <HelpTOCNode Title="Unregister Method " Url="html/M_MsgPack_Serialization_DefaultConcreteTypeRepository_Unregister.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
       <HelpTOCNode Title="EnumMemberSerializationMethod Enumeration" Url="html/T_MsgPack_Serialization_EnumMemberSerializationMethod.htm" />
-      <HelpTOCNode Id="a5bd5bfe-4022-4735-91c7-c2994651c01b" Title="EnumMessagePackSerializer(TEnum) Class" Url="html/T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm">
-        <HelpTOCNode Title="EnumMessagePackSerializer(TEnum) Members" Url="html/AllMembers_T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+      <HelpTOCNode Id="e58e4fa2-308e-4b8c-928e-977c8b938757" Title="EnumMessagePackSerializer(TEnum) Class" Url="html/T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm">
         <HelpTOCNode Title="EnumMessagePackSerializer(TEnum) Constructor " Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1__ctor.htm" />
-        <HelpTOCNode Id="3b88a52c-6e1d-4a3f-a735-faa4ec07bdca" Title="EnumMessagePackSerializer(TEnum) Methods" Url="html/Methods_T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm">
+        <HelpTOCNode Title="EnumMessagePackSerializer(TEnum) Properties" Url="html/Properties_T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+        <HelpTOCNode Id="3980d6f7-0d00-4468-a59e-cc822d7d02e5" Title="EnumMessagePackSerializer(TEnum) Methods" Url="html/Methods_T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm">
           <HelpTOCNode Title="PackToCore Method " Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_PackToCore.htm" />
           <HelpTOCNode Title="PackUnderlyingValueTo Method " Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_PackUnderlyingValueTo.htm" />
           <HelpTOCNode Title="UnpackFromCore Method " Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_UnpackFromCore.htm" />
           <HelpTOCNode Title="UnpackFromUnderlyingValue Method " Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_UnpackFromUnderlyingValue.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Title="EnumMessagePackSerializer(TEnum) Properties" Url="html/Properties_T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
       </HelpTOCNode>
-      <HelpTOCNode Id="a6971856-d053-4100-bd4f-c32a62ac49ab" Title="EnumMessagePackSerializerHelpers Class" Url="html/T_MsgPack_Serialization_EnumMessagePackSerializerHelpers.htm">
-        <HelpTOCNode Title="EnumMessagePackSerializerHelpers Members" Url="html/AllMembers_T_MsgPack_Serialization_EnumMessagePackSerializerHelpers.htm" />
-        <HelpTOCNode Id="4ef8a3d6-e840-43ed-b2d9-e20febded9ac" Title="EnumMessagePackSerializerHelpers Methods" Url="html/Methods_T_MsgPack_Serialization_EnumMessagePackSerializerHelpers.htm">
+      <HelpTOCNode Id="09f562f1-ea2e-4a65-93bd-6e99d1300a6a" Title="EnumMessagePackSerializerHelpers Class" Url="html/T_MsgPack_Serialization_EnumMessagePackSerializerHelpers.htm">
+        <HelpTOCNode Id="e8e94f17-8374-45cf-a3af-a36f03cca4ef" Title="EnumMessagePackSerializerHelpers Methods" Url="html/Methods_T_MsgPack_Serialization_EnumMessagePackSerializerHelpers.htm">
           <HelpTOCNode Title="DetermineEnumSerializationMethod Method " Url="html/M_MsgPack_Serialization_EnumMessagePackSerializerHelpers_DetermineEnumSerializationMethod.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
       <HelpTOCNode Title="EnumSerializationMethod Enumeration" Url="html/T_MsgPack_Serialization_EnumSerializationMethod.htm" />
-      <HelpTOCNode Id="618188d4-d146-4ee6-9176-198963391cf6" Title="IMessagePackSerializer Interface" Url="html/T_MsgPack_Serialization_IMessagePackSerializer.htm">
-        <HelpTOCNode Title="IMessagePackSerializer Members" Url="html/AllMembers_T_MsgPack_Serialization_IMessagePackSerializer.htm" />
-        <HelpTOCNode Id="ebe7479b-064a-4c27-82d1-29850c925e1c" Title="IMessagePackSerializer Methods" Url="html/Methods_T_MsgPack_Serialization_IMessagePackSerializer.htm">
+      <HelpTOCNode Id="b7e9d2c9-93fa-43cc-8d18-8fc39f66d657" Title="ExtTypeCodeMapping Class" Url="html/T_MsgPack_Serialization_ExtTypeCodeMapping.htm">
+        <HelpTOCNode Id="f35eaddf-8a92-4d89-847b-40f3b49d1604" Title="ExtTypeCodeMapping Properties" Url="html/Properties_T_MsgPack_Serialization_ExtTypeCodeMapping.htm">
+          <HelpTOCNode Title="Item Property " Url="html/P_MsgPack_Serialization_ExtTypeCodeMapping_Item.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="80bf437a-b4e2-433d-9eb2-b8365bba7e83" Title="ExtTypeCodeMapping Methods" Url="html/Methods_T_MsgPack_Serialization_ExtTypeCodeMapping.htm">
+          <HelpTOCNode Title="Add Method " Url="html/M_MsgPack_Serialization_ExtTypeCodeMapping_Add.htm" />
+          <HelpTOCNode Title="Clear Method " Url="html/M_MsgPack_Serialization_ExtTypeCodeMapping_Clear.htm" />
+          <HelpTOCNode Title="GetEnumerator Method " Url="html/M_MsgPack_Serialization_ExtTypeCodeMapping_GetEnumerator.htm" />
+          <HelpTOCNode Id="6dcb2b13-bdd8-460e-90d6-05fc4098d9ac" Title="Remove Method " Url="html/Overload_MsgPack_Serialization_ExtTypeCodeMapping_Remove.htm">
+            <HelpTOCNode Title="Remove Method (Byte)" Url="html/M_MsgPack_Serialization_ExtTypeCodeMapping_Remove.htm" />
+            <HelpTOCNode Title="Remove Method (String)" Url="html/M_MsgPack_Serialization_ExtTypeCodeMapping_Remove_1.htm" />
+          </HelpTOCNode>
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="75610500-611a-4967-a2e5-ab24178acd3a" Title="IMessagePackSerializer Interface" Url="html/T_MsgPack_Serialization_IMessagePackSerializer.htm">
+        <HelpTOCNode Id="21483543-bab7-4678-bf93-c89275d15c97" Title="IMessagePackSerializer Methods" Url="html/Methods_T_MsgPack_Serialization_IMessagePackSerializer.htm">
           <HelpTOCNode Title="PackTo Method " Url="html/M_MsgPack_Serialization_IMessagePackSerializer_PackTo.htm" />
           <HelpTOCNode Title="UnpackFrom Method " Url="html/M_MsgPack_Serialization_IMessagePackSerializer_UnpackFrom.htm" />
           <HelpTOCNode Title="UnpackTo Method " Url="html/M_MsgPack_Serialization_IMessagePackSerializer_UnpackTo.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="3f8275b4-32ce-4f4e-8e09-e83373ea1a8d" Title="IMessagePackSingleObjectSerializer Interface" Url="html/T_MsgPack_Serialization_IMessagePackSingleObjectSerializer.htm">
-        <HelpTOCNode Title="IMessagePackSingleObjectSerializer Members" Url="html/AllMembers_T_MsgPack_Serialization_IMessagePackSingleObjectSerializer.htm" />
-        <HelpTOCNode Id="9593b942-548b-4760-a70b-d483071830e1" Title="IMessagePackSingleObjectSerializer Methods" Url="html/Methods_T_MsgPack_Serialization_IMessagePackSingleObjectSerializer.htm">
+      <HelpTOCNode Id="248a1866-d32d-4656-b7d3-0a7ad92294c6" Title="IMessagePackSingleObjectSerializer Interface" Url="html/T_MsgPack_Serialization_IMessagePackSingleObjectSerializer.htm">
+        <HelpTOCNode Id="9c59e724-7db1-481a-93c5-b38842b98925" Title="IMessagePackSingleObjectSerializer Methods" Url="html/Methods_T_MsgPack_Serialization_IMessagePackSingleObjectSerializer.htm">
           <HelpTOCNode Title="PackSingleObject Method " Url="html/M_MsgPack_Serialization_IMessagePackSingleObjectSerializer_PackSingleObject.htm" />
           <HelpTOCNode Title="UnpackSingleObject Method " Url="html/M_MsgPack_Serialization_IMessagePackSingleObjectSerializer_UnpackSingleObject.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="e349acc0-8610-4849-9eab-a773271b3faf" Title="MessagePackEnumAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackEnumAttribute.htm">
-        <HelpTOCNode Title="MessagePackEnumAttribute Members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackEnumAttribute.htm" />
+      <HelpTOCNode Id="fd7c3d18-2d4f-4421-a136-b72f684bc59c" Title="MessagePackDateTimeMemberAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackDateTimeMemberAttribute.htm">
+        <HelpTOCNode Title="MessagePackDateTimeMemberAttribute Constructor " Url="html/M_MsgPack_Serialization_MessagePackDateTimeMemberAttribute__ctor.htm" />
+        <HelpTOCNode Id="9cf58b19-a2a0-4c4f-bf23-f00e6b415556" Title="MessagePackDateTimeMemberAttribute Properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackDateTimeMemberAttribute.htm">
+          <HelpTOCNode Title="DateTimeConversionMethod Property " Url="html/P_MsgPack_Serialization_MessagePackDateTimeMemberAttribute_DateTimeConversionMethod.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="f8051436-f3da-4448-8d2c-f1f01327f6aa" Title="MessagePackDeserializationConstructorAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackDeserializationConstructorAttribute.htm">
+        <HelpTOCNode Title="MessagePackDeserializationConstructorAttribute Constructor " Url="html/M_MsgPack_Serialization_MessagePackDeserializationConstructorAttribute__ctor.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="f669cbc1-0146-4f73-91f1-5aa8262339c1" Title="MessagePackEnumAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackEnumAttribute.htm">
         <HelpTOCNode Title="MessagePackEnumAttribute Constructor " Url="html/M_MsgPack_Serialization_MessagePackEnumAttribute__ctor.htm" />
-        <HelpTOCNode Id="72cecb3d-641b-4ade-9192-bd32dd3b3060" Title="MessagePackEnumAttribute Properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackEnumAttribute.htm">
+        <HelpTOCNode Id="6a137238-c63a-4d4e-a09a-e0e94840412b" Title="MessagePackEnumAttribute Properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackEnumAttribute.htm">
           <HelpTOCNode Title="SerializationMethod Property " Url="html/P_MsgPack_Serialization_MessagePackEnumAttribute_SerializationMethod.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="3469b443-9e98-467c-a98b-39f2d619c57f" Title="MessagePackEnumMemberAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackEnumMemberAttribute.htm">
-        <HelpTOCNode Title="MessagePackEnumMemberAttribute Members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackEnumMemberAttribute.htm" />
+      <HelpTOCNode Id="d99ba8e3-b030-407d-8b48-22f4597176b8" Title="MessagePackEnumMemberAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackEnumMemberAttribute.htm">
         <HelpTOCNode Title="MessagePackEnumMemberAttribute Constructor " Url="html/M_MsgPack_Serialization_MessagePackEnumMemberAttribute__ctor.htm" />
-        <HelpTOCNode Id="9fc00a14-57aa-4c88-a801-2d6932195c53" Title="MessagePackEnumMemberAttribute Properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackEnumMemberAttribute.htm">
+        <HelpTOCNode Id="72dc1864-6dab-4361-99a2-022ca0808afd" Title="MessagePackEnumMemberAttribute Properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackEnumMemberAttribute.htm">
           <HelpTOCNode Title="SerializationMethod Property " Url="html/P_MsgPack_Serialization_MessagePackEnumMemberAttribute_SerializationMethod.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="2541bceb-c006-4ef9-8d6a-c175f2331528" Title="MessagePackMemberAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackMemberAttribute.htm">
-        <HelpTOCNode Title="MessagePackMemberAttribute Members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackMemberAttribute.htm" />
+      <HelpTOCNode Id="68756a6c-76f3-4634-8232-2861c656b017" Title="MessagePackIgnoreAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackIgnoreAttribute.htm">
+        <HelpTOCNode Title="MessagePackIgnoreAttribute Constructor " Url="html/M_MsgPack_Serialization_MessagePackIgnoreAttribute__ctor.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="736d3afb-3365-480f-b57b-15be99ad1813" Title="MessagePackKnownCollectionItemTypeAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackKnownCollectionItemTypeAttribute.htm">
+        <HelpTOCNode Title="MessagePackKnownCollectionItemTypeAttribute Constructor " Url="html/M_MsgPack_Serialization_MessagePackKnownCollectionItemTypeAttribute__ctor.htm" />
+        <HelpTOCNode Id="e923a4e8-3738-4381-9bff-15776e1c8a95" Title="MessagePackKnownCollectionItemTypeAttribute Properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackKnownCollectionItemTypeAttribute.htm">
+          <HelpTOCNode Title="BindingType Property " Url="html/P_MsgPack_Serialization_MessagePackKnownCollectionItemTypeAttribute_BindingType.htm" />
+          <HelpTOCNode Title="TypeCode Property " Url="html/P_MsgPack_Serialization_MessagePackKnownCollectionItemTypeAttribute_TypeCode.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="94b2a8cb-1f70-433a-a25d-1d83e3c242b0" Title="MessagePackKnownDictionaryKeyTypeAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackKnownDictionaryKeyTypeAttribute.htm">
+        <HelpTOCNode Title="MessagePackKnownDictionaryKeyTypeAttribute Constructor " Url="html/M_MsgPack_Serialization_MessagePackKnownDictionaryKeyTypeAttribute__ctor.htm" />
+        <HelpTOCNode Id="e296d398-804c-4188-8bda-ed997766e180" Title="MessagePackKnownDictionaryKeyTypeAttribute Properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackKnownDictionaryKeyTypeAttribute.htm">
+          <HelpTOCNode Title="BindingType Property " Url="html/P_MsgPack_Serialization_MessagePackKnownDictionaryKeyTypeAttribute_BindingType.htm" />
+          <HelpTOCNode Title="TypeCode Property " Url="html/P_MsgPack_Serialization_MessagePackKnownDictionaryKeyTypeAttribute_TypeCode.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="ac95b0d7-92f0-4371-b486-b928ce1b8e0b" Title="MessagePackKnownTupleItemTypeAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackKnownTupleItemTypeAttribute.htm">
+        <HelpTOCNode Title="MessagePackKnownTupleItemTypeAttribute Constructor " Url="html/M_MsgPack_Serialization_MessagePackKnownTupleItemTypeAttribute__ctor.htm" />
+        <HelpTOCNode Id="bf2f1073-115e-4159-b64a-e04f6a05a111" Title="MessagePackKnownTupleItemTypeAttribute Properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackKnownTupleItemTypeAttribute.htm">
+          <HelpTOCNode Title="BindingType Property " Url="html/P_MsgPack_Serialization_MessagePackKnownTupleItemTypeAttribute_BindingType.htm" />
+          <HelpTOCNode Title="ItemNumber Property " Url="html/P_MsgPack_Serialization_MessagePackKnownTupleItemTypeAttribute_ItemNumber.htm" />
+          <HelpTOCNode Title="TypeCode Property " Url="html/P_MsgPack_Serialization_MessagePackKnownTupleItemTypeAttribute_TypeCode.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="67cbe632-3bc8-4aaa-8a45-4fa06ba851f7" Title="MessagePackKnownTypeAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackKnownTypeAttribute.htm">
+        <HelpTOCNode Title="MessagePackKnownTypeAttribute Constructor " Url="html/M_MsgPack_Serialization_MessagePackKnownTypeAttribute__ctor.htm" />
+        <HelpTOCNode Id="98da64e2-cac6-4e2d-b1bb-d29d5052731c" Title="MessagePackKnownTypeAttribute Properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackKnownTypeAttribute.htm">
+          <HelpTOCNode Title="BindingType Property " Url="html/P_MsgPack_Serialization_MessagePackKnownTypeAttribute_BindingType.htm" />
+          <HelpTOCNode Title="TypeCode Property " Url="html/P_MsgPack_Serialization_MessagePackKnownTypeAttribute_TypeCode.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="f6a39d15-fa96-420f-8829-da475fb6940f" Title="MessagePackMemberAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackMemberAttribute.htm">
         <HelpTOCNode Title="MessagePackMemberAttribute Constructor " Url="html/M_MsgPack_Serialization_MessagePackMemberAttribute__ctor.htm" />
-        <HelpTOCNode Id="3b17cf5b-ed1d-4b1c-b274-14268853d834" Title="MessagePackMemberAttribute Properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackMemberAttribute.htm">
+        <HelpTOCNode Id="2fbc02d4-09d7-46ce-bba7-3e0a68c2d312" Title="MessagePackMemberAttribute Properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackMemberAttribute.htm">
           <HelpTOCNode Title="Id Property " Url="html/P_MsgPack_Serialization_MessagePackMemberAttribute_Id.htm" />
           <HelpTOCNode Title="Name Property " Url="html/P_MsgPack_Serialization_MessagePackMemberAttribute_Name.htm" />
           <HelpTOCNode Title="NilImplication Property " Url="html/P_MsgPack_Serialization_MessagePackMemberAttribute_NilImplication.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="01101b21-5f95-4d92-a340-c15f5491e62e" Title="MessagePackSerializer Class" Url="html/T_MsgPack_Serialization_MessagePackSerializer.htm">
-        <HelpTOCNode Title="MessagePackSerializer Members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackSerializer.htm" />
-        <HelpTOCNode Id="c3ba8a77-ff44-4652-96aa-87f6654e2e4b" Title="MessagePackSerializer Methods" Url="html/Methods_T_MsgPack_Serialization_MessagePackSerializer.htm">
-          <HelpTOCNode Id="01e8cfac-a509-4d7f-a55f-e12f74bcf6f0" Title="Create Method " Url="html/Overload_MsgPack_Serialization_MessagePackSerializer_Create.htm">
+      <HelpTOCNode Id="f9d4f4f6-db0d-4a4f-ae3b-9cff1380b6bd" Title="MessagePackRuntimeCollectionItemTypeAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackRuntimeCollectionItemTypeAttribute.htm">
+        <HelpTOCNode Title="MessagePackRuntimeCollectionItemTypeAttribute Constructor " Url="html/M_MsgPack_Serialization_MessagePackRuntimeCollectionItemTypeAttribute__ctor.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="bfc6bb12-47b4-498b-9708-bb5d2fb9d4e3" Title="MessagePackRuntimeDictionaryKeyTypeAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackRuntimeDictionaryKeyTypeAttribute.htm">
+        <HelpTOCNode Title="MessagePackRuntimeDictionaryKeyTypeAttribute Constructor " Url="html/M_MsgPack_Serialization_MessagePackRuntimeDictionaryKeyTypeAttribute__ctor.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="eceb7028-ed41-462d-93d9-41a1cd2aa855" Title="MessagePackRuntimeTupleItemTypeAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackRuntimeTupleItemTypeAttribute.htm">
+        <HelpTOCNode Title="MessagePackRuntimeTupleItemTypeAttribute Constructor " Url="html/M_MsgPack_Serialization_MessagePackRuntimeTupleItemTypeAttribute__ctor.htm" />
+        <HelpTOCNode Id="c5573e2b-ff9f-427e-90a3-d987aa46a6f4" Title="MessagePackRuntimeTupleItemTypeAttribute Properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackRuntimeTupleItemTypeAttribute.htm">
+          <HelpTOCNode Title="ItemNumber Property " Url="html/P_MsgPack_Serialization_MessagePackRuntimeTupleItemTypeAttribute_ItemNumber.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="6c2c6f26-1ac8-4b37-9c7d-b3f8d138e7d6" Title="MessagePackRuntimeTypeAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackRuntimeTypeAttribute.htm">
+        <HelpTOCNode Title="MessagePackRuntimeTypeAttribute Constructor " Url="html/M_MsgPack_Serialization_MessagePackRuntimeTypeAttribute__ctor.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="532ff8e1-1b65-457c-8394-b373ef436bed" Title="MessagePackSerializer Class" Url="html/T_MsgPack_Serialization_MessagePackSerializer.htm">
+        <HelpTOCNode Id="2e83f29e-6909-458b-ae51-cbf88831ff92" Title="MessagePackSerializer Methods" Url="html/Methods_T_MsgPack_Serialization_MessagePackSerializer.htm">
+          <HelpTOCNode Id="4e244666-aab4-4aba-9215-6a56b89ecd4d" Title="Create Method " Url="html/Overload_MsgPack_Serialization_MessagePackSerializer_Create.htm">
             <HelpTOCNode Title="Create(T) Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_Create__1.htm" />
             <HelpTOCNode Title="Create Method (Type)" Url="html/M_MsgPack_Serialization_MessagePackSerializer_Create.htm" />
             <HelpTOCNode Title="Create(T) Method (SerializationContext)" Url="html/M_MsgPack_Serialization_MessagePackSerializer_Create__1_1.htm" />
             <HelpTOCNode Title="Create Method (Type, SerializationContext)" Url="html/M_MsgPack_Serialization_MessagePackSerializer_Create_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="d65ca9ec-ee43-4119-811b-08f8401bd0f8" Title="Get Method " Url="html/Overload_MsgPack_Serialization_MessagePackSerializer_Get.htm">
+          <HelpTOCNode Id="6933cc25-335b-465d-8512-a91fe2b7ab6c" Title="Get Method " Url="html/Overload_MsgPack_Serialization_MessagePackSerializer_Get.htm">
             <HelpTOCNode Title="Get(T) Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_Get__1.htm" />
             <HelpTOCNode Title="Get(T) Method (Object)" Url="html/M_MsgPack_Serialization_MessagePackSerializer_Get__1_3.htm" />
             <HelpTOCNode Title="Get Method (Type)" Url="html/M_MsgPack_Serialization_MessagePackSerializer_Get.htm" />
@@ -753,17 +806,21 @@
             <HelpTOCNode Title="Get(T) Method (SerializationContext, Object)" Url="html/M_MsgPack_Serialization_MessagePackSerializer_Get__1_2.htm" />
             <HelpTOCNode Title="Get Method (Type, SerializationContext, Object)" Url="html/M_MsgPack_Serialization_MessagePackSerializer_Get_2.htm" />
           </HelpTOCNode>
+          <HelpTOCNode Title="UnpackMessagePackObject Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_UnpackMessagePackObject.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="ff7eb2ad-6502-4202-8a89-3fc4767f660b" Title="MessagePackSerializer(T) Class" Url="html/T_MsgPack_Serialization_MessagePackSerializer_1.htm">
-        <HelpTOCNode Title="MessagePackSerializer(T) Members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackSerializer_1.htm" />
-        <HelpTOCNode Id="5012a73a-5892-48a9-ae61-f7571c1434e8" Title="MessagePackSerializer(T) Constructor " Url="html/Overload_MsgPack_Serialization_MessagePackSerializer_1__ctor.htm">
+      <HelpTOCNode Id="6a040752-393d-4fee-ad99-139e932be03d" Title="MessagePackSerializer(T) Class" Url="html/T_MsgPack_Serialization_MessagePackSerializer_1.htm">
+        <HelpTOCNode Id="d5f49031-1d5a-41dd-b39d-f742274f0433" Title="MessagePackSerializer(T) Constructor " Url="html/Overload_MsgPack_Serialization_MessagePackSerializer_1__ctor.htm">
           <HelpTOCNode Title="MessagePackSerializer(T) Constructor " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1__ctor.htm" />
           <HelpTOCNode Title="MessagePackSerializer(T) Constructor (PackerCompatibilityOptions)" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1__ctor_1.htm" />
           <HelpTOCNode Title="MessagePackSerializer(T) Constructor (SerializationContext)" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1__ctor_2.htm" />
           <HelpTOCNode Title="MessagePackSerializer(T) Constructor (SerializationContext, PackerCompatibilityOptions)" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1__ctor_3.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="f6dddf9f-d5e6-45b0-b66b-4295d02588de" Title="MessagePackSerializer(T) Methods" Url="html/Methods_T_MsgPack_Serialization_MessagePackSerializer_1.htm">
+        <HelpTOCNode Id="dd525c51-f819-4b40-95b8-ffb8b0a064a1" Title="MessagePackSerializer(T) Properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackSerializer_1.htm">
+          <HelpTOCNode Title="OwnerContext Property " Url="html/P_MsgPack_Serialization_MessagePackSerializer_1_OwnerContext.htm" />
+          <HelpTOCNode Title="PackerCompatibilityOptions Property " Url="html/P_MsgPack_Serialization_MessagePackSerializer_1_PackerCompatibilityOptions.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="fd46eb42-a63d-4999-b299-5fb331758454" Title="MessagePackSerializer(T) Methods" Url="html/Methods_T_MsgPack_Serialization_MessagePackSerializer_1.htm">
           <HelpTOCNode Title="Pack Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_Pack.htm" />
           <HelpTOCNode Title="PackSingleObject Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_PackSingleObject.htm" />
           <HelpTOCNode Title="PackTo Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_PackTo.htm" />
@@ -771,19 +828,15 @@
           <HelpTOCNode Title="Unpack Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_Unpack.htm" />
           <HelpTOCNode Title="UnpackFrom Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackFrom.htm" />
           <HelpTOCNode Title="UnpackFromCore Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackFromCore.htm" />
+          <HelpTOCNode Title="UnpackNil Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackNil.htm" />
           <HelpTOCNode Title="UnpackSingleObject Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackSingleObject.htm" />
           <HelpTOCNode Title="UnpackTo Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackTo.htm" />
           <HelpTOCNode Title="UnpackToCore Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackToCore.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="7f7fb4aa-a130-4a96-a766-3f65a07e9d38" Title="MessagePackSerializer(T) Properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackSerializer_1.htm">
-          <HelpTOCNode Title="OwnerContext Property " Url="html/P_MsgPack_Serialization_MessagePackSerializer_1_OwnerContext.htm" />
-          <HelpTOCNode Title="PackerCompatibilityOptions Property " Url="html/P_MsgPack_Serialization_MessagePackSerializer_1_PackerCompatibilityOptions.htm" />
-        </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="0ad3ab82-d326-41ec-ac68-91df09a7617c" Title="MessagePackSerializerExtensions Class" Url="html/T_MsgPack_Serialization_MessagePackSerializerExtensions.htm">
-        <HelpTOCNode Title="MessagePackSerializerExtensions Members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackSerializerExtensions.htm" />
-        <HelpTOCNode Id="c78044fd-abcf-4846-8f21-93fba1e0738d" Title="MessagePackSerializerExtensions Methods" Url="html/Methods_T_MsgPack_Serialization_MessagePackSerializerExtensions.htm">
-          <HelpTOCNode Id="03769869-2c90-4d15-834f-fdf620bfb718" Title="Pack Method " Url="html/Overload_MsgPack_Serialization_MessagePackSerializerExtensions_Pack.htm">
+      <HelpTOCNode Id="d97b152f-1a0e-4dde-8e3b-b693cc6d883c" Title="MessagePackSerializerExtensions Class" Url="html/T_MsgPack_Serialization_MessagePackSerializerExtensions.htm">
+        <HelpTOCNode Id="fecc4683-1ea9-4cc6-8243-efa2b91eacaa" Title="MessagePackSerializerExtensions Methods" Url="html/Methods_T_MsgPack_Serialization_MessagePackSerializerExtensions.htm">
+          <HelpTOCNode Id="cbc69a0e-2c67-44d2-971a-08c34a44a8a4" Title="Pack Method " Url="html/Overload_MsgPack_Serialization_MessagePackSerializerExtensions_Pack.htm">
             <HelpTOCNode Title="Pack Method (IMessagePackSerializer, Stream, Object)" Url="html/M_MsgPack_Serialization_MessagePackSerializerExtensions_Pack.htm" />
             <HelpTOCNode Title="Pack Method (IMessagePackSerializer, Stream, Object, PackerCompatibilityOptions)" Url="html/M_MsgPack_Serialization_MessagePackSerializerExtensions_Pack_1.htm" />
           </HelpTOCNode>
@@ -791,40 +844,73 @@
         </HelpTOCNode>
       </HelpTOCNode>
       <HelpTOCNode Title="NilImplication Enumeration" Url="html/T_MsgPack_Serialization_NilImplication.htm" />
-      <HelpTOCNode Id="cea2ef10-5297-4d82-9e41-c4a1a64cae9a" Title="SerializationCompatibilityOptions Class" Url="html/T_MsgPack_Serialization_SerializationCompatibilityOptions.htm">
-        <HelpTOCNode Title="SerializationCompatibilityOptions Members" Url="html/AllMembers_T_MsgPack_Serialization_SerializationCompatibilityOptions.htm" />
-        <HelpTOCNode Id="a40fb14a-f271-473f-a453-45cb7fa34b14" Title="SerializationCompatibilityOptions Properties" Url="html/Properties_T_MsgPack_Serialization_SerializationCompatibilityOptions.htm">
+      <HelpTOCNode Id="ec31b042-21e5-4928-a93f-bda6b4442a4d" Title="PolymorphismSchema Class" Url="html/T_MsgPack_Serialization_PolymorphismSchema.htm">
+        <HelpTOCNode Id="39346714-9d76-4ab1-bcec-51906e9f7c37" Title="PolymorphismSchema Methods" Url="html/Methods_T_MsgPack_Serialization_PolymorphismSchema.htm">
+          <HelpTOCNode Title="ForContextSpecifiedCollection Method " Url="html/M_MsgPack_Serialization_PolymorphismSchema_ForContextSpecifiedCollection.htm" />
+          <HelpTOCNode Title="ForContextSpecifiedDictionary Method " Url="html/M_MsgPack_Serialization_PolymorphismSchema_ForContextSpecifiedDictionary.htm" />
+          <HelpTOCNode Id="dddf25f8-1351-410b-a26b-c5f3e6d54cd5" Title="ForPolymorphicCollection Method " Url="html/Overload_MsgPack_Serialization_PolymorphismSchema_ForPolymorphicCollection.htm">
+            <HelpTOCNode Title="ForPolymorphicCollection Method (Type, PolymorphismSchema)" Url="html/M_MsgPack_Serialization_PolymorphismSchema_ForPolymorphicCollection.htm" />
+            <HelpTOCNode Title="ForPolymorphicCollection Method (Type, IDictionary(String, Type), PolymorphismSchema)" Url="html/M_MsgPack_Serialization_PolymorphismSchema_ForPolymorphicCollection_1.htm" />
+          </HelpTOCNode>
+          <HelpTOCNode Id="91032bb5-b232-4db4-9ed6-3008d97e63b7" Title="ForPolymorphicDictionary Method " Url="html/Overload_MsgPack_Serialization_PolymorphismSchema_ForPolymorphicDictionary.htm">
+            <HelpTOCNode Title="ForPolymorphicDictionary Method (Type, PolymorphismSchema, PolymorphismSchema)" Url="html/M_MsgPack_Serialization_PolymorphismSchema_ForPolymorphicDictionary.htm" />
+            <HelpTOCNode Title="ForPolymorphicDictionary Method (Type, IDictionary(String, Type), PolymorphismSchema, PolymorphismSchema)" Url="html/M_MsgPack_Serialization_PolymorphismSchema_ForPolymorphicDictionary_1.htm" />
+          </HelpTOCNode>
+          <HelpTOCNode Id="f4edc252-29d6-42a7-8293-389f018c7c39" Title="ForPolymorphicObject Method " Url="html/Overload_MsgPack_Serialization_PolymorphismSchema_ForPolymorphicObject.htm">
+            <HelpTOCNode Title="ForPolymorphicObject Method (Type)" Url="html/M_MsgPack_Serialization_PolymorphismSchema_ForPolymorphicObject.htm" />
+            <HelpTOCNode Title="ForPolymorphicObject Method (Type, IDictionary(String, Type))" Url="html/M_MsgPack_Serialization_PolymorphismSchema_ForPolymorphicObject_1.htm" />
+          </HelpTOCNode>
+          <HelpTOCNode Title="ForPolymorphicTuple Method " Url="html/M_MsgPack_Serialization_PolymorphismSchema_ForPolymorphicTuple.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="2dcb79b1-bed6-415c-9b21-6483e9d78d65" Title="ResolveSerializerEventArgs Class" Url="html/T_MsgPack_Serialization_ResolveSerializerEventArgs.htm">
+        <HelpTOCNode Id="c75f6476-2d2e-4283-b2b3-defc978dd47b" Title="ResolveSerializerEventArgs Properties" Url="html/Properties_T_MsgPack_Serialization_ResolveSerializerEventArgs.htm">
+          <HelpTOCNode Title="Context Property " Url="html/P_MsgPack_Serialization_ResolveSerializerEventArgs_Context.htm" />
+          <HelpTOCNode Title="PolymorphismSchema Property " Url="html/P_MsgPack_Serialization_ResolveSerializerEventArgs_PolymorphismSchema.htm" />
+          <HelpTOCNode Title="TargetType Property " Url="html/P_MsgPack_Serialization_ResolveSerializerEventArgs_TargetType.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="f2a075ef-3be9-4c6f-a601-ba06343e9dbf" Title="ResolveSerializerEventArgs Methods" Url="html/Methods_T_MsgPack_Serialization_ResolveSerializerEventArgs.htm">
+          <HelpTOCNode Title="SetSerializer(T) Method " Url="html/M_MsgPack_Serialization_ResolveSerializerEventArgs_SetSerializer__1.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="421f27f0-3e6b-484b-b9e1-891be745815b" Title="SerializationCompatibilityOptions Class" Url="html/T_MsgPack_Serialization_SerializationCompatibilityOptions.htm">
+        <HelpTOCNode Id="a3f35488-11ae-4188-b333-e218827e1e96" Title="SerializationCompatibilityOptions Properties" Url="html/Properties_T_MsgPack_Serialization_SerializationCompatibilityOptions.htm">
           <HelpTOCNode Title="OneBoundDataMemberOrder Property " Url="html/P_MsgPack_Serialization_SerializationCompatibilityOptions_OneBoundDataMemberOrder.htm" />
           <HelpTOCNode Title="PackerCompatibilityOptions Property " Url="html/P_MsgPack_Serialization_SerializationCompatibilityOptions_PackerCompatibilityOptions.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="c2a310f9-18ae-43ea-86c7-68ed19b45a85" Title="SerializationContext Class" Url="html/T_MsgPack_Serialization_SerializationContext.htm">
-        <HelpTOCNode Title="SerializationContext Members" Url="html/AllMembers_T_MsgPack_Serialization_SerializationContext.htm" />
-        <HelpTOCNode Id="ba74c359-3a10-419b-aca8-1ed2d4b5eb6f" Title="SerializationContext Constructor " Url="html/Overload_MsgPack_Serialization_SerializationContext__ctor.htm">
+      <HelpTOCNode Id="1d33626a-95ea-4580-abad-5aff6455496b" Title="SerializationContext Class" Url="html/T_MsgPack_Serialization_SerializationContext.htm">
+        <HelpTOCNode Id="48c56ceb-0dfa-4dac-8eba-ef9b300bf0f5" Title="SerializationContext Constructor " Url="html/Overload_MsgPack_Serialization_SerializationContext__ctor.htm">
           <HelpTOCNode Title="SerializationContext Constructor " Url="html/M_MsgPack_Serialization_SerializationContext__ctor.htm" />
           <HelpTOCNode Title="SerializationContext Constructor (PackerCompatibilityOptions)" Url="html/M_MsgPack_Serialization_SerializationContext__ctor_1.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="18642c46-a7a2-4476-8c96-b37970e2303c" Title="SerializationContext Methods" Url="html/Methods_T_MsgPack_Serialization_SerializationContext.htm">
-          <HelpTOCNode Id="b4b808f1-2114-40c6-bb9c-520d2c0867ce" Title="GetSerializer Method " Url="html/Overload_MsgPack_Serialization_SerializationContext_GetSerializer.htm">
+        <HelpTOCNode Id="207df781-b911-4db8-8137-d9b75794633b" Title="SerializationContext Properties" Url="html/Properties_T_MsgPack_Serialization_SerializationContext.htm">
+          <HelpTOCNode Title="CompatibilityOptions Property " Url="html/P_MsgPack_Serialization_SerializationContext_CompatibilityOptions.htm" />
+          <HelpTOCNode Title="Default Property " Url="html/P_MsgPack_Serialization_SerializationContext_Default.htm" />
+          <HelpTOCNode Title="DefaultCollectionTypes Property " Url="html/P_MsgPack_Serialization_SerializationContext_DefaultCollectionTypes.htm" />
+          <HelpTOCNode Title="DefaultDateTimeConversionMethod Property " Url="html/P_MsgPack_Serialization_SerializationContext_DefaultDateTimeConversionMethod.htm" />
+          <HelpTOCNode Title="EnumSerializationMethod Property " Url="html/P_MsgPack_Serialization_SerializationContext_EnumSerializationMethod.htm" />
+          <HelpTOCNode Title="ExtTypeCodeMapping Property " Url="html/P_MsgPack_Serialization_SerializationContext_ExtTypeCodeMapping.htm" />
+          <HelpTOCNode Title="GeneratorOption Property " Url="html/P_MsgPack_Serialization_SerializationContext_GeneratorOption.htm" />
+          <HelpTOCNode Title="SerializationMethod Property " Url="html/P_MsgPack_Serialization_SerializationContext_SerializationMethod.htm" />
+          <HelpTOCNode Title="Serializers Property " Url="html/P_MsgPack_Serialization_SerializationContext_Serializers.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="e59f6815-e74e-4021-bc11-32c3a47b00e8" Title="SerializationContext Methods" Url="html/Methods_T_MsgPack_Serialization_SerializationContext.htm">
+          <HelpTOCNode Title="ConfigureClassic Method " Url="html/M_MsgPack_Serialization_SerializationContext_ConfigureClassic.htm" />
+          <HelpTOCNode Title="CreateClassicContext Method " Url="html/M_MsgPack_Serialization_SerializationContext_CreateClassicContext.htm" />
+          <HelpTOCNode Id="7756a054-6819-4678-a146-5eca664770be" Title="GetSerializer Method " Url="html/Overload_MsgPack_Serialization_SerializationContext_GetSerializer.htm">
             <HelpTOCNode Title="GetSerializer(T) Method " Url="html/M_MsgPack_Serialization_SerializationContext_GetSerializer__1.htm" />
             <HelpTOCNode Title="GetSerializer(T) Method (Object)" Url="html/M_MsgPack_Serialization_SerializationContext_GetSerializer__1_1.htm" />
             <HelpTOCNode Title="GetSerializer Method (Type)" Url="html/M_MsgPack_Serialization_SerializationContext_GetSerializer.htm" />
             <HelpTOCNode Title="GetSerializer Method (Type, Object)" Url="html/M_MsgPack_Serialization_SerializationContext_GetSerializer_1.htm" />
           </HelpTOCNode>
         </HelpTOCNode>
-        <HelpTOCNode Id="8a5e536f-6296-45e2-8535-c52d8a550a8d" Title="SerializationContext Properties" Url="html/Properties_T_MsgPack_Serialization_SerializationContext.htm">
-          <HelpTOCNode Title="CompatibilityOptions Property " Url="html/P_MsgPack_Serialization_SerializationContext_CompatibilityOptions.htm" />
-          <HelpTOCNode Title="Default Property " Url="html/P_MsgPack_Serialization_SerializationContext_Default.htm" />
-          <HelpTOCNode Title="DefaultCollectionTypes Property " Url="html/P_MsgPack_Serialization_SerializationContext_DefaultCollectionTypes.htm" />
-          <HelpTOCNode Title="EnumSerializationMethod Property " Url="html/P_MsgPack_Serialization_SerializationContext_EnumSerializationMethod.htm" />
-          <HelpTOCNode Title="GeneratorOption Property " Url="html/P_MsgPack_Serialization_SerializationContext_GeneratorOption.htm" />
-          <HelpTOCNode Title="SerializationMethod Property " Url="html/P_MsgPack_Serialization_SerializationContext_SerializationMethod.htm" />
-          <HelpTOCNode Title="Serializers Property " Url="html/P_MsgPack_Serialization_SerializationContext_Serializers.htm" />
+        <HelpTOCNode Id="f15472f7-fc06-4b1f-b8ad-1b19b1897db7" Title="SerializationContext Events" Url="html/Events_T_MsgPack_Serialization_SerializationContext.htm">
+          <HelpTOCNode Title="ResolveSerializer Event" Url="html/E_MsgPack_Serialization_SerializationContext_ResolveSerializer.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="df9cabc6-3c09-4f5e-98ef-eb99a427f1f4" Title="SerializationExceptions Class" Url="html/T_MsgPack_Serialization_SerializationExceptions.htm">
-        <HelpTOCNode Title="SerializationExceptions Members" Url="html/AllMembers_T_MsgPack_Serialization_SerializationExceptions.htm" />
-        <HelpTOCNode Id="7191466d-3729-4978-89d7-bbefefdf7c0b" Title="SerializationExceptions Methods" Url="html/Methods_T_MsgPack_Serialization_SerializationExceptions.htm">
+      <HelpTOCNode Id="d4397a16-7f52-45af-a07e-97e6eb04e364" Title="SerializationExceptions Class" Url="html/T_MsgPack_Serialization_SerializationExceptions.htm">
+        <HelpTOCNode Id="c1457d3b-50bd-43aa-982b-1e29960e9a70" Title="SerializationExceptions Methods" Url="html/Methods_T_MsgPack_Serialization_SerializationExceptions.htm">
           <HelpTOCNode Title="NewFailedToDeserializeMember Method " Url="html/M_MsgPack_Serialization_SerializationExceptions_NewFailedToDeserializeMember.htm" />
           <HelpTOCNode Title="NewIsIncorrectStream Method " Url="html/M_MsgPack_Serialization_SerializationExceptions_NewIsIncorrectStream.htm" />
           <HelpTOCNode Title="NewIsNotArrayHeader Method " Url="html/M_MsgPack_Serialization_SerializationExceptions_NewIsNotArrayHeader.htm" />
@@ -838,14 +924,14 @@
           <HelpTOCNode Title="NewReadOnlyMemberItemsMustNotBeNull Method " Url="html/M_MsgPack_Serialization_SerializationExceptions_NewReadOnlyMemberItemsMustNotBeNull.htm" />
           <HelpTOCNode Title="NewStreamDoesNotContainCollectionForMember Method " Url="html/M_MsgPack_Serialization_SerializationExceptions_NewStreamDoesNotContainCollectionForMember.htm" />
           <HelpTOCNode Title="NewTupleCardinarityIsNotMatch Method " Url="html/M_MsgPack_Serialization_SerializationExceptions_NewTupleCardinarityIsNotMatch.htm" />
-          <HelpTOCNode Id="855f2ff2-7768-4b6c-b69f-66a6576d0b30" Title="NewTypeCannotDeserialize Method " Url="html/Overload_MsgPack_Serialization_SerializationExceptions_NewTypeCannotDeserialize.htm">
+          <HelpTOCNode Id="c5142f59-af4f-4d00-809d-1f8399926544" Title="NewTypeCannotDeserialize Method " Url="html/Overload_MsgPack_Serialization_SerializationExceptions_NewTypeCannotDeserialize.htm">
             <HelpTOCNode Title="NewTypeCannotDeserialize Method (Type)" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewTypeCannotDeserialize.htm" />
             <HelpTOCNode Title="NewTypeCannotDeserialize Method (Type, String, Exception)" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewTypeCannotDeserialize_1.htm" />
           </HelpTOCNode>
           <HelpTOCNode Title="NewTypeCannotSerialize Method " Url="html/M_MsgPack_Serialization_SerializationExceptions_NewTypeCannotSerialize.htm" />
           <HelpTOCNode Title="NewUnexpectedArrayLength Method " Url="html/M_MsgPack_Serialization_SerializationExceptions_NewUnexpectedArrayLength.htm" />
           <HelpTOCNode Title="NewUnexpectedEndOfStream Method " Url="html/M_MsgPack_Serialization_SerializationExceptions_NewUnexpectedEndOfStream.htm" />
-          <HelpTOCNode Id="be7c243f-14d0-4435-b9b7-baa48622159f" Title="NewValueTypeCannotBeNull Method " Url="html/Overload_MsgPack_Serialization_SerializationExceptions_NewValueTypeCannotBeNull.htm">
+          <HelpTOCNode Id="673d7903-007e-46da-8b9f-8a895f7a03e5" Title="NewValueTypeCannotBeNull Method " Url="html/Overload_MsgPack_Serialization_SerializationExceptions_NewValueTypeCannotBeNull.htm">
             <HelpTOCNode Title="NewValueTypeCannotBeNull Method (Type)" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewValueTypeCannotBeNull_1.htm" />
             <HelpTOCNode Title="NewValueTypeCannotBeNull Method (String, Type, Type)" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewValueTypeCannotBeNull.htm" />
           </HelpTOCNode>
@@ -853,89 +939,112 @@
       </HelpTOCNode>
       <HelpTOCNode Title="SerializationMethod Enumeration" Url="html/T_MsgPack_Serialization_SerializationMethod.htm" />
       <HelpTOCNode Title="SerializationMethodGeneratorOption Enumeration" Url="html/T_MsgPack_Serialization_SerializationMethodGeneratorOption.htm" />
-      <HelpTOCNode Id="fa3d9500-9831-4b0f-8929-38feede3c872" Title="SerializerAssemblyGenerationConfiguration Class" Url="html/T_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration.htm">
-        <HelpTOCNode Title="SerializerAssemblyGenerationConfiguration Members" Url="html/AllMembers_T_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration.htm" />
+      <HelpTOCNode Id="b2e5ce8e-d708-4563-8a11-34ab438125e8" Title="SerializerAssemblyGenerationConfiguration Class" Url="html/T_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration.htm">
         <HelpTOCNode Title="SerializerAssemblyGenerationConfiguration Constructor " Url="html/M_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration__ctor.htm" />
-        <HelpTOCNode Id="4579e650-fc53-4011-9f03-ff871b890384" Title="SerializerAssemblyGenerationConfiguration Properties" Url="html/Properties_T_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration.htm">
+        <HelpTOCNode Id="09944489-3cac-41c3-abad-7ee1de4584f4" Title="SerializerAssemblyGenerationConfiguration Properties" Url="html/Properties_T_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration.htm">
           <HelpTOCNode Title="AssemblyName Property " Url="html/P_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration_AssemblyName.htm" />
+          <HelpTOCNode Title="EnumSerializationMethod Property " Url="html/P_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration_EnumSerializationMethod.htm" />
+          <HelpTOCNode Title="IsRecursive Property " Url="html/P_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration_IsRecursive.htm" />
           <HelpTOCNode Title="OutputDirectory Property " Url="html/P_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration_OutputDirectory.htm" />
+          <HelpTOCNode Title="PreferReflectionBasedSerializer Property " Url="html/P_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration_PreferReflectionBasedSerializer.htm" />
           <HelpTOCNode Title="SerializationMethod Property " Url="html/P_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration_SerializationMethod.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="0d8ac4af-7202-41fc-bf64-a29d8fc147e7" Title="SerializerCodeGenerationConfiguration Class" Url="html/T_MsgPack_Serialization_SerializerCodeGenerationConfiguration.htm">
-        <HelpTOCNode Title="SerializerCodeGenerationConfiguration Members" Url="html/AllMembers_T_MsgPack_Serialization_SerializerCodeGenerationConfiguration.htm" />
+      <HelpTOCNode Id="a344e216-15af-4ac1-88d6-003fcf30a976" Title="SerializerCodeGenerationConfiguration Class" Url="html/T_MsgPack_Serialization_SerializerCodeGenerationConfiguration.htm">
         <HelpTOCNode Title="SerializerCodeGenerationConfiguration Constructor " Url="html/M_MsgPack_Serialization_SerializerCodeGenerationConfiguration__ctor.htm" />
-        <HelpTOCNode Id="f032fa97-aec9-4889-ba10-a77baf26b5be" Title="SerializerCodeGenerationConfiguration Properties" Url="html/Properties_T_MsgPack_Serialization_SerializerCodeGenerationConfiguration.htm">
+        <HelpTOCNode Id="3514f019-4f63-499a-9aa0-86ecd6ab4f6d" Title="SerializerCodeGenerationConfiguration Properties" Url="html/Properties_T_MsgPack_Serialization_SerializerCodeGenerationConfiguration.htm">
           <HelpTOCNode Title="CodeIndentString Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_CodeIndentString.htm" />
+          <HelpTOCNode Title="EnumSerializationMethod Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_EnumSerializationMethod.htm" />
+          <HelpTOCNode Title="IsInternalToMsgPackLibrary Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_IsInternalToMsgPackLibrary.htm" />
+          <HelpTOCNode Title="IsRecursive Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_IsRecursive.htm" />
           <HelpTOCNode Title="Language Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_Language.htm" />
           <HelpTOCNode Title="Namespace Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_Namespace.htm" />
           <HelpTOCNode Title="OutputDirectory Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_OutputDirectory.htm" />
+          <HelpTOCNode Title="PreferReflectionBasedSerializer Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_PreferReflectionBasedSerializer.htm" />
           <HelpTOCNode Title="SerializationMethod Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_SerializationMethod.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="20f59eae-a5d2-495c-ac49-473f58b22e15" Title="SerializerGenerator Class" Url="html/T_MsgPack_Serialization_SerializerGenerator.htm">
-        <HelpTOCNode Title="SerializerGenerator Members" Url="html/AllMembers_T_MsgPack_Serialization_SerializerGenerator.htm" />
-        <HelpTOCNode Id="7191307a-42fb-4a19-85ad-d4478c303356" Title="SerializerGenerator Constructor " Url="html/Overload_MsgPack_Serialization_SerializerGenerator__ctor.htm">
+      <HelpTOCNode Id="eecc3713-8aee-4b31-8828-cfe1d832c2b4" Title="SerializerCodeGenerationResult Class" Url="html/T_MsgPack_Serialization_SerializerCodeGenerationResult.htm">
+        <HelpTOCNode Id="08398375-29cf-4364-a2f0-06aead35f1c1" Title="SerializerCodeGenerationResult Properties" Url="html/Properties_T_MsgPack_Serialization_SerializerCodeGenerationResult.htm">
+          <HelpTOCNode Title="FilePath Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationResult_FilePath.htm" />
+          <HelpTOCNode Title="SerializerTypeFullName Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationResult_SerializerTypeFullName.htm" />
+          <HelpTOCNode Title="SerializerTypeName Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationResult_SerializerTypeName.htm" />
+          <HelpTOCNode Title="SerializerTypeNamespace Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationResult_SerializerTypeNamespace.htm" />
+          <HelpTOCNode Title="TargetType Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationResult_TargetType.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="1dbc39cb-7ee0-4a1a-8678-78b7354f5574" Title="SerializerGenerator Class" Url="html/T_MsgPack_Serialization_SerializerGenerator.htm">
+        <HelpTOCNode Id="3c9a13b7-af20-4705-83d0-96f01e2b5b21" Title="SerializerGenerator Constructor " Url="html/Overload_MsgPack_Serialization_SerializerGenerator__ctor.htm">
           <HelpTOCNode Title="SerializerGenerator Constructor (AssemblyName)" Url="html/M_MsgPack_Serialization_SerializerGenerator__ctor.htm" />
           <HelpTOCNode Title="SerializerGenerator Constructor (Type, AssemblyName)" Url="html/M_MsgPack_Serialization_SerializerGenerator__ctor_1.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="baf6235c-8d81-4cdd-93c8-4152347f7a50" Title="SerializerGenerator Methods" Url="html/Methods_T_MsgPack_Serialization_SerializerGenerator.htm">
-          <HelpTOCNode Id="8ad220cc-31bb-4fd0-9a53-9854d2b620b7" Title="GenerateAssembly Method " Url="html/Overload_MsgPack_Serialization_SerializerGenerator_GenerateAssembly.htm">
-            <HelpTOCNode Title="GenerateAssembly Method (SerializerAssemblyGenerationConfiguration, IEnumerable(Type))" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateAssembly.htm" />
-            <HelpTOCNode Title="GenerateAssembly Method (SerializerAssemblyGenerationConfiguration, Type[])" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateAssembly_1.htm" />
-          </HelpTOCNode>
-          <HelpTOCNode Id="6d9c797a-abf5-4b69-afbf-952e9dcd5fe9" Title="GenerateAssemblyFile Method " Url="html/Overload_MsgPack_Serialization_SerializerGenerator_GenerateAssemblyFile.htm">
-            <HelpTOCNode Title="GenerateAssemblyFile Method " Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateAssemblyFile.htm" />
-            <HelpTOCNode Title="GenerateAssemblyFile Method (String)" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateAssemblyFile_1.htm" />
-          </HelpTOCNode>
-          <HelpTOCNode Id="37f97e7c-14cf-46a5-afce-d20f7c2c04e4" Title="GenerateCode Method " Url="html/Overload_MsgPack_Serialization_SerializerGenerator_GenerateCode.htm">
-            <HelpTOCNode Title="GenerateCode Method (IEnumerable(Type))" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateCode_2.htm" />
-            <HelpTOCNode Title="GenerateCode Method (Type[])" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateCode_3.htm" />
-            <HelpTOCNode Title="GenerateCode Method (SerializerCodeGenerationConfiguration, IEnumerable(Type))" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateCode.htm" />
-            <HelpTOCNode Title="GenerateCode Method (SerializerCodeGenerationConfiguration, Type[])" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateCode_1.htm" />
-          </HelpTOCNode>
-        </HelpTOCNode>
-        <HelpTOCNode Id="823e32e9-9942-42bf-964c-afbcb114c152" Title="SerializerGenerator Properties" Url="html/Properties_T_MsgPack_Serialization_SerializerGenerator.htm">
+        <HelpTOCNode Id="1462ac82-95d8-4e77-af7d-0bf0e58c1438" Title="SerializerGenerator Properties" Url="html/Properties_T_MsgPack_Serialization_SerializerGenerator.htm">
           <HelpTOCNode Title="AssemblyName Property " Url="html/P_MsgPack_Serialization_SerializerGenerator_AssemblyName.htm" />
           <HelpTOCNode Title="Method Property " Url="html/P_MsgPack_Serialization_SerializerGenerator_Method.htm" />
           <HelpTOCNode Title="RootType Property " Url="html/P_MsgPack_Serialization_SerializerGenerator_RootType.htm" />
           <HelpTOCNode Title="TargetTypes Property " Url="html/P_MsgPack_Serialization_SerializerGenerator_TargetTypes.htm" />
         </HelpTOCNode>
+        <HelpTOCNode Id="e1265248-aa0f-48a3-ac24-7dafd86b89a0" Title="SerializerGenerator Methods" Url="html/Methods_T_MsgPack_Serialization_SerializerGenerator.htm">
+          <HelpTOCNode Id="c4511fff-a9be-4824-85db-1286e981598f" Title="GenerateAssembly Method " Url="html/Overload_MsgPack_Serialization_SerializerGenerator_GenerateAssembly.htm">
+            <HelpTOCNode Title="GenerateAssembly Method (SerializerAssemblyGenerationConfiguration, IEnumerable(Type))" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateAssembly.htm" />
+            <HelpTOCNode Title="GenerateAssembly Method (SerializerAssemblyGenerationConfiguration, Type[])" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateAssembly_1.htm" />
+          </HelpTOCNode>
+          <HelpTOCNode Id="20e99504-97ff-4849-a70c-c6f6bd8d0ed0" Title="GenerateAssemblyFile Method " Url="html/Overload_MsgPack_Serialization_SerializerGenerator_GenerateAssemblyFile.htm">
+            <HelpTOCNode Title="GenerateAssemblyFile Method " Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateAssemblyFile.htm" />
+            <HelpTOCNode Title="GenerateAssemblyFile Method (String)" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateAssemblyFile_1.htm" />
+          </HelpTOCNode>
+          <HelpTOCNode Id="be9cf98d-2ec0-48fb-9051-3dcac4d01fa5" Title="GenerateCode Method " Url="html/Overload_MsgPack_Serialization_SerializerGenerator_GenerateCode.htm">
+            <HelpTOCNode Title="GenerateCode Method (IEnumerable(Type))" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateCode_2.htm" />
+            <HelpTOCNode Title="GenerateCode Method (Type[])" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateCode_3.htm" />
+            <HelpTOCNode Title="GenerateCode Method (SerializerCodeGenerationConfiguration, IEnumerable(Type))" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateCode.htm" />
+            <HelpTOCNode Title="GenerateCode Method (SerializerCodeGenerationConfiguration, Type[])" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateCode_1.htm" />
+          </HelpTOCNode>
+          <HelpTOCNode Id="819af36b-04dc-437a-b83c-bc0a7f71dbdc" Title="GenerateSerializerCodeAssembly Method " Url="html/Overload_MsgPack_Serialization_SerializerGenerator_GenerateSerializerCodeAssembly.htm">
+            <HelpTOCNode Title="GenerateSerializerCodeAssembly Method (SerializerAssemblyGenerationConfiguration, IEnumerable(Type))" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateSerializerCodeAssembly.htm" />
+            <HelpTOCNode Title="GenerateSerializerCodeAssembly Method (SerializerAssemblyGenerationConfiguration, Type[])" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateSerializerCodeAssembly_1.htm" />
+          </HelpTOCNode>
+          <HelpTOCNode Id="2bfe0e3b-f36c-4648-ad28-8b48ef8b1e13" Title="GenerateSerializerSourceCodes Method " Url="html/Overload_MsgPack_Serialization_SerializerGenerator_GenerateSerializerSourceCodes.htm">
+            <HelpTOCNode Title="GenerateSerializerSourceCodes Method (IEnumerable(Type))" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateSerializerSourceCodes_2.htm" />
+            <HelpTOCNode Title="GenerateSerializerSourceCodes Method (Type[])" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateSerializerSourceCodes_3.htm" />
+            <HelpTOCNode Title="GenerateSerializerSourceCodes Method (SerializerCodeGenerationConfiguration, IEnumerable(Type))" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateSerializerSourceCodes.htm" />
+            <HelpTOCNode Title="GenerateSerializerSourceCodes Method (SerializerCodeGenerationConfiguration, Type[])" Url="html/M_MsgPack_Serialization_SerializerGenerator_GenerateSerializerSourceCodes_1.htm" />
+          </HelpTOCNode>
+        </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="e137a6df-5289-414f-8761-697ebe9013f3" Title="SerializerRepository Class" Url="html/T_MsgPack_Serialization_SerializerRepository.htm">
-        <HelpTOCNode Title="SerializerRepository Members" Url="html/AllMembers_T_MsgPack_Serialization_SerializerRepository.htm" />
-        <HelpTOCNode Id="d3a53243-4a48-473b-8fc5-81079a779881" Title="SerializerRepository Constructor " Url="html/Overload_MsgPack_Serialization_SerializerRepository__ctor.htm">
+      <HelpTOCNode Id="5ec3df99-20b2-4e0b-aa88-1ba5c1194130" Title="SerializerRepository Class" Url="html/T_MsgPack_Serialization_SerializerRepository.htm">
+        <HelpTOCNode Id="78f49fce-0ada-4c6f-b527-9ece611131f3" Title="SerializerRepository Constructor " Url="html/Overload_MsgPack_Serialization_SerializerRepository__ctor.htm">
           <HelpTOCNode Title="SerializerRepository Constructor " Url="html/M_MsgPack_Serialization_SerializerRepository__ctor.htm" />
           <HelpTOCNode Title="SerializerRepository Constructor (SerializerRepository)" Url="html/M_MsgPack_Serialization_SerializerRepository__ctor_1.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="46fa6006-a9a2-4368-8600-bc6c24d9266d" Title="SerializerRepository Methods" Url="html/Methods_T_MsgPack_Serialization_SerializerRepository.htm">
+        <HelpTOCNode Id="0e8b69b2-2360-4122-987d-4e6de63ec3cb" Title="SerializerRepository Properties" Url="html/Properties_T_MsgPack_Serialization_SerializerRepository.htm">
+          <HelpTOCNode Title="Default Property " Url="html/P_MsgPack_Serialization_SerializerRepository_Default.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="bab61e7f-2648-47d6-a25d-21c6dc34240d" Title="SerializerRepository Methods" Url="html/Methods_T_MsgPack_Serialization_SerializerRepository.htm">
           <HelpTOCNode Title="Dispose Method " Url="html/M_MsgPack_Serialization_SerializerRepository_Dispose.htm" />
-          <HelpTOCNode Id="d3da7ec5-0099-4c03-99ee-a0be835d3e6b" Title="Get Method " Url="html/Overload_MsgPack_Serialization_SerializerRepository_Get.htm">
+          <HelpTOCNode Id="ae7566cd-e8ad-4e8e-b858-cd0d506ac1b3" Title="Get Method " Url="html/Overload_MsgPack_Serialization_SerializerRepository_Get.htm">
             <HelpTOCNode Title="Get(T) Method (SerializationContext)" Url="html/M_MsgPack_Serialization_SerializerRepository_Get__1.htm" />
             <HelpTOCNode Title="Get(T) Method (SerializationContext, Object)" Url="html/M_MsgPack_Serialization_SerializerRepository_Get__1_1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="094c9d44-ca39-450f-a8a4-37a5923c2ce0" Title="GetDefault Method " Url="html/Overload_MsgPack_Serialization_SerializerRepository_GetDefault.htm">
-            <HelpTOCNode Title="GetDefault Method (PackerCompatibilityOptions)" Url="html/M_MsgPack_Serialization_SerializerRepository_GetDefault.htm" />
-            <HelpTOCNode Title="GetDefault Method (SerializationContext)" Url="html/M_MsgPack_Serialization_SerializerRepository_GetDefault_1.htm" />
+          <HelpTOCNode Id="b524a2e4-ecd3-419d-98df-d0f61b4f9315" Title="GetDefault Method " Url="html/Overload_MsgPack_Serialization_SerializerRepository_GetDefault.htm">
+            <HelpTOCNode Title="GetDefault Method " Url="html/M_MsgPack_Serialization_SerializerRepository_GetDefault.htm" />
+            <HelpTOCNode Title="GetDefault Method (PackerCompatibilityOptions)" Url="html/M_MsgPack_Serialization_SerializerRepository_GetDefault_1.htm" />
+            <HelpTOCNode Title="GetDefault Method (SerializationContext)" Url="html/M_MsgPack_Serialization_SerializerRepository_GetDefault_2.htm" />
           </HelpTOCNode>
           <HelpTOCNode Title="Register(T) Method " Url="html/M_MsgPack_Serialization_SerializerRepository_Register__1.htm" />
           <HelpTOCNode Title="RegisterOverride(T) Method " Url="html/M_MsgPack_Serialization_SerializerRepository_RegisterOverride__1.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="fbe7d5a5-38b6-45f6-a4a5-579d5879158d" Title="SerializerRepository Properties" Url="html/Properties_T_MsgPack_Serialization_SerializerRepository.htm">
-          <HelpTOCNode Title="Default Property " Url="html/P_MsgPack_Serialization_SerializerRepository_Default.htm" />
-        </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="86eefc8c-b172-4389-9c3c-e5e8bd997a6f" Title="UnpackHelpers Class" Url="html/T_MsgPack_Serialization_UnpackHelpers.htm">
-        <HelpTOCNode Title="UnpackHelpers Members" Url="html/AllMembers_T_MsgPack_Serialization_UnpackHelpers.htm" />
-        <HelpTOCNode Id="e38f3a83-2c9f-4f5a-98fd-094285d7d58d" Title="UnpackHelpers Methods" Url="html/Methods_T_MsgPack_Serialization_UnpackHelpers.htm">
+      <HelpTOCNode Id="986146aa-5711-438d-a035-49600d0dbb45" Title="UnpackHelpers Class" Url="html/T_MsgPack_Serialization_UnpackHelpers.htm">
+        <HelpTOCNode Id="e1f4dacc-36e3-4e1e-801b-3f1fc31d84a5" Title="UnpackHelpers Methods" Url="html/Methods_T_MsgPack_Serialization_UnpackHelpers.htm">
           <HelpTOCNode Title="ConvertWithEnsuringNotNull(T) Method " Url="html/M_MsgPack_Serialization_UnpackHelpers_ConvertWithEnsuringNotNull__1.htm" />
+          <HelpTOCNode Title="GetEqualityComparer(T) Method " Url="html/M_MsgPack_Serialization_UnpackHelpers_GetEqualityComparer__1.htm" />
           <HelpTOCNode Title="GetItemsCount Method " Url="html/M_MsgPack_Serialization_UnpackHelpers_GetItemsCount.htm" />
           <HelpTOCNode Title="InvokeUnpackFrom(T) Method " Url="html/M_MsgPack_Serialization_UnpackHelpers_InvokeUnpackFrom__1.htm" />
           <HelpTOCNode Title="UnpackArrayTo(T) Method " Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackArrayTo__1.htm" />
           <HelpTOCNode Title="UnpackBinaryValue Method " Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackBinaryValue.htm" />
           <HelpTOCNode Title="UnpackBooleanValue Method " Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackBooleanValue.htm" />
           <HelpTOCNode Title="UnpackByteValue Method " Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackByteValue.htm" />
-          <HelpTOCNode Id="1af1ac47-930a-41af-9d09-660b65594328" Title="UnpackCollectionTo Method " Url="html/Overload_MsgPack_Serialization_UnpackHelpers_UnpackCollectionTo.htm">
+          <HelpTOCNode Id="c7045e38-c88a-4baf-88b6-29f66f58bab8" Title="UnpackCollectionTo Method " Url="html/Overload_MsgPack_Serialization_UnpackHelpers_UnpackCollectionTo.htm">
             <HelpTOCNode Title="UnpackCollectionTo Method (Unpacker, IEnumerable, Action(Object))" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackCollectionTo.htm" />
             <HelpTOCNode Title="UnpackCollectionTo(TDiscarded) Method (Unpacker, IEnumerable, Func(Object, TDiscarded))" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackCollectionTo__1_1.htm" />
             <HelpTOCNode Title="UnpackCollectionTo(T) Method (Unpacker, MessagePackSerializer(T), IEnumerable(T), Action(T))" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackCollectionTo__1.htm" />
@@ -945,7 +1054,7 @@
           <HelpTOCNode Title="UnpackInt16Value Method " Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackInt16Value.htm" />
           <HelpTOCNode Title="UnpackInt32Value Method " Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackInt32Value.htm" />
           <HelpTOCNode Title="UnpackInt64Value Method " Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackInt64Value.htm" />
-          <HelpTOCNode Id="68fb85d0-0ae3-4e24-b13b-6d6e72fc280a" Title="UnpackMapTo Method " Url="html/Overload_MsgPack_Serialization_UnpackHelpers_UnpackMapTo.htm">
+          <HelpTOCNode Id="e51a83be-dd90-422c-a676-dd2ecaa7310c" Title="UnpackMapTo Method " Url="html/Overload_MsgPack_Serialization_UnpackHelpers_UnpackMapTo.htm">
             <HelpTOCNode Title="UnpackMapTo Method (Unpacker, IDictionary)" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackMapTo.htm" />
             <HelpTOCNode Title="UnpackMapTo(TKey, TValue) Method (Unpacker, MessagePackSerializer(TKey), MessagePackSerializer(TValue), IDictionary(TKey, TValue))" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackMapTo__2.htm" />
           </HelpTOCNode>
@@ -966,6 +1075,107 @@
           <HelpTOCNode Title="UnpackUInt16Value Method " Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackUInt16Value.htm" />
           <HelpTOCNode Title="UnpackUInt32Value Method " Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackUInt32Value.htm" />
           <HelpTOCNode Title="UnpackUInt64Value Method " Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackUInt64Value.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="823c1fda-73d9-4539-84a7-6798a4ae2cd9" Title="MsgPack.Serialization.CollectionSerializers" Url="html/N_MsgPack_Serialization_CollectionSerializers.htm">
+      <HelpTOCNode Id="5953602c-91e9-4a9a-8b8d-af492fce0e0d" Title="CollectionMessagePackSerializer(TCollection, TItem) Class" Url="html/T_MsgPack_Serialization_CollectionSerializers_CollectionMessagePackSerializer_2.htm">
+        <HelpTOCNode Title="CollectionMessagePackSerializer(TCollection, TItem) Constructor " Url="html/M_MsgPack_Serialization_CollectionSerializers_CollectionMessagePackSerializer_2__ctor.htm" />
+        <HelpTOCNode Title="CollectionMessagePackSerializer(TCollection, TItem) Properties" Url="html/Properties_T_MsgPack_Serialization_CollectionSerializers_CollectionMessagePackSerializer_2.htm" />
+        <HelpTOCNode Id="b686db61-cc9b-43aa-a0db-2d61d9ae6a41" Title="CollectionMessagePackSerializer(TCollection, TItem) Methods" Url="html/Methods_T_MsgPack_Serialization_CollectionSerializers_CollectionMessagePackSerializer_2.htm">
+          <HelpTOCNode Title="AddItem Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_CollectionMessagePackSerializer_2_AddItem.htm" />
+          <HelpTOCNode Title="GetCount Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_CollectionMessagePackSerializer_2_GetCount.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="cca282ac-483d-4f96-a264-639763f702c5" Title="CollectionMessagePackSerializerBase(TCollection, TItem) Class" Url="html/T_MsgPack_Serialization_CollectionSerializers_CollectionMessagePackSerializerBase_2.htm">
+        <HelpTOCNode Title="CollectionMessagePackSerializerBase(TCollection, TItem) Constructor " Url="html/M_MsgPack_Serialization_CollectionSerializers_CollectionMessagePackSerializerBase_2__ctor.htm" />
+        <HelpTOCNode Title="CollectionMessagePackSerializerBase(TCollection, TItem) Properties" Url="html/Properties_T_MsgPack_Serialization_CollectionSerializers_CollectionMessagePackSerializerBase_2.htm" />
+        <HelpTOCNode Id="b56008f8-28dc-4876-9346-734614775e81" Title="CollectionMessagePackSerializerBase(TCollection, TItem) Methods" Url="html/Methods_T_MsgPack_Serialization_CollectionSerializers_CollectionMessagePackSerializerBase_2.htm">
+          <HelpTOCNode Title="GetCount Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_CollectionMessagePackSerializerBase_2_GetCount.htm" />
+          <HelpTOCNode Title="PackToCore Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_CollectionMessagePackSerializerBase_2_PackToCore.htm" />
+          <HelpTOCNode Title="UnpackFromCore Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_CollectionMessagePackSerializerBase_2_UnpackFromCore.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="5cd78a28-ca1a-427d-b91a-4583077643cc" Title="DictionaryMessagePackSerializer(TDictionary, TKey, TValue) Class" Url="html/T_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializer_3.htm">
+        <HelpTOCNode Title="DictionaryMessagePackSerializer(TDictionary, TKey, TValue) Constructor " Url="html/M_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializer_3__ctor.htm" />
+        <HelpTOCNode Title="DictionaryMessagePackSerializer(TDictionary, TKey, TValue) Properties" Url="html/Properties_T_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializer_3.htm" />
+        <HelpTOCNode Id="58597253-7eee-4f52-be49-7a45d031854b" Title="DictionaryMessagePackSerializer(TDictionary, TKey, TValue) Methods" Url="html/Methods_T_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializer_3.htm">
+          <HelpTOCNode Title="AddItem Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializer_3_AddItem.htm" />
+          <HelpTOCNode Title="GetCount Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializer_3_GetCount.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="cb903e39-d8c8-4730-89ef-2f4a6c18f5fc" Title="DictionaryMessagePackSerializerBase(TDictionary, TKey, TValue) Class" Url="html/T_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializerBase_3.htm">
+        <HelpTOCNode Title="DictionaryMessagePackSerializerBase(TDictionary, TKey, TValue) Constructor " Url="html/M_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializerBase_3__ctor.htm" />
+        <HelpTOCNode Title="DictionaryMessagePackSerializerBase(TDictionary, TKey, TValue) Properties" Url="html/Properties_T_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializerBase_3.htm" />
+        <HelpTOCNode Id="d4972dea-9052-4d70-8f52-697e86988ca1" Title="DictionaryMessagePackSerializerBase(TDictionary, TKey, TValue) Methods" Url="html/Methods_T_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializerBase_3.htm">
+          <HelpTOCNode Title="AddItem Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializerBase_3_AddItem.htm" />
+          <HelpTOCNode Title="CreateInstance Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializerBase_3_CreateInstance.htm" />
+          <HelpTOCNode Title="GetCount Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializerBase_3_GetCount.htm" />
+          <HelpTOCNode Title="PackToCore Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializerBase_3_PackToCore.htm" />
+          <HelpTOCNode Title="UnpackFromCore Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializerBase_3_UnpackFromCore.htm" />
+          <HelpTOCNode Title="UnpackToCore Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_DictionaryMessagePackSerializerBase_3_UnpackToCore.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="d5193d10-29fd-42e8-afbd-11134f4165ca" Title="EnumerableMessagePackSerializer(TCollection, TItem) Class" Url="html/T_MsgPack_Serialization_CollectionSerializers_EnumerableMessagePackSerializer_2.htm">
+        <HelpTOCNode Title="EnumerableMessagePackSerializer(TCollection, TItem) Constructor " Url="html/M_MsgPack_Serialization_CollectionSerializers_EnumerableMessagePackSerializer_2__ctor.htm" />
+        <HelpTOCNode Title="EnumerableMessagePackSerializer(TCollection, TItem) Properties" Url="html/Properties_T_MsgPack_Serialization_CollectionSerializers_EnumerableMessagePackSerializer_2.htm" />
+        <HelpTOCNode Id="0e1fb708-5381-4f8c-984b-2d8cc5e2ffbe" Title="EnumerableMessagePackSerializer(TCollection, TItem) Methods" Url="html/Methods_T_MsgPack_Serialization_CollectionSerializers_EnumerableMessagePackSerializer_2.htm">
+          <HelpTOCNode Title="PackToCore Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_EnumerableMessagePackSerializer_2_PackToCore.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="278ac468-d2ee-4154-bd47-ceda3ba42dc9" Title="EnumerableMessagePackSerializerBase(TCollection, TItem) Class" Url="html/T_MsgPack_Serialization_CollectionSerializers_EnumerableMessagePackSerializerBase_2.htm">
+        <HelpTOCNode Title="EnumerableMessagePackSerializerBase(TCollection, TItem) Constructor " Url="html/M_MsgPack_Serialization_CollectionSerializers_EnumerableMessagePackSerializerBase_2__ctor.htm" />
+        <HelpTOCNode Title="EnumerableMessagePackSerializerBase(TCollection, TItem) Properties" Url="html/Properties_T_MsgPack_Serialization_CollectionSerializers_EnumerableMessagePackSerializerBase_2.htm" />
+        <HelpTOCNode Id="10a16bb0-9add-498d-a292-0f823aa09fd0" Title="EnumerableMessagePackSerializerBase(TCollection, TItem) Methods" Url="html/Methods_T_MsgPack_Serialization_CollectionSerializers_EnumerableMessagePackSerializerBase_2.htm">
+          <HelpTOCNode Title="AddItem Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_EnumerableMessagePackSerializerBase_2_AddItem.htm" />
+          <HelpTOCNode Title="CreateInstance Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_EnumerableMessagePackSerializerBase_2_CreateInstance.htm" />
+          <HelpTOCNode Title="UnpackToCore Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_EnumerableMessagePackSerializerBase_2_UnpackToCore.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="5ea7d239-c932-4d45-ac36-1c39ec90cc0a" Title="ICollectionInstanceFactory Interface" Url="html/T_MsgPack_Serialization_CollectionSerializers_ICollectionInstanceFactory.htm">
+        <HelpTOCNode Id="322db0d0-4f4d-4116-a70e-948b9ad7fd19" Title="ICollectionInstanceFactory Methods" Url="html/Methods_T_MsgPack_Serialization_CollectionSerializers_ICollectionInstanceFactory.htm">
+          <HelpTOCNode Title="CreateInstance Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_ICollectionInstanceFactory_CreateInstance.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="f7fe44af-f039-49d1-b8e7-2bea3e6d2e6a" Title="NonGenericCollectionMessagePackSerializer(TCollection) Class" Url="html/T_MsgPack_Serialization_CollectionSerializers_NonGenericCollectionMessagePackSerializer_1.htm">
+        <HelpTOCNode Title="NonGenericCollectionMessagePackSerializer(TCollection) Constructor " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericCollectionMessagePackSerializer_1__ctor.htm" />
+        <HelpTOCNode Title="NonGenericCollectionMessagePackSerializer(TCollection) Properties" Url="html/Properties_T_MsgPack_Serialization_CollectionSerializers_NonGenericCollectionMessagePackSerializer_1.htm" />
+        <HelpTOCNode Id="a5506ffe-e214-408d-9768-19af62aec157" Title="NonGenericCollectionMessagePackSerializer(TCollection) Methods" Url="html/Methods_T_MsgPack_Serialization_CollectionSerializers_NonGenericCollectionMessagePackSerializer_1.htm">
+          <HelpTOCNode Title="PackToCore Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericCollectionMessagePackSerializer_1_PackToCore.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="a7e76a41-1212-45f3-bb6f-4d6d3c30b974" Title="NonGenericDictionaryMessagePackSerializer(TDictionary) Class" Url="html/T_MsgPack_Serialization_CollectionSerializers_NonGenericDictionaryMessagePackSerializer_1.htm">
+        <HelpTOCNode Title="NonGenericDictionaryMessagePackSerializer(TDictionary) Constructor " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericDictionaryMessagePackSerializer_1__ctor.htm" />
+        <HelpTOCNode Title="NonGenericDictionaryMessagePackSerializer(TDictionary) Properties" Url="html/Properties_T_MsgPack_Serialization_CollectionSerializers_NonGenericDictionaryMessagePackSerializer_1.htm" />
+        <HelpTOCNode Id="8d5d8167-0403-437f-8fe3-7ba8a17921ef" Title="NonGenericDictionaryMessagePackSerializer(TDictionary) Methods" Url="html/Methods_T_MsgPack_Serialization_CollectionSerializers_NonGenericDictionaryMessagePackSerializer_1.htm">
+          <HelpTOCNode Title="CreateInstance Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericDictionaryMessagePackSerializer_1_CreateInstance.htm" />
+          <HelpTOCNode Title="PackToCore Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericDictionaryMessagePackSerializer_1_PackToCore.htm" />
+          <HelpTOCNode Title="UnpackFromCore Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericDictionaryMessagePackSerializer_1_UnpackFromCore.htm" />
+          <HelpTOCNode Title="UnpackToCore Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericDictionaryMessagePackSerializer_1_UnpackToCore.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="d8e63dcf-ffee-4162-9717-06a2a0f15de3" Title="NonGenericEnumerableMessagePackSerializer(TCollection) Class" Url="html/T_MsgPack_Serialization_CollectionSerializers_NonGenericEnumerableMessagePackSerializer_1.htm">
+        <HelpTOCNode Title="NonGenericEnumerableMessagePackSerializer(TCollection) Constructor " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericEnumerableMessagePackSerializer_1__ctor.htm" />
+        <HelpTOCNode Title="NonGenericEnumerableMessagePackSerializer(TCollection) Properties" Url="html/Properties_T_MsgPack_Serialization_CollectionSerializers_NonGenericEnumerableMessagePackSerializer_1.htm" />
+        <HelpTOCNode Id="9ea678b6-1c18-45d2-a621-35fad1434d58" Title="NonGenericEnumerableMessagePackSerializer(TCollection) Methods" Url="html/Methods_T_MsgPack_Serialization_CollectionSerializers_NonGenericEnumerableMessagePackSerializer_1.htm">
+          <HelpTOCNode Title="PackToCore Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericEnumerableMessagePackSerializer_1_PackToCore.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="39f27bf7-6d9c-4a84-99c6-1a672a592000" Title="NonGenericEnumerableMessagePackSerializerBase(TCollection) Class" Url="html/T_MsgPack_Serialization_CollectionSerializers_NonGenericEnumerableMessagePackSerializerBase_1.htm">
+        <HelpTOCNode Title="NonGenericEnumerableMessagePackSerializerBase(TCollection) Constructor " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericEnumerableMessagePackSerializerBase_1__ctor.htm" />
+        <HelpTOCNode Title="NonGenericEnumerableMessagePackSerializerBase(TCollection) Properties" Url="html/Properties_T_MsgPack_Serialization_CollectionSerializers_NonGenericEnumerableMessagePackSerializerBase_1.htm" />
+        <HelpTOCNode Id="bfec833b-fce7-4f7e-9da7-2cef9add4cbe" Title="NonGenericEnumerableMessagePackSerializerBase(TCollection) Methods" Url="html/Methods_T_MsgPack_Serialization_CollectionSerializers_NonGenericEnumerableMessagePackSerializerBase_1.htm">
+          <HelpTOCNode Title="AddItem Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericEnumerableMessagePackSerializerBase_1_AddItem.htm" />
+          <HelpTOCNode Title="CreateInstance Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericEnumerableMessagePackSerializerBase_1_CreateInstance.htm" />
+          <HelpTOCNode Title="UnpackToCore Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericEnumerableMessagePackSerializerBase_1_UnpackToCore.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="bfed5ae0-0a80-490c-b3bc-2cc2df0b4d7c" Title="NonGenericListMessagePackSerializer(TList) Class" Url="html/T_MsgPack_Serialization_CollectionSerializers_NonGenericListMessagePackSerializer_1.htm">
+        <HelpTOCNode Title="NonGenericListMessagePackSerializer(TList) Constructor " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericListMessagePackSerializer_1__ctor.htm" />
+        <HelpTOCNode Title="NonGenericListMessagePackSerializer(TList) Properties" Url="html/Properties_T_MsgPack_Serialization_CollectionSerializers_NonGenericListMessagePackSerializer_1.htm" />
+        <HelpTOCNode Id="cdc6f48d-b49a-49f3-8521-28aa000274e2" Title="NonGenericListMessagePackSerializer(TList) Methods" Url="html/Methods_T_MsgPack_Serialization_CollectionSerializers_NonGenericListMessagePackSerializer_1.htm">
+          <HelpTOCNode Title="AddItem Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericListMessagePackSerializer_1_AddItem.htm" />
+          <HelpTOCNode Title="UnpackFromCore Method " Url="html/M_MsgPack_Serialization_CollectionSerializers_NonGenericListMessagePackSerializer_1_UnpackFromCore.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
     </HelpTOCNode>
