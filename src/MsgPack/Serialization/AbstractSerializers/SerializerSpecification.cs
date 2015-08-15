@@ -83,6 +83,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 			{
 				return Object.ReferenceEquals( right, null );
 			}
+			
+			if ( Object.ReferenceEquals( right, null ) )
+			{
+				return false;
+			}
 
 			// TargetCollectionTraits is always derived from TargetType
 			return

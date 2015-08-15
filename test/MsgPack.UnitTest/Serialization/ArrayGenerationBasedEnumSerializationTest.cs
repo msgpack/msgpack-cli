@@ -137,7 +137,7 @@ namespace MsgPack.Serialization
 					Assert.That(
 #if !UNITY
 						result[ index ].ToString().Equals( ( ( IFormattable )propertyInfo.GetValue( value, null ) ).ToString( "D", null ) ),
-						result[ index ] + " == " + ( ( IFormattable )propertyInfo.GetValue( value, null ) ).ToString( "D", null )
+						result[ index ] + " == " + ( ( IFormattable )propertyInfo.GetValue( value , null) ).ToString( "D", null )
 #else
 						result[ index ].ToString().Equals( ( ( IFormattable )propertyInfo.GetGetMethod().Invoke( value, null ) ).ToString( "D", null ) ),
 						result[ index ] + " == " + ( ( IFormattable )propertyInfo.GetGetMethod().Invoke( value , null) ).ToString( "D", null )

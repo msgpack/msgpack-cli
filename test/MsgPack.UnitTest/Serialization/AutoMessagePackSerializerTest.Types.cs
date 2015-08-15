@@ -9164,6 +9164,8 @@ namespace MsgPack.Serialization
 			public FileSystemEntry NormalKnown { get; set; }
 			[MessagePackRuntimeType]
 			public Object ObjectRuntime { get; set; }
+			[MessagePackRuntimeType]
+			public Object ObjectRuntimeOmittedType { get; set; }
 			public IList<string> ListVanilla { get; set; }
 			[MessagePackKnownCollectionItemType( "1", typeof( FileEntry ) )]
 			[MessagePackKnownCollectionItemType( "2", typeof( DirectoryEntry ) )]
@@ -9560,3 +9562,31 @@ namespace MsgPack.Serialization
 
 		#endregion -- Polymorphism --
 }
+
+// Issue #108
+namespace MsgPack.UnitTest.TestTypes
+{
+	public class OmittedType
+	{
+		public string Value { get; set; }
+
+		public OmittedType() {}
+
+		public override bool Equals( object obj )
+		{
+			var other = obj as OmittedType;
+			if ( other == null )
+			{
+				return false;
+			}
+
+			return this.Value == other.Value;
+		}
+
+		public override int GetHashCode()
+		{
+			return this.Value == null ? 0 : this.Value.GetHashCode();
+		}
+	}
+}
+

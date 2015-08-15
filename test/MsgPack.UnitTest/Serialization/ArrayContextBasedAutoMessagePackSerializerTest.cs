@@ -10849,6 +10849,7 @@ namespace MsgPack.Serialization
 				target.NormalRuntime = new FileEntry { Name = "File", Size = 1 };
 				target.NormalKnown = new FileEntry { Name = "File", Size = 2 };
 				target.ObjectRuntime = new FileEntry { Name = "File", Size = 3 };
+				target.ObjectRuntimeOmittedType = new MsgPack.UnitTest.TestTypes.OmittedType { Value = "ABC" };
 				target.ListVanilla = new List<string> { "ABC" };
 				target.ListKnownItem = new List<FileSystemEntry> { new FileEntry { Name = "File", Size = 1 } };
 				target.ListKnwonContainerRuntimeItem = new List<FileSystemEntry> { new FileEntry { Name = "File", Size = 2 } };
@@ -10878,6 +10879,8 @@ namespace MsgPack.Serialization
 					Assert.That( result.NormalKnown, Is.InstanceOf( target.NormalKnown.GetType() ), "NormalKnown" );
 					Assert.That( result.ObjectRuntime, Is.EqualTo( target.ObjectRuntime ), "ObjectRuntime" );
 					Assert.That( result.ObjectRuntime, Is.InstanceOf( target.ObjectRuntime.GetType() ), "ObjectRuntime" );
+					Assert.That( result.ObjectRuntimeOmittedType, Is.EqualTo( target.ObjectRuntimeOmittedType ), "ObjectRuntimeOmittedType" );
+					Assert.That( result.ObjectRuntimeOmittedType, Is.InstanceOf( target.ObjectRuntimeOmittedType.GetType() ), "ObjectRuntimeOmittedType" );
 					Assert.That( result.ListVanilla, Is.EqualTo( target.ListVanilla ), "ListVanilla" );
 					Assert.That( result.ListVanilla, Is.InstanceOf( target.ListVanilla.GetType() ), "ListVanilla" );
 					Assert.That( result.ListKnownItem, Is.EqualTo( target.ListKnownItem ), "ListKnownItem" );
@@ -10921,6 +10924,7 @@ namespace MsgPack.Serialization
 					Assert.That( result.NormalRuntime, Is.Null );
 					Assert.That( result.NormalKnown, Is.Null );
 					Assert.That( result.ObjectRuntime, Is.Null );
+					Assert.That( result.ObjectRuntimeOmittedType, Is.Null );
 					Assert.That( result.ListVanilla, Is.Null );
 					Assert.That( result.ListKnownItem, Is.Null );
 					Assert.That( result.ListKnwonContainerRuntimeItem, Is.Null );

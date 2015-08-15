@@ -930,6 +930,34 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 GeneratePolymorphismTestTypes();
 #>
 }
+
+// Issue #108
+namespace MsgPack.UnitTest.TestTypes
+{
+	public class OmittedType
+	{
+		public string Value { get; set; }
+
+		public OmittedType() {}
+
+		public override bool Equals( object obj )
+		{
+			var other = obj as OmittedType;
+			if ( other == null )
+			{
+				return false;
+			}
+
+			return this.Value == other.Value;
+		}
+
+		public override int GetHashCode()
+		{
+			return this.Value == null ? 0 : this.Value.GetHashCode();
+		}
+	}
+}
+
 <#+
 private static string ToTypeName( Type type )
 {

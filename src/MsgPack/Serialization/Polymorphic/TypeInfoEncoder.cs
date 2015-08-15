@@ -53,12 +53,11 @@ namespace MsgPack.Serialization.Polymorphic
 		{
 			var assemblyName =
 #if !SILVERLIGHT
- type.GetAssembly().GetName();
+				type.GetAssembly().GetName();
 #else
 				new AssemblyName( type.GetAssembly().FullName );
 #endif // !SILVERLIGHT
 
-			// Omit namespace prefix when it equals to declaring assembly simple name.
 #if DEBUG && !UNITY
 			Contract.Assert( type.Namespace != null, "type.Namespace != null" );
 #endif // DEBUG && !UNITY
@@ -67,9 +66,11 @@ namespace MsgPack.Serialization.Polymorphic
 			packer.PackArrayHeader( 6 );
 
 			packer.Pack( ( byte )TypeInfoEncoding.RawCompressed );
+
+			// Omit namespace prefix when it equals to declaring assembly simple name.
 			var compressedTypeName =
 				type.Namespace.StartsWith( assemblyName.Name, StringComparison.Ordinal )
-					? Elipsis + type.FullName.Substring( assemblyName.Name.Length )
+					? Elipsis + type.FullName.Substring( assemblyName.Name.Length + 1 )
 					: type.FullName;
 			var version = new byte[ 16 ];
 			Buffer.BlockCopy( BitConverter.GetBytes( assemblyName.Version.Major ), 0, version, 0, 4 );
@@ -194,22 +195,22 @@ namespace MsgPack.Serialization.Polymorphic
 					};
 				assemblyName.SetPublicKeyToken( publicKeyToken );
 #else
-			var assemblyName = 
-				new AssemblyName( 
-					String.Format( 
-						CultureInfo.InvariantCulture, 
-						"{0},Version={1},Culture={2},PublicKeyToken={3}",
-						assemblySimpleName,
-						new Version(
-							BitConverter.ToInt32( version, 0 ),
-							BitConverter.ToInt32( version, 4 ),
-							BitConverter.ToInt32( version, 8 ),
-							BitConverter.ToInt32( version, 12 )
-						),
-						String.IsNullOrEmpty( culture ) ? "neutral" : culture,
-						( publicKeyToken == null || publicKeyToken.Length == 0 ) ? "null" : Binary.ToHexString( publicKeyToken, false )
-					)
-				);
+				var assemblyName = 
+					new AssemblyName( 
+						String.Format( 
+							CultureInfo.InvariantCulture, 
+							"{0},Version={1},Culture={2},PublicKeyToken={3}",
+							assemblySimpleName,
+							new Version(
+								BitConverter.ToInt32( version, 0 ),
+								BitConverter.ToInt32( version, 4 ),
+								BitConverter.ToInt32( version, 8 ),
+								BitConverter.ToInt32( version, 12 )
+							),
+							String.IsNullOrEmpty( culture ) ? "neutral" : culture,
+							( publicKeyToken == null || publicKeyToken.Length == 0 ) ? "null" : Binary.ToHexString( publicKeyToken, false )
+						)
+					);
 #endif // !NETFX_CORE
 
 				return
@@ -218,14 +219,14 @@ namespace MsgPack.Serialization.Polymorphic
 #if SILVERLIGHT
 					.ToString()
 #endif // SILVERLIGHT
- ).GetType(
+				).GetType(
 						compressedTypeName.StartsWith( Elipsis, StringComparison.Ordinal )
 							? assemblySimpleName + compressedTypeName
 							: compressedTypeName
 #if !NETFX_CORE
-, throwOnError: true
+						, throwOnError: true
 #endif // !NETFX_CORE
- );
+				);
 			}
 		}
 	}

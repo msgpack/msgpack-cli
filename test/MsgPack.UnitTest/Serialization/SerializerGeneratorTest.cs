@@ -818,7 +818,7 @@ namespace MsgPack.Serialization
 				Assert.That( resultCS.Length, Is.EqualTo( 2 ) );
 
 				var one = resultCS.SingleOrDefault( r => r.TargetType == typeof( GeneratorTestObject ) );
-				Assert.That( one, Is.Not.Null, String.Join( ", ", resultCS.Select( r => r.TargetType ) ) );
+				Assert.That( one, Is.Not.Null, String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
 				Assert.That(
 					one.FilePath,
 					Is.EqualTo(
@@ -829,7 +829,7 @@ namespace MsgPack.Serialization
 								.Concat( configuration.Namespace.Split( Type.Delimiter ) )
 								.Concat(
 									new[] { "MsgPack_Serialization_GeneratorTestObjectSerializer.cs" }
-								)
+								).ToArray()
 							)
 						)
 					)
@@ -851,7 +851,7 @@ namespace MsgPack.Serialization
 				);
 
 				var another = resultCS.SingleOrDefault( r => r.TargetType == typeof( AnotherGeneratorTestObject ) );
-				Assert.That( another, Is.Not.Null, String.Join( ", ", resultCS.Select( r => r.TargetType ) ) );
+				Assert.That( another, Is.Not.Null, String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
 				Assert.That(
 					another.FilePath,
 					Is.EqualTo(
@@ -862,7 +862,7 @@ namespace MsgPack.Serialization
 								.Concat( configuration.Namespace.Split( Type.Delimiter ) )
 								.Concat(
 									new[] { "MsgPack_Serialization_AnotherGeneratorTestObjectSerializer.cs" }
-								)
+								).ToArray()
 							)
 						)
 					)
