@@ -314,3 +314,13 @@ Release 0.6.0 - 2015/08/09
   * Fix Unpacker does not handle ext types in skipping.
   * Fix SerializerGenerator and mpu.exe do not handle EnumSerializationMethod. Issue #102.
   * Fix SerializerGenerator and mpu.exe do not exclude types which are handled with built-in serializers. Issue #104.
+
+Release 0.6.1 - 2015/08/16
+
+  IMPROVEMENTS
+  * Recursive generation now supports generic arguments and array element types. Issue #106.
+  * New SerializerGenerator.GenerateSerializerCodeAssembly and GenerateSerializerSourceCodes, which return structured information including target types and serializer type names. It should improve pre-generation experience. Issue #107.
+
+  BUG FIXES
+  * Fix SerializerGenerator does not filter out built-in types when they are appeared in members instead of API arguments. Issue #105.
+  * Fix type embedding fails if the type name starts with its assembly simple name. Issue #108.
