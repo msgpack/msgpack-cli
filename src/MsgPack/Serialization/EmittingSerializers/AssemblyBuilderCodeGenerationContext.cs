@@ -25,7 +25,6 @@ using System.Linq;
 using System.Reflection.Emit;
 
 using MsgPack.Serialization.AbstractSerializers;
-using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
@@ -38,7 +37,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private readonly SerializationMethodGeneratorManager _generatorManager;
 		private readonly AssemblyBuilder _assemblyBuilder;
 		private readonly string _directory;
-		private readonly bool _preferReflectionBasedSerializer;
 		private readonly List<SerializerSpecification> _generatedSerializers;
 
 		public AssemblyBuilderCodeGenerationContext( SerializationContext context, AssemblyBuilder assemblyBuilder, SerializerAssemblyGenerationConfiguration configuration )
@@ -48,7 +46,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			DefaultSerializationMethodGeneratorManager.SetUpAssemblyBuilderAttributes( assemblyBuilder, false );
 			this._generatorManager = SerializationMethodGeneratorManager.Get( assemblyBuilder );
-			this._preferReflectionBasedSerializer = configuration.PreferReflectionBasedSerializer;
 			this._directory = configuration.OutputDirectory;
 			this._generatedSerializers = new List<SerializerSpecification>();
 		}

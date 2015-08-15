@@ -31,7 +31,6 @@ using System.Security;
 using System.Text;
 
 using MsgPack.Serialization.AbstractSerializers;
-using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization.CodeDomSerializers
 {
@@ -204,7 +203,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 #if !NETFX_35 && !UNITY && !NETFX_40
 					|| traits.DetailedCollectionType == CollectionDetailedKind.GenericReadOnlyDictionary
 #endif // !NETFX_35 && !UNITY && !NETFX_40
- )
+				)
 				{
 					this.KeyToAdd = CodeDomConstruct.Parameter( traits.ElementType.GetGenericArguments()[ 0 ], "key" );
 					this.ValueToAdd = CodeDomConstruct.Parameter( traits.ElementType.GetGenericArguments()[ 1 ], "value" );
