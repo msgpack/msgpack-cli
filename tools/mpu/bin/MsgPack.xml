@@ -3735,24 +3735,11 @@
             	Defines common interface for context objects of serializer code generation.
             </summary>
         </member>
-        <member name="M:MsgPack.Serialization.AbstractSerializers.ISerializerCodeGenerationContext.BuiltInSerializerExists(System.Type,MsgPack.Serialization.CollectionTraits)">
-            <summary>
-            	Determines that whether built-in serializer for specified type exists or not.
-            </summary>
-            <param name="type">The type for check.</param>
-            <param name="traits">The known <see cref="T:MsgPack.Serialization.CollectionTraits"/> of the <paramref name="type"/>.</param>
-            <returns>
-            	<c>true</c> if built-in serializer for specified type exists; <c>false</c>, otherwise.
-            </returns>
-            <exception cref="T:System.ArgumentNullException">
-            	<paramref name="type"/> is <c>null</c>.
-            </exception>
-        </member>
         <member name="M:MsgPack.Serialization.AbstractSerializers.ISerializerCodeGenerationContext.Generate">
             <summary>
             	Generates codes for this context.
             </summary>
-            <returns>The path of generated files.</returns>
+            <returns>A <see cref="T:MsgPack.Serialization.SerializerCodeGenerationResult"/> collection which correspond to genereated codes.</returns>
         </member>
         <member name="T:MsgPack.Serialization.AbstractSerializers.ISerializerCodeGenerator">
             <summary>
@@ -4635,9 +4622,6 @@
             <exception cref="T:System.NotSupportedException">
             	This class does not support code generation.
             </exception>
-            <remarks>
-            	This method will not do anything when <see cref="M:MsgPack.Serialization.AbstractSerializers.ISerializerCodeGenerationContext.BuiltInSerializerExists(System.Type,MsgPack.Serialization.CollectionTraits)"/> returns <c>true</c> for <typeparamref name="TObject"/>.
-            </remarks>
         </member>
         <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.BuildSerializerCodeCore(MsgPack.Serialization.AbstractSerializers.ISerializerCodeGenerationContext,System.Type,MsgPack.Serialization.PolymorphismSchema)">
             <summary>
@@ -4874,17 +4858,6 @@
             	The configured nil-implication for tuple items.
             </value>
         </member>
-        <member name="M:MsgPack.Serialization.CodeDomSerializers.CodeDomContext.BuiltInSerializerExists(System.Type,MsgPack.Serialization.CollectionTraits)">
-            <summary>
-            	Determines that whether built-in serializer for specified type exists or not.
-            </summary>
-            <param name="type">The type for check.</param>
-            <param name="traits">The known <see cref="T:MsgPack.Serialization.CollectionTraits"/> of the <paramref name="type"/>.</param>
-            <returns>
-              <c>true</c> if built-in serializer for specified type exists; <c>false</c>, otherwise.
-            </returns>
-            <exception cref="T:System.NotImplementedException"></exception>
-        </member>
         <member name="M:MsgPack.Serialization.CodeDomSerializers.CodeDomContext.GetUniqueVariableName(System.String)">
             <summary>
             	Gets a unique name of a local variable.
@@ -4908,7 +4881,7 @@
             <summary>
             	Generates codes for this context.
             </summary>
-            <returns>The path of generated files.</returns>
+            <returns>A <see cref="T:MsgPack.Serialization.SerializerCodeGenerationResult"/> collection which correspond to genereated codes.</returns>
         </member>
         <member name="M:MsgPack.Serialization.CodeDomSerializers.CodeDomContext.CreateCodeCompileUnit">
             <summary>
@@ -6375,30 +6348,20 @@
             	An <see cref="T:MsgPack.Serialization.AbstractSerializers.ISerializerCodeGenerationContext"/> for <see cref="T:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderSerializerBuilder`1"/>.
             </summary>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderCodeGenerationContext.CreateEmittingContext(System.Type,System.Type)">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderCodeGenerationContext.CreateEmittingContext(System.Type,MsgPack.Serialization.CollectionTraits,System.Type)">
             <summary>
             	Create new <see cref="T:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderEmittingContext"/> for specified <see cref="T:System.Type"/>.
             </summary>
-            <param name="type">The type will be emitted.</param>
+            <param name="targetType">The target type of the serializer.</param>
+            <param name="targetTypeCollectionTraits">The collection traits of <paramref name="targetType"/>.</param>
             <param name="serializerBaseClass">The base class of the serializer.</param>
             <returns><see cref="T:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderEmittingContext"/>.</returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderCodeGenerationContext.BuiltInSerializerExists(System.Type,MsgPack.Serialization.CollectionTraits)">
-            <summary>
-            	Determines that whether built-in serializer for specified type exists or not.
-            </summary>
-            <param name="type">The type for check.</param>
-            <param name="traits">The known <see cref="T:MsgPack.Serialization.CollectionTraits"/> of the <paramref name="type"/>.</param>
-            <returns>
-              <c>true</c> if built-in serializer for specified type exists; <c>false</c>, otherwise.
-            </returns>
-            <exception cref="T:System.NotImplementedException"></exception>
         </member>
         <member name="M:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderCodeGenerationContext.Generate">
             <summary>
             	Generates codes for this context.
             </summary>
-            <returns>The path of generated files.</returns>
+            <returns>A <see cref="T:MsgPack.Serialization.SerializerCodeGenerationResult"/> collection which correspond to genereated codes.</returns>
         </member>
         <member name="T:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderEmittingContext">
             <summary>
@@ -6922,11 +6885,11 @@
             	This value will not be <c>null</c>.
             </returns>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter.#ctor(System.Type)">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter.#ctor(MsgPack.Serialization.AbstractSerializers.SerializerSpecification)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter"/> class.
             </summary>
-            <param name="targetType">Type of the target.</param>
+            <param name="specification">The specification of the serializer.</param>
         </member>
         <member name="M:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter.GetPackToMethodILGenerator">
             <summary>
@@ -7048,39 +7011,39 @@
             	This value will not be <c>null</c>.
             </returns>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEmitter(System.Type,System.Type,MsgPack.Serialization.EmitterFlavor)">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEmitter(MsgPack.Serialization.AbstractSerializers.SerializerSpecification,System.Type,MsgPack.Serialization.EmitterFlavor)">
             <summary>
             	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
             </summary>
-            <param name="targetType">The type of the serialization target.</param>
+            <param name="specification">The specification of the serializer.</param>
             <param name="baseClass">Type of the base class of the serializer.</param>
             <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
             <returns>New <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</returns>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEmitterCore(System.Type,System.Type,MsgPack.Serialization.EmitterFlavor)">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEmitterCore(MsgPack.Serialization.AbstractSerializers.SerializerSpecification,System.Type,MsgPack.Serialization.EmitterFlavor)">
             <summary>
             	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
             </summary>
-            <param name="targetType">The type of the serialization target.</param>
+            <param name="specification">The specification of the serializer.</param>
             <param name="baseClass">Type of the base class of the serializer.</param>
             <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
             <returns>New <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</returns>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEnumEmitter(MsgPack.Serialization.SerializationContext,System.Type,MsgPack.Serialization.EmitterFlavor)">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEnumEmitter(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.AbstractSerializers.SerializerSpecification,MsgPack.Serialization.EmitterFlavor)">
             <summary>
             	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
             </summary>
             <param name="context">The <see cref="T:MsgPack.Serialization.SerializationContext"/>.</param>
-            <param name="targetType">The type of the serialization target.</param>
+            <param name="specification">The specification of the serializer.</param>
             <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
             <returns>New <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</returns>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEnumEmitterCore(MsgPack.Serialization.SerializationContext,System.Type,MsgPack.Serialization.EmitterFlavor)">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEnumEmitterCore(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.AbstractSerializers.SerializerSpecification,MsgPack.Serialization.EmitterFlavor)">
             <summary>
             	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
             </summary>
             <param name="context">The <see cref="T:MsgPack.Serialization.SerializationContext"/>.</param>
-            <param name="targetType">The type of the serialization target.</param>
+            <param name="specification">The specification of the serializer.</param>
             <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
             <returns>New <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</returns>
         </member>
@@ -7094,12 +7057,23 @@
             	This value will not be <c>null</c>.
             </returns>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.DefaultSerializationMethodGeneratorManager.CreateEmitterCore(System.Type,System.Type,MsgPack.Serialization.EmitterFlavor)">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.DefaultSerializationMethodGeneratorManager.CreateEmitterCore(MsgPack.Serialization.AbstractSerializers.SerializerSpecification,System.Type,MsgPack.Serialization.EmitterFlavor)">
             <summary>
             	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
             </summary>
-            <param name="targetType">The type of the serialization target.</param>
+            <param name="specification">The specification of the serializer.</param>
             <param name="baseClass">Type of the base class of the serializer.</param>
+            <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
+            <returns>
+            	New <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.DefaultSerializationMethodGeneratorManager.CreateEnumEmitterCore(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.AbstractSerializers.SerializerSpecification,MsgPack.Serialization.EmitterFlavor)">
+            <summary>
+            	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
+            </summary>
+            <param name="context">The <see cref="T:MsgPack.Serialization.SerializationContext"/>.</param>
+            <param name="specification">The specification of the serializer.</param>
             <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
             <returns>
             	New <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
@@ -7164,14 +7138,13 @@
             	<see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> using instance fields to hold serializers for target members.
             </summary>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedEnumSerializerEmitter.#ctor(MsgPack.Serialization.SerializationContext,System.Reflection.Emit.ModuleBuilder,System.Nullable{System.Int32},System.Type,System.Boolean)">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedEnumSerializerEmitter.#ctor(MsgPack.Serialization.SerializationContext,System.Reflection.Emit.ModuleBuilder,MsgPack.Serialization.AbstractSerializers.SerializerSpecification,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter"/> class.
             </summary>
             <param name="context">A <see cref="T:MsgPack.Serialization.SerializationContext"/>.</param>
             <param name="host">The host <see cref="T:System.Reflection.Emit.ModuleBuilder"/>.</param>
-            <param name="sequence">The sequence number to name new type.</param>
-            <param name="targetType">Type of the serialization target.</param>
+            <param name="specification">The specification of the serializer.</param>
             <param name="isDebuggable">Set to <c>true</c> when <paramref name="host"/> is debuggable.</param>
         </member>
         <member name="T:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter">
@@ -7179,13 +7152,12 @@
             	<see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> using instance fields to hold serializers for target members.
             </summary>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter.#ctor(System.Reflection.Emit.ModuleBuilder,System.Nullable{System.Int32},System.Type,System.Type,System.Boolean)">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter.#ctor(System.Reflection.Emit.ModuleBuilder,MsgPack.Serialization.AbstractSerializers.SerializerSpecification,System.Type,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter"/> class.
             </summary>
             <param name="host">The host <see cref="T:System.Reflection.Emit.ModuleBuilder"/>.</param>
-            <param name="sequence">The sequence number to name new type.</param>
-            <param name="targetType">Type of the serialization target.</param>
+            <param name="specification">The specification of the serializer.</param>
             <param name="baseClass">Type of the base class of the serializer.</param>
             <param name="isDebuggable">Set to <c>true</c> when <paramref name="host"/> is debuggable.</param>
         </member>
@@ -10096,6 +10068,60 @@
             	so the generated source code must have the accessibility when and only when they will be same assembly as MsgPack library itself.
             </remarks>
         </member>
+        <member name="T:MsgPack.Serialization.SerializerCodeGenerationResult">
+            <summary>
+            	Represents result of serializer code generation for each input target types.
+            </summary>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializerCodeGenerationResult.FilePath">
+            <summary>
+            	Gets the file path which contains generated serializer.
+            </summary>
+            <value>
+            	The file path which contains generated serializer.
+            </value>
+            <remarks>
+            	If the generation method generates source codes, this property indicates each generated source code file. 
+            	Else, if the genration method generates an assembly, this property indicates the assembly file.
+            	This property will not be <c>null</c>, and will be valid file path.
+            </remarks>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializerCodeGenerationResult.TargetType">
+            <summary>
+            	Gets the target type of serializer generation.
+            </summary>
+            <value>
+            	The target type of serializer generation.
+            	This property will not be <c>null</c>.
+            </value>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializerCodeGenerationResult.SerializerTypeNamespace">
+            <summary>
+            	Gets the namespace of the generated serializer.
+            </summary>
+            <value>
+            	The namespace of the generated serializer.
+            	This value will not be <c>null</c>, but might be empty which represents global namespace.
+            </value>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializerCodeGenerationResult.SerializerTypeName">
+            <summary>
+            	Gets the type name of the generated serializer.
+            </summary>
+            <value>
+            	The type name of the generated serializer.
+            	This property will not be <c>null</c> nor empty.
+            </value>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializerCodeGenerationResult.SerializerTypeFullName">
+            <summary>
+            	Gets the full name of the generated serializer type.
+            </summary>
+            <value>
+            	The full name of the generated serializer type.
+            	This property will not be <c>null</c> nor empty.
+            </value>
+        </member>
         <member name="T:MsgPack.Serialization.SerializerDebugging">
             <summary>
             	Holds debugging support information.
@@ -10247,12 +10273,46 @@
             	Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are automatically generated.
             </remarks>
         </member>
+        <member name="M:MsgPack.Serialization.SerializerGenerator.GenerateSerializerCodeAssembly(MsgPack.Serialization.SerializerAssemblyGenerationConfiguration,System.Type[])">
+            <summary>
+            	Generates an assembly which contains auto-generated serializer types for specified types.
+            </summary>
+            <param name="configuration">The <see cref="T:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration"/> which holds required <see cref="P:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.AssemblyName"/> and optional settings.</param>
+            <param name="targetTypes">The target types where serializer types to be generated.</param>
+            <returns>
+            	A <see cref="T:MsgPack.Serialization.SerializerCodeGenerationResult"/> collection which correspond to codes generated to <paramref name="targetTypes"/>.
+            	All <see cref="P:MsgPack.Serialization.SerializerCodeGenerationResult.FilePath"/> properties of items will be same and will point to generated DLL file.
+            </returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="configuration"/> is <c>null</c>. Or, <paramref name="targetTypes"/> is <c>null</c>.</exception>
+            <exception cref="T:System.InvalidOperationException"><see cref="P:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.AssemblyName"/> of <paramref name="configuration"/> is not set correctly.</exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+            <remarks>
+            	Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are automatically generated.
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.SerializerGenerator.GenerateSerializerCodeAssembly(MsgPack.Serialization.SerializerAssemblyGenerationConfiguration,System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            	Generates an assembly which contains auto-generated serializer types for specified types.
+            </summary>
+            <param name="configuration">The <see cref="T:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration"/> which holds required <see cref="P:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.AssemblyName"/> and optional settings.</param>
+            <param name="targetTypes">The target types where serializer types to be generated.</param>
+            <returns>
+            	A <see cref="T:MsgPack.Serialization.SerializerCodeGenerationResult"/> collection which correspond to codes generated to <paramref name="targetTypes"/>.
+            	All <see cref="P:MsgPack.Serialization.SerializerCodeGenerationResult.FilePath"/> properties of items will be same and will point to generated DLL file.
+            </returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="configuration"/> is <c>null</c>. Or, <paramref name="targetTypes"/> is <c>null</c>.</exception>
+            <exception cref="T:System.InvalidOperationException"><see cref="P:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.AssemblyName"/> of <paramref name="configuration"/> is not set correctly.</exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+            <remarks>
+            	Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are automatically generated.
+            </remarks>
+        </member>
         <member name="M:MsgPack.Serialization.SerializerGenerator.GenerateCode(System.Type[])">
             <summary>
             	Generates source codes which implement auto-generated serializer types for specified types with default configuration.
             </summary>
             <param name="targetTypes">The target types where serializer types to be generated.</param>
-            <returns>The file path for generated single module assembly file.</returns>
+            <returns>A file path collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
             <exception cref="T:System.ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
             <remarks>
@@ -10265,7 +10325,7 @@
             	Generates source codes which implement auto-generated serializer types for specified types with default configuration.
             </summary>
             <param name="targetTypes">The target types where serializer types to be generated.</param>
-            <returns>The file path for generated single module assembly file.</returns>
+            <returns>A file path collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
             <exception cref="T:System.ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
             <remarks>
@@ -10279,7 +10339,7 @@
             </summary>
             <param name="configuration">The <see cref="T:MsgPack.Serialization.SerializerCodeGenerationConfiguration"/> which holds optional settings. Specifying <c>null</c> means using default settings.</param>
             <param name="targetTypes">The target types where serializer types to be generated.</param>
-            <returns>The file path for generated single module assembly file.</returns>
+            <returns>A file path collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
             <exception cref="T:System.ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
             <remarks>
@@ -10293,7 +10353,61 @@
             </summary>
             <param name="configuration">The <see cref="T:MsgPack.Serialization.SerializerCodeGenerationConfiguration"/> which holds optional settings. Specifying <c>null</c> means using default settings.</param>
             <param name="targetTypes">The target types where serializer types to be generated.</param>
-            <returns>The file path for generated single module assembly file.</returns>
+            <returns>A file path collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+            <remarks>
+            	Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are NOT generated.
+            	This method just generate serializer types for specified types.
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.SerializerGenerator.GenerateSerializerSourceCodes(System.Type[])">
+            <summary>
+            	Generates source codes which implement auto-generated serializer types for specified types with default configuration.
+            </summary>
+            <param name="targetTypes">The target types where serializer types to be generated.</param>
+            <returns>A <see cref="T:MsgPack.Serialization.SerializerCodeGenerationResult"/> collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+            <remarks>
+            	Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are NOT generated.
+            	This method just generate serializer types for specified types.
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.SerializerGenerator.GenerateSerializerSourceCodes(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            	Generates source codes which implement auto-generated serializer types for specified types with default configuration.
+            </summary>
+            <param name="targetTypes">The target types where serializer types to be generated.</param>
+            <returns>A <see cref="T:MsgPack.Serialization.SerializerCodeGenerationResult"/> collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+            <remarks>
+            	Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are NOT generated.
+            	This method just generate serializer types for specified types.
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.SerializerGenerator.GenerateSerializerSourceCodes(MsgPack.Serialization.SerializerCodeGenerationConfiguration,System.Type[])">
+            <summary>
+            	Generates source codes which implement auto-generated serializer types for specified types with specified configuration.
+            </summary>
+            <param name="configuration">The <see cref="T:MsgPack.Serialization.SerializerCodeGenerationConfiguration"/> which holds optional settings. Specifying <c>null</c> means using default settings.</param>
+            <param name="targetTypes">The target types where serializer types to be generated.</param>
+            <returns>A <see cref="T:MsgPack.Serialization.SerializerCodeGenerationResult"/> collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+            <remarks>
+            	Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are NOT generated.
+            	This method just generate serializer types for specified types.
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.SerializerGenerator.GenerateSerializerSourceCodes(MsgPack.Serialization.SerializerCodeGenerationConfiguration,System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            	Generates source codes which implement auto-generated serializer types for specified types with specified configuration.
+            </summary>
+            <param name="configuration">The <see cref="T:MsgPack.Serialization.SerializerCodeGenerationConfiguration"/> which holds optional settings. Specifying <c>null</c> means using default settings.</param>
+            <param name="targetTypes">The target types where serializer types to be generated.</param>
+            <returns>A <see cref="T:MsgPack.Serialization.SerializerCodeGenerationResult"/> collection which correspond to codes generated to <paramref name="targetTypes"/>.</returns>
             <exception cref="T:System.ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
             <remarks>
