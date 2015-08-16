@@ -324,3 +324,10 @@ Release 0.6.1 - 2015/08/16
   BUG FIXES
   * Fix SerializerGenerator does not filter out built-in types when they are appeared in members instead of API arguments. Issue #105.
   * Fix type embedding fails if the type name starts with its assembly simple name. Issue #108.
+
+Release 0.6.1.1 - 2015/08/16
+
+  This release is only zip release for Unity because other dists are not affected at all.
+
+  BUG FIXES
+  * Fix IL2CPP crash. Issue #101.
