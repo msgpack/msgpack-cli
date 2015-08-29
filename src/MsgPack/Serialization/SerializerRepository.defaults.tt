@@ -121,6 +121,18 @@ var __excludes =
 		typeof( System.Threading.SpinLock ),
 		typeof( System.Threading.SpinWait ),
 		typeof( System.Threading.Tasks.ParallelLoopResult ),
+		// .NET 4.6 Types -- comment out when you face T4Template problems
+		typeof( System.Security.Cryptography.HashAlgorithmName ),
+		typeof( System.Diagnostics.Tracing.EventSourceOptions ),
+		typeof( System.Threading.AsyncLocalValueChangedArgs<> ),
+		// SIMD types -- should be supported soon
+		typeof( System.Numerics.Matrix3x2 ),
+		typeof( System.Numerics.Matrix4x4 ),
+		typeof( System.Numerics.Plane ),
+		typeof( System.Numerics.Quaternion ),
+		typeof( System.Numerics.Vector2 ),
+		typeof( System.Numerics.Vector3 ),
+		typeof( System.Numerics.Vector4 ),
 	};
 var __winRTExcludes =
 	new HashSet<string>()
