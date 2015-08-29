@@ -39,7 +39,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				throw new SerializationException( "System.Object cannot be serialized." );
 			}
 
-			packer.PackObject( value );
+			packer.PackObject( value, this.OwnerContext );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]

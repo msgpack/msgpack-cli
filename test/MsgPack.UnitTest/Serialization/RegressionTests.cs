@@ -115,5 +115,59 @@ namespace MsgPack.Serialization
 				Assert.That( a[ 1 ].Length, Is.EqualTo( 0 ) );
 			}
 		}
+
+#if !UNITY
+		[Test]
+		public void TestIssue111()
+		{
+			var context = new SerializationContext
+			{
+				SerializationMethod = SerializationMethod.Map,
+				EnumSerializationMethod = EnumSerializationMethod.ByName,
+				CompatibilityOptions =
+				{
+					PackerCompatibilityOptions = PackerCompatibilityOptions.None
+				}
+			};
+			var serializer = context.GetSerializer<Dictionary<string, object>>();
+
+			var dict = new Dictionary<string, object>();
+			dict[ "a" ] = "x";
+			dict[ "b" ] = true;
+			dict[ "c" ] = 5;
+			dict[ "myclass" ] = new Issue111Class() { x = 8, y = "ola" };
+
+			byte[] body = serializer.PackSingleObject( dict );
+
+			using ( var stream = new MemoryStream( body ) )
+			{
+				var unpackedDictionary = Unpacking.UnpackDictionary( stream );
+				Assert.That( unpackedDictionary.Count, Is.EqualTo( 4 ) );
+				Assert.That( unpackedDictionary[ "a" ] == "x" );
+				Assert.That( unpackedDictionary[ "b" ] == true );
+				Assert.That( unpackedDictionary[ "c" ] == 5 );
+				Assert.That( unpackedDictionary[ "myclass" ].IsDictionary );
+				var myClass = unpackedDictionary[ "myclass" ].AsDictionary();
+				Assert.That( myClass[ "x" ] == 8 );
+				Assert.That( myClass[ "y" ] == "ola" );
+			}
+		}
+
+		// Define other methods and classes here
+		public enum Issue111Aux
+		{
+			AuxZero = 0,
+			AuxOne = 1,
+			AuxTwo = 2,
+			AuxThree = 3,
+		}
+
+		public class Issue111Class
+		{
+			public int x;
+			public string y;
+			public Issue111Aux aux;
+		}
+#endif // !UNITY
 	}
 }
