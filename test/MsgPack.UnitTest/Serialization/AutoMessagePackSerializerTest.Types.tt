@@ -37,6 +37,8 @@ var __fields =
 		new Tuple<Object, string, string, bool>( typeof( DateTimeOffset ), String.Empty, "DateTimeOffset.UtcNow", true ),
 		new Tuple<Object, string, string, bool>( typeof( Uri ), String.Empty, "new Uri( \"http://example.com/\" )", true ),
 		new Tuple<Object, string, string, bool>( typeof( Version ), String.Empty, "new Version( 1, 2, 3, 4 )", true ),
+		new Tuple<Object, string, string, bool>( typeof( CultureInfo ), "InvariantCultureField", "CultureInfo.InvariantCulture", true ),
+		new Tuple<Object, string, string, bool>( typeof( CultureInfo ), "CurrentCultureField", "CultureInfo.CurrentCulture", true ),
 		new Tuple<Object, string, string, bool>( typeof( FILETIME ), String.Empty, "ToFileTime( DateTime.UtcNow )", true ),
 		new Tuple<Object, string, string, bool>( typeof( TimeSpan ), String.Empty, "TimeSpan.FromMilliseconds( 123456789 )", true ),
 		new Tuple<Object, string, string, bool>( typeof( Guid ), String.Empty, "Guid.NewGuid()", true ),
@@ -156,6 +158,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 #if !NETFX_35 && !WINDOWS_PHONE

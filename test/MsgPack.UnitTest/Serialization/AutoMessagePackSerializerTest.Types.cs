@@ -28,6 +28,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 #if !NETFX_35 && !WINDOWS_PHONE
@@ -195,6 +196,20 @@ namespace MsgPack.Serialization
 		{
 			get { return this._VersionField; }
 			set { this._VersionField = value; }
+		}
+		private CultureInfo _InvariantCultureField;
+		
+		public CultureInfo InvariantCultureField
+		{
+			get { return this._InvariantCultureField; }
+			set { this._InvariantCultureField = value; }
+		}
+		private CultureInfo _CurrentCultureField;
+		
+		public CultureInfo CurrentCultureField
+		{
+			get { return this._CurrentCultureField; }
+			set { this._CurrentCultureField = value; }
 		}
 		private FILETIME _FILETIMEField;
 		
@@ -605,6 +620,8 @@ namespace MsgPack.Serialization
 			this._DateTimeOffsetField = DateTimeOffset.UtcNow;
 			this._UriField = new Uri( "http://example.com/" );
 			this._VersionField = new Version( 1, 2, 3, 4 );
+			this._InvariantCultureField = CultureInfo.InvariantCulture;
+			this._CurrentCultureField = CultureInfo.CurrentCulture;
 			this._FILETIMEField = ToFileTime( DateTime.UtcNow );
 			this._TimeSpanField = TimeSpan.FromMilliseconds( 123456789 );
 			this._GuidField = Guid.NewGuid();
@@ -715,6 +732,8 @@ namespace MsgPack.Serialization
 			AutoMessagePackSerializerTest.Verify( expected._DateTimeOffsetField, this._DateTimeOffsetField );
 			AutoMessagePackSerializerTest.Verify( expected._UriField, this._UriField );
 			AutoMessagePackSerializerTest.Verify( expected._VersionField, this._VersionField );
+			AutoMessagePackSerializerTest.Verify( expected._InvariantCultureField, this._InvariantCultureField );
+			AutoMessagePackSerializerTest.Verify( expected._CurrentCultureField, this._CurrentCultureField );
 			AutoMessagePackSerializerTest.Verify( expected._FILETIMEField, this._FILETIMEField );
 			AutoMessagePackSerializerTest.Verify( expected._TimeSpanField, this._TimeSpanField );
 			AutoMessagePackSerializerTest.Verify( expected._GuidField, this._GuidField );

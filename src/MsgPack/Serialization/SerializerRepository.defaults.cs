@@ -45,7 +45,7 @@ namespace MsgPack.Serialization
 	// ReSharper disable RedundantNameQualifier
 	partial class SerializerRepository 
 	{
-		internal const int DefaultTableCapacity = 441;
+		internal const int DefaultTableCapacity = 451;
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This API is naturally coupled with many types" )]
 		internal static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable( SerializationContext ownerContext )
@@ -111,6 +111,7 @@ namespace MsgPack.Serialization
 #if !UNITY
 			dictionary.Add( typeof( System.ArraySegment<> ).TypeHandle, typeof( System_ArraySegment_1MessagePackSerializer<> ) );
 #endif // !UNITY
+			dictionary.Add( typeof( System.Globalization.CultureInfo ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Globalization_CultureInfoMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( System.Collections.DictionaryEntry ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_DictionaryEntryMessagePackSerializer( ownerContext ) );
 #if !SILVERLIGHT && !NETFX_CORE
 			dictionary.Add( typeof( System.Collections.Stack ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_StackMessagePackSerializer( ownerContext ) );

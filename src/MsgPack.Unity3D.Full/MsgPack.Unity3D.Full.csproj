@@ -343,6 +343,9 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_DBNullMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_DBNullMessagePackSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Globalization_CultureInfoMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_Globalization_CultureInfoMessagePackSerializer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs</Link>
     </Compile>
@@ -663,6 +666,9 @@
     <Compile Include="Serialization\TypedMessagePackSerializerWrapper`1.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\MsgPack\remarks.xml">
+      <Link>remarks.xml</Link>
+    </None>
     <None Include="CorLibOnlyHelper.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CorLibOnlyHelper.cs</LastGenOutput>

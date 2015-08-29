@@ -154,6 +154,7 @@ var __classTypes =
 	new[]
 	{
 		typeof( ArraySegment<> ),
+		typeof( System.Globalization.CultureInfo ),
 		typeof( DictionaryEntry ),
 		typeof( System.Collections.Stack ),
 		typeof( System.Collections.Queue ),
