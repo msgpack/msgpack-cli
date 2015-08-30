@@ -27,7 +27,7 @@ using System.Security;
 [assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010-2014" )]
 
 
-[assembly: AssemblyFileVersion( "0.6.2053.357" )]
+[assembly: AssemblyFileVersion( "0.6.2067.367" )]
 
 [assembly: AllowPartiallyTrustedCallers]
 
