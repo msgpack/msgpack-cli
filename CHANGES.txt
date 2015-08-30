@@ -336,3 +336,6 @@ Release 0.6.2 - 2015/08/30
 
   BUG FIXES
   * Fix built-in serializer for System.Object does not honor current context. Issue #111.
+
+  IMPROVEMENTS
+  * Add built-in System.Globalization.CultureInfo serializer. Issue #112.
