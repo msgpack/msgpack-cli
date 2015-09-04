@@ -1,0 +1,454 @@
+﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ include file="..\Core.ttinclude" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Runtime.InteropServices" #> 
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
+using System;
+
+namespace MsgPack
+{
+	// This file was generated from ItemsUnpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit ItemsUnpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude instead.
+
+	partial class ItemsUnpacker
+	{
+<#
+this.PushIndent( 2 );
+
+foreach( var type in
+	new []
+	{ 
+		typeof( bool ), 
+		typeof( byte ), typeof( sbyte ),
+		typeof( short ), typeof( ushort ),
+		typeof( int ), typeof( uint ),
+		typeof( long ), typeof( ulong ),
+		typeof( float ), typeof( double ),
+	}
+)
+{
+	this.WriteReadBody( type.Name, type.Name, false, () => this.WriteReadScalar( type ) );
+	this.WriteReadBody( type.Name, type.Name, true, () => this.WriteReadScalar( type ) );
+
+	this.WriteReadBody( "Nullable" + type.Name, type.Name + "?", false, () => this.WriteReadScalar( typeof( Nullable<> ).MakeGenericType( type ) ) );
+	this.WriteReadBody( "Nullable" + type.Name, type.Name + "?", true, () => this.WriteReadScalar( typeof( Nullable<> ).MakeGenericType( type ) ) );
+}
+
+this.WriteReadBody( "Binary", "Byte[]", false, () => this.WriteReadRaw( "Byte[]", "Binary", true ) );
+this.WriteReadBody( "Binary", "Byte[]", true, () => this.WriteReadRaw( "Byte[]", "Binary", true ) );
+this.WriteReadBody( "String", "String", false, () => this.WriteReadRaw( "String", "String", true ) );
+this.WriteReadBody( "String", "String", true, () => this.WriteReadRaw( "String", "String", true ) );
+
+this.WriteReadBody( "Object", "MessagePackObject", false, () => this.WriteReadObject() );
+this.WriteReadBody( "Object", "MessagePackObject", true, () => this.WriteReadObject() );
+this.WriteReadBody( "ArrayLength", "Int64", false, () => this.WriteReadLength( "ArrayLength", false ) );
+this.WriteReadBody( "ArrayLength", "Int64", true, () => this.WriteReadLength( "ArrayLength", false ) );
+this.WriteReadBody( "MapLength", "Int64", false, () => this.WriteReadLength( "MapLength", false ) );
+this.WriteReadBody( "MapLength", "Int64", true, () => this.WriteReadLength( "MapLength", false ) );
+
+this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", false, () => this.WriteReadExt() );
+this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", true, () => this.WriteReadExt() );
+this.PopIndent();
+#>
+	}
+}
+
+<#+
+
+private static readonly Type[] ScalarTypes =
+			new []
+			{
+				typeof( sbyte ), typeof( short ), typeof( int ), typeof( long ),
+				typeof( byte ), typeof( ushort ), typeof( uint ), typeof( ulong ),
+				typeof( float ), typeof( double )
+			};
+
+private static readonly string[] ExtCodes = new [] { "FixExt1", "FixExt2", "FixExt4", "FixExt8", "FixExt16", "Ext8", "Ext16", "Ext32" };
+
+private class TypeCodeMapping
+{
+	public string Code { get; set; }
+	public Type CodeType { get; set; }
+	public int Size { get; set; }
+}
+
+private static readonly TypeCodeMapping[] TypeCodeMappings =
+		new [] 
+		{
+			"SByte", "Int16", "Int32", "Int64",
+			"Byte", "UInt16", "UInt32", "UInt64",
+			"Single", "Double"
+		}.Zip( ScalarTypes,
+			( code, codeType ) => new TypeCodeMapping{ Code = code, CodeType = codeType, Size = Marshal.SizeOf( codeType ) }
+		).ToArray();
+
+private void WriteReadBody( string typeName, string fullTypeName, bool isForSubtree, Action bodyWriter )
+{
+#>
+<#= isForSubtree ? "internal" : "public override" #> bool Read<#= isForSubtree ? "Subtree" : String.Empty #><#= typeName #>( out <#= fullTypeName #> result )
+{
+<#+
+	if( !isForSubtree )
+	{
+#>
+#if !UNITY
+	this.EnsureNotInSubtreeMode();
+#endif // !UNITY
+
+	return this.ReadSubtree<#= typeName #>( out result );
+<#+
+	}
+	else
+	{
+		this.PushIndent( 1 );
+		bodyWriter();
+		this.PopIndent();
+	}
+#>
+}
+
+<#+
+} // WriteReadBody
+
+private void WriteReadBodyCore( string typeName, bool isNullable, Action<string, DecodedVariable, string> bodyWriter )
+{
+#>
+byte header;
+long integral;
+float real32;
+double real64;
+var type = this.ReadValue( out header, out integral, out real32, out real64 );
+switch( type )
+{
+	case ReadValueResult.Eof:
+	{
+		result = default( <#= typeName #> );
+		return false;
+	}
+<#+
+	if( isNullable )
+	{
+#>
+	case ReadValueResult.Nil:
+	{
+<#+
+		this.PushIndent( 2 );
+		this.OnReturnScalar();
+		this.PopIndent();
+#>
+		result = null;
+		return true;
+	}
+<#+
+	} // if( isNullable )
+
+	this.PushIndent( 1 );
+	bodyWriter( "type", new DecodedVariable( "integral", "real32", "real64" ), "result" );
+	this.PopIndent();
+#>
+	default:
+	{
+		throw this.NewTypeException( typeof( <#= typeName #> ), header );
+	}
+}
+<#+
+} // WriteReadBodyCore( Type type, bool isNullable, Action<string, DecodedVariable, string> bodyWriter )
+
+private void WriteReadScalar( Type type )
+{
+	var nullableUnderlying  = Nullable.GetUnderlyingType( type );
+	WriteReadBodyCore( ( nullableUnderlying ?? type ).Name, nullableUnderlying != null, ( t, valueVar, resultVar ) => WriteReadScalarCore( nullableUnderlying ?? type, nullableUnderlying != null, valueVar, resultVar ) );
+}
+
+private void WriteReadScalarCore( Type type, bool isNullable, DecodedVariable valueVariable, string resultVariable )
+{
+	if( type == typeof( bool ) )
+	{
+#>
+case ReadValueResult.Boolean:
+{
+<#+
+		this.PushIndent( 1 );
+		this.OnReturnScalar();
+		this.PopIndent();
+#>
+	<#= resultVariable #> = <#= valueVariable.Integral #> != 0;
+	return true;
+}
+<#+
+		return; // bool is done.
+	} // if( type == typeof( bool ) )
+
+	var thisEntry = TypeCodeMappings.SingleOrDefault( e => e.CodeType == type );
+	if( thisEntry != null )
+	{
+#>
+case ReadValueResult.<#= thisEntry.Code #>:
+{
+<#+
+		this.PushIndent( 1 );
+		this.OnReturnScalar();
+		this.PopIndent();
+#>
+	<#= resultVariable #>  = <#= CastIfNecessary( type, false, valueVariable.Get( type ) ) #>;
+	return true;
+}
+<#+
+	} // if
+
+	foreach( var entry in TypeCodeMappings.Where( e => CanConvertTo( type, e.Size ) && e.CodeType != type ) )
+	{
+#>
+case ReadValueResult.<#= entry.Code #>:
+<#+
+	} // foreach
+#>
+{
+<#+
+		this.PushIndent( 1 );
+		this.OnReturnScalar();
+		this.PopIndent();
+#>
+	<#= resultVariable #> = <#= CastIfNecessary( type, true, valueVariable.Get( type ) ) #>;
+	return true;
+}
+<#+
+} // WriteReadScalarCore()
+
+private void WriteReadLength( string code, bool isNullable )
+{
+	WriteReadBodyCore( "Int64", isNullable, ( t, valueVar, resultVar ) => this.WriteReadLengthCore( code, valueVar, resultVar ) );
+} // WriteReadLength( string typeName, string code )
+
+private void WriteReadLengthCore( string code, DecodedVariable valueVariable, string resultVariable )
+{
+#>
+case ReadValueResult.<#= code #>:
+{
+	<#= resultVariable #> = this.Read<#= code #>Core( <#= valueVariable.Integral #> );
+	this.CheckLength( <#= resultVariable #>, ReadValueResult.<#= code #> );
+	return true;
+}
+<#+
+} // WriteReadLengthCore( string code, string headerVariable, DecodedVariable valueVariable, string resultVariable )
+
+
+private void WriteReadRaw( string typeName, string code, bool isNullable )
+{
+	WriteReadBodyCore( typeName, isNullable, ( t, valueVar, resultVar ) => this.WriteReadRawCore( code, valueVar, resultVar ) );
+} // WriteReadRaw( string typeName, string code )
+
+private void WriteReadRawCore( string code, DecodedVariable valueVariable, string resultVariable )
+{
+#>
+case ReadValueResult.String:
+case ReadValueResult.Binary:
+{
+	<#= resultVariable #> = this.Read<#= code #>Core( <#= valueVariable.Integral #> );
+	return true;
+}
+<#+
+} // WriteReadRawCore( string code, string headerVariable, DecodedVariable valueVariable, string resultVariable )
+
+private void WriteReadObject()
+{
+	WriteReadBodyCore( "MessagePackObject", false, ( typeVar, valueVar, resultVar ) => this.WriteReadObjectCore( typeVar, valueVar, resultVar ) );
+} // WriteReadObject()
+
+private void WriteReadObjectCore( string typeVariable, DecodedVariable valueVariable, string resultVariable )
+{
+#>
+case ReadValueResult.Nil:
+{
+<#+
+		this.PushIndent( 1 );
+		this.OnReturnScalar();
+		this.PopIndent();
+#>
+	<#= resultVariable #> = MessagePackObject.Nil;
+	this.InternalData = <#= resultVariable #>;
+	return true;
+}
+case ReadValueResult.Boolean:
+{
+<#+
+		this.PushIndent( 1 );
+		this.OnReturnScalar();
+		this.PopIndent();
+#>
+	<#= resultVariable #> = <#= valueVariable.Integral #> != 0;
+	this.InternalData = <#= resultVariable #>;
+	return true;
+}
+<#+
+	foreach( var entry in TypeCodeMappings )
+	{
+#>
+case ReadValueResult.<#= entry.Code #>:
+{
+<#+
+		this.PushIndent( 1 );
+		this.OnReturnScalar();
+		this.PopIndent();
+#>
+	<#= resultVariable #> = <#= CastIfNecessary( entry.CodeType, false, valueVariable.Get( entry.CodeType ) ) #>;
+	this.InternalData = <#= resultVariable #>;
+	return true;
+}
+<#+
+	} // foreach -- scalar
+
+	foreach( var collection in new [] { "Array", "Map" } )
+	{
+#>
+case ReadValueResult.<#= collection #>Length:
+{
+	<#= resultVariable #> = <#= CastIfNecessary( typeof( uint ), false, "this.Read"+ collection + "LengthCore( " + valueVariable.Integral + " )" ) #>;
+	return true;
+}
+<#+
+	} // foreach -- collection
+#>
+case ReadValueResult.String:
+{
+	<#= resultVariable #> = new MessagePackObject( new MessagePackString( this.ReadBinaryCore( <#= valueVariable.Integral #> ), false ) );
+	this.InternalData = <#= resultVariable #>;
+	return true;
+}
+case ReadValueResult.Binary:
+{
+	<#= resultVariable #> = new MessagePackObject( new MessagePackString( this.ReadBinaryCore( <#= valueVariable.Integral #> ), true ) );
+	this.InternalData = <#= resultVariable #>;
+	return true;
+}
+<#+
+	this.WriteReadExtCore( typeVariable, resultVariable, true );
+} // WriteReadObjectCore( string typeVariable, DecodedVariable valueVariable, string resultVariable )
+
+
+private void WriteReadExt()
+{
+	WriteReadBodyCore( "MessagePackExtendedTypeObject", false, ( typeVar, v, resultVar ) => this.WriteReadExtCore( typeVar, resultVar, false ) );
+} // WriteReadExt()
+
+private void WriteReadExtCore( string typeVariable, string resultVariable, bool isMpo )
+{
+
+	foreach( var code in ExtCodes )
+	{
+#>
+case ReadValueResult.<#= code #>:
+<#+
+	} // foreach
+#>
+{
+	<#= resultVariable #> = this.ReadMessagePackExtendedTypeObjectCore( <#= typeVariable #> );
+<#+
+	if( isMpo )
+	{
+#>
+	this.InternalData = <#= resultVariable #>;
+<#+
+	}
+#>
+	return true;
+}
+<#+
+} // WriteReadExtCore( string headerVariable, string resultVariable )
+
+
+private void OnReturnScalar()
+{
+#>
+this.InternalCollectionType = CollectionType.None;
+<#+
+} // OnReturnScalar()
+
+private bool CanConvertTo( Type destination, int size )
+{
+	switch( Type.GetTypeCode( destination ) )
+	{
+		case TypeCode.Single:
+		case TypeCode.Double:
+		{
+			return true;
+		}
+		default:
+		{
+			return System.Runtime.InteropServices.Marshal.SizeOf( destination ) >= size / 8;
+		}
+	}
+} // CanConvertTo( Type destination, String source )
+
+private static string CastIfNecessary( Type target, bool shouldCheckOverflow, string expression )
+{
+	if( target == typeof( long ) || target == typeof( float ) || target == typeof( double ) )
+	{
+		return expression;
+	}
+	else
+	{
+		return String.Format( CultureInfo.InvariantCulture, "{0}( ( {1} ){2} )", ( shouldCheckOverflow ? "checked" : "unchecked" ), target.Name, expression );
+	}
+}
+
+private class DecodedVariable
+{
+	public string Integral { get; private set; }
+	public string Real32 { get; private set; }
+	public string Real64 { get; private set; }
+
+	public DecodedVariable( string integral, string real32, string real64 )
+	{
+		this.Integral = integral;
+		this.Real32 = real32;
+		this.Real64 = real64;
+	}
+
+	public string Get( Type type )
+	{
+		if( type == typeof( float ) )
+		{
+			return this.Real32;
+		}
+
+		if( type == typeof( double ) )
+		{
+			return this.Real64;
+		}
+
+		return this.Integral;
+	}
+}
+#>

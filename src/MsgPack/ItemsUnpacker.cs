@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Globalization;
 using System.IO;
 
 namespace MsgPack
@@ -26,8 +27,10 @@ namespace MsgPack
 	internal sealed partial class ItemsUnpacker : Unpacker
 	{
 		private readonly bool _ownsStream;
-		private readonly Stream _stream;
+		private readonly Stream _source;
+
 		private readonly byte[] _scalarBuffer = new byte[ 8 ];
+
 		internal long InternalItemsCount;
 		internal CollectionType InternalCollectionType;
 		internal MessagePackObject InternalData;
@@ -67,15 +70,20 @@ namespace MsgPack
 
 		protected override Stream UnderlyingStream
 		{
-			get { return this._stream; }
+			get { return this._source; }
 		}
 
 #if DEBUG
 		internal override long? UnderlyingStreamPosition
 		{
-			get { return this._stream.Position; }
+			get { return this.UnderlyingStream.Position; }
 		}
 #endif
+
+		/// <summary>
+		///		An position of seekable <see cref="Stream"/> or offset from start of this instance.
+		/// </summary>
+		private long _offset;
 
 		public ItemsUnpacker( Stream stream, bool ownsStream )
 		{
@@ -84,8 +92,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "stream" );
 			}
 
-			this._stream = stream;
+			this._source = stream;
 			this._ownsStream = ownsStream;
+			this._offset = stream.CanSeek ? stream.Position : 0L;
 		}
 
 		protected override void Dispose( bool disposing )
@@ -94,7 +103,7 @@ namespace MsgPack
 			{
 				if ( this._ownsStream )
 				{
-					this._stream.Dispose();
+					this._source.Dispose();
 				}
 			}
 
@@ -146,6 +155,69 @@ namespace MsgPack
 		internal long? SkipSubtreeItem()
 		{
 			return this.SkipCore();
+		}
+
+		private void ReadStrict( byte[] buffer, int size )
+		{
+			// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
+			if ( size == 0 )
+			{
+				return;
+			}
+
+			var originalOffset = this._offset;
+			var remaining = size;
+			var offset = 0;
+			int read;
+
+			do
+			{
+				read = this._source.Read( buffer, offset, remaining );
+				remaining -= read;
+				offset += read;
+			} while ( read > 0 && remaining > 0 );
+
+			this._offset += offset;
+
+			if ( offset < size )
+			{
+				throw this.NewEofException( size, originalOffset );
+			}
+		}
+
+		private Exception NewEofException( long lastOffset, long reading )
+		{
+			return new InvalidMessagePackStreamException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						this._source.CanSeek
+						? "Stream unexpectedly ends. Cannot read {0:#,0} bytes from stream at position {1:#,0}."
+						: "Stream unexpectedly ends. Cannot read {0:#,0} bytes from stream at offset {1:#,0}.",
+						reading,
+						lastOffset
+					)
+				);
+		}
+
+		private byte ReadByteStrict()
+		{
+			var originalOffset = this._offset;
+			var result = this._source.ReadByte();
+			if ( result < 1 )
+			{
+				throw new InvalidMessagePackStreamException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						this._source.CanSeek
+						? "Stream unexpectedly ends. Cannot read a byte from stream at position {0:#,0}."
+						: "Stream unexpectedly ends. Cannot read a byte from stream at offset {0:#,0}.",
+						originalOffset
+					)
+				);
+			}
+
+			this._offset++;
+			return unchecked( ( byte )result );
 		}
 
 		internal enum CollectionType

@@ -49,7 +49,7 @@ namespace MsgPack
 
 		protected sealed override long? SkipCore()
 		{
-			var source = this._stream;
+			var source = this._source;
 			var buffer = this._scalarBuffer;
 #if !UNITY
 			Contract.Assert( source != null, "source != null" );

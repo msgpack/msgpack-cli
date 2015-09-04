@@ -97,6 +97,9 @@
     <Compile Include="..\MsgPack\ItemsUnpacker.cs">
       <Link>ItemsUnpacker.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\ItemsUnpacker.Read.cs">
+      <Link>ItemsUnpacker.Read.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\ItemsUnpacker.Skipping.cs">
       <Link>ItemsUnpacker.Skipping.cs</Link>
     </Compile>

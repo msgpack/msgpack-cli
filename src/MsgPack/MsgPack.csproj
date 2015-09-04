@@ -121,11 +121,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ItemsUnpacker.cs" />
-    <Compile Include="ItemsUnpacker.Unpacking.cs">
+    <Compile Include="ItemsUnpacker.Read.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ItemsUnpacker.Unpacking.tt</DependentUpon>
+      <DependentUpon>ItemsUnpacker.Read.tt</DependentUpon>
     </Compile>
+    <Compile Include="ItemsUnpacker.Unpacking.cs" />
     <Compile Include="IUnpackable.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -517,10 +518,6 @@
     <None Include="..\MsgPack.snk">
       <Link>MsgPack.snk</Link>
     </None>
-    <None Include="ItemsUnpacker.Unpacking.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ItemsUnpacker.Unpacking.cs</LastGenOutput>
-    </None>
     <None Include="Serialization\DefaultSerializers\DefaultSerializers.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DefaultSerializers.cs</LastGenOutput>
@@ -587,6 +584,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ItemsUnpacker.Read.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ItemsUnpacker.Read.cs</LastGenOutput>
+    </Content>
     <Content Include="remarks.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
