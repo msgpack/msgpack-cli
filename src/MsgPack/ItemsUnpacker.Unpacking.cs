@@ -317,20 +317,37 @@ namespace MsgPack
 
 			this.CheckLength( length, ReadValueResult.String );
 
+			var length32 = unchecked( ( int )length );
+			var bytes = BufferManager.GetByteBuffer();
+#if DEBUG
+			try
+			{ 
+#endif // DEBUG
+
+			if ( length32 <= bytes.Length )
+			{
+				this.ReadStrict( bytes, length32 );
+				var result = Encoding.UTF8.GetString( bytes, 0, length32 );
+				this.InternalCollectionType = CollectionType.None;
+				return result;
+			}
+
 			var decoder = Encoding.UTF8.GetDecoder();
-			int chunkSize = length > 16 * 1024 ? 16 * 1024 : unchecked( ( int )length );
-			var bytes = new byte[ chunkSize ];
-			var chars = new char[ chunkSize ];
-			var stringBuffer = new StringBuilder( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
-			var remaining = length;
+			var chars = BufferManager.GetCharBuffer();
+#if DEBUG
+			try
+			{ 
+#endif // DEBUG
+			var stringBuffer = new StringBuilder( Math.Min( length32, Int32.MaxValue ) );
+			var remaining = length32;
 			do
 			{
-				var reading = ( remaining > bytes.Length ) ? bytes.Length : unchecked( ( int )remaining );
+				var reading = Math.Min( remaining, bytes.Length );
 				var bytesRead = this._source.Read( bytes, 0, reading );
 				this._offset += bytesRead;
 				if ( bytesRead == 0 )
 				{
-					throw this.NewEofException( 0, reading );
+					throw NewEofException( 0, reading );
 				}
 
 				remaining -= bytesRead;
@@ -363,6 +380,18 @@ namespace MsgPack
 
 			this.InternalCollectionType = CollectionType.None;
 			return stringBuffer.ToString();
+#if DEBUG
+			}
+			finally
+			{
+				BufferManager.ReleaseCharBuffer();
+			}
+			}
+			finally
+			{
+				BufferManager.ReleaseByteBuffer();
+			}
+#endif // DEBUG
 		}
 
 		private MessagePackExtendedTypeObject ReadMessagePackExtendedTypeObjectCore( ReadValueResult type )

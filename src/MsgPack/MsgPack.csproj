@@ -110,6 +110,9 @@
     </Compile>
     <Compile Include="BigEndianBinary.cs" />
     <Compile Include="Binary.cs" />
+    <Compile Include="BufferManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="CollectionDebuggerProxy`1.cs" />
     <Compile Include="CollectionOperation.cs" />
     <Compile Include="DictionaryDebuggerProxy`2.cs" />
