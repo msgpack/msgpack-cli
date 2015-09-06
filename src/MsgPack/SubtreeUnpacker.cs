@@ -23,7 +23,6 @@
 #endif
 
 using System;
-using System.Collections.Generic;
 #if !UNITY
 #if XAMIOS || XAMDROID
 using Contract = MsgPack.MPContract;
@@ -165,15 +164,25 @@ namespace MsgPack
 
 			if ( this._unpacked.Count == 0  )
 			{
-				throw new InvalidOperationException( "This unpacker is located in the tail." );
+				ThrowInTailException();
 			}
 
 			if ( this._root.InternalCollectionType == ItemsUnpacker.CollectionType.None )
 			{
-				throw new InvalidOperationException( "This unpacker is not located in the head of collection." );
+				ThrowNotInHeadOfCollectionException();
 			}
 
 			return new SubtreeUnpacker( this._root, this );
+		}
+
+		private static void ThrowInTailException()
+		{
+			throw new InvalidOperationException( "This unpacker is located in the tail." );
+		}
+
+		private static void ThrowNotInHeadOfCollectionException()
+		{
+			throw new InvalidOperationException( "This unpacker is not located in the head of collection." );
 		}
 
 		protected override bool ReadCore()

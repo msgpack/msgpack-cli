@@ -34,7 +34,6 @@
 #endif
 
 using System;
-using System.Collections.Generic;
 #if !UNITY
 #if XAMIOS || XAMDROID
 using Contract = MsgPack.MPContract;
@@ -42,7 +41,6 @@ using Contract = MsgPack.MPContract;
 using System.Diagnostics.Contracts;
 #endif // XAMIOS || XAMDROID
 #endif // !UNITY
-using System.Globalization;
 
 #if !UNITY || MSGPACK_UNITY_FULL
 using Int64Stack = System.Collections.Generic.Stack<System.Int64>;
@@ -55,11 +53,9 @@ namespace MsgPack
 
 	partial class ItemsUnpacker
 	{
-		private static readonly byte[] DummyBufferForSkipping = new byte[ 64 * 1024 ];
-
-		protected sealed override long? SkipCore()
+		protected override long? SkipCore()
 		{
-			var source = this._stream;
+			var source = this._source;
 			var buffer = this._scalarBuffer;
 #if !UNITY
 			Contract.Assert( source != null, "source != null" );
@@ -386,10 +382,9 @@ this.PopIndent();
 					case MessagePackCode.FixExt1:
 					{
 						skipped += 1;
-						byte typeCode;
 <#
 this.PushIndent( 6 );
-this.WriteUnpackByte( "typeCode" );
+this.WriteUnpackByte( null );
 this.WriteDrainValue( "1" );
 this.WriteTryPopCollection();
 this.PopIndent();
@@ -399,10 +394,9 @@ this.PopIndent();
 					case MessagePackCode.FixExt2:
 					{
 						skipped += 1;
-						byte typeCode;
 <#
 this.PushIndent( 6 );
-this.WriteUnpackByte( "typeCode" );
+this.WriteUnpackByte( null );
 this.WriteDrainValue( "2" );
 this.WriteTryPopCollection();
 this.PopIndent();
@@ -412,23 +406,14 @@ this.PopIndent();
 					case MessagePackCode.FixExt4:
 					{
 						skipped += 1;
-						byte typeCode;
-<#
-this.PushIndent( 6 );
-this.WriteUnpackByte( "typeCode" );
-this.WriteDrainValue( "4" );
-this.WriteTryPopCollection();
-this.PopIndent();
-#>
 						continue;
 					}
 					case MessagePackCode.FixExt8:
 					{
 						skipped += 1;
-						byte typeCode;
 <#
 this.PushIndent( 6 );
-this.WriteUnpackByte( "typeCode" );
+this.WriteUnpackByte( null );
 this.WriteDrainValue( "8" );
 this.WriteTryPopCollection();
 this.PopIndent();
@@ -438,10 +423,9 @@ this.PopIndent();
 					case MessagePackCode.FixExt16:
 					{
 						skipped += 1;
-						byte typeCode;
 <#
 this.PushIndent( 6 );
-this.WriteUnpackByte( "typeCode" );
+this.WriteUnpackByte( null );
 this.WriteDrainValue( "16" );
 this.WriteTryPopCollection();
 this.PopIndent();
@@ -451,12 +435,11 @@ this.PopIndent();
 					case MessagePackCode.Ext8:
 					{
 						skipped += 1;
-						byte typeCode;
 						byte length;
 <#
 this.PushIndent( 6 );
 this.WriteUnpackByte( "length" );
-this.WriteUnpackByteSubsequent( "typeCode" );
+this.WriteUnpackByteSubsequent( null );
 this.WriteDrainValue( "length" );
 this.WriteTryPopCollection();
 this.PopIndent();
@@ -466,12 +449,11 @@ this.PopIndent();
 					case MessagePackCode.Ext16:
 					{
 						skipped += 1;
-						byte typeCode;
 						ushort length;
 <#
 this.PushIndent( 6 );
 this.WriteUnpackLength( 2, "length" );
-this.WriteUnpackByteSubsequent( "typeCode" );
+this.WriteUnpackByteSubsequent( null );
 this.WriteDrainValue( "length" );
 this.WriteTryPopCollection();
 this.PopIndent();
@@ -481,12 +463,11 @@ this.PopIndent();
 					case MessagePackCode.Ext32:
 					{
 						skipped += 1;
-						byte typeCode;
 						uint length;
 <#
 this.PushIndent( 6 );
 this.WriteUnpackLength( 4, "length" );
-this.WriteUnpackByteSubsequent( "typeCode" );
+this.WriteUnpackByteSubsequent( null );
 this.WriteDrainValue( "length" );
 this.WriteTryPopCollection();
 this.PopIndent();
@@ -495,7 +476,8 @@ this.PopIndent();
 					}
 					default:
 					{
-						throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
+						ThrowUnassingedMessageTypeException( header );
+						return null; // Never reach
 					}
 				}
 			} while ( remainingItems > 0 );
@@ -560,12 +542,24 @@ long bytesRead = 0;
 while( <#= sizeVariable #> > bytesRead )
 {
 	var remaining = ( <#= sizeVariable #> - bytesRead );
-	var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-	bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+	var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+#if DEBUG
+	try
+	{
+#endif // DEBUG
+	var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+	bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 	if ( bytesRead < reading )
 	{
 		return null;
 	}
+#if DEBUG
+	}
+	finally
+	{
+		BufferManager.ReleaseByteBuffer();
+	}
+#endif // DEBUG
 }
 
 skipped += bytesRead;
@@ -606,7 +600,14 @@ private void WriteUnpackByteCore( string lengthVariable, bool needsDeclaration )
 <#= needsDeclaration ? "var" : String.Empty #> read = source.Read( buffer, 0, 1 );
 if ( read == 1 )
 {
+<#+
+	if ( lengthVariable != null )
+	{
+#>
 	<#= lengthVariable #> = buffer[0];
+<#+
+	}
+#>
 	skipped += 1;
 }
 else

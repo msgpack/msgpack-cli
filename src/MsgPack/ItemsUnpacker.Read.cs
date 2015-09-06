@@ -28,8 +28,8 @@ using System;
 
 namespace MsgPack
 {
-	// This file was generated from ItemsUnpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit ItemsUnpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from ItemsUnpacker.Read.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit ItemsUnpacker.Read.tt and StreamingUnapkcerBase.ttinclude instead.
 
 	partial class ItemsUnpacker
 	{
@@ -64,7 +64,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Boolean ), header );
+					this.ThrowTypeException( typeof( Boolean ), header );
+					result = default( Boolean ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -106,7 +108,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Boolean ), header );
+					this.ThrowTypeException( typeof( Boolean ), header );
+					result = default( Boolean ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -156,7 +160,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Byte ), header );
+					this.ThrowTypeException( typeof( Byte ), header );
+					result = default( Byte ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -212,7 +218,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Byte ), header );
+					this.ThrowTypeException( typeof( Byte ), header );
+					result = default( Byte ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -262,7 +270,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( SByte ), header );
+					this.ThrowTypeException( typeof( SByte ), header );
+					result = default( SByte ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -318,7 +328,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( SByte ), header );
+					this.ThrowTypeException( typeof( SByte ), header );
+					result = default( SByte ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -368,7 +380,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Int16 ), header );
+					this.ThrowTypeException( typeof( Int16 ), header );
+					result = default( Int16 ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -424,7 +438,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Int16 ), header );
+					this.ThrowTypeException( typeof( Int16 ), header );
+					result = default( Int16 ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -474,7 +490,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( UInt16 ), header );
+					this.ThrowTypeException( typeof( UInt16 ), header );
+					result = default( UInt16 ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -530,7 +548,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( UInt16 ), header );
+					this.ThrowTypeException( typeof( UInt16 ), header );
+					result = default( UInt16 ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -580,7 +600,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Int32 ), header );
+					this.ThrowTypeException( typeof( Int32 ), header );
+					result = default( Int32 ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -636,7 +658,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Int32 ), header );
+					this.ThrowTypeException( typeof( Int32 ), header );
+					result = default( Int32 ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -686,7 +710,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( UInt32 ), header );
+					this.ThrowTypeException( typeof( UInt32 ), header );
+					result = default( UInt32 ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -742,7 +768,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( UInt32 ), header );
+					this.ThrowTypeException( typeof( UInt32 ), header );
+					result = default( UInt32 ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -792,7 +820,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Int64 ), header );
+					this.ThrowTypeException( typeof( Int64 ), header );
+					result = default( Int64 ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -848,7 +878,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Int64 ), header );
+					this.ThrowTypeException( typeof( Int64 ), header );
+					result = default( Int64 ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -898,7 +930,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( UInt64 ), header );
+					this.ThrowTypeException( typeof( UInt64 ), header );
+					result = default( UInt64 ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -954,7 +988,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( UInt64 ), header );
+					this.ThrowTypeException( typeof( UInt64 ), header );
+					result = default( UInt64 ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -1004,7 +1040,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Single ), header );
+					this.ThrowTypeException( typeof( Single ), header );
+					result = default( Single ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -1060,7 +1098,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Single ), header );
+					this.ThrowTypeException( typeof( Single ), header );
+					result = default( Single ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -1110,7 +1150,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Double ), header );
+					this.ThrowTypeException( typeof( Double ), header );
+					result = default( Double ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -1166,7 +1208,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Double ), header );
+					this.ThrowTypeException( typeof( Double ), header );
+					result = default( Double ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -1208,7 +1252,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Byte[] ), header );
+					this.ThrowTypeException( typeof( Byte[] ), header );
+					result = default( Byte[] ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -1250,7 +1296,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( String ), header );
+					this.ThrowTypeException( typeof( String ), header );
+					result = default( String ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -1399,7 +1447,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( MessagePackObject ), header );
+					this.ThrowTypeException( typeof( MessagePackObject ), header );
+					result = default( MessagePackObject ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -1435,7 +1485,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Int64 ), header );
+					this.ThrowTypeException( typeof( Int64 ), header );
+					result = default( Int64 ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -1471,7 +1523,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( Int64 ), header );
+					this.ThrowTypeException( typeof( Int64 ), header );
+					result = default( Int64 ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}
@@ -1513,7 +1567,9 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw this.NewTypeException( typeof( MessagePackExtendedTypeObject ), header );
+					this.ThrowTypeException( typeof( MessagePackExtendedTypeObject ), header );
+					result = default( MessagePackExtendedTypeObject ); // Never reach
+					return false; // Never reach
 				}
 			}
 		}

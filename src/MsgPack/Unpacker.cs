@@ -144,7 +144,7 @@ namespace MsgPack
 
 			if ( this._mode != mode )
 			{
-				throw this.NewInvalidModeException();
+				this.ThrowInvalidModeException();
 			}
 		}
 
@@ -155,17 +155,18 @@ namespace MsgPack
 		{
 			if ( this._mode == UnpackerMode.Disposed )
 			{
-				throw new ObjectDisposedException( this.GetType().FullName );
+				this.ThrowObjectDisposedException();
 			}
 		}
 
-		/// <summary>
-		///		Returns new exception instance to notify invalid mode transition.
-		/// </summary>
-		/// <returns>New exception instance to notify invalid mode transition.</returns>
-		private Exception NewInvalidModeException()
+		private void ThrowObjectDisposedException()
 		{
-			return new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Reader is in '{0}' mode.", this._mode ) );
+			throw new ObjectDisposedException( this.GetType().FullName );
+		}
+
+		private void ThrowInvalidModeException()
+		{
+			throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Reader is in '{0}' mode.", this._mode ) );
 		}
 
 		/// <summary>
@@ -270,17 +271,27 @@ namespace MsgPack
 		{
 			if ( !this.IsCollectionHeader )
 			{
-				throw new InvalidOperationException( "Unpacker does not locate on array nor map header." );
+				ThrowCannotBeSubtreeModeException();
 			}
 
 			if ( this._isSubtreeReading )
 			{
-				throw new InvalidOperationException( "Unpacker is already in 'Subtree' mode." );
+				ThrowInSubtreeModeException();
 			}
 
 			var subtreeReader = this.ReadSubtreeCore();
 			this._isSubtreeReading = !ReferenceEquals( subtreeReader, this );
 			return subtreeReader;
+		}
+
+		private static void ThrowCannotBeSubtreeModeException()
+		{
+			throw new InvalidOperationException( "Unpacker does not locate on array nor map header." );
+		}
+		
+		private static void ThrowInSubtreeModeException()
+		{
+			throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
 		}
 
 		/// <summary>
@@ -336,7 +347,7 @@ namespace MsgPack
 			this.VerifyMode( UnpackerMode.Streaming );
 			if ( this._isSubtreeReading )
 			{
-				throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
+				ThrowInSubtreeModeException();
 			}
 		}
 
@@ -389,12 +400,12 @@ namespace MsgPack
 
 			if( this._mode == UnpackerMode.Enumerating )
 			{
-				throw this.NewInvalidModeException();
+				this.ThrowInvalidModeException();
 			}
 
 			if ( this._isSubtreeReading )
 			{
-				throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
+				ThrowInSubtreeModeException();
 			}
 
 			this._mode = UnpackerMode.Skipping;
@@ -451,10 +462,15 @@ namespace MsgPack
 		{
 			if ( !this.Read() )
 			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+				this.ThrowEofException();
 			}
 
 			return this.UnpackSubtreeData();
+		}
+
+		internal virtual void ThrowEofException()
+		{
+			throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 		}
 
 		/// <summary>

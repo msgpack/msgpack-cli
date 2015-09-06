@@ -181,13 +181,39 @@ namespace MsgPack
 
 			if ( offset < size )
 			{
-				throw this.NewEofException( size, originalOffset );
+				this.ThrowEofException( size, originalOffset );
 			}
 		}
 
-		private Exception NewEofException( long lastOffset, long reading )
+		private byte ReadByteStrict()
 		{
-			return new InvalidMessagePackStreamException(
+			var originalOffset = this._offset;
+			var result = this._source.ReadByte();
+			if ( result < 1 )
+			{
+				this.ThrowEofException( originalOffset, 1);
+			}
+
+			this._offset++;
+			return unchecked( ( byte )result );
+		}
+
+		internal override void ThrowEofException()
+		{
+			throw new InvalidMessagePackStreamException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						this._source.CanSeek
+						? "Stream unexpectedly ends. Cannot read object from stream. Current position is {0:#,0}."
+						: "Stream unexpectedly ends. Cannot read object from stream. Current offset is {0:#,0}.",
+						this._offset
+					)
+				);
+		}
+
+		private void ThrowEofException( long lastOffset, long reading )
+		{
+			throw new InvalidMessagePackStreamException(
 					String.Format(
 						CultureInfo.CurrentCulture,
 						this._source.CanSeek
@@ -197,27 +223,6 @@ namespace MsgPack
 						lastOffset
 					)
 				);
-		}
-
-		private byte ReadByteStrict()
-		{
-			var originalOffset = this._offset;
-			var result = this._source.ReadByte();
-			if ( result < 1 )
-			{
-				throw new InvalidMessagePackStreamException(
-					String.Format(
-						CultureInfo.CurrentCulture,
-						this._source.CanSeek
-						? "Stream unexpectedly ends. Cannot read a byte from stream at position {0:#,0}."
-						: "Stream unexpectedly ends. Cannot read a byte from stream at offset {0:#,0}.",
-						originalOffset
-					)
-				);
-			}
-
-			this._offset++;
-			return unchecked( ( byte )result );
 		}
 
 		internal enum CollectionType

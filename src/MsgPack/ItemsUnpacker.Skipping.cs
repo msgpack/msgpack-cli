@@ -24,7 +24,6 @@
 #endif
 
 using System;
-using System.Collections.Generic;
 #if !UNITY
 #if XAMIOS || XAMDROID
 using Contract = MsgPack.MPContract;
@@ -32,7 +31,6 @@ using Contract = MsgPack.MPContract;
 using System.Diagnostics.Contracts;
 #endif // XAMIOS || XAMDROID
 #endif // !UNITY
-using System.Globalization;
 
 #if !UNITY || MSGPACK_UNITY_FULL
 using Int64Stack = System.Collections.Generic.Stack<System.Int64>;
@@ -45,9 +43,7 @@ namespace MsgPack
 
 	partial class ItemsUnpacker
 	{
-		private static readonly byte[] DummyBufferForSkipping = new byte[ 64 * 1024 ];
-
-		protected sealed override long? SkipCore()
+		protected override long? SkipCore()
 		{
 			var source = this._source;
 			var buffer = this._scalarBuffer;
@@ -253,12 +249,24 @@ namespace MsgPack
 						while( size > bytesRead )
 						{
 							var remaining = ( size - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 							if ( bytesRead < reading )
 							{
 								return null;
 							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
 						}
 						
 						skipped += bytesRead;
@@ -318,12 +326,24 @@ namespace MsgPack
 						while( 1 > bytesRead )
 						{
 							var remaining = ( 1 - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 							if ( bytesRead < reading )
 							{
 								return null;
 							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
 						}
 						
 						skipped += bytesRead;
@@ -360,12 +380,24 @@ namespace MsgPack
 						while( 2 > bytesRead )
 						{
 							var remaining = ( 2 - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 							if ( bytesRead < reading )
 							{
 								return null;
 							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
 						}
 						
 						skipped += bytesRead;
@@ -403,12 +435,24 @@ namespace MsgPack
 						while( 4 > bytesRead )
 						{
 							var remaining = ( 4 - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 							if ( bytesRead < reading )
 							{
 								return null;
 							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
 						}
 						
 						skipped += bytesRead;
@@ -446,12 +490,24 @@ namespace MsgPack
 						while( 8 > bytesRead )
 						{
 							var remaining = ( 8 - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 							if ( bytesRead < reading )
 							{
 								return null;
 							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
 						}
 						
 						skipped += bytesRead;
@@ -480,12 +536,24 @@ namespace MsgPack
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 							if ( bytesRead < reading )
 							{
 								return null;
 							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
 						}
 						
 						skipped += bytesRead;
@@ -533,12 +601,24 @@ namespace MsgPack
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 							if ( bytesRead < reading )
 							{
 								return null;
 							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
 						}
 						
 						skipped += bytesRead;
@@ -586,12 +666,24 @@ namespace MsgPack
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 							if ( bytesRead < reading )
 							{
 								return null;
 							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
 						}
 						
 						skipped += bytesRead;
@@ -849,11 +941,9 @@ namespace MsgPack
 					case MessagePackCode.FixExt1:
 					{
 						skipped += 1;
-						byte typeCode;
 						var read = source.Read( buffer, 0, 1 );
 						if ( read == 1 )
 						{
-							typeCode = buffer[0];
 							skipped += 1;
 						}
 						else
@@ -866,12 +956,24 @@ namespace MsgPack
 						while( 1 > bytesRead )
 						{
 							var remaining = ( 1 - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 							if ( bytesRead < reading )
 							{
 								return null;
 							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
 						}
 						
 						skipped += bytesRead;
@@ -901,11 +1003,9 @@ namespace MsgPack
 					case MessagePackCode.FixExt2:
 					{
 						skipped += 1;
-						byte typeCode;
 						var read = source.Read( buffer, 0, 1 );
 						if ( read == 1 )
 						{
-							typeCode = buffer[0];
 							skipped += 1;
 						}
 						else
@@ -918,12 +1018,24 @@ namespace MsgPack
 						while( 2 > bytesRead )
 						{
 							var remaining = ( 2 - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 							if ( bytesRead < reading )
 							{
 								return null;
 							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
 						}
 						
 						skipped += bytesRead;
@@ -953,63 +1065,14 @@ namespace MsgPack
 					case MessagePackCode.FixExt4:
 					{
 						skipped += 1;
-						byte typeCode;
-						var read = source.Read( buffer, 0, 1 );
-						if ( read == 1 )
-						{
-							typeCode = buffer[0];
-							skipped += 1;
-						}
-						else
-						{
-							return null;
-						}
-						#region DrainValue
-						
-						long bytesRead = 0;
-						while( 4 > bytesRead )
-						{
-							var remaining = ( 4 - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
-							{
-								return null;
-							}
-						}
-						
-						skipped += bytesRead;
-						
-						#endregion DrainValue
-						#region TryPopContextCollection
-						
-						remainingItems--;
-						
-						if( remainingCollections != null )
-						{
-							while ( remainingItems == 0 && remainingCollections.Count > 0 )
-							{
-								if( remainingCollections.Count == 0 )
-								{
-									break;
-								}
-						
-								remainingItems = remainingCollections.Pop();
-								remainingItems--;
-							}
-						}
-						
-						#endregion TryPopContextCollection
 						continue;
 					}
 					case MessagePackCode.FixExt8:
 					{
 						skipped += 1;
-						byte typeCode;
 						var read = source.Read( buffer, 0, 1 );
 						if ( read == 1 )
 						{
-							typeCode = buffer[0];
 							skipped += 1;
 						}
 						else
@@ -1022,12 +1085,24 @@ namespace MsgPack
 						while( 8 > bytesRead )
 						{
 							var remaining = ( 8 - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 							if ( bytesRead < reading )
 							{
 								return null;
 							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
 						}
 						
 						skipped += bytesRead;
@@ -1057,11 +1132,9 @@ namespace MsgPack
 					case MessagePackCode.FixExt16:
 					{
 						skipped += 1;
-						byte typeCode;
 						var read = source.Read( buffer, 0, 1 );
 						if ( read == 1 )
 						{
-							typeCode = buffer[0];
 							skipped += 1;
 						}
 						else
@@ -1074,12 +1147,24 @@ namespace MsgPack
 						while( 16 > bytesRead )
 						{
 							var remaining = ( 16 - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 							if ( bytesRead < reading )
 							{
 								return null;
 							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
 						}
 						
 						skipped += bytesRead;
@@ -1109,7 +1194,6 @@ namespace MsgPack
 					case MessagePackCode.Ext8:
 					{
 						skipped += 1;
-						byte typeCode;
 						byte length;
 						var read = source.Read( buffer, 0, 1 );
 						if ( read == 1 )
@@ -1124,7 +1208,6 @@ namespace MsgPack
 						 read = source.Read( buffer, 0, 1 );
 						if ( read == 1 )
 						{
-							typeCode = buffer[0];
 							skipped += 1;
 						}
 						else
@@ -1137,12 +1220,24 @@ namespace MsgPack
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 							if ( bytesRead < reading )
 							{
 								return null;
 							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
 						}
 						
 						skipped += bytesRead;
@@ -1172,7 +1267,6 @@ namespace MsgPack
 					case MessagePackCode.Ext16:
 					{
 						skipped += 1;
-						byte typeCode;
 						ushort length;
 						var read = source.Read( buffer, 0, 2 );
 						if ( read == 2 )
@@ -1187,7 +1281,6 @@ namespace MsgPack
 						 read = source.Read( buffer, 0, 1 );
 						if ( read == 1 )
 						{
-							typeCode = buffer[0];
 							skipped += 1;
 						}
 						else
@@ -1200,12 +1293,24 @@ namespace MsgPack
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 							if ( bytesRead < reading )
 							{
 								return null;
 							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
 						}
 						
 						skipped += bytesRead;
@@ -1235,7 +1340,6 @@ namespace MsgPack
 					case MessagePackCode.Ext32:
 					{
 						skipped += 1;
-						byte typeCode;
 						uint length;
 						var read = source.Read( buffer, 0, 4 );
 						if ( read == 4 )
@@ -1250,7 +1354,6 @@ namespace MsgPack
 						 read = source.Read( buffer, 0, 1 );
 						if ( read == 1 )
 						{
-							typeCode = buffer[0];
 							skipped += 1;
 						}
 						else
@@ -1263,12 +1366,24 @@ namespace MsgPack
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 							if ( bytesRead < reading )
 							{
 								return null;
 							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
 						}
 						
 						skipped += bytesRead;
@@ -1297,7 +1412,8 @@ namespace MsgPack
 					}
 					default:
 					{
-						throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
+						ThrowUnassingedMessageTypeException( header );
+						return null; // Never reach
 					}
 				}
 			} while ( remainingItems > 0 );

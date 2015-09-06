@@ -38,8 +38,8 @@ using System;
 
 namespace MsgPack
 {
-	// This file was generated from ItemsUnpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit ItemsUnpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from ItemsUnpacker.Read.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit ItemsUnpacker.Read.tt and StreamingUnapkcerBase.ttinclude instead.
 
 	partial class ItemsUnpacker
 	{
@@ -179,7 +179,9 @@ switch( type )
 #>
 	default:
 	{
-		throw this.NewTypeException( typeof( <#= typeName #> ), header );
+		this.ThrowTypeException( typeof( <#= typeName #> ), header );
+		result = default( <#= typeName #> ); // Never reach
+		return false; // Never reach
 	}
 }
 <#+
