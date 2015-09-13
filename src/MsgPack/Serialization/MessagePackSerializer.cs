@@ -663,9 +663,12 @@ namespace MsgPack.Serialization
 			return
 				nonGeneric == null
 				? null
-				: nonGeneric is ICustomizableEnumSerializer
-				? new EnumTypedMessagePackSerializerWrapper<T>( context, nonGeneric )
-				: new TypedMessagePackSerializerWrapper<T>( context, nonGeneric );
+				: ( nonGeneric as TypedMessagePackSerializerWrapper<T> )
+				?? ( 
+					nonGeneric is ICustomizableEnumSerializer
+					? new EnumTypedMessagePackSerializerWrapper<T>( context, nonGeneric )
+					: new TypedMessagePackSerializerWrapper<T>( context, nonGeneric )
+				);
 		}
 #endif // UNITY
 
