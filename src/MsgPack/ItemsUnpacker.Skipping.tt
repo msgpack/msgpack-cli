@@ -406,6 +406,13 @@ this.PopIndent();
 					case MessagePackCode.FixExt4:
 					{
 						skipped += 1;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackByte( null );
+this.WriteDrainValue( "4" );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
 						continue;
 					}
 					case MessagePackCode.FixExt8:

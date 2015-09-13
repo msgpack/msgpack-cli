@@ -1065,6 +1065,63 @@ namespace MsgPack
 					case MessagePackCode.FixExt4:
 					{
 						skipped += 1;
+						var read = source.Read( buffer, 0, 1 );
+						if ( read == 1 )
+						{
+							skipped += 1;
+						}
+						else
+						{
+							return null;
+						}
+						#region DrainValue
+						
+						long bytesRead = 0;
+						while( 4 > bytesRead )
+						{
+							var remaining = ( 4 - bytesRead );
+							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
+						#if DEBUG
+							try
+							{
+						#endif // DEBUG
+							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
+							if ( bytesRead < reading )
+							{
+								return null;
+							}
+						#if DEBUG
+							}
+							finally
+							{
+								BufferManager.ReleaseByteBuffer();
+							}
+						#endif // DEBUG
+						}
+						
+						skipped += bytesRead;
+						
+						#endregion DrainValue
+						#region TryPopContextCollection
+						
+						remainingItems--;
+						
+						if( remainingCollections != null )
+						{
+							while ( remainingItems == 0 && remainingCollections.Count > 0 )
+							{
+								if( remainingCollections.Count == 0 )
+								{
+									break;
+								}
+						
+								remainingItems = remainingCollections.Pop();
+								remainingItems--;
+							}
+						}
+						
+						#endregion TryPopContextCollection
 						continue;
 					}
 					case MessagePackCode.FixExt8:
