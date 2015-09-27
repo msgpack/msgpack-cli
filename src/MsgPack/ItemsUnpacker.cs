@@ -18,7 +18,15 @@
 //
 #endregion -- License Terms --
 
+
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
+#if DEBUG && !UNITY
+using System.Diagnostics.Contracts;
+#endif // DEBUG && !UNITY
 using System.Globalization;
 using System.IO;
 
@@ -159,6 +167,12 @@ namespace MsgPack
 
 		private void ReadStrict( byte[] buffer, int size )
 		{
+#if DEBUG && !UNITY
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG && !UNITY
 			// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
 			if ( size == 0 )
 			{
@@ -178,6 +192,12 @@ namespace MsgPack
 			} while ( read > 0 && remaining > 0 );
 
 			this._offset += offset;
+#if DEBUG && !UNITY
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG && !UNITY
 
 			if ( offset < size )
 			{
@@ -187,6 +207,12 @@ namespace MsgPack
 
 		private byte ReadByteStrict()
 		{
+#if DEBUG && !UNITY
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG && !UNITY
 			var originalOffset = this._offset;
 			var result = this._source.ReadByte();
 			if ( result < 1 )
@@ -195,6 +221,12 @@ namespace MsgPack
 			}
 
 			this._offset++;
+#if DEBUG && !UNITY
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG && !UNITY
 			return unchecked( ( byte )result );
 		}
 
