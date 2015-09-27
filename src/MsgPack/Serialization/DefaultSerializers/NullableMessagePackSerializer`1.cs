@@ -23,9 +23,6 @@
 #endif
 
 using System;
-#if UNITY
-using System.Reflection;
-#endif // UNITY
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -69,21 +66,18 @@ namespace MsgPack.Serialization.DefaultSerializers
 #else
 	internal class NullableMessagePackSerializer : NonGenericMessagePackSerializer
 	{
-		private readonly MethodInfo _getValue;
 		private readonly IMessagePackSingleObjectSerializer _valueSerializer;
 
 		public NullableMessagePackSerializer( SerializationContext ownerContext, Type nullableType, Type underlyingType )
 			: base( ownerContext, nullableType )
 		{
 			this._valueSerializer = ownerContext.GetSerializer( underlyingType );
-			this._getValue = nullableType.GetProperty( "Value" ).GetGetMethod();
 		}
 
 		public NullableMessagePackSerializer( SerializationContext ownerContext, Type nullableType, IMessagePackSingleObjectSerializer valueSerializer )
 			: base( ownerContext, nullableType )
 		{
 			this._valueSerializer = valueSerializer;
-			this._getValue = nullableType.GetProperty( "Value" ).GetGetMethod();
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
