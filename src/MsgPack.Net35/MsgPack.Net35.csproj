@@ -860,6 +860,9 @@
     <Compile Include="..\MsgPack\Serialization\SerializerGenerator.cs">
       <Link>Serialization\SerializerGenerator.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializerRegistrationOptions.cs">
+      <Link>Serialization\SerializerRegistrationOptions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerRepository.cs">
       <Link>Serialization\SerializerRepository.cs</Link>
     </Compile>

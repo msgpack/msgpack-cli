@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 
+using MsgPack.Serialization.DefaultSerializers;
 using MsgPack.Serialization.Polymorphic;
 
 namespace MsgPack.Serialization
@@ -168,23 +169,94 @@ namespace MsgPack.Serialization
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="serializer"/> is <c>null</c>.
 		/// </exception>
+		/// <remarks>
+		///		This method invokes <see cref="Register{T}(MsgPack.Serialization.MessagePackSerializer{T},SerializerRegistrationOptions)"/> with <see cref="SerializerRegistrationOptions.None"/>.
+		///		<note>
+		///			If you register serializer for value type, using <see cref="SerializerRegistrationOptions.WithNullable"/> is recommended because auto-generated deserializers use them to handle nil value.
+		///			You can use <see cref="Register{T}(MsgPack.Serialization.MessagePackSerializer{T},SerializerRegistrationOptions)"/> with <see cref="SerializerRegistrationOptions.WithNullable"/> to
+		///			get equivalant behavior for this method with registering nullable serializer automatically.
+		///		</note>
+		/// </remarks>
 		public bool Register<T>( MessagePackSerializer<T> serializer )
 		{
-#if !UNITY
-			return this.Register( typeof( T ), new PolymorphicSerializerProvider<T>( serializer ) );
-#else
-			return this.Register( typeof( T ), new PolymorphicSerializerProvider<T>( serializer.OwnerContext, serializer ) );
-#endif // !UNITY
+			return this.Register( serializer, SerializerRegistrationOptions.None );
 		}
 
-		internal bool Register( Type targetType, MessagePackSerializerProvider serializer )
+		/// <summary>
+		///		Registers a <see cref="MessagePackSerializer{T}"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of serialization target.</typeparam>
+		/// <param name="serializer"><see cref="MessagePackSerializer{T}"/> instance.</param>
+		/// <param name="options">A <see cref="SerializerRegistrationOptions"/> to control this registration process.</param>
+		/// <returns>
+		///		<c>true</c> if success to register; otherwise, <c>false</c>.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="serializer"/> is <c>null</c>.
+		/// </exception>
+		public bool Register<T>( MessagePackSerializer<T> serializer, SerializerRegistrationOptions options )
 		{
 			if ( serializer == null )
 			{
 				throw new ArgumentNullException( "serializer" );
 			}
 
-			return this._repository.Register( targetType, serializer, /*allowOverwrite*/ false );
+			Type nullableType = null;
+			MessagePackSerializerProvider nullableSerializerProvider = null;
+#if !UNITY
+			if ( ( options & SerializerRegistrationOptions.WithNullable ) != 0 )
+			{
+				GetNullableCompanion( typeof( T ), serializer.OwnerContext, serializer, out nullableType, out nullableSerializerProvider );
+			}
+#endif // !UNITY
+#if !UNITY
+			return this.Register( typeof( T ), new PolymorphicSerializerProvider<T>( serializer ), nullableType, nullableSerializerProvider, options );
+#else
+			return this.Register( typeof( T ), new PolymorphicSerializerProvider<T>(  serializer.OwnerContext, serializer ), nullableType, nullableSerializerProvider, options );
+#endif // !UNITY
+		}
+
+#if !UNITY
+		internal static void GetNullableCompanion(
+			Type targetType,
+			SerializationContext context,
+			object serializer,
+			out Type nullableType,
+			out MessagePackSerializerProvider nullableSerializerProvider 
+		)
+		{
+			if ( targetType.GetIsValueType() && Nullable.GetUnderlyingType( targetType ) == null )
+			{
+				nullableType = typeof( Nullable<> ).MakeGenericType( targetType );
+				var nullableCtor =
+					typeof( NullableMessagePackSerializer<> ).MakeGenericType( targetType ).GetConstructor(
+						new[]
+						{
+							typeof( SerializationContext ),
+							typeof( MessagePackSerializer<> ).MakeGenericType( targetType )
+						}
+					);
+
+				nullableSerializerProvider =
+					( MessagePackSerializerProvider ) ReflectionExtensions.CreateInstancePreservingExceptionType(
+						typeof( PolymorphicSerializerProvider<> ).MakeGenericType( nullableType ),
+						nullableCtor.InvokePreservingExceptionType(
+							context,
+							serializer
+						)
+					);
+			}
+			else
+			{
+				nullableType = null;
+				nullableSerializerProvider = null;
+			}
+		}
+#endif // !UNITY
+
+		internal bool Register( Type targetType, MessagePackSerializerProvider serializerProvider, Type nullableType, MessagePackSerializerProvider nullableSerializerProvider, SerializerRegistrationOptions options )
+		{
+			return this._repository.Register( targetType, serializerProvider, nullableType, nullableSerializerProvider, options );
 		}
 
 		/// <summary>
@@ -195,14 +267,18 @@ namespace MsgPack.Serialization
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="serializer"/> is <c>null</c>.
 		/// </exception>
+		/// <remarks>
+		///		This method invokes <see cref="Register{T}(MsgPack.Serialization.MessagePackSerializer{T},SerializerRegistrationOptions)"/> with <see cref="SerializerRegistrationOptions.AllowOverride"/>.
+		///		<note>
+		///			If you register serializer for value type, using <see cref="SerializerRegistrationOptions.WithNullable"/> is recommended because auto-generated deserializers use them to handle nil value.
+		///			You can use <see cref="Register{T}(MsgPack.Serialization.MessagePackSerializer{T},SerializerRegistrationOptions)"/> 
+		///			with <see cref="SerializerRegistrationOptions.AllowOverride"/> and <see cref="SerializerRegistrationOptions.WithNullable"/> to
+		///			get equivalant behavior for this method with registering nullable serializer automatically.
+		///		</note>
+		/// </remarks>
 		public void RegisterOverride<T>( MessagePackSerializer<T> serializer )
 		{
-			if ( serializer == null )
-			{
-				throw new ArgumentNullException( "serializer" );
-			}
-
-			this._repository.Register( typeof( T ), serializer, /*allowOverwrite:*/ true );
+			this.Register( serializer, SerializerRegistrationOptions.AllowOverride );
 		}
 
 		/// <summary>

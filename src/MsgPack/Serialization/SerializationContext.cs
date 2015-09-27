@@ -525,7 +525,7 @@ namespace MsgPack.Serialization
 			: this( PackerCompatibilityOptions.None ) { }
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.GetDefault(PackerCompatibilityOptions)"/> for specified <see cref="PackerCompatibilityOptions"/>.
+		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.GetDefault()"/> for specified <see cref="PackerCompatibilityOptions"/>.
 		/// </summary>
 		/// <param name="packerCompatibilityOptions"><see cref="PackerCompatibilityOptions"/> which will be used on built-in serializers.</param>
 		public SerializationContext( PackerCompatibilityOptions packerCompatibilityOptions )
@@ -729,7 +729,33 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 					}
 
-					this._serializers.Register( typeof( T ), provider );
+					Type nullableType;
+					MessagePackSerializerProvider nullableSerializerProvider;
+#if !UNITY
+					SerializerRepository.GetNullableCompanion(
+						typeof( T ),
+						this,
+						serializer,
+						out nullableType,
+						out nullableSerializerProvider
+					);
+
+					this._serializers.Register(
+						typeof( T ),
+						provider,
+						nullableType,
+						nullableSerializerProvider,
+						SerializerRegistrationOptions.WithNullable 
+					);
+#else
+					this._serializers.Register(
+						typeof( T ),
+						provider,
+						null,
+						null,
+						SerializerRegistrationOptions.None
+					);
+#endif // !UNITY
 				}
 				else
 				{
@@ -831,9 +857,9 @@ namespace MsgPack.Serialization
 			}
 
 			// Fail when already registered manually.
-			this.Serializers.Register( typeof( T ), provider );
+			this.Serializers.Register( typeof( T ), provider, null, null, SerializerRegistrationOptions.None );
 
-			return provider.Get( this, schema ) as MessagePackSerializer<T>;
+			return ( MessagePackSerializer<T> ) provider.Get( this, schema );
 		}
 
 		/// <summary>

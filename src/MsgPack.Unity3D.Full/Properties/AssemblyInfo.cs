@@ -33,4 +33,6 @@ using System.Security;
 
 #if DEBUG || PERFORMANCE_TEST
 [assembly: InternalsVisibleTo( "MsgPack.UnitTest.Unity3D" )]
+[assembly: InternalsVisibleTo( "MsgPack.UnitTest.Unity3D.Desktop" )]
+
 #endif

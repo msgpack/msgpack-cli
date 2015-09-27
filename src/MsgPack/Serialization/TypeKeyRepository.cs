@@ -168,13 +168,13 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public bool Register( Type type, object entry, bool allowOverwrite )
+		public bool Register( Type type, object entry, Type nullableType, object nullableValue, SerializerRegistrationOptions options )
 		{
 #if !UNITY && DEBUG
 			Contract.Assert( entry != null, "entry != null" );
 #endif // !UNITY && DEBUG
 
-			return this.RegisterCore( type, entry, allowOverwrite );
+			return this.RegisterCore( type, entry, nullableType, nullableValue, options );
 		}
 
 #if !NETFX_35 && !UNITY
@@ -183,9 +183,11 @@ namespace MsgPack.Serialization
 #if NETFX_35 || UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands", Justification = "CER is OK" )]
 #endif // NETFX_35 || UNITY
-		private bool RegisterCore( Type key, object value, bool allowOverwrite )
+		private bool RegisterCore( Type key, object value, Type nullableType, object nullableValue, SerializerRegistrationOptions options )
 		{
-			if ( allowOverwrite || !this._table.ContainsKey( key.TypeHandle ) )
+			var allowOverwrite = ( options & SerializerRegistrationOptions.AllowOverride ) != 0;
+
+			if ( allowOverwrite || !this.ContainsType( key, nullableType ) )
 			{
 				bool holdsWriteLock = false;
 #if !SILVERLIGHT && !NETFX_CORE
@@ -202,9 +204,14 @@ namespace MsgPack.Serialization
 						this._lock.EnterWriteLock();
 						holdsWriteLock = true;
 					}
-					if ( allowOverwrite || !this._table.ContainsKey( key.TypeHandle ) )
+					if ( allowOverwrite || !this.ContainsType( key, nullableType ) )
 					{
 						this._table[ key.TypeHandle ] = value;
+						if ( nullableValue != null )
+						{
+							this._table[ nullableType.TypeHandle ] = nullableValue;
+						}
+
 						return true;
 					}
 				}
@@ -220,7 +227,19 @@ namespace MsgPack.Serialization
 			return false;
 		}
 
-
+		private bool ContainsType( Type baseType, Type nullableType )
+		{
+			if ( nullableType == null )
+			{
+				return this._table.ContainsKey( baseType.TypeHandle );
+			}
+			else
+			{
+				return
+					this._table.ContainsKey( baseType.TypeHandle )
+					&& this._table.ContainsKey( nullableType.TypeHandle );
+			}
+		}
 
 		public bool Unregister( Type type )
 		{

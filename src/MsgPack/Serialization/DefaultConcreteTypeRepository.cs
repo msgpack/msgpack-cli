@@ -263,7 +263,7 @@ namespace MsgPack.Serialization
 					"defaultCollectionType" );
 			}
 
-			this._defaultCollectionTypes.Register( abstractCollectionType, defaultCollectionType, /*allowOverwrite:*/ true );
+			this._defaultCollectionTypes.Register( abstractCollectionType, defaultCollectionType, null, null, SerializerRegistrationOptions.AllowOverride );
 		}
 
 		private static bool IsAnscestorType( Type mayBeAncestor, Type mayBeDescendant )

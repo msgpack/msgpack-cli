@@ -464,6 +464,27 @@ namespace MsgPack.Serialization
 			Assert.That( registered, Is.False );
 		}
 
+#if !UNITY
+		[Test]
+		public void TestIssue116()
+		{
+			var context = new SerializationContext { DefaultDateTimeConversionMethod = DateTimeConversionMethod.UnixEpoc };
+			context.Serializers.Register(
+				new NetDateTimeSerializer(),
+				SerializerRegistrationOptions.AllowOverride | SerializerRegistrationOptions.WithNullable 
+			);
+			var dt = DateTime.UtcNow;
+			using ( var buffer = new MemoryStream() )
+			{
+				var serializerNullable = context.GetSerializer<DateTime?>();
+				var serializerNotNullable = context.GetSerializer<DateTime>();
+				serializerNotNullable.Pack( buffer, dt );
+				buffer.Position = 0;
+				var result = serializerNullable.Unpack( buffer );
+				Assert.That( result.GetValueOrDefault(), Is.EqualTo( dt ) );
+			}
+		}
+#endif // !UNITY
 
 		private sealed class NetDateTimeSerializer : MessagePackSerializer<DateTime>
 		{

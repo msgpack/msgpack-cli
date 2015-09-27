@@ -444,7 +444,7 @@ namespace MsgPack.Serialization
 				{
 					realTargetTypes =
 						targetTypes
-						.SelectMany( t =>ExtractElementTypes( context, configuration, t ) );
+						.SelectMany( t => ExtractElementTypes( context, configuration, t ) );
 				}
 				else
 				{
@@ -454,7 +454,7 @@ namespace MsgPack.Serialization
 				var generationContext = this.CreateGenerationContext( context, configuration );
 				var generatorFactory = this.CreateGeneratorFactory();
 
-				foreach ( var targetType in 
+				foreach ( var targetType in
 					realTargetTypes
 					.Distinct()
 					.Where( t => !SerializationTarget.BuiltInSerializerExists( configuration, t, t.GetCollectionTraits() ) )
@@ -494,7 +494,7 @@ namespace MsgPack.Serialization
 
 				if ( type.IsArray )
 				{
-					var elementType =  type.GetElementType();
+					var elementType = type.GetElementType();
 					if ( !SerializationTarget.BuiltInSerializerExists( configuration, elementType, elementType.GetCollectionTraits() ) )
 					{
 						yield return elementType;

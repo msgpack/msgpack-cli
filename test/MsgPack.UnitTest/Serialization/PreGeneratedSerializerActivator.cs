@@ -108,7 +108,7 @@ namespace MsgPack.Serialization
 
 			foreach ( var entry in serializers )
 			{
-				context.Serializers.Register( entry.Key, entry.Value );
+				context.Serializers.Register( entry.Key, entry.Value, null, null, SerializerRegistrationOptions.None );
 			}
 
 #if !XAMIOS && !UNITY_IPHONE
@@ -228,7 +228,7 @@ namespace MsgPack.Serialization
 				return 
 					ReflectionExtensions.CreateInstancePreservingExceptionType<MessagePackSerializerProvider>(
 						typeof( PolymorphicSerializerProvider<> ).MakeGenericType( this._targetType ),
-						context, 
+						context,
 						serializer
 					).Get( context, schema ?? PolymorphismSchema.Default ) as IMessagePackSerializer;
 #endif // !UNITY
