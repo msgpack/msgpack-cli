@@ -215,9 +215,9 @@ namespace MsgPack
 #endif // DEBUG && !UNITY
 			var originalOffset = this._offset;
 			var result = this._source.ReadByte();
-			if ( result < 1 )
+			if ( result < 0 )
 			{
-				this.ThrowEofException( originalOffset, 1);
+				this.ThrowEofException( originalOffset, 1 );
 			}
 
 			this._offset++;
