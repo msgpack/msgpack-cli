@@ -136,6 +136,11 @@
     <Exclude Path="MessagePackObjectTest.RuntimeSerialization.cs" />
   </Project>
 
+  <Project Name="MsgPack.UnitTest.Unity3D.Desktop" Base="MsgPack.UnitTest.Unity3D">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve Path="Resources\*" />
+  </Project>
+
   <Project Name="MsgPack.UnitTest.WinRT" Base="MsgPack.UnitTest">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve File="*.config" />
