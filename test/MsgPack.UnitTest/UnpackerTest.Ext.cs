@@ -43,7 +43,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt1_AndBinaryLengthIs1JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD4, typeCode }
@@ -67,7 +67,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt1_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD4, typeCode }
@@ -92,7 +92,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt1_AndBinaryLengthIs1TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD4, typeCode }
@@ -108,7 +108,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt1_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD4, typeCode }
@@ -125,7 +125,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt1_AndBinaryLengthIs1HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD4, typeCode }
@@ -149,7 +149,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt1_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD4, typeCode }
@@ -174,7 +174,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt1_AndBinaryLengthIs1JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD4, typeCode }
@@ -194,7 +194,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt1_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD4, typeCode }
@@ -215,7 +215,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt1_AndBinaryLengthIs1TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD4, typeCode }
@@ -232,7 +232,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt1_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD4, typeCode }
@@ -250,7 +250,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt1_AndBinaryLengthIs1HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD4, typeCode }
@@ -270,7 +270,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt1_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD4, typeCode }
@@ -291,7 +291,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt2_AndBinaryLengthIs2JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD5, typeCode }
@@ -315,7 +315,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt2_AndBinaryLengthIs2JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD5, typeCode }
@@ -340,7 +340,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt2_AndBinaryLengthIs2TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD5, typeCode }
@@ -356,7 +356,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt2_AndBinaryLengthIs2TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD5, typeCode }
@@ -373,7 +373,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt2_AndBinaryLengthIs2HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD5, typeCode }
@@ -397,7 +397,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt2_AndBinaryLengthIs2HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD5, typeCode }
@@ -422,7 +422,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt2_AndBinaryLengthIs2JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD5, typeCode }
@@ -442,7 +442,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt2_AndBinaryLengthIs2JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD5, typeCode }
@@ -463,7 +463,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt2_AndBinaryLengthIs2TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD5, typeCode }
@@ -480,7 +480,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt2_AndBinaryLengthIs2TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD5, typeCode }
@@ -498,7 +498,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt2_AndBinaryLengthIs2HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD5, typeCode }
@@ -518,7 +518,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt2_AndBinaryLengthIs2HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD5, typeCode }
@@ -539,7 +539,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt4_AndBinaryLengthIs4JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD6, typeCode }
@@ -563,7 +563,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt4_AndBinaryLengthIs4JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD6, typeCode }
@@ -588,7 +588,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt4_AndBinaryLengthIs4TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD6, typeCode }
@@ -604,7 +604,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt4_AndBinaryLengthIs4TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD6, typeCode }
@@ -621,7 +621,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt4_AndBinaryLengthIs4HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD6, typeCode }
@@ -645,7 +645,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt4_AndBinaryLengthIs4HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD6, typeCode }
@@ -670,7 +670,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt4_AndBinaryLengthIs4JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD6, typeCode }
@@ -690,7 +690,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt4_AndBinaryLengthIs4JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD6, typeCode }
@@ -711,7 +711,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt4_AndBinaryLengthIs4TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD6, typeCode }
@@ -728,7 +728,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt4_AndBinaryLengthIs4TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD6, typeCode }
@@ -746,7 +746,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt4_AndBinaryLengthIs4HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD6, typeCode }
@@ -766,7 +766,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt4_AndBinaryLengthIs4HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD6, typeCode }
@@ -787,7 +787,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt8_AndBinaryLengthIs8JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD7, typeCode }
@@ -811,7 +811,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt8_AndBinaryLengthIs8JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD7, typeCode }
@@ -836,7 +836,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt8_AndBinaryLengthIs8TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD7, typeCode }
@@ -852,7 +852,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt8_AndBinaryLengthIs8TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD7, typeCode }
@@ -869,7 +869,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt8_AndBinaryLengthIs8HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD7, typeCode }
@@ -893,7 +893,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt8_AndBinaryLengthIs8HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD7, typeCode }
@@ -918,7 +918,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt8_AndBinaryLengthIs8JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD7, typeCode }
@@ -938,7 +938,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt8_AndBinaryLengthIs8JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD7, typeCode }
@@ -959,7 +959,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt8_AndBinaryLengthIs8TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD7, typeCode }
@@ -976,7 +976,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt8_AndBinaryLengthIs8TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD7, typeCode }
@@ -994,7 +994,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt8_AndBinaryLengthIs8HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD7, typeCode }
@@ -1014,7 +1014,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt8_AndBinaryLengthIs8HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD7, typeCode }
@@ -1035,7 +1035,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt16_AndBinaryLengthIs16JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD8, typeCode }
@@ -1059,7 +1059,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt16_AndBinaryLengthIs16JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD8, typeCode }
@@ -1084,7 +1084,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt16_AndBinaryLengthIs16TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD8, typeCode }
@@ -1100,7 +1100,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt16_AndBinaryLengthIs16TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD8, typeCode }
@@ -1117,7 +1117,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt16_AndBinaryLengthIs16HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD8, typeCode }
@@ -1141,7 +1141,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_FixExt16_AndBinaryLengthIs16HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD8, typeCode }
@@ -1166,7 +1166,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt16_AndBinaryLengthIs16JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD8, typeCode }
@@ -1186,7 +1186,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt16_AndBinaryLengthIs16JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD8, typeCode }
@@ -1207,7 +1207,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt16_AndBinaryLengthIs16TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD8, typeCode }
@@ -1224,7 +1224,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt16_AndBinaryLengthIs16TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD8, typeCode }
@@ -1242,7 +1242,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt16_AndBinaryLengthIs16HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD8, typeCode }
@@ -1262,7 +1262,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_FixExt16_AndBinaryLengthIs16HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xD8, typeCode }
@@ -1283,7 +1283,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs0JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0, typeCode }
@@ -1307,7 +1307,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0, typeCode }
@@ -1332,7 +1332,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs0HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0, typeCode }
@@ -1356,7 +1356,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0, typeCode }
@@ -1381,7 +1381,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs0JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0, typeCode }
@@ -1401,7 +1401,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0, typeCode }
@@ -1422,7 +1422,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs0HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0, typeCode }
@@ -1442,7 +1442,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0, typeCode }
@@ -1463,7 +1463,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs1JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 1, typeCode }
@@ -1487,7 +1487,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 1, typeCode }
@@ -1512,7 +1512,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs1TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 1, typeCode }
@@ -1528,7 +1528,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 1, typeCode }
@@ -1545,7 +1545,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs1HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 1, typeCode }
@@ -1569,7 +1569,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 1, typeCode }
@@ -1594,7 +1594,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs1JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 1, typeCode }
@@ -1614,7 +1614,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 1, typeCode }
@@ -1635,7 +1635,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs1TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 1, typeCode }
@@ -1652,7 +1652,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 1, typeCode }
@@ -1670,7 +1670,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs1HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 1, typeCode }
@@ -1690,7 +1690,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 1, typeCode }
@@ -1711,7 +1711,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs17JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 17, typeCode }
@@ -1735,7 +1735,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 17, typeCode }
@@ -1760,7 +1760,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs17TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 17, typeCode }
@@ -1776,7 +1776,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 17, typeCode }
@@ -1793,7 +1793,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs17HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 17, typeCode }
@@ -1817,7 +1817,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 17, typeCode }
@@ -1842,7 +1842,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs17JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 17, typeCode }
@@ -1862,7 +1862,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 17, typeCode }
@@ -1883,7 +1883,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs17TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 17, typeCode }
@@ -1900,7 +1900,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 17, typeCode }
@@ -1918,7 +1918,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs17HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 17, typeCode }
@@ -1938,7 +1938,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 17, typeCode }
@@ -1959,7 +1959,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs255JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0xFF, typeCode }
@@ -1983,7 +1983,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0xFF, typeCode }
@@ -2008,7 +2008,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs255TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0xFF, typeCode }
@@ -2024,7 +2024,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0xFF, typeCode }
@@ -2041,7 +2041,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs255HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0xFF, typeCode }
@@ -2065,7 +2065,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext8_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0xFF, typeCode }
@@ -2090,7 +2090,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs255JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0xFF, typeCode }
@@ -2110,7 +2110,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0xFF, typeCode }
@@ -2131,7 +2131,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs255TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0xFF, typeCode }
@@ -2148,7 +2148,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0xFF, typeCode }
@@ -2166,7 +2166,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs255HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0xFF, typeCode }
@@ -2186,7 +2186,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext8_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC7, 0xFF, typeCode }
@@ -2207,7 +2207,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs0JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0, typeCode }
@@ -2231,7 +2231,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0, typeCode }
@@ -2256,7 +2256,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs0HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0, typeCode }
@@ -2280,7 +2280,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0, typeCode }
@@ -2305,7 +2305,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs0JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0, typeCode }
@@ -2325,7 +2325,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0, typeCode }
@@ -2346,7 +2346,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs0HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0, typeCode }
@@ -2366,7 +2366,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0, typeCode }
@@ -2387,7 +2387,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs1JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 1, typeCode }
@@ -2411,7 +2411,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 1, typeCode }
@@ -2436,7 +2436,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs1TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 1, typeCode }
@@ -2452,7 +2452,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 1, typeCode }
@@ -2469,7 +2469,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs1HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 1, typeCode }
@@ -2493,7 +2493,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 1, typeCode }
@@ -2518,7 +2518,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs1JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 1, typeCode }
@@ -2538,7 +2538,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 1, typeCode }
@@ -2559,7 +2559,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs1TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 1, typeCode }
@@ -2576,7 +2576,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 1, typeCode }
@@ -2594,7 +2594,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs1HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 1, typeCode }
@@ -2614,7 +2614,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 1, typeCode }
@@ -2635,7 +2635,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs17JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 17, typeCode }
@@ -2659,7 +2659,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 17, typeCode }
@@ -2684,7 +2684,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs17TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 17, typeCode }
@@ -2700,7 +2700,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 17, typeCode }
@@ -2717,7 +2717,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs17HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 17, typeCode }
@@ -2741,7 +2741,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 17, typeCode }
@@ -2766,7 +2766,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs17JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 17, typeCode }
@@ -2786,7 +2786,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 17, typeCode }
@@ -2807,7 +2807,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs17TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 17, typeCode }
@@ -2824,7 +2824,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 17, typeCode }
@@ -2842,7 +2842,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs17HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 17, typeCode }
@@ -2862,7 +2862,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 17, typeCode }
@@ -2883,7 +2883,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs255JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0xFF, typeCode }
@@ -2907,7 +2907,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0xFF, typeCode }
@@ -2932,7 +2932,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs255TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0xFF, typeCode }
@@ -2948,7 +2948,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0xFF, typeCode }
@@ -2965,7 +2965,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs255HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0xFF, typeCode }
@@ -2989,7 +2989,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0xFF, typeCode }
@@ -3014,7 +3014,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs255JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0xFF, typeCode }
@@ -3034,7 +3034,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0xFF, typeCode }
@@ -3055,7 +3055,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs255TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0xFF, typeCode }
@@ -3072,7 +3072,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0xFF, typeCode }
@@ -3090,7 +3090,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs255HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0xFF, typeCode }
@@ -3110,7 +3110,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0, 0xFF, typeCode }
@@ -3131,7 +3131,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs256JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 1, 0, typeCode }
@@ -3155,7 +3155,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs256JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 1, 0, typeCode }
@@ -3180,7 +3180,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs256TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 1, 0, typeCode }
@@ -3196,7 +3196,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs256TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 1, 0, typeCode }
@@ -3213,7 +3213,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs256HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 1, 0, typeCode }
@@ -3237,7 +3237,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs256HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 1, 0, typeCode }
@@ -3262,7 +3262,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs256JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 1, 0, typeCode }
@@ -3282,7 +3282,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs256JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 1, 0, typeCode }
@@ -3303,7 +3303,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs256TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 1, 0, typeCode }
@@ -3320,7 +3320,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs256TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 1, 0, typeCode }
@@ -3338,7 +3338,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs256HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 1, 0, typeCode }
@@ -3358,7 +3358,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs256HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 1, 0, typeCode }
@@ -3379,7 +3379,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs65535JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
@@ -3403,7 +3403,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs65535JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
@@ -3428,7 +3428,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs65535TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
@@ -3444,7 +3444,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs65535TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
@@ -3461,7 +3461,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs65535HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
@@ -3485,7 +3485,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext16_AndBinaryLengthIs65535HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
@@ -3510,7 +3510,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs65535JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
@@ -3530,7 +3530,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs65535JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
@@ -3551,7 +3551,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs65535TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
@@ -3568,7 +3568,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs65535TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
@@ -3586,7 +3586,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs65535HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
@@ -3606,7 +3606,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext16_AndBinaryLengthIs65535HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
@@ -3627,7 +3627,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs0JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0, typeCode }
@@ -3651,7 +3651,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0, typeCode }
@@ -3676,7 +3676,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs0HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0, typeCode }
@@ -3700,7 +3700,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0, typeCode }
@@ -3725,7 +3725,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs0JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0, typeCode }
@@ -3745,7 +3745,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0, typeCode }
@@ -3766,7 +3766,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs0HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0, typeCode }
@@ -3786,7 +3786,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0, typeCode }
@@ -3807,7 +3807,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs1JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
@@ -3831,7 +3831,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
@@ -3856,7 +3856,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs1TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
@@ -3872,7 +3872,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
@@ -3889,7 +3889,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs1HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
@@ -3913,7 +3913,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
@@ -3938,7 +3938,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs1JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
@@ -3958,7 +3958,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
@@ -3979,7 +3979,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs1TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
@@ -3996,7 +3996,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
@@ -4014,7 +4014,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs1HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
@@ -4034,7 +4034,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
@@ -4055,7 +4055,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs17JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
@@ -4079,7 +4079,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
@@ -4104,7 +4104,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs17TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
@@ -4120,7 +4120,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
@@ -4137,7 +4137,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs17HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
@@ -4161,7 +4161,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
@@ -4186,7 +4186,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs17JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
@@ -4206,7 +4206,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
@@ -4227,7 +4227,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs17TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
@@ -4244,7 +4244,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
@@ -4262,7 +4262,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs17HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
@@ -4282,7 +4282,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
@@ -4303,7 +4303,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs255JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
@@ -4327,7 +4327,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
@@ -4352,7 +4352,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs255TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
@@ -4368,7 +4368,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
@@ -4385,7 +4385,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs255HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
@@ -4409,7 +4409,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
@@ -4434,7 +4434,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs255JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
@@ -4454,7 +4454,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
@@ -4475,7 +4475,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs255TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
@@ -4492,7 +4492,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
@@ -4510,7 +4510,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs255HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
@@ -4530,7 +4530,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
@@ -4551,7 +4551,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs256JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
@@ -4575,7 +4575,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs256JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
@@ -4600,7 +4600,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs256TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
@@ -4616,7 +4616,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs256TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
@@ -4633,7 +4633,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs256HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
@@ -4657,7 +4657,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs256HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
@@ -4682,7 +4682,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs256JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
@@ -4702,7 +4702,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs256JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
@@ -4723,7 +4723,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs256TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
@@ -4740,7 +4740,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs256TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
@@ -4758,7 +4758,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs256HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
@@ -4778,7 +4778,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs256HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
@@ -4799,7 +4799,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs65535JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
@@ -4823,7 +4823,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs65535JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
@@ -4848,7 +4848,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs65535TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
@@ -4864,7 +4864,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs65535TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
@@ -4881,7 +4881,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs65535HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
@@ -4905,7 +4905,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs65535HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
@@ -4930,7 +4930,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs65535JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
@@ -4950,7 +4950,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs65535JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
@@ -4971,7 +4971,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs65535TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
@@ -4988,7 +4988,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs65535TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
@@ -5006,7 +5006,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs65535HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
@@ -5026,7 +5026,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs65535HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
@@ -5047,7 +5047,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs65536JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
@@ -5071,7 +5071,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs65536JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
@@ -5096,7 +5096,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs65536TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
@@ -5112,7 +5112,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs65536TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
@@ -5129,7 +5129,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs65536HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
@@ -5153,7 +5153,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_Read_Ext32_AndBinaryLengthIs65536HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
@@ -5178,7 +5178,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs65536JustLength_Success()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
@@ -5198,7 +5198,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs65536JustLength_Success_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
@@ -5219,7 +5219,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs65536TooShort_Fail()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
@@ -5236,7 +5236,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs65536TooShort_Fail_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
@@ -5254,7 +5254,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs65536HasExtra_NoProblem()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
@@ -5274,7 +5274,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpack_ReadExtension_Ext32_AndBinaryLengthIs65536HasExtra_NoProblem_Splitted()
 		{
-			var typeCode = ( byte )( Environment.TickCount % 128 );
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }

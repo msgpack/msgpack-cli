@@ -193,7 +193,7 @@ private void PutTestMethod( string methodName, string headerFormat, int? lengthO
 		[Test]
 		public void <#= methodName #>()
 		{
-			var <#= typeCode #> = ( byte )( Environment.TickCount % 128 );
+			var <#= typeCode #> = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { <#= headerValue #> }
@@ -211,7 +211,7 @@ private void PutTestMethod( string methodName, string headerFormat, int? lengthO
 		[Test]
 		public void <#= methodName #>_Splitted()
 		{
-			var <#= typeCode #> = ( byte )( Environment.TickCount % 128 );
+			var <#= typeCode #> = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
 				new MemoryStream( 
 					new byte[] { <#= headerValue #> }
