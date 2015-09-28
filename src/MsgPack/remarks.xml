@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <doc>
   <remarks name="MsgPack.Unpacker">
-    <see cref="Unpacker"/> implements three mode, that is 'Streaming', 'Enumerating', 'Skipping', and 'Subtree'.
+    <see cref="Unpacker"/> implements three mode, that is 'Streaming', 'Skipping' and 'Subtree'.
     <list type="bullet">
       <item>
         <para>
@@ -16,20 +16,6 @@
         </para>
         <para>
           If the reading of the entry is completed, that is the <see cref="Data"/> is not <c>null</c>, unpacker can transit other mode.
-        </para>
-      </item>
-      <item>
-        <para>
-          <strong>Enumerating</strong>
-        </para>
-        <para>
-          When the <see cref="GetEnumerator"/> is called and the enumeration is started, unpacker go into 'Enumerating' mode.
-          In this mode, unpacker unpacks individual entries as <see cref="MessagePackObject"/> via <see cref="P:IEnumerator{T}.Current"/> property.
-          If the underlying stream is ended unexpectedly, enumeration is interrupted.
-          The interrupted unpacker cannot be resume.
-        </para>
-        <para>
-          Once the enumeration is completed gracefully, unpacker can transit other mode.
         </para>
       </item>
       <item>
