@@ -175,6 +175,14 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		public bool IsInternalToMsgPackLibrary { get { return this._configuration.IsInternalToMsgPackLibrary; } }
 
 		/// <summary>
+		///		Gets or sets a value indicating whether conditional expression is used, that is, helper method is required or not.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if conditional expression is used; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsConditionalExpressionUsed { get; set; }
+
+		/// <summary>
 		///		Resets internal states for new type.
 		/// </summary>
 		/// <param name="targetType">Type of the target.</param>

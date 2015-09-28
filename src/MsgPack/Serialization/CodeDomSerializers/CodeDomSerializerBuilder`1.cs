@@ -820,7 +820,19 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						elseExpression.AsStatements().ToArray()
 					)
 				) as CodeDomConstruct
-				: CodeDomConstruct.Expression(
+				: CreateConditionalExpression(
+					context,
+					conditionExpression,
+					thenExpression,
+					elseExpression
+				);
+		}
+
+		private static CodeDomConstruct CreateConditionalExpression( CodeDomContext context, CodeDomConstruct conditionExpression, CodeDomConstruct thenExpression, CodeDomConstruct elseExpression )
+		{
+			context.IsConditionalExpressionUsed = true;
+			return
+				CodeDomConstruct.Expression(
 					thenExpression.ContextType,
 					new CodeMethodInvokeExpression(
 						null,
@@ -1482,6 +1494,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			} // else of isEnum
 
 			// __Condition
+			if ( context.IsConditionalExpressionUsed )
 			{
 				var t = new CodeTypeParameter( "T" );
 				var tRef = new CodeTypeReference( t );
