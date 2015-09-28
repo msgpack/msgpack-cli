@@ -897,9 +897,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\MsgPack\remarks.xml">
+    <None Include="..\MsgPack\remarks.xml">
       <Link>remarks.xml</Link>
-    </Content>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

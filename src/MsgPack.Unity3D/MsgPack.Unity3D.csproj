@@ -685,11 +685,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\MsgPack\remarks.xml">
-      <Link>remarks.xml</Link>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\MsgPack\remarks.xml">
       <Link>remarks.xml</Link>
     </None>

@@ -965,9 +965,9 @@
     <Compile Include="SilverlightExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\MsgPack\remarks.xml">
+    <None Include="..\MsgPack\remarks.xml">
       <Link>remarks.xml</Link>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\MsgPack.snk">
