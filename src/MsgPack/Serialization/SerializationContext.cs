@@ -667,9 +667,9 @@ namespace MsgPack.Serialization
 					// Decrement monitor counter.
 					Monitor.Exit( aquiredLock );
 
-#if DEBUG && !NETFX_35 && !UNITY
+#if DEBUG && !NETFX_40 && !NETFX_35 && !SILVERLIGHT && !UNITY
 					Contract.Assert( Monitor.IsEntered( aquiredLock ), "Monitor.IsEntered(aquiredLock)" );
-#endif // DEBUG && !NETFX_35 && !UNITY
+#endif // DEBUG && !NETFX_40 && !NETFX_35 !SILVERLIGHT && && !UNITY
 
 					if ( lockTaken )
 					{
@@ -791,9 +791,9 @@ namespace MsgPack.Serialization
 				{
 					// Release primary lock or waiting lock.
 					Monitor.Exit( aquiredLock );
-#if DEBUG && !NETFX_35 && !UNITY
+#if DEBUG && !NETFX_40 && !NETFX_35 && !SILVERLIGHT && !UNITY
 					Contract.Assert( !Monitor.IsEntered( aquiredLock ), "!Monitor.IsEntered(aquiredLock)" );
-#endif // DEBUG && !NETFX_35 && !UNITY
+#endif // DEBUG && !NETFX_40 && !NETFX_35 && !SILVERLIGHT && !UNITY
 				}
 			}
 		}
