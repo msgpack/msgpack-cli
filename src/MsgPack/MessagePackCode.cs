@@ -50,6 +50,8 @@ namespace MsgPack
 		public const int Str8 = 0xd9;
 		public const int Raw16 = 0xda;
 		public const int Raw32 = 0xdb;
+		public const int Str16 = Raw16;
+		public const int Str32 = Raw32;
 		public const int Bin8 = 0xc4;
 		public const int Bin16 = 0xc5;
 		public const int Bin32 = 0xc6;
