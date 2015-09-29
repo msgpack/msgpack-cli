@@ -774,7 +774,7 @@ namespace MsgPack
 
 			if( !this.IsArrayHeader )
 			{
-				throw new MessageTypeException( "Not in map header." );
+				throw new MessageTypeException( "Not in array header." );
 			}
 
 			result = this.LastReadData.AsInt64();
