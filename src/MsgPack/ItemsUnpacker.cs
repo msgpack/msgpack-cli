@@ -37,6 +37,7 @@ namespace MsgPack
 		private readonly bool _ownsStream;
 		private readonly Stream _source;
 
+		private readonly byte[] _oneByteBuffer = new byte[ 1 ];
 		private readonly byte[] _scalarBuffer = new byte[ 8 ];
 
 		internal long InternalItemsCount;
@@ -214,8 +215,8 @@ namespace MsgPack
 			}
 #endif // DEBUG && !UNITY
 			var originalOffset = this._offset;
-			var result = this._source.ReadByte();
-			if ( result < 0 )
+			var read = this._source.Read( this._oneByteBuffer, 0, 1 );
+			if ( read == 0 )
 			{
 				this.ThrowEofException( originalOffset, 1 );
 			}
@@ -227,7 +228,7 @@ namespace MsgPack
 				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
 			}
 #endif // DEBUG && !UNITY
-			return unchecked( ( byte )result );
+			return this._oneByteBuffer[ 0 ];
 		}
 
 		internal override void ThrowEofException()
