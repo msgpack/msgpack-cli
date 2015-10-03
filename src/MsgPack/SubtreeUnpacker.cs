@@ -39,7 +39,6 @@ using Int64Stack = System.Collections.Generic.Stack<System.Int64>;
 
 namespace MsgPack
 {
-	// TODO: Expose base subtree unpacker as API
 	/// <summary>
 	///		Defines subtree unpacking unpacker.
 	/// </summary>
@@ -124,10 +123,7 @@ namespace MsgPack
 				if ( this._state != State.Disposed )
 				{
 					// Drain...
-					while ( this.ReadCore() )
-					{
-						// nop
-					}
+					this.Drain();
 					if ( this._parent != null )
 					{
 						this._parent.EndReadSubtree();
@@ -142,6 +138,21 @@ namespace MsgPack
 			}
 
 			base.Dispose( disposing );
+		}
+
+		public override void Drain()
+		{
+			if ( this._state >= State.Drained )
+			{
+				return;
+			}
+
+			while ( this.Read() )
+			{
+				// nop
+			}
+
+			this._state  = State.Drained;
 		}
 
 		protected internal override void EndReadSubtree()
@@ -162,7 +173,7 @@ namespace MsgPack
 				return this;
 			}
 
-			if ( this._unpacked.Count == 0  )
+			if ( this._unpacked.Count == 0 )
 			{
 				ThrowInTailException();
 			}
@@ -270,8 +281,9 @@ namespace MsgPack
 		private enum State
 		{
 			InHead = 0,
-			InProgress,
-			Disposed
+			InProgress = 1,
+			Drained = 2,
+			Disposed = 3,
 		}
 	}
 }

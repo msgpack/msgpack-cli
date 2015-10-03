@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -243,6 +243,22 @@ namespace MsgPack
 		}
 
 		#endregion -- Ctor / Dispose --
+
+		#region -- Draing --
+
+		/// <summary>
+		///		Drains remaining items in current context.
+		/// </summary>
+		/// <remarks>
+		///		This method drains remaining items in context of subtree mode unpacker.
+		///		This method does not any effect for other types of unpacker.
+		/// </remarks>
+		public virtual void Drain()
+		{
+			// nop
+		}
+
+		#endregion -- Draining --
 
 		#region -- Streaming API --
 
