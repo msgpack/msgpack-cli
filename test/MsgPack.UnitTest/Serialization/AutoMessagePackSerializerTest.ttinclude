@@ -2204,6 +2204,62 @@ namespace MsgPack.Serialization
 		}
 
 #endregion -- Exclusion --
+
+// Issue 119
+#region -- Generic --
+<#+
+		foreach( var target in new [] { "Generic", "GenericRecord" } )
+		{
+			foreach( var type in new [] { "Value", "Reference" } )
+			{
+#>
+
+		[Test]
+		public void Test<#= target #>Derived_<#= type #>_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target =
+<#+
+				var field = type == "Value" ? "1" : "\"1\"";
+				var property = type == "Value" ? "2" : "\"2\"";
+				var targetType = target + type + "Class";
+
+				if( target == "Generic" )
+				{
+#>
+				new <#= targetType #>
+				{
+					GenericField = <#= field #>,
+					GenericProperty = <#= property #>
+				};
+<#+
+				}
+				else // GenericRecord
+				{
+#>
+				new <#= targetType #>( <#= field #>, <#= property #> );
+<#+
+				}
+#>
+			var serializer = context.GetSerializer<#= "<" + targetType + ">" #>();
+
+			using( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result.GenericField, Is.EqualTo( target.GenericField ) );
+				Assert.That( result.GenericProperty, Is.EqualTo( target.GenericProperty ) );
+			}
+		}
+<#+
+			}
+		}
+#>
+
+#endregion -- Generic --
+
 <#+
 	}
 #>

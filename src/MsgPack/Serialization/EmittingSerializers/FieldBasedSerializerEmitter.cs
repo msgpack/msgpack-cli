@@ -41,8 +41,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private static readonly Type[] CollectionConstructorParameterTypes = { typeof( SerializationContext ), typeof( PolymorphismSchema ) };
 
 		private readonly Dictionary<SerializerFieldKey, SerializerFieldInfo> _serializers;
-		private readonly Dictionary<RuntimeFieldHandle, FieldBuilder> _fieldInfos;
-		private readonly Dictionary<RuntimeMethodHandle, FieldBuilder> _methodBases;
+		private readonly Dictionary<RuntimeFieldHandle, CachedFieldInfo> _cachedFieldInfos;
+		private readonly Dictionary<RuntimeMethodHandle, CachedMethodBase> _cachedMethodBases;
 		private readonly ConstructorBuilder _defaultConstructorBuilder;
 		private readonly ConstructorBuilder _contextConstructorBuilder;
 		private readonly TypeBuilder _typeBuilder;
@@ -85,8 +85,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Contract.Assert( baseType != null, "baseType != null" );
 #endif
 			this._serializers = new Dictionary<SerializerFieldKey, SerializerFieldInfo>();
-			this._fieldInfos = new Dictionary<RuntimeFieldHandle, FieldBuilder>();
-			this._methodBases = new Dictionary<RuntimeMethodHandle, FieldBuilder>();
+			this._cachedFieldInfos = new Dictionary<RuntimeFieldHandle, CachedFieldInfo>();
+			this._cachedMethodBases = new Dictionary<RuntimeMethodHandle, CachedMethodBase>();
 			this._isDebuggable = isDebuggable;
 
 #if !SILVERLIGHT && !NETFX_35
@@ -434,20 +434,22 @@ namespace MsgPack.Serialization.EmittingSerializers
 						il.EmitStfld( entry.Value.Field );
 					}
 
-					foreach ( var entry in this._fieldInfos )
+					foreach ( var entry in this._cachedFieldInfos )
 					{
 						il.EmitLdarg_0();
-						il.EmitLdtoken( FieldInfo.GetFieldFromHandle( entry.Key ) );
+						il.EmitLdtoken( entry.Value.Target );
+						il.EmitLdtoken( entry.Value.Target.DeclaringType );
 						il.EmitCall( Metadata._FieldInfo.GetFieldFromHandle );
-						il.EmitStfld( entry.Value );
+						il.EmitStfld( entry.Value.StorageFieldBuilder );
 					}
 
-					foreach ( var entry in this._methodBases )
+					foreach ( var entry in this._cachedMethodBases )
 					{
 						il.EmitLdarg_0();
-						il.EmitLdtoken( MethodBase.GetMethodFromHandle( entry.Key ) );
+						il.EmitLdtoken( entry.Value.Target );
+						il.EmitLdtoken( entry.Value.Target.DeclaringType );
 						il.EmitCall( Metadata._MethodBase.GetMethodFromHandle );
-						il.EmitStfld( entry.Value );
+						il.EmitStfld( entry.Value.StorageFieldBuilder );
 					}
 
 					il.EmitRet();
@@ -538,19 +540,27 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			var key = field.FieldHandle;
 
-			FieldBuilder result;
-			if ( !this._fieldInfos.TryGetValue( key, out result ) )
+			CachedFieldInfo result;
+			if ( !this._cachedFieldInfos.TryGetValue( key, out result ) )
 			{
 				Contract.Assert( field.DeclaringType != null, "field.DeclaringType != null" );
-				result = this._typeBuilder.DefineField( "_field" + field.DeclaringType.Name + "_" + field.Name + this._fieldInfos.Count, typeof( FieldInfo ), FieldAttributes.Private | FieldAttributes.InitOnly );
-				this._fieldInfos.Add( key, result );
+				result =
+					new CachedFieldInfo(
+						field,
+						this._typeBuilder.DefineField(
+							"_field" + field.DeclaringType.Name + "_" + field.Name + this._cachedFieldInfos.Count,
+							typeof( FieldInfo ),
+							FieldAttributes.Private | FieldAttributes.InitOnly
+						)
+					);
+				this._cachedFieldInfos.Add( key, result );
 			}
 
 			return
 				( il, thisIndex ) =>
 				{
 					il.EmitAnyLdarg( thisIndex );
-					il.EmitLdfld( result );
+					il.EmitLdfld( result.StorageFieldBuilder );
 				};
 		}
 
@@ -563,19 +573,27 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			var key = method.MethodHandle;
 
-			FieldBuilder result;
-			if ( !this._methodBases.TryGetValue( key, out result ) )
+			CachedMethodBase result;
+			if ( !this._cachedMethodBases.TryGetValue( key, out result ) )
 			{
 				Contract.Assert( method.DeclaringType != null, "method.DeclaringType != null" );
-				result = this._typeBuilder.DefineField( "_function" + method.DeclaringType.Name + "_" + method.Name + this._methodBases.Count, typeof( FieldInfo ), FieldAttributes.Private | FieldAttributes.InitOnly );
-				this._methodBases.Add( key, result );
+				result =
+					new CachedMethodBase(
+						method,
+						this._typeBuilder.DefineField(
+							"_function" + method.DeclaringType.Name + "_" + method.Name + this._cachedMethodBases.Count,
+							typeof( FieldInfo ),
+							FieldAttributes.Private | FieldAttributes.InitOnly 
+						)
+					);
+				this._cachedMethodBases.Add( key, result );
 			}
 
 			return
 				( il, thisIndex ) =>
 				{
 					il.EmitAnyLdarg( thisIndex );
-					il.EmitLdfld( result );
+					il.EmitLdfld( result.StorageFieldBuilder );
 				};
 		}
 
@@ -588,6 +606,30 @@ namespace MsgPack.Serialization.EmittingSerializers
 			{
 				this.Field = field;
 				this.SchemaProvider = schemaProvider;
+			}
+		}
+
+		private struct CachedFieldInfo
+		{
+			public readonly FieldBuilder StorageFieldBuilder;
+			public readonly FieldInfo Target;
+
+			public CachedFieldInfo( FieldInfo target, FieldBuilder storageFieldBuilder )
+			{
+				this.Target = target;
+				this.StorageFieldBuilder = storageFieldBuilder;
+			}
+		}
+
+		private struct CachedMethodBase
+		{
+			public readonly FieldBuilder StorageFieldBuilder;
+			public readonly MethodBase Target;
+
+			public CachedMethodBase( MethodBase target, FieldBuilder storageFieldBuilder )
+			{
+				this.Target = target;
+				this.StorageFieldBuilder = storageFieldBuilder;
 			}
 		}
 	}

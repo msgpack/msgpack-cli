@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
@@ -312,7 +313,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			{
 #if !NETFX_CORE
 				// WinRT expression tree cannot handle Type constants, but handle RuntimeTypeHandle.
-				return Expression.Call( Metadata._MethodBase.GetMethodFromHandle, Expression.Constant( method.MethodHandle ) );
+#if DEBUG
+				Contract.Assert( method.DeclaringType != null, "method.DeclaringType != null" );
+#endif // DEBUG
+				return Expression.Call( Metadata._MethodBase.GetMethodFromHandle, Expression.Constant( method.MethodHandle ), Expression.Constant( method.DeclaringType.TypeHandle ) );
 #else
 				// WinRT expression tree cannot handle Type constants, and MethodHandle property is not exposed.
 				// typeof( T ).GetRuntimeMethod( method.Name, ...{types}... );
@@ -341,7 +345,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			else
 			{
 #if !NETFX_CORE
-				return Expression.Call( Metadata._FieldInfo.GetFieldFromHandle, Expression.Constant( field.FieldHandle ) );
+#if DEBUG
+				Contract.Assert( field.DeclaringType != null, "field.DeclaringType != null" );
+#endif // DEBUG
+				return Expression.Call( Metadata._FieldInfo.GetFieldFromHandle, Expression.Constant( field.FieldHandle ), Expression.Constant( field.DeclaringType.TypeHandle ) );
 #else
 				// WinRT expression tree cannot handle Type constants, and MethodHandle property is not exposed.
 				// typeof( T ).GetRuntimeField( field.Name );

@@ -44,8 +44,10 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		public const string ConditionalExpressionHelperWhenFalseParameterName = "whenFalse";
 
 		private readonly Dictionary<SerializerFieldKey, string> _dependentSerializers = new Dictionary<SerializerFieldKey, string>();
-		private readonly Dictionary<RuntimeFieldHandle, string> _cachedFieldInfos = new Dictionary<RuntimeFieldHandle, string>();
-		private readonly Dictionary<RuntimeMethodHandle, string> _cachedMethodBases = new Dictionary<RuntimeMethodHandle, string>();
+		private readonly Dictionary<RuntimeFieldHandle, CachedFieldInfo> _cachedTargetFields = 
+			new Dictionary<RuntimeFieldHandle, CachedFieldInfo>();
+		private readonly Dictionary<RuntimeMethodHandle, CachedMethodBase> _cachedPropertyAccessors =
+			new Dictionary<RuntimeMethodHandle, CachedMethodBase>();
 
 		private readonly Dictionary<Type, CodeTypeDeclaration> _declaringTypes = new Dictionary<Type, CodeTypeDeclaration>();
 
@@ -92,41 +94,49 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		public string GetCachedFieldInfoName( FieldInfo field )
 		{
 			var key = field.FieldHandle;
-			string fieldName;
-			if ( !this._cachedFieldInfos.TryGetValue( key, out fieldName ) )
+			CachedFieldInfo cachedField;
+			if ( !this._cachedTargetFields.TryGetValue( key, out cachedField ) )
 			{
 				Contract.Assert( field.DeclaringType != null, "field.DeclaringType != null" );
 
-				fieldName = "_field" + field.DeclaringType.Name + "_" + field.Name + this._cachedFieldInfos.Count.ToString( CultureInfo.InvariantCulture );
-				this._cachedFieldInfos.Add( key, fieldName );
+				cachedField = 
+					new CachedFieldInfo(
+						field,
+						"_field" + field.DeclaringType.Name.Replace( '`', '_' ) + "_" + field.Name + this._cachedTargetFields.Count.ToString( CultureInfo.InvariantCulture )
+					);
+				this._cachedTargetFields.Add( key, cachedField );
 			}
 
-			return fieldName;
+			return cachedField.StorageFieldName;
 		}
 
-		public Dictionary<RuntimeFieldHandle, String> GetCachedFieldInfos()
+		public Dictionary<RuntimeFieldHandle, CachedFieldInfo> GetCachedFieldInfos()
 		{
-			return this._cachedFieldInfos;
+			return this._cachedTargetFields;
 		}
 
 		public string GetCachedMethodBaseName( MethodBase method )
 		{
 			var key = method.MethodHandle;
-			string fieldName;
-			if ( !this._cachedMethodBases.TryGetValue( key, out fieldName ) )
+			CachedMethodBase cachedMethod;
+			if ( !this._cachedPropertyAccessors.TryGetValue( key, out cachedMethod ) )
 			{
 				Contract.Assert( method.DeclaringType != null, "method.DeclaringType != null" );
 
-				fieldName = "_methodBase" + method.DeclaringType.Name + "_" + method.Name + this._cachedMethodBases.Count.ToString( CultureInfo.InvariantCulture );
-				this._cachedMethodBases.Add( key, fieldName );
+				cachedMethod =
+					new CachedMethodBase(
+						method,
+						"_methodBase" + method.DeclaringType.Name.Replace( '`', '_' ) + "_" + method.Name + this._cachedPropertyAccessors.Count.ToString( CultureInfo.InvariantCulture )
+					);
+				this._cachedPropertyAccessors.Add( key, cachedMethod );
 			}
 
-			return fieldName;
+			return cachedMethod.StorageFieldName;
 		}
 
-		public Dictionary<RuntimeMethodHandle, String> GetCachedMethodBases()
+		public Dictionary<RuntimeMethodHandle, CachedMethodBase> GetCachedMethodBases()
 		{
-			return this._cachedMethodBases;
+			return this._cachedPropertyAccessors;
 		}
 
 		private readonly Dictionary<string, int> _uniqueVariableSuffixes = new Dictionary<string, int>();
@@ -186,8 +196,8 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 			this._declaringTypes.Add( targetType, declaringType );
 			this._dependentSerializers.Clear();
-			this._cachedFieldInfos.Clear();
-			this._cachedMethodBases.Clear();
+			this._cachedTargetFields.Clear();
+			this._cachedPropertyAccessors.Clear();
 			this._buildingType = declaringType;
 
 			this.Packer = CodeDomConstruct.Parameter( typeof( Packer ), "packer" );
@@ -302,6 +312,30 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			var cu = new CodeCompileUnit();
 			cu.Namespaces.Add( cn );
 			return cu;
+		}
+
+		public struct CachedFieldInfo
+		{
+			public readonly string StorageFieldName;
+			public readonly FieldInfo Target;
+
+			public CachedFieldInfo( FieldInfo target, string storageFieldName )
+			{
+				this.Target = target;
+				this.StorageFieldName = storageFieldName;
+			}
+		}
+
+		public struct CachedMethodBase
+		{
+			public readonly string StorageFieldName;
+			public readonly MethodBase Target;
+
+			public CachedMethodBase( MethodBase target, string storageFieldName )
+			{
+				this.Target = target;
+				this.StorageFieldName = storageFieldName;
+			}
 		}
 	}
 }

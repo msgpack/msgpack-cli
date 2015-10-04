@@ -1200,7 +1200,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				context.DeclaringType.Members.Add(
 					new CodeMemberField(
 						typeof( FieldInfo ),
-						cachedFieldInfo.Value
+						cachedFieldInfo.Value.StorageFieldName
 					)
 				);
 			}
@@ -1211,7 +1211,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				context.DeclaringType.Members.Add(
 					new CodeMemberField(
 						typeof( MethodBase ),
-						cachedMethodBase.Value
+						cachedMethodBase.Value.StorageFieldName
 					)
 				);
 			}
@@ -1377,13 +1377,12 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 				foreach ( var cachedFieldInfo in context.GetCachedFieldInfos() )
 				{
-					var fieldInfo = FieldInfo.GetFieldFromHandle( cachedFieldInfo.Key );
+					var fieldInfo = cachedFieldInfo.Value.Target;
 					ctor.Statements.Add(
 						new CodeAssignStatement(
-							new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), cachedFieldInfo.Value ),
+							new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), cachedFieldInfo.Value.StorageFieldName ),
 							new CodeMethodInvokeExpression(
 								new CodeMethodReferenceExpression(
-									// ReSharper disable once AssignNullToNotNullAttribute
 									new CodeTypeOfExpression( fieldInfo.DeclaringType ),
 									"GetField"
 								),
@@ -1414,10 +1413,10 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 				foreach ( var cachedMethodBase in context.GetCachedMethodBases() )
 				{
-					var methodBase = MethodBase.GetMethodFromHandle( cachedMethodBase.Key );
+					var methodBase = cachedMethodBase.Value.Target;
 					ctor.Statements.Add(
 						new CodeAssignStatement(
-							new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), cachedMethodBase.Value ),
+							new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), cachedMethodBase.Value.StorageFieldName ),
 							new CodeMethodInvokeExpression(
 								new CodeMethodReferenceExpression(
 									// ReSharper disable once AssignNullToNotNullAttribute

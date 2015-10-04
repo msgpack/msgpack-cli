@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ namespace MsgPack.Serialization.Metadata
 	internal static class _MethodBase
 	{
 #if !NETFX_CORE
-		public static readonly MethodInfo GetMethodFromHandle = FromExpression.ToMethod( ( RuntimeMethodHandle handle ) => MethodBase.GetMethodFromHandle( handle ) );
+		public static readonly MethodInfo GetMethodFromHandle = FromExpression.ToMethod( ( RuntimeMethodHandle handle, RuntimeTypeHandle declaringType ) => MethodBase.GetMethodFromHandle( handle, declaringType ) );
 #endif // !NETFX_CORE
 
 		public static readonly MethodInfo Invoke_2 =

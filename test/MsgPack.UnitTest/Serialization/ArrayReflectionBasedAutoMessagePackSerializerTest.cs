@@ -2212,6 +2212,96 @@ namespace MsgPack.Serialization
 		}
 
 #endregion -- Exclusion --
+
+// Issue 119
+#region -- Generic --
+
+		[Test]
+		public void TestGenericDerived_Value_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target =
+				new GenericValueClass
+				{
+					GenericField = 1,
+					GenericProperty = 2
+				};
+			var serializer = context.GetSerializer<GenericValueClass>();
+
+			using( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result.GenericField, Is.EqualTo( target.GenericField ) );
+				Assert.That( result.GenericProperty, Is.EqualTo( target.GenericProperty ) );
+			}
+		}
+
+		[Test]
+		public void TestGenericDerived_Reference_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target =
+				new GenericReferenceClass
+				{
+					GenericField = "1",
+					GenericProperty = "2"
+				};
+			var serializer = context.GetSerializer<GenericReferenceClass>();
+
+			using( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result.GenericField, Is.EqualTo( target.GenericField ) );
+				Assert.That( result.GenericProperty, Is.EqualTo( target.GenericProperty ) );
+			}
+		}
+
+		[Test]
+		public void TestGenericRecordDerived_Value_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target =
+				new GenericRecordValueClass( 1, 2 );
+			var serializer = context.GetSerializer<GenericRecordValueClass>();
+
+			using( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result.GenericField, Is.EqualTo( target.GenericField ) );
+				Assert.That( result.GenericProperty, Is.EqualTo( target.GenericProperty ) );
+			}
+		}
+
+		[Test]
+		public void TestGenericRecordDerived_Reference_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target =
+				new GenericRecordReferenceClass( "1", "2" );
+			var serializer = context.GetSerializer<GenericRecordReferenceClass>();
+
+			using( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result.GenericField, Is.EqualTo( target.GenericField ) );
+				Assert.That( result.GenericProperty, Is.EqualTo( target.GenericProperty ) );
+			}
+		}
+
+#endregion -- Generic --
+
 		public class HasInitOnlyField
 		{
 			public readonly string Field = "ABC";

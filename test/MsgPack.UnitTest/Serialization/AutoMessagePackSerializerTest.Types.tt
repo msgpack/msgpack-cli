@@ -929,6 +929,46 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 #endif // !UNITY
 		}
 	}
+
+	// Issue 119
+	public abstract class GenericClass<T>
+	{
+		public T GenericField;
+		public virtual T GenericProperty { get; internal set; }
+
+		public GenericClass() {}
+	}
+
+	public class GenericValueClass : GenericClass<int> { }
+
+	public class GenericReferenceClass : GenericClass<string> { }
+
+	public abstract class GenericRecordClass<T>
+	{
+		public readonly T GenericField;
+
+		private readonly T _genericProperty;
+		public virtual T GenericProperty { get { return this._genericProperty; } }
+
+		public GenericRecordClass( T genericField, T genericProperty )
+		{
+			this.GenericField = genericField;
+			this._genericProperty = genericProperty;
+		}
+	}
+
+	public class GenericRecordValueClass : GenericRecordClass<int>
+	{
+		public GenericRecordValueClass( int genericField, int genericProperty )
+			: base( genericField, genericProperty )	{ }
+	}
+
+	public class GenericRecordReferenceClass : GenericRecordClass<string>
+	{
+		public GenericRecordReferenceClass( string genericField, string genericProperty )
+			: base( genericField, genericProperty )	{ }
+	}
+
 <#
 GeneratePolymorphismTestTypes();
 #>

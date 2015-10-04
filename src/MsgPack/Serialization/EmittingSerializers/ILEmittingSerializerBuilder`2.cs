@@ -582,6 +582,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					il =>
 					{
 						il.EmitLdtoken( method );
+						il.EmitLdtoken( method.DeclaringType );
 						il.EmitCall( Metadata._MethodBase.GetMethodFromHandle );
 					}
 				);
@@ -596,6 +597,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					il =>
 					{
 						il.EmitLdtoken( field );
+						il.EmitLdtoken( field.DeclaringType );
 						il.EmitCall( Metadata._FieldInfo.GetFieldFromHandle );
 					}
 				);
