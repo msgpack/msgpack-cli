@@ -733,9 +733,9 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 					}
 
+#if !UNITY
 					Type nullableType;
 					MessagePackSerializerProvider nullableSerializerProvider;
-#if !UNITY
 					SerializerRepository.GetNullableCompanion(
 						typeof( T ),
 						this,
