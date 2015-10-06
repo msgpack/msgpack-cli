@@ -243,10 +243,45 @@ namespace MsgPack.Serialization
 				}
 			);
 		}
+		
+		[Test]
+		public void TestDateTimeNullableChangeOnDemand()
+		{
+			TestCore(
+				( DateTime? )DateTime.UtcNow,
+				stream => MessagePackConvert.ToDateTime( Unpacking.UnpackInt64( stream ) ),
+				CompareDateTime,
+				context =>
+				{
+					context.GetSerializer<DateTime?>();
+					context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.UnixEpoc;
+				}
+			);
+		}
+
+		[Test]
+		public void TestDateTimeOffsetNullableChangeOnDemand()
+		{
+			TestCore(
+				( DateTimeOffset? )DateTimeOffset.UtcNow,
+				stream => MessagePackConvert.ToDateTimeOffset( Unpacking.UnpackInt64( stream ) ),
+				( x, y ) => CompareDateTime( x.Value.DateTime.ToUniversalTime(), y.Value.DateTime.ToUniversalTime() ),
+				context =>
+				{
+					context.GetSerializer<DateTimeOffset?>();
+					context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.UnixEpoc;
+				}
+			);
+		}
 
 		private static bool CompareDateTime( DateTime x, DateTime y )
 		{
 			return x.Date == y.Date && x.Hour == y.Hour && x.Minute == y.Minute && x.Second == y.Second && x.Millisecond == y.Millisecond;
+		}
+
+		private static bool CompareDateTime( DateTime? x, DateTime? y )
+		{
+			return CompareDateTime( x.Value, y.Value );
 		}
 
 		[Test]

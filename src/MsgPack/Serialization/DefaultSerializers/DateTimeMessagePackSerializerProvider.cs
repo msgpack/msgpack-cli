@@ -46,9 +46,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 					new NullableMessagePackSerializer<DateTime>( context, new NativeDateTimeMessagePackSerializer( context ) );
 #else
 				this._unixEpoc =
-					new NullableMessagePackSerializer( context, typeof( DateTime? ), new UnixEpocDateTimeMessagePackSerializer( context ));
+					new NullableMessagePackSerializer( context, typeof( DateTime? ), new UnixEpocDateTimeMessagePackSerializer( context ) );
 				this._native =
-					new NullableMessagePackSerializer( context, typeof( DateTime? ), new NativeDateTimeMessagePackSerializer( context ));
+					new NullableMessagePackSerializer( context, typeof( DateTime? ), new NativeDateTimeMessagePackSerializer( context ) );
 #endif // !UNITY
 			}
 			else

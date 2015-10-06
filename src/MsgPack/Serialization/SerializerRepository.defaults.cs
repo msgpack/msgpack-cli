@@ -65,12 +65,13 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( Char[] ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_CharArrayMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( Byte[] ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_ByteArrayMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( DateTime ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeMessagePackSerializerProvider( ownerContext, false ) );
-			dictionary.Add( typeof( DateTimeOffset ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeOffsetMessagePackSerializerProvider( ownerContext ) );
+			dictionary.Add( typeof( DateTimeOffset ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeOffsetMessagePackSerializerProvider( ownerContext, false ) );
 #if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
 			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.FileTimeMessagePackSerializerProvider( ownerContext, false ) );
 #endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
-			// DateTime and FILETIME must have nullable providers.
+			// DateTime, DateTimeOffset, and FILETIME must have nullable providers.
 			dictionary.Add( typeof( DateTime? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeMessagePackSerializerProvider( ownerContext, true ) );
+			dictionary.Add( typeof( DateTimeOffset? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeOffsetMessagePackSerializerProvider( ownerContext, true ) );
 #if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
 			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.FileTimeMessagePackSerializerProvider( ownerContext, true ) );
 #endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY

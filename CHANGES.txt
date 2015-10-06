@@ -339,3 +339,12 @@ Release 0.6.2 - 2015/08/30
 
   IMPROVEMENTS
   * Add built-in System.Globalization.CultureInfo serializer. Issue #112.
+
+Release 0.6.3 - 2015/10/?
+
+  BUG FIXES
+  * Fix reflection based serialization for non-public member fails for members which use generic type parameter(s). Issue #119
+  * Fix DateTimeOffset? serializer act different from DateTime? serializer for DateTimeSerializationMethod setting change. A part of issue #118
+
+  IMPROVEMENTS
+  * Improve Unpacker performance.

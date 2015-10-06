@@ -32,13 +32,30 @@ namespace MsgPack.Serialization.DefaultSerializers
 	/// </summary>
 	internal class DateTimeOffsetMessagePackSerializerProvider : MessagePackSerializerProvider
 	{
-		private readonly DateTimeOffsetMessagePackSerializer _unixEpoc;
-		private readonly DateTimeOffsetMessagePackSerializer _native;
+		private readonly IMessagePackSingleObjectSerializer _unixEpoc;
+		private readonly IMessagePackSingleObjectSerializer _native;
 
-		public DateTimeOffsetMessagePackSerializerProvider( SerializationContext context )
+		public DateTimeOffsetMessagePackSerializerProvider( SerializationContext context, bool isNullable )
 		{
-			this._unixEpoc = new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.UnixEpoc );
-			this._native = new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.Native );
+			if ( isNullable )
+			{
+#if !UNITY
+				this._unixEpoc =
+					new NullableMessagePackSerializer<DateTimeOffset>( context, new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.UnixEpoc ) );
+				this._native =
+					new NullableMessagePackSerializer<DateTimeOffset>( context, new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.Native ) );
+#else
+				this._unixEpoc =
+					new NullableMessagePackSerializer( context, typeof( DateTimeOffset? ), new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.UnixEpoc ) );
+				this._native =
+					new NullableMessagePackSerializer( context, typeof( DateTimeOffset? ), new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.Native ) );
+#endif // !UNITY
+			}
+			else
+			{
+				this._unixEpoc = new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.UnixEpoc );
+				this._native = new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.Native );
+			}
 		}
 
 		public override object Get( SerializationContext context, object providerParameter )
