@@ -516,6 +516,20 @@ namespace MsgPack.Serialization
 						yield return elementType;
 					}
 				}
+
+				if ( configuration.WithNullableSerializers && type.GetIsValueType() && Nullable.GetUnderlyingType( type ) == null )
+				{
+					// Retrun nullable companion even if they always have built-in serializers.
+
+					var nullableType = typeof( Nullable<> ).MakeGenericType( type );
+	
+					yield return nullableType;
+
+					foreach ( var elementType in ExtractElementTypes( context, configuration, nullableType ) )
+					{
+						yield return elementType;
+					}
+				}
 			}
 
 			protected abstract ISerializerCodeGenerationContext CreateGenerationContext( SerializationContext context, TConfig configuration );

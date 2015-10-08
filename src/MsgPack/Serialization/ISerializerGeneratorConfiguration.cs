@@ -72,6 +72,14 @@ namespace MsgPack.Serialization
 		bool PreferReflectionBasedSerializer { get; set; }
 
 		/// <summary>
+		///		Gets or sets a value indicating whether creating Nullable of T serializers for value type serializers.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if creates Nullable of T serializers for value type serializers; otherwise, <c>false</c>.
+		/// </value>
+		bool WithNullableSerializers { get; set; }
+
+		/// <summary>
 		///		Validates this instance state.
 		/// </summary>
 		/// <exception cref="InvalidOperationException">This object is not in valid state.</exception>

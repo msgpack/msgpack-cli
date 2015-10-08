@@ -193,6 +193,14 @@ namespace MsgPack.Serialization
 		public bool PreferReflectionBasedSerializer { get; set; }
 
 		/// <summary>
+		///		Gets or sets a value indicating whether creating Nullable of T serializers for value type serializers.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if creates Nullable of T serializers for value type serializers; otherwise, <c>false</c>.
+		/// </value>
+		public bool WithNullableSerializers { get; set; }
+
+		/// <summary>
 		///		Gets or sets a value indicating whether the generated serializers will be internal to MsgPack library itself.
 		/// </summary>
 		/// <value>

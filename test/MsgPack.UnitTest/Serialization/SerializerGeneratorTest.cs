@@ -1116,6 +1116,178 @@ namespace MsgPack.Serialization
 
 		#endregion -- Issue 120 --
 
+		#region -- Issue 121 --
+
+		[Test]
+		public void TestGenerateSerializerSourceCodes_MemberTypesOfElementTypes_ValueType_WithNullable_GeneratedWithNullable()
+		{
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, WithNullableSerializers = true };
+			var resultCS =
+				SerializerGenerator.GenerateSerializerSourceCodes(
+					configuration,
+					typeof( List<RootGeneratorTestValueObject> ),
+					typeof( AnotherRootGeneratorTestValueObject[] )
+				).ToArray();
+			try
+			{
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherRootGeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType? ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType? ) ), Is.False );
+
+				Assert.That( resultCS.Length, Is.EqualTo( 8 ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+			}
+			finally
+			{
+				foreach ( var result in resultCS )
+				{
+					File.Delete( result.FilePath );
+				}
+			}
+		}
+
+		[Test]
+		public void TestGenerateSerializerSourceCodes_MemberTypesOfElementTypesNested_ValueType_WithNullable_GeneratedWithNullable()
+		{
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, WithNullableSerializers = true };
+			var resultCS =
+				SerializerGenerator.GenerateSerializerSourceCodes(
+					configuration,
+					typeof( HoldsRootElementTypeValueObject )
+				).ToArray();
+			try
+			{
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( HoldsRootElementTypeValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherRootGeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType? ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType? ) ), Is.False );
+
+				Assert.That( resultCS.Length, Is.EqualTo( 9 ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( HoldsRootElementTypeValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherRootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+			}
+			finally
+			{
+				foreach ( var result in resultCS )
+				{
+					File.Delete( result.FilePath );
+				}
+			}
+		}
+
+		[Test]
+		public void TestGenerateSerializerSourceCodes_MemberTypesOfElementTypes_ValueType_WithoutNullable_GeneratedWithoutNullable()
+		{
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false };
+			Assert.That( configuration.WithNullableSerializers, Is.False );
+			var resultCS =
+				SerializerGenerator.GenerateSerializerSourceCodes(
+					configuration,
+					typeof( List<RootGeneratorTestValueObject> ),
+					typeof( AnotherRootGeneratorTestValueObject[] )
+				).ToArray();
+			try
+			{
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherRootGeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType? ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType? ) ), Is.False );
+
+				Assert.That( resultCS.Length, Is.EqualTo( 6 ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.All( r => r.TargetType != typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.All( r => r.TargetType != typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+			}
+			finally
+			{
+				foreach ( var result in resultCS )
+				{
+					File.Delete( result.FilePath );
+				}
+			}
+		}
+
+		[Test]
+		public void TestGenerateSerializerSourceCodes_MemberTypesOfElementTypesNested_ValueType_WithoutNullable_GeneratedWithoutNullable()
+		{
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false };
+			Assert.That( configuration.WithNullableSerializers, Is.False );
+			var resultCS =
+				SerializerGenerator.GenerateSerializerSourceCodes(
+					configuration,
+					typeof( HoldsRootElementTypeValueObject )
+				).ToArray();
+			try
+			{
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( HoldsRootElementTypeValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherRootGeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType? ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType? ) ), Is.False );
+
+				Assert.That( resultCS.Length, Is.EqualTo( 7 ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( HoldsRootElementTypeValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherRootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.All( r => r.TargetType != typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.All( r => r.TargetType != typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+			}
+			finally
+			{
+				foreach ( var result in resultCS )
+				{
+					File.Delete( result.FilePath );
+				}
+			}
+		}
+
+		#endregion -- Issue 121 --
+
 		private static void TestOnWorkerAppDomain( string geneartedAssemblyFilePath, PackerCompatibilityOptions packerCompatibilityOptions, byte[] bytesValue, byte[] expectedPackedValue, TestType testType )
 		{
 			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
@@ -1311,6 +1483,40 @@ namespace MsgPack.Serialization
 	{
 		public List<RootGeneratorTestObject> List { get; set; }
 		public AnotherRootGeneratorTestObject[] Array { get; set; }
+	}
+
+	public struct GeneratorTestValueObject
+	{
+		public TestEnumType Val { get; set; }
+	}
+
+	public sealed class RootGeneratorTestValueObject
+	{
+		public TestType Val { get; set; }
+		public GeneratorTestValueObject Child { get; set; }
+	}
+
+	public sealed class AnotherGeneratorTestValueObject
+	{
+		public TestEnumType Val { get; set; }
+	}
+
+	public sealed class AnotherRootGeneratorTestValueObject
+	{
+		public TestType Val { get; set; }
+		public AnotherGeneratorTestValueObject Child { get; set; }
+	}
+
+	public sealed class HoldsElementTypeValueObject
+	{
+		public List<GeneratorTestValueObject> List { get; set; }
+		public AnotherGeneratorTestValueObject[] Array { get; set; }
+	}
+
+	public sealed class HoldsRootElementTypeValueObject
+	{
+		public List<RootGeneratorTestValueObject> List { get; set; }
+		public AnotherRootGeneratorTestValueObject[] Array { get; set; }
 	}
 
 	[Serializable]
