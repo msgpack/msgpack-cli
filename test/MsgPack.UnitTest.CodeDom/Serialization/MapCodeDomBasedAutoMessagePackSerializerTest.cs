@@ -2254,7 +2254,9 @@ namespace MsgPack.Serialization
 
 #endregion -- Exclusion --
 
-// Issue 119
+#if !UNITY
+		// Mono 2.7.3 AOT fails when these classes are used...
+		// Issue 119
 #region -- Generic --
 
 		[Test]
@@ -2342,6 +2344,9 @@ namespace MsgPack.Serialization
 		}
 
 #endregion -- Generic --
+
+#endif // !UNITY
+
 
 		public class HasInitOnlyField
 		{

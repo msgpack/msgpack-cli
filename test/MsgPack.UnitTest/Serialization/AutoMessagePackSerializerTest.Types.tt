@@ -930,6 +930,8 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 		}
 	}
 
+#if !UNITY
+	// Mono 2.7.3 AOT fails when these classes are used...
 	// Issue 119
 	public abstract class GenericClass<T>
 	{
@@ -968,6 +970,7 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 		public GenericRecordReferenceClass( string genericField, string genericProperty )
 			: base( genericField, genericProperty )	{ }
 	}
+#endif // !UNITY
 
 <#
 GeneratePolymorphismTestTypes();

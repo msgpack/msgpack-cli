@@ -1338,6 +1338,8 @@ namespace MsgPack.Serialization
 		}
 	}
 
+#if !UNITY
+	// Mono 2.7.3 AOT fails when these classes are used...
 	// Issue 119
 	public abstract class GenericClass<T>
 	{
@@ -1376,6 +1378,7 @@ namespace MsgPack.Serialization
 		public GenericRecordReferenceClass( string genericField, string genericProperty )
 			: base( genericField, genericProperty )	{ }
 	}
+#endif // !UNITY
 
 		#region -- Polymorphism --
 		#region ---- KnownType ----
