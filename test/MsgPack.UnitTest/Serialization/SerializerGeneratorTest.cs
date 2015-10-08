@@ -1045,6 +1045,77 @@ namespace MsgPack.Serialization
 
 		#endregion -- Issue106 --
 
+		#region -- Issue 120 --
+
+		[Test]
+		public void TestGenerateSerializerSourceCodes_MemberTypesOfElementTypes_Generated()
+		{
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false };
+			var resultCS =
+				SerializerGenerator.GenerateSerializerSourceCodes(
+					configuration,
+					typeof( List<RootGeneratorTestObject> ),
+					typeof( AnotherRootGeneratorTestObject[] )
+				).ToArray();
+			try
+			{
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherRootGeneratorTestObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestObject ) ), Is.False );
+
+				Assert.That( resultCS.Length, Is.EqualTo( 4 ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+			}
+			finally
+			{
+				foreach ( var result in resultCS )
+				{
+					File.Delete( result.FilePath );
+				}
+			}
+		}
+
+		[Test]
+		public void TestGenerateSerializerSourceCodes_MemberTypesOfElementTypesNested_Generated()
+		{
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false };
+			var resultCS =
+				SerializerGenerator.GenerateSerializerSourceCodes(
+					configuration,
+					typeof( HoldsRootElementTypeObject )
+				).ToArray();
+			try
+			{
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( HoldsRootElementTypeObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherRootGeneratorTestObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestObject ) ), Is.False );
+
+				Assert.That( resultCS.Length, Is.EqualTo( 5 ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( HoldsRootElementTypeObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherRootGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+			}
+			finally
+			{
+				foreach ( var result in resultCS )
+				{
+					File.Delete( result.FilePath );
+				}
+			}
+		}
+
+		#endregion -- Issue 120 --
+
 		private static void TestOnWorkerAppDomain( string geneartedAssemblyFilePath, PackerCompatibilityOptions packerCompatibilityOptions, byte[] bytesValue, byte[] expectedPackedValue, TestType testType )
 		{
 			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
@@ -1224,10 +1295,22 @@ namespace MsgPack.Serialization
 		public byte[] Val { get; set; }
 	}
 
+	public sealed class AnotherRootGeneratorTestObject
+	{
+		public string Val { get; set; }
+		public AnotherGeneratorTestObject Child { get; set; }
+	}
+
 	public sealed class HoldsElementTypeObject
 	{
 		public List<GeneratorTestObject> List { get; set; }
 		public AnotherGeneratorTestObject[] Array { get; set; }
+	}
+
+	public sealed class HoldsRootElementTypeObject
+	{
+		public List<RootGeneratorTestObject> List { get; set; }
+		public AnotherRootGeneratorTestObject[] Array { get; set; }
 	}
 
 	[Serializable]

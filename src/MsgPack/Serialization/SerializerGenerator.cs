@@ -497,6 +497,11 @@ namespace MsgPack.Serialization
 					var elementType = type.GetElementType();
 					if ( !SerializationTarget.BuiltInSerializerExists( configuration, elementType, elementType.GetCollectionTraits() ) )
 					{
+						foreach ( var descendant in ExtractElementTypes( context, configuration, elementType ) )
+						{
+							yield return descendant;
+						}
+
 						yield return elementType;
 					}
 
