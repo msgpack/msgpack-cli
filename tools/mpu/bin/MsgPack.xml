@@ -19,6 +19,11 @@
             	Singleton empty <see cref="T:System.Byte"/>[].
             </summary>
         </member>
+        <member name="T:MsgPack.BufferManager">
+            <summary>
+            	Manages internal thread-local buffers for packer/unpacker.
+            </summary>
+        </member>
         <member name="T:MsgPack.CollectionDebuggerProxy`1">
             <summary>
             	Debugger type proxy for <see cref="T:System.Collections.Generic.ICollection`1"/>.
@@ -191,7 +196,7 @@
             	Implements deserializing feature of MsgPack.
             </summary>
             <remarks name="MsgPack.Unpacker">
-    <see cref="T:MsgPack.Unpacker"/> implements three mode, that is 'Streaming', 'Enumerating', 'Skipping', and 'Subtree'.
+    <see cref="T:MsgPack.Unpacker"/> implements three mode, that is 'Streaming', 'Skipping' and 'Subtree'.
     <list type="bullet">
       <item>
         <para>
@@ -206,20 +211,6 @@
         </para>
         <para>
           If the reading of the entry is completed, that is the <see cref="P:MsgPack.Unpacker.Data"/> is not <c>null</c>, unpacker can transit other mode.
-        </para>
-      </item>
-      <item>
-        <para>
-          <strong>Enumerating</strong>
-        </para>
-        <para>
-          When the <see cref="M:MsgPack.Unpacker.GetEnumerator"/> is called and the enumeration is started, unpacker go into 'Enumerating' mode.
-          In this mode, unpacker unpacks individual entries as <see cref="T:MsgPack.MessagePackObject"/> via <see cref="P:IEnumerator{T}.Current"/> property.
-          If the underlying stream is ended unexpectedly, enumeration is interrupted.
-          The interrupted unpacker cannot be resume.
-        </para>
-        <para>
-          Once the enumeration is completed gracefully, unpacker can transit other mode.
         </para>
       </item>
       <item>
@@ -281,12 +272,6 @@
             <summary>
             	Verifies this instance is not disposed.
             </summary>
-        </member>
-        <member name="M:MsgPack.Unpacker.NewInvalidModeException">
-            <summary>
-            	Returns new exception instance to notify invalid mode transition.
-            </summary>
-            <returns>New exception instance to notify invalid mode transition.</returns>
         </member>
         <member name="M:MsgPack.Unpacker.Create(System.IO.Stream)">
             <summary>
@@ -981,6 +966,11 @@
             <exception cref="T:System.NotSupportedException">
             	This instance does not supoort direct API.
             </exception>
+        </member>
+        <member name="F:MsgPack.ItemsUnpacker._offset">
+            <summary>
+            	An position of seekable <see cref="T:System.IO.Stream"/> or offset from start of this instance.
+            </summary>
         </member>
         <member name="M:MsgPack.ItemsUnpacker.ReadSubtreeCore">
             <summary>
@@ -7450,6 +7440,14 @@
             <c>true</c> if prefer reflection based collection serializers instead of dyhnamic generated serializers; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="P:MsgPack.Serialization.ISerializerGeneratorConfiguration.WithNullableSerializers">
+            <summary>
+            	Gets or sets a value indicating whether creating Nullable of T serializers for value type serializers.
+            </summary>
+            <value>
+            <c>true</c> if creates Nullable of T serializers for value type serializers; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="T:MsgPack.Serialization.LazyDelegatingMessagePackSerializer`1">
             <summary>
             	Lazy initialized serializer which delegates actual work for the other serializer implementation.
@@ -9437,7 +9435,7 @@
         </member>
         <member name="M:MsgPack.Serialization.SerializationContext.#ctor(MsgPack.PackerCompatibilityOptions)">
             <summary>
-            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.SerializationContext"/> class with copy of <see cref="M:MsgPack.Serialization.SerializerRepository.GetDefault(MsgPack.PackerCompatibilityOptions)"/> for specified <see cref="T:MsgPack.PackerCompatibilityOptions"/>.
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.SerializationContext"/> class with copy of <see cref="M:MsgPack.Serialization.SerializerRepository.GetDefault"/> for specified <see cref="T:MsgPack.PackerCompatibilityOptions"/>.
             </summary>
             <param name="packerCompatibilityOptions"><see cref="T:MsgPack.PackerCompatibilityOptions"/> which will be used on built-in serializers.</param>
         </member>
@@ -9961,6 +9959,14 @@
             <c>true</c> if prefer reflection based collection serializers instead of dyhnamic generated serializers; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="P:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.WithNullableSerializers">
+            <summary>
+            	Gets or sets a value indicating whether creating Nullable of T serializers for value type serializers.
+            </summary>
+            <value>
+            <c>true</c> if creates Nullable of T serializers for value type serializers; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="T:MsgPack.Serialization.SerializerCodeGenerationConfiguration">
             <summary>
             Represents configuration for serializer code generation.
@@ -10052,6 +10058,14 @@
             </summary>
             <value>
             <c>true</c> if prefer reflection based collection serializers instead of dyhnamic generated serializers; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializerCodeGenerationConfiguration.WithNullableSerializers">
+            <summary>
+            	Gets or sets a value indicating whether creating Nullable of T serializers for value type serializers.
+            </summary>
+            <value>
+            <c>true</c> if creates Nullable of T serializers for value type serializers; otherwise, <c>false</c>.
             </value>
         </member>
         <member name="P:MsgPack.Serialization.SerializerCodeGenerationConfiguration.IsInternalToMsgPackLibrary">
@@ -10448,6 +10462,26 @@
             	The <see cref="T:MsgPack.Serialization.SerializationMethod"/> which indicates serialization method to be used.
             </value>
         </member>
+        <member name="T:MsgPack.Serialization.SerializerRegistrationOptions">
+            <summary>
+            	Represents options for custom or pre-generated serializer registration.
+            </summary>
+        </member>
+        <member name="F:MsgPack.Serialization.SerializerRegistrationOptions.None">
+            <summary>
+            	None of options are applied.
+            </summary>
+        </member>
+        <member name="F:MsgPack.Serialization.SerializerRegistrationOptions.AllowOverride">
+            <summary>
+            	Overrides existing registration with specified serializer.
+            </summary>
+        </member>
+        <member name="F:MsgPack.Serialization.SerializerRegistrationOptions.WithNullable">
+            <summary>
+            	For non-nullable value type, registering nullable companion simulary.
+            </summary>
+        </member>
         <member name="T:MsgPack.Serialization.SerializerRepository">
             <summary>
             	Repository of known <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/>s.
@@ -10506,6 +10540,28 @@
             <exception cref="T:System.ArgumentNullException">
             	<paramref name="serializer"/> is <c>null</c>.
             </exception>
+            <remarks>
+            	This method invokes <see cref="M:MsgPack.Serialization.SerializerRepository.Register``1(MsgPack.Serialization.MessagePackSerializer{``0},MsgPack.Serialization.SerializerRegistrationOptions)"/> with <see cref="F:MsgPack.Serialization.SerializerRegistrationOptions.None"/>.
+            	<note>
+            		If you register serializer for value type, using <see cref="F:MsgPack.Serialization.SerializerRegistrationOptions.WithNullable"/> is recommended because auto-generated deserializers use them to handle nil value.
+            		You can use <see cref="M:MsgPack.Serialization.SerializerRepository.Register``1(MsgPack.Serialization.MessagePackSerializer{``0},MsgPack.Serialization.SerializerRegistrationOptions)"/> with <see cref="F:MsgPack.Serialization.SerializerRegistrationOptions.WithNullable"/> to
+            		get equivalant behavior for this method with registering nullable serializer automatically.
+            	</note>
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.SerializerRepository.Register``1(MsgPack.Serialization.MessagePackSerializer{``0},MsgPack.Serialization.SerializerRegistrationOptions)">
+            <summary>
+            	Registers a <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/>.
+            </summary>
+            <typeparam name="T">The type of serialization target.</typeparam>
+            <param name="serializer"><see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> instance.</param>
+            <param name="options">A <see cref="T:MsgPack.Serialization.SerializerRegistrationOptions"/> to control this registration process.</param>
+            <returns>
+            	<c>true</c> if success to register; otherwise, <c>false</c>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="serializer"/> is <c>null</c>.
+            </exception>
         </member>
         <member name="M:MsgPack.Serialization.SerializerRepository.RegisterOverride``1(MsgPack.Serialization.MessagePackSerializer{``0})">
             <summary>
@@ -10516,6 +10572,15 @@
             <exception cref="T:System.ArgumentNullException">
             	<paramref name="serializer"/> is <c>null</c>.
             </exception>
+            <remarks>
+            	This method invokes <see cref="M:MsgPack.Serialization.SerializerRepository.Register``1(MsgPack.Serialization.MessagePackSerializer{``0},MsgPack.Serialization.SerializerRegistrationOptions)"/> with <see cref="F:MsgPack.Serialization.SerializerRegistrationOptions.AllowOverride"/>.
+            	<note>
+            		If you register serializer for value type, using <see cref="F:MsgPack.Serialization.SerializerRegistrationOptions.WithNullable"/> is recommended because auto-generated deserializers use them to handle nil value.
+            		You can use <see cref="M:MsgPack.Serialization.SerializerRepository.Register``1(MsgPack.Serialization.MessagePackSerializer{``0},MsgPack.Serialization.SerializerRegistrationOptions)"/> 
+            		with <see cref="F:MsgPack.Serialization.SerializerRegistrationOptions.AllowOverride"/> and <see cref="F:MsgPack.Serialization.SerializerRegistrationOptions.WithNullable"/> to
+            		get equivalant behavior for this method with registering nullable serializer automatically.
+            	</note>
+            </remarks>
         </member>
         <member name="M:MsgPack.Serialization.SerializerRepository.GetDefault">
             <summary>
