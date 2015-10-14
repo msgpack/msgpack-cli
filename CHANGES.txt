@@ -350,3 +350,8 @@ Release 0.6.3 - 2015/10/12
   IMPROVEMENTS
   * Improve Unpacker performance.
   * Add WithNullable feature to serializer generator. It specifies generating nullable companions together. Issue #121
+
+Release 0.6.4 - 2015/10/14
+
+  BUG FIXES
+  * Fix StackOverflowException on SerializerGenerator.GenerateSerializerCodes with WithNullable and IsRecursive. Issue #121
