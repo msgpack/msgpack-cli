@@ -320,7 +320,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		protected override CodeDomConstruct MakeEnumLiteral( CodeDomContext context, Type type, object constant )
 		{
-			return CodeDomConstruct.Expression( type, new CodePrimitiveExpression( constant ) );
+			return CodeDomConstruct.Expression( type, new CodeFieldReferenceExpression( new CodeTypeReferenceExpression( type ), constant.ToString() ) );
 		}
 
 		protected override CodeDomConstruct MakeDefaultLiteral( CodeDomContext context, Type type )

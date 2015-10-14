@@ -448,17 +448,15 @@ namespace MsgPack.Serialization
 				}
 				else
 				{
-					realTargetTypes = targetTypes;
+					realTargetTypes =
+						targetTypes
+						.Where( t => !SerializationTarget.BuiltInSerializerExists( configuration, t, t.GetCollectionTraits() ) );
 				}
 
 				var generationContext = this.CreateGenerationContext( context, configuration );
 				var generatorFactory = this.CreateGeneratorFactory();
 
-				foreach ( var targetType in
-					realTargetTypes
-					.Distinct()
-					.Where( t => !SerializationTarget.BuiltInSerializerExists( configuration, t, t.GetCollectionTraits() ) )
-				)
+				foreach ( var targetType in realTargetTypes.Distinct() )
 				{
 					var generator = generatorFactory( targetType );
 
@@ -468,9 +466,6 @@ namespace MsgPack.Serialization
 						concreteType = context.DefaultCollectionTypes.GetConcreteType( targetType );
 					}
 
-#if DEBUG
-					Contract.Assert( !SerializationTarget.BuiltInSerializerExists( configuration, targetType, targetType.GetCollectionTraits() ) );
-#endif // DEBUG
 					generator.BuildSerializerCode( generationContext, concreteType, null );
 				}
 
@@ -485,10 +480,17 @@ namespace MsgPack.Serialization
 				{
 					yield return type;
 
-					// Search dependents recursively.
-					foreach ( var dependentType in SerializationTarget.Prepare( context, type ).Members.SelectMany( m => ExtractElementTypes( context, configuration, m.Member.GetMemberValueType() ) ) )
+					// Search dependents recursively if the type is NOT enum.
+					if ( !type.GetIsEnum() )
 					{
-						yield return dependentType;
+						foreach (
+							var dependentType in
+								SerializationTarget.Prepare( context, type )
+								.Members.SelectMany( m => ExtractElementTypes( context, configuration, m.Member.GetMemberValueType() ) ) 
+						)
+						{
+							yield return dependentType;
+						}
 					}
 				}
 
@@ -520,15 +522,7 @@ namespace MsgPack.Serialization
 				if ( configuration.WithNullableSerializers && type.GetIsValueType() && Nullable.GetUnderlyingType( type ) == null )
 				{
 					// Retrun nullable companion even if they always have built-in serializers.
-
-					var nullableType = typeof( Nullable<> ).MakeGenericType( type );
-	
-					yield return nullableType;
-
-					foreach ( var elementType in ExtractElementTypes( context, configuration, nullableType ) )
-					{
-						yield return elementType;
-					}
+					yield return typeof( Nullable<> ).MakeGenericType( type );
 				}
 			}
 

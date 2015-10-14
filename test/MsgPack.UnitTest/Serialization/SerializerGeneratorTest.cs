@@ -24,6 +24,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+
+using MsgPack.Serialization.Reflection;
+
 using NUnit.Framework;
 
 namespace MsgPack.Serialization
@@ -1001,8 +1004,8 @@ namespace MsgPack.Serialization
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestObject ) ), Is.False );
 
 				Assert.That( resultCS.Length, Is.EqualTo( 2 ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 			}
 			finally
 			{
@@ -1030,9 +1033,9 @@ namespace MsgPack.Serialization
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestObject ) ), Is.False );
 
 				Assert.That( resultCS.Length, Is.EqualTo( 3 ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( HoldsElementTypeObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( HoldsElementTypeObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 			}
 			finally
 			{
@@ -1066,10 +1069,10 @@ namespace MsgPack.Serialization
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestObject ) ), Is.False );
 
 				Assert.That( resultCS.Length, Is.EqualTo( 4 ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 			}
 			finally
 			{
@@ -1099,11 +1102,11 @@ namespace MsgPack.Serialization
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestObject ) ), Is.False );
 
 				Assert.That( resultCS.Length, Is.EqualTo( 5 ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( HoldsRootElementTypeObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherRootGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( HoldsRootElementTypeObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherRootGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 			}
 			finally
 			{
@@ -1134,21 +1137,22 @@ namespace MsgPack.Serialization
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestValueObject ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherRootGeneratorTestValueObject ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestValueObject? ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestValueObject ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType? ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType? ) ), Is.False );
 
-				Assert.That( resultCS.Length, Is.EqualTo( 8 ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Length, Is.EqualTo( 9 ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 			}
 			finally
 			{
@@ -1175,22 +1179,24 @@ namespace MsgPack.Serialization
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestValueObject ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherRootGeneratorTestValueObject ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestValueObject? ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestValueObject ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType? ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType? ) ), Is.False );
 
-				Assert.That( resultCS.Length, Is.EqualTo( 9 ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( HoldsRootElementTypeValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherRootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Length, Is.EqualTo( 10 ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( HoldsRootElementTypeValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherRootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestValueObject? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 			}
 			finally
 			{
@@ -1218,21 +1224,22 @@ namespace MsgPack.Serialization
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestValueObject ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherRootGeneratorTestValueObject ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestValueObject? ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestValueObject ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType? ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType? ) ), Is.False );
 
-				Assert.That( resultCS.Length, Is.EqualTo( 6 ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.All( r => r.TargetType != typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.All( r => r.TargetType != typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Length, Is.EqualTo( 6 ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.All( r => r.TargetType != typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.All( r => r.TargetType != typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 			}
 			finally
 			{
@@ -1260,22 +1267,23 @@ namespace MsgPack.Serialization
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestValueObject ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherRootGeneratorTestValueObject ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestValueObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestValueObject? ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestValueObject ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestType? ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( TestEnumType? ) ), Is.False );
 
-				Assert.That( resultCS.Length, Is.EqualTo( 7 ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( HoldsRootElementTypeValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherRootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.All( r => r.TargetType != typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
-				Assert.That( resultCS.All( r => r.TargetType != typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That( resultCS.Length, Is.EqualTo( 7 ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( HoldsRootElementTypeValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( RootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherRootGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestValueObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.All( r => r.TargetType != typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.All( r => r.TargetType != typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 			}
 			finally
 			{
@@ -1286,6 +1294,33 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		[Test]
+		public void TestGenerateSerializerSourceCodes_MemberIsPrimitive_WithNullable_GeneratedWithNullable()
+		{
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, WithNullableSerializers = true };
+			var resultCS =
+				SerializerGenerator.GenerateSerializerSourceCodes(
+					configuration,
+					typeof( WithPrimitive )
+				).ToArray();
+			try
+			{
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( WithPrimitive ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( int? ) ), Is.False );
+
+				Assert.That( resultCS.Length, Is.EqualTo( 2 ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( WithPrimitive ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+				Assert.That( resultCS.Any( r => r.TargetType == typeof( int? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+			}
+			finally
+			{
+				foreach ( var result in resultCS )
+				{
+					File.Delete( result.FilePath );
+				}
+			}
+		}
 		#endregion -- Issue 121 --
 
 		private static void TestOnWorkerAppDomain( string geneartedAssemblyFilePath, PackerCompatibilityOptions packerCompatibilityOptions, byte[] bytesValue, byte[] expectedPackedValue, TestType testType )
@@ -1524,5 +1559,10 @@ namespace MsgPack.Serialization
 	{
 		Zero = 0,
 		One = 1
+	}
+
+	public class WithPrimitive
+	{
+		public int Val { get; set; }
 	}
 }
