@@ -172,6 +172,7 @@
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Collection.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Nullable.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerSpecification.cs" />
     <Compile Include="Serialization\CodeDomSerializers\CodeDomSerializerBuilder.cs" />
     <Compile Include="Serialization\CollectionDetailedKind.cs" />

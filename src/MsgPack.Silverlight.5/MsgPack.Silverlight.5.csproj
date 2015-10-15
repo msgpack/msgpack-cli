@@ -223,6 +223,9 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs">
       <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Nullable.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Nullable.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs">
       <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs</Link>
     </Compile>

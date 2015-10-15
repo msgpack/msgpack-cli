@@ -2345,8 +2345,107 @@ namespace MsgPack.Serialization
 
 #endregion -- Generic --
 
-#endif // !UNITY
+#region -- Nullable --
+		// Issue #121
 
+		[Test]
+		public void TestNullable_Primitive_NonNull_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = DateTime.UtcNow.Millisecond;
+			var serializer = MessagePackSerializer.CreateInternal<int?>( context, null );
+
+			using( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( target ) );
+			}
+		}
+
+		[Test]
+		public void TestNullable_Primitive_Null_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = default( int? );
+			var serializer = MessagePackSerializer.CreateInternal<int?>( context, null );
+
+			using( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( target ) );
+			}
+		}
+
+		[Test]
+		public void TestNullable_Complex_NonNull_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = TimeSpan.FromSeconds( DateTime.UtcNow.Millisecond );
+			var serializer = MessagePackSerializer.CreateInternal<TimeSpan?>( context, null );
+
+			using( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( target ) );
+			}
+		}
+
+		[Test]
+		public void TestNullable_Complex_Null_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = default( TimeSpan? );
+			var serializer = MessagePackSerializer.CreateInternal<TimeSpan?>( context, null );
+
+			using( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( target ) );
+			}
+		}
+
+		[Test]
+		public void TestNullable_Enum_NonNull_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = DayOfWeek.Monday;
+			var serializer = MessagePackSerializer.CreateInternal<DayOfWeek?>( context, null );
+
+			using( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( target ) );
+			}
+		}
+
+		[Test]
+		public void TestNullable_Enum_Null_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = default( DayOfWeek? );
+			var serializer = MessagePackSerializer.CreateInternal<DayOfWeek?>( context, null );
+
+			using( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( target ) );
+			}
+		}
+#endregion  -- Nullable --
+
+#endif // !UNITY
 
 		public class HasInitOnlyField
 		{

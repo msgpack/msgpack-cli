@@ -2345,8 +2345,8 @@ namespace MsgPack.Serialization
 
 #endregion -- Generic --
 
-#endif // !UNITY
 
+#endif // !UNITY
 
 		public class HasInitOnlyField
 		{

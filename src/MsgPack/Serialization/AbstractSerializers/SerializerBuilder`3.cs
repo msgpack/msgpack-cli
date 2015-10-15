@@ -232,6 +232,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 #if DEBUG
 			Contract.Assert( !typeof( TObject ).IsArray );
+			Contract.Assert( !typeof( TObject ).IsEnum );
 #endif
 
 			switch ( CollectionTraitsOfThis.CollectionType )
@@ -244,9 +245,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 				case CollectionKind.NotCollection:
 				{
-					if ( typeof( TObject ).GetIsEnum() )
+					var nullableUnderlyingType = Nullable.GetUnderlyingType( typeof( TObject ) );
+					if ( nullableUnderlyingType != null )
 					{
-						this.BuildEnumSerializer( context );
+						this.BuildNullableSerializer( context, nullableUnderlyingType );
 					}
 #if !NETFX_35
 					else if ( TupleItems.IsTuple( typeof( TObject ) ) )

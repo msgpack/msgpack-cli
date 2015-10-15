@@ -2297,8 +2297,65 @@ namespace MsgPack.Serialization
 
 #endregion -- Generic --
 
-#endif // !UNITY
+<#+
+		// ReflectionBasedSerializers do not support nullable because they don't need it.
+		if ( !String.IsNullOrWhiteSpace( builderTypeName ) )
+		{
+#>
+#region -- Nullable --
+		// Issue #121
+<#+
+			foreach( var testCase in 
+				new []
+				{
+					new { Label = "Primitive",	Type = "int",		Value = "DateTime.UtcNow.Millisecond" },
+					new { Label = "Complex",	Type = "TimeSpan",	Value = "TimeSpan.FromSeconds( DateTime.UtcNow.Millisecond )" },
+					new { Label = "Enum",		Type = "DayOfWeek",	Value = "DayOfWeek.Monday" }
+				}
+			)
+			{
+#>
 
+		[Test]
+		public void TestNullable_<#= testCase.Label #>_NonNull_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = <#= testCase.Value #>;
+			var serializer = MessagePackSerializer.CreateInternal<#= "<" + testCase.Type + "?>" #>( context, null );
+
+			using( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( target ) );
+			}
+		}
+
+		[Test]
+		public void TestNullable_<#= testCase.Label #>_Null_Success()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = default( <#= testCase.Type #>? );
+			var serializer = MessagePackSerializer.CreateInternal<#= "<" + testCase.Type + "?>" #>( context, null );
+
+			using( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( target ) );
+			}
+		}
+<#+
+			}
+#>
+#endregion  -- Nullable --
+<#+
+		}
+#>
+
+#endif // !UNITY
 
 <#+
 	}

@@ -1177,7 +1177,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		}
 
 		/// <summary>
-		/// Emits the pack item expression.
+		/// Emits the pack item statements.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="packer">The packer.</param>
@@ -1211,22 +1211,39 @@ namespace MsgPack.Serialization.AbstractSerializers
 			/*
 			 * this._serializerN.PackTo(packer, item);
 			 */
-			yield return
+			yield return this.EmitSerializeItemExpressionCore( context, packer, itemType, item, memberInfo, itemsSchema );
+		}
+
+		/// <summary>
+		/// Emits the pack item expression.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="packer">The packer.</param>
+		/// <param name="itemType">Type of the item.</param>
+		/// <param name="item">The item to be packed.</param>
+		/// <param name="memberInfo">The metadata of packing member. <c>null</c> for non-object member (collection or tuple items).</param>
+		/// <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
+		/// <returns>The generated code construct.</returns>
+		private TConstruct EmitSerializeItemExpressionCore( TContext context, TConstruct packer, Type itemType, TConstruct item, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
+		{
+			return
 				this.EmitInvokeVoidMethod(
 					context,
 					this.EmitGetSerializerExpression( context, itemType, memberInfo, itemsSchema ),
 					typeof( MessagePackSerializer<> )
 						.MakeGenericType( itemType )
 						.GetMethods()
-						.Single( m =>
-							m.Name == "PackTo"
-							&& !m.IsStatic
-							&& m.IsPublic
+						.Single(
+							m =>
+								m.Name == "PackTo"
+								&& !m.IsStatic
+								&& m.IsPublic
 						),
 					packer,
 					item
 				);
 		}
+
 
 		/// <summary>
 		///		Emits the get items count expression.
@@ -1500,18 +1517,18 @@ namespace MsgPack.Serialization.AbstractSerializers
 					),
 					itemType == typeof( MessagePackObject )
 					? this.EmitAndConditionalExpression(
-							context,
-							isNotInCollectionCondition,
-							this.EmitStoreVariableStatement(
+						context,
+						isNotInCollectionCondition,
+						this.EmitStoreVariableStatement(
 							context,
 							nullable,
 							this.EmitGetPropertyExpression(
-									context,
-									unpacker,
-									Metadata._Unpacker.LastReadData
-								)
-							),
-							this.EmitStoreVariableStatement(
+								context,
+								unpacker,
+								Metadata._Unpacker.LastReadData
+							)
+						),
+						this.EmitStoreVariableStatement(
 							context,
 							nullable,
 							this.EmitInvokeMethodExpression(
@@ -1671,12 +1688,27 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitStoreVariableStatement(
 					context,
 					unpacked,
-					this.EmitInvokeMethodExpression(
-						context,
-						this.EmitGetSerializerExpression( context, itemType, memberInfo, itemsSchema ),
-						typeof( MessagePackSerializer<> ).MakeGenericType( itemType ).GetMethod( "UnpackFrom" ),
-						unpacker
-					)
+					this.EmitDeserializeItemExpressionCore( context, unpacker, itemType, memberInfo, itemsSchema )
+				);
+		}
+
+		/// <summary>
+		///		Emits the deserialize item expression.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="unpacker">The unpacker expression.</param>
+		/// <param name="itemType">Type of the item to be deserialized.</param>
+		/// <param name="memberInfo">The metadata of unpacking member.</param>
+		/// <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
+		/// <returns>The expression which returns deserialized item.</returns>
+		private TConstruct EmitDeserializeItemExpressionCore( TContext context, TConstruct unpacker, Type itemType, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
+		{
+			return 
+				this.EmitInvokeMethodExpression(
+					context,
+					this.EmitGetSerializerExpression( context, itemType, memberInfo, itemsSchema ),
+					typeof( MessagePackSerializer<> ).MakeGenericType( itemType ).GetMethod( "UnpackFrom" ),
+					unpacker
 				);
 		}
 
