@@ -126,7 +126,11 @@ namespace SyncProjects
 					.Select( e => new ItemGroup( e ) );
 				var baseItemGroups = baseProjectXml.Root.Elements( Ns + "ItemGroup" ).SelectMany( ig => ig.Elements() ).ToLookup( e => e.Name.LocalName );
 
-				var existingItemGroups = projectXml.Root.Elements( Ns + "ItemGroup" ).Where( e => e.Elements().Any() ).Select( e => new ItemGroup( e ) ).ToDictionary( ig => ig.Key );
+				var existingItemGroups =
+					projectXml.Root.Elements( Ns + "ItemGroup" )
+						.Where( e => e.HasElements )
+						.Select( e => new ItemGroup( e ) )
+						.ToDictionaryDebuggable( e => e.Key, projectFilePath );
 				foreach ( var itemGroup in targetItemGroups )
 				{
 					switch ( itemGroup.Key )
@@ -363,5 +367,39 @@ namespace SyncProjects
 			}
 		}
 
+	}
+
+	internal static class EnumerableEx
+	{
+		public static Dictionary<TKey, T> ToDictionaryDebuggable<T, TKey>(
+			this IEnumerable<T> source,
+			Func<T, TKey> keySelector,
+			string filePath
+		)
+		{
+			var dictionary = new Dictionary<TKey,T>();
+			foreach ( var item in source )
+			{
+				var key = keySelector( item );
+				try
+				{
+					dictionary.Add( key, item );
+				}
+				catch ( ArgumentException ex )
+				{
+					throw new InvalidOperationException(
+						String.Format( 
+							CultureInfo.CurrentCulture,
+							"Failed to process file '{0}'. Key '{1}' is duplicated.",
+							filePath,
+							key
+						),
+						ex
+					);
+				}
+			}
+
+			return dictionary;
+		}
 	}
 }
