@@ -320,7 +320,32 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		protected override CodeDomConstruct MakeEnumLiteral( CodeDomContext context, Type type, object constant )
 		{
-			return CodeDomConstruct.Expression( type, new CodeFieldReferenceExpression( new CodeTypeReferenceExpression( type ), constant.ToString() ) );
+			var asString = constant.ToString();
+			if ( ( '0' <= asString[ 0 ] && asString[ 0 ] <= '9' ) || asString.Contains( ',' ) )
+			{
+				// Unrepresentable numeric or combined flags
+				return
+					CodeDomConstruct.Expression(
+						type,
+						new CodeCastExpression(
+							type,
+							// Only support integrals.
+							new CodePrimitiveExpression(
+								UInt64.Parse( ( ( Enum ) constant ).ToString( "D" ), CultureInfo.InvariantCulture ) 
+							)
+						)
+					);
+			}
+			else
+			{
+				return
+					CodeDomConstruct.Expression(
+						type,
+						new CodeFieldReferenceExpression( 
+							new CodeTypeReferenceExpression( type ), constant.ToString() 
+						)
+					);
+			}
 		}
 
 		protected override CodeDomConstruct MakeDefaultLiteral( CodeDomContext context, Type type )

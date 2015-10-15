@@ -34,6 +34,12 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class SerializerGeneratorTest
 	{
+		[SetUp]
+		public void SetUp()
+		{
+			SerializationContext.Default = new SerializationContext();
+		}
+
 		#region -- Compat --
 #pragma warning disable 0618
 		[Test]
@@ -1073,6 +1079,8 @@ namespace MsgPack.Serialization
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+
+				AssertValidCode( resultCS );
 			}
 			finally
 			{
@@ -1107,6 +1115,8 @@ namespace MsgPack.Serialization
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherRootGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( GeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( AnotherGeneratorTestObject ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+
+				AssertValidCode( resultCS );
 			}
 			finally
 			{
@@ -1153,6 +1163,8 @@ namespace MsgPack.Serialization
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+
+				AssertValidCode( resultCS );
 			}
 			finally
 			{
@@ -1197,6 +1209,8 @@ namespace MsgPack.Serialization
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+
+				AssertValidCode( resultCS );
 			}
 			finally
 			{
@@ -1240,6 +1254,8 @@ namespace MsgPack.Serialization
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 				Assert.That( resultCS.All( r => r.TargetType != typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 				Assert.That( resultCS.All( r => r.TargetType != typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+
+				AssertValidCode( resultCS );
 			}
 			finally
 			{
@@ -1284,6 +1300,8 @@ namespace MsgPack.Serialization
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( TestEnumType ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 				Assert.That( resultCS.All( r => r.TargetType != typeof( TestType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 				Assert.That( resultCS.All( r => r.TargetType != typeof( TestEnumType? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+
+				AssertValidCode( resultCS );
 			}
 			finally
 			{
@@ -1312,6 +1330,8 @@ namespace MsgPack.Serialization
 				Assert.That( resultCS.Length, Is.EqualTo( 2 ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( WithPrimitive ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
 				Assert.That( resultCS.Any( r => r.TargetType == typeof( int? ) ), String.Join( ", ", resultCS.Select( r => r.TargetType.GetFullName() ).ToArray() ) );
+
+				AssertValidCode( resultCS );
 			}
 			finally
 			{
@@ -1414,6 +1434,42 @@ namespace MsgPack.Serialization
 				AppDomain.Unload( workerDomain );
 			}
 		}
+
+		private static void AssertValidCode( IEnumerable<SerializerCodeGenerationResult> results )
+		{
+			var result =
+				CodeDomProvider
+				.CreateProvider( "C#" )
+				.CompileAssemblyFromFile(
+					new CompilerParameters( 
+						new []
+						{
+							typeof( MessagePackObject ).Assembly.Location,
+							typeof( CodeDomProvider ).Assembly.Location,
+							Assembly.GetExecutingAssembly().Location
+						} 
+					),
+					results.Select( r => r.FilePath ).ToArray()
+				);
+			try
+			{
+				Assert.That(
+					result.Errors.HasErrors,
+					Is.False,
+					String.Join( Environment.NewLine, result.Errors.OfType<CompilerError>().SelectMany( GetCompileErrorLines ) )
+				);
+			}
+			finally
+			{
+				File.Delete( result.PathToAssembly );
+			}
+		}
+
+		private static IEnumerable<string> GetCompileErrorLines( CompilerError error )
+		{
+			yield return error.ToString();
+			yield return File.ReadLines( error.FileName ).Skip( error.Line - 1 ).First();
+		} 
 
 		public sealed class Tester : MarshalByRefObject
 		{
@@ -1557,8 +1613,8 @@ namespace MsgPack.Serialization
 	[Serializable]
 	public enum TestEnumType
 	{
-		Zero = 0,
-		One = 1
+		One = 1,
+		Two = 2
 	}
 
 	public class WithPrimitive
