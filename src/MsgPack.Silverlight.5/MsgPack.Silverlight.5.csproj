@@ -965,13 +965,11 @@
     <Compile Include="SilverlightExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\MsgPack\remarks.xml">
-      <Link>remarks.xml</Link>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\MsgPack.snk">
       <Link>MsgPack.snk</Link>
+    </None>
+    <None Include="..\MsgPack\remarks.xml">
+      <Link>remarks.xml</Link>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />

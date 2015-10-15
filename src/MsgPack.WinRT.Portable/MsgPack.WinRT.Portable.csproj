@@ -208,6 +208,9 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs">
       <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Nullable.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Nullable.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs">
       <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs</Link>
     </Compile>
@@ -832,11 +835,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\Reflection\ReflectionHelpers.cs" />
     <Compile Include="WinRTCompatibility.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\MsgPack\remarks.xml">
-      <Link>remarks.xml</Link>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

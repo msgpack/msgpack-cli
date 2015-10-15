@@ -997,8 +997,6 @@
     <None Include="..\MsgPack.snk">
       <Link>MsgPack.snk</Link>
     </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\MsgPack\remarks.xml">
       <Link>remarks.xml</Link>
     </None>

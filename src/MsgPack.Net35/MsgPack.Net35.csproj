@@ -965,6 +965,9 @@
     <None Include="..\MsgPack.snk">
       <Link>MsgPack.snk</Link>
     </None>
+    <None Include="..\MsgPack\remarks.xml">
+      <Link>remarks.xml</Link>
+    </None>
     <None Include="Delegates.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Delegates.cs</LastGenOutput>
@@ -972,11 +975,6 @@
     <None Include="Tuple`n.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Tuple`n.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\MsgPack\remarks.xml">
-      <Link>remarks.xml</Link>
     </None>
   </ItemGroup>
   <ItemGroup>
