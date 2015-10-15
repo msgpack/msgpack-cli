@@ -23,6 +23,9 @@
 #endif
 
 using System;
+#if DEBUG && !UNITY
+using System.Diagnostics.Contracts;
+#endif // DEBUG && !UNITY
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -47,20 +50,21 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override void PackToCore( Packer packer, T? objectTree )
 		{
-			if ( !objectTree.HasValue )
-			{
-				packer.PackNull();
-			}
-			else
-			{
-				this._valueSerializer.PackToCore( packer, objectTree.Value );
-			}
+#if DEBUG && !UNITY
+			Contract.Assert( objectTree != null, "objectTree != null" );
+#endif // DEBUG && !UNITY
+			// null was handled in PackTo() method.
+			this._valueSerializer.PackToCore( packer, objectTree.Value );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override T? UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.LastReadData.IsNil ? default( T? ) : this._valueSerializer.UnpackFromCore( unpacker );
+#if DEBUG && !UNITY
+			Contract.Assert( !unpacker.LastReadData.IsNil, "!unpacker.LastReadData.IsNil" );
+#endif // DEBUG && !UNITY
+			// nil was handled in UnpackFrom() method.
+			return this._valueSerializer.UnpackFromCore( unpacker );
 		}
 	}
 #else
@@ -83,20 +87,15 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override void PackToCore( Packer packer, object objectTree )
 		{
-			if ( objectTree == null )
-			{
-				packer.PackNull();
-			}
-			else
-			{
-				this._valueSerializer.PackTo( packer, objectTree );
-			}
+			// null was handled in PackTo() method.
+			this._valueSerializer.PackTo( packer, objectTree );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override object UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.LastReadData.IsNil ? null : this._valueSerializer.UnpackFrom( unpacker );
+			// nil was handled in UnpackFrom() method.
+			return this._valueSerializer.UnpackFrom( unpacker );
 		}
 	}
 #endif // !UNITY
