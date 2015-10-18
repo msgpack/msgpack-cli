@@ -40,9 +40,15 @@ namespace MsgPack.Serialization
 		{
 			this.TargetType = null;
 			this.PolymorphismType = PolymorphismType.None;
-			this._codeTypeMapping = new ReadOnlyDictionary<string, Type>( EmptyMap );
 			this.ChildrenType = PolymorphismSchemaChildrenType.None;
+#if !UNITY
+			this._codeTypeMapping = new ReadOnlyDictionary<string, Type>( EmptyMap );
 			this._children = new ReadOnlyCollection<PolymorphismSchema>( EmptyChildren );
+#else
+			// Work-around Unity type intiialization issue.
+			this._codeTypeMapping = new ReadOnlyDictionary<string, Type>( new Dictionary<string, Type>( 0 ) );
+			this._children = new ReadOnlyCollection<PolymorphismSchema>( new PolymorphismSchema[ 0 ] );
+#endif
 		}
 
 		// Aggregate
