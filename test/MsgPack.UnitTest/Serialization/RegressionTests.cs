@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 #if !MSTEST
 using NUnit.Framework;
@@ -116,6 +117,56 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		[Test]
+		public void TestIssue99_HoGyuLee_AotForEnumKeyDictionary()
+		{
+			MessagePackSerializer.PrepareType<FileMode>();
+			using ( var buffer = new MemoryStream( new byte[] { 0x81, 0x01, 0x00 } ) )
+			{
+				var serializer =
+					MessagePackSerializer.Get<Dictionary<FileMode, int>>(
+						PreGeneratedSerializerActivator.CreateContext(
+							SerializationMethod.Array,
+							PackerCompatibilityOptions.None
+						)
+					);
+				var result = serializer.Unpack( buffer );
+				Assert.That( result.Count, Is.EqualTo( 1 ) );
+				var singleResult = default ( KeyValuePair<FileMode, int> );
+				foreach ( var kv in result )
+				{
+					singleResult = kv;
+				}
+
+				Assert.That( singleResult.Key, Is.EqualTo( ( FileMode )1 ) );
+				Assert.That( singleResult.Value, Is.EqualTo( 0 ) );
+			}
+		}
+
+		[Test]
+		public void TestIssue124_AotForComplexValueType()
+		{
+			MessagePackSerializer.PrepareType<TestValueType>();
+			var context = 
+				PreGeneratedSerializerActivator.CreateContext(
+					SerializationMethod.Array,
+					PackerCompatibilityOptions.None
+				);
+			context.Serializers.RegisterOverride( new TestValueTypeWrapperSerializer( context ) );
+			var serializer = MessagePackSerializer.Get<TestValueTypeWrapper>( context );
+			var target = new TestValueTypeWrapper { Value = new TestValueType { StringField = String.Empty } };
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result.Value.StringField, Is.EqualTo( String.Empty ) );
+				Assert.That( result.Value.Int32ArrayField, Is.Null );
+				Assert.That( result.Value.DictionaryField, Is.Null );
+			}
+		}
+
 #if !UNITY
 		[Test]
 		public void TestIssue111()
@@ -169,5 +220,36 @@ namespace MsgPack.Serialization
 			public Issue111Aux aux;
 		}
 #endif // !UNITY
+
+		public class TestValueTypeWrapper
+		{
+			public TestValueType Value { get; set; }
+			public TestValueTypeWrapper() { }
+		}
+
+		public class TestValueTypeWrapperSerializer : MessagePackSerializer<TestValueTypeWrapper>
+		{
+			private readonly MessagePackSerializer<TestValueType> _serializer0;
+
+			public TestValueTypeWrapperSerializer( SerializationContext context )
+				: base( context )
+			{
+				this._serializer0 = context.GetSerializer<TestValueType>( PolymorphismSchema.Default );
+			}
+
+			protected internal override void PackToCore( Packer packer, TestValueTypeWrapper objectTree )
+			{
+				packer.PackArrayHeader( 1 );
+				this._serializer0.PackTo( packer, objectTree.Value );
+			}
+
+			protected internal override TestValueTypeWrapper UnpackFromCore( Unpacker unpacker )
+			{
+				Assert.That( unpacker.IsArrayHeader );
+				Assert.That( unpacker.ItemsCount, Is.EqualTo( 1L ) );
+				Assert.That( unpacker.Read() );
+				return new TestValueTypeWrapper { Value = this._serializer0.UnpackFrom( unpacker ) };
+			}
+		}
 	}
 }

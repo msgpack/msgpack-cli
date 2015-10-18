@@ -694,5 +694,30 @@ namespace MsgPack.Serialization
 		{
 			return _singleTonMpoDeserializer.Unpack( stream );
 		}
+
+		/// <summary>
+		///		Try to prepare specified type for some AOT(Ahead-Of-Time) compilation environment.
+		/// </summary>
+		/// <typeparam name="T">The type to be prepared. Normally, this should be value type.</typeparam>
+		/// <remarks>
+		///		<para>
+		///			Currently, this method only works in Unity3D build.
+		///			This method does not any work for other environments(and should be removed on JIT/AOT), but exists to simplify the application compilation.
+		///			It is recommended to use this method on start up code to reduce probability of some AOT errors.
+		///		</para>
+		///		<para>
+		///			Please note that this method do not ensure for full linkage for AOT.
+		///			Manifest or attribute based linker options (e.g. for .NET Native or Xamarin.iOS) are still required.
+		///		</para>
+		/// </remarks>
+		public static void PrepareType<T>()
+		{
+#if UNITY
+			// Ensure GetSerializer<T>( object ) is AOT-ed.
+			SerializationContext.Default.GetSerializer<T>( null );
+			// Ensure Dictionary<T, ?> is work.
+			AotHelper.PrepareEqualityComparer<T>();
+#endif // UNITY
+		}
 	}
 }

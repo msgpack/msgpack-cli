@@ -57,6 +57,19 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		internal static void PrepareEqualityComparer<T>()
+		{
+			lock ( EqualityComparerTable )
+			{
+				object result;
+				if ( !EqualityComparerTable.TryGetValue( typeof( T ).TypeHandle, out result ) )
+				{
+					result = new BoxingGenericEqualityComparer<T>();
+					EqualityComparerTable[ typeof( T ).TypeHandle ] = result;
+				}
+			}
+		}
+
 		private sealed class BoxingGenericEqualityComparer<T> : IEqualityComparer<T>
 		{
 			public BoxingGenericEqualityComparer() {}
