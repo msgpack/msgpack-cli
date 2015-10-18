@@ -1456,7 +1456,7 @@ namespace MsgPack.Serialization
 				Assert.That(
 					result.Errors.HasErrors,
 					Is.False,
-					String.Join( Environment.NewLine, result.Errors.OfType<CompilerError>().SelectMany( GetCompileErrorLines ) )
+					String.Join( Environment.NewLine, result.Errors.OfType<CompilerError>().SelectMany( GetCompileErrorLines ).ToArray() )
 				);
 			}
 			finally
@@ -1468,7 +1468,7 @@ namespace MsgPack.Serialization
 		private static IEnumerable<string> GetCompileErrorLines( CompilerError error )
 		{
 			yield return error.ToString();
-			yield return File.ReadLines( error.FileName ).Skip( error.Line - 1 ).First();
+			yield return File.ReadAllLines( error.FileName ).Skip( error.Line - 1 ).First();
 		} 
 
 		public sealed class Tester : MarshalByRefObject
