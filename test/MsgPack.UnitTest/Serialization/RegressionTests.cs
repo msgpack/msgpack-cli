@@ -117,6 +117,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if !SILVERLIGHT && !NETFX_CORE
 		[Test]
 		public void TestIssue99_HoGyuLee_AotForEnumKeyDictionary()
 		{
@@ -166,6 +167,7 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value.DictionaryField, Is.Null );
 			}
 		}
+#endif // !SLIVERLIGHT && !NETFX_CORE
 
 #if !UNITY
 		[Test]

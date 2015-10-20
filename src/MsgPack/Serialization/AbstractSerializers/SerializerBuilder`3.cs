@@ -232,7 +232,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 #if DEBUG
 			Contract.Assert( !typeof( TObject ).IsArray );
-			Contract.Assert( !typeof( TObject ).IsEnum );
+			Contract.Assert( !typeof( TObject ).GetIsEnum() );
 #endif
 
 			switch ( CollectionTraitsOfThis.CollectionType )
