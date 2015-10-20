@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -78,7 +79,7 @@ namespace mpu
 						CultureInfo.InvariantCulture,
 						".{0}src{0}MsgPack.Unity3D{0}MsgPack.Unity3D.csproj",
 						Path.DirectorySeparatorChar
-						);
+					);
 			}
 
 			if ( String.IsNullOrEmpty( outputDirectoryPath ) )
@@ -88,23 +89,34 @@ namespace mpu
 						CultureInfo.InvariantCulture,
 						".{0}Assets{0}MsgPack",
 						Path.DirectorySeparatorChar
-						);
+					);
 			}
 
 			var sourceDirectoryPath = Path.GetDirectoryName( sourceProjectPath );
 
 			foreach ( var sourceFileRelativePath in this.ParseProjectFile( sourceProjectPath ) )
 			{
-				var destinationFilePath = Path.Combine( outputDirectoryPath, sourceFileRelativePath.StartsWith( "..\\" ) ? sourceFileRelativePath.Substring( 3 ) : sourceFileRelativePath );
+				var destinationFilePath = 
+					Path.Combine( 
+						outputDirectoryPath,
+						new String(
+							( sourceFileRelativePath.StartsWith( "..\\" ) ? sourceFileRelativePath.Substring( 3 ) : sourceFileRelativePath ) // remove relative
+							.SkipWhile( c => c != '\\') // remove project name portion
+							.Skip( 1 )
+							.ToArray()
+						)
+					);
 				// ReSharper disable once AssignNullToNotNullAttribute
 				Directory.CreateDirectory( Path.GetDirectoryName( destinationFilePath ) );
+
+				Debug.Print( "Copy {0} to {1}", sourceFileRelativePath, destinationFilePath );
 
 				File.Copy(
 					// ReSharper disable once AssignNullToNotNullAttribute
 					Path.Combine( sourceDirectoryPath, sourceFileRelativePath ),
 					destinationFilePath,
 					this.Overwrite
-					);
+				);
 			}
 		}
 
