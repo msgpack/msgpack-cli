@@ -67,19 +67,19 @@ namespace MsgPack.Serialization
 					const string String40 = "1234567890123456789012345678901234567890"; // packed as Bin8 or Str8
 					var packer = Packer.Create( stream, compat, false );
 					packer.PackMapHeader( 7 );
-					packer.Pack( "Field1" );
+					packer.PackString( "Field1" );
 					packer.Pack( 1 );
-					packer.Pack("Extra1");
-					packer.Pack(String40);
-					packer.Pack("Extra2");
-					packer.Pack(System.Text.Encoding.UTF8.GetBytes(String40));
-					packer.Pack("Field2");
+					packer.PackString( "Extra1" );
+					packer.PackString( String40 );
+					packer.PackString( "Extra2" );
+					packer.PackBinary(System.Text.Encoding.UTF8.GetBytes(String40));
+					packer.PackString( "Field2" );
 					packer.Pack( -1 );
-					packer.Pack("Extra3");
-					packer.Pack(String10);
-					packer.Pack("Field3");
-					packer.Pack( "a" );
-					packer.Pack( "Extra4" );
+					packer.PackString( "Extra3" );
+					packer.PackString( String10 );
+					packer.PackString( "Field3" );
+					packer.PackString( "a" );
+					packer.PackString( "Extra4" );
 					packer.PackNull();
 				}
 
@@ -107,7 +107,7 @@ namespace MsgPack.Serialization
 				{
 					var packer = Packer.Create( stream, false );
 					packer.PackMapHeader( 1 );
-					packer.Pack( "Field1" );
+					packer.PackString( "Field1" );
 					packer.Pack( 1 );
 				}
 
@@ -135,11 +135,11 @@ namespace MsgPack.Serialization
 				{
 					var packer = Packer.Create( stream, false );
 					packer.PackMapHeader( 3 );
-					packer.Pack( "Field1" );
+					packer.PackString( "Field1" );
 					packer.Pack( 1 );
-					packer.Pack( "Field2" );
+					packer.PackString( "Field2" );
 					packer.Pack( -1 );
-					packer.Pack( "Field3" );
+					packer.PackString( "Field3" );
 					packer.Pack( 1 );
 				}
 
@@ -162,11 +162,11 @@ namespace MsgPack.Serialization
 
 				var packer = Packer.Create( stream, false );
 				packer.PackMapHeader( 3 );
-				packer.Pack( "Field1" );
+				packer.PackString( "Field1" );
 				packer.Pack( 1 );
-				packer.Pack( "Field2" );
+				packer.PackString( "Field2" );
 				packer.Pack( -1 );
-				packer.Pack( "Extra" );
+				packer.PackString( "Extra" );
 				packer.Pack( 2 ); // Issue6
 
 				stream.Position = 0;

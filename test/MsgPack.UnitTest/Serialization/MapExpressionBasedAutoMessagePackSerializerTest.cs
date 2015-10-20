@@ -1265,9 +1265,9 @@ namespace MsgPack.Serialization
 				using ( var packer = Packer.Create( stream, false ) )
 				{
 					packer.PackMapHeader( 2 );
-					packer.Pack( "Field" );
-					packer.Pack( "ABC" );
-					packer.Pack( "Extra" );
+					packer.PackString( "Field" );
+					packer.PackString( "ABC" );
+					packer.PackString( "Extra" );
 					packer.PackNull();
 				}
 
@@ -1319,9 +1319,9 @@ namespace MsgPack.Serialization
 				using ( var packer = Packer.Create( stream, false ) )
 				{
 					packer.PackMapHeader( 2 );
-					packer.Pack( "Property" );
-					packer.Pack( "ABC" );
-					packer.Pack( "Extra" );
+					packer.PackString( "Property" );
+					packer.PackString( "ABC" );
+					packer.PackString( "Extra" );
 					packer.PackNull();
 				}
 
@@ -1340,9 +1340,9 @@ namespace MsgPack.Serialization
 				using ( var packer = Packer.Create( stream, false ) )
 				{
 					packer.PackMapHeader( 2 );
-					packer.Pack( "Property" );
-					packer.Pack( "ABC" );
-					packer.Pack( "Extra" );
+					packer.PackString( "Property" );
+					packer.PackString( "ABC" );
+					packer.PackString( "Extra" );
 					packer.PackNull();
 				}
 
@@ -2798,9 +2798,9 @@ namespace MsgPack.Serialization
 			protected internal override void PackToCore( Packer packer, Person objectTree )
 			{
 				packer.PackMapHeader( 2 );
-				packer.Pack( "Name" );
-				packer.Pack( objectTree.Name );
-				packer.Pack( "Children" );
+				packer.PackString( "Name" );
+				packer.PackString( objectTree.Name );
+				packer.PackString( "Children" );
 				if ( objectTree.Children == null )
 				{
 					packer.PackNull();

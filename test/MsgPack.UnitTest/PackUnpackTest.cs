@@ -498,7 +498,7 @@ namespace MsgPack
 			{
 				sw.Restart();
 				var output = new MemoryStream();
-				Packer.Create( output ).Pack( Enumerable.Range( 0, count ).ToDictionary( item => item.ToString(), item => item ) );
+				Packer.Create( output ).PackDictionary( Enumerable.Range( 0, count ).ToDictionary( item => item.ToString(), item => item ) );
 				Assert.That(
 					Enumerable.Range( 0, count ).ToDictionary( item => item.ToString(), item => item ),
 					Is.EqualTo( UnpackOne( output ).AsDictionary().ToDictionary( kv => kv.Key.AsString(), kv => kv.Value.AsInt32() ) )
@@ -529,7 +529,7 @@ namespace MsgPack
 			{
 				using ( var output = new MemoryStream() )
 				{
-					Packer.Create( output ).Pack( Enumerable.Range( 0, count ).ToDictionary( item => item.ToString(), item => item ) );
+					Packer.Create( output ).PackDictionary( Enumerable.Range( 0, count ).ToDictionary( item => item.ToString(), item => item ) );
 					output.Position = 0;
 					using ( var splitted = new SplittingStream( output ) )
 					{
@@ -563,7 +563,7 @@ namespace MsgPack
 			{
 				sw.Restart();
 				var output = new MemoryStream();
-				Packer.Create( output ).Pack( Enumerable.Range( 0, count ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray() );
+				Packer.Create( output ).PackBinary( Enumerable.Range( 0, count ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray() );
 				Assert.That(
 					Enumerable.Range( 0, count ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray(),
 					Is.EqualTo( UnpackOne( output ).AsBinary() )
@@ -594,7 +594,7 @@ namespace MsgPack
 			{
 				using ( var output = new MemoryStream() )
 				{
-					Packer.Create( output ).Pack( Enumerable.Range( 0, count ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray() );
+					Packer.Create( output ).PackBinary( Enumerable.Range( 0, count ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray() );
 					output.Position = 0;
 					using ( var splitted = new SplittingStream( output ) )
 					{
@@ -630,7 +630,7 @@ namespace MsgPack
 			{
 				sw.Restart();
 				var output = new MemoryStream();
-				Packer.Create( output ).Pack( String.Concat( Enumerable.Range( 0, count ).Select( i => ( i % 10 ).ToString() ).ToArray() ) );
+				Packer.Create( output ).PackString( String.Concat( Enumerable.Range( 0, count ).Select( i => ( i % 10 ).ToString() ).ToArray() ) );
 				Assert.AreEqual(
 					String.Concat( Enumerable.Range( 0, count ).Select( i => ( i % 10 ).ToString() ).ToArray() ),
 					UnpackOne( output ).AsString()
@@ -663,7 +663,7 @@ namespace MsgPack
 			{
 				using ( var output = new MemoryStream() )
 				{
-					Packer.Create( output ).Pack( String.Concat( Enumerable.Range( 0, count ).Select( i => ( i % 10 ).ToString() ).ToArray() ) );
+					Packer.Create( output ).PackString( String.Concat( Enumerable.Range( 0, count ).Select( i => ( i % 10 ).ToString() ).ToArray() ) );
 					output.Position = 0;
 					using ( var splitted = new SplittingStream( output ) )
 					{
@@ -703,7 +703,7 @@ namespace MsgPack
 				var output = new MemoryStream();
 				var value = new MessagePackExtendedTypeObject(
 					1, Enumerable.Range( 0, count ).Select( i => ( byte ) ( i % 0x100 ) ).ToArray() );
-				Packer.Create( output, PackerCompatibilityOptions.None ).Pack( value );
+				Packer.Create( output, PackerCompatibilityOptions.None ).PackExtendedTypeValue( value );
 				Assert.AreEqual(
 					value,
 					UnpackOne( output ).AsMessagePackExtendedTypeObject()
@@ -740,7 +740,7 @@ namespace MsgPack
 				{
 					var value = new MessagePackExtendedTypeObject(
 						1, Enumerable.Range( 0, count ).Select( i => ( byte )( i % 0x100 ) ).ToArray() );
-					Packer.Create( output, PackerCompatibilityOptions.None ).Pack( value );
+					Packer.Create( output, PackerCompatibilityOptions.None ).PackExtendedTypeValue( value );
 					output.Position = 0;
 					using ( var splitted = new SplittingStream( output ) )
 					{
@@ -760,7 +760,7 @@ namespace MsgPack
 			{
 				var packer = Packer.Create( stream );
 				packer.Pack( 1 );
-				packer.Pack( "1" );
+				packer.PackString( "1" );
 				stream.Position = 0;
 				var item = Unpacking.UnpackObject( stream );
 				Assert.That( item, Is.Not.Null );

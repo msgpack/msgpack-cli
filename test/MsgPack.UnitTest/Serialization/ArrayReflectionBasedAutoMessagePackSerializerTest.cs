@@ -1265,7 +1265,7 @@ namespace MsgPack.Serialization
 				using ( var packer = Packer.Create( stream, false ) )
 				{
 					packer.PackArrayHeader( 2 );
-					packer.Pack( "ABC" );
+					packer.PackString( "ABC" );
 					packer.PackNull();
 				}
 
@@ -1317,7 +1317,7 @@ namespace MsgPack.Serialization
 				using ( var packer = Packer.Create( stream, false ) )
 				{
 					packer.PackArrayHeader( 2 );
-					packer.Pack( "ABC" );
+					packer.PackString( "ABC" );
 					packer.PackNull();
 				}
 
@@ -1336,7 +1336,7 @@ namespace MsgPack.Serialization
 				using ( var packer = Packer.Create( stream, false ) )
 				{
 					packer.PackArrayHeader( 2 );
-					packer.Pack( "ABC" );
+					packer.PackString( "ABC" );
 					packer.PackNull();
 				}
 
@@ -2693,9 +2693,9 @@ namespace MsgPack.Serialization
 			protected internal override void PackToCore( Packer packer, Person objectTree )
 			{
 				packer.PackMapHeader( 2 );
-				packer.Pack( "Name" );
-				packer.Pack( objectTree.Name );
-				packer.Pack( "Children" );
+				packer.PackString( "Name" );
+				packer.PackString( objectTree.Name );
+				packer.PackString( "Children" );
 				if ( objectTree.Children == null )
 				{
 					packer.PackNull();

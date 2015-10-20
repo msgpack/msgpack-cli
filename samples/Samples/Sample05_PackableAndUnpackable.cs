@@ -64,7 +64,7 @@ namespace Samples
 			// First, record total fields size.
 			packer.PackArrayHeader( 2 );
 			packer.Pack( this.Id );
-			packer.Pack( this.Name );
+			packer.PackString( this.Name );
 
 			// ...Instead, you can pack as map as follows:
 			// packer.PackMapHeader( 2 );

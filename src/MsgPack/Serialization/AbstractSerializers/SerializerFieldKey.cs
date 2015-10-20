@@ -125,15 +125,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 				else
 				{
-					packer.Pack( value.TargetType.AssemblyQualifiedName );
+					packer.PackString( value.TargetType.AssemblyQualifiedName );
 				}
 				packer.Pack( ( int )value.ChildrenType );
 
 				packer.PackMapHeader( value.CodeTypeMapping.Count );
 				foreach ( var mapping in value.CodeTypeMapping )
 				{
-					packer.Pack( mapping.Key );
-					packer.Pack( mapping.Value.AssemblyQualifiedName );
+					packer.PackString( mapping.Key );
+					packer.PackString( mapping.Value.AssemblyQualifiedName );
 				}
 
 				packer.PackArrayHeader( value.ChildSchemaList.Count );

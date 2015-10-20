@@ -79,15 +79,15 @@ namespace MsgPack.Serialization.Polymorphic
 			Buffer.BlockCopy( BitConverter.GetBytes( assemblyName.Version.Revision ), 0, version, 12, 4 );
 
 			packer
-				.Pack( compressedTypeName )
-				.Pack( assemblyName.Name )
-				.Pack( version )
+				.PackString( compressedTypeName )
+				.PackString( assemblyName.Name )
+				.PackBinary( version )
 #if !XAMIOS && !XAMDROID
-				.Pack( assemblyName.GetCultureName() )
+				.PackString( assemblyName.GetCultureName() )
 #else
-				.Pack( assemblyName.GetCultureName() == "neutral" ? null : assemblyName.GetCultureName() )
+				.PackString( assemblyName.GetCultureName() == "neutral" ? null : assemblyName.GetCultureName() )
 #endif // !XAMIOS && !XAMDROID
-				.Pack( assemblyName.GetPublicKeyToken() );
+				.PackBinary( assemblyName.GetPublicKeyToken() );
 		}
 
 		public static T Decode<T>( Unpacker unpacker, Func<Unpacker, Type> typeFinder, Func<Type, Unpacker, T> unpacking )

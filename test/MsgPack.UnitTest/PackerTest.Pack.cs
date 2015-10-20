@@ -337,7 +337,7 @@ namespace MsgPack
 			using( var buffer = new MemoryStream() )
 			using( var packer = Packer.Create( buffer ) )
 			{
-				packer.Pack( default( object ) );
+				packer.Pack( default( int? ) );
 				Assert.AreEqual(
 					new byte[] { 0xC0 },
 					buffer.ToArray()
