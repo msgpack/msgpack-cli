@@ -354,4 +354,19 @@ Release 0.6.3 - 2015/10/12
 Release 0.6.4 - 2015/10/14
 
   BUG FIXES
-  * Fix StackOverflowException on SerializerGenerator.GenerateSerializerCodes with WithNullable and IsRecursive. Issue #121
+  * Fix StackOverflowException on SerializerGenerator.GenerateSerializerCodes with WithNullable and IsRecursive. Issue #121(cont)
+
+Release 0.6.5 - 2015/10/20
+
+  BUG FIXES
+  * Fix enum handling in code generation for enum values which do not have corresponding single symbols. Issue #121(cont)
+
+  IMPROVEMENTS
+  * Improve Nullable<T> serializer source code for SerializerGenerator.GenerateSerializerCodes with WithNullable. Issue #121(cont)
+  * Add Unity AOT work around method MessagePackSerializer.PrepareType<T>(). This solves a part of issue #99 and an issue #124.
+  * Fix build issues in source tree release for Unity.
+    * mpu.exe --library now creates merged source tree.
+    * Add work arounds for Unity C# compiler issue for DictionaryMessagePackSerializer`3.cs
+    * Add UNITY_5 for UNITY compiler constant determination.
+  * Remove unnecessary Pack<T>() usage to avoid unexpected performance loss and/or Unity(and its Mono) C# compiler overload resolution failure.
+

@@ -4304,13 +4304,25 @@
         </member>
         <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.EmitPackItemStatements(`0,`1,System.Type,MsgPack.Serialization.NilImplication,System.String,`1,System.Nullable{MsgPack.Serialization.SerializingMember},MsgPack.Serialization.PolymorphismSchema)">
             <summary>
-            Emits the pack item expression.
+            Emits the pack item statements.
             </summary>
             <param name="context">The generation context.</param>
             <param name="packer">The packer.</param>
             <param name="itemType">Type of the item.</param>
             <param name="nilImplication">The nil implication of the member.</param>
             <param name="memberName">Name of the member.</param>
+            <param name="item">The item to be packed.</param>
+            <param name="memberInfo">The metadata of packing member. <c>null</c> for non-object member (collection or tuple items).</param>
+            <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
+            <returns>The generated code construct.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.EmitSerializeItemExpressionCore(`0,`1,System.Type,`1,System.Nullable{MsgPack.Serialization.SerializingMember},MsgPack.Serialization.PolymorphismSchema)">
+            <summary>
+            Emits the pack item expression.
+            </summary>
+            <param name="context">The generation context.</param>
+            <param name="packer">The packer.</param>
+            <param name="itemType">Type of the item.</param>
             <param name="item">The item to be packed.</param>
             <param name="memberInfo">The metadata of packing member. <c>null</c> for non-object member (collection or tuple items).</param>
             <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
@@ -4405,6 +4417,17 @@
             <param name="unpacker">The unpacker expression.</param>
             <param name="itemType">Type of the item to be deserialized.</param>
             <param name="unpacked">The variable which stores unpacked item.</param>
+            <param name="memberInfo">The metadata of unpacking member.</param>
+            <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
+            <returns>The expression which returns deserialized item.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.EmitDeserializeItemExpressionCore(`0,`1,System.Type,System.Nullable{MsgPack.Serialization.SerializingMember},MsgPack.Serialization.PolymorphismSchema)">
+            <summary>
+            	Emits the deserialize item expression.
+            </summary>
+            <param name="context">The generation context.</param>
+            <param name="unpacker">The unpacker expression.</param>
+            <param name="itemType">Type of the item to be deserialized.</param>
             <param name="memberInfo">The metadata of unpacking member.</param>
             <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
             <returns>The expression which returns deserialized item.</returns>
@@ -8213,6 +8236,23 @@
             	<note>
             		You cannot override this method behavior because this method uses private <see cref="T:MsgPack.Serialization.SerializationContext"/> instead of default context which is able to be accessed via <see cref="P:MsgPack.Serialization.SerializationContext.Default"/>.
             	</note>
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.MessagePackSerializer.PrepareType``1">
+            <summary>
+            	Try to prepare specified type for some AOT(Ahead-Of-Time) compilation environment.
+            </summary>
+            <typeparam name="T">The type to be prepared. Normally, this should be value type.</typeparam>
+            <remarks>
+            	<para>
+            		Currently, this method only works in Unity3D build.
+            		This method does not any work for other environments(and should be removed on JIT/AOT), but exists to simplify the application compilation.
+            		It is recommended to use this method on start up code to reduce probability of some AOT errors.
+            	</para>
+            	<para>
+            		Please note that this method do not ensure for full linkage for AOT.
+            		Manifest or attribute based linker options (e.g. for .NET Native or Xamarin.iOS) are still required.
+            	</para>
             </remarks>
         </member>
         <member name="T:MsgPack.Serialization.MessagePackSerializerExtensions">
