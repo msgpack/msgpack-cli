@@ -42,6 +42,9 @@ namespace MsgPack.Serialization.CollectionSerializers
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes", Justification = "By design" )]
 	public abstract class DictionaryMessagePackSerializer<TDictionary, TKey, TValue> : DictionaryMessagePackSerializerBase<TDictionary, TKey, TValue>
 		where TDictionary : IDictionary<TKey, TValue>
+#if UNITY
+		, IEnumerable<KeyValuePair<TKey, TValue>> // This is obvious from IDictionary<TKey, TValue>, but Unity compiler cannot recognize this.
+#endif // UNITY
 	{
 		/// <summary>
 		///		Initializes a new instance of the <see cref="DictionaryMessagePackSerializer{TDictionary, TKey, TValue}"/> class.
