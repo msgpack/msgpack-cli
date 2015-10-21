@@ -29,12 +29,6 @@ namespace MsgPack.Serialization
 	{
 #if !NETFX_CORE
 		/// <summary>
-		///		Uses <see cref="SerializationContext"/> in each case of the members (de)serialization.
-		///		It may cause more contentions but is available in WP7.
-		/// </summary>
-		ContextBased,
-
-		/// <summary>
 		///		Caches serializers for the members (de)serialization.
 		///		It is default.
 		/// </summary>

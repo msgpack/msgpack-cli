@@ -56,9 +56,6 @@
     <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayCodeDomBasedCustomCollectionSerializersTest.cs">
       <Link>Serialization\ArrayCodeDomBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayContextBasedCustomCollectionSerializersTest.cs">
-      <Link>Serialization\ArrayContextBasedCustomCollectionSerializersTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayExpressionBasedCustomCollectionSerializersTest.cs">
       <Link>Serialization\ArrayExpressionBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
@@ -67,9 +64,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapCodeDomBasedCustomCollectionSerializersTest.cs">
       <Link>Serialization\MapCodeDomBasedCustomCollectionSerializersTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapContextBasedCustomCollectionSerializersTest.cs">
-      <Link>Serialization\MapContextBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapExpressionBasedCustomCollectionSerializersTest.cs">
       <Link>Serialization\MapExpressionBasedCustomCollectionSerializersTest.cs</Link>

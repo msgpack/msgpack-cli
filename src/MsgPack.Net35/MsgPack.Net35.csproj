@@ -491,71 +491,17 @@
     <Compile Include="..\MsgPack\Serialization\EmittingSerializers\BinaryOperatorILConstruct.cs">
       <Link>Serialization\EmittingSerializers\BinaryOperatorILConstruct.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\CallbackCollectionMessagePackSerializer`2.cs">
-      <Link>Serialization\EmittingSerializers\CallbackCollectionMessagePackSerializer`2.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\CallbackDictionaryMessagePackSerializer`3.cs">
-      <Link>Serialization\EmittingSerializers\CallbackDictionaryMessagePackSerializer`3.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\CallbackEnumerableMessagePackSerializer`2.cs">
-      <Link>Serialization\EmittingSerializers\CallbackEnumerableMessagePackSerializer`2.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\CallbackEnumMessagePackSerializer.cs">
-      <Link>Serialization\EmittingSerializers\CallbackEnumMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\CallbackMessagePackSerializer`1.cs">
-      <Link>Serialization\EmittingSerializers\CallbackMessagePackSerializer`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\CallbackNonGenericCollectionMessagePackSerializer`1.cs">
-      <Link>Serialization\EmittingSerializers\CallbackNonGenericCollectionMessagePackSerializer`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\CallbackNonGenericDictionaryMessagePackSerializer`1.cs">
-      <Link>Serialization\EmittingSerializers\CallbackNonGenericDictionaryMessagePackSerializer`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\CallbackNonGenericEnumerableMessagePackSerializer`1.cs">
-      <Link>Serialization\EmittingSerializers\CallbackNonGenericEnumerableMessagePackSerializer`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\CallbackNonGenericListMessagePackSerializer`1.cs">
-      <Link>Serialization\EmittingSerializers\CallbackNonGenericListMessagePackSerializer`1.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\EmittingSerializers\ConditionalILConstruct.cs">
       <Link>Serialization\EmittingSerializers\ConditionalILConstruct.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\ContextBasedEnumSerializerEmitter.cs">
-      <Link>Serialization\EmittingSerializers\ContextBasedEnumSerializerEmitter.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\ContextBasedSerializerEmitter.cs">
-      <Link>Serialization\EmittingSerializers\ContextBasedSerializerEmitter.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\EmittingSerializers\ContextfulILConstruct.cs">
       <Link>Serialization\EmittingSerializers\ContextfulILConstruct.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\DefaultSerializationMethodGeneratorManager.cs">
-      <Link>Serialization\EmittingSerializers\DefaultSerializationMethodGeneratorManager.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\DynamicMethodEmittingContext.cs">
-      <Link>Serialization\EmittingSerializers\DynamicMethodEmittingContext.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\DynamicMethodSerializerBuilder`1.cs">
-      <Link>Serialization\EmittingSerializers\DynamicMethodSerializerBuilder`1.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\EmittingSerializers\EnumSerializerEmitter.cs">
       <Link>Serialization\EmittingSerializers\EnumSerializerEmitter.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\FieldBasedEnumSerializerEmitter.cs">
-      <Link>Serialization\EmittingSerializers\FieldBasedEnumSerializerEmitter.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs">
-      <Link>Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\EmittingSerializers\ILConstruct.cs">
       <Link>Serialization\EmittingSerializers\ILConstruct.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\ILEmittingContext.cs">
-      <Link>Serialization\EmittingSerializers\ILEmittingContext.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\ILEmittingSerializerBuilder`2.cs">
-      <Link>Serialization\EmittingSerializers\ILEmittingSerializerBuilder`2.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\EmittingSerializers\InvocationILConsruct.cs">
       <Link>Serialization\EmittingSerializers\InvocationILConsruct.cs</Link>

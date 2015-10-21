@@ -135,7 +135,7 @@ namespace MsgPack.Serialization
 <#
 foreach( var __method in new []{ "Array", "Map" } )
 {
-	foreach( var __flavor in new [] { "Field", "Context", "Expression" } )
+	foreach( var __flavor in new [] { "Field", "Expression" } )
 	{
 		if ( __flavor == "Expression" )
 		{
@@ -152,9 +152,15 @@ foreach( var __method in new []{ "Array", "Map" } )
 #>
 
 		[Test]
-		public void TestExtraField_NotExtensible_<#= __method #>_<#= __flavor #>Based_Fail()
+		public void TestExtraField_NotExtensible_<#= __method #>_<#= __flavor #>Based_Classic_Fail()
 		{
-			TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.<#= __method #>, EmitterFlavor.<#= __flavor #>Based );
+			TestExtraFieldCore( SerializationMethod.<#= __method #>, EmitterFlavor.<#= __flavor #>Based, PackerCompatibilityOptions.Classic );
+		}
+
+		[Test]
+		public void TestExtraField_NotExtensible_<#= __method #>_<#= __flavor #>Based_None_Fail()
+		{
+			TestExtraFieldCore( SerializationMethod.<#= __method #>, EmitterFlavor.<#= __flavor #>Based, PackerCompatibilityOptions.None );
 		}
 
 		[Test]
@@ -215,32 +221,6 @@ foreach( var __targetType in
 	<#= __targetType.Item2 #>
 <#
 	}
-#>
-	public class <#= __targetType.Item1 #>VersioningTestTarget
-	{
-<#
-	foreach (var __member in 
-		new []
-		{
-			Tuple.Create( 0, "Field1", "Int32" ),
-			Tuple.Create( 1, "Field2", "Int32" ),
-			Tuple.Create( 2, "Field3", "String" ),
-		}
-	)
-	{
-		if( __targetType.Item3 != null )
-		{
-#>
-		<#= String.Format( CultureInfo.InvariantCulture, __targetType.Item3, __member.Item1 ) #>
-<#
-		}
-#>
-		public <#= __member.Item3 #> <#= __member.Item2 #> { get; set; }
-<#
-	}
-#>
-	}
-<#
 }
 #>
 }

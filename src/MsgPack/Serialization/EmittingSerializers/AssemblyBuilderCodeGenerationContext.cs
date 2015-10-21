@@ -44,7 +44,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this._context = context;
 			this._assemblyBuilder = assemblyBuilder;
 
-			DefaultSerializationMethodGeneratorManager.SetUpAssemblyBuilderAttributes( assemblyBuilder, false );
+			SerializationMethodGeneratorManager.SetUpAssemblyBuilderAttributes( assemblyBuilder, false );
 			this._generatorManager = SerializationMethodGeneratorManager.Get( assemblyBuilder );
 			this._directory = configuration.OutputDirectory;
 			this._generatedSerializers = new List<SerializerSpecification>();

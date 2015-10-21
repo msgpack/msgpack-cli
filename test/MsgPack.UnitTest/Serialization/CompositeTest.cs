@@ -75,7 +75,7 @@ namespace MsgPack.Serialization
 				}
 				finally
 				{
-					DefaultSerializationMethodGeneratorManager.Refresh();
+					SerializationMethodGeneratorManager.Refresh();
 				}
 			}
 
@@ -94,13 +94,7 @@ namespace MsgPack.Serialization
 		{
 			TestCore( EmitterFlavor.FieldBased, SerializationMethod.Map, new AssemblyBuilderSerializerBuilder<DirectoryItem>( ) );
 		}
-
-		[Test]
-		public void TestArrayContextBased()
-		{
-			TestCore( EmitterFlavor.ContextBased, SerializationMethod.Array, new DynamicMethodSerializerBuilder<DirectoryItem>() );
-		}
-
+		
 		[Test]
 		public void TestArrayCodeDomBased()
 		{
@@ -122,12 +116,6 @@ namespace MsgPack.Serialization
 		}
 
 #if !NETFX_CORE && !WINDOWS_PHONE
-		[Test]
-		public void TestMapContextBased()
-		{
-			TestCore( EmitterFlavor.ContextBased, SerializationMethod.Map, new DynamicMethodSerializerBuilder<DirectoryItem>() );
-		}
-
 		[Test]
 		public void TestMapCodeDomBased()
 		{

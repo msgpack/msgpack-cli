@@ -130,7 +130,7 @@ namespace MsgPack.Serialization
 				}
 				finally
 				{
-					DefaultSerializationMethodGeneratorManager.Refresh();
+					SerializationMethodGeneratorManager.Refresh();
 				}
 			}
 

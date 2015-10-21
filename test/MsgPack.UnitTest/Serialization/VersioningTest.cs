@@ -180,7 +180,6 @@ namespace MsgPack.Serialization
 		}
 	}
 
-
 	public class VersioningTestTarget {
 		[MessagePackMember(0)]
 		public Int32 Field1 { get; set; }

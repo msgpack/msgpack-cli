@@ -45,6 +45,12 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		public void TestExtraField_NotExtensible_Array_FieldBased_None_Fail()
+		{
+			TestExtraFieldCore( SerializationMethod.Array, EmitterFlavor.FieldBased, PackerCompatibilityOptions.None );
+		}
+
+		[Test]
 		public void TestMissingField_Array_FieldBased_MissingIsTreatedAsNil()
 		{
 			TestMissingFieldCore( SerializationMethod.Array, EmitterFlavor.FieldBased );
@@ -56,32 +62,18 @@ namespace MsgPack.Serialization
 			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.FieldBased ) );
 		}
 #endif // !NETFX_CORE
-#if !NETFX_CORE
-
-		[Test]
-		public void TestExtraField_NotExtensible_Array_ContextBased_Classic_Fail()
-		{
-			TestExtraFieldCore( SerializationMethod.Array, EmitterFlavor.ContextBased, PackerCompatibilityOptions.Classic );
-		}
-
-		[Test]
-		public void TestMissingField_Array_ContextBased_MissingIsTreatedAsNil()
-		{
-			TestMissingFieldCore( SerializationMethod.Array, EmitterFlavor.ContextBased );
-		}
-
-		[Test]
-		public void TestFieldInvalidType_Array_ContextBased_Fail()
-		{
-			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.ContextBased ) );
-		}
-#endif // !NETFX_CORE
 #if !NETFX_35
 
 		[Test]
 		public void TestExtraField_NotExtensible_Array_ExpressionBased_Classic_Fail()
 		{
 			TestExtraFieldCore( SerializationMethod.Array, EmitterFlavor.ExpressionBased, PackerCompatibilityOptions.Classic );
+		}
+
+		[Test]
+		public void TestExtraField_NotExtensible_Array_ExpressionBased_None_Fail()
+		{
+			TestExtraFieldCore( SerializationMethod.Array, EmitterFlavor.ExpressionBased, PackerCompatibilityOptions.None );
 		}
 
 		[Test]
@@ -105,7 +97,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestExtraField_NotExtensible_Map_FieldBased_None_Fail ()
+		public void TestExtraField_NotExtensible_Map_FieldBased_None_Fail()
 		{
 			TestExtraFieldCore( SerializationMethod.Map, EmitterFlavor.FieldBased, PackerCompatibilityOptions.None );
 		}
@@ -128,38 +120,6 @@ namespace MsgPack.Serialization
 			TestFieldSwappedCore( EmitterFlavor.FieldBased );
 		}
 #endif // !NETFX_CORE
-#if !NETFX_CORE
-
-		[Test]
-		public void TestExtraField_NotExtensible_Map_ContextBased_Classic_Fail()
-		{
-			TestExtraFieldCore( SerializationMethod.Map, EmitterFlavor.ContextBased, PackerCompatibilityOptions.Classic );
-		}
-
-		[Test]
-		public void TestExtraField_NotExtensible_Map_ContextBased_None_Fail ()
-		{
-			TestExtraFieldCore( SerializationMethod.Map, EmitterFlavor.ContextBased, PackerCompatibilityOptions.None );
-		}
-
-		[Test]
-		public void TestMissingField_Map_ContextBased_MissingIsTreatedAsNil()
-		{
-			TestMissingFieldCore( SerializationMethod.Map, EmitterFlavor.ContextBased );
-		}
-
-		[Test]
-		public void TestFieldInvalidType_Map_ContextBased_Fail()
-		{
-			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Map, EmitterFlavor.ContextBased ) );
-		}
-
-		[Test]
-		public void TestFieldModified_Map_ContextBased_ExtraIsStoredAsExtensionData_MissingIsTreatedAsNil()
-		{
-			TestFieldSwappedCore( EmitterFlavor.ContextBased );
-		}
-#endif // !NETFX_CORE
 #if !NETFX_35
 
 		[Test]
@@ -169,7 +129,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestExtraField_NotExtensible_Map_ExpressionBased_None_Fail ()
+		public void TestExtraField_NotExtensible_Map_ExpressionBased_None_Fail()
 		{
 			TestExtraFieldCore( SerializationMethod.Map, EmitterFlavor.ExpressionBased, PackerCompatibilityOptions.None );
 		}
@@ -193,4 +153,5 @@ namespace MsgPack.Serialization
 		}
 #endif // !NETFX_35
 	}
+
 }

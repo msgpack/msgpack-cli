@@ -45,12 +45,10 @@ using System.Linq.Expressions;
 #endif
 #if !XAMIOS && !XAMDROID && !UNITY
 using MsgPack.Serialization.AbstractSerializers;
-#if !NETFX_CORE && !WINDOWS_PHONE
-#if !SILVERLIGHT
+#if !NETFX_CORE && !WINDOWS_PHONE && !SILVERLIGHT
 using MsgPack.Serialization.CodeDomSerializers;
-#endif // !SILVERLIGHT
 using MsgPack.Serialization.EmittingSerializers;
-#endif // NETFX_CORE && !WINDOWS_PHONE
+#endif // NETFX_CORE && !WINDOWS_PHONE && !SILVERLIGHT
 #endif // !!XAMIOS && !XAMDROID && !UNITY
 #if !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
 using MsgPack.Serialization.ExpressionSerializers;
@@ -251,10 +249,8 @@ namespace MsgPack.Serialization
 #if !XAMIOS && !XAMDROID && !UNITY
 			ISerializerBuilder<T> builder;
 #endif // !XAMIOS && !XAMDROID && !UNITY
-#if NETFX_CORE || WINDOWS_PHONE
+#if NETFX_CORE || WINDOWS_PHONE || SILVERLIGHT
 			builder = new ExpressionTreeSerializerBuilder<T>();
-#elif SILVERLIGHT
-			builder = new DynamicMethodSerializerBuilder<T>();
 #else
 #if !XAMIOS && !XAMDROID && !UNITY
 			switch ( context.EmitterFlavor )
@@ -277,11 +273,6 @@ namespace MsgPack.Serialization
 				case EmitterFlavor.FieldBased:
 				{
 					builder = new AssemblyBuilderSerializerBuilder<T>();
-					break;
-				}
-				case EmitterFlavor.ContextBased:
-				{
-					builder = new DynamicMethodSerializerBuilder<T>();
 					break;
 				}
 				default:
