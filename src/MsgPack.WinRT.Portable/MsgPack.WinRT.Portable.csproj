@@ -838,6 +838,7 @@
     <Compile Include="..\MsgPack\UnpackingStreamReader.cs">
       <Link>UnpackingStreamReader.cs</Link>
     </Compile>
+    <Compile Include="BufferedStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\Reflection\ReflectionHelpers.cs" />
     <Compile Include="WinRTCompatibility.cs" />
