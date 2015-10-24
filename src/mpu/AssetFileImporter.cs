@@ -93,15 +93,15 @@ namespace mpu
 			}
 
 			var sourceDirectoryPath = Path.GetDirectoryName( sourceProjectPath );
-
-			foreach ( var sourceFileRelativePath in this.ParseProjectFile( sourceProjectPath ) )
+			var relativePrefix = ".." + Path.DirectorySeparatorChar;
+			foreach ( var sourceFileRelativePath in this.ParseProjectFile( sourceProjectPath ).Select( p => p.Replace( '\\', Path.DirectorySeparatorChar )) )
 			{
 				var destinationFilePath = 
 					Path.Combine( 
 						outputDirectoryPath,
 						new String(
-							( sourceFileRelativePath.StartsWith( "..\\" ) ? sourceFileRelativePath.Substring( 3 ) : sourceFileRelativePath ) // remove relative
-							.SkipWhile( c => c != '\\') // remove project name portion
+							( sourceFileRelativePath.StartsWith( relativePrefix ) ? sourceFileRelativePath.Substring( 3 ) : sourceFileRelativePath ) // remove relative
+							.SkipWhile( c => c != Path.DirectorySeparatorChar) // remove project name portion
 							.Skip( 1 )
 							.ToArray()
 						)

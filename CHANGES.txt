@@ -370,3 +370,8 @@ Release 0.6.5 - 2015/10/20
     * Add UNITY_5 for UNITY compiler constant determination.
   * Remove unnecessary Pack<T>() usage to avoid unexpected performance loss and/or Unity(and its Mono) C# compiler overload resolution failure.
 
+Release 0.6.5.1 - 2015/10/25
+
+  BUG FIXES
+  * mpu.exe -l option does not work in non-Windows environment. Issue #125.
+
