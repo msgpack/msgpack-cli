@@ -343,8 +343,9 @@ Release 0.6.2 - 2015/08/30
 Release 0.6.3 - 2015/10/12
 
   BUG FIXES
+  * Add new custom serializer registration option which registers nullable serializer together (this API is NOT available in Unity3D yet because of AOT issue). Issue #116.
   * Fix reflection based serialization for non-public member fails for members which use generic type parameter(s). Issue #119
-  * Fix DateTimeOffset? serializer act different from DateTime? serializer for DateTimeSerializationMethod setting change. A part of issue #118
+  * Fix DateTimeOffset? serializer act different from DateTime? serializer for DateTimeSerializationMethod setting change. A part of issue #117
   * Fix array element type is not processed recursively even if the IsRecursive option of serializer generator is true. Issue #120
 
   IMPROVEMENTS
