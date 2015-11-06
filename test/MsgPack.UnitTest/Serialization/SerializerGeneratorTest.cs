@@ -626,7 +626,7 @@ namespace MsgPack.Serialization
 				Assert.That(
 					linesCS.Any( l => Regex.IsMatch( l, @"^\s*namespace\s+MsgPack\.Serialization\.GeneratedSerializers\s+" ) ) );
 				// Array
-				Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"\.PackArrayHeader" ) ) );
+				Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"PackHelpers\.PackToArray" ) ) );
 			}
 			finally
 			{
@@ -674,7 +674,7 @@ namespace MsgPack.Serialization
 				// Nemespace
 				Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"^\s*namespace\s+Test\s+" ) ) );
 				// Map
-				Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"\.PackMapHeader" ) ) );
+				Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"PackHelpers\.PackToMap" ) ) );
 
 				// Language
 				var filePathVB =
