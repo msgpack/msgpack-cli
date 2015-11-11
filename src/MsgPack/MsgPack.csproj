@@ -148,6 +148,11 @@
     <Compile Include="MessagePackObjectDictionary.cs" />
     <Compile Include="MessagePackObjectEqualityComparer.cs" />
     <Compile Include="MessagePackString.cs" />
+    <Compile Include="Packer.Packing.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Packer.Packing.tt</DependentUpon>
+    </Compile>
     <Compile Include="PackerCompatibilityOptions.cs" />
     <Compile Include="PackerUnpackerExtensions.cs">
       <SubType>Code</SubType>
@@ -593,6 +598,10 @@
     <Content Include="ItemsUnpacker.Read.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ItemsUnpacker.Read.cs</LastGenOutput>
+    </Content>
+    <Content Include="Packer.Packing.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Packer.Packing.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

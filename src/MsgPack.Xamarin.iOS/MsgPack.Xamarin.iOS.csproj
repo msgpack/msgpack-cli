@@ -155,6 +155,9 @@
     <Compile Include="..\MsgPack\Packer.Nullable.cs">
       <Link>Packer.Nullable.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Packer.Packing.cs">
+      <Link>Packer.Packing.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\PackerCompatibilityOptions.cs">
       <Link>PackerCompatibilityOptions.cs</Link>
     </Compile>
