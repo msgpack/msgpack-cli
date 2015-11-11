@@ -62,7 +62,7 @@ namespace MsgPack
 		{
 			if ( !this.CanSeek )
 			{
-				throw new NotSupportedException();
+				ThrowCannotSeekException();
 			}
 
 			this._stream.Seek( offset, SeekOrigin.Current );
@@ -77,6 +77,12 @@ namespace MsgPack
 		protected sealed override void WriteBytes( byte[] asArray, bool isImmutable )
 		{
 			this._stream.Write( asArray, 0, asArray.Length );
+		}
+
+
+		private static void ThrowCannotSeekException()
+		{
+			throw new NotSupportedException("The underlying stream does not support seeking.");
 		}
 	}
 }

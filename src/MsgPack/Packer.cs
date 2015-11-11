@@ -230,8 +230,13 @@ namespace MsgPack
 		{
 			if ( this._isDisposed )
 			{
-				throw new ObjectDisposedException( this.ToString() );
+				this.ThrowObjectDisposedException();
 			}
+		}
+
+		private void ThrowObjectDisposedException()
+		{
+			throw new ObjectDisposedException( this.ToString() );
 		}
 
 		/// <summary>
@@ -262,13 +267,14 @@ namespace MsgPack
 		{
 			if ( value == null )
 			{
-				throw new ArgumentNullException( "value" );
+				ThrowArgumentNullException( "value" );
 			}
 
 #if !UNITY
 			Contract.EndContractBlock();
 #endif // !UNITY
 
+			// ReSharper disable once PossibleNullReferenceException
 			foreach ( var b in value )
 			{
 				this.WriteByte( b );
@@ -284,13 +290,14 @@ namespace MsgPack
 		{
 			if ( value == null )
 			{
-				throw new ArgumentNullException( "value" );
+				ThrowArgumentNullException( "value" );
 			}
 
 #if !UNITY
 			Contract.EndContractBlock();
 #endif // !UNITY
 
+			// ReSharper disable once PossibleNullReferenceException
 			foreach ( var b in value )
 			{
 				this.WriteByte( b );
@@ -1999,6 +2006,26 @@ namespace MsgPack
 
 			this.WriteByte( typeCode );
 			this.WriteBytes( body, true );
+		}
+
+		private static void ThrowArgumentNullException( string parameterName )
+		{
+			throw new ArgumentNullException( parameterName );
+		}
+
+		private static void ThrowCannotBeNegativeException( string parameterName )
+		{
+			throw new ArgumentOutOfRangeException( parameterName, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", parameterName ) );
+		}
+
+		private static void ThrowMissingBodyOfExtTypeValueException( string parameterName )
+		{
+			throw new ArgumentException( "MessagePackExtendedTypeObject must have body.", parameterName );
+		}
+
+		private static void ThrowExtTypeIsProhibitedException()
+		{
+			throw new InvalidOperationException( "ExtendedTypeObject is prohibited in this packer." );
 		}
 	}
 }

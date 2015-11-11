@@ -126,7 +126,7 @@ namespace MsgPack.Serialization
 		{
 			if ( ownerContext == null )
 			{
-				throw new ArgumentNullException( "ownerContext" );
+				ThrowArgumentNullException( "ownerContext" );
 			}
 
 			this._packerCompatibilityOptionsForCompatibility = packerCompatibilityOptions;
@@ -190,7 +190,7 @@ namespace MsgPack.Serialization
 			var unpacker = Unpacker.Create( stream );
 			if ( !unpacker.Read() )
 			{
-				throw SerializationExceptions.NewUnexpectedEndOfStream();
+				ThrowUnexpectedEndOfStreamException();
 			}
 
 			return this.UnpackFrom( unpacker );
@@ -209,15 +209,15 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public void PackTo( Packer packer, T objectTree )
 		{
-			// TODO: Hot-Path-Optimization
 			if ( packer == null )
 			{
-				throw new ArgumentNullException( "packer" );
+				ThrowArgumentNullException( "packer" );
 			}
 
 			// ReSharper disable once CompareNonConstrainedGenericWithNull
 			if ( objectTree == null )
 			{
+				// ReSharper disable once PossibleNullReferenceException
 				packer.PackNull();
 				return;
 			}
@@ -257,12 +257,12 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public T UnpackFrom( Unpacker unpacker )
 		{
-			// TODO: Hot-Path-Optimization
 			if ( unpacker == null )
 			{
-				throw new ArgumentNullException( "unpacker" );
+				ThrowArgumentNullException( "unpacker" );
 			}
 
+			// ReSharper disable once PossibleNullReferenceException
 			if ( unpacker.LastReadData.IsNil )
 			{
 				return this.UnpackNil();
@@ -290,15 +290,13 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		protected internal virtual T UnpackNil()
 		{
-			if ( _isNullable )
+			if ( !_isNullable )
 			{
-				// null
-				return default( T );
+				ThrowNewValueTypeCannotBeNullException();
 			}
-			else
-			{
-				throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
-			}
+
+			// null
+			return default( T );
 		}
 
 		/// <summary>
@@ -343,18 +341,18 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public void UnpackTo( Unpacker unpacker, T collection )
 		{
-			// TODO: Hot-Path-Optimization
 			if ( unpacker == null )
 			{
-				throw new ArgumentNullException( "unpacker" );
+				ThrowArgumentNullException( "unpacker" );
 			}
 
 			// ReSharper disable once CompareNonConstrainedGenericWithNull
 			if ( collection == null )
 			{
-				throw new ArgumentNullException( "unpacker" );
+				ThrowArgumentNullException( "unpacker" );
 			}
 
+			// ReSharper disable once PossibleNullReferenceException
 			if ( unpacker.LastReadData.IsNil )
 			{
 				return;
@@ -426,9 +424,10 @@ namespace MsgPack.Serialization
 		{
 			if ( buffer == null )
 			{
-				throw new ArgumentNullException( "buffer" );
+				ThrowArgumentNullException( "buffer" );
 			}
 
+			// ReSharper disable once AssignNullToNotNullAttribute
 			using ( var stream = new MemoryStream( buffer ) )
 			{
 				return this.Unpack( stream );
@@ -437,10 +436,9 @@ namespace MsgPack.Serialization
 
 		void IMessagePackSerializer.PackTo( Packer packer, object objectTree )
 		{
-			// TODO: Hot-Path-Optimization
 			if ( packer == null )
 			{
-				throw new ArgumentNullException( "packer" );
+				ThrowArgumentNullException( "packer" );
 			}
 
 			if ( objectTree == null )
@@ -449,10 +447,11 @@ namespace MsgPack.Serialization
 				{
 					if ( !( typeof( T ).GetIsGenericType() && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) ) )
 					{
-						throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
+						ThrowNewValueTypeCannotBeNullException();
 					}
 				}
 
+				// ReSharper disable once PossibleNullReferenceException
 				packer.PackNull();
 				return;
 			}
@@ -460,7 +459,7 @@ namespace MsgPack.Serialization
 			{
 				if ( !( objectTree is T ) )
 				{
-					throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", objectTree.GetType(), typeof( T ) ), "objectTree" );
+					ThrowArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", objectTree.GetType(), typeof( T ) ), "objectTree" );
 				}
 			}
 
@@ -474,20 +473,20 @@ namespace MsgPack.Serialization
 
 		void IMessagePackSerializer.UnpackTo( Unpacker unpacker, object collection )
 		{
-			// TODO: Hot-Path-Optimization
 			if ( unpacker == null )
 			{
-				throw new ArgumentNullException( "unpacker" );
+				ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( collection == null )
 			{
-				throw new ArgumentNullException( "collection" );
+				ThrowArgumentNullException( "collection" );
 			}
 
 			if ( !( collection is T ) )
 			{
-				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", collection.GetType(), typeof( T ) ), "collection" );
+				// ReSharper disable once PossibleNullReferenceException
+				ThrowArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", collection.GetType(), typeof( T ) ), "collection" );
 			}
 
 			this.UnpackTo( unpacker, ( T )collection );
@@ -499,7 +498,7 @@ namespace MsgPack.Serialization
 			if ( ( typeof( T ).GetIsValueType() && !isT )
 				|| ( ( objectTree != null && !isT ) ) )
 			{
-				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", objectTree == null ? "(null)" : objectTree.GetType().FullName, typeof( T ) ), "objectTree" );
+				ThrowArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", objectTree == null ? "(null)" : objectTree.GetType().FullName, typeof( T ) ), "objectTree" );
 			}
 
 			return this.PackSingleObject( ( T )objectTree );
@@ -509,5 +508,26 @@ namespace MsgPack.Serialization
 		{
 			return this.UnpackSingleObject( buffer );
 		}
+
+		private static void ThrowArgumentNullException( string parameterName )
+		{
+			throw new ArgumentNullException( parameterName );
+		}
+
+		private static void ThrowArgumentException( string message, string parameterName )
+		{
+			throw new ArgumentException( message, parameterName );
+		}
+
+		private static void ThrowUnexpectedEndOfStreamException()
+		{
+			throw SerializationExceptions.NewUnexpectedEndOfStream();
+		}
+
+		private static void ThrowNewValueTypeCannotBeNullException()
+		{
+			throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
+		}
+
 	}
 }
