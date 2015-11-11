@@ -1360,7 +1360,7 @@ namespace MsgPack
 				return;
 			}
 
-			PrivatePackRawCore( value, false );
+			this.PrivatePackRawCore( value, false );
 		}
 
 		private void PrivatePackRawCore( byte[] value, bool isImmutable )
@@ -1743,7 +1743,7 @@ namespace MsgPack
 				return;
 			}
 
-			PrivatePackBinaryCore( value, false );
+			this.PrivatePackBinaryCore( value, false );
 		}
 
 		private void PrivatePackBinaryCore( byte[] value, bool isImmutable )

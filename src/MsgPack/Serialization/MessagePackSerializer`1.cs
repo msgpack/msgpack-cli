@@ -26,7 +26,6 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization
 {
@@ -164,7 +163,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="stream"/> is <c>null</c>.
 		/// </exception>
-		/// <exception cref="SerializationException">
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		<typeparamref name="T"/> is not serializable etc.
 		/// </exception>
 		public void Pack( Stream stream, T objectTree )
@@ -181,7 +180,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="stream"/> is <c>null</c>.
 		/// </exception>
-		/// <exception cref="SerializationException">
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		<typeparamref name="T"/> is not serializable etc.
 		/// </exception>
 		public T Unpack( Stream stream )
@@ -204,7 +203,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="packer"/> is <c>null</c>.
 		/// </exception>
-		/// <exception cref="SerializationException">
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		<typeparamref name="T"/> is not serializable etc.
 		/// </exception>
 		public void PackTo( Packer packer, T objectTree )
@@ -230,7 +229,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="packer"><see cref="Packer"/> which packs values in <paramref name="objectTree"/>. This value will not be <c>null</c>.</param>
 		/// <param name="objectTree">Object to be serialized.</param>
-		/// <exception cref="SerializationException">
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		<typeparamref name="T"/> is not serializable etc.
 		/// </exception>
 		protected internal abstract void PackToCore( Packer packer, T objectTree );
@@ -243,7 +242,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="unpacker"/> is <c>null</c>.
 		/// </exception>
-		/// <exception cref="SerializationException">
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
 		/// </exception>
 		/// <exception cref="MessageTypeException">
@@ -282,7 +281,7 @@ namespace MsgPack.Serialization
 		///			This method is invoked from <see cref="UnpackFrom"/> method when the current <see cref="Unpacker.LastReadData"/> is <see cref="MessagePackObject.IsNil">nil</see>.
 		///		</para>
 		///		<para>
-		///			The implementation of this class returns <c>null</c> for nullable types (that is, all reference types and <see cref="Nullable{T}"/>); otherwise, throws <see cref="SerializationException"/>.
+		///			The implementation of this class returns <c>null</c> for nullable types (that is, all reference types and <see cref="Nullable{T}"/>); otherwise, throws <see cref="System.Runtime.Serialization.SerializationException"/>.
 		///		</para>
 		///		<para>
 		///			Custom serializers can override this method to provide custom nil representation. For example, built-in <see cref="DBNull"/> serializer overrides this method to return <see cref="DBNull.Value"/> instead of <c>null</c>.
@@ -304,7 +303,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
 		/// <returns>Deserialized object.</returns>
-		/// <exception cref="SerializationException">
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
 		/// </exception>
 		/// <exception cref="MessageTypeException">
@@ -327,7 +326,7 @@ namespace MsgPack.Serialization
 		///		<paramref name="unpacker"/> is <c>null</c>.
 		///		Or <paramref name="collection"/> is <c>null</c>.
 		/// </exception>
-		/// <exception cref="SerializationException">
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
 		/// </exception>
 		/// <exception cref="MessageTypeException">
@@ -366,7 +365,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
 		/// <param name="collection">Collection that the items to be stored. This value will not be <c>null</c>.</param>
-		/// <exception cref="SerializationException">
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
 		/// </exception>
 		/// <exception cref="NotSupportedException">
@@ -382,7 +381,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="objectTree">Object to be serialized.</param>
 		/// <returns>An array of <see cref="Byte"/> which stores serialized value.</returns>
-		/// <exception cref="SerializationException">
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		<typeparamref name="T"/> is not serializable etc.
 		/// </exception>
 		public byte[] PackSingleObject( T objectTree )
@@ -402,7 +401,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="buffer"/> is <c>null</c>.
 		/// </exception>
-		/// <exception cref="SerializationException">
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
 		/// </exception>
 		/// <exception cref="MessageTypeException">
