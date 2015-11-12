@@ -274,7 +274,7 @@ void WriteTestBody( string byteArrayExpression, string centinel )
 #>
 			var binary = <#= byteArrayExpression #>;
 			using ( var buffer = new MemoryStream( binary ) )
-			using ( var target = new ItemsUnpacker( buffer, false ) )
+			using ( var target = new ItemsUnpacker( buffer, PackerUnpackerStreamOptions.None ) )
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );

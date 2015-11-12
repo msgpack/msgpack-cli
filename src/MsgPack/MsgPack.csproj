@@ -157,6 +157,7 @@
     <Compile Include="PackerUnpackerExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PackerUnpackerStreamOptions.cs" />
     <Compile Include="PackingOptions.cs" />
     <Compile Include="MessagePackObject.cs">
       <AutoGen>True</AutoGen>

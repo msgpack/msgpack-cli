@@ -201,12 +201,24 @@ namespace MsgPack
 		/// </remarks>
 		public static Packer Create( Stream stream, PackerCompatibilityOptions compatibilityOptions, bool ownsStream )
 		{
-			if ( stream == null )
-			{
-				throw new ArgumentNullException( "stream" );
-			}
+			return new StreamPacker( stream, compatibilityOptions, ownsStream ? PackerUnpackerStreamOptions.SingletonOwnsStream : PackerUnpackerStreamOptions.None );
+		}
 
-			return new StreamPacker( stream, compatibilityOptions, ownsStream );
+		/// <summary>
+		///		Create standard Safe <see cref="Packer"/> instancde wrapping specified <see cref="Stream"/> with specified <see cref="PackerCompatibilityOptions"/>.
+		/// </summary>
+		/// <param name="stream"><see cref="Stream"/> object.</param>
+		/// <param name="compatibilityOptions">A <see cref="PackerCompatibilityOptions"/> which specifies compatibility options.</param>
+		/// <param name="streamOptions"><see cref="PackerUnpackerStreamOptions"/> which specifies stream handling options.</param>
+		/// <returns>Safe <see cref="Packer"/>. This will not be null.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
+		/// <remarks>
+		///		 You can specify any derived <see cref="Stream"/> class like FileStream, <see cref="MemoryStream"/>,
+		///		 NetworkStream, UnmanagedMemoryStream, or so.
+		/// </remarks>
+		public static Packer Create( Stream stream, PackerCompatibilityOptions compatibilityOptions, PackerUnpackerStreamOptions streamOptions )
+		{
+			return new StreamPacker( stream, compatibilityOptions, streamOptions );
 		}
 
 		/// <summary>

@@ -41,11 +41,19 @@ namespace MsgPack
 			get { return this._stream.Position; }
 		}
 
-		public StreamPacker( Stream output, PackerCompatibilityOptions compatibilityOptions, bool ownsStream )
+		public StreamPacker( Stream stream, PackerCompatibilityOptions compatibilityOptions, PackerUnpackerStreamOptions streamOptions )
 			: base( compatibilityOptions )
 		{
-			this._stream = output;
-			this._ownsStream = ownsStream;
+			if ( stream == null )
+			{
+				throw new ArgumentNullException( "stream" );
+			}
+
+			var options = streamOptions ?? PackerUnpackerStreamOptions.None;
+
+			this._stream = options.WrapStream( stream );
+
+			this._ownsStream = options.OwnsStream;
 		}
 
 		protected sealed override void Dispose( bool disposing )

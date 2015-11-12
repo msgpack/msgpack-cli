@@ -94,15 +94,16 @@ namespace MsgPack
 		/// </summary>
 		private long _offset;
 
-		public ItemsUnpacker( Stream stream, bool ownsStream )
+		public ItemsUnpacker( Stream stream, PackerUnpackerStreamOptions streamOptions )
 		{
 			if ( stream == null )
 			{
 				throw new ArgumentNullException( "stream" );
 			}
 
-			this._source = stream;
-			this._ownsStream = ownsStream;
+			var options = streamOptions ?? PackerUnpackerStreamOptions.None;
+			this._source = options.WrapStream( stream );
+			this._ownsStream = options.OwnsStream;
 			this._offset = stream.CanSeek ? stream.Position : 0L;
 		}
 

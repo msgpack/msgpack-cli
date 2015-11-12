@@ -212,7 +212,18 @@ namespace MsgPack
 		/// <returns><see cref="Unpacker"/> instance.</returns>
 		public static Unpacker Create( Stream stream, bool ownsStream )
 		{
-			return new ItemsUnpacker( stream, ownsStream );
+			return new ItemsUnpacker( stream, ownsStream ? PackerUnpackerStreamOptions.SingletonOwnsStream : null );
+		}
+
+		/// <summary>
+		///		 Creates the new <see cref="Unpacker"/> from specified stream.
+		/// </summary>
+		/// <param name="stream">The stream to be unpacked.</param>
+		/// <param name="streamOptions"><see cref="PackerUnpackerStreamOptions"/> which specifies stream handling options.</param>
+		/// <returns><see cref="Unpacker"/> instance.</returns>
+		public static Unpacker Create( Stream stream, PackerUnpackerStreamOptions streamOptions )
+		{
+			return new ItemsUnpacker( stream, streamOptions );
 		}
 
 		#endregion -- Factories --

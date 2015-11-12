@@ -163,6 +163,9 @@
     <Compile Include="..\MsgPack\PackerUnpackerExtensions.cs">
       <Link>PackerUnpackerExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\PackerUnpackerStreamOptions.cs">
+      <Link>PackerUnpackerStreamOptions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\PackingOptions.cs">
       <Link>PackingOptions.cs</Link>
     </Compile>
