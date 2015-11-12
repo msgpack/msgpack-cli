@@ -1,4 +1,10 @@
-﻿// This file is based on https://github.com/dotnet/coreclr/blob/master/src/mscorlib/src/System/IO/BufferedStream.cs
+﻿// This file is based on https://github.com/dotnet/coreclr/blob/master/src/mscorlib/src/System/IO/BufferedStream.cs 814c2882a5c27ac40781bc20d6978708848784eb
+
+// ReSharper disable ArrangeThisQualifier
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
+// ReSharper disable PossibleNullReferenceException
+// ReSharper disable RedundantUsingDirective
 
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -27,7 +33,7 @@ namespace System.IO
 
 	/// <summary>
 	/// One of the design goals here is to prevent the buffer from getting in the way and slowing
-	/// down underlying stream accesses when it is not needed. If you always read & write for sizes
+	/// down underlying stream accesses when it is not needed. If you always read &amp; write for sizes
 	/// greater than the internal buffer size, then this class may not even allocate the internal buffer.
 	/// See a large comment in Write for the details of the write buffer heuristic.
 	/// 
@@ -59,7 +65,7 @@ namespace System.IO
 	/// actual specified buffer size.
 	/// </summary>
 	[ComVisible( true )]
-	public sealed class BufferedStream : Stream
+	internal sealed class BufferedStream : Stream
 	{
 
 
@@ -76,13 +82,11 @@ namespace System.IO
 		private Int32 _readLen;                               // Number of bytes read in buffer from _stream.
 		private Int32 _writePos;                              // Write pointer within shared buffer.
 
-		private BeginEndAwaitableAdapter _beginEndAwaitable;  // Used to be able to await a BeginXxx call and thus to share code
-															  // between the APM and Async pattern implementations
-
 		private Task<Int32> _lastSyncCompletedReadTask;       // The last successful Task returned from ReadAsync
 															  // (perf optimization for successive reads of the same size)
 
 
+		// ReSharper disable once UnusedMember.Local
 		// Removing a private default constructor is a breaking change for the DataContractSerializer.
 		// Because this ctor was here previously we need to keep it around.
 		private BufferedStream() { }
@@ -102,13 +106,9 @@ namespace System.IO
 				throw new ArgumentNullException( "stream" );
 
 			if ( bufferSize <= 0 )
-				throw new ArgumentOutOfRangeException( "bufferSize", Environment.GetResourceString( "ArgumentOutOfRange_MustBePositive", "bufferSize" ) );
+				throw new ArgumentOutOfRangeException( "bufferSize", "The value must be positive." );
 
 			Contract.EndContractBlock();
-
-			BCLDebug.Perf( !( stream is FileStream ), "FileStream is buffered - don't wrap it in a BufferedStream" );
-			BCLDebug.Perf( !( stream is MemoryStream ), "MemoryStream shouldn't be wrapped in a BufferedStream!" );
-			BCLDebug.Perf( !( stream is BufferedStream ), "BufferedStream shouldn't be wrapped in another BufferedStream!" );
 
 			_stream = stream;
 			_bufferSize = bufferSize;
@@ -158,16 +158,6 @@ namespace System.IO
 				__Error.WriteNotSupported();
 		}
 
-
-		private void EnsureBeginEndAwaitableAllocated()
-		{
-			// We support only a single ongoing async operation and enforce this with a semaphore,
-			// so singleton is fine and no need to worry about a race condition here.
-			if ( _beginEndAwaitable == null )
-				_beginEndAwaitable = new BeginEndAwaitableAdapter();
-		}
-
-
 		/// <summary><code>MaxShadowBufferSize</code> is chosed such that shadow buffers are not allocated on the Large Object Heap.
 		/// Currently, an object is allocated on the LOH if it is larger than 85000 bytes. See LARGE_OBJECT_SIZE in ndp\clr\src\vm\gc.h
 		/// We will go with exactly 80 KBytes, although this is somewhat arbitrary.</summary>
@@ -183,7 +173,7 @@ namespace System.IO
 				return;
 
 			Byte[] shadowBuffer = new Byte[Math.Min(_bufferSize + _bufferSize, MaxShadowBufferSize)];
-			Buffer.InternalBlockCopy( _buffer, 0, shadowBuffer, 0, _writePos );
+			Buffer.BlockCopy( _buffer, 0, shadowBuffer, 0, _writePos );
 			_buffer = shadowBuffer;
 		}
 
@@ -201,7 +191,6 @@ namespace System.IO
 
 		internal Stream UnderlyingStream
 		{
-			[FriendAccessAllowed]
 			[Pure]
 			get
 			{ return _stream; }
@@ -210,7 +199,6 @@ namespace System.IO
 
 		internal Int32 BufferSize
 		{
-			[FriendAccessAllowed]
 			[Pure]
 			get
 			{ return _bufferSize; }
@@ -268,7 +256,7 @@ namespace System.IO
 			set
 			{
 				if ( value < 0 )
-					throw new ArgumentOutOfRangeException( "value", Environment.GetResourceString( "ArgumentOutOfRange_NeedNonNegNum" ) );
+					throw new ArgumentOutOfRangeException( "value", "The value cannot be negative." );
 				Contract.EndContractBlock();
 
 				EnsureNotClosed();
@@ -297,7 +285,7 @@ namespace System.IO
 					}
 					finally
 					{
-						_stream.Close();
+						_stream.Dispose();
 					}
 				}
 			}
@@ -360,7 +348,7 @@ namespace System.IO
 		{
 
 			if ( cancellationToken.IsCancellationRequested )
-				return Task.FromCancellation<Int32>( cancellationToken );
+				return _Task.FromCancellation<Int32>( cancellationToken );
 
 			EnsureNotClosed();
 
@@ -465,7 +453,7 @@ namespace System.IO
 			// However, since the user did not call a method that is intuitively expected to seek, a better message is in order.
 			// Ideally, we would throw an InvalidOperation here, but for backward compat we have to stick with NotSupported.
 			if ( !_stream.CanSeek )
-				throw new NotSupportedException( Environment.GetResourceString( "NotSupported_CannotWriteToBufferedStreamIfReadBufferCannotBeFlushed" ) );
+				throw new NotSupportedException( "Cannot write stream because read buffer cannot be flushed." );
 
 			FlushRead();
 		}
@@ -513,7 +501,7 @@ namespace System.IO
 			if ( readBytes > count )
 				readBytes = count;
 
-			Buffer.InternalBlockCopy( _buffer, _readPos, array, offset, readBytes );
+			Buffer.BlockCopy( _buffer, _readPos, array, offset, readBytes );
 			_readPos += readBytes;
 
 			return readBytes;
@@ -542,13 +530,13 @@ namespace System.IO
 		{
 
 			if ( array == null )
-				throw new ArgumentNullException( "array", Environment.GetResourceString( "ArgumentNull_Buffer" ) );
+				throw new ArgumentNullException( "array" );
 			if ( offset < 0 )
-				throw new ArgumentOutOfRangeException( "offset", Environment.GetResourceString( "ArgumentOutOfRange_NeedNonNegNum" ) );
+				throw new ArgumentOutOfRangeException( "offset", "The value cannot be negative." );
 			if ( count < 0 )
-				throw new ArgumentOutOfRangeException( "count", Environment.GetResourceString( "ArgumentOutOfRange_NeedNonNegNum" ) );
+				throw new ArgumentOutOfRangeException( "count", "The value cannot be negative." );
 			if ( array.Length - offset < count )
-				throw new ArgumentException( Environment.GetResourceString( "Argument_InvalidOffLen" ) );
+				throw new ArgumentException( "The offset is too big for length." );
 			Contract.EndContractBlock();
 
 			EnsureNotClosed();
@@ -605,100 +593,6 @@ namespace System.IO
 			return bytesFromBuffer + alreadySatisfied;
 		}
 
-
-		public override IAsyncResult BeginRead( Byte[] buffer, Int32 offset, Int32 count, AsyncCallback callback, Object state )
-		{
-
-			if ( buffer == null )
-				throw new ArgumentNullException( "buffer", Environment.GetResourceString( "ArgumentNull_Buffer" ) );
-			if ( offset < 0 )
-				throw new ArgumentOutOfRangeException( "offset", Environment.GetResourceString( "ArgumentOutOfRange_NeedNonNegNum" ) );
-			if ( count < 0 )
-				throw new ArgumentOutOfRangeException( "count", Environment.GetResourceString( "ArgumentOutOfRange_NeedNonNegNum" ) );
-			if ( buffer.Length - offset < count )
-				throw new ArgumentException( Environment.GetResourceString( "Argument_InvalidOffLen" ) );
-			Contract.EndContractBlock();
-
-			// Previous version incorrectly threw NotSupported instead of ObjectDisposed. We keep that behaviour for back-compat.
-			// EnsureNotClosed();
-			if ( _stream == null ) __Error.ReadNotSupported();
-			EnsureCanRead();
-
-			Int32 bytesFromBuffer = 0;
-			// Try to satisfy the request from the buffer synchronously. But still need a sem-lock in case that another
-			// Async IO Task accesses the buffer concurrently. If we fail to acquire the lock without waiting, make this 
-			// an Async operation.      
-			SemaphoreSlim sem = base.EnsureAsyncActiveSemaphoreInitialized();
-			Task semaphoreLockTask = sem.WaitAsync();
-			if ( semaphoreLockTask.Status == TaskStatus.RanToCompletion )
-			{
-
-				bool completeSynchronously = true;
-				try
-				{
-
-					Exception error;
-					bytesFromBuffer = ReadFromBuffer( buffer, offset, count, out error );
-
-					// If we satistied enough data from the buffer, we can complete synchronously.
-					// Reading again for more data may cause us to block if we're using a device with no clear end of file,
-					// such as a serial port or pipe. If we blocked here and this code was used with redirected pipes for a
-					// process's standard output, this can lead to deadlocks involving two processes.              
-					// BUT - this is a breaking change. 
-					// So: If we could not read all bytes the user asked for from the buffer, we will try once from the underlying
-					// stream thus ensuring the same blocking behaviour as if the underlying stream was not wrapped in this BufferedStream.
-					completeSynchronously = ( bytesFromBuffer == count || error != null );
-
-					if ( completeSynchronously )
-					{
-
-						SynchronousAsyncResult asyncResult = (error == null)
-												? new SynchronousAsyncResult(bytesFromBuffer, state)
-												: new SynchronousAsyncResult(error, state, isWrite: false);
-						if ( callback != null )
-							callback( asyncResult );
-
-						return asyncResult;
-					}
-				}
-				finally
-				{
-					if ( completeSynchronously )  // if this is FALSE, we will be entering ReadFromUnderlyingStreamAsync and releasing there.
-						sem.Release();
-				}
-			}
-
-			// Delegate to the async implementation.
-			return BeginReadFromUnderlyingStream( buffer, offset + bytesFromBuffer, count - bytesFromBuffer, callback, state,
-												 bytesFromBuffer, semaphoreLockTask );
-		}
-
-
-		private IAsyncResult BeginReadFromUnderlyingStream( Byte[] buffer, Int32 offset, Int32 count, AsyncCallback callback, Object state,
-														   Int32 bytesAlreadySatisfied, Task semaphoreLockTask )
-		{
-
-			Task<Int32> readOp = ReadFromUnderlyingStreamAsync(buffer, offset, count, CancellationToken.None,
-														   bytesAlreadySatisfied, semaphoreLockTask, useApmPattern: true);
-			return TaskToApm.Begin( readOp, callback, state );
-		}
-
-
-		public override Int32 EndRead( IAsyncResult asyncResult )
-		{
-
-			if ( asyncResult == null )
-				throw new ArgumentNullException( "asyncResult" );
-			Contract.Ensures( Contract.Result<Int32>() >= 0 );
-			Contract.EndContractBlock();
-
-			var sAR = asyncResult as SynchronousAsyncResult;
-			if ( sAR != null )
-				return SynchronousAsyncResult.EndRead( asyncResult );
-			return TaskToApm.End<Int32>( asyncResult );
-		}
-
-
 		private Task<Int32> LastSyncCompletedReadTask( Int32 val )
 		{
 
@@ -708,6 +602,7 @@ namespace System.IO
 			if ( t != null && t.Result == val )
 				return t;
 
+			// ReSharper disable once RedundantTypeArgumentsOfMethod
 			t = Task.FromResult<Int32>( val );
 			_lastSyncCompletedReadTask = t;
 			return t;
@@ -718,18 +613,18 @@ namespace System.IO
 		{
 
 			if ( buffer == null )
-				throw new ArgumentNullException( "buffer", Environment.GetResourceString( "ArgumentNull_Buffer" ) );
+				throw new ArgumentNullException( "buffer" );
 			if ( offset < 0 )
-				throw new ArgumentOutOfRangeException( "offset", Environment.GetResourceString( "ArgumentOutOfRange_NeedNonNegNum" ) );
+				throw new ArgumentOutOfRangeException( "offset", "The value cannot be negative." );
 			if ( count < 0 )
-				throw new ArgumentOutOfRangeException( "count", Environment.GetResourceString( "ArgumentOutOfRange_NeedNonNegNum" ) );
+				throw new ArgumentOutOfRangeException( "count", "The value cannot be negative." );
 			if ( buffer.Length - offset < count )
-				throw new ArgumentException( Environment.GetResourceString( "Argument_InvalidOffLen" ) );
+				throw new ArgumentException( "The offset is too big for length." );
 			Contract.EndContractBlock();
 
 			// Fast path check for cancellation already requested
 			if ( cancellationToken.IsCancellationRequested )
-				return Task.FromCancellation<Int32>( cancellationToken );
+				return _Task.FromCancellation<Int32>( cancellationToken );
 
 			EnsureNotClosed();
 			EnsureCanRead();
@@ -738,7 +633,7 @@ namespace System.IO
 			// Try to satisfy the request from the buffer synchronously. But still need a sem-lock in case that another
 			// Async IO Task accesses the buffer concurrently. If we fail to acquire the lock without waiting, make this 
 			// an Async operation.
-			SemaphoreSlim sem = base.EnsureAsyncActiveSemaphoreInitialized();
+			SemaphoreSlim sem = this.EnsureAsyncActiveSemaphoreInitialized();
 			Task semaphoreLockTask = sem.WaitAsync();
 			if ( semaphoreLockTask.Status == TaskStatus.RanToCompletion )
 			{
@@ -763,7 +658,7 @@ namespace System.IO
 
 						return ( error == null )
 									? LastSyncCompletedReadTask( bytesFromBuffer )
-									: Task.FromException<Int32>( error );
+									: _Task.FromException<Int32>( error );
 					}
 				}
 				finally
@@ -775,7 +670,7 @@ namespace System.IO
 
 			// Delegate to the async implementation.
 			return ReadFromUnderlyingStreamAsync( buffer, offset + bytesFromBuffer, count - bytesFromBuffer, cancellationToken,
-												 bytesFromBuffer, semaphoreLockTask, useApmPattern: false );
+												 bytesFromBuffer, semaphoreLockTask );
 		}
 
 
@@ -789,7 +684,7 @@ namespace System.IO
 		private async Task<Int32> ReadFromUnderlyingStreamAsync( Byte[] array, Int32 offset, Int32 count,
 																CancellationToken cancellationToken,
 																Int32 bytesAlreadySatisfied,
-																Task semaphoreLockTask, bool useApmPattern )
+																Task semaphoreLockTask )
 		{
 
 			// Same conditions validated with exceptions in ReadAsync:
@@ -831,31 +726,12 @@ namespace System.IO
 				// If the requested read is larger than buffer size, avoid the buffer and still use a single read:
 				if ( count >= _bufferSize )
 				{
-
-					if ( useApmPattern )
-					{
-						EnsureBeginEndAwaitableAllocated();
-						_stream.BeginRead( array, offset, count, BeginEndAwaitableAdapter.Callback, _beginEndAwaitable );
-						return bytesAlreadySatisfied + _stream.EndRead( await _beginEndAwaitable );
-					}
-					else
-					{
-						return bytesAlreadySatisfied + await _stream.ReadAsync( array, offset, count, cancellationToken ).ConfigureAwait( false );
-					}
+					return bytesAlreadySatisfied + await _stream.ReadAsync( array, offset, count, cancellationToken ).ConfigureAwait( false );
 				}
 
 				// Ok. We can fill the buffer:
 				EnsureBufferAllocated();
-				if ( useApmPattern )
-				{
-					EnsureBeginEndAwaitableAllocated();
-					_stream.BeginRead( _buffer, 0, _bufferSize, BeginEndAwaitableAdapter.Callback, _beginEndAwaitable );
-					_readLen = _stream.EndRead( await _beginEndAwaitable );
-				}
-				else
-				{
-					_readLen = await _stream.ReadAsync( _buffer, 0, _bufferSize, cancellationToken ).ConfigureAwait( false );
-				}
+				_readLen = await _stream.ReadAsync( _buffer, 0, _bufferSize, cancellationToken ).ConfigureAwait( false );
 
 				bytesFromBuffer = ReadFromBuffer( array, offset, count );
 				return bytesAlreadySatisfied + bytesFromBuffer;
@@ -863,7 +739,7 @@ namespace System.IO
 			}
 			finally
 			{
-				SemaphoreSlim sem = base.EnsureAsyncActiveSemaphoreInitialized();
+				SemaphoreSlim sem = this.EnsureAsyncActiveSemaphoreInitialized();
 				sem.Release();
 			}
 		}
@@ -903,7 +779,7 @@ namespace System.IO
 				return;
 
 			EnsureBufferAllocated();
-			Buffer.InternalBlockCopy( array, offset, _buffer, _writePos, bytesToWrite );
+			Buffer.BlockCopy( array, offset, _buffer, _writePos, bytesToWrite );
 
 			_writePos += bytesToWrite;
 			count -= bytesToWrite;
@@ -932,13 +808,13 @@ namespace System.IO
 		{
 
 			if ( array == null )
-				throw new ArgumentNullException( "array", Environment.GetResourceString( "ArgumentNull_Buffer" ) );
+				throw new ArgumentNullException( "array" );
 			if ( offset < 0 )
-				throw new ArgumentOutOfRangeException( "offset", Environment.GetResourceString( "ArgumentOutOfRange_NeedNonNegNum" ) );
+				throw new ArgumentOutOfRangeException( "offset", "The value cannot be negative." );
 			if ( count < 0 )
-				throw new ArgumentOutOfRangeException( "count", Environment.GetResourceString( "ArgumentOutOfRange_NeedNonNegNum" ) );
+				throw new ArgumentOutOfRangeException( "count", "The value cannot be negative." );
 			if ( array.Length - offset < count )
-				throw new ArgumentException( Environment.GetResourceString( "Argument_InvalidOffLen" ) );
+				throw new ArgumentException( "The offset is too big for length." );
 			Contract.EndContractBlock();
 
 			EnsureNotClosed();
@@ -1057,7 +933,7 @@ namespace System.IO
 					{
 
 						EnsureShadowBufferAllocated();
-						Buffer.InternalBlockCopy( array, offset, _buffer, _writePos, count );
+						Buffer.BlockCopy( array, offset, _buffer, _writePos, count );
 						_stream.Write( _buffer, 0, totalUserBytes );
 						_writePos = 0;
 						return;
@@ -1072,116 +948,22 @@ namespace System.IO
 			}
 		}
 
-
-
-
-		public override IAsyncResult BeginWrite( Byte[] buffer, Int32 offset, Int32 count, AsyncCallback callback, Object state )
-		{
-
-			if ( buffer == null )
-				throw new ArgumentNullException( "buffer", Environment.GetResourceString( "ArgumentNull_Buffer" ) );
-			if ( offset < 0 )
-				throw new ArgumentOutOfRangeException( "offset", Environment.GetResourceString( "ArgumentOutOfRange_NeedNonNegNum" ) );
-			if ( count < 0 )
-				throw new ArgumentOutOfRangeException( "count", Environment.GetResourceString( "ArgumentOutOfRange_NeedNonNegNum" ) );
-			if ( buffer.Length - offset < count )
-				throw new ArgumentException( Environment.GetResourceString( "Argument_InvalidOffLen" ) );
-			Contract.EndContractBlock();
-
-			// Previous version incorrectly threw NotSupported instead of ObjectDisposed. We keep that behaviour for back-compat.
-			// EnsureNotClosed();
-			if ( _stream == null ) __Error.ReadNotSupported();
-			EnsureCanWrite();
-
-			// Try to satisfy the request from the buffer synchronously. But still need a sem-lock in case that another
-			// Async IO Task accesses the buffer concurrently. If we fail to acquire the lock without waiting, make this 
-			// an Async operation.        
-			SemaphoreSlim sem = base.EnsureAsyncActiveSemaphoreInitialized();
-			Task semaphoreLockTask = sem.WaitAsync();
-			if ( semaphoreLockTask.Status == TaskStatus.RanToCompletion )
-			{
-
-				bool completeSynchronously = true;
-				try
-				{
-					if ( _writePos == 0 )
-						ClearReadBufferBeforeWrite();
-
-					// If the write completely fits into the buffer, we can complete synchronously.
-					Contract.Assert( _writePos < _bufferSize );
-					completeSynchronously = ( count < _bufferSize - _writePos );
-
-					if ( completeSynchronously )
-					{
-
-						Exception error;
-						WriteToBuffer( buffer, ref offset, ref count, out error );
-						Contract.Assert( count == 0 );
-
-						SynchronousAsyncResult asyncResult = (error == null)
-												? new SynchronousAsyncResult(state)
-												: new SynchronousAsyncResult(error, state, isWrite: true);
-						if ( callback != null )
-							callback( asyncResult );
-
-						return asyncResult;
-					}
-				}
-				finally
-				{
-					if ( completeSynchronously )  // if this is FALSE, we will be entering WriteToUnderlyingStreamAsync and releasing there.
-						sem.Release();
-				}
-			}
-
-			// Delegate to the async implementation.
-			return BeginWriteToUnderlyingStream( buffer, offset, count, callback, state, semaphoreLockTask );
-		}
-
-
-		private IAsyncResult BeginWriteToUnderlyingStream( Byte[] buffer, Int32 offset, Int32 count, AsyncCallback callback, Object state,
-														  Task semaphoreLockTask )
-		{
-
-			Task writeOp = WriteToUnderlyingStreamAsync(buffer, offset, count, CancellationToken.None, semaphoreLockTask, useApmPattern: true);
-			return TaskToApm.Begin( writeOp, callback, state );
-		}
-
-
-		public override void EndWrite( IAsyncResult asyncResult )
-		{
-
-			if ( asyncResult == null )
-				throw new ArgumentNullException( "asyncResult" );
-			Contract.EndContractBlock();
-
-			var sAR = asyncResult as SynchronousAsyncResult;
-			if ( sAR != null )
-			{
-				SynchronousAsyncResult.EndWrite( asyncResult );
-				return;
-			}
-
-			TaskToApm.End( asyncResult );
-		}
-
-
 		public override Task WriteAsync( Byte[] buffer, Int32 offset, Int32 count, CancellationToken cancellationToken )
 		{
 
 			if ( buffer == null )
-				throw new ArgumentNullException( "buffer", Environment.GetResourceString( "ArgumentNull_Buffer" ) );
+				throw new ArgumentNullException( "buffer" );
 			if ( offset < 0 )
-				throw new ArgumentOutOfRangeException( "offset", Environment.GetResourceString( "ArgumentOutOfRange_NeedNonNegNum" ) );
+				throw new ArgumentOutOfRangeException( "offset", "The value cannot be negative." );
 			if ( count < 0 )
-				throw new ArgumentOutOfRangeException( "count", Environment.GetResourceString( "ArgumentOutOfRange_NeedNonNegNum" ) );
+				throw new ArgumentOutOfRangeException( "count", "The value cannot be negative." );
 			if ( buffer.Length - offset < count )
-				throw new ArgumentException( Environment.GetResourceString( "Argument_InvalidOffLen" ) );
+				throw new ArgumentException( "The offset is too big for length." );
 			Contract.EndContractBlock();
 
 			// Fast path check for cancellation already requested
 			if ( cancellationToken.IsCancellationRequested )
-				return Task.FromCancellation<Int32>( cancellationToken );
+				return _Task.FromCancellation<Int32>( cancellationToken );
 
 			EnsureNotClosed();
 			EnsureCanWrite();
@@ -1189,7 +971,7 @@ namespace System.IO
 			// Try to satisfy the request from the buffer synchronously. But still need a sem-lock in case that another
 			// Async IO Task accesses the buffer concurrently. If we fail to acquire the lock without waiting, make this 
 			// an Async operation.
-			SemaphoreSlim sem = base.EnsureAsyncActiveSemaphoreInitialized();
+			SemaphoreSlim sem = this.EnsureAsyncActiveSemaphoreInitialized();
 			Task semaphoreLockTask = sem.WaitAsync();
 			if ( semaphoreLockTask.Status == TaskStatus.RanToCompletion )
 			{
@@ -1214,8 +996,8 @@ namespace System.IO
 						Contract.Assert( count == 0 );
 
 						return ( error == null )
-									? Task.CompletedTask
-									: Task.FromException( error );
+									? _Task.CompletedTask
+									: _Task.FromException( error );
 					}
 				}
 				finally
@@ -1226,7 +1008,7 @@ namespace System.IO
 			}
 
 			// Delegate to the async implementation.
-			return WriteToUnderlyingStreamAsync( buffer, offset, count, cancellationToken, semaphoreLockTask, useApmPattern: false );
+			return WriteToUnderlyingStreamAsync( buffer, offset, count, cancellationToken, semaphoreLockTask );
 		}
 
 
@@ -1238,7 +1020,7 @@ namespace System.IO
 		/// a corresponding useApmPattern value. Recall that Task implements IAsyncResult.</summary>    
 		private async Task WriteToUnderlyingStreamAsync( Byte[] array, Int32 offset, Int32 count,
 														CancellationToken cancellationToken,
-														Task semaphoreLockTask, bool useApmPattern )
+														Task semaphoreLockTask )
 		{
 
 			// (These should be Contract.Requires(..) but that method had some issues in async methods; using Assert(..) for now.)
@@ -1287,16 +1069,7 @@ namespace System.IO
 					Contract.Assert( _writePos == _bufferSize );
 					Contract.Assert( _buffer != null );
 
-					if ( useApmPattern )
-					{
-						EnsureBeginEndAwaitableAllocated();
-						_stream.BeginWrite( _buffer, 0, _writePos, BeginEndAwaitableAdapter.Callback, _beginEndAwaitable );
-						_stream.EndWrite( await _beginEndAwaitable );
-					}
-					else
-					{
-						await _stream.WriteAsync( _buffer, 0, _writePos, cancellationToken ).ConfigureAwait( false );
-					}
+					await _stream.WriteAsync( _buffer, 0, _writePos, cancellationToken ).ConfigureAwait( false );
 					_writePos = 0;
 
 					WriteToBuffer( array, ref offset, ref count );
@@ -1320,50 +1093,23 @@ namespace System.IO
 						{
 
 							EnsureShadowBufferAllocated();
-							Buffer.InternalBlockCopy( array, offset, _buffer, _writePos, count );
-							if ( useApmPattern )
-							{
-								EnsureBeginEndAwaitableAllocated();
-								_stream.BeginWrite( _buffer, 0, totalUserBytes, BeginEndAwaitableAdapter.Callback, _beginEndAwaitable );
-								_stream.EndWrite( await _beginEndAwaitable );
-							}
-							else
-							{
-								await _stream.WriteAsync( _buffer, 0, totalUserBytes, cancellationToken ).ConfigureAwait( false );
-							}
+							Buffer.BlockCopy( array, offset, _buffer, _writePos, count );
+							await _stream.WriteAsync( _buffer, 0, totalUserBytes, cancellationToken ).ConfigureAwait( false );
 							_writePos = 0;
 							return;
 						}
 
-						if ( useApmPattern )
-						{
-							EnsureBeginEndAwaitableAllocated();
-							_stream.BeginWrite( _buffer, 0, _writePos, BeginEndAwaitableAdapter.Callback, _beginEndAwaitable );
-							_stream.EndWrite( await _beginEndAwaitable );
-						}
-						else
-						{
-							await _stream.WriteAsync( _buffer, 0, _writePos, cancellationToken ).ConfigureAwait( false );
-						}
+						await _stream.WriteAsync( _buffer, 0, _writePos, cancellationToken ).ConfigureAwait( false );
 						_writePos = 0;
 					}
 
 					// Write out user data.
-					if ( useApmPattern )
-					{
-						EnsureBeginEndAwaitableAllocated();
-						_stream.BeginWrite( array, offset, count, BeginEndAwaitableAdapter.Callback, _beginEndAwaitable );
-						_stream.EndWrite( await _beginEndAwaitable );
-					}
-					else
-					{
-						await _stream.WriteAsync( array, offset, count, cancellationToken ).ConfigureAwait( false );
-					}
+					await _stream.WriteAsync( array, offset, count, cancellationToken ).ConfigureAwait( false );
 				}
 			}
 			finally
 			{
-				SemaphoreSlim sem = base.EnsureAsyncActiveSemaphoreInitialized();
+				SemaphoreSlim sem = this.EnsureAsyncActiveSemaphoreInitialized();
 				sem.Release();
 			}
 		}
@@ -1452,7 +1198,7 @@ namespace System.IO
 		{
 
 			if ( value < 0 )
-				throw new ArgumentOutOfRangeException( "value", Environment.GetResourceString( "ArgumentOutOfRange_NegFileSize" ) );
+				throw new ArgumentOutOfRangeException( "value", "The size cannot be negative." );
 			Contract.EndContractBlock();
 
 			EnsureNotClosed();
@@ -1461,6 +1207,80 @@ namespace System.IO
 
 			Flush();
 			_stream.SetLength( value );
+		}
+
+		// From https://github.com/dotnet/coreclr/blob/master/src/mscorlib/src/System/IO/Stream.cs ef1e2ab328087c61a6878c1e84f4fc5d710aebce
+
+		// To implement Async IO operations on streams that don't support async IO
+
+		private SemaphoreSlim _asyncActiveSemaphore;
+
+		internal SemaphoreSlim EnsureAsyncActiveSemaphoreInitialized()
+		{
+			// Lazily-initialize _asyncActiveSemaphore.  As we're never accessing the SemaphoreSlim's
+			// WaitHandle, we don't need to worry about Disposing it.
+			return LazyInitializer.EnsureInitialized( ref _asyncActiveSemaphore, () => new SemaphoreSlim( 1, 1 ) );
+		}
+
+		// End From Stream.cs
+
+		// From https://github.com/dotnet/coreclr/blob/master/src/mscorlib/src/System/IO/__Error.cs ef1e2ab328087c61a6878c1e84f4fc5d710aebce
+		private static class __Error
+		{
+			internal static void StreamIsClosed()
+			{
+				throw new ObjectDisposedException( null, "This stream is already closed." );
+			}
+
+			internal static void ReadNotSupported()
+			{
+				throw new NotSupportedException( "Cannot read on the current stream." );
+			}
+			internal static void WriteNotSupported()
+			{
+				throw new NotSupportedException( "Cannot write on the current stream." );
+			}
+
+			internal static void SeekNotSupported()
+			{
+				throw new NotSupportedException( "Cannot seek on the current stream." );
+			}
+		}
+
+		// From 
+		private static class _Task
+		{
+			/// <summary>Gets a task that's already been completed successfully.</summary>
+			/// <remarks>May not always return the same instance.</remarks>        
+			public static Task CompletedTask
+			{
+				get
+				{
+					var tcs = new TaskCompletionSource<object>();
+					tcs.SetResult( null );
+					return tcs.Task;
+				}
+			}
+
+			// ReSharper disable once UnusedParameter.Local
+			public static Task<T> FromCancellation<T>(CancellationToken cancellationToken)
+			{
+				var tcs = new TaskCompletionSource<T>();
+				tcs.SetCanceled();
+				return tcs.Task;
+			}
+
+			public static Task FromException(Exception ex)
+			{
+				return FromException<object>( ex );
+			}
+
+			public static Task<T> FromException<T>( Exception ex )
+			{
+				var tcs = new TaskCompletionSource<T>();
+				tcs.SetException( ex );
+				return tcs.Task;
+			}
 		}
 
 	}  // class BufferedStream

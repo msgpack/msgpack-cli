@@ -111,6 +111,7 @@
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
+    <Preserve Path="BufferedStream.cs" />
     <Preserve Path="WinRTCompatibility.cs" />
     <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
@@ -182,6 +183,7 @@
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve Path="Serialization\DefaultSerializers\System_DBNullMessagePackSerializer.cs" />
     <Exclude Path="Serialization\Reflection\ReflectionHelpers.cs" />
+    <Exclude Path="BufferedStream.cs" />
     <Exclude Path="WinRTCompatibility.cs" />
   </Project>
 </ProjectSync>
