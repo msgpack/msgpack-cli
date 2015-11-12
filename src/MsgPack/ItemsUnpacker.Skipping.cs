@@ -249,8 +249,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
@@ -326,8 +327,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
@@ -380,8 +382,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
@@ -435,8 +438,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
@@ -490,8 +494,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
@@ -536,8 +541,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
@@ -601,8 +607,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
@@ -666,8 +673,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
@@ -952,8 +960,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
@@ -1014,8 +1023,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
@@ -1076,8 +1086,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
@@ -1138,8 +1149,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
@@ -1200,8 +1212,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
@@ -1273,8 +1286,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
@@ -1346,8 +1360,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
@@ -1419,8 +1434,9 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
-							if ( bytesRead < reading )
+							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							bytesRead += lastRead;
+							if ( lastRead == 0 )
 							{
 								this._offset += bytesRead;
 								return null;
