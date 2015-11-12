@@ -45,16 +45,6 @@ namespace MsgPack
 			real64 = default( double );
 
 			var readHeader = this._source.ReadByte();
-			if ( this._source.CanSeek )
-			{
-				// Re-sync offset here.
-				this._offset = this._source.Position;
-			}
-			else
-			{
-				this._offset++;
-			}
-
 			if ( readHeader < 0 )
 			{
 				header = 0;

@@ -63,7 +63,7 @@ namespace MsgPack
 #endif // !UNITY
 
 			long remainingItems = -1;
-			long skipped = 0;
+			long startOffset = this._offset;
 			Int64Stack remainingCollections = null;
 			do
 			{
@@ -79,7 +79,6 @@ namespace MsgPack
 					case MessagePackCode.TrueValue:
 					case MessagePackCode.FalseValue:
 					{
-						skipped += 1;
 <#
 this.PushIndent( 6 );
 this.WriteTryPopCollection();
@@ -91,7 +90,6 @@ this.PopIndent();
 
 				if ( header < 0x80 )
 				{
-					skipped += 1;
 <#
 this.PushIndent( 5 );
 this.WriteTryPopCollection();
@@ -101,7 +99,6 @@ this.PopIndent();
 				}
 				else if ( header >= 0xE0 )
 				{
-					skipped += 1;
 <#
 this.PushIndent( 5 );
 this.WriteTryPopCollection();
@@ -115,7 +112,6 @@ this.PopIndent();
 					case 0x80:
 					{
 						var size = header & 0xF;
-						skipped += 1;
 						if( size == 0 )
 						{
 <#
@@ -138,7 +134,6 @@ this.PopIndent();
 					case 0x90:
 					{
 						var size = header & 0xF;
-						skipped += 1;
 						if( size == 0 )
 						{
 <#
@@ -162,7 +157,6 @@ this.PopIndent();
 					case 0xB0:
 					{
 						var size = header & 0x1F;
-						skipped += 1;
 <#
 this.PushIndent( 6 );
 this.WriteDrainValue( "size" );
@@ -178,7 +172,6 @@ this.PopIndent();
 					case MessagePackCode.SignedInt8:
 					case MessagePackCode.UnsignedInt8:
 					{
-						skipped += 1;
 <#
 this.PushIndent( 6 );
 this.WriteTryPopCollection();
@@ -190,7 +183,6 @@ this.PopIndent();
 					case MessagePackCode.SignedInt16:
 					case MessagePackCode.UnsignedInt16:
 					{
-						skipped += 1;
 <#
 this.PushIndent( 6 );
 this.WriteTryPopCollection();
@@ -203,7 +195,6 @@ this.PopIndent();
 					case MessagePackCode.UnsignedInt32:
 					case MessagePackCode.Real32:
 					{
-						skipped += 1;
 <#
 this.PushIndent( 6 );
 this.WriteTryPopCollection();
@@ -216,7 +207,6 @@ this.PopIndent();
 					case MessagePackCode.UnsignedInt64:
 					case MessagePackCode.Real64:
 					{
-						skipped += 1;
 <#
 this.PushIndent( 6 );
 this.WriteTryPopCollection();
@@ -228,7 +218,6 @@ this.PopIndent();
 					case MessagePackCode.Str8:
 					case MessagePackCode.Bin8:
 					{
-						skipped += 1;
 						byte length;
 <#
 this.PushIndent( 6 );
@@ -242,7 +231,6 @@ this.PopIndent();
 					case MessagePackCode.Bin16:
 					case MessagePackCode.Raw16:
 					{
-						skipped += 1;
 						ushort length;
 <#
 this.PushIndent( 6 );
@@ -256,7 +244,6 @@ this.PopIndent();
 					case MessagePackCode.Bin32:
 					case MessagePackCode.Raw32:
 					{
-						skipped += 1;
 						uint length;
 <#
 this.PushIndent( 6 );
@@ -269,7 +256,6 @@ this.PopIndent();
 					}
 					case MessagePackCode.Array16:
 					{
-						skipped += 1;
 						ushort length;
 <#
 this.PushIndent( 6 );
@@ -297,7 +283,6 @@ this.PopIndent();
 					}
 					case MessagePackCode.Array32:
 					{
-						skipped += 1;
 						uint length;
 <#
 this.PushIndent( 6 );
@@ -325,7 +310,6 @@ this.PopIndent();
 					}
 					case MessagePackCode.Map16:
 					{
-						skipped += 1;
 						ushort length;
 <#
 this.PushIndent( 6 );
@@ -353,7 +337,6 @@ this.PopIndent();
 					}
 					case MessagePackCode.Map32:
 					{
-						skipped += 1;
 						uint length;
 <#
 this.PushIndent( 6 );
@@ -381,7 +364,6 @@ this.PopIndent();
 					}
 					case MessagePackCode.FixExt1:
 					{
-						skipped += 1;
 <#
 this.PushIndent( 6 );
 this.WriteUnpackByte( null );
@@ -393,7 +375,6 @@ this.PopIndent();
 					}
 					case MessagePackCode.FixExt2:
 					{
-						skipped += 1;
 <#
 this.PushIndent( 6 );
 this.WriteUnpackByte( null );
@@ -405,7 +386,6 @@ this.PopIndent();
 					}
 					case MessagePackCode.FixExt4:
 					{
-						skipped += 1;
 <#
 this.PushIndent( 6 );
 this.WriteUnpackByte( null );
@@ -417,7 +397,6 @@ this.PopIndent();
 					}
 					case MessagePackCode.FixExt8:
 					{
-						skipped += 1;
 <#
 this.PushIndent( 6 );
 this.WriteUnpackByte( null );
@@ -429,7 +408,6 @@ this.PopIndent();
 					}
 					case MessagePackCode.FixExt16:
 					{
-						skipped += 1;
 <#
 this.PushIndent( 6 );
 this.WriteUnpackByte( null );
@@ -441,7 +419,6 @@ this.PopIndent();
 					}
 					case MessagePackCode.Ext8:
 					{
-						skipped += 1;
 						byte length;
 <#
 this.PushIndent( 6 );
@@ -455,7 +432,6 @@ this.PopIndent();
 					}
 					case MessagePackCode.Ext16:
 					{
-						skipped += 1;
 						ushort length;
 <#
 this.PushIndent( 6 );
@@ -469,7 +445,6 @@ this.PopIndent();
 					}
 					case MessagePackCode.Ext32:
 					{
-						skipped += 1;
 						uint length;
 <#
 this.PushIndent( 6 );
@@ -489,7 +464,7 @@ this.PopIndent();
 				}
 			} while ( remainingItems > 0 );
 
-			return skipped;
+			return this._offset - startOffset;
 		}
 	}
 }
@@ -558,6 +533,7 @@ while( <#= sizeVariable #> > bytesRead )
 	bytesRead += source.Read( dummyBufferForSkipping, 0, reading );
 	if ( bytesRead < reading )
 	{
+		this._offset += bytesRead;
 		return null;
 	}
 #if DEBUG
@@ -569,7 +545,7 @@ while( <#= sizeVariable #> > bytesRead )
 #endif // DEBUG
 }
 
-skipped += bytesRead;
+this._offset += bytesRead;
 
 #endregion DrainValue
 <#+
@@ -579,10 +555,10 @@ private void WriteUnpackLength( int size, string lengthVariable )
 {
 #>
 var read = source.Read( buffer, 0, <#= size.ToString( CultureInfo.InvariantCulture ) #> );
+this._offset += read;
 if ( read == <#= size.ToString( CultureInfo.InvariantCulture ) #> )
 {
 	<#= lengthVariable #> = BigEndianBinary.ToUInt<#= ( size * 8 ).ToString( CultureInfo.InvariantCulture ) #>( buffer, 0 );
-	skipped += <#= size #>;
 }
 else
 {
@@ -605,6 +581,7 @@ private void WriteUnpackByteCore( string lengthVariable, bool needsDeclaration )
 {
 #>
 <#= needsDeclaration ? "var" : String.Empty #> read = source.Read( buffer, 0, 1 );
+this._offset += read;
 if ( read == 1 )
 {
 <#+
@@ -615,7 +592,6 @@ if ( read == 1 )
 <#+
 	}
 #>
-	skipped += 1;
 }
 else
 {
