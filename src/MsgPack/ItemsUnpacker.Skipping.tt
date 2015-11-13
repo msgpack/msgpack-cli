@@ -444,7 +444,7 @@ this.PopIndent();
 					}
 					default:
 					{
-						ThrowUnassingedMessageTypeException( header );
+						this.ThrowUnassignedMessageTypeException( header );
 						return null; // Never reach
 					}
 				}
@@ -516,11 +516,12 @@ while( <#= sizeVariable #> > bytesRead )
 	{
 #endif // DEBUG
 	var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+	this._lastOffset = this._offset;
 	var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+	this._offset += lastRead;
 	bytesRead += lastRead;
 	if ( lastRead == 0 )
 	{
-		this._offset += bytesRead;
 		return null;
 	}
 #if DEBUG
@@ -532,8 +533,6 @@ while( <#= sizeVariable #> > bytesRead )
 #endif // DEBUG
 }
 
-this._offset += bytesRead;
-
 #endregion DrainValue
 <#+
 }
@@ -541,6 +540,7 @@ this._offset += bytesRead;
 private void WriteUnpackLength( int size, string lengthVariable )
 {
 #>
+this._lastOffset = this._offset;
 var read = this._source.Read( this._scalarBuffer, 0, <#= size.ToString( CultureInfo.InvariantCulture ) #> );
 this._offset += read;
 if ( read == <#= size.ToString( CultureInfo.InvariantCulture ) #> )
@@ -567,6 +567,7 @@ private void WriteUnpackByteSubsequent( string lengthVariable )
 private void WriteUnpackByteCore( string lengthVariable, bool needsDeclaration )
 {
 #>
+this._lastOffset = this._offset;
 <#= needsDeclaration ? "var" : String.Empty #> read = this._source.Read( this._scalarBuffer, 0, 1 );
 this._offset += read;
 if ( read == 1 )

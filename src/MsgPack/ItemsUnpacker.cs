@@ -35,6 +35,7 @@ namespace MsgPack
 	internal sealed partial class ItemsUnpacker : Unpacker
 	{
 		private readonly bool _ownsStream;
+		private readonly bool _useStreamPosition;
 		private readonly Stream _source;
 
 		private readonly byte[] _oneByteBuffer = new byte[ 1 ];
@@ -89,10 +90,21 @@ namespace MsgPack
 		}
 #endif
 
+		internal override bool GetPreviousPosition( out long offsetOrPosition )
+		{
+			offsetOrPosition = this._lastOffset;
+			return this._useStreamPosition;
+		}
+
 		/// <summary>
 		///		An position of seekable <see cref="Stream"/> or offset from start of this instance.
 		/// </summary>
 		private long _offset;
+
+		/// <summary>
+		///		An position of seekable <see cref="Stream"/> or offset from start of this instance before last operation.
+		/// </summary>
+		private long _lastOffset;
 
 		public ItemsUnpacker( Stream stream, PackerUnpackerStreamOptions streamOptions )
 		{
@@ -104,7 +116,8 @@ namespace MsgPack
 			var options = streamOptions ?? PackerUnpackerStreamOptions.None;
 			this._source = options.WrapStream( stream );
 			this._ownsStream = options.OwnsStream;
-			this._offset = stream.CanSeek ? stream.Position : 0L;
+			this._useStreamPosition = stream.CanSeek;
+			this._offset = this._useStreamPosition ? stream.Position : 0L;
 		}
 
 		protected override void Dispose( bool disposing )
@@ -181,7 +194,7 @@ namespace MsgPack
 				return;
 			}
 
-			var originalOffset = this._offset;
+			this._lastOffset = this._offset;
 			var remaining = size;
 			var offset = 0;
 			int read;
@@ -203,12 +216,13 @@ namespace MsgPack
 
 			if ( offset < size )
 			{
-				this.ThrowEofException( size, originalOffset );
+				this.ThrowEofException( size );
 			}
 		}
 
 		private int ReadByteFromSource()
 		{
+			this._lastOffset = this._offset;
 #if DEBUG && !UNITY
 			if ( this._source.CanSeek )
 			{
@@ -238,11 +252,11 @@ namespace MsgPack
 				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
 			}
 #endif // DEBUG && !UNITY
-			var originalOffset = this._offset;
+			this._lastOffset = this._offset;
 			var read = this._source.Read( this._oneByteBuffer, 0, 1 );
 			if ( read == 0 )
 			{
-				this.ThrowEofException( originalOffset, 1 );
+				this.ThrowEofException( 1 );
 			}
 
 			this._offset++;
@@ -257,48 +271,74 @@ namespace MsgPack
 
 		internal override void ThrowEofException()
 		{
+			long offsetOrPosition;
+			var isRealOffset = this.GetPreviousPosition( out offsetOrPosition );
 			throw new InvalidMessagePackStreamException(
 					String.Format(
 						CultureInfo.CurrentCulture,
-						this._source.CanSeek
-						? "Stream unexpectedly ends. Cannot read object from stream. Current position is {0:#,0}."
-						: "Stream unexpectedly ends. Cannot read object from stream. Current offset is {0:#,0}.",
-						this._offset
+						isRealOffset
+							? "Stream unexpectedly ends. Cannot read object from stream. Current position is {0:#,0}."
+							: "Stream unexpectedly ends. Cannot read object from stream. Current offset is {0:#,0}.",
+						offsetOrPosition
 					)
 				);
 		}
 
-		private void ThrowEofException( long lastOffset, long reading )
+		private void ThrowEofException( long reading )
 		{
+			long offsetOrPosition;
+			var isRealOffset = this.GetPreviousPosition( out offsetOrPosition );
 			throw new InvalidMessagePackStreamException(
 					String.Format(
 						CultureInfo.CurrentCulture,
-						this._source.CanSeek
-						? "Stream unexpectedly ends. Cannot read {0:#,0} bytes from stream at position {1:#,0}."
-						: "Stream unexpectedly ends. Cannot read {0:#,0} bytes from stream at offset {1:#,0}.",
+						isRealOffset
+							? "Stream unexpectedly ends. Cannot read {0:#,0} bytes from stream at position {1:#,0}."
+							: "Stream unexpectedly ends. Cannot read {0:#,0} bytes from stream at offset {1:#,0}.",
 						reading,
-						lastOffset
+						offsetOrPosition
 					)
 				);
 		}
 
-		private static void ThrowUnassingedMessageTypeException( int header )
+		private void ThrowUnassignedMessageTypeException( int header )
 		{
 #if DEBUG && !UNITY
 			Contract.Assert( header == 0xC1, "Unhandled header:" + header.ToString( "X2" ) );
 #endif // DEBUG && !UNITY
+			long offsetOrPosition;
+			var isRealOffset = this.GetPreviousPosition( out offsetOrPosition );
 			throw new UnassignedMessageTypeException(
-				String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header )
+				String.Format( 
+					CultureInfo.CurrentCulture,
+					isRealOffset
+						? "Unknown header value 0x{0:X} at position {1:#,0}"
+						: "Unknown header value 0x{0:X} at offset {1:#,0}",
+					header,
+					offsetOrPosition
+				)
 			);
 		}
 
-		private static void ThrowUnexpectedExtCodeException( ReadValueResult type )
+		private void ThrowUnexpectedExtCodeException( ReadValueResult type )
 		{
 #if DEBUG && !UNITY
 			Contract.Assert( false, "Unexpected ext-code type:" + type );
 #endif // DEBUG && !UNITY
-			// ReSharper disable once HeuristicUnreachableCode
-			throw new NotSupportedException( "Unexpeded ext-code type. " + type );
+			// ReSharper disable HeuristicUnreachableCode
+			long offsetOrPosition;
+			var isRealOffset = this.GetPreviousPosition( out offsetOrPosition );
+
+			throw new NotSupportedException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					isRealOffset
+						? "Unexpeded ext-code type {0} at position {1:#,0}"
+						: "Unexpeded ext-code type {0} at offset {1:#,0}",
+					type,
+					offsetOrPosition
+				)
+			);
+			// ReSharper restore HeuristicUnreachableCode
 		}
 
 		private void CheckLength( long length, ReadValueResult type )
@@ -312,12 +352,15 @@ namespace MsgPack
 		private void ThrowTooLongLengthException( long length, ReadValueResult type )
 		{
 			string message;
+			long offsetOrPosition;
+			var isRealOffset = this.GetPreviousPosition( out offsetOrPosition );
+
 			switch ( type )
 			{
 				case ReadValueResult.ArrayLength:
 				{
 					message =
-						this._source.CanSeek
+						isRealOffset
 						? "MessagePack for CLI cannot handle large array (0x{0:X} elements) which has more than Int32.MaxValue elements, at position {1:#,0}"
 						: "MessagePack for CLI cannot handle large array (0x{0:X} elements) which has more than Int32.MaxValue elements, at offset {1:#,0}";
 					break;
@@ -325,7 +368,7 @@ namespace MsgPack
 				case ReadValueResult.MapLength:
 				{
 					message =
-						this._source.CanSeek
+						isRealOffset
 						? "MessagePack for CLI cannot handle large map (0x{0:X} entries) which has more than Int32.MaxValue entries, at position {1:#,0}"
 						: "MessagePack for CLI cannot handle large map (0x{0:X} entries) which has more than Int32.MaxValue entries, at offset {1:#,0}";
 					break;
@@ -333,7 +376,7 @@ namespace MsgPack
 				default:
 				{
 					message =
-						this._source.CanSeek
+						isRealOffset
 						? "MessagePack for CLI cannot handle large binary or string (0x{0:X} bytes) which has more than Int32.MaxValue bytes, at position {1:#,0}"
 						: "MessagePack for CLI cannot handle large binary or string (0x{0:X} bytes) which has more than Int32.MaxValue bytes, at offset {1:#,0}";
 					break;
@@ -345,23 +388,25 @@ namespace MsgPack
 					CultureInfo.CurrentCulture,
 					message,
 					length,
-					this._offset
+					offsetOrPosition
 				)
 			);
 		}
 
 		private void ThrowTypeException( Type type, byte header )
 		{
+			long offsetOrPosition;
+			var isRealOffset = this.GetPreviousPosition( out offsetOrPosition );
 			throw new MessageTypeException(
 				String.Format(
 					CultureInfo.CurrentCulture,
-					this._source.CanSeek
+					isRealOffset
 					? "Cannot convert '{0}' type value from type '{2}'(0x{1:X}) in position {3:#,0}."
 					: "Cannot convert '{0}' type value from type '{2}'(0x{1:X}) in offset {3:#,0}.",
 					type,
 					header,
 					MessagePackCode.ToString( header ),
-					this._offset
+					offsetOrPosition
 				)
 			);
 		}

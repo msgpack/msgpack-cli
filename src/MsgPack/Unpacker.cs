@@ -185,7 +185,17 @@ namespace MsgPack
 		{
 			get { return null; }
 		}
-#endif
+#endif		
+		/// <summary>
+		///		Gets the previous position before last operation for debugging.
+		/// </summary>
+		/// <param name="offsetOrPosition">The offset or position.</param>
+		/// <returns><c>true</c> for the <paramref name="offsetOrPosition"/> is real position of the underlying stream;<c>false</c> if the value is offset from the root unpaker instance was created.</returns>
+		internal virtual bool GetPreviousPosition( out long offsetOrPosition )
+		{
+			offsetOrPosition = -1;
+			return false;
+		}
 
 		#endregion -- Properties --
 

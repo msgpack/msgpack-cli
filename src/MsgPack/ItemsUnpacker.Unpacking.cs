@@ -262,7 +262,7 @@ namespace MsgPack
 				}
 				default:
 				{
-					ThrowUnassingedMessageTypeException( readHeader );
+					this.ThrowUnassignedMessageTypeException( readHeader );
 					// Never reach
 					return ReadValueResult.Eof;
 				}
@@ -336,11 +336,12 @@ namespace MsgPack
 					do
 					{
 						var reading = Math.Min( remaining, bytes.Length );
+						this._lastOffset = this._offset;
 						var bytesRead = this._source.Read( bytes, 0, reading );
 						this._offset += bytesRead;
 						if ( bytesRead == 0 )
 						{
-							this.ThrowEofException( 0, reading );
+							this.ThrowEofException( reading );
 						}
 
 						remaining -= bytesRead;
@@ -446,7 +447,7 @@ namespace MsgPack
 				}
 				default:
 				{
-					ThrowUnexpectedExtCodeException( type );
+					this.ThrowUnexpectedExtCodeException( type );
 					return default( MessagePackExtendedTypeObject ); // Never reach
 				}
 			}

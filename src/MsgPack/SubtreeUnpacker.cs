@@ -91,6 +91,11 @@ namespace MsgPack
 		}
 #endif
 
+		internal override bool GetPreviousPosition( out long offsetOrPosition )
+		{
+			return this._root.GetPreviousPosition( out offsetOrPosition );
+		}
+
 		public SubtreeUnpacker( ItemsUnpacker parent ) : this( parent, null ) { }
 
 		private SubtreeUnpacker( ItemsUnpacker root, SubtreeUnpacker parent )

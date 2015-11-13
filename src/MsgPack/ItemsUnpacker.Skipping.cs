@@ -234,11 +234,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -249,8 +250,6 @@ namespace MsgPack
 							}
 						#endif // DEBUG
 						}
-						
-						this._offset += bytesRead;
 						
 						#endregion DrainValue
 						#region TryPopContextCollection
@@ -312,11 +311,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -327,8 +327,6 @@ namespace MsgPack
 							}
 						#endif // DEBUG
 						}
-						
-						this._offset += bytesRead;
 						
 						#endregion DrainValue
 						continue;
@@ -367,11 +365,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -382,8 +381,6 @@ namespace MsgPack
 							}
 						#endif // DEBUG
 						}
-						
-						this._offset += bytesRead;
 						
 						#endregion DrainValue
 						continue;
@@ -423,11 +420,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -438,8 +436,6 @@ namespace MsgPack
 							}
 						#endif // DEBUG
 						}
-						
-						this._offset += bytesRead;
 						
 						#endregion DrainValue
 						continue;
@@ -479,11 +475,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -495,8 +492,6 @@ namespace MsgPack
 						#endif // DEBUG
 						}
 						
-						this._offset += bytesRead;
-						
 						#endregion DrainValue
 						continue;
 					}
@@ -504,6 +499,7 @@ namespace MsgPack
 					case MessagePackCode.Bin8:
 					{
 						byte length;
+						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
@@ -526,11 +522,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -541,8 +538,6 @@ namespace MsgPack
 							}
 						#endif // DEBUG
 						}
-						
-						this._offset += bytesRead;
 						
 						#endregion DrainValue
 						#region TryPopContextCollection
@@ -570,6 +565,7 @@ namespace MsgPack
 					case MessagePackCode.Raw16:
 					{
 						ushort length;
+						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 2 );
 						this._offset += read;
 						if ( read == 2 )
@@ -592,11 +588,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -607,8 +604,6 @@ namespace MsgPack
 							}
 						#endif // DEBUG
 						}
-						
-						this._offset += bytesRead;
 						
 						#endregion DrainValue
 						#region TryPopContextCollection
@@ -636,6 +631,7 @@ namespace MsgPack
 					case MessagePackCode.Raw32:
 					{
 						uint length;
+						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 4 );
 						this._offset += read;
 						if ( read == 4 )
@@ -658,11 +654,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -673,8 +670,6 @@ namespace MsgPack
 							}
 						#endif // DEBUG
 						}
-						
-						this._offset += bytesRead;
 						
 						#endregion DrainValue
 						#region TryPopContextCollection
@@ -701,6 +696,7 @@ namespace MsgPack
 					case MessagePackCode.Array16:
 					{
 						ushort length;
+						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 2 );
 						this._offset += read;
 						if ( read == 2 )
@@ -757,6 +753,7 @@ namespace MsgPack
 					case MessagePackCode.Array32:
 					{
 						uint length;
+						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 4 );
 						this._offset += read;
 						if ( read == 4 )
@@ -813,6 +810,7 @@ namespace MsgPack
 					case MessagePackCode.Map16:
 					{
 						ushort length;
+						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 2 );
 						this._offset += read;
 						if ( read == 2 )
@@ -869,6 +867,7 @@ namespace MsgPack
 					case MessagePackCode.Map32:
 					{
 						uint length;
+						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 4 );
 						this._offset += read;
 						if ( read == 4 )
@@ -924,6 +923,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt1:
 					{
+						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
@@ -945,11 +945,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -960,8 +961,6 @@ namespace MsgPack
 							}
 						#endif // DEBUG
 						}
-						
-						this._offset += bytesRead;
 						
 						#endregion DrainValue
 						#region TryPopContextCollection
@@ -987,6 +986,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt2:
 					{
+						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
@@ -1008,11 +1008,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -1023,8 +1024,6 @@ namespace MsgPack
 							}
 						#endif // DEBUG
 						}
-						
-						this._offset += bytesRead;
 						
 						#endregion DrainValue
 						#region TryPopContextCollection
@@ -1050,6 +1049,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt4:
 					{
+						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
@@ -1071,11 +1071,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -1086,8 +1087,6 @@ namespace MsgPack
 							}
 						#endif // DEBUG
 						}
-						
-						this._offset += bytesRead;
 						
 						#endregion DrainValue
 						#region TryPopContextCollection
@@ -1113,6 +1112,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt8:
 					{
+						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
@@ -1134,11 +1134,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -1149,8 +1150,6 @@ namespace MsgPack
 							}
 						#endif // DEBUG
 						}
-						
-						this._offset += bytesRead;
 						
 						#endregion DrainValue
 						#region TryPopContextCollection
@@ -1176,6 +1175,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt16:
 					{
+						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
@@ -1197,11 +1197,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -1212,8 +1213,6 @@ namespace MsgPack
 							}
 						#endif // DEBUG
 						}
-						
-						this._offset += bytesRead;
 						
 						#endregion DrainValue
 						#region TryPopContextCollection
@@ -1240,6 +1239,7 @@ namespace MsgPack
 					case MessagePackCode.Ext8:
 					{
 						byte length;
+						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
@@ -1250,6 +1250,7 @@ namespace MsgPack
 						{
 							return null;
 						}
+						this._lastOffset = this._offset;
 						 read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
@@ -1271,11 +1272,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -1286,8 +1288,6 @@ namespace MsgPack
 							}
 						#endif // DEBUG
 						}
-						
-						this._offset += bytesRead;
 						
 						#endregion DrainValue
 						#region TryPopContextCollection
@@ -1314,6 +1314,7 @@ namespace MsgPack
 					case MessagePackCode.Ext16:
 					{
 						ushort length;
+						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 2 );
 						this._offset += read;
 						if ( read == 2 )
@@ -1324,6 +1325,7 @@ namespace MsgPack
 						{
 							return null;
 						}
+						this._lastOffset = this._offset;
 						 read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
@@ -1345,11 +1347,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -1360,8 +1363,6 @@ namespace MsgPack
 							}
 						#endif // DEBUG
 						}
-						
-						this._offset += bytesRead;
 						
 						#endregion DrainValue
 						#region TryPopContextCollection
@@ -1388,6 +1389,7 @@ namespace MsgPack
 					case MessagePackCode.Ext32:
 					{
 						uint length;
+						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 4 );
 						this._offset += read;
 						if ( read == 4 )
@@ -1398,6 +1400,7 @@ namespace MsgPack
 						{
 							return null;
 						}
+						this._lastOffset = this._offset;
 						 read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
@@ -1419,11 +1422,12 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
+							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+							this._offset += lastRead;
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
-								this._offset += bytesRead;
 								return null;
 							}
 						#if DEBUG
@@ -1434,8 +1438,6 @@ namespace MsgPack
 							}
 						#endif // DEBUG
 						}
-						
-						this._offset += bytesRead;
 						
 						#endregion DrainValue
 						#region TryPopContextCollection
@@ -1461,7 +1463,7 @@ namespace MsgPack
 					}
 					default:
 					{
-						ThrowUnassingedMessageTypeException( header );
+						this.ThrowUnassignedMessageTypeException( header );
 						return null; // Never reach
 					}
 				}
