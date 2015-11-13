@@ -1,4 +1,16 @@
-﻿#region -- License Terms --
+﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ include file="..\Core.ttinclude" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -61,26 +73,34 @@ namespace MsgPack
 					// PositiveFixNum
 					this.InternalCollectionType = CollectionType.None;
 					integral = header;
-					return ReadValueResult.Byte;
+<#
+					ReturnValue( "Byte" );
+#>
 				}
 				case 0x8:
 				{
 					// FixMap
 					integral = header & 0xF;
-					return ReadValueResult.MapLength;
+<#
+					ReturnValue( "MapLength" );
+#>
 				}
 				case 0x9:
 				{
 					// FixArray
 					integral = header & 0xF;
-					return ReadValueResult.ArrayLength;
+<#
+					ReturnValue( "ArrayLength" );
+#>
 				}
 				case 0xA:
 				case 0xB:
 				{
 					// FixRaw
 					integral = header & 0x1F;
-					return ReadValueResult.String;
+<#
+					ReturnValue( "String" );
+#>
 				}
 				case 0xE:
 				case 0xF:
@@ -88,7 +108,9 @@ namespace MsgPack
 					// NegativeFixNum
 					this.InternalCollectionType = CollectionType.None;
 					integral = header | unchecked( ( long )0xFFFFFFFFFFFFFF00 );
-					return ReadValueResult.SByte;
+<#
+					ReturnValue( "SByte" );
+#>
 				}
 			}
 
@@ -96,175 +118,239 @@ namespace MsgPack
 			{
 				case MessagePackCode.NilValue:
 				{
-					return ReadValueResult.Nil;
+<#
+					ReturnValue( "Nil" );
+#>
 				}
 				case MessagePackCode.TrueValue:
 				{
 					integral = 1;
-					return ReadValueResult.Boolean;
+<#
+					ReturnValue( "Boolean" );
+#>
 				}
 				case MessagePackCode.FalseValue:
 				{
 					integral = 0;
-					return ReadValueResult.Boolean;
+<#
+					ReturnValue( "Boolean" );
+#>
 				}
 				case MessagePackCode.SignedInt8:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( sbyte ) );
+					<#= ReadStrict( "sbyte" ) #>;
 					integral = BigEndianBinary.ToSByte( this._scalarBuffer, 0 );
-					return ReadValueResult.SByte;
+<#
+					ReturnValue( "SByte" );
+#>
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( short ) );
+					<#= ReadStrict( "short" ) #>;
 					integral = BigEndianBinary.ToInt16( this._scalarBuffer, 0 );
-					return ReadValueResult.Int16;
+<#
+					ReturnValue( "Int16" );
+#>
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( int ) );
+					<#= ReadStrict( "int" ) #>;
 					integral = BigEndianBinary.ToInt32( this._scalarBuffer, 0 );
-					return ReadValueResult.Int32;
+<#
+					ReturnValue( "Int32" );
+#>
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( long ) );
+					<#= ReadStrict( "long" ) #>;
 					integral = BigEndianBinary.ToInt64( this._scalarBuffer, 0 );
-					return ReadValueResult.Int64;
+<#
+					ReturnValue( "Int64" );
+#>
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( byte ) );
+					<#= ReadStrict( "byte" ) #>;
 					integral = BigEndianBinary.ToByte( this._scalarBuffer, 0 );
-					return ReadValueResult.Byte;
+<#
+					ReturnValue( "Byte" );
+#>
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( ushort ) );
+					<#= ReadStrict( "ushort" ) #>;
 					integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
-					return ReadValueResult.UInt16;
+<#
+					ReturnValue( "UInt16" );
+#>
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( uint ) );
+					<#= ReadStrict( "uint" ) #>;
 					integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
-					return ReadValueResult.UInt32;
+<#
+					ReturnValue( "UInt32" );
+#>
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( ulong ) );
+					<#= ReadStrict( "ulong" ) #>;
 					integral = unchecked( ( long )BigEndianBinary.ToUInt64( this._scalarBuffer, 0 ) );
-					return ReadValueResult.UInt64;
+<#
+					ReturnValue( "UInt64" );
+#>
 				}
 				case MessagePackCode.Real32:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( float ) );
+					<#= ReadStrict( "float" ) #>;
 					real32 = BigEndianBinary.ToSingle( this._scalarBuffer, 0 );
-					return ReadValueResult.Single;
+<#
+					ReturnValue( "Single" );
+#>
 				}
 				case MessagePackCode.Real64:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( double ) );
+					<#= ReadStrict( "double" ) #>;
 					real64 = BigEndianBinary.ToDouble( this._scalarBuffer, 0 );
-					return ReadValueResult.Double;
+<#
+					ReturnValue( "Double" );
+#>
 				}
 				case MessagePackCode.Bin8:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( byte ) );
+					<#= ReadStrict( "byte" ) #>;
 					integral = BigEndianBinary.ToByte( this._scalarBuffer, 0 );
-					return ReadValueResult.Binary;
+<#
+					ReturnValue( "Binary" );
+#>
 				}
 				case MessagePackCode.Str8:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( byte ) );
+					<#= ReadStrict( "byte" ) #>;
 					integral = BigEndianBinary.ToByte( this._scalarBuffer, 0 );
-					return ReadValueResult.String;
+<#
+					ReturnValue( "String" );
+#>
 				}
 				case MessagePackCode.Bin16:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( ushort ) );
+					<#= ReadStrict( "ushort" ) #>;
 					integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
-					return ReadValueResult.Binary;
+<#
+					ReturnValue( "Binary" );
+#>
 				}
 				case MessagePackCode.Raw16:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( ushort ) );
+					<#= ReadStrict( "ushort" ) #>;
 					integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
-					return ReadValueResult.String;
+<#
+					ReturnValue( "String" );
+#>
 				}
 				case MessagePackCode.Bin32:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( uint ) );
+					<#= ReadStrict( "uint" ) #>;
 					integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
-					return ReadValueResult.Binary;
+<#
+					ReturnValue( "Binary" );
+#>
 				}
 				case MessagePackCode.Raw32:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( uint ) );
+					<#= ReadStrict( "uint" ) #>;
 					integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
-					return ReadValueResult.String;
+<#
+					ReturnValue( "String" );
+#>
 				}
 				case MessagePackCode.Array16:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( ushort ) );
+					<#= ReadStrict( "ushort" ) #>;
 					integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
-					return ReadValueResult.ArrayLength;
+<#
+					ReturnValue( "ArrayLength" );
+#>
 				}
 				case MessagePackCode.Array32:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( uint ) );
+					<#= ReadStrict( "uint" ) #>;
 					integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
-					return ReadValueResult.ArrayLength;
+<#
+					ReturnValue( "ArrayLength" );
+#>
 				}
 				case MessagePackCode.Map16:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( ushort ) );
+					<#= ReadStrict( "ushort" ) #>;
 					integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
-					return ReadValueResult.MapLength;
+<#
+					ReturnValue( "MapLength" );
+#>
 				}
 				case MessagePackCode.Map32:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( uint ) );
+					<#= ReadStrict( "uint" ) #>;
 					integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
-					return ReadValueResult.MapLength;
+<#
+					ReturnValue( "MapLength" );
+#>
 				}
 				case MessagePackCode.FixExt1:
 				{
-					return ReadValueResult.FixExt1;
+<#
+					ReturnValue( "FixExt1" );
+#>
 				}
 				case MessagePackCode.FixExt2:
 				{
-					return ReadValueResult.FixExt2;
+<#
+					ReturnValue( "FixExt2" );
+#>
 				}
 				case MessagePackCode.FixExt4:
 				{
-					return ReadValueResult.FixExt4;
+<#
+					ReturnValue( "FixExt4" );
+#>
 				}
 				case MessagePackCode.FixExt8:
 				{
-					return ReadValueResult.FixExt8;
+<#
+					ReturnValue( "FixExt8" );
+#>
 				}
 				case MessagePackCode.FixExt16:
 				{
-					return ReadValueResult.FixExt16;
+<#
+					ReturnValue( "FixExt16" );
+#>
 				}
 				case MessagePackCode.Ext8:
 				{
-					return ReadValueResult.Ext8;
+<#
+					ReturnValue( "Ext8" );
+#>
 				}
 				case MessagePackCode.Ext16:
 				{
-					return ReadValueResult.Ext16;
+<#
+					ReturnValue( "Ext16" );
+#>
 				}
 				case MessagePackCode.Ext32:
 				{
-					return ReadValueResult.Ext32;
+<#
+					ReturnValue( "Ext32" );
+#>
 				}
 				default:
 				{
 					ThrowUnassingedMessageTypeException( readHeader );
 					// Never reach
-					return ReadValueResult.Eof;
+<#
+					ReturnValue( "Eof" );
+#>
 				}
 			}
 		}
@@ -395,51 +481,51 @@ namespace MsgPack
 			{
 				case ReadValueResult.FixExt1:
 				{
-					typeCode = this.ReadByteStrict();
+					typeCode = <#= ReadByteStrict() #>;
 					length = 1;
 					break;
 				}
 				case ReadValueResult.FixExt2:
 				{
-					typeCode = this.ReadByteStrict();
+					typeCode = <#= ReadByteStrict() #>;
 					length = 2;
 					break;
 				}
 				case ReadValueResult.FixExt4:
 				{
-					typeCode = this.ReadByteStrict();
+					typeCode = <#= ReadByteStrict() #>;
 					length = 4;
 					break;
 				}
 				case ReadValueResult.FixExt8:
 				{
-					typeCode = this.ReadByteStrict();
+					typeCode = <#= ReadByteStrict() #>;
 					length = 8;
 					break;
 				}
 				case ReadValueResult.FixExt16:
 				{
-					typeCode = this.ReadByteStrict();
+					typeCode = <#= ReadByteStrict() #>;
 					length = 16;
 					break;
 				}
 				case ReadValueResult.Ext8:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( byte ) );
+					<#= ReadStrict( "byte" ) #>;
 					length = BigEndianBinary.ToByte( this._scalarBuffer, 0 );
 					typeCode = this.ReadByteStrict();
 					break;
 				}
 				case ReadValueResult.Ext16:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( ushort ) );
+					<#= ReadStrict( "ushort" ) #>;
 					length = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
 					typeCode = this.ReadByteStrict();
 					break;
 				}
 				case ReadValueResult.Ext32:
 				{
-					this.ReadStrict( this._scalarBuffer, sizeof( uint ) );
+					<#= ReadStrict( "uint" ) #>;
 					length = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
 					typeCode = this.ReadByteStrict();
 					break;
@@ -458,3 +544,25 @@ namespace MsgPack
 		}
 	}
 }
+<#+
+private static string ReadStrict( string type )
+{
+	return 
+		"this.ReadStrict" + 
+		"( this._scalarBuffer, sizeof( " + type + " )" +
+		" )";
+}
+
+private static string ReadByteStrict()
+{
+	return "this.ReadByteStrict()";
+}
+
+
+private void ReturnValue( string type )
+{
+#>
+					return ReadValueResult.<#= type #>;
+<#+
+}
+#>

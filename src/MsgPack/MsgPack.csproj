@@ -124,12 +124,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ItemsUnpacker.cs" />
+    <Compile Include="ItemsUnpacker.Unpacking.cs">
+      <DependentUpon>ItemsUnpacker.Unpacking.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="ItemsUnpacker.Read.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ItemsUnpacker.Read.tt</DependentUpon>
     </Compile>
-    <Compile Include="ItemsUnpacker.Unpacking.cs" />
     <Compile Include="IUnpackable.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -599,6 +603,10 @@
     <Content Include="ItemsUnpacker.Read.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ItemsUnpacker.Read.cs</LastGenOutput>
+    </Content>
+    <Content Include="ItemsUnpacker.Unpacking.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ItemsUnpacker.Unpacking.cs</LastGenOutput>
     </Content>
     <Content Include="Packer.Packing.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

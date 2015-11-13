@@ -207,6 +207,29 @@ namespace MsgPack
 			}
 		}
 
+		private int ReadByteFromSource()
+		{
+#if DEBUG && !UNITY
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG && !UNITY
+			var read = this._source.Read( this._oneByteBuffer, 0, 1 );
+			if ( read > 0 )
+			{
+				this._offset++;
+			}
+
+#if DEBUG && !UNITY
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG && !UNITY
+			return read == 0 ? -1 : this._oneByteBuffer[ 0 ];
+		}
+
 		private byte ReadByteStrict()
 		{
 #if DEBUG && !UNITY
@@ -257,6 +280,119 @@ namespace MsgPack
 						lastOffset
 					)
 				);
+		}
+
+		private static void ThrowUnassingedMessageTypeException( int header )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( header == 0xC1, "Unhandled header:" + header.ToString( "X2" ) );
+#endif // DEBUG && !UNITY
+			throw new UnassignedMessageTypeException(
+				String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header )
+			);
+		}
+
+		private static void ThrowUnexpectedExtCodeException( ReadValueResult type )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( false, "Unexpected ext-code type:" + type );
+#endif // DEBUG && !UNITY
+			// ReSharper disable once HeuristicUnreachableCode
+			throw new NotSupportedException( "Unexpeded ext-code type. " + type );
+		}
+
+		private void CheckLength( long length, ReadValueResult type )
+		{
+			if ( length > Int32.MaxValue )
+			{
+				this.ThrowTooLongLengthException( length, type );
+			}
+		}
+
+		private void ThrowTooLongLengthException( long length, ReadValueResult type )
+		{
+			string message;
+			switch ( type )
+			{
+				case ReadValueResult.ArrayLength:
+				{
+					message =
+						this._source.CanSeek
+						? "MessagePack for CLI cannot handle large array (0x{0:X} elements) which has more than Int32.MaxValue elements, at position {1:#,0}"
+						: "MessagePack for CLI cannot handle large array (0x{0:X} elements) which has more than Int32.MaxValue elements, at offset {1:#,0}";
+					break;
+				}
+				case ReadValueResult.MapLength:
+				{
+					message =
+						this._source.CanSeek
+						? "MessagePack for CLI cannot handle large map (0x{0:X} entries) which has more than Int32.MaxValue entries, at position {1:#,0}"
+						: "MessagePack for CLI cannot handle large map (0x{0:X} entries) which has more than Int32.MaxValue entries, at offset {1:#,0}";
+					break;
+				}
+				default:
+				{
+					message =
+						this._source.CanSeek
+						? "MessagePack for CLI cannot handle large binary or string (0x{0:X} bytes) which has more than Int32.MaxValue bytes, at position {1:#,0}"
+						: "MessagePack for CLI cannot handle large binary or string (0x{0:X} bytes) which has more than Int32.MaxValue bytes, at offset {1:#,0}";
+					break;
+				}
+			}
+
+			throw new MessageNotSupportedException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					message,
+					length,
+					this._offset
+				)
+			);
+		}
+
+		private void ThrowTypeException( Type type, byte header )
+		{
+			throw new MessageTypeException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					this._source.CanSeek
+					? "Cannot convert '{0}' type value from type '{2}'(0x{1:X}) in position {3:#,0}."
+					: "Cannot convert '{0}' type value from type '{2}'(0x{1:X}) in offset {3:#,0}.",
+					type,
+					header,
+					MessagePackCode.ToString( header ),
+					this._offset
+				)
+			);
+		}
+
+		private enum ReadValueResult
+		{
+			Eof = 0,
+			Nil,
+			Boolean,
+			SByte,
+			Byte,
+			Int16,
+			UInt16,
+			Int32,
+			UInt32,
+			Int64,
+			UInt64,
+			Single,
+			Double,
+			ArrayLength,
+			MapLength,
+			String,
+			Binary,
+			FixExt1,
+			FixExt2,
+			FixExt4,
+			FixExt8,
+			FixExt16,
+			Ext8,
+			Ext16,
+			Ext32,
 		}
 
 		internal enum CollectionType

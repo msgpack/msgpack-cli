@@ -315,7 +315,7 @@ namespace MsgPack
 		{
 			throw new InvalidOperationException( "Unpacker does not locate on array nor map header." );
 		}
-		
+
 		private static void ThrowInSubtreeModeException()
 		{
 			throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
@@ -423,6 +423,16 @@ namespace MsgPack
 		/// </returns>
 		public long? Skip()
 		{
+			this.BeginSkip();
+
+			var result = this.SkipCore();
+			this.EndSkip( result );
+
+			return result;
+		}
+
+		private void BeginSkip()
+		{
 			this.VerifyIsNotDisposed();
 
 			if( this._mode == UnpackerMode.Enumerating )
@@ -436,14 +446,15 @@ namespace MsgPack
 			}
 
 			this._mode = UnpackerMode.Skipping;
+		}
 
-			var result = this.SkipCore();
+		private void EndSkip( long? result )
+		{
 			if ( result != null )
 			{
 				this.SetStable();
 			}
 
-			return result;
 		}
 
 		/// <summary>

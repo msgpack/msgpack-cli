@@ -4,7 +4,7 @@
 <#@ Assembly Name="System.Core.dll" #>
 <#@ import namespace="System" #>
 <#@ import namespace="System.Collections" #>
-<#@ import namespace="System.Collections.Generic" #> 
+<#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Diagnostics" #>
 <#@ import namespace="System.Globalization" #>
 <#@ import namespace="System.IO" #>
@@ -34,13 +34,6 @@
 #endif
 
 using System;
-#if !UNITY
-#if XAMIOS || XAMDROID
-using Contract = MsgPack.MPContract;
-#else
-using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
-#endif // !UNITY
 
 #if !UNITY || MSGPACK_UNITY_FULL
 using Int64Stack = System.Collections.Generic.Stack<System.Int64>;
@@ -55,19 +48,12 @@ namespace MsgPack
 	{
 		protected override long? SkipCore()
 		{
-			var source = this._source;
-			var buffer = this._scalarBuffer;
-#if !UNITY
-			Contract.Assert( source != null, "source != null" );
-			Contract.Assert( buffer != null, "buffer != null" );
-#endif // !UNITY
-
 			long remainingItems = -1;
 			long startOffset = this._offset;
 			Int64Stack remainingCollections = null;
 			do
 			{
-				var header = source.ReadByte();
+				var header = this.ReadByteFromSource();
 				if ( header < 0 )
 				{
 					return null;
@@ -530,7 +516,7 @@ while( <#= sizeVariable #> > bytesRead )
 	{
 #endif // DEBUG
 	var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-	var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+	var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 	bytesRead += lastRead;
 	if ( lastRead == 0 )
 	{
@@ -555,11 +541,11 @@ this._offset += bytesRead;
 private void WriteUnpackLength( int size, string lengthVariable )
 {
 #>
-var read = source.Read( buffer, 0, <#= size.ToString( CultureInfo.InvariantCulture ) #> );
+var read = this._source.Read( this._scalarBuffer, 0, <#= size.ToString( CultureInfo.InvariantCulture ) #> );
 this._offset += read;
 if ( read == <#= size.ToString( CultureInfo.InvariantCulture ) #> )
 {
-	<#= lengthVariable #> = BigEndianBinary.ToUInt<#= ( size * 8 ).ToString( CultureInfo.InvariantCulture ) #>( buffer, 0 );
+	<#= lengthVariable #> = BigEndianBinary.ToUInt<#= ( size * 8 ).ToString( CultureInfo.InvariantCulture ) #>( this._scalarBuffer, 0 );
 }
 else
 {
@@ -581,7 +567,7 @@ private void WriteUnpackByteSubsequent( string lengthVariable )
 private void WriteUnpackByteCore( string lengthVariable, bool needsDeclaration )
 {
 #>
-<#= needsDeclaration ? "var" : String.Empty #> read = source.Read( buffer, 0, 1 );
+<#= needsDeclaration ? "var" : String.Empty #> read = this._source.Read( this._scalarBuffer, 0, 1 );
 this._offset += read;
 if ( read == 1 )
 {
@@ -589,7 +575,7 @@ if ( read == 1 )
 	if ( lengthVariable != null )
 	{
 #>
-	<#= lengthVariable #> = buffer[0];
+	<#= lengthVariable #> = this._scalarBuffer[0];
 <#+
 	}
 #>

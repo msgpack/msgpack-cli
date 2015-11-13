@@ -1,6 +1,4 @@
-﻿ 
- 
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -35,10 +33,10 @@ namespace MsgPack
 	{
 		public override bool ReadBoolean( out Boolean result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeBoolean( out result );
 		}
 		
@@ -49,6 +47,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -65,18 +64,19 @@ namespace MsgPack
 				default:
 				{
 					this.ThrowTypeException( typeof( Boolean ), header );
-					result = default( Boolean ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( Boolean );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadNullableBoolean( out Boolean? result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeNullableBoolean( out result );
 		}
 		
@@ -87,17 +87,18 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
 				{
-					result = default( Boolean );
+					result = default( Boolean? );
 					return false;
 				}
 				case ReadValueResult.Nil:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = null;
+					result = default( Boolean? );
 					return true;
 				}
 				case ReadValueResult.Boolean:
@@ -108,19 +109,20 @@ namespace MsgPack
 				}
 				default:
 				{
-					this.ThrowTypeException( typeof( Boolean ), header );
-					result = default( Boolean ); // Never reach
-					return false; // Never reach
+					this.ThrowTypeException( typeof( Boolean? ), header );
+					// Never reach
+					result = default( Boolean? );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadByte( out Byte result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeByte( out result );
 		}
 		
@@ -131,6 +133,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -141,7 +144,7 @@ namespace MsgPack
 				case ReadValueResult.Byte:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = unchecked( ( Byte )integral );
+					result = unchecked( ( Byte )integral );
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -161,18 +164,19 @@ namespace MsgPack
 				default:
 				{
 					this.ThrowTypeException( typeof( Byte ), header );
-					result = default( Byte ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( Byte );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadNullableByte( out Byte? result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeNullableByte( out result );
 		}
 		
@@ -183,23 +187,24 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
 				{
-					result = default( Byte );
+					result = default( Byte? );
 					return false;
 				}
 				case ReadValueResult.Nil:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = null;
+					result = default( Byte? );
 					return true;
 				}
 				case ReadValueResult.Byte:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = unchecked( ( Byte )integral );
+					result = unchecked( ( Byte )integral );
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -218,19 +223,20 @@ namespace MsgPack
 				}
 				default:
 				{
-					this.ThrowTypeException( typeof( Byte ), header );
-					result = default( Byte ); // Never reach
-					return false; // Never reach
+					this.ThrowTypeException( typeof( Byte? ), header );
+					// Never reach
+					result = default( Byte? );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadSByte( out SByte result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeSByte( out result );
 		}
 		
@@ -241,6 +247,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -251,7 +258,7 @@ namespace MsgPack
 				case ReadValueResult.SByte:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = unchecked( ( SByte )integral );
+					result = unchecked( ( SByte )integral );
 					return true;
 				}
 				case ReadValueResult.Int16:
@@ -271,18 +278,19 @@ namespace MsgPack
 				default:
 				{
 					this.ThrowTypeException( typeof( SByte ), header );
-					result = default( SByte ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( SByte );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadNullableSByte( out SByte? result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeNullableSByte( out result );
 		}
 		
@@ -293,23 +301,24 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
 				{
-					result = default( SByte );
+					result = default( SByte? );
 					return false;
 				}
 				case ReadValueResult.Nil:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = null;
+					result = default( SByte? );
 					return true;
 				}
 				case ReadValueResult.SByte:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = unchecked( ( SByte )integral );
+					result = unchecked( ( SByte )integral );
 					return true;
 				}
 				case ReadValueResult.Int16:
@@ -328,19 +337,20 @@ namespace MsgPack
 				}
 				default:
 				{
-					this.ThrowTypeException( typeof( SByte ), header );
-					result = default( SByte ); // Never reach
-					return false; // Never reach
+					this.ThrowTypeException( typeof( SByte? ), header );
+					// Never reach
+					result = default( SByte? );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadInt16( out Int16 result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeInt16( out result );
 		}
 		
@@ -351,6 +361,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -361,7 +372,7 @@ namespace MsgPack
 				case ReadValueResult.Int16:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = unchecked( ( Int16 )integral );
+					result = unchecked( ( Int16 )integral );
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -381,18 +392,19 @@ namespace MsgPack
 				default:
 				{
 					this.ThrowTypeException( typeof( Int16 ), header );
-					result = default( Int16 ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( Int16 );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadNullableInt16( out Int16? result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeNullableInt16( out result );
 		}
 		
@@ -403,23 +415,24 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
 				{
-					result = default( Int16 );
+					result = default( Int16? );
 					return false;
 				}
 				case ReadValueResult.Nil:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = null;
+					result = default( Int16? );
 					return true;
 				}
 				case ReadValueResult.Int16:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = unchecked( ( Int16 )integral );
+					result = unchecked( ( Int16 )integral );
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -438,19 +451,20 @@ namespace MsgPack
 				}
 				default:
 				{
-					this.ThrowTypeException( typeof( Int16 ), header );
-					result = default( Int16 ); // Never reach
-					return false; // Never reach
+					this.ThrowTypeException( typeof( Int16? ), header );
+					// Never reach
+					result = default( Int16? );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadUInt16( out UInt16 result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeUInt16( out result );
 		}
 		
@@ -461,6 +475,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -471,7 +486,7 @@ namespace MsgPack
 				case ReadValueResult.UInt16:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = unchecked( ( UInt16 )integral );
+					result = unchecked( ( UInt16 )integral );
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -491,18 +506,19 @@ namespace MsgPack
 				default:
 				{
 					this.ThrowTypeException( typeof( UInt16 ), header );
-					result = default( UInt16 ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( UInt16 );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadNullableUInt16( out UInt16? result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeNullableUInt16( out result );
 		}
 		
@@ -513,23 +529,24 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
 				{
-					result = default( UInt16 );
+					result = default( UInt16? );
 					return false;
 				}
 				case ReadValueResult.Nil:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = null;
+					result = default( UInt16? );
 					return true;
 				}
 				case ReadValueResult.UInt16:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = unchecked( ( UInt16 )integral );
+					result = unchecked( ( UInt16 )integral );
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -548,19 +565,20 @@ namespace MsgPack
 				}
 				default:
 				{
-					this.ThrowTypeException( typeof( UInt16 ), header );
-					result = default( UInt16 ); // Never reach
-					return false; // Never reach
+					this.ThrowTypeException( typeof( UInt16? ), header );
+					// Never reach
+					result = default( UInt16? );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadInt32( out Int32 result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeInt32( out result );
 		}
 		
@@ -571,6 +589,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -581,7 +600,7 @@ namespace MsgPack
 				case ReadValueResult.Int32:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = unchecked( ( Int32 )integral );
+					result = unchecked( ( Int32 )integral );
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -601,18 +620,19 @@ namespace MsgPack
 				default:
 				{
 					this.ThrowTypeException( typeof( Int32 ), header );
-					result = default( Int32 ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( Int32 );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadNullableInt32( out Int32? result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeNullableInt32( out result );
 		}
 		
@@ -623,23 +643,24 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
 				{
-					result = default( Int32 );
+					result = default( Int32? );
 					return false;
 				}
 				case ReadValueResult.Nil:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = null;
+					result = default( Int32? );
 					return true;
 				}
 				case ReadValueResult.Int32:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = unchecked( ( Int32 )integral );
+					result = unchecked( ( Int32 )integral );
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -658,19 +679,20 @@ namespace MsgPack
 				}
 				default:
 				{
-					this.ThrowTypeException( typeof( Int32 ), header );
-					result = default( Int32 ); // Never reach
-					return false; // Never reach
+					this.ThrowTypeException( typeof( Int32? ), header );
+					// Never reach
+					result = default( Int32? );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadUInt32( out UInt32 result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeUInt32( out result );
 		}
 		
@@ -681,6 +703,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -691,7 +714,7 @@ namespace MsgPack
 				case ReadValueResult.UInt32:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = unchecked( ( UInt32 )integral );
+					result = unchecked( ( UInt32 )integral );
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -711,18 +734,19 @@ namespace MsgPack
 				default:
 				{
 					this.ThrowTypeException( typeof( UInt32 ), header );
-					result = default( UInt32 ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( UInt32 );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadNullableUInt32( out UInt32? result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeNullableUInt32( out result );
 		}
 		
@@ -733,23 +757,24 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
 				{
-					result = default( UInt32 );
+					result = default( UInt32? );
 					return false;
 				}
 				case ReadValueResult.Nil:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = null;
+					result = default( UInt32? );
 					return true;
 				}
 				case ReadValueResult.UInt32:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = unchecked( ( UInt32 )integral );
+					result = unchecked( ( UInt32 )integral );
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -768,19 +793,20 @@ namespace MsgPack
 				}
 				default:
 				{
-					this.ThrowTypeException( typeof( UInt32 ), header );
-					result = default( UInt32 ); // Never reach
-					return false; // Never reach
+					this.ThrowTypeException( typeof( UInt32? ), header );
+					// Never reach
+					result = default( UInt32? );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadInt64( out Int64 result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeInt64( out result );
 		}
 		
@@ -791,6 +817,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -801,7 +828,7 @@ namespace MsgPack
 				case ReadValueResult.Int64:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = integral;
+					result = integral;
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -821,18 +848,19 @@ namespace MsgPack
 				default:
 				{
 					this.ThrowTypeException( typeof( Int64 ), header );
-					result = default( Int64 ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( Int64 );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadNullableInt64( out Int64? result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeNullableInt64( out result );
 		}
 		
@@ -843,23 +871,24 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
 				{
-					result = default( Int64 );
+					result = default( Int64? );
 					return false;
 				}
 				case ReadValueResult.Nil:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = null;
+					result = default( Int64? );
 					return true;
 				}
 				case ReadValueResult.Int64:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = integral;
+					result = integral;
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -878,19 +907,20 @@ namespace MsgPack
 				}
 				default:
 				{
-					this.ThrowTypeException( typeof( Int64 ), header );
-					result = default( Int64 ); // Never reach
-					return false; // Never reach
+					this.ThrowTypeException( typeof( Int64? ), header );
+					// Never reach
+					result = default( Int64? );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadUInt64( out UInt64 result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeUInt64( out result );
 		}
 		
@@ -901,6 +931,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -911,7 +942,7 @@ namespace MsgPack
 				case ReadValueResult.UInt64:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = unchecked( ( UInt64 )integral );
+					result = unchecked( ( UInt64 )integral );
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -931,18 +962,19 @@ namespace MsgPack
 				default:
 				{
 					this.ThrowTypeException( typeof( UInt64 ), header );
-					result = default( UInt64 ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( UInt64 );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadNullableUInt64( out UInt64? result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeNullableUInt64( out result );
 		}
 		
@@ -953,23 +985,24 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
 				{
-					result = default( UInt64 );
+					result = default( UInt64? );
 					return false;
 				}
 				case ReadValueResult.Nil:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = null;
+					result = default( UInt64? );
 					return true;
 				}
 				case ReadValueResult.UInt64:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = unchecked( ( UInt64 )integral );
+					result = unchecked( ( UInt64 )integral );
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -988,19 +1021,20 @@ namespace MsgPack
 				}
 				default:
 				{
-					this.ThrowTypeException( typeof( UInt64 ), header );
-					result = default( UInt64 ); // Never reach
-					return false; // Never reach
+					this.ThrowTypeException( typeof( UInt64? ), header );
+					// Never reach
+					result = default( UInt64? );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadSingle( out Single result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeSingle( out result );
 		}
 		
@@ -1011,6 +1045,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -1021,7 +1056,7 @@ namespace MsgPack
 				case ReadValueResult.Single:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = real32;
+					result = real32;
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -1041,18 +1076,19 @@ namespace MsgPack
 				default:
 				{
 					this.ThrowTypeException( typeof( Single ), header );
-					result = default( Single ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( Single );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadNullableSingle( out Single? result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeNullableSingle( out result );
 		}
 		
@@ -1063,23 +1099,24 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
 				{
-					result = default( Single );
+					result = default( Single? );
 					return false;
 				}
 				case ReadValueResult.Nil:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = null;
+					result = default( Single? );
 					return true;
 				}
 				case ReadValueResult.Single:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = real32;
+					result = real32;
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -1098,19 +1135,20 @@ namespace MsgPack
 				}
 				default:
 				{
-					this.ThrowTypeException( typeof( Single ), header );
-					result = default( Single ); // Never reach
-					return false; // Never reach
+					this.ThrowTypeException( typeof( Single? ), header );
+					// Never reach
+					result = default( Single? );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadDouble( out Double result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeDouble( out result );
 		}
 		
@@ -1121,6 +1159,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -1131,7 +1170,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = real64;
+					result = real64;
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -1151,18 +1190,19 @@ namespace MsgPack
 				default:
 				{
 					this.ThrowTypeException( typeof( Double ), header );
-					result = default( Double ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( Double );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadNullableDouble( out Double? result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeNullableDouble( out result );
 		}
 		
@@ -1173,23 +1213,24 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
 				{
-					result = default( Double );
+					result = default( Double? );
 					return false;
 				}
 				case ReadValueResult.Nil:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = null;
+					result = default( Double? );
 					return true;
 				}
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result  = real64;
+					result = real64;
 					return true;
 				}
 				case ReadValueResult.SByte:
@@ -1208,19 +1249,20 @@ namespace MsgPack
 				}
 				default:
 				{
-					this.ThrowTypeException( typeof( Double ), header );
-					result = default( Double ); // Never reach
-					return false; // Never reach
+					this.ThrowTypeException( typeof( Double? ), header );
+					// Never reach
+					result = default( Double? );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadBinary( out Byte[] result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeBinary( out result );
 		}
 		
@@ -1231,6 +1273,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -1241,7 +1284,7 @@ namespace MsgPack
 				case ReadValueResult.Nil:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = null;
+					result = default( Byte[] );
 					return true;
 				}
 				case ReadValueResult.String:
@@ -1253,18 +1296,19 @@ namespace MsgPack
 				default:
 				{
 					this.ThrowTypeException( typeof( Byte[] ), header );
-					result = default( Byte[] ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( Byte[] );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadString( out String result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeString( out result );
 		}
 		
@@ -1275,6 +1319,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -1285,7 +1330,7 @@ namespace MsgPack
 				case ReadValueResult.Nil:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = null;
+					result = default( String );
 					return true;
 				}
 				case ReadValueResult.String:
@@ -1297,18 +1342,19 @@ namespace MsgPack
 				default:
 				{
 					this.ThrowTypeException( typeof( String ), header );
-					result = default( String ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( String );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadObject( out MessagePackObject result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeObject( out result );
 		}
 		
@@ -1319,6 +1365,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -1413,11 +1460,13 @@ namespace MsgPack
 				case ReadValueResult.ArrayLength:
 				{
 					result = unchecked( ( UInt32 )this.ReadArrayLengthCore( integral ) );
+					this.InternalData = result;
 					return true;
 				}
 				case ReadValueResult.MapLength:
 				{
 					result = unchecked( ( UInt32 )this.ReadMapLengthCore( integral ) );
+					this.InternalData = result;
 					return true;
 				}
 				case ReadValueResult.String:
@@ -1448,18 +1497,19 @@ namespace MsgPack
 				default:
 				{
 					this.ThrowTypeException( typeof( MessagePackObject ), header );
-					result = default( MessagePackObject ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( MessagePackObject );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadArrayLength( out Int64 result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeArrayLength( out result );
 		}
 		
@@ -1470,6 +1520,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -1479,25 +1530,26 @@ namespace MsgPack
 				}
 				case ReadValueResult.ArrayLength:
 				{
-					result = this.ReadArrayLengthCore( integral );
+					result = this.ReadArrayLengthCore( integral);
 					this.CheckLength( result, ReadValueResult.ArrayLength );
 					return true;
 				}
 				default:
 				{
 					this.ThrowTypeException( typeof( Int64 ), header );
-					result = default( Int64 ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( Int64 );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadMapLength( out Int64 result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeMapLength( out result );
 		}
 		
@@ -1508,6 +1560,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -1517,25 +1570,26 @@ namespace MsgPack
 				}
 				case ReadValueResult.MapLength:
 				{
-					result = this.ReadMapLengthCore( integral );
+					result = this.ReadMapLengthCore( integral);
 					this.CheckLength( result, ReadValueResult.MapLength );
 					return true;
 				}
 				default:
 				{
 					this.ThrowTypeException( typeof( Int64 ), header );
-					result = default( Int64 ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( Int64 );
+					return false;
 				}
 			}
 		}
 		
 		public override bool ReadMessagePackExtendedTypeObject( out MessagePackExtendedTypeObject result )
 		{
-		#if !UNITY
+#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY
-		
+#endif // !UNITY
+
 			return this.ReadSubtreeMessagePackExtendedTypeObject( out result );
 		}
 		
@@ -1546,6 +1600,7 @@ namespace MsgPack
 			float real32;
 			double real64;
 			var type = this.ReadValue( out header, out integral, out real32, out real64 );
+			
 			switch( type )
 			{
 				case ReadValueResult.Eof:
@@ -1568,8 +1623,9 @@ namespace MsgPack
 				default:
 				{
 					this.ThrowTypeException( typeof( MessagePackExtendedTypeObject ), header );
-					result = default( MessagePackExtendedTypeObject ); // Never reach
-					return false; // Never reach
+					// Never reach
+					result = default( MessagePackExtendedTypeObject );
+					return false;
 				}
 			}
 		}

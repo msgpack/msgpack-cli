@@ -1,5 +1,4 @@
-﻿ 
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -24,13 +23,6 @@
 #endif
 
 using System;
-#if !UNITY
-#if XAMIOS || XAMDROID
-using Contract = MsgPack.MPContract;
-#else
-using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
-#endif // !UNITY
 
 #if !UNITY || MSGPACK_UNITY_FULL
 using Int64Stack = System.Collections.Generic.Stack<System.Int64>;
@@ -45,19 +37,12 @@ namespace MsgPack
 	{
 		protected override long? SkipCore()
 		{
-			var source = this._source;
-			var buffer = this._scalarBuffer;
-#if !UNITY
-			Contract.Assert( source != null, "source != null" );
-			Contract.Assert( buffer != null, "buffer != null" );
-#endif // !UNITY
-
 			long remainingItems = -1;
 			long startOffset = this._offset;
 			Int64Stack remainingCollections = null;
 			do
 			{
-				var header = source.ReadByte();
+				var header = this.ReadByteFromSource();
 				if ( header < 0 )
 				{
 					return null;
@@ -249,7 +234,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
@@ -327,7 +312,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
@@ -382,7 +367,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
@@ -438,7 +423,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
@@ -494,7 +479,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
@@ -519,11 +504,11 @@ namespace MsgPack
 					case MessagePackCode.Bin8:
 					{
 						byte length;
-						var read = source.Read( buffer, 0, 1 );
+						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
 						{
-							length = buffer[0];
+							length = this._scalarBuffer[0];
 						}
 						else
 						{
@@ -541,7 +526,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
@@ -585,11 +570,11 @@ namespace MsgPack
 					case MessagePackCode.Raw16:
 					{
 						ushort length;
-						var read = source.Read( buffer, 0, 2 );
+						var read = this._source.Read( this._scalarBuffer, 0, 2 );
 						this._offset += read;
 						if ( read == 2 )
 						{
-							length = BigEndianBinary.ToUInt16( buffer, 0 );
+							length = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
 						}
 						else
 						{
@@ -607,7 +592,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
@@ -651,11 +636,11 @@ namespace MsgPack
 					case MessagePackCode.Raw32:
 					{
 						uint length;
-						var read = source.Read( buffer, 0, 4 );
+						var read = this._source.Read( this._scalarBuffer, 0, 4 );
 						this._offset += read;
 						if ( read == 4 )
 						{
-							length = BigEndianBinary.ToUInt32( buffer, 0 );
+							length = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
 						}
 						else
 						{
@@ -673,7 +658,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
@@ -716,11 +701,11 @@ namespace MsgPack
 					case MessagePackCode.Array16:
 					{
 						ushort length;
-						var read = source.Read( buffer, 0, 2 );
+						var read = this._source.Read( this._scalarBuffer, 0, 2 );
 						this._offset += read;
 						if ( read == 2 )
 						{
-							length = BigEndianBinary.ToUInt16( buffer, 0 );
+							length = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
 						}
 						else
 						{
@@ -772,11 +757,11 @@ namespace MsgPack
 					case MessagePackCode.Array32:
 					{
 						uint length;
-						var read = source.Read( buffer, 0, 4 );
+						var read = this._source.Read( this._scalarBuffer, 0, 4 );
 						this._offset += read;
 						if ( read == 4 )
 						{
-							length = BigEndianBinary.ToUInt32( buffer, 0 );
+							length = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
 						}
 						else
 						{
@@ -828,11 +813,11 @@ namespace MsgPack
 					case MessagePackCode.Map16:
 					{
 						ushort length;
-						var read = source.Read( buffer, 0, 2 );
+						var read = this._source.Read( this._scalarBuffer, 0, 2 );
 						this._offset += read;
 						if ( read == 2 )
 						{
-							length = BigEndianBinary.ToUInt16( buffer, 0 );
+							length = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
 						}
 						else
 						{
@@ -884,11 +869,11 @@ namespace MsgPack
 					case MessagePackCode.Map32:
 					{
 						uint length;
-						var read = source.Read( buffer, 0, 4 );
+						var read = this._source.Read( this._scalarBuffer, 0, 4 );
 						this._offset += read;
 						if ( read == 4 )
 						{
-							length = BigEndianBinary.ToUInt32( buffer, 0 );
+							length = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
 						}
 						else
 						{
@@ -939,7 +924,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt1:
 					{
-						var read = source.Read( buffer, 0, 1 );
+						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
 						{
@@ -960,7 +945,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
@@ -1002,7 +987,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt2:
 					{
-						var read = source.Read( buffer, 0, 1 );
+						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
 						{
@@ -1023,7 +1008,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
@@ -1065,7 +1050,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt4:
 					{
-						var read = source.Read( buffer, 0, 1 );
+						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
 						{
@@ -1086,7 +1071,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
@@ -1128,7 +1113,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt8:
 					{
-						var read = source.Read( buffer, 0, 1 );
+						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
 						{
@@ -1149,7 +1134,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
@@ -1191,7 +1176,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt16:
 					{
-						var read = source.Read( buffer, 0, 1 );
+						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
 						{
@@ -1212,7 +1197,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
@@ -1255,17 +1240,17 @@ namespace MsgPack
 					case MessagePackCode.Ext8:
 					{
 						byte length;
-						var read = source.Read( buffer, 0, 1 );
+						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
 						{
-							length = buffer[0];
+							length = this._scalarBuffer[0];
 						}
 						else
 						{
 							return null;
 						}
-						 read = source.Read( buffer, 0, 1 );
+						 read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
 						{
@@ -1286,7 +1271,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
@@ -1329,17 +1314,17 @@ namespace MsgPack
 					case MessagePackCode.Ext16:
 					{
 						ushort length;
-						var read = source.Read( buffer, 0, 2 );
+						var read = this._source.Read( this._scalarBuffer, 0, 2 );
 						this._offset += read;
 						if ( read == 2 )
 						{
-							length = BigEndianBinary.ToUInt16( buffer, 0 );
+							length = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
 						}
 						else
 						{
 							return null;
 						}
-						 read = source.Read( buffer, 0, 1 );
+						 read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
 						{
@@ -1360,7 +1345,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{
@@ -1403,17 +1388,17 @@ namespace MsgPack
 					case MessagePackCode.Ext32:
 					{
 						uint length;
-						var read = source.Read( buffer, 0, 4 );
+						var read = this._source.Read( this._scalarBuffer, 0, 4 );
 						this._offset += read;
 						if ( read == 4 )
 						{
-							length = BigEndianBinary.ToUInt32( buffer, 0 );
+							length = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
 						}
 						else
 						{
 							return null;
 						}
-						 read = source.Read( buffer, 0, 1 );
+						 read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
 						if ( read == 1 )
 						{
@@ -1434,7 +1419,7 @@ namespace MsgPack
 							{
 						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							var lastRead = source.Read( dummyBufferForSkipping, 0, reading );
+							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
 							bytesRead += lastRead;
 							if ( lastRead == 0 )
 							{

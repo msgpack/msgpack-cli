@@ -4,12 +4,12 @@
 <#@ include file="..\Core.ttinclude" #>
 <#@ import namespace="System" #>
 <#@ import namespace="System.Collections" #>
-<#@ import namespace="System.Collections.Generic" #> 
+<#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Diagnostics" #>
 <#@ import namespace="System.Globalization" #>
 <#@ import namespace="System.Linq" #>
-<#@ import namespace="System.Runtime.InteropServices" #> 
+<#@ import namespace="System.Runtime.InteropServices" #>
 #region -- License Terms --
 //
 // MessagePack for CLI
@@ -58,27 +58,27 @@ foreach( var type in
 	}
 )
 {
-	this.WriteReadBody( type.Name, type.Name, false, () => this.WriteReadScalar( type ) );
-	this.WriteReadBody( type.Name, type.Name, true, () => this.WriteReadScalar( type ) );
+	this.WriteReadBody( type.Name, type.Name, false,	() => this.WriteReadScalar( type ) );
+	this.WriteReadBody( type.Name, type.Name, true,		() => this.WriteReadScalar( type ) );
 
-	this.WriteReadBody( "Nullable" + type.Name, type.Name + "?", false, () => this.WriteReadScalar( typeof( Nullable<> ).MakeGenericType( type ) ) );
-	this.WriteReadBody( "Nullable" + type.Name, type.Name + "?", true, () => this.WriteReadScalar( typeof( Nullable<> ).MakeGenericType( type ) ) );
+	this.WriteReadBody( "Nullable" + type.Name, type.Name + "?", false,	() => this.WriteReadScalar( typeof( Nullable<> ).MakeGenericType( type ) ) );
+	this.WriteReadBody( "Nullable" + type.Name, type.Name + "?", true,	() => this.WriteReadScalar( typeof( Nullable<> ).MakeGenericType( type ) ) );
 }
 
-this.WriteReadBody( "Binary", "Byte[]", false, () => this.WriteReadRaw( "Byte[]", "Binary", true ) );
-this.WriteReadBody( "Binary", "Byte[]", true, () => this.WriteReadRaw( "Byte[]", "Binary", true ) );
-this.WriteReadBody( "String", "String", false, () => this.WriteReadRaw( "String", "String", true ) );
-this.WriteReadBody( "String", "String", true, () => this.WriteReadRaw( "String", "String", true ) );
+this.WriteReadBody( "Binary", "Byte[]", false,	() => this.WriteReadRaw( "Byte[]", "Binary" ) );
+this.WriteReadBody( "Binary", "Byte[]", true,	() => this.WriteReadRaw( "Byte[]", "Binary" ) );
+this.WriteReadBody( "String", "String", false,	() => this.WriteReadRaw( "String", "String" ) );
+this.WriteReadBody( "String", "String", true,	() => this.WriteReadRaw( "String", "String" ) );
 
-this.WriteReadBody( "Object", "MessagePackObject", false, () => this.WriteReadObject() );
-this.WriteReadBody( "Object", "MessagePackObject", true, () => this.WriteReadObject() );
-this.WriteReadBody( "ArrayLength", "Int64", false, () => this.WriteReadLength( "ArrayLength", false ) );
-this.WriteReadBody( "ArrayLength", "Int64", true, () => this.WriteReadLength( "ArrayLength", false ) );
-this.WriteReadBody( "MapLength", "Int64", false, () => this.WriteReadLength( "MapLength", false ) );
-this.WriteReadBody( "MapLength", "Int64", true, () => this.WriteReadLength( "MapLength", false ) );
+this.WriteReadBody( "Object", "MessagePackObject", false,	() => this.WriteReadObject() );
+this.WriteReadBody( "Object", "MessagePackObject", true,	() => this.WriteReadObject() );
+this.WriteReadBody( "ArrayLength", "Int64", false,	() => this.WriteReadLength( "ArrayLength" ) );
+this.WriteReadBody( "ArrayLength", "Int64", true,	() => this.WriteReadLength( "ArrayLength" ) );
+this.WriteReadBody( "MapLength", "Int64", false,	() => this.WriteReadLength( "MapLength" ) );
+this.WriteReadBody( "MapLength", "Int64", true,		() => this.WriteReadLength( "MapLength" ) );
 
-this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", false, () => this.WriteReadExt() );
-this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", true, () => this.WriteReadExt() );
+this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", false,	() => this.WriteReadExt() );
+this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", true,		() => this.WriteReadExt() );
 this.PopIndent();
 #>
 	}
@@ -121,11 +121,16 @@ private void WriteReadBody( string typeName, string fullTypeName, bool isForSubt
 <#+
 	if( !isForSubtree )
 	{
+		this.PopIndent();
 #>
 #if !UNITY
-	this.EnsureNotInSubtreeMode();
+			this.EnsureNotInSubtreeMode();
 #endif // !UNITY
 
+<#+
+		this.PushIndent( 2 );
+
+#>
 	return this.ReadSubtree<#= typeName #>( out result );
 <#+
 	}
@@ -141,23 +146,33 @@ private void WriteReadBody( string typeName, string fullTypeName, bool isForSubt
 <#+
 } // WriteReadBody
 
-private void WriteReadBodyCore( string typeName, bool isNullable, Action<string, DecodedVariable, string> bodyWriter )
+private void WriteReadBodyCore( string typeName, Nullability nullability, Action<string, DecodedVariable, string> bodyWriter )
 {
+	var actualTypeName = typeName;
+	if( nullability == Nullability.Nullable  )
+	{
+		actualTypeName += "?";
+	}
+
 #>
 byte header;
 long integral;
 float real32;
 double real64;
 var type = this.ReadValue( out header, out integral, out real32, out real64 );
+
 switch( type )
 {
 	case ReadValueResult.Eof:
 	{
-		result = default( <#= typeName #> );
-		return false;
+<#+
+	this.PushIndent( 2 );
+	this.Fail( "result", actualTypeName );
+	this.PopIndent();
+#>
 	}
 <#+
-	if( isNullable )
+	if( nullability != Nullability.Value )
 	{
 #>
 	case ReadValueResult.Nil:
@@ -165,10 +180,9 @@ switch( type )
 <#+
 		this.PushIndent( 2 );
 		this.OnReturnScalar();
+		this.Success( null, "result", "default( " + actualTypeName + " )" );
 		this.PopIndent();
 #>
-		result = null;
-		return true;
 	}
 <#+
 	} // if( isNullable )
@@ -179,9 +193,13 @@ switch( type )
 #>
 	default:
 	{
-		this.ThrowTypeException( typeof( <#= typeName #> ), header );
-		result = default( <#= typeName #> ); // Never reach
-		return false; // Never reach
+		this.ThrowTypeException( typeof( <#= actualTypeName #> ), header );
+		// Never reach
+<#+
+		this.PushIndent( 2 );
+		this.Fail( "result", actualTypeName );
+		this.PopIndent();
+#>
 	}
 }
 <#+
@@ -190,11 +208,14 @@ switch( type )
 private void WriteReadScalar( Type type )
 {
 	var nullableUnderlying  = Nullable.GetUnderlyingType( type );
-	WriteReadBodyCore( ( nullableUnderlying ?? type ).Name, nullableUnderlying != null, ( t, valueVar, resultVar ) => WriteReadScalarCore( nullableUnderlying ?? type, nullableUnderlying != null, valueVar, resultVar ) );
+	WriteReadBodyCore( ( nullableUnderlying ?? type ).Name, nullableUnderlying != null ? Nullability.Nullable : Nullability.Value, ( t, valueVar, resultVar ) => WriteReadScalarCore( nullableUnderlying ?? type, nullableUnderlying != null, valueVar, resultVar ) );
 }
 
 private void WriteReadScalarCore( Type type, bool isNullable, DecodedVariable valueVariable, string resultVariable )
 {
+	var nullableType =
+		( isNullable && type.IsValueType ) ? type.Name + "?" : null;
+
 	if( type == typeof( bool ) )
 	{
 #>
@@ -203,10 +224,9 @@ case ReadValueResult.Boolean:
 <#+
 		this.PushIndent( 1 );
 		this.OnReturnScalar();
+		this.Success( nullableType, resultVariable, valueVariable.Integral() + " != 0" );
 		this.PopIndent();
 #>
-	<#= resultVariable #> = <#= valueVariable.Integral #> != 0;
-	return true;
 }
 <#+
 		return; // bool is done.
@@ -221,10 +241,9 @@ case ReadValueResult.<#= thisEntry.Code #>:
 <#+
 		this.PushIndent( 1 );
 		this.OnReturnScalar();
+		this.Success( nullableType, resultVariable, CastIfNecessary( type, false, valueVariable.Get( type ) ) );
 		this.PopIndent();
 #>
-	<#= resultVariable #>  = <#= CastIfNecessary( type, false, valueVariable.Get( type ) ) #>;
-	return true;
 }
 <#+
 	} // if
@@ -240,35 +259,36 @@ case ReadValueResult.<#= entry.Code #>:
 <#+
 		this.PushIndent( 1 );
 		this.OnReturnScalar();
+		this.Success( nullableType, resultVariable, CastIfNecessary( type, true, valueVariable.Get( type ) ) );
 		this.PopIndent();
 #>
-	<#= resultVariable #> = <#= CastIfNecessary( type, true, valueVariable.Get( type ) ) #>;
-	return true;
 }
 <#+
-} // WriteReadScalarCore()
+} // WriteReadScalarCore( Type type, bool isNullable, DecodedVariable valueVariable, string resultVariable )
 
-private void WriteReadLength( string code, bool isNullable )
+private void WriteReadLength( string code )
 {
-	WriteReadBodyCore( "Int64", isNullable, ( t, valueVar, resultVar ) => this.WriteReadLengthCore( code, valueVar, resultVar ) );
-} // WriteReadLength( string typeName, string code )
+	WriteReadBodyCore( "Int64", Nullability.Value, ( t, valueVar, resultVar ) => this.WriteReadLengthCore( code, valueVar, resultVar ) );
+} // WriteReadLength( string code )
 
 private void WriteReadLengthCore( string code, DecodedVariable valueVariable, string resultVariable )
 {
 #>
 case ReadValueResult.<#= code #>:
 {
-	<#= resultVariable #> = this.Read<#= code #>Core( <#= valueVariable.Integral #> );
-	this.CheckLength( <#= resultVariable #>, ReadValueResult.<#= code #> );
-	return true;
+<#+
+	this.PushIndent( 1 );
+	this.SuccessWithLengthCheck( code, resultVariable, "this.Read" + code + "Core( " + valueVariable.Integral() + ")" );
+	this.PopIndent();
+#>
 }
 <#+
 } // WriteReadLengthCore( string code, string headerVariable, DecodedVariable valueVariable, string resultVariable )
 
 
-private void WriteReadRaw( string typeName, string code, bool isNullable )
+private void WriteReadRaw( string typeName, string code )
 {
-	WriteReadBodyCore( typeName, isNullable, ( t, valueVar, resultVar ) => this.WriteReadRawCore( code, valueVar, resultVar ) );
+	WriteReadBodyCore( typeName, Nullability.Reference, ( t, valueVar, resultVar ) => this.WriteReadRawCore( code, valueVar, resultVar ) );
 } // WriteReadRaw( string typeName, string code )
 
 private void WriteReadRawCore( string code, DecodedVariable valueVariable, string resultVariable )
@@ -277,15 +297,18 @@ private void WriteReadRawCore( string code, DecodedVariable valueVariable, strin
 case ReadValueResult.String:
 case ReadValueResult.Binary:
 {
-	<#= resultVariable #> = this.Read<#= code #>Core( <#= valueVariable.Integral #> );
-	return true;
+<#+
+	this.PushIndent( 1 );
+	this.Success( null, resultVariable, "this.Read" + code + "Core( " + valueVariable.Integral() + " )" );
+	this.PopIndent();
+#>
 }
 <#+
 } // WriteReadRawCore( string code, string headerVariable, DecodedVariable valueVariable, string resultVariable )
 
 private void WriteReadObject()
 {
-	WriteReadBodyCore( "MessagePackObject", false, ( typeVar, valueVar, resultVar ) => this.WriteReadObjectCore( typeVar, valueVar, resultVar ) );
+	WriteReadBodyCore( "MessagePackObject", Nullability.Value, ( typeVar, valueVar, resultVar ) => this.WriteReadObjectCore( typeVar, valueVar, resultVar ) );
 } // WriteReadObject()
 
 private void WriteReadObjectCore( string typeVariable, DecodedVariable valueVariable, string resultVariable )
@@ -296,22 +319,18 @@ case ReadValueResult.Nil:
 <#+
 		this.PushIndent( 1 );
 		this.OnReturnScalar();
+		this.SuccessObject( resultVariable, "MessagePackObject.Nil", false );
 		this.PopIndent();
 #>
-	<#= resultVariable #> = MessagePackObject.Nil;
-	this.InternalData = <#= resultVariable #>;
-	return true;
 }
 case ReadValueResult.Boolean:
 {
 <#+
 		this.PushIndent( 1 );
 		this.OnReturnScalar();
+		this.SuccessObject( resultVariable, valueVariable.Integral() + " != 0", true );
 		this.PopIndent();
 #>
-	<#= resultVariable #> = <#= valueVariable.Integral #> != 0;
-	this.InternalData = <#= resultVariable #>;
-	return true;
 }
 <#+
 	foreach( var entry in TypeCodeMappings )
@@ -322,11 +341,9 @@ case ReadValueResult.<#= entry.Code #>:
 <#+
 		this.PushIndent( 1 );
 		this.OnReturnScalar();
+		this.SuccessObject(resultVariable, CastIfNecessary( entry.CodeType, false, valueVariable.Get( entry.CodeType ) ), true );
 		this.PopIndent();
 #>
-	<#= resultVariable #> = <#= CastIfNecessary( entry.CodeType, false, valueVariable.Get( entry.CodeType ) ) #>;
-	this.InternalData = <#= resultVariable #>;
-	return true;
 }
 <#+
 	} // foreach -- scalar
@@ -336,33 +353,56 @@ case ReadValueResult.<#= entry.Code #>:
 #>
 case ReadValueResult.<#= collection #>Length:
 {
-	<#= resultVariable #> = <#= CastIfNecessary( typeof( uint ), false, "this.Read"+ collection + "LengthCore( " + valueVariable.Integral + " )" ) #>;
-	return true;
+<#+
+		this.PushIndent( 1 );
+		this.SuccessObject(
+			resultVariable, 
+			CastIfNecessary( 
+				typeof( uint ), 
+				false, 
+				"this.Read" + collection + "LengthCore( " + valueVariable.Integral() + " )" 
+			),
+			true
+		);
+		this.PopIndent();
+#>
 }
 <#+
 	} // foreach -- collection
 #>
 case ReadValueResult.String:
 {
-	<#= resultVariable #> = new MessagePackObject( new MessagePackString( this.ReadBinaryCore( <#= valueVariable.Integral #> ), false ) );
-	this.InternalData = <#= resultVariable #>;
-	return true;
+<#+
+		this.PushIndent( 1 );
+		this.SuccessObject(
+			resultVariable, 
+			"new MessagePackObject( new MessagePackString( " + "this.ReadBinaryCore( " + valueVariable.Integral() + " )" + ", false ) )",
+			false
+		);
+		this.PopIndent();
+#>
 }
 case ReadValueResult.Binary:
 {
-	<#= resultVariable #> = new MessagePackObject( new MessagePackString( this.ReadBinaryCore( <#= valueVariable.Integral #> ), true ) );
-	this.InternalData = <#= resultVariable #>;
-	return true;
+<#+
+		this.PushIndent( 1 );
+		this.SuccessObject(
+			resultVariable, 
+			"new MessagePackObject( new MessagePackString( this.ReadBinaryCore( " + valueVariable.Integral() + " )" + ", true ) )",
+			false
+		);
+		this.PopIndent();
+#>
 }
 <#+
 	this.WriteReadExtCore( typeVariable, resultVariable, true );
-} // WriteReadObjectCore( string typeVariable, DecodedVariable valueVariable, string resultVariable )
+} // WriteReadObjectCore( string typeVariable, DecodedVariable valueVariable, string resultVariable, bool isAsync )
 
 
 private void WriteReadExt()
 {
-	WriteReadBodyCore( "MessagePackExtendedTypeObject", false, ( typeVar, v, resultVar ) => this.WriteReadExtCore( typeVar, resultVar, false ) );
-} // WriteReadExt()
+	WriteReadBodyCore( "MessagePackExtendedTypeObject", Nullability.Value, ( typeVar, v, resultVar ) => this.WriteReadExtCore( typeVar, resultVar, false ) );
+} // WriteReadExt( bool isAsync )
 
 private void WriteReadExtCore( string typeVariable, string resultVariable, bool isMpo )
 {
@@ -375,19 +415,26 @@ case ReadValueResult.<#= code #>:
 	} // foreach
 #>
 {
-	<#= resultVariable #> = this.ReadMessagePackExtendedTypeObjectCore( <#= typeVariable #> );
 <#+
-	if( isMpo )
+	var expression =
+		"this.ReadMessagePackExtendedTypeObjectCore( " + typeVariable + " )";
+
+	this.PushIndent( 1 );
+
+	if( !isMpo )
 	{
-#>
-	this.InternalData = <#= resultVariable #>;
-<#+
+		this.Success( null, resultVariable, expression );
 	}
+	else
+	{
+		this.SuccessObject( resultVariable, expression, true );
+	}
+
+	this.PopIndent();
 #>
-	return true;
 }
 <#+
-} // WriteReadExtCore( string headerVariable, string resultVariable )
+} // WriteReadExtCore( string headerVariable, string resultVariable, bool isAsync )
 
 
 private void OnReturnScalar()
@@ -396,6 +443,7 @@ private void OnReturnScalar()
 this.InternalCollectionType = CollectionType.None;
 <#+
 } // OnReturnScalar()
+
 
 private bool CanConvertTo( Type destination, int size )
 {
@@ -423,34 +471,95 @@ private static string CastIfNecessary( Type target, bool shouldCheckOverflow, st
 	{
 		return String.Format( CultureInfo.InvariantCulture, "{0}( ( {1} ){2} )", ( shouldCheckOverflow ? "checked" : "unchecked" ), target.Name, expression );
 	}
+} // CastIfNecessary( Type target, bool shouldCheckOverflow, string expression )
+
+private void Success( string type, string resultVariable, string expression )
+{
+#>
+<#= resultVariable #> = <#= expression #>;
+return true;
+<#+
+} // Sucess( string resultVariable, string expression, bool isAsync )
+
+private void SuccessWithLengthCheck( string code, string resultVariable, string expression )
+{
+#>
+<#= resultVariable #> = <#= expression #>;
+this.CheckLength( <#= resultVariable #>, ReadValueResult.<#= code #> );
+return true;
+<#+
+} // SuccessWithLengthCheck( string type, string resultVariable, string expression, bool isAsync )
+
+private void SuccessObject( string resultVariable, string expression, bool withTypeVariable )
+{
+#>
+<#= resultVariable #> = <#= expression #>;
+this.InternalData = <#= resultVariable #>;
+return true;
+<#+
+} // SuccessObject( string resultVariable, string expression )
+
+private void Fail( string resultVariable, string typeName )
+{
+#>
+<#= resultVariable #> = default( <#= typeName #> );
+return false;
+<#+
+} // Fail( string resultVariable, string typeName )
+
+private enum Nullability
+{
+	Reference,
+	Value,
+	Nullable
 }
 
 private class DecodedVariable
 {
-	public string Integral { get; private set; }
-	public string Real32 { get; private set; }
-	public string Real64 { get; private set; }
+	private readonly string _integral;
+	private readonly string _real32;
+	private readonly string _real64;
 
 	public DecodedVariable( string integral, string real32, string real64 )
 	{
-		this.Integral = integral;
-		this.Real32 = real32;
-		this.Real64 = real64;
+		this._integral = integral;
+		this._real32 = real32;
+		this._real64 = real64;
 	}
 
 	public string Get( Type type )
 	{
 		if( type == typeof( float ) )
 		{
-			return this.Real32;
+			return this.Real32();
 		}
 
 		if( type == typeof( double ) )
 		{
-			return this.Real64;
+			return this.Real64();
 		}
 
-		return this.Integral;
+		return this.Integral();
+	}
+
+	public string Integral()
+	{
+		return this.GetVariable( this._integral );
+	}
+
+	public string Real32()
+	{
+		return this.GetVariable( this._real32 );
+	}
+
+	public string Real64()
+	{
+		return this.GetVariable( this._real64 );
+	}
+
+	private string GetVariable( string name )
+	{
+		return name;
 	}
 }
 #>
