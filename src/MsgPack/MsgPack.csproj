@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FEATURE_TAP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\MsgPack.XML</DocumentationFile>
@@ -31,7 +31,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\net461\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_TAP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\bin\net461\MsgPack.XML</DocumentationFile>
@@ -39,7 +39,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'PerformanceTest|AnyCPU' ">
     <OutputPath>bin\Performance Test\</OutputPath>
-    <DefineConstants>TRACE;PERFORMANCE_TEST</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_TAP;PERFORMANCE_TEST</DefineConstants>
     <DocumentationFile>bin\Release\MsgPack.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -59,8 +59,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Instrument|AnyCPU'">
     <OutputPath>bin\Instrument\</OutputPath>
-    <DefineConstants>TRACE;PERFORMANCE_TEST</DefineConstants>
-    <DocumentationFile>bin\Release\MsgPack.XML</DocumentationFile>
+    <DefineConstants>TRACE;FEATURE_TAP;PERFORMANCE_TEST</DefineConstants>
+    <DocumentationFile>bin\Instrument\MsgPack.XML</DocumentationFile>
     <Optimize>false</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -73,8 +73,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
-    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
-    <DocumentationFile>bin\Release\MsgPack.XML</DocumentationFile>
+    <DefineConstants>TRACE;FEATURE_TAP;CODE_ANALYSIS</DefineConstants>
+    <DocumentationFile>bin\CodeAnalysis\MsgPack.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -87,8 +87,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CoreProfile|AnyCPU'">
     <OutputPath>bin\CoreProfile\</OutputPath>
-    <DefineConstants>TRACE;CORE_PROFILE</DefineConstants>
-    <DocumentationFile>bin\Release\MsgPack.XML</DocumentationFile>
+    <DefineConstants>TRACE;FEATURE_TAP;CORE_PROFILE</DefineConstants>
+    <DocumentationFile>bin\CoreProfile\MsgPack.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>

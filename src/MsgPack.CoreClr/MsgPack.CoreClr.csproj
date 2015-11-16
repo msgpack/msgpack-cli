@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CORE_CLR</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CORE_CLR;FEATURE_TAP;FEATURE_ASYNC_LOCAL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -30,7 +30,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\dotnet\</OutputPath>
-    <DefineConstants>TRACE;CORE_CLR</DefineConstants>
+    <DefineConstants>TRACE;CORE_CLR;FEATURE_TAP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\bin\dotnet\MsgPack.XML</DocumentationFile>

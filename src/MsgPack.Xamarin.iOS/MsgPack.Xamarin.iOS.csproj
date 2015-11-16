@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;XAMIOS</DefineConstants>
+    <DefineConstants>DEBUG;XAMIOS;FEATURE_TAP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -29,7 +29,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <DefineConstants>XAMIOS</DefineConstants>
+    <DefineConstants>XAMIOS;FEATURE_TAP</DefineConstants>
     <DocumentationFile>..\..\bin\MonoTouch10\MsgPack.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
