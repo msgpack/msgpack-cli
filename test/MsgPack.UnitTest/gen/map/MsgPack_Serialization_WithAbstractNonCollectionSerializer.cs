@@ -15,109 +15,82 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class MsgPack_Serialization_WithAbstractNonCollectionSerializer : MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.WithAbstractNonCollection> {
         
-        private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
+        private MsgPack.Serialization.MessagePackSerializer<System.IO.Stream> _serializer0;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.IO.Stream> _serializer1;
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractNonCollection>> _packOperationTable;
+        
+        private System.Collections.Generic.IList<string> _memberNames;
+        
+        private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractNonCollection, int>> _unpackOperationList;
+        
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractNonCollection, int>> _unpackOperationTable;
         
         public MsgPack_Serialization_WithAbstractNonCollectionSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             schema0 = null;
-            this._serializer0 = context.GetSerializer<string>(schema0);
-            MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema1 = null;
-            this._serializer1 = context.GetSerializer<System.IO.Stream>(schema1);
+            this._serializer0 = context.GetSerializer<System.IO.Stream>(schema0);
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractNonCollection>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractNonCollection>>);
+            packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractNonCollection>>(1);
+            packOperationTable["NonCollection"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractNonCollection>(this.PackValueOfNonCollection);
+            this._packOperationTable = packOperationTable;
+            System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractNonCollection, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractNonCollection, int>[]);
+            unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractNonCollection, int>[1];
+            unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractNonCollection, int>(this.UnpackValueOfNonCollection);
+            this._unpackOperationList = unpackOperationList;
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractNonCollection, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractNonCollection, int>>);
+            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractNonCollection, int>>(1);
+            unpackOperationTable["NonCollection"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractNonCollection, int>(this.UnpackValueOfNonCollection);
+            this._unpackOperationTable = unpackOperationTable;
+            this._memberNames = new string[] {
+                    "NonCollection"};
+        }
+        
+        private void PackValueOfNonCollection(MsgPack.Packer packer, MsgPack.Serialization.WithAbstractNonCollection objectTree) {
+            this._serializer0.PackTo(packer, objectTree.NonCollection);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.WithAbstractNonCollection objectTree) {
-            packer.PackMapHeader(1);
-            this._serializer0.PackTo(packer, "NonCollection");
-            this._serializer1.PackTo(packer, objectTree.NonCollection);
+            MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+        }
+        
+        private void UnpackValueOfNonCollection(MsgPack.Unpacker unpacker, MsgPack.Serialization.WithAbstractNonCollection unpackingContext, int indexOfItem) {
+            System.IO.Stream nullable = default(System.IO.Stream);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "NonCollection", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable = this._serializer0.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
+                disposable = unpacker.ReadSubtree();
+                try {
+                    nullable = this._serializer0.UnpackFrom(disposable);
+                }
+                finally {
+                    if (((disposable == null) 
+                                == false)) {
+                        disposable.Dispose();
+                    }
+                }
+            }
+            if (((nullable == null) 
+                        == false)) {
+                unpackingContext.NonCollection = nullable;
+            }
         }
         
         protected internal override MsgPack.Serialization.WithAbstractNonCollection UnpackFromCore(MsgPack.Unpacker unpacker) {
             MsgPack.Serialization.WithAbstractNonCollection result = default(MsgPack.Serialization.WithAbstractNonCollection);
             result = new MsgPack.Serialization.WithAbstractNonCollection();
             if (unpacker.IsArrayHeader) {
-                int unpacked = default(int);
-                int itemsCount = default(int);
-                itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                System.IO.Stream nullable = default(System.IO.Stream);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(0);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable = this._serializer1.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
-                        disposable = unpacker.ReadSubtree();
-                        try {
-                            nullable = this._serializer1.UnpackFrom(disposable);
-                        }
-                        finally {
-                            if (((disposable == null) 
-                                        == false)) {
-                                disposable.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable == null) 
-                            == false)) {
-                    result.NonCollection = nullable;
-                }
-                unpacked = (unpacked + 1);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.WithAbstractNonCollection>(), this._memberNames, this._unpackOperationList);
             }
             else {
-                int itemsCount0 = default(int);
-                itemsCount0 = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                for (int i = 0; (i < itemsCount0); i = (i + 1)) {
-                    string key = default(string);
-                    string nullable0 = default(string);
-                    nullable0 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.WithAbstractNonCollection), "MemberName");
-                    if (((nullable0 == null) 
-                                == false)) {
-                        key = nullable0;
-                    }
-                    else {
-                        throw MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited("MemberName");
-                    }
-                    if ((key == "NonCollection")) {
-                        System.IO.Stream nullable1 = default(System.IO.Stream);
-                        if ((unpacker.Read() == false)) {
-                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                        }
-                        if (((unpacker.IsArrayHeader == false) 
-                                    && (unpacker.IsMapHeader == false))) {
-                            nullable1 = this._serializer1.UnpackFrom(unpacker);
-                        }
-                        else {
-                            MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
-                            disposable0 = unpacker.ReadSubtree();
-                            try {
-                                nullable1 = this._serializer1.UnpackFrom(disposable0);
-                            }
-                            finally {
-                                if (((disposable0 == null) 
-                                            == false)) {
-                                    disposable0.Dispose();
-                                }
-                            }
-                        }
-                        if (((nullable1 == null) 
-                                    == false)) {
-                            result.NonCollection = nullable1;
-                        }
-                    }
-                    else {
-                        unpacker.Skip();
-                    }
-                }
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.WithAbstractNonCollection>(), this._unpackOperationTable);
             }
-            return result;
         }
     }
 }

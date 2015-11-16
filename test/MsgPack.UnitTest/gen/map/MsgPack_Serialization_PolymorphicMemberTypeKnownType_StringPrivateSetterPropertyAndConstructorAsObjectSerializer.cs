@@ -15,116 +15,88 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObjectSerializer : MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject> {
         
-        private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
+        private MsgPack.Serialization.MessagePackSerializer<object> _serializer0;
         
-        private MsgPack.Serialization.MessagePackSerializer<object> _serializer1;
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject>> _packOperationTable;
         
         private System.Reflection.MethodBase _methodBasePolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject_set_String0;
+        
+        private System.Collections.Generic.IList<string> _memberNames;
+        
+        private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject, int>> _unpackOperationList;
+        
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject, int>> _unpackOperationTable;
         
         public MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObjectSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             schema0 = null;
-            this._serializer0 = context.GetSerializer<string>(schema0);
-            MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema1 = null;
-            this._serializer1 = context.GetSerializer<object>(schema1);
+            this._serializer0 = context.GetSerializer<object>(schema0);
             this._methodBasePolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject_set_String0 = typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject).GetMethod("set_String", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
                         typeof(object)}, null);
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject>>);
+            packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject>>(1);
+            packOperationTable["String"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject>(this.PackValueOfString);
+            this._packOperationTable = packOperationTable;
+            System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject, int>[]);
+            unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject, int>[1];
+            unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject, int>(this.UnpackValueOfString);
+            this._unpackOperationList = unpackOperationList;
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject, int>>);
+            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject, int>>(1);
+            unpackOperationTable["String"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject, int>(this.UnpackValueOfString);
+            this._unpackOperationTable = unpackOperationTable;
+            this._memberNames = new string[] {
+                    "String"};
+        }
+        
+        private void PackValueOfString(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject objectTree) {
+            this._serializer0.PackTo(packer, objectTree.String);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject objectTree) {
-            packer.PackMapHeader(1);
-            this._serializer0.PackTo(packer, "String");
-            this._serializer1.PackTo(packer, objectTree.String);
+            MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+        }
+        
+        private void UnpackValueOfString(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject unpackingContext, int indexOfItem) {
+            object nullable = default(object);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "String", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable = this._serializer0.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
+                disposable = unpacker.ReadSubtree();
+                try {
+                    nullable = this._serializer0.UnpackFrom(disposable);
+                }
+                finally {
+                    if (((disposable == null) 
+                                == false)) {
+                        disposable.Dispose();
+                    }
+                }
+            }
+            if (((nullable == null) 
+                        == false)) {
+                this._methodBasePolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject_set_String0.Invoke(unpackingContext, new object[] {
+                            nullable});
+            }
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject UnpackFromCore(MsgPack.Unpacker unpacker) {
             MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject result = default(MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject);
             result = new MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject();
             if (unpacker.IsArrayHeader) {
-                int unpacked = default(int);
-                int itemsCount = default(int);
-                itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                object nullable = default(object);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(0);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable = this._serializer1.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
-                        disposable = unpacker.ReadSubtree();
-                        try {
-                            nullable = this._serializer1.UnpackFrom(disposable);
-                        }
-                        finally {
-                            if (((disposable == null) 
-                                        == false)) {
-                                disposable.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable == null) 
-                            == false)) {
-                    this._methodBasePolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject_set_String0.Invoke(result, new object[] {
-                                nullable});
-                }
-                unpacked = (unpacked + 1);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject>(), this._memberNames, this._unpackOperationList);
             }
             else {
-                int itemsCount0 = default(int);
-                itemsCount0 = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                for (int i = 0; (i < itemsCount0); i = (i + 1)) {
-                    string key = default(string);
-                    string nullable0 = default(string);
-                    nullable0 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject), "MemberName");
-                    if (((nullable0 == null) 
-                                == false)) {
-                        key = nullable0;
-                    }
-                    else {
-                        throw MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited("MemberName");
-                    }
-                    if ((key == "String")) {
-                        object nullable1 = default(object);
-                        if ((unpacker.Read() == false)) {
-                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                        }
-                        if (((unpacker.IsArrayHeader == false) 
-                                    && (unpacker.IsMapHeader == false))) {
-                            nullable1 = this._serializer1.UnpackFrom(unpacker);
-                        }
-                        else {
-                            MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
-                            disposable0 = unpacker.ReadSubtree();
-                            try {
-                                nullable1 = this._serializer1.UnpackFrom(disposable0);
-                            }
-                            finally {
-                                if (((disposable0 == null) 
-                                            == false)) {
-                                    disposable0.Dispose();
-                                }
-                            }
-                        }
-                        if (((nullable1 == null) 
-                                    == false)) {
-                            this._methodBasePolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject_set_String0.Invoke(result, new object[] {
-                                        nullable1});
-                        }
-                    }
-                    else {
-                        unpacker.Skip();
-                    }
-                }
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject>(), this._unpackOperationTable);
             }
-            return result;
         }
     }
 }

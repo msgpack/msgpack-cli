@@ -17,6 +17,14 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>> _serializer0;
         
+        private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField>> _packOperationList;
+        
+        private System.Collections.Generic.IList<string> _memberNames;
+        
+        private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField, int>> _unpackOperationList;
+        
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField, int>> _unpackOperationTable;
+        
         public MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionFieldSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
@@ -28,120 +36,79 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
             itemsSchema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), itemsSchemaTypeMap0);
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForContextSpecifiedCollection(typeof(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>), itemsSchema0);
             this._serializer0 = context.GetSerializer<System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>>(schema0);
+            System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField>[]);
+            packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField>[1];
+            packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField>(this.PackValueOfListPolymorphicItem);
+            this._packOperationList = packOperationList;
+            System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField, int>[]);
+            unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField, int>[1];
+            unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField, int>(this.UnpackValueOfListPolymorphicItem);
+            this._unpackOperationList = unpackOperationList;
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField, int>>);
+            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField, int>>(1);
+            unpackOperationTable["ListPolymorphicItem"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField, int>(this.UnpackValueOfListPolymorphicItem);
+            this._unpackOperationTable = unpackOperationTable;
+            this._memberNames = new string[] {
+                    "ListPolymorphicItem"};
+        }
+        
+        private void PackValueOfListPolymorphicItem(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField objectTree) {
+            this._serializer0.PackTo(packer, objectTree.ListPolymorphicItem);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField objectTree) {
-            packer.PackArrayHeader(1);
-            this._serializer0.PackTo(packer, objectTree.ListPolymorphicItem);
+            MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
+        }
+        
+        private void UnpackValueOfListPolymorphicItem(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry> nullable = default(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ListPolymorphicItem", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable = this._serializer0.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
+                disposable = unpacker.ReadSubtree();
+                try {
+                    nullable = this._serializer0.UnpackFrom(disposable);
+                }
+                finally {
+                    if (((disposable == null) 
+                                == false)) {
+                        disposable.Dispose();
+                    }
+                }
+            }
+            if (((nullable == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<MsgPack.Serialization.FileSystemEntry> enumerator = nullable.GetEnumerator();
+                MsgPack.Serialization.FileSystemEntry current;
+                try {
+                    for (
+                    ; enumerator.MoveNext(); 
+                    ) {
+                        current = enumerator.Current;
+                        unpackingContext.ListPolymorphicItem.Add(current);
+                    }
+                }
+                finally {
+                    enumerator.Dispose();
+                }
+            }
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField UnpackFromCore(MsgPack.Unpacker unpacker) {
             MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField result = default(MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField);
             result = new MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField();
             if (unpacker.IsArrayHeader) {
-                int unpacked = default(int);
-                int itemsCount = default(int);
-                itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry> nullable = default(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(0);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable = this._serializer0.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
-                        disposable = unpacker.ReadSubtree();
-                        try {
-                            nullable = this._serializer0.UnpackFrom(disposable);
-                        }
-                        finally {
-                            if (((disposable == null) 
-                                        == false)) {
-                                disposable.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<MsgPack.Serialization.FileSystemEntry> enumerator = nullable.GetEnumerator();
-                    MsgPack.Serialization.FileSystemEntry current;
-                    try {
-                        for (
-                        ; enumerator.MoveNext(); 
-                        ) {
-                            current = enumerator.Current;
-                            result.ListPolymorphicItem.Add(current);
-                        }
-                    }
-                    finally {
-                        enumerator.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField>(), this._memberNames, this._unpackOperationList);
             }
             else {
-                int itemsCount0 = default(int);
-                itemsCount0 = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                for (int i = 0; (i < itemsCount0); i = (i + 1)) {
-                    string key = default(string);
-                    string nullable0 = default(string);
-                    nullable0 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField), "MemberName");
-                    if (((nullable0 == null) 
-                                == false)) {
-                        key = nullable0;
-                    }
-                    else {
-                        throw MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited("MemberName");
-                    }
-                    if ((key == "ListPolymorphicItem")) {
-                        System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry> nullable1 = default(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>);
-                        if ((unpacker.Read() == false)) {
-                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                        }
-                        if (((unpacker.IsArrayHeader == false) 
-                                    && (unpacker.IsMapHeader == false))) {
-                            nullable1 = this._serializer0.UnpackFrom(unpacker);
-                        }
-                        else {
-                            MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
-                            disposable0 = unpacker.ReadSubtree();
-                            try {
-                                nullable1 = this._serializer0.UnpackFrom(disposable0);
-                            }
-                            finally {
-                                if (((disposable0 == null) 
-                                            == false)) {
-                                    disposable0.Dispose();
-                                }
-                            }
-                        }
-                        if (((nullable1 == null) 
-                                    == false)) {
-                            System.Collections.Generic.IEnumerator<MsgPack.Serialization.FileSystemEntry> enumerator0 = nullable1.GetEnumerator();
-                            MsgPack.Serialization.FileSystemEntry current0;
-                            try {
-                                for (
-                                ; enumerator0.MoveNext(); 
-                                ) {
-                                    current0 = enumerator0.Current;
-                                    result.ListPolymorphicItem.Add(current0);
-                                }
-                            }
-                            finally {
-                                enumerator0.Dispose();
-                            }
-                        }
-                    }
-                    else {
-                        unpacker.Skip();
-                    }
-                }
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField>(), this._unpackOperationTable);
             }
-            return result;
         }
     }
 }

@@ -17,106 +17,97 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Version> _serializer0;
         
+        private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor>> _packOperationList;
+        
+        private System.Collections.Generic.IList<string> _memberNames;
+        
+        private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, UnpackingContext, int>> _unpackOperationList;
+        
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, UnpackingContext, int>> _unpackOperationTable;
+        
         public MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructorSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             schema0 = null;
             this._serializer0 = context.GetSerializer<System.Version>(schema0);
+            System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor>[]);
+            packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor>[1];
+            packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor>(this.PackValueOfReference);
+            this._packOperationList = packOperationList;
+            System.Action<MsgPack.Unpacker, UnpackingContext, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, UnpackingContext, int>[]);
+            unpackOperationList = new System.Action<MsgPack.Unpacker, UnpackingContext, int>[1];
+            unpackOperationList[0] = new System.Action<MsgPack.Unpacker, UnpackingContext, int>(this.UnpackValueOfReference);
+            this._unpackOperationList = unpackOperationList;
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, UnpackingContext, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, UnpackingContext, int>>);
+            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, UnpackingContext, int>>(1);
+            unpackOperationTable["Reference"] = new System.Action<MsgPack.Unpacker, UnpackingContext, int>(this.UnpackValueOfReference);
+            this._unpackOperationTable = unpackOperationTable;
+            this._memberNames = new string[] {
+                    "Reference"};
         }
         
-        protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor objectTree) {
-            packer.PackArrayHeader(1);
+        private void PackValueOfReference(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor objectTree) {
             this._serializer0.PackTo(packer, objectTree.Reference);
         }
         
-        protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor UnpackFromCore(MsgPack.Unpacker unpacker) {
+        protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor objectTree) {
+            MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
+        }
+        
+        private MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor CreateInstanceFromContext(UnpackingContext unpackingContext) {
             MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor result = default(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor);
-            if (unpacker.IsArrayHeader) {
-                int unpacked = default(int);
-                int itemsCount = default(int);
-                itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                System.Version ctorArg0 = default(System.Version);
-                ctorArg0 = null;
-                System.Version nullable = default(System.Version);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(0);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable = this._serializer0.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
-                        disposable = unpacker.ReadSubtree();
-                        try {
-                            nullable = this._serializer0.UnpackFrom(disposable);
-                        }
-                        finally {
-                            if (((disposable == null) 
-                                        == false)) {
-                                disposable.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable == null) 
-                            == false)) {
-                    ctorArg0 = nullable;
-                }
-                unpacked = (unpacked + 1);
-                result = new MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor(ctorArg0);
+            result = new MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor(unpackingContext.Reference);
+            return result;
+        }
+        
+        private void UnpackValueOfReference(MsgPack.Unpacker unpacker, UnpackingContext unpackingContext, int indexOfItem) {
+            System.Version nullable = default(System.Version);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "Reference", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable = this._serializer0.UnpackFrom(unpacker);
             }
             else {
-                int itemsCount0 = default(int);
-                itemsCount0 = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                System.Version ctorArg00 = default(System.Version);
-                ctorArg00 = null;
-                for (int i = 0; (i < itemsCount0); i = (i + 1)) {
-                    string key = default(string);
-                    string nullable0 = default(string);
-                    nullable0 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor), "MemberName");
-                    if (((nullable0 == null) 
+                MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
+                disposable = unpacker.ReadSubtree();
+                try {
+                    nullable = this._serializer0.UnpackFrom(disposable);
+                }
+                finally {
+                    if (((disposable == null) 
                                 == false)) {
-                        key = nullable0;
-                    }
-                    else {
-                        throw MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited("MemberName");
-                    }
-                    if ((key == "Reference")) {
-                        System.Version nullable1 = default(System.Version);
-                        if ((unpacker.Read() == false)) {
-                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                        }
-                        if (((unpacker.IsArrayHeader == false) 
-                                    && (unpacker.IsMapHeader == false))) {
-                            nullable1 = this._serializer0.UnpackFrom(unpacker);
-                        }
-                        else {
-                            MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
-                            disposable0 = unpacker.ReadSubtree();
-                            try {
-                                nullable1 = this._serializer0.UnpackFrom(disposable0);
-                            }
-                            finally {
-                                if (((disposable0 == null) 
-                                            == false)) {
-                                    disposable0.Dispose();
-                                }
-                            }
-                        }
-                        if (((nullable1 == null) 
-                                    == false)) {
-                            ctorArg00 = nullable1;
-                        }
-                    }
-                    else {
-                        unpacker.Skip();
+                        disposable.Dispose();
                     }
                 }
-                result = new MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor(ctorArg00);
             }
-            return result;
+            if (((nullable == null) 
+                        == false)) {
+                unpackingContext.Reference = nullable;
+            }
+        }
+        
+        protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor UnpackFromCore(MsgPack.Unpacker unpacker) {
+            UnpackingContext unpackingContext = default(UnpackingContext);
+            System.Version ctorArg0 = default(System.Version);
+            ctorArg0 = null;
+            unpackingContext = new UnpackingContext(ctorArg0);
+            if (unpacker.IsArrayHeader) {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, unpackingContext, new System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor>(this.CreateInstanceFromContext), this._memberNames, this._unpackOperationList);
+            }
+            else {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, unpackingContext, new System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor>(this.CreateInstanceFromContext), this._unpackOperationTable);
+            }
+        }
+        
+        public class UnpackingContext {
+            
+            public System.Version Reference;
+            
+            public UnpackingContext(System.Version Reference) {
+                this.Reference = Reference;
+            }
         }
     }
 }

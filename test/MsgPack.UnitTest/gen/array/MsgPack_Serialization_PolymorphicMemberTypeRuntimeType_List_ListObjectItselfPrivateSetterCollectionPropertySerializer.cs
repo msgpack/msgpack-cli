@@ -17,7 +17,15 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         
         private MsgPack.Serialization.MessagePackSerializer<object> _serializer0;
         
+        private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty>> _packOperationList;
+        
         private System.Reflection.MethodBase _methodBasePolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty_set_ListObjectItself0;
+        
+        private System.Collections.Generic.IList<string> _memberNames;
+        
+        private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty, int>> _unpackOperationList;
+        
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty, int>> _unpackOperationTable;
         
         public MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionPropertySerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
@@ -27,98 +35,68 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
             this._methodBasePolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty_set_ListObjectItself0 = typeof(MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty).GetMethod("set_ListObjectItself", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
                         typeof(object)}, null);
+            System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty>[]);
+            packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty>[1];
+            packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty>(this.PackValueOfListObjectItself);
+            this._packOperationList = packOperationList;
+            System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty, int>[]);
+            unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty, int>[1];
+            unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty, int>(this.UnpackValueOfListObjectItself);
+            this._unpackOperationList = unpackOperationList;
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty, int>>);
+            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty, int>>(1);
+            unpackOperationTable["ListObjectItself"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty, int>(this.UnpackValueOfListObjectItself);
+            this._unpackOperationTable = unpackOperationTable;
+            this._memberNames = new string[] {
+                    "ListObjectItself"};
+        }
+        
+        private void PackValueOfListObjectItself(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty objectTree) {
+            this._serializer0.PackTo(packer, objectTree.ListObjectItself);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty objectTree) {
-            packer.PackArrayHeader(1);
-            this._serializer0.PackTo(packer, objectTree.ListObjectItself);
+            MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
+        }
+        
+        private void UnpackValueOfListObjectItself(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty unpackingContext, int indexOfItem) {
+            object nullable = default(object);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ListObjectItself", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable = this._serializer0.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
+                disposable = unpacker.ReadSubtree();
+                try {
+                    nullable = this._serializer0.UnpackFrom(disposable);
+                }
+                finally {
+                    if (((disposable == null) 
+                                == false)) {
+                        disposable.Dispose();
+                    }
+                }
+            }
+            if (((nullable == null) 
+                        == false)) {
+                this._methodBasePolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty_set_ListObjectItself0.Invoke(unpackingContext, new object[] {
+                            nullable});
+            }
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty UnpackFromCore(MsgPack.Unpacker unpacker) {
             MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty result = default(MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty);
             result = new MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty();
             if (unpacker.IsArrayHeader) {
-                int unpacked = default(int);
-                int itemsCount = default(int);
-                itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                object nullable = default(object);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(0);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable = this._serializer0.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
-                        disposable = unpacker.ReadSubtree();
-                        try {
-                            nullable = this._serializer0.UnpackFrom(disposable);
-                        }
-                        finally {
-                            if (((disposable == null) 
-                                        == false)) {
-                                disposable.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable == null) 
-                            == false)) {
-                    this._methodBasePolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty_set_ListObjectItself0.Invoke(result, new object[] {
-                                nullable});
-                }
-                unpacked = (unpacked + 1);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty>(), this._memberNames, this._unpackOperationList);
             }
             else {
-                int itemsCount0 = default(int);
-                itemsCount0 = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                for (int i = 0; (i < itemsCount0); i = (i + 1)) {
-                    string key = default(string);
-                    string nullable0 = default(string);
-                    nullable0 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty), "MemberName");
-                    if (((nullable0 == null) 
-                                == false)) {
-                        key = nullable0;
-                    }
-                    else {
-                        throw MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited("MemberName");
-                    }
-                    if ((key == "ListObjectItself")) {
-                        object nullable1 = default(object);
-                        if ((unpacker.Read() == false)) {
-                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                        }
-                        if (((unpacker.IsArrayHeader == false) 
-                                    && (unpacker.IsMapHeader == false))) {
-                            nullable1 = this._serializer0.UnpackFrom(unpacker);
-                        }
-                        else {
-                            MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
-                            disposable0 = unpacker.ReadSubtree();
-                            try {
-                                nullable1 = this._serializer0.UnpackFrom(disposable0);
-                            }
-                            finally {
-                                if (((disposable0 == null) 
-                                            == false)) {
-                                    disposable0.Dispose();
-                                }
-                            }
-                        }
-                        if (((nullable1 == null) 
-                                    == false)) {
-                            this._methodBasePolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty_set_ListObjectItself0.Invoke(result, new object[] {
-                                        nullable1});
-                        }
-                    }
-                    else {
-                        unpacker.Skip();
-                    }
-                }
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty>(), this._unpackOperationTable);
             }
-            return result;
         }
     }
 }

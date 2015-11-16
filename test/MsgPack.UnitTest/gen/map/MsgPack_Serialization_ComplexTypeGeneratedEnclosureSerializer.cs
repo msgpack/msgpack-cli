@@ -19,6 +19,14 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.ComplexTypeGenerated> _serializer1;
         
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>> _packOperationTable;
+        
+        private System.Collections.Generic.IList<string> _memberNames;
+        
+        private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int>> _unpackOperationList;
+        
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int>> _unpackOperationTable;
+        
         public MsgPack_Serialization_ComplexTypeGeneratedEnclosureSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
@@ -27,118 +35,84 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
             schema1 = null;
             this._serializer1 = context.GetSerializer<MsgPack.Serialization.ComplexTypeGenerated>(schema1);
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>>);
+            packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>>(2);
+            packOperationTable["Name"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfName);
+            packOperationTable["Nested"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfNested);
+            this._packOperationTable = packOperationTable;
+            System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int>[]);
+            unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int>[2];
+            unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int>(this.UnpackValueOfName);
+            unpackOperationList[1] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int>(this.UnpackValueOfNested);
+            this._unpackOperationList = unpackOperationList;
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int>>);
+            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int>>(2);
+            unpackOperationTable["Name"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int>(this.UnpackValueOfName);
+            unpackOperationTable["Nested"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int>(this.UnpackValueOfNested);
+            this._unpackOperationTable = unpackOperationTable;
+            this._memberNames = new string[] {
+                    "Name",
+                    "Nested"};
+        }
+        
+        private void PackValueOfName(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure objectTree) {
+            this._serializer0.PackTo(packer, objectTree.Name);
+        }
+        
+        private void PackValueOfNested(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure objectTree) {
+            this._serializer1.PackTo(packer, objectTree.Nested);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure objectTree) {
-            packer.PackMapHeader(2);
-            this._serializer0.PackTo(packer, "Name");
-            this._serializer0.PackTo(packer, objectTree.Name);
-            this._serializer0.PackTo(packer, "Nested");
-            this._serializer1.PackTo(packer, objectTree.Nested);
+            MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+        }
+        
+        private void UnpackValueOfName(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure unpackingContext, int indexOfItem) {
+            string nullable = default(string);
+            nullable = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGeneratedEnclosure), "Name");
+            if (((nullable == null) 
+                        == false)) {
+                unpackingContext.Name = nullable;
+            }
+        }
+        
+        private void UnpackValueOfNested(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure unpackingContext, int indexOfItem) {
+            MsgPack.Serialization.ComplexTypeGenerated nullable0 = default(MsgPack.Serialization.ComplexTypeGenerated);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "Nested", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable0 = this._serializer1.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
+                disposable = unpacker.ReadSubtree();
+                try {
+                    nullable0 = this._serializer1.UnpackFrom(disposable);
+                }
+                finally {
+                    if (((disposable == null) 
+                                == false)) {
+                        disposable.Dispose();
+                    }
+                }
+            }
+            if (((nullable0 == null) 
+                        == false)) {
+                unpackingContext.Nested = nullable0;
+            }
         }
         
         protected internal override MsgPack.Serialization.ComplexTypeGeneratedEnclosure UnpackFromCore(MsgPack.Unpacker unpacker) {
             MsgPack.Serialization.ComplexTypeGeneratedEnclosure result = default(MsgPack.Serialization.ComplexTypeGeneratedEnclosure);
             result = new MsgPack.Serialization.ComplexTypeGeneratedEnclosure();
             if (unpacker.IsArrayHeader) {
-                int unpacked = default(int);
-                int itemsCount = default(int);
-                itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                string nullable = default(string);
-                if ((unpacked < itemsCount)) {
-                    nullable = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGeneratedEnclosure), "System.String Name");
-                }
-                if (((nullable == null) 
-                            == false)) {
-                    result.Name = nullable;
-                }
-                unpacked = (unpacked + 1);
-                MsgPack.Serialization.ComplexTypeGenerated nullable0 = default(MsgPack.Serialization.ComplexTypeGenerated);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(1);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable0 = this._serializer1.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
-                        disposable = unpacker.ReadSubtree();
-                        try {
-                            nullable0 = this._serializer1.UnpackFrom(disposable);
-                        }
-                        finally {
-                            if (((disposable == null) 
-                                        == false)) {
-                                disposable.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable0 == null) 
-                            == false)) {
-                    result.Nested = nullable0;
-                }
-                unpacked = (unpacked + 1);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(), this._memberNames, this._unpackOperationList);
             }
             else {
-                int itemsCount0 = default(int);
-                itemsCount0 = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                for (int i = 0; (i < itemsCount0); i = (i + 1)) {
-                    string key = default(string);
-                    string nullable1 = default(string);
-                    nullable1 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGeneratedEnclosure), "MemberName");
-                    if (((nullable1 == null) 
-                                == false)) {
-                        key = nullable1;
-                    }
-                    else {
-                        throw MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited("MemberName");
-                    }
-                    if ((key == "Nested")) {
-                        MsgPack.Serialization.ComplexTypeGenerated nullable3 = default(MsgPack.Serialization.ComplexTypeGenerated);
-                        if ((unpacker.Read() == false)) {
-                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                        }
-                        if (((unpacker.IsArrayHeader == false) 
-                                    && (unpacker.IsMapHeader == false))) {
-                            nullable3 = this._serializer1.UnpackFrom(unpacker);
-                        }
-                        else {
-                            MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
-                            disposable0 = unpacker.ReadSubtree();
-                            try {
-                                nullable3 = this._serializer1.UnpackFrom(disposable0);
-                            }
-                            finally {
-                                if (((disposable0 == null) 
-                                            == false)) {
-                                    disposable0.Dispose();
-                                }
-                            }
-                        }
-                        if (((nullable3 == null) 
-                                    == false)) {
-                            result.Nested = nullable3;
-                        }
-                    }
-                    else {
-                        if ((key == "Name")) {
-                            string nullable2 = default(string);
-                            nullable2 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGeneratedEnclosure), "System.String Name");
-                            if (((nullable2 == null) 
-                                        == false)) {
-                                result.Name = nullable2;
-                            }
-                        }
-                        else {
-                            unpacker.Skip();
-                        }
-                    }
-                }
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(), this._unpackOperationTable);
             }
-            return result;
         }
     }
 }

@@ -15,125 +15,125 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class MsgPack_Serialization_ComplexTypeGeneratedSerializer : MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.ComplexTypeGenerated> {
         
-        private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<System.DateTime>> _serializer0;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<System.DateTime>> _serializer1;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>> _serializer1;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>> _serializer2;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<object>> _serializer2;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<object>> _serializer3;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ArrayList> _serializer3;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ArrayList> _serializer4;
+        private MsgPack.Serialization.MessagePackSerializer<System.ArraySegment<byte>> _serializer4;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.ArraySegment<byte>> _serializer5;
+        private MsgPack.Serialization.MessagePackSerializer<System.ArraySegment<decimal>> _serializer5;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.ArraySegment<decimal>> _serializer6;
+        private MsgPack.Serialization.MessagePackSerializer<System.ArraySegment<int>> _serializer6;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.ArraySegment<int>> _serializer7;
+        private MsgPack.Serialization.MessagePackSerializer<System.Numerics.BigInteger> _serializer7;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Numerics.BigInteger> _serializer8;
+        private MsgPack.Serialization.MessagePackSerializer<byte[]> _serializer8;
         
-        private MsgPack.Serialization.MessagePackSerializer<byte[]> _serializer9;
+        private MsgPack.Serialization.MessagePackSerializer<byte> _serializer9;
         
-        private MsgPack.Serialization.MessagePackSerializer<byte> _serializer10;
+        private MsgPack.Serialization.MessagePackSerializer<char[]> _serializer10;
         
-        private MsgPack.Serialization.MessagePackSerializer<char[]> _serializer11;
+        private MsgPack.Serialization.MessagePackSerializer<char> _serializer11;
         
-        private MsgPack.Serialization.MessagePackSerializer<char> _serializer12;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>> _serializer12;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>> _serializer13;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<System.DateTime>> _serializer13;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<System.DateTime>> _serializer14;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<object>> _serializer14;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<object>> _serializer15;
+        private MsgPack.Serialization.MessagePackSerializer<System.Numerics.Complex> _serializer15;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Numerics.Complex> _serializer16;
+        private MsgPack.Serialization.MessagePackSerializer<System.Globalization.CultureInfo> _serializer16;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Globalization.CultureInfo> _serializer17;
+        private MsgPack.Serialization.MessagePackSerializer<System.DateTime> _serializer17;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTime> _serializer18;
+        private MsgPack.Serialization.MessagePackSerializer<System.DateTimeOffset> _serializer18;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTimeOffset> _serializer19;
+        private MsgPack.Serialization.MessagePackSerializer<decimal> _serializer19;
         
-        private MsgPack.Serialization.MessagePackSerializer<decimal> _serializer20;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> _serializer20;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> _serializer21;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.DictionaryEntry> _serializer21;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.DictionaryEntry> _serializer22;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<object, object>> _serializer22;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<object, object>> _serializer23;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<string, System.DateTime>> _serializer23;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<string, System.DateTime>> _serializer24;
+        private MsgPack.Serialization.MessagePackSerializer<bool> _serializer24;
         
-        private MsgPack.Serialization.MessagePackSerializer<bool> _serializer25;
+        private MsgPack.Serialization.MessagePackSerializer<System.Runtime.InteropServices.ComTypes.FILETIME> _serializer25;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Runtime.InteropServices.ComTypes.FILETIME> _serializer26;
+        private MsgPack.Serialization.MessagePackSerializer<System.Guid> _serializer26;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Guid> _serializer27;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<MsgPack.MessagePackObject>> _serializer27;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<MsgPack.MessagePackObject>> _serializer28;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<System.DateTime>> _serializer28;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<System.DateTime>> _serializer29;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<object>> _serializer29;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<object>> _serializer30;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Hashtable> _serializer30;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Hashtable> _serializer31;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ICollection<MsgPack.MessagePackObject>> _serializer31;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ICollection<MsgPack.MessagePackObject>> _serializer32;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ICollection<System.DateTime>> _serializer32;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ICollection<System.DateTime>> _serializer33;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ICollection<object>> _serializer33;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ICollection<object>> _serializer34;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> _serializer34;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> _serializer35;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<object, object>> _serializer35;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<object, object>> _serializer36;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<string, System.DateTime>> _serializer36;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<string, System.DateTime>> _serializer37;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<MsgPack.MessagePackObject>> _serializer37;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<MsgPack.MessagePackObject>> _serializer38;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<System.DateTime>> _serializer38;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<System.DateTime>> _serializer39;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<object>> _serializer39;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<object>> _serializer40;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Image> _serializer40;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Image> _serializer41;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ISet<MsgPack.MessagePackObject>> _serializer41;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ISet<MsgPack.MessagePackObject>> _serializer42;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ISet<System.DateTime>> _serializer42;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ISet<System.DateTime>> _serializer43;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ISet<object>> _serializer43;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ISet<object>> _serializer44;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>> _serializer44;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>> _serializer45;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>> _serializer45;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>> _serializer46;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<MsgPack.MessagePackObject>> _serializer46;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<MsgPack.MessagePackObject>> _serializer47;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<System.DateTime>> _serializer47;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<System.DateTime>> _serializer48;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<object>> _serializer48;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<object>> _serializer49;
+        private MsgPack.Serialization.MessagePackSerializer<int> _serializer49;
         
-        private MsgPack.Serialization.MessagePackSerializer<int> _serializer50;
+        private MsgPack.Serialization.MessagePackSerializer<long> _serializer50;
         
-        private MsgPack.Serialization.MessagePackSerializer<long> _serializer51;
+        private MsgPack.Serialization.MessagePackSerializer<ushort> _serializer51;
         
-        private MsgPack.Serialization.MessagePackSerializer<ushort> _serializer52;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject> _serializer52;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject> _serializer53;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject[]> _serializer53;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject[]> _serializer54;
+        private MsgPack.Serialization.MessagePackSerializer<object> _serializer54;
         
-        private MsgPack.Serialization.MessagePackSerializer<object> _serializer55;
+        private MsgPack.Serialization.MessagePackSerializer<object[]> _serializer55;
         
-        private MsgPack.Serialization.MessagePackSerializer<object[]> _serializer56;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>> _serializer56;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>> _serializer57;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.ObservableCollection<System.DateTime>> _serializer57;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.ObservableCollection<System.DateTime>> _serializer58;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.ObservableCollection<object>> _serializer58;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.ObservableCollection<object>> _serializer59;
+        private MsgPack.Serialization.MessagePackSerializer<string> _serializer59;
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.StringKeyedCollection<System.DateTime>> _serializer60;
         
@@ -143,220 +143,226 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
         
         private MsgPack.Serialization.MessagePackSerializer<System.TimeSpan> _serializer63;
         
-        private MsgPack.Serialization.MessagePackSerializer<string> _serializer64;
+        private MsgPack.Serialization.MessagePackSerializer<System.Tuple<int, string, MsgPack.MessagePackObject, object>> _serializer64;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Tuple<int, string, MsgPack.MessagePackObject, object>> _serializer65;
+        private MsgPack.Serialization.MessagePackSerializer<System.Uri> _serializer65;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Uri> _serializer66;
+        private MsgPack.Serialization.MessagePackSerializer<System.Version> _serializer66;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Version> _serializer67;
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>> _packOperationTable;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.ArraySegment<byte>>> _serializer68;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.ArraySegment<byte>>> _serializer67;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.ArraySegment<decimal>>> _serializer69;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.ArraySegment<decimal>>> _serializer68;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.ArraySegment<int>>> _serializer70;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.ArraySegment<int>>> _serializer69;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Numerics.BigInteger>> _serializer71;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Numerics.BigInteger>> _serializer70;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<char>> _serializer72;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<char>> _serializer71;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Numerics.Complex>> _serializer73;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Numerics.Complex>> _serializer72;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTime>> _serializer74;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTime>> _serializer73;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTimeOffset>> _serializer75;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTimeOffset>> _serializer74;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<decimal>> _serializer76;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<decimal>> _serializer75;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Collections.DictionaryEntry>> _serializer77;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Collections.DictionaryEntry>> _serializer76;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME>> _serializer78;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME>> _serializer77;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Guid>> _serializer79;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Guid>> _serializer78;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>> _serializer80;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>> _serializer79;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>> _serializer81;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>> _serializer80;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.TimeSpan>> _serializer82;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.TimeSpan>> _serializer81;
+        
+        private System.Collections.Generic.IList<string> _memberNames;
+        
+        private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>> _unpackOperationList;
+        
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>> _unpackOperationTable;
         
         public MsgPack_Serialization_ComplexTypeGeneratedSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             schema0 = null;
-            this._serializer0 = context.GetSerializer<string>(schema0);
+            this._serializer0 = context.GetSerializer<MsgPack.Serialization.AddOnlyCollection<System.DateTime>>(schema0);
             MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
             schema1 = null;
-            this._serializer1 = context.GetSerializer<MsgPack.Serialization.AddOnlyCollection<System.DateTime>>(schema1);
+            this._serializer1 = context.GetSerializer<MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>>(schema1);
             MsgPack.Serialization.PolymorphismSchema schema2 = default(MsgPack.Serialization.PolymorphismSchema);
             schema2 = null;
-            this._serializer2 = context.GetSerializer<MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>>(schema2);
+            this._serializer2 = context.GetSerializer<MsgPack.Serialization.AddOnlyCollection<object>>(schema2);
             MsgPack.Serialization.PolymorphismSchema schema3 = default(MsgPack.Serialization.PolymorphismSchema);
             schema3 = null;
-            this._serializer3 = context.GetSerializer<MsgPack.Serialization.AddOnlyCollection<object>>(schema3);
+            this._serializer3 = context.GetSerializer<System.Collections.ArrayList>(schema3);
             MsgPack.Serialization.PolymorphismSchema schema4 = default(MsgPack.Serialization.PolymorphismSchema);
             schema4 = null;
-            this._serializer4 = context.GetSerializer<System.Collections.ArrayList>(schema4);
+            this._serializer4 = context.GetSerializer<System.ArraySegment<byte>>(schema4);
             MsgPack.Serialization.PolymorphismSchema schema5 = default(MsgPack.Serialization.PolymorphismSchema);
             schema5 = null;
-            this._serializer5 = context.GetSerializer<System.ArraySegment<byte>>(schema5);
+            this._serializer5 = context.GetSerializer<System.ArraySegment<decimal>>(schema5);
             MsgPack.Serialization.PolymorphismSchema schema6 = default(MsgPack.Serialization.PolymorphismSchema);
             schema6 = null;
-            this._serializer6 = context.GetSerializer<System.ArraySegment<decimal>>(schema6);
+            this._serializer6 = context.GetSerializer<System.ArraySegment<int>>(schema6);
             MsgPack.Serialization.PolymorphismSchema schema7 = default(MsgPack.Serialization.PolymorphismSchema);
             schema7 = null;
-            this._serializer7 = context.GetSerializer<System.ArraySegment<int>>(schema7);
+            this._serializer7 = context.GetSerializer<System.Numerics.BigInteger>(schema7);
             MsgPack.Serialization.PolymorphismSchema schema8 = default(MsgPack.Serialization.PolymorphismSchema);
             schema8 = null;
-            this._serializer8 = context.GetSerializer<System.Numerics.BigInteger>(schema8);
+            this._serializer8 = context.GetSerializer<byte[]>(schema8);
             MsgPack.Serialization.PolymorphismSchema schema9 = default(MsgPack.Serialization.PolymorphismSchema);
             schema9 = null;
-            this._serializer9 = context.GetSerializer<byte[]>(schema9);
+            this._serializer9 = context.GetSerializer<byte>(schema9);
             MsgPack.Serialization.PolymorphismSchema schema10 = default(MsgPack.Serialization.PolymorphismSchema);
             schema10 = null;
-            this._serializer10 = context.GetSerializer<byte>(schema10);
+            this._serializer10 = context.GetSerializer<char[]>(schema10);
             MsgPack.Serialization.PolymorphismSchema schema11 = default(MsgPack.Serialization.PolymorphismSchema);
             schema11 = null;
-            this._serializer11 = context.GetSerializer<char[]>(schema11);
+            this._serializer11 = context.GetSerializer<char>(schema11);
             MsgPack.Serialization.PolymorphismSchema schema12 = default(MsgPack.Serialization.PolymorphismSchema);
             schema12 = null;
-            this._serializer12 = context.GetSerializer<char>(schema12);
+            this._serializer12 = context.GetSerializer<System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>>(schema12);
             MsgPack.Serialization.PolymorphismSchema schema13 = default(MsgPack.Serialization.PolymorphismSchema);
             schema13 = null;
-            this._serializer13 = context.GetSerializer<System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>>(schema13);
+            this._serializer13 = context.GetSerializer<System.Collections.ObjectModel.Collection<System.DateTime>>(schema13);
             MsgPack.Serialization.PolymorphismSchema schema14 = default(MsgPack.Serialization.PolymorphismSchema);
             schema14 = null;
-            this._serializer14 = context.GetSerializer<System.Collections.ObjectModel.Collection<System.DateTime>>(schema14);
+            this._serializer14 = context.GetSerializer<System.Collections.ObjectModel.Collection<object>>(schema14);
             MsgPack.Serialization.PolymorphismSchema schema15 = default(MsgPack.Serialization.PolymorphismSchema);
             schema15 = null;
-            this._serializer15 = context.GetSerializer<System.Collections.ObjectModel.Collection<object>>(schema15);
+            this._serializer15 = context.GetSerializer<System.Numerics.Complex>(schema15);
             MsgPack.Serialization.PolymorphismSchema schema16 = default(MsgPack.Serialization.PolymorphismSchema);
             schema16 = null;
-            this._serializer16 = context.GetSerializer<System.Numerics.Complex>(schema16);
+            this._serializer16 = context.GetSerializer<System.Globalization.CultureInfo>(schema16);
+            this._serializer17 = context.GetSerializer<System.DateTime>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
+            this._serializer18 = context.GetSerializer<System.DateTimeOffset>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
             MsgPack.Serialization.PolymorphismSchema schema17 = default(MsgPack.Serialization.PolymorphismSchema);
             schema17 = null;
-            this._serializer17 = context.GetSerializer<System.Globalization.CultureInfo>(schema17);
-            this._serializer18 = context.GetSerializer<System.DateTime>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
-            this._serializer19 = context.GetSerializer<System.DateTimeOffset>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
+            this._serializer19 = context.GetSerializer<decimal>(schema17);
             MsgPack.Serialization.PolymorphismSchema schema18 = default(MsgPack.Serialization.PolymorphismSchema);
             schema18 = null;
-            this._serializer20 = context.GetSerializer<decimal>(schema18);
+            this._serializer20 = context.GetSerializer<System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>(schema18);
             MsgPack.Serialization.PolymorphismSchema schema19 = default(MsgPack.Serialization.PolymorphismSchema);
             schema19 = null;
-            this._serializer21 = context.GetSerializer<System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>(schema19);
+            this._serializer21 = context.GetSerializer<System.Collections.DictionaryEntry>(schema19);
             MsgPack.Serialization.PolymorphismSchema schema20 = default(MsgPack.Serialization.PolymorphismSchema);
             schema20 = null;
-            this._serializer22 = context.GetSerializer<System.Collections.DictionaryEntry>(schema20);
+            this._serializer22 = context.GetSerializer<System.Collections.Generic.Dictionary<object, object>>(schema20);
             MsgPack.Serialization.PolymorphismSchema schema21 = default(MsgPack.Serialization.PolymorphismSchema);
             schema21 = null;
-            this._serializer23 = context.GetSerializer<System.Collections.Generic.Dictionary<object, object>>(schema21);
+            this._serializer23 = context.GetSerializer<System.Collections.Generic.Dictionary<string, System.DateTime>>(schema21);
             MsgPack.Serialization.PolymorphismSchema schema22 = default(MsgPack.Serialization.PolymorphismSchema);
             schema22 = null;
-            this._serializer24 = context.GetSerializer<System.Collections.Generic.Dictionary<string, System.DateTime>>(schema22);
+            this._serializer24 = context.GetSerializer<bool>(schema22);
+            this._serializer25 = context.GetSerializer<System.Runtime.InteropServices.ComTypes.FILETIME>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
             MsgPack.Serialization.PolymorphismSchema schema23 = default(MsgPack.Serialization.PolymorphismSchema);
             schema23 = null;
-            this._serializer25 = context.GetSerializer<bool>(schema23);
-            this._serializer26 = context.GetSerializer<System.Runtime.InteropServices.ComTypes.FILETIME>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
+            this._serializer26 = context.GetSerializer<System.Guid>(schema23);
             MsgPack.Serialization.PolymorphismSchema schema24 = default(MsgPack.Serialization.PolymorphismSchema);
             schema24 = null;
-            this._serializer27 = context.GetSerializer<System.Guid>(schema24);
+            this._serializer27 = context.GetSerializer<System.Collections.Generic.HashSet<MsgPack.MessagePackObject>>(schema24);
             MsgPack.Serialization.PolymorphismSchema schema25 = default(MsgPack.Serialization.PolymorphismSchema);
             schema25 = null;
-            this._serializer28 = context.GetSerializer<System.Collections.Generic.HashSet<MsgPack.MessagePackObject>>(schema25);
+            this._serializer28 = context.GetSerializer<System.Collections.Generic.HashSet<System.DateTime>>(schema25);
             MsgPack.Serialization.PolymorphismSchema schema26 = default(MsgPack.Serialization.PolymorphismSchema);
             schema26 = null;
-            this._serializer29 = context.GetSerializer<System.Collections.Generic.HashSet<System.DateTime>>(schema26);
+            this._serializer29 = context.GetSerializer<System.Collections.Generic.HashSet<object>>(schema26);
             MsgPack.Serialization.PolymorphismSchema schema27 = default(MsgPack.Serialization.PolymorphismSchema);
             schema27 = null;
-            this._serializer30 = context.GetSerializer<System.Collections.Generic.HashSet<object>>(schema27);
+            this._serializer30 = context.GetSerializer<System.Collections.Hashtable>(schema27);
             MsgPack.Serialization.PolymorphismSchema schema28 = default(MsgPack.Serialization.PolymorphismSchema);
             schema28 = null;
-            this._serializer31 = context.GetSerializer<System.Collections.Hashtable>(schema28);
+            this._serializer31 = context.GetSerializer<System.Collections.Generic.ICollection<MsgPack.MessagePackObject>>(schema28);
             MsgPack.Serialization.PolymorphismSchema schema29 = default(MsgPack.Serialization.PolymorphismSchema);
             schema29 = null;
-            this._serializer32 = context.GetSerializer<System.Collections.Generic.ICollection<MsgPack.MessagePackObject>>(schema29);
+            this._serializer32 = context.GetSerializer<System.Collections.Generic.ICollection<System.DateTime>>(schema29);
             MsgPack.Serialization.PolymorphismSchema schema30 = default(MsgPack.Serialization.PolymorphismSchema);
             schema30 = null;
-            this._serializer33 = context.GetSerializer<System.Collections.Generic.ICollection<System.DateTime>>(schema30);
+            this._serializer33 = context.GetSerializer<System.Collections.Generic.ICollection<object>>(schema30);
             MsgPack.Serialization.PolymorphismSchema schema31 = default(MsgPack.Serialization.PolymorphismSchema);
             schema31 = null;
-            this._serializer34 = context.GetSerializer<System.Collections.Generic.ICollection<object>>(schema31);
+            this._serializer34 = context.GetSerializer<System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>(schema31);
             MsgPack.Serialization.PolymorphismSchema schema32 = default(MsgPack.Serialization.PolymorphismSchema);
             schema32 = null;
-            this._serializer35 = context.GetSerializer<System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>(schema32);
+            this._serializer35 = context.GetSerializer<System.Collections.Generic.IDictionary<object, object>>(schema32);
             MsgPack.Serialization.PolymorphismSchema schema33 = default(MsgPack.Serialization.PolymorphismSchema);
             schema33 = null;
-            this._serializer36 = context.GetSerializer<System.Collections.Generic.IDictionary<object, object>>(schema33);
+            this._serializer36 = context.GetSerializer<System.Collections.Generic.IDictionary<string, System.DateTime>>(schema33);
             MsgPack.Serialization.PolymorphismSchema schema34 = default(MsgPack.Serialization.PolymorphismSchema);
             schema34 = null;
-            this._serializer37 = context.GetSerializer<System.Collections.Generic.IDictionary<string, System.DateTime>>(schema34);
+            this._serializer37 = context.GetSerializer<System.Collections.Generic.IList<MsgPack.MessagePackObject>>(schema34);
             MsgPack.Serialization.PolymorphismSchema schema35 = default(MsgPack.Serialization.PolymorphismSchema);
             schema35 = null;
-            this._serializer38 = context.GetSerializer<System.Collections.Generic.IList<MsgPack.MessagePackObject>>(schema35);
+            this._serializer38 = context.GetSerializer<System.Collections.Generic.IList<System.DateTime>>(schema35);
             MsgPack.Serialization.PolymorphismSchema schema36 = default(MsgPack.Serialization.PolymorphismSchema);
             schema36 = null;
-            this._serializer39 = context.GetSerializer<System.Collections.Generic.IList<System.DateTime>>(schema36);
+            this._serializer39 = context.GetSerializer<System.Collections.Generic.IList<object>>(schema36);
             MsgPack.Serialization.PolymorphismSchema schema37 = default(MsgPack.Serialization.PolymorphismSchema);
             schema37 = null;
-            this._serializer40 = context.GetSerializer<System.Collections.Generic.IList<object>>(schema37);
+            this._serializer40 = context.GetSerializer<MsgPack.Image>(schema37);
             MsgPack.Serialization.PolymorphismSchema schema38 = default(MsgPack.Serialization.PolymorphismSchema);
             schema38 = null;
-            this._serializer41 = context.GetSerializer<MsgPack.Image>(schema38);
+            this._serializer41 = context.GetSerializer<System.Collections.Generic.ISet<MsgPack.MessagePackObject>>(schema38);
             MsgPack.Serialization.PolymorphismSchema schema39 = default(MsgPack.Serialization.PolymorphismSchema);
             schema39 = null;
-            this._serializer42 = context.GetSerializer<System.Collections.Generic.ISet<MsgPack.MessagePackObject>>(schema39);
+            this._serializer42 = context.GetSerializer<System.Collections.Generic.ISet<System.DateTime>>(schema39);
             MsgPack.Serialization.PolymorphismSchema schema40 = default(MsgPack.Serialization.PolymorphismSchema);
             schema40 = null;
-            this._serializer43 = context.GetSerializer<System.Collections.Generic.ISet<System.DateTime>>(schema40);
+            this._serializer43 = context.GetSerializer<System.Collections.Generic.ISet<object>>(schema40);
             MsgPack.Serialization.PolymorphismSchema schema41 = default(MsgPack.Serialization.PolymorphismSchema);
             schema41 = null;
-            this._serializer44 = context.GetSerializer<System.Collections.Generic.ISet<object>>(schema41);
+            this._serializer44 = context.GetSerializer<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>(schema41);
             MsgPack.Serialization.PolymorphismSchema schema42 = default(MsgPack.Serialization.PolymorphismSchema);
             schema42 = null;
-            this._serializer45 = context.GetSerializer<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>(schema42);
+            this._serializer45 = context.GetSerializer<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>(schema42);
             MsgPack.Serialization.PolymorphismSchema schema43 = default(MsgPack.Serialization.PolymorphismSchema);
             schema43 = null;
-            this._serializer46 = context.GetSerializer<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>(schema43);
+            this._serializer46 = context.GetSerializer<System.Collections.Generic.List<MsgPack.MessagePackObject>>(schema43);
             MsgPack.Serialization.PolymorphismSchema schema44 = default(MsgPack.Serialization.PolymorphismSchema);
             schema44 = null;
-            this._serializer47 = context.GetSerializer<System.Collections.Generic.List<MsgPack.MessagePackObject>>(schema44);
+            this._serializer47 = context.GetSerializer<System.Collections.Generic.List<System.DateTime>>(schema44);
             MsgPack.Serialization.PolymorphismSchema schema45 = default(MsgPack.Serialization.PolymorphismSchema);
             schema45 = null;
-            this._serializer48 = context.GetSerializer<System.Collections.Generic.List<System.DateTime>>(schema45);
+            this._serializer48 = context.GetSerializer<System.Collections.Generic.List<object>>(schema45);
             MsgPack.Serialization.PolymorphismSchema schema46 = default(MsgPack.Serialization.PolymorphismSchema);
             schema46 = null;
-            this._serializer49 = context.GetSerializer<System.Collections.Generic.List<object>>(schema46);
+            this._serializer49 = context.GetSerializer<int>(schema46);
             MsgPack.Serialization.PolymorphismSchema schema47 = default(MsgPack.Serialization.PolymorphismSchema);
             schema47 = null;
-            this._serializer50 = context.GetSerializer<int>(schema47);
+            this._serializer50 = context.GetSerializer<long>(schema47);
             MsgPack.Serialization.PolymorphismSchema schema48 = default(MsgPack.Serialization.PolymorphismSchema);
             schema48 = null;
-            this._serializer51 = context.GetSerializer<long>(schema48);
+            this._serializer51 = context.GetSerializer<ushort>(schema48);
             MsgPack.Serialization.PolymorphismSchema schema49 = default(MsgPack.Serialization.PolymorphismSchema);
             schema49 = null;
-            this._serializer52 = context.GetSerializer<ushort>(schema49);
+            this._serializer52 = context.GetSerializer<MsgPack.MessagePackObject>(schema49);
             MsgPack.Serialization.PolymorphismSchema schema50 = default(MsgPack.Serialization.PolymorphismSchema);
             schema50 = null;
-            this._serializer53 = context.GetSerializer<MsgPack.MessagePackObject>(schema50);
+            this._serializer53 = context.GetSerializer<MsgPack.MessagePackObject[]>(schema50);
             MsgPack.Serialization.PolymorphismSchema schema51 = default(MsgPack.Serialization.PolymorphismSchema);
             schema51 = null;
-            this._serializer54 = context.GetSerializer<MsgPack.MessagePackObject[]>(schema51);
+            this._serializer54 = context.GetSerializer<object>(schema51);
             MsgPack.Serialization.PolymorphismSchema schema52 = default(MsgPack.Serialization.PolymorphismSchema);
             schema52 = null;
-            this._serializer55 = context.GetSerializer<object>(schema52);
+            this._serializer55 = context.GetSerializer<object[]>(schema52);
             MsgPack.Serialization.PolymorphismSchema schema53 = default(MsgPack.Serialization.PolymorphismSchema);
             schema53 = null;
-            this._serializer56 = context.GetSerializer<object[]>(schema53);
+            this._serializer56 = context.GetSerializer<System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>>(schema53);
             MsgPack.Serialization.PolymorphismSchema schema54 = default(MsgPack.Serialization.PolymorphismSchema);
             schema54 = null;
-            this._serializer57 = context.GetSerializer<System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>>(schema54);
+            this._serializer57 = context.GetSerializer<System.Collections.ObjectModel.ObservableCollection<System.DateTime>>(schema54);
             MsgPack.Serialization.PolymorphismSchema schema55 = default(MsgPack.Serialization.PolymorphismSchema);
             schema55 = null;
-            this._serializer58 = context.GetSerializer<System.Collections.ObjectModel.ObservableCollection<System.DateTime>>(schema55);
+            this._serializer58 = context.GetSerializer<System.Collections.ObjectModel.ObservableCollection<object>>(schema55);
             MsgPack.Serialization.PolymorphismSchema schema56 = default(MsgPack.Serialization.PolymorphismSchema);
             schema56 = null;
-            this._serializer59 = context.GetSerializer<System.Collections.ObjectModel.ObservableCollection<object>>(schema56);
+            this._serializer59 = context.GetSerializer<string>(schema56);
             MsgPack.Serialization.PolymorphismSchema schema57 = default(MsgPack.Serialization.PolymorphismSchema);
             schema57 = null;
             this._serializer60 = context.GetSerializer<MsgPack.Serialization.StringKeyedCollection<System.DateTime>>(schema57);
@@ -385,4818 +391,2937 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             tupleItemSchema3 = null;
             tupleItemsSchema0[3] = tupleItemSchema3;
             schema61 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicTuple(typeof(System.Tuple<int, string, MsgPack.MessagePackObject, object>), tupleItemsSchema0);
-            this._serializer64 = context.GetSerializer<string>(schema61);
+            this._serializer64 = context.GetSerializer<System.Tuple<int, string, MsgPack.MessagePackObject, object>>(schema61);
             MsgPack.Serialization.PolymorphismSchema schema62 = default(MsgPack.Serialization.PolymorphismSchema);
-            MsgPack.Serialization.PolymorphismSchema[] tupleItemsSchema1 = default(MsgPack.Serialization.PolymorphismSchema[]);
-            tupleItemsSchema1 = new MsgPack.Serialization.PolymorphismSchema[4];
-            MsgPack.Serialization.PolymorphismSchema tupleItemSchema4 = default(MsgPack.Serialization.PolymorphismSchema);
-            tupleItemSchema4 = null;
-            tupleItemsSchema1[0] = tupleItemSchema4;
-            MsgPack.Serialization.PolymorphismSchema tupleItemSchema5 = default(MsgPack.Serialization.PolymorphismSchema);
-            tupleItemSchema5 = null;
-            tupleItemsSchema1[1] = tupleItemSchema5;
-            MsgPack.Serialization.PolymorphismSchema tupleItemSchema6 = default(MsgPack.Serialization.PolymorphismSchema);
-            tupleItemSchema6 = null;
-            tupleItemsSchema1[2] = tupleItemSchema6;
-            MsgPack.Serialization.PolymorphismSchema tupleItemSchema7 = default(MsgPack.Serialization.PolymorphismSchema);
-            tupleItemSchema7 = null;
-            tupleItemsSchema1[3] = tupleItemSchema7;
-            schema62 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicTuple(typeof(System.Tuple<int, string, MsgPack.MessagePackObject, object>), tupleItemsSchema1);
-            this._serializer65 = context.GetSerializer<System.Tuple<int, string, MsgPack.MessagePackObject, object>>(schema62);
+            schema62 = null;
+            this._serializer65 = context.GetSerializer<System.Uri>(schema62);
             MsgPack.Serialization.PolymorphismSchema schema63 = default(MsgPack.Serialization.PolymorphismSchema);
             schema63 = null;
-            this._serializer66 = context.GetSerializer<System.Uri>(schema63);
+            this._serializer66 = context.GetSerializer<System.Version>(schema63);
             MsgPack.Serialization.PolymorphismSchema schema64 = default(MsgPack.Serialization.PolymorphismSchema);
             schema64 = null;
-            this._serializer67 = context.GetSerializer<System.Version>(schema64);
+            this._serializer67 = context.GetSerializer<System.Nullable<System.ArraySegment<byte>>>(schema64);
             MsgPack.Serialization.PolymorphismSchema schema65 = default(MsgPack.Serialization.PolymorphismSchema);
             schema65 = null;
-            this._serializer68 = context.GetSerializer<System.Nullable<System.ArraySegment<byte>>>(schema65);
+            this._serializer68 = context.GetSerializer<System.Nullable<System.ArraySegment<decimal>>>(schema65);
             MsgPack.Serialization.PolymorphismSchema schema66 = default(MsgPack.Serialization.PolymorphismSchema);
             schema66 = null;
-            this._serializer69 = context.GetSerializer<System.Nullable<System.ArraySegment<decimal>>>(schema66);
+            this._serializer69 = context.GetSerializer<System.Nullable<System.ArraySegment<int>>>(schema66);
             MsgPack.Serialization.PolymorphismSchema schema67 = default(MsgPack.Serialization.PolymorphismSchema);
             schema67 = null;
-            this._serializer70 = context.GetSerializer<System.Nullable<System.ArraySegment<int>>>(schema67);
+            this._serializer70 = context.GetSerializer<System.Nullable<System.Numerics.BigInteger>>(schema67);
             MsgPack.Serialization.PolymorphismSchema schema68 = default(MsgPack.Serialization.PolymorphismSchema);
             schema68 = null;
-            this._serializer71 = context.GetSerializer<System.Nullable<System.Numerics.BigInteger>>(schema68);
+            this._serializer71 = context.GetSerializer<System.Nullable<char>>(schema68);
             MsgPack.Serialization.PolymorphismSchema schema69 = default(MsgPack.Serialization.PolymorphismSchema);
             schema69 = null;
-            this._serializer72 = context.GetSerializer<System.Nullable<char>>(schema69);
+            this._serializer72 = context.GetSerializer<System.Nullable<System.Numerics.Complex>>(schema69);
+            this._serializer73 = context.GetSerializer<System.Nullable<System.DateTime>>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
             MsgPack.Serialization.PolymorphismSchema schema70 = default(MsgPack.Serialization.PolymorphismSchema);
             schema70 = null;
-            this._serializer73 = context.GetSerializer<System.Nullable<System.Numerics.Complex>>(schema70);
-            this._serializer74 = context.GetSerializer<System.Nullable<System.DateTime>>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
+            this._serializer74 = context.GetSerializer<System.Nullable<System.DateTimeOffset>>(schema70);
             MsgPack.Serialization.PolymorphismSchema schema71 = default(MsgPack.Serialization.PolymorphismSchema);
             schema71 = null;
-            this._serializer75 = context.GetSerializer<System.Nullable<System.DateTimeOffset>>(schema71);
+            this._serializer75 = context.GetSerializer<System.Nullable<decimal>>(schema71);
             MsgPack.Serialization.PolymorphismSchema schema72 = default(MsgPack.Serialization.PolymorphismSchema);
             schema72 = null;
-            this._serializer76 = context.GetSerializer<System.Nullable<decimal>>(schema72);
+            this._serializer76 = context.GetSerializer<System.Nullable<System.Collections.DictionaryEntry>>(schema72);
+            this._serializer77 = context.GetSerializer<System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME>>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
             MsgPack.Serialization.PolymorphismSchema schema73 = default(MsgPack.Serialization.PolymorphismSchema);
             schema73 = null;
-            this._serializer77 = context.GetSerializer<System.Nullable<System.Collections.DictionaryEntry>>(schema73);
-            this._serializer78 = context.GetSerializer<System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME>>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
+            this._serializer78 = context.GetSerializer<System.Nullable<System.Guid>>(schema73);
             MsgPack.Serialization.PolymorphismSchema schema74 = default(MsgPack.Serialization.PolymorphismSchema);
             schema74 = null;
-            this._serializer79 = context.GetSerializer<System.Nullable<System.Guid>>(schema74);
+            this._serializer79 = context.GetSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>>(schema74);
             MsgPack.Serialization.PolymorphismSchema schema75 = default(MsgPack.Serialization.PolymorphismSchema);
             schema75 = null;
-            this._serializer80 = context.GetSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>>(schema75);
+            this._serializer80 = context.GetSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>>(schema75);
             MsgPack.Serialization.PolymorphismSchema schema76 = default(MsgPack.Serialization.PolymorphismSchema);
             schema76 = null;
-            this._serializer81 = context.GetSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>>(schema76);
-            MsgPack.Serialization.PolymorphismSchema schema77 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema77 = null;
-            this._serializer82 = context.GetSerializer<System.Nullable<System.TimeSpan>>(schema77);
+            this._serializer81 = context.GetSerializer<System.Nullable<System.TimeSpan>>(schema76);
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>>);
+            packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>>(77);
+            packOperationTable["AddOnlyCollection_DateTimeField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfAddOnlyCollection_DateTimeField);
+            packOperationTable["AddOnlyCollection_MessagePackObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfAddOnlyCollection_MessagePackObjectField);
+            packOperationTable["AddOnlyCollection_ObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfAddOnlyCollection_ObjectField);
+            packOperationTable["ArrayListField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfArrayListField);
+            packOperationTable["ArraySegmentByteField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfArraySegmentByteField);
+            packOperationTable["ArraySegmentDecimalField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfArraySegmentDecimalField);
+            packOperationTable["ArraySegmentInt32Field"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfArraySegmentInt32Field);
+            packOperationTable["BigIntegerField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfBigIntegerField);
+            packOperationTable["ByteArrayField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfByteArrayField);
+            packOperationTable["ByteField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfByteField);
+            packOperationTable["CharArrayField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCharArrayField);
+            packOperationTable["CharField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCharField);
+            packOperationTable["Collection_MessagePackObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCollection_MessagePackObjectField);
+            packOperationTable["CollectionDateTimeField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCollectionDateTimeField);
+            packOperationTable["CollectionObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCollectionObjectField);
+            packOperationTable["ComplexField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfComplexField);
+            packOperationTable["CurrentCultureField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCurrentCultureField);
+            packOperationTable["DateTimeField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDateTimeField);
+            packOperationTable["DateTimeOffsetField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDateTimeOffsetField);
+            packOperationTable["DecimalField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDecimalField);
+            packOperationTable["Dictionary_MessagePackObject_MessagePackObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDictionary_MessagePackObject_MessagePackObjectField);
+            packOperationTable["DictionaryEntryField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDictionaryEntryField);
+            packOperationTable["DictionaryObjectObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDictionaryObjectObjectField);
+            packOperationTable["DictionaryStringDateTimeField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDictionaryStringDateTimeField);
+            packOperationTable["FalseField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfFalseField);
+            packOperationTable["FILETIMEField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfFILETIMEField);
+            packOperationTable["GuidField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfGuidField);
+            packOperationTable["HashSet_MessagePackObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfHashSet_MessagePackObjectField);
+            packOperationTable["HashSetDateTimeField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfHashSetDateTimeField);
+            packOperationTable["HashSetObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfHashSetObjectField);
+            packOperationTable["HashtableField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfHashtableField);
+            packOperationTable["ICollection_MessagePackObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfICollection_MessagePackObjectField);
+            packOperationTable["ICollectionDateTimeField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfICollectionDateTimeField);
+            packOperationTable["ICollectionObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfICollectionObjectField);
+            packOperationTable["IDictionary_MessagePackObject_MessagePackObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIDictionary_MessagePackObject_MessagePackObjectField);
+            packOperationTable["IDictionaryObjectObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIDictionaryObjectObjectField);
+            packOperationTable["IDictionaryStringDateTimeField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIDictionaryStringDateTimeField);
+            packOperationTable["IList_MessagePackObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIList_MessagePackObjectField);
+            packOperationTable["IListDateTimeField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIListDateTimeField);
+            packOperationTable["IListObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIListObjectField);
+            packOperationTable["Image_Field"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfImage_Field);
+            packOperationTable["InvariantCultureField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfInvariantCultureField);
+            packOperationTable["ISet_MessagePackObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfISet_MessagePackObjectField);
+            packOperationTable["ISetDateTimeField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfISetDateTimeField);
+            packOperationTable["ISetObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfISetObjectField);
+            packOperationTable["KeyValuePairStringComplexField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfKeyValuePairStringComplexField);
+            packOperationTable["KeyValuePairStringDateTimeOffsetField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfKeyValuePairStringDateTimeOffsetField);
+            packOperationTable["List_MessagePackObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfList_MessagePackObjectField);
+            packOperationTable["ListDateTimeField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfListDateTimeField);
+            packOperationTable["ListObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfListObjectField);
+            packOperationTable["MaxByteField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMaxByteField);
+            packOperationTable["MaxInt32Field"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMaxInt32Field);
+            packOperationTable["MaxInt64Field"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMaxInt64Field);
+            packOperationTable["MaxUInt16Field"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMaxUInt16Field);
+            packOperationTable["MessagePackObject_Field"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMessagePackObject_Field);
+            packOperationTable["MessagePackObjectArray_Field"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMessagePackObjectArray_Field);
+            packOperationTable["MinInt32Field"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMinInt32Field);
+            packOperationTable["MinInt64Field"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMinInt64Field);
+            packOperationTable["NullField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfNullField);
+            packOperationTable["ObjectArrayField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfObjectArrayField);
+            packOperationTable["ObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfObjectField);
+            packOperationTable["ObservableCollection_MessagePackObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfObservableCollection_MessagePackObjectField);
+            packOperationTable["ObservableCollectionDateTimeField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfObservableCollectionDateTimeField);
+            packOperationTable["ObservableCollectionObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfObservableCollectionObjectField);
+            packOperationTable["StringField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfStringField);
+            packOperationTable["StringKeyedCollection_DateTimeField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfStringKeyedCollection_DateTimeField);
+            packOperationTable["StringKeyedCollection_MessagePackObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfStringKeyedCollection_MessagePackObjectField);
+            packOperationTable["StringKeyedCollection_ObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfStringKeyedCollection_ObjectField);
+            packOperationTable["TimeSpanField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTimeSpanField);
+            packOperationTable["TinyByteField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTinyByteField);
+            packOperationTable["TinyInt32Field"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTinyInt32Field);
+            packOperationTable["TinyInt64Field"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTinyInt64Field);
+            packOperationTable["TinyUInt16Field"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTinyUInt16Field);
+            packOperationTable["TrueField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTrueField);
+            packOperationTable["Tuple_Int32_String_MessagePackObject_ObjectField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTuple_Int32_String_MessagePackObject_ObjectField);
+            packOperationTable["UriField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfUriField);
+            packOperationTable["VersionField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfVersionField);
+            this._packOperationTable = packOperationTable;
+            System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>[]);
+            unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>[77];
+            unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfAddOnlyCollection_DateTimeField);
+            unpackOperationList[1] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfAddOnlyCollection_MessagePackObjectField);
+            unpackOperationList[2] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfAddOnlyCollection_ObjectField);
+            unpackOperationList[3] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfArrayListField);
+            unpackOperationList[4] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfArraySegmentByteField);
+            unpackOperationList[5] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfArraySegmentDecimalField);
+            unpackOperationList[6] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfArraySegmentInt32Field);
+            unpackOperationList[7] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfBigIntegerField);
+            unpackOperationList[8] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfByteArrayField);
+            unpackOperationList[9] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfByteField);
+            unpackOperationList[10] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfCharArrayField);
+            unpackOperationList[11] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfCharField);
+            unpackOperationList[12] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfCollection_MessagePackObjectField);
+            unpackOperationList[13] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfCollectionDateTimeField);
+            unpackOperationList[14] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfCollectionObjectField);
+            unpackOperationList[15] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfComplexField);
+            unpackOperationList[16] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfCurrentCultureField);
+            unpackOperationList[17] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfDateTimeField);
+            unpackOperationList[18] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfDateTimeOffsetField);
+            unpackOperationList[19] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfDecimalField);
+            unpackOperationList[20] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfDictionary_MessagePackObject_MessagePackObjectField);
+            unpackOperationList[21] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfDictionaryEntryField);
+            unpackOperationList[22] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfDictionaryObjectObjectField);
+            unpackOperationList[23] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfDictionaryStringDateTimeField);
+            unpackOperationList[24] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfFalseField);
+            unpackOperationList[25] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfFILETIMEField);
+            unpackOperationList[26] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfGuidField);
+            unpackOperationList[27] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfHashSet_MessagePackObjectField);
+            unpackOperationList[28] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfHashSetDateTimeField);
+            unpackOperationList[29] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfHashSetObjectField);
+            unpackOperationList[30] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfHashtableField);
+            unpackOperationList[31] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfICollection_MessagePackObjectField);
+            unpackOperationList[32] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfICollectionDateTimeField);
+            unpackOperationList[33] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfICollectionObjectField);
+            unpackOperationList[34] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfIDictionary_MessagePackObject_MessagePackObjectField);
+            unpackOperationList[35] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfIDictionaryObjectObjectField);
+            unpackOperationList[36] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfIDictionaryStringDateTimeField);
+            unpackOperationList[37] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfIList_MessagePackObjectField);
+            unpackOperationList[38] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfIListDateTimeField);
+            unpackOperationList[39] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfIListObjectField);
+            unpackOperationList[40] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfImage_Field);
+            unpackOperationList[41] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfInvariantCultureField);
+            unpackOperationList[42] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfISet_MessagePackObjectField);
+            unpackOperationList[43] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfISetDateTimeField);
+            unpackOperationList[44] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfISetObjectField);
+            unpackOperationList[45] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfKeyValuePairStringComplexField);
+            unpackOperationList[46] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfKeyValuePairStringDateTimeOffsetField);
+            unpackOperationList[47] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfList_MessagePackObjectField);
+            unpackOperationList[48] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfListDateTimeField);
+            unpackOperationList[49] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfListObjectField);
+            unpackOperationList[50] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMaxByteField);
+            unpackOperationList[51] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMaxInt32Field);
+            unpackOperationList[52] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMaxInt64Field);
+            unpackOperationList[53] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMaxUInt16Field);
+            unpackOperationList[54] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMessagePackObject_Field);
+            unpackOperationList[55] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMessagePackObjectArray_Field);
+            unpackOperationList[56] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMinInt32Field);
+            unpackOperationList[57] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMinInt64Field);
+            unpackOperationList[58] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfNullField);
+            unpackOperationList[59] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfObjectArrayField);
+            unpackOperationList[60] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfObjectField);
+            unpackOperationList[61] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfObservableCollection_MessagePackObjectField);
+            unpackOperationList[62] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfObservableCollectionDateTimeField);
+            unpackOperationList[63] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfObservableCollectionObjectField);
+            unpackOperationList[64] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfStringField);
+            unpackOperationList[65] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfStringKeyedCollection_DateTimeField);
+            unpackOperationList[66] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfStringKeyedCollection_MessagePackObjectField);
+            unpackOperationList[67] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfStringKeyedCollection_ObjectField);
+            unpackOperationList[68] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfTimeSpanField);
+            unpackOperationList[69] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfTinyByteField);
+            unpackOperationList[70] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfTinyInt32Field);
+            unpackOperationList[71] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfTinyInt64Field);
+            unpackOperationList[72] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfTinyUInt16Field);
+            unpackOperationList[73] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfTrueField);
+            unpackOperationList[74] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfTuple_Int32_String_MessagePackObject_ObjectField);
+            unpackOperationList[75] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfUriField);
+            unpackOperationList[76] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfVersionField);
+            this._unpackOperationList = unpackOperationList;
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>>);
+            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>>(77);
+            unpackOperationTable["AddOnlyCollection_DateTimeField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfAddOnlyCollection_DateTimeField);
+            unpackOperationTable["AddOnlyCollection_MessagePackObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfAddOnlyCollection_MessagePackObjectField);
+            unpackOperationTable["AddOnlyCollection_ObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfAddOnlyCollection_ObjectField);
+            unpackOperationTable["ArrayListField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfArrayListField);
+            unpackOperationTable["ArraySegmentByteField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfArraySegmentByteField);
+            unpackOperationTable["ArraySegmentDecimalField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfArraySegmentDecimalField);
+            unpackOperationTable["ArraySegmentInt32Field"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfArraySegmentInt32Field);
+            unpackOperationTable["BigIntegerField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfBigIntegerField);
+            unpackOperationTable["ByteArrayField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfByteArrayField);
+            unpackOperationTable["ByteField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfByteField);
+            unpackOperationTable["CharArrayField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfCharArrayField);
+            unpackOperationTable["CharField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfCharField);
+            unpackOperationTable["Collection_MessagePackObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfCollection_MessagePackObjectField);
+            unpackOperationTable["CollectionDateTimeField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfCollectionDateTimeField);
+            unpackOperationTable["CollectionObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfCollectionObjectField);
+            unpackOperationTable["ComplexField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfComplexField);
+            unpackOperationTable["CurrentCultureField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfCurrentCultureField);
+            unpackOperationTable["DateTimeField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfDateTimeField);
+            unpackOperationTable["DateTimeOffsetField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfDateTimeOffsetField);
+            unpackOperationTable["DecimalField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfDecimalField);
+            unpackOperationTable["Dictionary_MessagePackObject_MessagePackObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfDictionary_MessagePackObject_MessagePackObjectField);
+            unpackOperationTable["DictionaryEntryField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfDictionaryEntryField);
+            unpackOperationTable["DictionaryObjectObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfDictionaryObjectObjectField);
+            unpackOperationTable["DictionaryStringDateTimeField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfDictionaryStringDateTimeField);
+            unpackOperationTable["FalseField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfFalseField);
+            unpackOperationTable["FILETIMEField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfFILETIMEField);
+            unpackOperationTable["GuidField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfGuidField);
+            unpackOperationTable["HashSet_MessagePackObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfHashSet_MessagePackObjectField);
+            unpackOperationTable["HashSetDateTimeField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfHashSetDateTimeField);
+            unpackOperationTable["HashSetObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfHashSetObjectField);
+            unpackOperationTable["HashtableField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfHashtableField);
+            unpackOperationTable["ICollection_MessagePackObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfICollection_MessagePackObjectField);
+            unpackOperationTable["ICollectionDateTimeField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfICollectionDateTimeField);
+            unpackOperationTable["ICollectionObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfICollectionObjectField);
+            unpackOperationTable["IDictionary_MessagePackObject_MessagePackObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfIDictionary_MessagePackObject_MessagePackObjectField);
+            unpackOperationTable["IDictionaryObjectObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfIDictionaryObjectObjectField);
+            unpackOperationTable["IDictionaryStringDateTimeField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfIDictionaryStringDateTimeField);
+            unpackOperationTable["IList_MessagePackObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfIList_MessagePackObjectField);
+            unpackOperationTable["IListDateTimeField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfIListDateTimeField);
+            unpackOperationTable["IListObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfIListObjectField);
+            unpackOperationTable["Image_Field"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfImage_Field);
+            unpackOperationTable["InvariantCultureField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfInvariantCultureField);
+            unpackOperationTable["ISet_MessagePackObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfISet_MessagePackObjectField);
+            unpackOperationTable["ISetDateTimeField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfISetDateTimeField);
+            unpackOperationTable["ISetObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfISetObjectField);
+            unpackOperationTable["KeyValuePairStringComplexField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfKeyValuePairStringComplexField);
+            unpackOperationTable["KeyValuePairStringDateTimeOffsetField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfKeyValuePairStringDateTimeOffsetField);
+            unpackOperationTable["List_MessagePackObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfList_MessagePackObjectField);
+            unpackOperationTable["ListDateTimeField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfListDateTimeField);
+            unpackOperationTable["ListObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfListObjectField);
+            unpackOperationTable["MaxByteField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMaxByteField);
+            unpackOperationTable["MaxInt32Field"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMaxInt32Field);
+            unpackOperationTable["MaxInt64Field"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMaxInt64Field);
+            unpackOperationTable["MaxUInt16Field"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMaxUInt16Field);
+            unpackOperationTable["MessagePackObject_Field"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMessagePackObject_Field);
+            unpackOperationTable["MessagePackObjectArray_Field"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMessagePackObjectArray_Field);
+            unpackOperationTable["MinInt32Field"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMinInt32Field);
+            unpackOperationTable["MinInt64Field"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfMinInt64Field);
+            unpackOperationTable["NullField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfNullField);
+            unpackOperationTable["ObjectArrayField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfObjectArrayField);
+            unpackOperationTable["ObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfObjectField);
+            unpackOperationTable["ObservableCollection_MessagePackObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfObservableCollection_MessagePackObjectField);
+            unpackOperationTable["ObservableCollectionDateTimeField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfObservableCollectionDateTimeField);
+            unpackOperationTable["ObservableCollectionObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfObservableCollectionObjectField);
+            unpackOperationTable["StringField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfStringField);
+            unpackOperationTable["StringKeyedCollection_DateTimeField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfStringKeyedCollection_DateTimeField);
+            unpackOperationTable["StringKeyedCollection_MessagePackObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfStringKeyedCollection_MessagePackObjectField);
+            unpackOperationTable["StringKeyedCollection_ObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfStringKeyedCollection_ObjectField);
+            unpackOperationTable["TimeSpanField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfTimeSpanField);
+            unpackOperationTable["TinyByteField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfTinyByteField);
+            unpackOperationTable["TinyInt32Field"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfTinyInt32Field);
+            unpackOperationTable["TinyInt64Field"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfTinyInt64Field);
+            unpackOperationTable["TinyUInt16Field"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfTinyUInt16Field);
+            unpackOperationTable["TrueField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfTrueField);
+            unpackOperationTable["Tuple_Int32_String_MessagePackObject_ObjectField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfTuple_Int32_String_MessagePackObject_ObjectField);
+            unpackOperationTable["UriField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfUriField);
+            unpackOperationTable["VersionField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int>(this.UnpackValueOfVersionField);
+            this._unpackOperationTable = unpackOperationTable;
+            this._memberNames = new string[] {
+                    "AddOnlyCollection_DateTimeField",
+                    "AddOnlyCollection_MessagePackObjectField",
+                    "AddOnlyCollection_ObjectField",
+                    "ArrayListField",
+                    "ArraySegmentByteField",
+                    "ArraySegmentDecimalField",
+                    "ArraySegmentInt32Field",
+                    "BigIntegerField",
+                    "ByteArrayField",
+                    "ByteField",
+                    "CharArrayField",
+                    "CharField",
+                    "Collection_MessagePackObjectField",
+                    "CollectionDateTimeField",
+                    "CollectionObjectField",
+                    "ComplexField",
+                    "CurrentCultureField",
+                    "DateTimeField",
+                    "DateTimeOffsetField",
+                    "DecimalField",
+                    "Dictionary_MessagePackObject_MessagePackObjectField",
+                    "DictionaryEntryField",
+                    "DictionaryObjectObjectField",
+                    "DictionaryStringDateTimeField",
+                    "FalseField",
+                    "FILETIMEField",
+                    "GuidField",
+                    "HashSet_MessagePackObjectField",
+                    "HashSetDateTimeField",
+                    "HashSetObjectField",
+                    "HashtableField",
+                    "ICollection_MessagePackObjectField",
+                    "ICollectionDateTimeField",
+                    "ICollectionObjectField",
+                    "IDictionary_MessagePackObject_MessagePackObjectField",
+                    "IDictionaryObjectObjectField",
+                    "IDictionaryStringDateTimeField",
+                    "IList_MessagePackObjectField",
+                    "IListDateTimeField",
+                    "IListObjectField",
+                    "Image_Field",
+                    "InvariantCultureField",
+                    "ISet_MessagePackObjectField",
+                    "ISetDateTimeField",
+                    "ISetObjectField",
+                    "KeyValuePairStringComplexField",
+                    "KeyValuePairStringDateTimeOffsetField",
+                    "List_MessagePackObjectField",
+                    "ListDateTimeField",
+                    "ListObjectField",
+                    "MaxByteField",
+                    "MaxInt32Field",
+                    "MaxInt64Field",
+                    "MaxUInt16Field",
+                    "MessagePackObject_Field",
+                    "MessagePackObjectArray_Field",
+                    "MinInt32Field",
+                    "MinInt64Field",
+                    "NullField",
+                    "ObjectArrayField",
+                    "ObjectField",
+                    "ObservableCollection_MessagePackObjectField",
+                    "ObservableCollectionDateTimeField",
+                    "ObservableCollectionObjectField",
+                    "StringField",
+                    "StringKeyedCollection_DateTimeField",
+                    "StringKeyedCollection_MessagePackObjectField",
+                    "StringKeyedCollection_ObjectField",
+                    "TimeSpanField",
+                    "TinyByteField",
+                    "TinyInt32Field",
+                    "TinyInt64Field",
+                    "TinyUInt16Field",
+                    "TrueField",
+                    "Tuple_Int32_String_MessagePackObject_ObjectField",
+                    "UriField",
+                    "VersionField"};
+        }
+        
+        private void PackValueOfAddOnlyCollection_DateTimeField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer0.PackTo(packer, objectTree.AddOnlyCollection_DateTimeField);
+        }
+        
+        private void PackValueOfAddOnlyCollection_MessagePackObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer1.PackTo(packer, objectTree.AddOnlyCollection_MessagePackObjectField);
+        }
+        
+        private void PackValueOfAddOnlyCollection_ObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer2.PackTo(packer, objectTree.AddOnlyCollection_ObjectField);
+        }
+        
+        private void PackValueOfArrayListField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer3.PackTo(packer, objectTree.ArrayListField);
+        }
+        
+        private void PackValueOfArraySegmentByteField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer4.PackTo(packer, objectTree.ArraySegmentByteField);
+        }
+        
+        private void PackValueOfArraySegmentDecimalField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer5.PackTo(packer, objectTree.ArraySegmentDecimalField);
+        }
+        
+        private void PackValueOfArraySegmentInt32Field(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer6.PackTo(packer, objectTree.ArraySegmentInt32Field);
+        }
+        
+        private void PackValueOfBigIntegerField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer7.PackTo(packer, objectTree.BigIntegerField);
+        }
+        
+        private void PackValueOfByteArrayField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer8.PackTo(packer, objectTree.ByteArrayField);
+        }
+        
+        private void PackValueOfByteField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer9.PackTo(packer, objectTree.ByteField);
+        }
+        
+        private void PackValueOfCharArrayField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer10.PackTo(packer, objectTree.CharArrayField);
+        }
+        
+        private void PackValueOfCharField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer11.PackTo(packer, objectTree.CharField);
+        }
+        
+        private void PackValueOfCollection_MessagePackObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer12.PackTo(packer, objectTree.Collection_MessagePackObjectField);
+        }
+        
+        private void PackValueOfCollectionDateTimeField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer13.PackTo(packer, objectTree.CollectionDateTimeField);
+        }
+        
+        private void PackValueOfCollectionObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer14.PackTo(packer, objectTree.CollectionObjectField);
+        }
+        
+        private void PackValueOfComplexField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer15.PackTo(packer, objectTree.ComplexField);
+        }
+        
+        private void PackValueOfCurrentCultureField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer16.PackTo(packer, objectTree.CurrentCultureField);
+        }
+        
+        private void PackValueOfDateTimeField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer17.PackTo(packer, objectTree.DateTimeField);
+        }
+        
+        private void PackValueOfDateTimeOffsetField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer18.PackTo(packer, objectTree.DateTimeOffsetField);
+        }
+        
+        private void PackValueOfDecimalField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer19.PackTo(packer, objectTree.DecimalField);
+        }
+        
+        private void PackValueOfDictionary_MessagePackObject_MessagePackObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer20.PackTo(packer, objectTree.Dictionary_MessagePackObject_MessagePackObjectField);
+        }
+        
+        private void PackValueOfDictionaryEntryField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer21.PackTo(packer, objectTree.DictionaryEntryField);
+        }
+        
+        private void PackValueOfDictionaryObjectObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer22.PackTo(packer, objectTree.DictionaryObjectObjectField);
+        }
+        
+        private void PackValueOfDictionaryStringDateTimeField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer23.PackTo(packer, objectTree.DictionaryStringDateTimeField);
+        }
+        
+        private void PackValueOfFalseField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer24.PackTo(packer, objectTree.FalseField);
+        }
+        
+        private void PackValueOfFILETIMEField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer25.PackTo(packer, objectTree.FILETIMEField);
+        }
+        
+        private void PackValueOfGuidField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer26.PackTo(packer, objectTree.GuidField);
+        }
+        
+        private void PackValueOfHashSet_MessagePackObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer27.PackTo(packer, objectTree.HashSet_MessagePackObjectField);
+        }
+        
+        private void PackValueOfHashSetDateTimeField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer28.PackTo(packer, objectTree.HashSetDateTimeField);
+        }
+        
+        private void PackValueOfHashSetObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer29.PackTo(packer, objectTree.HashSetObjectField);
+        }
+        
+        private void PackValueOfHashtableField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer30.PackTo(packer, objectTree.HashtableField);
+        }
+        
+        private void PackValueOfICollection_MessagePackObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer31.PackTo(packer, objectTree.ICollection_MessagePackObjectField);
+        }
+        
+        private void PackValueOfICollectionDateTimeField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer32.PackTo(packer, objectTree.ICollectionDateTimeField);
+        }
+        
+        private void PackValueOfICollectionObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer33.PackTo(packer, objectTree.ICollectionObjectField);
+        }
+        
+        private void PackValueOfIDictionary_MessagePackObject_MessagePackObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer34.PackTo(packer, objectTree.IDictionary_MessagePackObject_MessagePackObjectField);
+        }
+        
+        private void PackValueOfIDictionaryObjectObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer35.PackTo(packer, objectTree.IDictionaryObjectObjectField);
+        }
+        
+        private void PackValueOfIDictionaryStringDateTimeField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer36.PackTo(packer, objectTree.IDictionaryStringDateTimeField);
+        }
+        
+        private void PackValueOfIList_MessagePackObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer37.PackTo(packer, objectTree.IList_MessagePackObjectField);
+        }
+        
+        private void PackValueOfIListDateTimeField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer38.PackTo(packer, objectTree.IListDateTimeField);
+        }
+        
+        private void PackValueOfIListObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer39.PackTo(packer, objectTree.IListObjectField);
+        }
+        
+        private void PackValueOfImage_Field(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer40.PackTo(packer, objectTree.Image_Field);
+        }
+        
+        private void PackValueOfInvariantCultureField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer16.PackTo(packer, objectTree.InvariantCultureField);
+        }
+        
+        private void PackValueOfISet_MessagePackObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer41.PackTo(packer, objectTree.ISet_MessagePackObjectField);
+        }
+        
+        private void PackValueOfISetDateTimeField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer42.PackTo(packer, objectTree.ISetDateTimeField);
+        }
+        
+        private void PackValueOfISetObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer43.PackTo(packer, objectTree.ISetObjectField);
+        }
+        
+        private void PackValueOfKeyValuePairStringComplexField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer44.PackTo(packer, objectTree.KeyValuePairStringComplexField);
+        }
+        
+        private void PackValueOfKeyValuePairStringDateTimeOffsetField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer45.PackTo(packer, objectTree.KeyValuePairStringDateTimeOffsetField);
+        }
+        
+        private void PackValueOfList_MessagePackObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer46.PackTo(packer, objectTree.List_MessagePackObjectField);
+        }
+        
+        private void PackValueOfListDateTimeField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer47.PackTo(packer, objectTree.ListDateTimeField);
+        }
+        
+        private void PackValueOfListObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer48.PackTo(packer, objectTree.ListObjectField);
+        }
+        
+        private void PackValueOfMaxByteField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer9.PackTo(packer, objectTree.MaxByteField);
+        }
+        
+        private void PackValueOfMaxInt32Field(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer49.PackTo(packer, objectTree.MaxInt32Field);
+        }
+        
+        private void PackValueOfMaxInt64Field(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer50.PackTo(packer, objectTree.MaxInt64Field);
+        }
+        
+        private void PackValueOfMaxUInt16Field(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer51.PackTo(packer, objectTree.MaxUInt16Field);
+        }
+        
+        private void PackValueOfMessagePackObject_Field(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer52.PackTo(packer, objectTree.MessagePackObject_Field);
+        }
+        
+        private void PackValueOfMessagePackObjectArray_Field(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer53.PackTo(packer, objectTree.MessagePackObjectArray_Field);
+        }
+        
+        private void PackValueOfMinInt32Field(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer49.PackTo(packer, objectTree.MinInt32Field);
+        }
+        
+        private void PackValueOfMinInt64Field(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer50.PackTo(packer, objectTree.MinInt64Field);
+        }
+        
+        private void PackValueOfNullField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer54.PackTo(packer, objectTree.NullField);
+        }
+        
+        private void PackValueOfObjectArrayField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer55.PackTo(packer, objectTree.ObjectArrayField);
+        }
+        
+        private void PackValueOfObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer54.PackTo(packer, objectTree.ObjectField);
+        }
+        
+        private void PackValueOfObservableCollection_MessagePackObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer56.PackTo(packer, objectTree.ObservableCollection_MessagePackObjectField);
+        }
+        
+        private void PackValueOfObservableCollectionDateTimeField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer57.PackTo(packer, objectTree.ObservableCollectionDateTimeField);
+        }
+        
+        private void PackValueOfObservableCollectionObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer58.PackTo(packer, objectTree.ObservableCollectionObjectField);
+        }
+        
+        private void PackValueOfStringField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer59.PackTo(packer, objectTree.StringField);
+        }
+        
+        private void PackValueOfStringKeyedCollection_DateTimeField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer60.PackTo(packer, objectTree.StringKeyedCollection_DateTimeField);
+        }
+        
+        private void PackValueOfStringKeyedCollection_MessagePackObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer61.PackTo(packer, objectTree.StringKeyedCollection_MessagePackObjectField);
+        }
+        
+        private void PackValueOfStringKeyedCollection_ObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer62.PackTo(packer, objectTree.StringKeyedCollection_ObjectField);
+        }
+        
+        private void PackValueOfTimeSpanField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer63.PackTo(packer, objectTree.TimeSpanField);
+        }
+        
+        private void PackValueOfTinyByteField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer9.PackTo(packer, objectTree.TinyByteField);
+        }
+        
+        private void PackValueOfTinyInt32Field(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer49.PackTo(packer, objectTree.TinyInt32Field);
+        }
+        
+        private void PackValueOfTinyInt64Field(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer50.PackTo(packer, objectTree.TinyInt64Field);
+        }
+        
+        private void PackValueOfTinyUInt16Field(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer51.PackTo(packer, objectTree.TinyUInt16Field);
+        }
+        
+        private void PackValueOfTrueField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer24.PackTo(packer, objectTree.TrueField);
+        }
+        
+        private void PackValueOfTuple_Int32_String_MessagePackObject_ObjectField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer64.PackTo(packer, objectTree.Tuple_Int32_String_MessagePackObject_ObjectField);
+        }
+        
+        private void PackValueOfUriField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer65.PackTo(packer, objectTree.UriField);
+        }
+        
+        private void PackValueOfVersionField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
+            this._serializer66.PackTo(packer, objectTree.VersionField);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
-            packer.PackMapHeader(77);
-            this._serializer0.PackTo(packer, "AddOnlyCollection_DateTimeField");
-            this._serializer1.PackTo(packer, objectTree.AddOnlyCollection_DateTimeField);
-            this._serializer0.PackTo(packer, "AddOnlyCollection_MessagePackObjectField");
-            this._serializer2.PackTo(packer, objectTree.AddOnlyCollection_MessagePackObjectField);
-            this._serializer0.PackTo(packer, "AddOnlyCollection_ObjectField");
-            this._serializer3.PackTo(packer, objectTree.AddOnlyCollection_ObjectField);
-            this._serializer0.PackTo(packer, "ArrayListField");
-            this._serializer4.PackTo(packer, objectTree.ArrayListField);
-            this._serializer0.PackTo(packer, "ArraySegmentByteField");
-            this._serializer5.PackTo(packer, objectTree.ArraySegmentByteField);
-            this._serializer0.PackTo(packer, "ArraySegmentDecimalField");
-            this._serializer6.PackTo(packer, objectTree.ArraySegmentDecimalField);
-            this._serializer0.PackTo(packer, "ArraySegmentInt32Field");
-            this._serializer7.PackTo(packer, objectTree.ArraySegmentInt32Field);
-            this._serializer0.PackTo(packer, "BigIntegerField");
-            this._serializer8.PackTo(packer, objectTree.BigIntegerField);
-            this._serializer0.PackTo(packer, "ByteArrayField");
-            this._serializer9.PackTo(packer, objectTree.ByteArrayField);
-            this._serializer0.PackTo(packer, "ByteField");
-            this._serializer10.PackTo(packer, objectTree.ByteField);
-            this._serializer0.PackTo(packer, "CharArrayField");
-            this._serializer11.PackTo(packer, objectTree.CharArrayField);
-            this._serializer0.PackTo(packer, "CharField");
-            this._serializer12.PackTo(packer, objectTree.CharField);
-            this._serializer0.PackTo(packer, "Collection_MessagePackObjectField");
-            this._serializer13.PackTo(packer, objectTree.Collection_MessagePackObjectField);
-            this._serializer0.PackTo(packer, "CollectionDateTimeField");
-            this._serializer14.PackTo(packer, objectTree.CollectionDateTimeField);
-            this._serializer0.PackTo(packer, "CollectionObjectField");
-            this._serializer15.PackTo(packer, objectTree.CollectionObjectField);
-            this._serializer0.PackTo(packer, "ComplexField");
-            this._serializer16.PackTo(packer, objectTree.ComplexField);
-            this._serializer0.PackTo(packer, "CurrentCultureField");
-            this._serializer17.PackTo(packer, objectTree.CurrentCultureField);
-            this._serializer0.PackTo(packer, "DateTimeField");
-            this._serializer18.PackTo(packer, objectTree.DateTimeField);
-            this._serializer0.PackTo(packer, "DateTimeOffsetField");
-            this._serializer19.PackTo(packer, objectTree.DateTimeOffsetField);
-            this._serializer0.PackTo(packer, "DecimalField");
-            this._serializer20.PackTo(packer, objectTree.DecimalField);
-            this._serializer0.PackTo(packer, "Dictionary_MessagePackObject_MessagePackObjectField");
-            this._serializer21.PackTo(packer, objectTree.Dictionary_MessagePackObject_MessagePackObjectField);
-            this._serializer0.PackTo(packer, "DictionaryEntryField");
-            this._serializer22.PackTo(packer, objectTree.DictionaryEntryField);
-            this._serializer0.PackTo(packer, "DictionaryObjectObjectField");
-            this._serializer23.PackTo(packer, objectTree.DictionaryObjectObjectField);
-            this._serializer0.PackTo(packer, "DictionaryStringDateTimeField");
-            this._serializer24.PackTo(packer, objectTree.DictionaryStringDateTimeField);
-            this._serializer0.PackTo(packer, "FalseField");
-            this._serializer25.PackTo(packer, objectTree.FalseField);
-            this._serializer0.PackTo(packer, "FILETIMEField");
-            this._serializer26.PackTo(packer, objectTree.FILETIMEField);
-            this._serializer0.PackTo(packer, "GuidField");
-            this._serializer27.PackTo(packer, objectTree.GuidField);
-            this._serializer0.PackTo(packer, "HashSet_MessagePackObjectField");
-            this._serializer28.PackTo(packer, objectTree.HashSet_MessagePackObjectField);
-            this._serializer0.PackTo(packer, "HashSetDateTimeField");
-            this._serializer29.PackTo(packer, objectTree.HashSetDateTimeField);
-            this._serializer0.PackTo(packer, "HashSetObjectField");
-            this._serializer30.PackTo(packer, objectTree.HashSetObjectField);
-            this._serializer0.PackTo(packer, "HashtableField");
-            this._serializer31.PackTo(packer, objectTree.HashtableField);
-            this._serializer0.PackTo(packer, "ICollection_MessagePackObjectField");
-            this._serializer32.PackTo(packer, objectTree.ICollection_MessagePackObjectField);
-            this._serializer0.PackTo(packer, "ICollectionDateTimeField");
-            this._serializer33.PackTo(packer, objectTree.ICollectionDateTimeField);
-            this._serializer0.PackTo(packer, "ICollectionObjectField");
-            this._serializer34.PackTo(packer, objectTree.ICollectionObjectField);
-            this._serializer0.PackTo(packer, "IDictionary_MessagePackObject_MessagePackObjectField");
-            this._serializer35.PackTo(packer, objectTree.IDictionary_MessagePackObject_MessagePackObjectField);
-            this._serializer0.PackTo(packer, "IDictionaryObjectObjectField");
-            this._serializer36.PackTo(packer, objectTree.IDictionaryObjectObjectField);
-            this._serializer0.PackTo(packer, "IDictionaryStringDateTimeField");
-            this._serializer37.PackTo(packer, objectTree.IDictionaryStringDateTimeField);
-            this._serializer0.PackTo(packer, "IList_MessagePackObjectField");
-            this._serializer38.PackTo(packer, objectTree.IList_MessagePackObjectField);
-            this._serializer0.PackTo(packer, "IListDateTimeField");
-            this._serializer39.PackTo(packer, objectTree.IListDateTimeField);
-            this._serializer0.PackTo(packer, "IListObjectField");
-            this._serializer40.PackTo(packer, objectTree.IListObjectField);
-            this._serializer0.PackTo(packer, "Image_Field");
-            this._serializer41.PackTo(packer, objectTree.Image_Field);
-            this._serializer0.PackTo(packer, "InvariantCultureField");
-            this._serializer17.PackTo(packer, objectTree.InvariantCultureField);
-            this._serializer0.PackTo(packer, "ISet_MessagePackObjectField");
-            this._serializer42.PackTo(packer, objectTree.ISet_MessagePackObjectField);
-            this._serializer0.PackTo(packer, "ISetDateTimeField");
-            this._serializer43.PackTo(packer, objectTree.ISetDateTimeField);
-            this._serializer0.PackTo(packer, "ISetObjectField");
-            this._serializer44.PackTo(packer, objectTree.ISetObjectField);
-            this._serializer0.PackTo(packer, "KeyValuePairStringComplexField");
-            this._serializer45.PackTo(packer, objectTree.KeyValuePairStringComplexField);
-            this._serializer0.PackTo(packer, "KeyValuePairStringDateTimeOffsetField");
-            this._serializer46.PackTo(packer, objectTree.KeyValuePairStringDateTimeOffsetField);
-            this._serializer0.PackTo(packer, "List_MessagePackObjectField");
-            this._serializer47.PackTo(packer, objectTree.List_MessagePackObjectField);
-            this._serializer0.PackTo(packer, "ListDateTimeField");
-            this._serializer48.PackTo(packer, objectTree.ListDateTimeField);
-            this._serializer0.PackTo(packer, "ListObjectField");
-            this._serializer49.PackTo(packer, objectTree.ListObjectField);
-            this._serializer0.PackTo(packer, "MaxByteField");
-            this._serializer10.PackTo(packer, objectTree.MaxByteField);
-            this._serializer0.PackTo(packer, "MaxInt32Field");
-            this._serializer50.PackTo(packer, objectTree.MaxInt32Field);
-            this._serializer0.PackTo(packer, "MaxInt64Field");
-            this._serializer51.PackTo(packer, objectTree.MaxInt64Field);
-            this._serializer0.PackTo(packer, "MaxUInt16Field");
-            this._serializer52.PackTo(packer, objectTree.MaxUInt16Field);
-            this._serializer0.PackTo(packer, "MessagePackObject_Field");
-            this._serializer53.PackTo(packer, objectTree.MessagePackObject_Field);
-            this._serializer0.PackTo(packer, "MessagePackObjectArray_Field");
-            this._serializer54.PackTo(packer, objectTree.MessagePackObjectArray_Field);
-            this._serializer0.PackTo(packer, "MinInt32Field");
-            this._serializer50.PackTo(packer, objectTree.MinInt32Field);
-            this._serializer0.PackTo(packer, "MinInt64Field");
-            this._serializer51.PackTo(packer, objectTree.MinInt64Field);
-            this._serializer0.PackTo(packer, "NullField");
-            this._serializer55.PackTo(packer, objectTree.NullField);
-            this._serializer0.PackTo(packer, "ObjectArrayField");
-            this._serializer56.PackTo(packer, objectTree.ObjectArrayField);
-            this._serializer0.PackTo(packer, "ObjectField");
-            this._serializer55.PackTo(packer, objectTree.ObjectField);
-            this._serializer0.PackTo(packer, "ObservableCollection_MessagePackObjectField");
-            this._serializer57.PackTo(packer, objectTree.ObservableCollection_MessagePackObjectField);
-            this._serializer0.PackTo(packer, "ObservableCollectionDateTimeField");
-            this._serializer58.PackTo(packer, objectTree.ObservableCollectionDateTimeField);
-            this._serializer0.PackTo(packer, "ObservableCollectionObjectField");
-            this._serializer59.PackTo(packer, objectTree.ObservableCollectionObjectField);
-            this._serializer0.PackTo(packer, "StringField");
-            this._serializer0.PackTo(packer, objectTree.StringField);
-            this._serializer0.PackTo(packer, "StringKeyedCollection_DateTimeField");
-            this._serializer60.PackTo(packer, objectTree.StringKeyedCollection_DateTimeField);
-            this._serializer0.PackTo(packer, "StringKeyedCollection_MessagePackObjectField");
-            this._serializer61.PackTo(packer, objectTree.StringKeyedCollection_MessagePackObjectField);
-            this._serializer0.PackTo(packer, "StringKeyedCollection_ObjectField");
-            this._serializer62.PackTo(packer, objectTree.StringKeyedCollection_ObjectField);
-            this._serializer0.PackTo(packer, "TimeSpanField");
-            this._serializer63.PackTo(packer, objectTree.TimeSpanField);
-            this._serializer0.PackTo(packer, "TinyByteField");
-            this._serializer10.PackTo(packer, objectTree.TinyByteField);
-            this._serializer0.PackTo(packer, "TinyInt32Field");
-            this._serializer50.PackTo(packer, objectTree.TinyInt32Field);
-            this._serializer0.PackTo(packer, "TinyInt64Field");
-            this._serializer51.PackTo(packer, objectTree.TinyInt64Field);
-            this._serializer0.PackTo(packer, "TinyUInt16Field");
-            this._serializer52.PackTo(packer, objectTree.TinyUInt16Field);
-            this._serializer0.PackTo(packer, "TrueField");
-            this._serializer25.PackTo(packer, objectTree.TrueField);
-            this._serializer64.PackTo(packer, "Tuple_Int32_String_MessagePackObject_ObjectField");
-            this._serializer65.PackTo(packer, objectTree.Tuple_Int32_String_MessagePackObject_ObjectField);
-            this._serializer0.PackTo(packer, "UriField");
-            this._serializer66.PackTo(packer, objectTree.UriField);
-            this._serializer0.PackTo(packer, "VersionField");
-            this._serializer67.PackTo(packer, objectTree.VersionField);
+            MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+        }
+        
+        private void UnpackValueOfAddOnlyCollection_DateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            MsgPack.Serialization.AddOnlyCollection<System.DateTime> nullable = default(MsgPack.Serialization.AddOnlyCollection<System.DateTime>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "AddOnlyCollection_DateTimeField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable = this._serializer0.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
+                disposable = unpacker.ReadSubtree();
+                try {
+                    nullable = this._serializer0.UnpackFrom(disposable);
+                }
+                finally {
+                    if (((disposable == null) 
+                                == false)) {
+                        disposable.Dispose();
+                    }
+                }
+            }
+            if (((nullable == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<System.DateTime> enumerator = nullable.GetEnumerator();
+                System.DateTime current;
+                try {
+                    for (
+                    ; enumerator.MoveNext(); 
+                    ) {
+                        current = enumerator.Current;
+                        unpackingContext.AddOnlyCollection_DateTimeField.Add(current);
+                    }
+                }
+                finally {
+                    enumerator.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfAddOnlyCollection_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject> nullable0 = default(MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "AddOnlyCollection_MessagePackObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable0 = this._serializer1.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
+                disposable0 = unpacker.ReadSubtree();
+                try {
+                    nullable0 = this._serializer1.UnpackFrom(disposable0);
+                }
+                finally {
+                    if (((disposable0 == null) 
+                                == false)) {
+                        disposable0.Dispose();
+                    }
+                }
+            }
+            if (((nullable0 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator0 = nullable0.GetEnumerator();
+                MsgPack.MessagePackObject current0;
+                try {
+                    for (
+                    ; enumerator0.MoveNext(); 
+                    ) {
+                        current0 = enumerator0.Current;
+                        unpackingContext.AddOnlyCollection_MessagePackObjectField.Add(current0);
+                    }
+                }
+                finally {
+                    enumerator0.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfAddOnlyCollection_ObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            MsgPack.Serialization.AddOnlyCollection<object> nullable1 = default(MsgPack.Serialization.AddOnlyCollection<object>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "AddOnlyCollection_ObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable1 = this._serializer2.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable1 = default(MsgPack.Unpacker);
+                disposable1 = unpacker.ReadSubtree();
+                try {
+                    nullable1 = this._serializer2.UnpackFrom(disposable1);
+                }
+                finally {
+                    if (((disposable1 == null) 
+                                == false)) {
+                        disposable1.Dispose();
+                    }
+                }
+            }
+            if (((nullable1 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<object> enumerator1 = nullable1.GetEnumerator();
+                object current1;
+                try {
+                    for (
+                    ; enumerator1.MoveNext(); 
+                    ) {
+                        current1 = enumerator1.Current;
+                        unpackingContext.AddOnlyCollection_ObjectField.Add(current1);
+                    }
+                }
+                finally {
+                    enumerator1.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfArrayListField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.ArrayList nullable2 = default(System.Collections.ArrayList);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ArrayListField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable2 = this._serializer3.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable2 = default(MsgPack.Unpacker);
+                disposable2 = unpacker.ReadSubtree();
+                try {
+                    nullable2 = this._serializer3.UnpackFrom(disposable2);
+                }
+                finally {
+                    if (((disposable2 == null) 
+                                == false)) {
+                        disposable2.Dispose();
+                    }
+                }
+            }
+            if (((nullable2 == null) 
+                        == false)) {
+                System.Collections.IEnumerator enumerator2 = nullable2.GetEnumerator();
+                object current2;
+                for (
+                ; enumerator2.MoveNext(); 
+                ) {
+                    current2 = enumerator2.Current;
+                    unpackingContext.ArrayListField.Add(current2);
+                }
+            }
+        }
+        
+        private void UnpackValueOfArraySegmentByteField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<System.ArraySegment<byte>> nullable3 = default(System.Nullable<System.ArraySegment<byte>>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ArraySegmentByteField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable3 = this._serializer67.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable3 = default(MsgPack.Unpacker);
+                disposable3 = unpacker.ReadSubtree();
+                try {
+                    nullable3 = this._serializer67.UnpackFrom(disposable3);
+                }
+                finally {
+                    if (((disposable3 == null) 
+                                == false)) {
+                        disposable3.Dispose();
+                    }
+                }
+            }
+            if (nullable3.HasValue) {
+                unpackingContext.ArraySegmentByteField = nullable3.Value;
+            }
+        }
+        
+        private void UnpackValueOfArraySegmentDecimalField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<System.ArraySegment<decimal>> nullable4 = default(System.Nullable<System.ArraySegment<decimal>>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ArraySegmentDecimalField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable4 = this._serializer68.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable4 = default(MsgPack.Unpacker);
+                disposable4 = unpacker.ReadSubtree();
+                try {
+                    nullable4 = this._serializer68.UnpackFrom(disposable4);
+                }
+                finally {
+                    if (((disposable4 == null) 
+                                == false)) {
+                        disposable4.Dispose();
+                    }
+                }
+            }
+            if (nullable4.HasValue) {
+                unpackingContext.ArraySegmentDecimalField = nullable4.Value;
+            }
+        }
+        
+        private void UnpackValueOfArraySegmentInt32Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<System.ArraySegment<int>> nullable5 = default(System.Nullable<System.ArraySegment<int>>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ArraySegmentInt32Field", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable5 = this._serializer69.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable5 = default(MsgPack.Unpacker);
+                disposable5 = unpacker.ReadSubtree();
+                try {
+                    nullable5 = this._serializer69.UnpackFrom(disposable5);
+                }
+                finally {
+                    if (((disposable5 == null) 
+                                == false)) {
+                        disposable5.Dispose();
+                    }
+                }
+            }
+            if (nullable5.HasValue) {
+                unpackingContext.ArraySegmentInt32Field = nullable5.Value;
+            }
+        }
+        
+        private void UnpackValueOfBigIntegerField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<System.Numerics.BigInteger> nullable6 = default(System.Nullable<System.Numerics.BigInteger>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "BigIntegerField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable6 = this._serializer70.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable6 = default(MsgPack.Unpacker);
+                disposable6 = unpacker.ReadSubtree();
+                try {
+                    nullable6 = this._serializer70.UnpackFrom(disposable6);
+                }
+                finally {
+                    if (((disposable6 == null) 
+                                == false)) {
+                        disposable6.Dispose();
+                    }
+                }
+            }
+            if (nullable6.HasValue) {
+                unpackingContext.BigIntegerField = nullable6.Value;
+            }
+        }
+        
+        private void UnpackValueOfByteArrayField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            byte[] nullable7 = default(byte[]);
+            nullable7 = MsgPack.Serialization.UnpackHelpers.UnpackBinaryValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "ByteArrayField");
+            if (((nullable7 == null) 
+                        == false)) {
+                unpackingContext.ByteArrayField = nullable7;
+            }
+        }
+        
+        private void UnpackValueOfByteField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<byte> nullable8 = default(System.Nullable<byte>);
+            nullable8 = MsgPack.Serialization.UnpackHelpers.UnpackNullableByteValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "ByteField");
+            if (nullable8.HasValue) {
+                unpackingContext.ByteField = nullable8.Value;
+            }
+        }
+        
+        private void UnpackValueOfCharArrayField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            char[] nullable9 = default(char[]);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "CharArrayField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable9 = this._serializer10.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable7 = default(MsgPack.Unpacker);
+                disposable7 = unpacker.ReadSubtree();
+                try {
+                    nullable9 = this._serializer10.UnpackFrom(disposable7);
+                }
+                finally {
+                    if (((disposable7 == null) 
+                                == false)) {
+                        disposable7.Dispose();
+                    }
+                }
+            }
+            if (((nullable9 == null) 
+                        == false)) {
+                unpackingContext.CharArrayField = nullable9;
+            }
+        }
+        
+        private void UnpackValueOfCharField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<char> nullable10 = default(System.Nullable<char>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "CharField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable10 = this._serializer71.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable8 = default(MsgPack.Unpacker);
+                disposable8 = unpacker.ReadSubtree();
+                try {
+                    nullable10 = this._serializer71.UnpackFrom(disposable8);
+                }
+                finally {
+                    if (((disposable8 == null) 
+                                == false)) {
+                        disposable8.Dispose();
+                    }
+                }
+            }
+            if (nullable10.HasValue) {
+                unpackingContext.CharField = nullable10.Value;
+            }
+        }
+        
+        private void UnpackValueOfCollection_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> nullable11 = default(System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "Collection_MessagePackObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable11 = this._serializer12.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable9 = default(MsgPack.Unpacker);
+                disposable9 = unpacker.ReadSubtree();
+                try {
+                    nullable11 = this._serializer12.UnpackFrom(disposable9);
+                }
+                finally {
+                    if (((disposable9 == null) 
+                                == false)) {
+                        disposable9.Dispose();
+                    }
+                }
+            }
+            if (((nullable11 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator3 = nullable11.GetEnumerator();
+                MsgPack.MessagePackObject current3;
+                try {
+                    for (
+                    ; enumerator3.MoveNext(); 
+                    ) {
+                        current3 = enumerator3.Current;
+                        unpackingContext.Collection_MessagePackObjectField.Add(current3);
+                    }
+                }
+                finally {
+                    enumerator3.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfCollectionDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.ObjectModel.Collection<System.DateTime> nullable12 = default(System.Collections.ObjectModel.Collection<System.DateTime>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "CollectionDateTimeField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable12 = this._serializer13.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable10 = default(MsgPack.Unpacker);
+                disposable10 = unpacker.ReadSubtree();
+                try {
+                    nullable12 = this._serializer13.UnpackFrom(disposable10);
+                }
+                finally {
+                    if (((disposable10 == null) 
+                                == false)) {
+                        disposable10.Dispose();
+                    }
+                }
+            }
+            if (((nullable12 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<System.DateTime> enumerator4 = nullable12.GetEnumerator();
+                System.DateTime current4;
+                try {
+                    for (
+                    ; enumerator4.MoveNext(); 
+                    ) {
+                        current4 = enumerator4.Current;
+                        unpackingContext.CollectionDateTimeField.Add(current4);
+                    }
+                }
+                finally {
+                    enumerator4.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfCollectionObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.ObjectModel.Collection<object> nullable13 = default(System.Collections.ObjectModel.Collection<object>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "CollectionObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable13 = this._serializer14.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable11 = default(MsgPack.Unpacker);
+                disposable11 = unpacker.ReadSubtree();
+                try {
+                    nullable13 = this._serializer14.UnpackFrom(disposable11);
+                }
+                finally {
+                    if (((disposable11 == null) 
+                                == false)) {
+                        disposable11.Dispose();
+                    }
+                }
+            }
+            if (((nullable13 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<object> enumerator5 = nullable13.GetEnumerator();
+                object current5;
+                try {
+                    for (
+                    ; enumerator5.MoveNext(); 
+                    ) {
+                        current5 = enumerator5.Current;
+                        unpackingContext.CollectionObjectField.Add(current5);
+                    }
+                }
+                finally {
+                    enumerator5.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfComplexField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<System.Numerics.Complex> nullable14 = default(System.Nullable<System.Numerics.Complex>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ComplexField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable14 = this._serializer72.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable12 = default(MsgPack.Unpacker);
+                disposable12 = unpacker.ReadSubtree();
+                try {
+                    nullable14 = this._serializer72.UnpackFrom(disposable12);
+                }
+                finally {
+                    if (((disposable12 == null) 
+                                == false)) {
+                        disposable12.Dispose();
+                    }
+                }
+            }
+            if (nullable14.HasValue) {
+                unpackingContext.ComplexField = nullable14.Value;
+            }
+        }
+        
+        private void UnpackValueOfCurrentCultureField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Globalization.CultureInfo nullable15 = default(System.Globalization.CultureInfo);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "CurrentCultureField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable15 = this._serializer16.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable13 = default(MsgPack.Unpacker);
+                disposable13 = unpacker.ReadSubtree();
+                try {
+                    nullable15 = this._serializer16.UnpackFrom(disposable13);
+                }
+                finally {
+                    if (((disposable13 == null) 
+                                == false)) {
+                        disposable13.Dispose();
+                    }
+                }
+            }
+            if (((nullable15 == null) 
+                        == false)) {
+                unpackingContext.CurrentCultureField = nullable15;
+            }
+        }
+        
+        private void UnpackValueOfDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<System.DateTime> nullable16 = default(System.Nullable<System.DateTime>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "DateTimeField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable16 = this._serializer73.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable14 = default(MsgPack.Unpacker);
+                disposable14 = unpacker.ReadSubtree();
+                try {
+                    nullable16 = this._serializer73.UnpackFrom(disposable14);
+                }
+                finally {
+                    if (((disposable14 == null) 
+                                == false)) {
+                        disposable14.Dispose();
+                    }
+                }
+            }
+            if (nullable16.HasValue) {
+                unpackingContext.DateTimeField = nullable16.Value;
+            }
+        }
+        
+        private void UnpackValueOfDateTimeOffsetField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<System.DateTimeOffset> nullable17 = default(System.Nullable<System.DateTimeOffset>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "DateTimeOffsetField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable17 = this._serializer74.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable15 = default(MsgPack.Unpacker);
+                disposable15 = unpacker.ReadSubtree();
+                try {
+                    nullable17 = this._serializer74.UnpackFrom(disposable15);
+                }
+                finally {
+                    if (((disposable15 == null) 
+                                == false)) {
+                        disposable15.Dispose();
+                    }
+                }
+            }
+            if (nullable17.HasValue) {
+                unpackingContext.DateTimeOffsetField = nullable17.Value;
+            }
+        }
+        
+        private void UnpackValueOfDecimalField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<decimal> nullable18 = default(System.Nullable<decimal>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "DecimalField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable18 = this._serializer75.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable16 = default(MsgPack.Unpacker);
+                disposable16 = unpacker.ReadSubtree();
+                try {
+                    nullable18 = this._serializer75.UnpackFrom(disposable16);
+                }
+                finally {
+                    if (((disposable16 == null) 
+                                == false)) {
+                        disposable16.Dispose();
+                    }
+                }
+            }
+            if (nullable18.HasValue) {
+                unpackingContext.DecimalField = nullable18.Value;
+            }
+        }
+        
+        private void UnpackValueOfDictionary_MessagePackObject_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> nullable19 = default(System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "Dictionary_MessagePackObject_MessagePackObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable19 = this._serializer20.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable17 = default(MsgPack.Unpacker);
+                disposable17 = unpacker.ReadSubtree();
+                try {
+                    nullable19 = this._serializer20.UnpackFrom(disposable17);
+                }
+                finally {
+                    if (((disposable17 == null) 
+                                == false)) {
+                        disposable17.Dispose();
+                    }
+                }
+            }
+            if (((nullable19 == null) 
+                        == false)) {
+                System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>.Enumerator enumerator6 = nullable19.GetEnumerator();
+                System.Collections.Generic.KeyValuePair<MsgPack.MessagePackObject, MsgPack.MessagePackObject> current6;
+                try {
+                    for (
+                    ; enumerator6.MoveNext(); 
+                    ) {
+                        current6 = enumerator6.Current;
+                        unpackingContext.Dictionary_MessagePackObject_MessagePackObjectField.Add(current6.Key, current6.Value);
+                    }
+                }
+                finally {
+                    enumerator6.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfDictionaryEntryField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<System.Collections.DictionaryEntry> nullable20 = default(System.Nullable<System.Collections.DictionaryEntry>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "DictionaryEntryField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable20 = this._serializer76.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable18 = default(MsgPack.Unpacker);
+                disposable18 = unpacker.ReadSubtree();
+                try {
+                    nullable20 = this._serializer76.UnpackFrom(disposable18);
+                }
+                finally {
+                    if (((disposable18 == null) 
+                                == false)) {
+                        disposable18.Dispose();
+                    }
+                }
+            }
+            if (nullable20.HasValue) {
+                unpackingContext.DictionaryEntryField = nullable20.Value;
+            }
+        }
+        
+        private void UnpackValueOfDictionaryObjectObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.Dictionary<object, object> nullable21 = default(System.Collections.Generic.Dictionary<object, object>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "DictionaryObjectObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable21 = this._serializer22.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable19 = default(MsgPack.Unpacker);
+                disposable19 = unpacker.ReadSubtree();
+                try {
+                    nullable21 = this._serializer22.UnpackFrom(disposable19);
+                }
+                finally {
+                    if (((disposable19 == null) 
+                                == false)) {
+                        disposable19.Dispose();
+                    }
+                }
+            }
+            if (((nullable21 == null) 
+                        == false)) {
+                System.Collections.Generic.Dictionary<object, object>.Enumerator enumerator7 = nullable21.GetEnumerator();
+                System.Collections.Generic.KeyValuePair<object, object> current7;
+                try {
+                    for (
+                    ; enumerator7.MoveNext(); 
+                    ) {
+                        current7 = enumerator7.Current;
+                        unpackingContext.DictionaryObjectObjectField.Add(current7.Key, current7.Value);
+                    }
+                }
+                finally {
+                    enumerator7.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfDictionaryStringDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.Dictionary<string, System.DateTime> nullable22 = default(System.Collections.Generic.Dictionary<string, System.DateTime>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "DictionaryStringDateTimeField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable22 = this._serializer23.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable20 = default(MsgPack.Unpacker);
+                disposable20 = unpacker.ReadSubtree();
+                try {
+                    nullable22 = this._serializer23.UnpackFrom(disposable20);
+                }
+                finally {
+                    if (((disposable20 == null) 
+                                == false)) {
+                        disposable20.Dispose();
+                    }
+                }
+            }
+            if (((nullable22 == null) 
+                        == false)) {
+                System.Collections.Generic.Dictionary<string, System.DateTime>.Enumerator enumerator8 = nullable22.GetEnumerator();
+                System.Collections.Generic.KeyValuePair<string, System.DateTime> current8;
+                try {
+                    for (
+                    ; enumerator8.MoveNext(); 
+                    ) {
+                        current8 = enumerator8.Current;
+                        unpackingContext.DictionaryStringDateTimeField.Add(current8.Key, current8.Value);
+                    }
+                }
+                finally {
+                    enumerator8.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfFalseField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<bool> nullable23 = default(System.Nullable<bool>);
+            nullable23 = MsgPack.Serialization.UnpackHelpers.UnpackNullableBooleanValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "FalseField");
+            if (nullable23.HasValue) {
+                unpackingContext.FalseField = nullable23.Value;
+            }
+        }
+        
+        private void UnpackValueOfFILETIMEField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME> nullable24 = default(System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "FILETIMEField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable24 = this._serializer77.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable21 = default(MsgPack.Unpacker);
+                disposable21 = unpacker.ReadSubtree();
+                try {
+                    nullable24 = this._serializer77.UnpackFrom(disposable21);
+                }
+                finally {
+                    if (((disposable21 == null) 
+                                == false)) {
+                        disposable21.Dispose();
+                    }
+                }
+            }
+            if (nullable24.HasValue) {
+                unpackingContext.FILETIMEField = nullable24.Value;
+            }
+        }
+        
+        private void UnpackValueOfGuidField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<System.Guid> nullable25 = default(System.Nullable<System.Guid>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "GuidField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable25 = this._serializer78.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable22 = default(MsgPack.Unpacker);
+                disposable22 = unpacker.ReadSubtree();
+                try {
+                    nullable25 = this._serializer78.UnpackFrom(disposable22);
+                }
+                finally {
+                    if (((disposable22 == null) 
+                                == false)) {
+                        disposable22.Dispose();
+                    }
+                }
+            }
+            if (nullable25.HasValue) {
+                unpackingContext.GuidField = nullable25.Value;
+            }
+        }
+        
+        private void UnpackValueOfHashSet_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.HashSet<MsgPack.MessagePackObject> nullable26 = default(System.Collections.Generic.HashSet<MsgPack.MessagePackObject>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "HashSet_MessagePackObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable26 = this._serializer27.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable23 = default(MsgPack.Unpacker);
+                disposable23 = unpacker.ReadSubtree();
+                try {
+                    nullable26 = this._serializer27.UnpackFrom(disposable23);
+                }
+                finally {
+                    if (((disposable23 == null) 
+                                == false)) {
+                        disposable23.Dispose();
+                    }
+                }
+            }
+            if (((nullable26 == null) 
+                        == false)) {
+                System.Collections.Generic.HashSet<MsgPack.MessagePackObject>.Enumerator enumerator9 = nullable26.GetEnumerator();
+                MsgPack.MessagePackObject current9;
+                try {
+                    for (
+                    ; enumerator9.MoveNext(); 
+                    ) {
+                        current9 = enumerator9.Current;
+                        unpackingContext.HashSet_MessagePackObjectField.Add(current9);
+                    }
+                }
+                finally {
+                    enumerator9.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfHashSetDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.HashSet<System.DateTime> nullable27 = default(System.Collections.Generic.HashSet<System.DateTime>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "HashSetDateTimeField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable27 = this._serializer28.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable24 = default(MsgPack.Unpacker);
+                disposable24 = unpacker.ReadSubtree();
+                try {
+                    nullable27 = this._serializer28.UnpackFrom(disposable24);
+                }
+                finally {
+                    if (((disposable24 == null) 
+                                == false)) {
+                        disposable24.Dispose();
+                    }
+                }
+            }
+            if (((nullable27 == null) 
+                        == false)) {
+                System.Collections.Generic.HashSet<System.DateTime>.Enumerator enumerator10 = nullable27.GetEnumerator();
+                System.DateTime current10;
+                try {
+                    for (
+                    ; enumerator10.MoveNext(); 
+                    ) {
+                        current10 = enumerator10.Current;
+                        unpackingContext.HashSetDateTimeField.Add(current10);
+                    }
+                }
+                finally {
+                    enumerator10.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfHashSetObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.HashSet<object> nullable28 = default(System.Collections.Generic.HashSet<object>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "HashSetObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable28 = this._serializer29.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable25 = default(MsgPack.Unpacker);
+                disposable25 = unpacker.ReadSubtree();
+                try {
+                    nullable28 = this._serializer29.UnpackFrom(disposable25);
+                }
+                finally {
+                    if (((disposable25 == null) 
+                                == false)) {
+                        disposable25.Dispose();
+                    }
+                }
+            }
+            if (((nullable28 == null) 
+                        == false)) {
+                System.Collections.Generic.HashSet<object>.Enumerator enumerator11 = nullable28.GetEnumerator();
+                object current11;
+                try {
+                    for (
+                    ; enumerator11.MoveNext(); 
+                    ) {
+                        current11 = enumerator11.Current;
+                        unpackingContext.HashSetObjectField.Add(current11);
+                    }
+                }
+                finally {
+                    enumerator11.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfHashtableField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Hashtable nullable29 = default(System.Collections.Hashtable);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "HashtableField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable29 = this._serializer30.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable26 = default(MsgPack.Unpacker);
+                disposable26 = unpacker.ReadSubtree();
+                try {
+                    nullable29 = this._serializer30.UnpackFrom(disposable26);
+                }
+                finally {
+                    if (((disposable26 == null) 
+                                == false)) {
+                        disposable26.Dispose();
+                    }
+                }
+            }
+            if (((nullable29 == null) 
+                        == false)) {
+                System.Collections.IDictionaryEnumerator enumerator12 = nullable29.GetEnumerator();
+                System.Collections.DictionaryEntry current12;
+                for (
+                ; enumerator12.MoveNext(); 
+                ) {
+                    current12 = enumerator12.Entry;
+                    unpackingContext.HashtableField.Add(current12.Key, current12.Value);
+                }
+            }
+        }
+        
+        private void UnpackValueOfICollection_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.ICollection<MsgPack.MessagePackObject> nullable30 = default(System.Collections.Generic.ICollection<MsgPack.MessagePackObject>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ICollection_MessagePackObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable30 = this._serializer31.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable27 = default(MsgPack.Unpacker);
+                disposable27 = unpacker.ReadSubtree();
+                try {
+                    nullable30 = this._serializer31.UnpackFrom(disposable27);
+                }
+                finally {
+                    if (((disposable27 == null) 
+                                == false)) {
+                        disposable27.Dispose();
+                    }
+                }
+            }
+            if (((nullable30 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator13 = nullable30.GetEnumerator();
+                MsgPack.MessagePackObject current13;
+                try {
+                    for (
+                    ; enumerator13.MoveNext(); 
+                    ) {
+                        current13 = enumerator13.Current;
+                        unpackingContext.ICollection_MessagePackObjectField.Add(current13);
+                    }
+                }
+                finally {
+                    enumerator13.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfICollectionDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.ICollection<System.DateTime> nullable31 = default(System.Collections.Generic.ICollection<System.DateTime>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ICollectionDateTimeField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable31 = this._serializer32.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable28 = default(MsgPack.Unpacker);
+                disposable28 = unpacker.ReadSubtree();
+                try {
+                    nullable31 = this._serializer32.UnpackFrom(disposable28);
+                }
+                finally {
+                    if (((disposable28 == null) 
+                                == false)) {
+                        disposable28.Dispose();
+                    }
+                }
+            }
+            if (((nullable31 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<System.DateTime> enumerator14 = nullable31.GetEnumerator();
+                System.DateTime current14;
+                try {
+                    for (
+                    ; enumerator14.MoveNext(); 
+                    ) {
+                        current14 = enumerator14.Current;
+                        unpackingContext.ICollectionDateTimeField.Add(current14);
+                    }
+                }
+                finally {
+                    enumerator14.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfICollectionObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.ICollection<object> nullable32 = default(System.Collections.Generic.ICollection<object>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ICollectionObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable32 = this._serializer33.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable29 = default(MsgPack.Unpacker);
+                disposable29 = unpacker.ReadSubtree();
+                try {
+                    nullable32 = this._serializer33.UnpackFrom(disposable29);
+                }
+                finally {
+                    if (((disposable29 == null) 
+                                == false)) {
+                        disposable29.Dispose();
+                    }
+                }
+            }
+            if (((nullable32 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<object> enumerator15 = nullable32.GetEnumerator();
+                object current15;
+                try {
+                    for (
+                    ; enumerator15.MoveNext(); 
+                    ) {
+                        current15 = enumerator15.Current;
+                        unpackingContext.ICollectionObjectField.Add(current15);
+                    }
+                }
+                finally {
+                    enumerator15.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfIDictionary_MessagePackObject_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> nullable33 = default(System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "IDictionary_MessagePackObject_MessagePackObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable33 = this._serializer34.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable30 = default(MsgPack.Unpacker);
+                disposable30 = unpacker.ReadSubtree();
+                try {
+                    nullable33 = this._serializer34.UnpackFrom(disposable30);
+                }
+                finally {
+                    if (((disposable30 == null) 
+                                == false)) {
+                        disposable30.Dispose();
+                    }
+                }
+            }
+            if (((nullable33 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> enumerator16 = nullable33.GetEnumerator();
+                System.Collections.Generic.KeyValuePair<MsgPack.MessagePackObject, MsgPack.MessagePackObject> current16;
+                try {
+                    for (
+                    ; enumerator16.MoveNext(); 
+                    ) {
+                        current16 = enumerator16.Current;
+                        unpackingContext.IDictionary_MessagePackObject_MessagePackObjectField.Add(current16.Key, current16.Value);
+                    }
+                }
+                finally {
+                    enumerator16.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfIDictionaryObjectObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IDictionary<object, object> nullable34 = default(System.Collections.Generic.IDictionary<object, object>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "IDictionaryObjectObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable34 = this._serializer35.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable31 = default(MsgPack.Unpacker);
+                disposable31 = unpacker.ReadSubtree();
+                try {
+                    nullable34 = this._serializer35.UnpackFrom(disposable31);
+                }
+                finally {
+                    if (((disposable31 == null) 
+                                == false)) {
+                        disposable31.Dispose();
+                    }
+                }
+            }
+            if (((nullable34 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<object, object>> enumerator17 = nullable34.GetEnumerator();
+                System.Collections.Generic.KeyValuePair<object, object> current17;
+                try {
+                    for (
+                    ; enumerator17.MoveNext(); 
+                    ) {
+                        current17 = enumerator17.Current;
+                        unpackingContext.IDictionaryObjectObjectField.Add(current17.Key, current17.Value);
+                    }
+                }
+                finally {
+                    enumerator17.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfIDictionaryStringDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IDictionary<string, System.DateTime> nullable35 = default(System.Collections.Generic.IDictionary<string, System.DateTime>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "IDictionaryStringDateTimeField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable35 = this._serializer36.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable32 = default(MsgPack.Unpacker);
+                disposable32 = unpacker.ReadSubtree();
+                try {
+                    nullable35 = this._serializer36.UnpackFrom(disposable32);
+                }
+                finally {
+                    if (((disposable32 == null) 
+                                == false)) {
+                        disposable32.Dispose();
+                    }
+                }
+            }
+            if (((nullable35 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, System.DateTime>> enumerator18 = nullable35.GetEnumerator();
+                System.Collections.Generic.KeyValuePair<string, System.DateTime> current18;
+                try {
+                    for (
+                    ; enumerator18.MoveNext(); 
+                    ) {
+                        current18 = enumerator18.Current;
+                        unpackingContext.IDictionaryStringDateTimeField.Add(current18.Key, current18.Value);
+                    }
+                }
+                finally {
+                    enumerator18.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfIList_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IList<MsgPack.MessagePackObject> nullable36 = default(System.Collections.Generic.IList<MsgPack.MessagePackObject>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "IList_MessagePackObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable36 = this._serializer37.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable33 = default(MsgPack.Unpacker);
+                disposable33 = unpacker.ReadSubtree();
+                try {
+                    nullable36 = this._serializer37.UnpackFrom(disposable33);
+                }
+                finally {
+                    if (((disposable33 == null) 
+                                == false)) {
+                        disposable33.Dispose();
+                    }
+                }
+            }
+            if (((nullable36 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator19 = nullable36.GetEnumerator();
+                MsgPack.MessagePackObject current19;
+                try {
+                    for (
+                    ; enumerator19.MoveNext(); 
+                    ) {
+                        current19 = enumerator19.Current;
+                        unpackingContext.IList_MessagePackObjectField.Add(current19);
+                    }
+                }
+                finally {
+                    enumerator19.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfIListDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IList<System.DateTime> nullable37 = default(System.Collections.Generic.IList<System.DateTime>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "IListDateTimeField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable37 = this._serializer38.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable34 = default(MsgPack.Unpacker);
+                disposable34 = unpacker.ReadSubtree();
+                try {
+                    nullable37 = this._serializer38.UnpackFrom(disposable34);
+                }
+                finally {
+                    if (((disposable34 == null) 
+                                == false)) {
+                        disposable34.Dispose();
+                    }
+                }
+            }
+            if (((nullable37 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<System.DateTime> enumerator20 = nullable37.GetEnumerator();
+                System.DateTime current20;
+                try {
+                    for (
+                    ; enumerator20.MoveNext(); 
+                    ) {
+                        current20 = enumerator20.Current;
+                        unpackingContext.IListDateTimeField.Add(current20);
+                    }
+                }
+                finally {
+                    enumerator20.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfIListObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IList<object> nullable38 = default(System.Collections.Generic.IList<object>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "IListObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable38 = this._serializer39.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable35 = default(MsgPack.Unpacker);
+                disposable35 = unpacker.ReadSubtree();
+                try {
+                    nullable38 = this._serializer39.UnpackFrom(disposable35);
+                }
+                finally {
+                    if (((disposable35 == null) 
+                                == false)) {
+                        disposable35.Dispose();
+                    }
+                }
+            }
+            if (((nullable38 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<object> enumerator21 = nullable38.GetEnumerator();
+                object current21;
+                try {
+                    for (
+                    ; enumerator21.MoveNext(); 
+                    ) {
+                        current21 = enumerator21.Current;
+                        unpackingContext.IListObjectField.Add(current21);
+                    }
+                }
+                finally {
+                    enumerator21.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfImage_Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            MsgPack.Image nullable39 = default(MsgPack.Image);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "Image_Field", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable39 = this._serializer40.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable36 = default(MsgPack.Unpacker);
+                disposable36 = unpacker.ReadSubtree();
+                try {
+                    nullable39 = this._serializer40.UnpackFrom(disposable36);
+                }
+                finally {
+                    if (((disposable36 == null) 
+                                == false)) {
+                        disposable36.Dispose();
+                    }
+                }
+            }
+            if (((nullable39 == null) 
+                        == false)) {
+                unpackingContext.Image_Field = nullable39;
+            }
+        }
+        
+        private void UnpackValueOfInvariantCultureField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Globalization.CultureInfo nullable40 = default(System.Globalization.CultureInfo);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "InvariantCultureField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable40 = this._serializer16.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable37 = default(MsgPack.Unpacker);
+                disposable37 = unpacker.ReadSubtree();
+                try {
+                    nullable40 = this._serializer16.UnpackFrom(disposable37);
+                }
+                finally {
+                    if (((disposable37 == null) 
+                                == false)) {
+                        disposable37.Dispose();
+                    }
+                }
+            }
+            if (((nullable40 == null) 
+                        == false)) {
+                unpackingContext.InvariantCultureField = nullable40;
+            }
+        }
+        
+        private void UnpackValueOfISet_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.ISet<MsgPack.MessagePackObject> nullable41 = default(System.Collections.Generic.ISet<MsgPack.MessagePackObject>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ISet_MessagePackObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable41 = this._serializer41.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable38 = default(MsgPack.Unpacker);
+                disposable38 = unpacker.ReadSubtree();
+                try {
+                    nullable41 = this._serializer41.UnpackFrom(disposable38);
+                }
+                finally {
+                    if (((disposable38 == null) 
+                                == false)) {
+                        disposable38.Dispose();
+                    }
+                }
+            }
+            if (((nullable41 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator22 = nullable41.GetEnumerator();
+                MsgPack.MessagePackObject current22;
+                try {
+                    for (
+                    ; enumerator22.MoveNext(); 
+                    ) {
+                        current22 = enumerator22.Current;
+                        unpackingContext.ISet_MessagePackObjectField.Add(current22);
+                    }
+                }
+                finally {
+                    enumerator22.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfISetDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.ISet<System.DateTime> nullable42 = default(System.Collections.Generic.ISet<System.DateTime>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ISetDateTimeField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable42 = this._serializer42.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable39 = default(MsgPack.Unpacker);
+                disposable39 = unpacker.ReadSubtree();
+                try {
+                    nullable42 = this._serializer42.UnpackFrom(disposable39);
+                }
+                finally {
+                    if (((disposable39 == null) 
+                                == false)) {
+                        disposable39.Dispose();
+                    }
+                }
+            }
+            if (((nullable42 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<System.DateTime> enumerator23 = nullable42.GetEnumerator();
+                System.DateTime current23;
+                try {
+                    for (
+                    ; enumerator23.MoveNext(); 
+                    ) {
+                        current23 = enumerator23.Current;
+                        unpackingContext.ISetDateTimeField.Add(current23);
+                    }
+                }
+                finally {
+                    enumerator23.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfISetObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.ISet<object> nullable43 = default(System.Collections.Generic.ISet<object>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ISetObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable43 = this._serializer43.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable40 = default(MsgPack.Unpacker);
+                disposable40 = unpacker.ReadSubtree();
+                try {
+                    nullable43 = this._serializer43.UnpackFrom(disposable40);
+                }
+                finally {
+                    if (((disposable40 == null) 
+                                == false)) {
+                        disposable40.Dispose();
+                    }
+                }
+            }
+            if (((nullable43 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<object> enumerator24 = nullable43.GetEnumerator();
+                object current24;
+                try {
+                    for (
+                    ; enumerator24.MoveNext(); 
+                    ) {
+                        current24 = enumerator24.Current;
+                        unpackingContext.ISetObjectField.Add(current24);
+                    }
+                }
+                finally {
+                    enumerator24.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfKeyValuePairStringComplexField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>> nullable44 = default(System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "KeyValuePairStringComplexField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable44 = this._serializer79.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable41 = default(MsgPack.Unpacker);
+                disposable41 = unpacker.ReadSubtree();
+                try {
+                    nullable44 = this._serializer79.UnpackFrom(disposable41);
+                }
+                finally {
+                    if (((disposable41 == null) 
+                                == false)) {
+                        disposable41.Dispose();
+                    }
+                }
+            }
+            if (nullable44.HasValue) {
+                unpackingContext.KeyValuePairStringComplexField = nullable44.Value;
+            }
+        }
+        
+        private void UnpackValueOfKeyValuePairStringDateTimeOffsetField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>> nullable45 = default(System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "KeyValuePairStringDateTimeOffsetField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable45 = this._serializer80.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable42 = default(MsgPack.Unpacker);
+                disposable42 = unpacker.ReadSubtree();
+                try {
+                    nullable45 = this._serializer80.UnpackFrom(disposable42);
+                }
+                finally {
+                    if (((disposable42 == null) 
+                                == false)) {
+                        disposable42.Dispose();
+                    }
+                }
+            }
+            if (nullable45.HasValue) {
+                unpackingContext.KeyValuePairStringDateTimeOffsetField = nullable45.Value;
+            }
+        }
+        
+        private void UnpackValueOfList_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.List<MsgPack.MessagePackObject> nullable46 = default(System.Collections.Generic.List<MsgPack.MessagePackObject>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "List_MessagePackObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable46 = this._serializer46.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable43 = default(MsgPack.Unpacker);
+                disposable43 = unpacker.ReadSubtree();
+                try {
+                    nullable46 = this._serializer46.UnpackFrom(disposable43);
+                }
+                finally {
+                    if (((disposable43 == null) 
+                                == false)) {
+                        disposable43.Dispose();
+                    }
+                }
+            }
+            if (((nullable46 == null) 
+                        == false)) {
+                System.Collections.Generic.List<MsgPack.MessagePackObject>.Enumerator enumerator25 = nullable46.GetEnumerator();
+                MsgPack.MessagePackObject current25;
+                try {
+                    for (
+                    ; enumerator25.MoveNext(); 
+                    ) {
+                        current25 = enumerator25.Current;
+                        unpackingContext.List_MessagePackObjectField.Add(current25);
+                    }
+                }
+                finally {
+                    enumerator25.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfListDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.List<System.DateTime> nullable47 = default(System.Collections.Generic.List<System.DateTime>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ListDateTimeField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable47 = this._serializer47.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable44 = default(MsgPack.Unpacker);
+                disposable44 = unpacker.ReadSubtree();
+                try {
+                    nullable47 = this._serializer47.UnpackFrom(disposable44);
+                }
+                finally {
+                    if (((disposable44 == null) 
+                                == false)) {
+                        disposable44.Dispose();
+                    }
+                }
+            }
+            if (((nullable47 == null) 
+                        == false)) {
+                System.Collections.Generic.List<System.DateTime>.Enumerator enumerator26 = nullable47.GetEnumerator();
+                System.DateTime current26;
+                try {
+                    for (
+                    ; enumerator26.MoveNext(); 
+                    ) {
+                        current26 = enumerator26.Current;
+                        unpackingContext.ListDateTimeField.Add(current26);
+                    }
+                }
+                finally {
+                    enumerator26.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfListObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.Generic.List<object> nullable48 = default(System.Collections.Generic.List<object>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ListObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable48 = this._serializer48.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable45 = default(MsgPack.Unpacker);
+                disposable45 = unpacker.ReadSubtree();
+                try {
+                    nullable48 = this._serializer48.UnpackFrom(disposable45);
+                }
+                finally {
+                    if (((disposable45 == null) 
+                                == false)) {
+                        disposable45.Dispose();
+                    }
+                }
+            }
+            if (((nullable48 == null) 
+                        == false)) {
+                System.Collections.Generic.List<object>.Enumerator enumerator27 = nullable48.GetEnumerator();
+                object current27;
+                try {
+                    for (
+                    ; enumerator27.MoveNext(); 
+                    ) {
+                        current27 = enumerator27.Current;
+                        unpackingContext.ListObjectField.Add(current27);
+                    }
+                }
+                finally {
+                    enumerator27.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfMaxByteField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<byte> nullable49 = default(System.Nullable<byte>);
+            nullable49 = MsgPack.Serialization.UnpackHelpers.UnpackNullableByteValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "MaxByteField");
+            if (nullable49.HasValue) {
+                unpackingContext.MaxByteField = nullable49.Value;
+            }
+        }
+        
+        private void UnpackValueOfMaxInt32Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<int> nullable50 = default(System.Nullable<int>);
+            nullable50 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "MaxInt32Field");
+            if (nullable50.HasValue) {
+                unpackingContext.MaxInt32Field = nullable50.Value;
+            }
+        }
+        
+        private void UnpackValueOfMaxInt64Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<long> nullable51 = default(System.Nullable<long>);
+            nullable51 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt64Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "MaxInt64Field");
+            if (nullable51.HasValue) {
+                unpackingContext.MaxInt64Field = nullable51.Value;
+            }
+        }
+        
+        private void UnpackValueOfMaxUInt16Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<ushort> nullable52 = default(System.Nullable<ushort>);
+            nullable52 = MsgPack.Serialization.UnpackHelpers.UnpackNullableUInt16Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "MaxUInt16Field");
+            if (nullable52.HasValue) {
+                unpackingContext.MaxUInt16Field = nullable52.Value;
+            }
+        }
+        
+        private void UnpackValueOfMessagePackObject_Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            MsgPack.MessagePackObject nullable53 = default(MsgPack.MessagePackObject);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "MessagePackObject_Field", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable53 = unpacker.LastReadData;
+            }
+            else {
+                nullable53 = unpacker.UnpackSubtreeData();
+            }
+            if ((nullable53.IsNil == false)) {
+                unpackingContext.MessagePackObject_Field = nullable53;
+            }
+        }
+        
+        private void UnpackValueOfMessagePackObjectArray_Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            MsgPack.MessagePackObject[] nullable54 = default(MsgPack.MessagePackObject[]);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "MessagePackObjectArray_Field", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable54 = this._serializer53.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable46 = default(MsgPack.Unpacker);
+                disposable46 = unpacker.ReadSubtree();
+                try {
+                    nullable54 = this._serializer53.UnpackFrom(disposable46);
+                }
+                finally {
+                    if (((disposable46 == null) 
+                                == false)) {
+                        disposable46.Dispose();
+                    }
+                }
+            }
+            if (((nullable54 == null) 
+                        == false)) {
+                unpackingContext.MessagePackObjectArray_Field = nullable54;
+            }
+        }
+        
+        private void UnpackValueOfMinInt32Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<int> nullable55 = default(System.Nullable<int>);
+            nullable55 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "MinInt32Field");
+            if (nullable55.HasValue) {
+                unpackingContext.MinInt32Field = nullable55.Value;
+            }
+        }
+        
+        private void UnpackValueOfMinInt64Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<long> nullable56 = default(System.Nullable<long>);
+            nullable56 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt64Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "MinInt64Field");
+            if (nullable56.HasValue) {
+                unpackingContext.MinInt64Field = nullable56.Value;
+            }
+        }
+        
+        private void UnpackValueOfNullField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            object nullable57 = default(object);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "NullField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable57 = this._serializer54.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable47 = default(MsgPack.Unpacker);
+                disposable47 = unpacker.ReadSubtree();
+                try {
+                    nullable57 = this._serializer54.UnpackFrom(disposable47);
+                }
+                finally {
+                    if (((disposable47 == null) 
+                                == false)) {
+                        disposable47.Dispose();
+                    }
+                }
+            }
+            if (((nullable57 == null) 
+                        == false)) {
+                unpackingContext.NullField = nullable57;
+            }
+        }
+        
+        private void UnpackValueOfObjectArrayField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            object[] nullable58 = default(object[]);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ObjectArrayField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable58 = this._serializer55.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable48 = default(MsgPack.Unpacker);
+                disposable48 = unpacker.ReadSubtree();
+                try {
+                    nullable58 = this._serializer55.UnpackFrom(disposable48);
+                }
+                finally {
+                    if (((disposable48 == null) 
+                                == false)) {
+                        disposable48.Dispose();
+                    }
+                }
+            }
+            if (((nullable58 == null) 
+                        == false)) {
+                unpackingContext.ObjectArrayField = nullable58;
+            }
+        }
+        
+        private void UnpackValueOfObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            object nullable59 = default(object);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable59 = this._serializer54.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable49 = default(MsgPack.Unpacker);
+                disposable49 = unpacker.ReadSubtree();
+                try {
+                    nullable59 = this._serializer54.UnpackFrom(disposable49);
+                }
+                finally {
+                    if (((disposable49 == null) 
+                                == false)) {
+                        disposable49.Dispose();
+                    }
+                }
+            }
+            if (((nullable59 == null) 
+                        == false)) {
+                unpackingContext.ObjectField = nullable59;
+            }
+        }
+        
+        private void UnpackValueOfObservableCollection_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject> nullable60 = default(System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ObservableCollection_MessagePackObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable60 = this._serializer56.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable50 = default(MsgPack.Unpacker);
+                disposable50 = unpacker.ReadSubtree();
+                try {
+                    nullable60 = this._serializer56.UnpackFrom(disposable50);
+                }
+                finally {
+                    if (((disposable50 == null) 
+                                == false)) {
+                        disposable50.Dispose();
+                    }
+                }
+            }
+            if (((nullable60 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator28 = nullable60.GetEnumerator();
+                MsgPack.MessagePackObject current28;
+                try {
+                    for (
+                    ; enumerator28.MoveNext(); 
+                    ) {
+                        current28 = enumerator28.Current;
+                        unpackingContext.ObservableCollection_MessagePackObjectField.Add(current28);
+                    }
+                }
+                finally {
+                    enumerator28.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfObservableCollectionDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.ObjectModel.ObservableCollection<System.DateTime> nullable61 = default(System.Collections.ObjectModel.ObservableCollection<System.DateTime>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ObservableCollectionDateTimeField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable61 = this._serializer57.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable51 = default(MsgPack.Unpacker);
+                disposable51 = unpacker.ReadSubtree();
+                try {
+                    nullable61 = this._serializer57.UnpackFrom(disposable51);
+                }
+                finally {
+                    if (((disposable51 == null) 
+                                == false)) {
+                        disposable51.Dispose();
+                    }
+                }
+            }
+            if (((nullable61 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<System.DateTime> enumerator29 = nullable61.GetEnumerator();
+                System.DateTime current29;
+                try {
+                    for (
+                    ; enumerator29.MoveNext(); 
+                    ) {
+                        current29 = enumerator29.Current;
+                        unpackingContext.ObservableCollectionDateTimeField.Add(current29);
+                    }
+                }
+                finally {
+                    enumerator29.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfObservableCollectionObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Collections.ObjectModel.ObservableCollection<object> nullable62 = default(System.Collections.ObjectModel.ObservableCollection<object>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ObservableCollectionObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable62 = this._serializer58.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable52 = default(MsgPack.Unpacker);
+                disposable52 = unpacker.ReadSubtree();
+                try {
+                    nullable62 = this._serializer58.UnpackFrom(disposable52);
+                }
+                finally {
+                    if (((disposable52 == null) 
+                                == false)) {
+                        disposable52.Dispose();
+                    }
+                }
+            }
+            if (((nullable62 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<object> enumerator30 = nullable62.GetEnumerator();
+                object current30;
+                try {
+                    for (
+                    ; enumerator30.MoveNext(); 
+                    ) {
+                        current30 = enumerator30.Current;
+                        unpackingContext.ObservableCollectionObjectField.Add(current30);
+                    }
+                }
+                finally {
+                    enumerator30.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfStringField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            string nullable63 = default(string);
+            nullable63 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "StringField");
+            if (((nullable63 == null) 
+                        == false)) {
+                unpackingContext.StringField = nullable63;
+            }
+        }
+        
+        private void UnpackValueOfStringKeyedCollection_DateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            MsgPack.Serialization.StringKeyedCollection<System.DateTime> nullable64 = default(MsgPack.Serialization.StringKeyedCollection<System.DateTime>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "StringKeyedCollection_DateTimeField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable64 = this._serializer60.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable53 = default(MsgPack.Unpacker);
+                disposable53 = unpacker.ReadSubtree();
+                try {
+                    nullable64 = this._serializer60.UnpackFrom(disposable53);
+                }
+                finally {
+                    if (((disposable53 == null) 
+                                == false)) {
+                        disposable53.Dispose();
+                    }
+                }
+            }
+            if (((nullable64 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<System.DateTime> enumerator31 = nullable64.GetEnumerator();
+                System.DateTime current31;
+                try {
+                    for (
+                    ; enumerator31.MoveNext(); 
+                    ) {
+                        current31 = enumerator31.Current;
+                        unpackingContext.StringKeyedCollection_DateTimeField.Add(current31);
+                    }
+                }
+                finally {
+                    enumerator31.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfStringKeyedCollection_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject> nullable65 = default(MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "StringKeyedCollection_MessagePackObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable65 = this._serializer61.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable54 = default(MsgPack.Unpacker);
+                disposable54 = unpacker.ReadSubtree();
+                try {
+                    nullable65 = this._serializer61.UnpackFrom(disposable54);
+                }
+                finally {
+                    if (((disposable54 == null) 
+                                == false)) {
+                        disposable54.Dispose();
+                    }
+                }
+            }
+            if (((nullable65 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator32 = nullable65.GetEnumerator();
+                MsgPack.MessagePackObject current32;
+                try {
+                    for (
+                    ; enumerator32.MoveNext(); 
+                    ) {
+                        current32 = enumerator32.Current;
+                        unpackingContext.StringKeyedCollection_MessagePackObjectField.Add(current32);
+                    }
+                }
+                finally {
+                    enumerator32.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfStringKeyedCollection_ObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            MsgPack.Serialization.StringKeyedCollection<object> nullable66 = default(MsgPack.Serialization.StringKeyedCollection<object>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "StringKeyedCollection_ObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable66 = this._serializer62.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable55 = default(MsgPack.Unpacker);
+                disposable55 = unpacker.ReadSubtree();
+                try {
+                    nullable66 = this._serializer62.UnpackFrom(disposable55);
+                }
+                finally {
+                    if (((disposable55 == null) 
+                                == false)) {
+                        disposable55.Dispose();
+                    }
+                }
+            }
+            if (((nullable66 == null) 
+                        == false)) {
+                System.Collections.Generic.IEnumerator<object> enumerator33 = nullable66.GetEnumerator();
+                object current33;
+                try {
+                    for (
+                    ; enumerator33.MoveNext(); 
+                    ) {
+                        current33 = enumerator33.Current;
+                        unpackingContext.StringKeyedCollection_ObjectField.Add(current33);
+                    }
+                }
+                finally {
+                    enumerator33.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfTimeSpanField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<System.TimeSpan> nullable67 = default(System.Nullable<System.TimeSpan>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "TimeSpanField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable67 = this._serializer81.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable56 = default(MsgPack.Unpacker);
+                disposable56 = unpacker.ReadSubtree();
+                try {
+                    nullable67 = this._serializer81.UnpackFrom(disposable56);
+                }
+                finally {
+                    if (((disposable56 == null) 
+                                == false)) {
+                        disposable56.Dispose();
+                    }
+                }
+            }
+            if (nullable67.HasValue) {
+                unpackingContext.TimeSpanField = nullable67.Value;
+            }
+        }
+        
+        private void UnpackValueOfTinyByteField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<byte> nullable68 = default(System.Nullable<byte>);
+            nullable68 = MsgPack.Serialization.UnpackHelpers.UnpackNullableByteValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "TinyByteField");
+            if (nullable68.HasValue) {
+                unpackingContext.TinyByteField = nullable68.Value;
+            }
+        }
+        
+        private void UnpackValueOfTinyInt32Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<int> nullable69 = default(System.Nullable<int>);
+            nullable69 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "TinyInt32Field");
+            if (nullable69.HasValue) {
+                unpackingContext.TinyInt32Field = nullable69.Value;
+            }
+        }
+        
+        private void UnpackValueOfTinyInt64Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<long> nullable70 = default(System.Nullable<long>);
+            nullable70 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt64Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "TinyInt64Field");
+            if (nullable70.HasValue) {
+                unpackingContext.TinyInt64Field = nullable70.Value;
+            }
+        }
+        
+        private void UnpackValueOfTinyUInt16Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<ushort> nullable71 = default(System.Nullable<ushort>);
+            nullable71 = MsgPack.Serialization.UnpackHelpers.UnpackNullableUInt16Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "TinyUInt16Field");
+            if (nullable71.HasValue) {
+                unpackingContext.TinyUInt16Field = nullable71.Value;
+            }
+        }
+        
+        private void UnpackValueOfTrueField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Nullable<bool> nullable72 = default(System.Nullable<bool>);
+            nullable72 = MsgPack.Serialization.UnpackHelpers.UnpackNullableBooleanValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "TrueField");
+            if (nullable72.HasValue) {
+                unpackingContext.TrueField = nullable72.Value;
+            }
+        }
+        
+        private void UnpackValueOfTuple_Int32_String_MessagePackObject_ObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Tuple<int, string, MsgPack.MessagePackObject, object> nullable73 = default(System.Tuple<int, string, MsgPack.MessagePackObject, object>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "Tuple_Int32_String_MessagePackObject_ObjectField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable73 = this._serializer64.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable57 = default(MsgPack.Unpacker);
+                disposable57 = unpacker.ReadSubtree();
+                try {
+                    nullable73 = this._serializer64.UnpackFrom(disposable57);
+                }
+                finally {
+                    if (((disposable57 == null) 
+                                == false)) {
+                        disposable57.Dispose();
+                    }
+                }
+            }
+            if (((nullable73 == null) 
+                        == false)) {
+                unpackingContext.Tuple_Int32_String_MessagePackObject_ObjectField = nullable73;
+            }
+        }
+        
+        private void UnpackValueOfUriField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Uri nullable74 = default(System.Uri);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "UriField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable74 = this._serializer65.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable58 = default(MsgPack.Unpacker);
+                disposable58 = unpacker.ReadSubtree();
+                try {
+                    nullable74 = this._serializer65.UnpackFrom(disposable58);
+                }
+                finally {
+                    if (((disposable58 == null) 
+                                == false)) {
+                        disposable58.Dispose();
+                    }
+                }
+            }
+            if (((nullable74 == null) 
+                        == false)) {
+                unpackingContext.UriField = nullable74;
+            }
+        }
+        
+        private void UnpackValueOfVersionField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem) {
+            System.Version nullable75 = default(System.Version);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "VersionField", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable75 = this._serializer66.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable59 = default(MsgPack.Unpacker);
+                disposable59 = unpacker.ReadSubtree();
+                try {
+                    nullable75 = this._serializer66.UnpackFrom(disposable59);
+                }
+                finally {
+                    if (((disposable59 == null) 
+                                == false)) {
+                        disposable59.Dispose();
+                    }
+                }
+            }
+            if (((nullable75 == null) 
+                        == false)) {
+                unpackingContext.VersionField = nullable75;
+            }
         }
         
         protected internal override MsgPack.Serialization.ComplexTypeGenerated UnpackFromCore(MsgPack.Unpacker unpacker) {
             MsgPack.Serialization.ComplexTypeGenerated result = default(MsgPack.Serialization.ComplexTypeGenerated);
             result = new MsgPack.Serialization.ComplexTypeGenerated();
             if (unpacker.IsArrayHeader) {
-                int unpacked = default(int);
-                int itemsCount = default(int);
-                itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                MsgPack.Serialization.AddOnlyCollection<System.DateTime> nullable = default(MsgPack.Serialization.AddOnlyCollection<System.DateTime>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(0);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable = this._serializer1.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
-                        disposable = unpacker.ReadSubtree();
-                        try {
-                            nullable = this._serializer1.UnpackFrom(disposable);
-                        }
-                        finally {
-                            if (((disposable == null) 
-                                        == false)) {
-                                disposable.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<System.DateTime> enumerator = nullable.GetEnumerator();
-                    System.DateTime current;
-                    try {
-                        for (
-                        ; enumerator.MoveNext(); 
-                        ) {
-                            current = enumerator.Current;
-                            result.AddOnlyCollection_DateTimeField.Add(current);
-                        }
-                    }
-                    finally {
-                        enumerator.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject> nullable0 = default(MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(1);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable0 = this._serializer2.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
-                        disposable0 = unpacker.ReadSubtree();
-                        try {
-                            nullable0 = this._serializer2.UnpackFrom(disposable0);
-                        }
-                        finally {
-                            if (((disposable0 == null) 
-                                        == false)) {
-                                disposable0.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable0 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator0 = nullable0.GetEnumerator();
-                    MsgPack.MessagePackObject current0;
-                    try {
-                        for (
-                        ; enumerator0.MoveNext(); 
-                        ) {
-                            current0 = enumerator0.Current;
-                            result.AddOnlyCollection_MessagePackObjectField.Add(current0);
-                        }
-                    }
-                    finally {
-                        enumerator0.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                MsgPack.Serialization.AddOnlyCollection<object> nullable1 = default(MsgPack.Serialization.AddOnlyCollection<object>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(2);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable1 = this._serializer3.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable1 = default(MsgPack.Unpacker);
-                        disposable1 = unpacker.ReadSubtree();
-                        try {
-                            nullable1 = this._serializer3.UnpackFrom(disposable1);
-                        }
-                        finally {
-                            if (((disposable1 == null) 
-                                        == false)) {
-                                disposable1.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable1 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<object> enumerator1 = nullable1.GetEnumerator();
-                    object current1;
-                    try {
-                        for (
-                        ; enumerator1.MoveNext(); 
-                        ) {
-                            current1 = enumerator1.Current;
-                            result.AddOnlyCollection_ObjectField.Add(current1);
-                        }
-                    }
-                    finally {
-                        enumerator1.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.ArrayList nullable2 = default(System.Collections.ArrayList);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(3);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable2 = this._serializer4.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable2 = default(MsgPack.Unpacker);
-                        disposable2 = unpacker.ReadSubtree();
-                        try {
-                            nullable2 = this._serializer4.UnpackFrom(disposable2);
-                        }
-                        finally {
-                            if (((disposable2 == null) 
-                                        == false)) {
-                                disposable2.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable2 == null) 
-                            == false)) {
-                    System.Collections.IEnumerator enumerator2 = nullable2.GetEnumerator();
-                    object current2;
-                    for (
-                    ; enumerator2.MoveNext(); 
-                    ) {
-                        current2 = enumerator2.Current;
-                        result.ArrayListField.Add(current2);
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<System.ArraySegment<byte>> nullable3 = default(System.Nullable<System.ArraySegment<byte>>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(4);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable3 = this._serializer68.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable3 = default(MsgPack.Unpacker);
-                        disposable3 = unpacker.ReadSubtree();
-                        try {
-                            nullable3 = this._serializer68.UnpackFrom(disposable3);
-                        }
-                        finally {
-                            if (((disposable3 == null) 
-                                        == false)) {
-                                disposable3.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable3.HasValue) {
-                    result.ArraySegmentByteField = nullable3.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<System.ArraySegment<decimal>> nullable4 = default(System.Nullable<System.ArraySegment<decimal>>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(5);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable4 = this._serializer69.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable4 = default(MsgPack.Unpacker);
-                        disposable4 = unpacker.ReadSubtree();
-                        try {
-                            nullable4 = this._serializer69.UnpackFrom(disposable4);
-                        }
-                        finally {
-                            if (((disposable4 == null) 
-                                        == false)) {
-                                disposable4.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable4.HasValue) {
-                    result.ArraySegmentDecimalField = nullable4.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<System.ArraySegment<int>> nullable5 = default(System.Nullable<System.ArraySegment<int>>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(6);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable5 = this._serializer70.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable5 = default(MsgPack.Unpacker);
-                        disposable5 = unpacker.ReadSubtree();
-                        try {
-                            nullable5 = this._serializer70.UnpackFrom(disposable5);
-                        }
-                        finally {
-                            if (((disposable5 == null) 
-                                        == false)) {
-                                disposable5.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable5.HasValue) {
-                    result.ArraySegmentInt32Field = nullable5.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<System.Numerics.BigInteger> nullable6 = default(System.Nullable<System.Numerics.BigInteger>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(7);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable6 = this._serializer71.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable6 = default(MsgPack.Unpacker);
-                        disposable6 = unpacker.ReadSubtree();
-                        try {
-                            nullable6 = this._serializer71.UnpackFrom(disposable6);
-                        }
-                        finally {
-                            if (((disposable6 == null) 
-                                        == false)) {
-                                disposable6.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable6.HasValue) {
-                    result.BigIntegerField = nullable6.Value;
-                }
-                unpacked = (unpacked + 1);
-                byte[] nullable7 = default(byte[]);
-                if ((unpacked < itemsCount)) {
-                    nullable7 = MsgPack.Serialization.UnpackHelpers.UnpackBinaryValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Byte[] ByteArrayField");
-                }
-                if (((nullable7 == null) 
-                            == false)) {
-                    result.ByteArrayField = nullable7;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<byte> nullable8 = default(System.Nullable<byte>);
-                if ((unpacked < itemsCount)) {
-                    nullable8 = MsgPack.Serialization.UnpackHelpers.UnpackNullableByteValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Byte ByteField");
-                }
-                if (nullable8.HasValue) {
-                    result.ByteField = nullable8.Value;
-                }
-                unpacked = (unpacked + 1);
-                char[] nullable9 = default(char[]);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(10);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable9 = this._serializer11.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable7 = default(MsgPack.Unpacker);
-                        disposable7 = unpacker.ReadSubtree();
-                        try {
-                            nullable9 = this._serializer11.UnpackFrom(disposable7);
-                        }
-                        finally {
-                            if (((disposable7 == null) 
-                                        == false)) {
-                                disposable7.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable9 == null) 
-                            == false)) {
-                    result.CharArrayField = nullable9;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<char> nullable10 = default(System.Nullable<char>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(11);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable10 = this._serializer72.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable8 = default(MsgPack.Unpacker);
-                        disposable8 = unpacker.ReadSubtree();
-                        try {
-                            nullable10 = this._serializer72.UnpackFrom(disposable8);
-                        }
-                        finally {
-                            if (((disposable8 == null) 
-                                        == false)) {
-                                disposable8.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable10.HasValue) {
-                    result.CharField = nullable10.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> nullable11 = default(System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(12);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable11 = this._serializer13.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable9 = default(MsgPack.Unpacker);
-                        disposable9 = unpacker.ReadSubtree();
-                        try {
-                            nullable11 = this._serializer13.UnpackFrom(disposable9);
-                        }
-                        finally {
-                            if (((disposable9 == null) 
-                                        == false)) {
-                                disposable9.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable11 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator3 = nullable11.GetEnumerator();
-                    MsgPack.MessagePackObject current3;
-                    try {
-                        for (
-                        ; enumerator3.MoveNext(); 
-                        ) {
-                            current3 = enumerator3.Current;
-                            result.Collection_MessagePackObjectField.Add(current3);
-                        }
-                    }
-                    finally {
-                        enumerator3.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.ObjectModel.Collection<System.DateTime> nullable12 = default(System.Collections.ObjectModel.Collection<System.DateTime>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(13);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable12 = this._serializer14.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable10 = default(MsgPack.Unpacker);
-                        disposable10 = unpacker.ReadSubtree();
-                        try {
-                            nullable12 = this._serializer14.UnpackFrom(disposable10);
-                        }
-                        finally {
-                            if (((disposable10 == null) 
-                                        == false)) {
-                                disposable10.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable12 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<System.DateTime> enumerator4 = nullable12.GetEnumerator();
-                    System.DateTime current4;
-                    try {
-                        for (
-                        ; enumerator4.MoveNext(); 
-                        ) {
-                            current4 = enumerator4.Current;
-                            result.CollectionDateTimeField.Add(current4);
-                        }
-                    }
-                    finally {
-                        enumerator4.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.ObjectModel.Collection<object> nullable13 = default(System.Collections.ObjectModel.Collection<object>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(14);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable13 = this._serializer15.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable11 = default(MsgPack.Unpacker);
-                        disposable11 = unpacker.ReadSubtree();
-                        try {
-                            nullable13 = this._serializer15.UnpackFrom(disposable11);
-                        }
-                        finally {
-                            if (((disposable11 == null) 
-                                        == false)) {
-                                disposable11.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable13 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<object> enumerator5 = nullable13.GetEnumerator();
-                    object current5;
-                    try {
-                        for (
-                        ; enumerator5.MoveNext(); 
-                        ) {
-                            current5 = enumerator5.Current;
-                            result.CollectionObjectField.Add(current5);
-                        }
-                    }
-                    finally {
-                        enumerator5.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<System.Numerics.Complex> nullable14 = default(System.Nullable<System.Numerics.Complex>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(15);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable14 = this._serializer73.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable12 = default(MsgPack.Unpacker);
-                        disposable12 = unpacker.ReadSubtree();
-                        try {
-                            nullable14 = this._serializer73.UnpackFrom(disposable12);
-                        }
-                        finally {
-                            if (((disposable12 == null) 
-                                        == false)) {
-                                disposable12.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable14.HasValue) {
-                    result.ComplexField = nullable14.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Globalization.CultureInfo nullable15 = default(System.Globalization.CultureInfo);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(16);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable15 = this._serializer17.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable13 = default(MsgPack.Unpacker);
-                        disposable13 = unpacker.ReadSubtree();
-                        try {
-                            nullable15 = this._serializer17.UnpackFrom(disposable13);
-                        }
-                        finally {
-                            if (((disposable13 == null) 
-                                        == false)) {
-                                disposable13.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable15 == null) 
-                            == false)) {
-                    result.CurrentCultureField = nullable15;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<System.DateTime> nullable16 = default(System.Nullable<System.DateTime>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(17);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable16 = this._serializer74.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable14 = default(MsgPack.Unpacker);
-                        disposable14 = unpacker.ReadSubtree();
-                        try {
-                            nullable16 = this._serializer74.UnpackFrom(disposable14);
-                        }
-                        finally {
-                            if (((disposable14 == null) 
-                                        == false)) {
-                                disposable14.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable16.HasValue) {
-                    result.DateTimeField = nullable16.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<System.DateTimeOffset> nullable17 = default(System.Nullable<System.DateTimeOffset>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(18);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable17 = this._serializer75.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable15 = default(MsgPack.Unpacker);
-                        disposable15 = unpacker.ReadSubtree();
-                        try {
-                            nullable17 = this._serializer75.UnpackFrom(disposable15);
-                        }
-                        finally {
-                            if (((disposable15 == null) 
-                                        == false)) {
-                                disposable15.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable17.HasValue) {
-                    result.DateTimeOffsetField = nullable17.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<decimal> nullable18 = default(System.Nullable<decimal>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(19);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable18 = this._serializer76.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable16 = default(MsgPack.Unpacker);
-                        disposable16 = unpacker.ReadSubtree();
-                        try {
-                            nullable18 = this._serializer76.UnpackFrom(disposable16);
-                        }
-                        finally {
-                            if (((disposable16 == null) 
-                                        == false)) {
-                                disposable16.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable18.HasValue) {
-                    result.DecimalField = nullable18.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> nullable19 = default(System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(20);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable19 = this._serializer21.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable17 = default(MsgPack.Unpacker);
-                        disposable17 = unpacker.ReadSubtree();
-                        try {
-                            nullable19 = this._serializer21.UnpackFrom(disposable17);
-                        }
-                        finally {
-                            if (((disposable17 == null) 
-                                        == false)) {
-                                disposable17.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable19 == null) 
-                            == false)) {
-                    System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>.Enumerator enumerator6 = nullable19.GetEnumerator();
-                    System.Collections.Generic.KeyValuePair<MsgPack.MessagePackObject, MsgPack.MessagePackObject> current6;
-                    try {
-                        for (
-                        ; enumerator6.MoveNext(); 
-                        ) {
-                            current6 = enumerator6.Current;
-                            result.Dictionary_MessagePackObject_MessagePackObjectField.Add(current6.Key, current6.Value);
-                        }
-                    }
-                    finally {
-                        enumerator6.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<System.Collections.DictionaryEntry> nullable20 = default(System.Nullable<System.Collections.DictionaryEntry>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(21);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable20 = this._serializer77.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable18 = default(MsgPack.Unpacker);
-                        disposable18 = unpacker.ReadSubtree();
-                        try {
-                            nullable20 = this._serializer77.UnpackFrom(disposable18);
-                        }
-                        finally {
-                            if (((disposable18 == null) 
-                                        == false)) {
-                                disposable18.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable20.HasValue) {
-                    result.DictionaryEntryField = nullable20.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.Dictionary<object, object> nullable21 = default(System.Collections.Generic.Dictionary<object, object>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(22);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable21 = this._serializer23.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable19 = default(MsgPack.Unpacker);
-                        disposable19 = unpacker.ReadSubtree();
-                        try {
-                            nullable21 = this._serializer23.UnpackFrom(disposable19);
-                        }
-                        finally {
-                            if (((disposable19 == null) 
-                                        == false)) {
-                                disposable19.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable21 == null) 
-                            == false)) {
-                    System.Collections.Generic.Dictionary<object, object>.Enumerator enumerator7 = nullable21.GetEnumerator();
-                    System.Collections.Generic.KeyValuePair<object, object> current7;
-                    try {
-                        for (
-                        ; enumerator7.MoveNext(); 
-                        ) {
-                            current7 = enumerator7.Current;
-                            result.DictionaryObjectObjectField.Add(current7.Key, current7.Value);
-                        }
-                    }
-                    finally {
-                        enumerator7.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.Dictionary<string, System.DateTime> nullable22 = default(System.Collections.Generic.Dictionary<string, System.DateTime>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(23);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable22 = this._serializer24.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable20 = default(MsgPack.Unpacker);
-                        disposable20 = unpacker.ReadSubtree();
-                        try {
-                            nullable22 = this._serializer24.UnpackFrom(disposable20);
-                        }
-                        finally {
-                            if (((disposable20 == null) 
-                                        == false)) {
-                                disposable20.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable22 == null) 
-                            == false)) {
-                    System.Collections.Generic.Dictionary<string, System.DateTime>.Enumerator enumerator8 = nullable22.GetEnumerator();
-                    System.Collections.Generic.KeyValuePair<string, System.DateTime> current8;
-                    try {
-                        for (
-                        ; enumerator8.MoveNext(); 
-                        ) {
-                            current8 = enumerator8.Current;
-                            result.DictionaryStringDateTimeField.Add(current8.Key, current8.Value);
-                        }
-                    }
-                    finally {
-                        enumerator8.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<bool> nullable23 = default(System.Nullable<bool>);
-                if ((unpacked < itemsCount)) {
-                    nullable23 = MsgPack.Serialization.UnpackHelpers.UnpackNullableBooleanValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Boolean FalseField");
-                }
-                if (nullable23.HasValue) {
-                    result.FalseField = nullable23.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME> nullable24 = default(System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(25);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable24 = this._serializer78.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable21 = default(MsgPack.Unpacker);
-                        disposable21 = unpacker.ReadSubtree();
-                        try {
-                            nullable24 = this._serializer78.UnpackFrom(disposable21);
-                        }
-                        finally {
-                            if (((disposable21 == null) 
-                                        == false)) {
-                                disposable21.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable24.HasValue) {
-                    result.FILETIMEField = nullable24.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<System.Guid> nullable25 = default(System.Nullable<System.Guid>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(26);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable25 = this._serializer79.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable22 = default(MsgPack.Unpacker);
-                        disposable22 = unpacker.ReadSubtree();
-                        try {
-                            nullable25 = this._serializer79.UnpackFrom(disposable22);
-                        }
-                        finally {
-                            if (((disposable22 == null) 
-                                        == false)) {
-                                disposable22.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable25.HasValue) {
-                    result.GuidField = nullable25.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.HashSet<MsgPack.MessagePackObject> nullable26 = default(System.Collections.Generic.HashSet<MsgPack.MessagePackObject>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(27);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable26 = this._serializer28.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable23 = default(MsgPack.Unpacker);
-                        disposable23 = unpacker.ReadSubtree();
-                        try {
-                            nullable26 = this._serializer28.UnpackFrom(disposable23);
-                        }
-                        finally {
-                            if (((disposable23 == null) 
-                                        == false)) {
-                                disposable23.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable26 == null) 
-                            == false)) {
-                    System.Collections.Generic.HashSet<MsgPack.MessagePackObject>.Enumerator enumerator9 = nullable26.GetEnumerator();
-                    MsgPack.MessagePackObject current9;
-                    try {
-                        for (
-                        ; enumerator9.MoveNext(); 
-                        ) {
-                            current9 = enumerator9.Current;
-                            result.HashSet_MessagePackObjectField.Add(current9);
-                        }
-                    }
-                    finally {
-                        enumerator9.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.HashSet<System.DateTime> nullable27 = default(System.Collections.Generic.HashSet<System.DateTime>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(28);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable27 = this._serializer29.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable24 = default(MsgPack.Unpacker);
-                        disposable24 = unpacker.ReadSubtree();
-                        try {
-                            nullable27 = this._serializer29.UnpackFrom(disposable24);
-                        }
-                        finally {
-                            if (((disposable24 == null) 
-                                        == false)) {
-                                disposable24.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable27 == null) 
-                            == false)) {
-                    System.Collections.Generic.HashSet<System.DateTime>.Enumerator enumerator10 = nullable27.GetEnumerator();
-                    System.DateTime current10;
-                    try {
-                        for (
-                        ; enumerator10.MoveNext(); 
-                        ) {
-                            current10 = enumerator10.Current;
-                            result.HashSetDateTimeField.Add(current10);
-                        }
-                    }
-                    finally {
-                        enumerator10.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.HashSet<object> nullable28 = default(System.Collections.Generic.HashSet<object>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(29);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable28 = this._serializer30.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable25 = default(MsgPack.Unpacker);
-                        disposable25 = unpacker.ReadSubtree();
-                        try {
-                            nullable28 = this._serializer30.UnpackFrom(disposable25);
-                        }
-                        finally {
-                            if (((disposable25 == null) 
-                                        == false)) {
-                                disposable25.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable28 == null) 
-                            == false)) {
-                    System.Collections.Generic.HashSet<object>.Enumerator enumerator11 = nullable28.GetEnumerator();
-                    object current11;
-                    try {
-                        for (
-                        ; enumerator11.MoveNext(); 
-                        ) {
-                            current11 = enumerator11.Current;
-                            result.HashSetObjectField.Add(current11);
-                        }
-                    }
-                    finally {
-                        enumerator11.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Hashtable nullable29 = default(System.Collections.Hashtable);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(30);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable29 = this._serializer31.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable26 = default(MsgPack.Unpacker);
-                        disposable26 = unpacker.ReadSubtree();
-                        try {
-                            nullable29 = this._serializer31.UnpackFrom(disposable26);
-                        }
-                        finally {
-                            if (((disposable26 == null) 
-                                        == false)) {
-                                disposable26.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable29 == null) 
-                            == false)) {
-                    System.Collections.IDictionaryEnumerator enumerator12 = nullable29.GetEnumerator();
-                    System.Collections.DictionaryEntry current12;
-                    for (
-                    ; enumerator12.MoveNext(); 
-                    ) {
-                        current12 = enumerator12.Entry;
-                        result.HashtableField.Add(current12.Key, current12.Value);
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.ICollection<MsgPack.MessagePackObject> nullable30 = default(System.Collections.Generic.ICollection<MsgPack.MessagePackObject>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(31);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable30 = this._serializer32.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable27 = default(MsgPack.Unpacker);
-                        disposable27 = unpacker.ReadSubtree();
-                        try {
-                            nullable30 = this._serializer32.UnpackFrom(disposable27);
-                        }
-                        finally {
-                            if (((disposable27 == null) 
-                                        == false)) {
-                                disposable27.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable30 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator13 = nullable30.GetEnumerator();
-                    MsgPack.MessagePackObject current13;
-                    try {
-                        for (
-                        ; enumerator13.MoveNext(); 
-                        ) {
-                            current13 = enumerator13.Current;
-                            result.ICollection_MessagePackObjectField.Add(current13);
-                        }
-                    }
-                    finally {
-                        enumerator13.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.ICollection<System.DateTime> nullable31 = default(System.Collections.Generic.ICollection<System.DateTime>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(32);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable31 = this._serializer33.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable28 = default(MsgPack.Unpacker);
-                        disposable28 = unpacker.ReadSubtree();
-                        try {
-                            nullable31 = this._serializer33.UnpackFrom(disposable28);
-                        }
-                        finally {
-                            if (((disposable28 == null) 
-                                        == false)) {
-                                disposable28.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable31 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<System.DateTime> enumerator14 = nullable31.GetEnumerator();
-                    System.DateTime current14;
-                    try {
-                        for (
-                        ; enumerator14.MoveNext(); 
-                        ) {
-                            current14 = enumerator14.Current;
-                            result.ICollectionDateTimeField.Add(current14);
-                        }
-                    }
-                    finally {
-                        enumerator14.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.ICollection<object> nullable32 = default(System.Collections.Generic.ICollection<object>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(33);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable32 = this._serializer34.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable29 = default(MsgPack.Unpacker);
-                        disposable29 = unpacker.ReadSubtree();
-                        try {
-                            nullable32 = this._serializer34.UnpackFrom(disposable29);
-                        }
-                        finally {
-                            if (((disposable29 == null) 
-                                        == false)) {
-                                disposable29.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable32 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<object> enumerator15 = nullable32.GetEnumerator();
-                    object current15;
-                    try {
-                        for (
-                        ; enumerator15.MoveNext(); 
-                        ) {
-                            current15 = enumerator15.Current;
-                            result.ICollectionObjectField.Add(current15);
-                        }
-                    }
-                    finally {
-                        enumerator15.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> nullable33 = default(System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(34);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable33 = this._serializer35.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable30 = default(MsgPack.Unpacker);
-                        disposable30 = unpacker.ReadSubtree();
-                        try {
-                            nullable33 = this._serializer35.UnpackFrom(disposable30);
-                        }
-                        finally {
-                            if (((disposable30 == null) 
-                                        == false)) {
-                                disposable30.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable33 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> enumerator16 = nullable33.GetEnumerator();
-                    System.Collections.Generic.KeyValuePair<MsgPack.MessagePackObject, MsgPack.MessagePackObject> current16;
-                    try {
-                        for (
-                        ; enumerator16.MoveNext(); 
-                        ) {
-                            current16 = enumerator16.Current;
-                            result.IDictionary_MessagePackObject_MessagePackObjectField.Add(current16.Key, current16.Value);
-                        }
-                    }
-                    finally {
-                        enumerator16.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.IDictionary<object, object> nullable34 = default(System.Collections.Generic.IDictionary<object, object>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(35);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable34 = this._serializer36.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable31 = default(MsgPack.Unpacker);
-                        disposable31 = unpacker.ReadSubtree();
-                        try {
-                            nullable34 = this._serializer36.UnpackFrom(disposable31);
-                        }
-                        finally {
-                            if (((disposable31 == null) 
-                                        == false)) {
-                                disposable31.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable34 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<object, object>> enumerator17 = nullable34.GetEnumerator();
-                    System.Collections.Generic.KeyValuePair<object, object> current17;
-                    try {
-                        for (
-                        ; enumerator17.MoveNext(); 
-                        ) {
-                            current17 = enumerator17.Current;
-                            result.IDictionaryObjectObjectField.Add(current17.Key, current17.Value);
-                        }
-                    }
-                    finally {
-                        enumerator17.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.IDictionary<string, System.DateTime> nullable35 = default(System.Collections.Generic.IDictionary<string, System.DateTime>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(36);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable35 = this._serializer37.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable32 = default(MsgPack.Unpacker);
-                        disposable32 = unpacker.ReadSubtree();
-                        try {
-                            nullable35 = this._serializer37.UnpackFrom(disposable32);
-                        }
-                        finally {
-                            if (((disposable32 == null) 
-                                        == false)) {
-                                disposable32.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable35 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, System.DateTime>> enumerator18 = nullable35.GetEnumerator();
-                    System.Collections.Generic.KeyValuePair<string, System.DateTime> current18;
-                    try {
-                        for (
-                        ; enumerator18.MoveNext(); 
-                        ) {
-                            current18 = enumerator18.Current;
-                            result.IDictionaryStringDateTimeField.Add(current18.Key, current18.Value);
-                        }
-                    }
-                    finally {
-                        enumerator18.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.IList<MsgPack.MessagePackObject> nullable36 = default(System.Collections.Generic.IList<MsgPack.MessagePackObject>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(37);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable36 = this._serializer38.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable33 = default(MsgPack.Unpacker);
-                        disposable33 = unpacker.ReadSubtree();
-                        try {
-                            nullable36 = this._serializer38.UnpackFrom(disposable33);
-                        }
-                        finally {
-                            if (((disposable33 == null) 
-                                        == false)) {
-                                disposable33.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable36 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator19 = nullable36.GetEnumerator();
-                    MsgPack.MessagePackObject current19;
-                    try {
-                        for (
-                        ; enumerator19.MoveNext(); 
-                        ) {
-                            current19 = enumerator19.Current;
-                            result.IList_MessagePackObjectField.Add(current19);
-                        }
-                    }
-                    finally {
-                        enumerator19.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.IList<System.DateTime> nullable37 = default(System.Collections.Generic.IList<System.DateTime>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(38);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable37 = this._serializer39.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable34 = default(MsgPack.Unpacker);
-                        disposable34 = unpacker.ReadSubtree();
-                        try {
-                            nullable37 = this._serializer39.UnpackFrom(disposable34);
-                        }
-                        finally {
-                            if (((disposable34 == null) 
-                                        == false)) {
-                                disposable34.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable37 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<System.DateTime> enumerator20 = nullable37.GetEnumerator();
-                    System.DateTime current20;
-                    try {
-                        for (
-                        ; enumerator20.MoveNext(); 
-                        ) {
-                            current20 = enumerator20.Current;
-                            result.IListDateTimeField.Add(current20);
-                        }
-                    }
-                    finally {
-                        enumerator20.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.IList<object> nullable38 = default(System.Collections.Generic.IList<object>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(39);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable38 = this._serializer40.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable35 = default(MsgPack.Unpacker);
-                        disposable35 = unpacker.ReadSubtree();
-                        try {
-                            nullable38 = this._serializer40.UnpackFrom(disposable35);
-                        }
-                        finally {
-                            if (((disposable35 == null) 
-                                        == false)) {
-                                disposable35.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable38 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<object> enumerator21 = nullable38.GetEnumerator();
-                    object current21;
-                    try {
-                        for (
-                        ; enumerator21.MoveNext(); 
-                        ) {
-                            current21 = enumerator21.Current;
-                            result.IListObjectField.Add(current21);
-                        }
-                    }
-                    finally {
-                        enumerator21.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                MsgPack.Image nullable39 = default(MsgPack.Image);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(40);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable39 = this._serializer41.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable36 = default(MsgPack.Unpacker);
-                        disposable36 = unpacker.ReadSubtree();
-                        try {
-                            nullable39 = this._serializer41.UnpackFrom(disposable36);
-                        }
-                        finally {
-                            if (((disposable36 == null) 
-                                        == false)) {
-                                disposable36.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable39 == null) 
-                            == false)) {
-                    result.Image_Field = nullable39;
-                }
-                unpacked = (unpacked + 1);
-                System.Globalization.CultureInfo nullable40 = default(System.Globalization.CultureInfo);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(41);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable40 = this._serializer17.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable37 = default(MsgPack.Unpacker);
-                        disposable37 = unpacker.ReadSubtree();
-                        try {
-                            nullable40 = this._serializer17.UnpackFrom(disposable37);
-                        }
-                        finally {
-                            if (((disposable37 == null) 
-                                        == false)) {
-                                disposable37.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable40 == null) 
-                            == false)) {
-                    result.InvariantCultureField = nullable40;
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.ISet<MsgPack.MessagePackObject> nullable41 = default(System.Collections.Generic.ISet<MsgPack.MessagePackObject>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(42);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable41 = this._serializer42.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable38 = default(MsgPack.Unpacker);
-                        disposable38 = unpacker.ReadSubtree();
-                        try {
-                            nullable41 = this._serializer42.UnpackFrom(disposable38);
-                        }
-                        finally {
-                            if (((disposable38 == null) 
-                                        == false)) {
-                                disposable38.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable41 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator22 = nullable41.GetEnumerator();
-                    MsgPack.MessagePackObject current22;
-                    try {
-                        for (
-                        ; enumerator22.MoveNext(); 
-                        ) {
-                            current22 = enumerator22.Current;
-                            result.ISet_MessagePackObjectField.Add(current22);
-                        }
-                    }
-                    finally {
-                        enumerator22.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.ISet<System.DateTime> nullable42 = default(System.Collections.Generic.ISet<System.DateTime>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(43);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable42 = this._serializer43.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable39 = default(MsgPack.Unpacker);
-                        disposable39 = unpacker.ReadSubtree();
-                        try {
-                            nullable42 = this._serializer43.UnpackFrom(disposable39);
-                        }
-                        finally {
-                            if (((disposable39 == null) 
-                                        == false)) {
-                                disposable39.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable42 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<System.DateTime> enumerator23 = nullable42.GetEnumerator();
-                    System.DateTime current23;
-                    try {
-                        for (
-                        ; enumerator23.MoveNext(); 
-                        ) {
-                            current23 = enumerator23.Current;
-                            result.ISetDateTimeField.Add(current23);
-                        }
-                    }
-                    finally {
-                        enumerator23.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.ISet<object> nullable43 = default(System.Collections.Generic.ISet<object>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(44);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable43 = this._serializer44.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable40 = default(MsgPack.Unpacker);
-                        disposable40 = unpacker.ReadSubtree();
-                        try {
-                            nullable43 = this._serializer44.UnpackFrom(disposable40);
-                        }
-                        finally {
-                            if (((disposable40 == null) 
-                                        == false)) {
-                                disposable40.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable43 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<object> enumerator24 = nullable43.GetEnumerator();
-                    object current24;
-                    try {
-                        for (
-                        ; enumerator24.MoveNext(); 
-                        ) {
-                            current24 = enumerator24.Current;
-                            result.ISetObjectField.Add(current24);
-                        }
-                    }
-                    finally {
-                        enumerator24.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>> nullable44 = default(System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(45);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable44 = this._serializer80.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable41 = default(MsgPack.Unpacker);
-                        disposable41 = unpacker.ReadSubtree();
-                        try {
-                            nullable44 = this._serializer80.UnpackFrom(disposable41);
-                        }
-                        finally {
-                            if (((disposable41 == null) 
-                                        == false)) {
-                                disposable41.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable44.HasValue) {
-                    result.KeyValuePairStringComplexField = nullable44.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>> nullable45 = default(System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(46);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable45 = this._serializer81.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable42 = default(MsgPack.Unpacker);
-                        disposable42 = unpacker.ReadSubtree();
-                        try {
-                            nullable45 = this._serializer81.UnpackFrom(disposable42);
-                        }
-                        finally {
-                            if (((disposable42 == null) 
-                                        == false)) {
-                                disposable42.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable45.HasValue) {
-                    result.KeyValuePairStringDateTimeOffsetField = nullable45.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.List<MsgPack.MessagePackObject> nullable46 = default(System.Collections.Generic.List<MsgPack.MessagePackObject>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(47);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable46 = this._serializer47.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable43 = default(MsgPack.Unpacker);
-                        disposable43 = unpacker.ReadSubtree();
-                        try {
-                            nullable46 = this._serializer47.UnpackFrom(disposable43);
-                        }
-                        finally {
-                            if (((disposable43 == null) 
-                                        == false)) {
-                                disposable43.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable46 == null) 
-                            == false)) {
-                    System.Collections.Generic.List<MsgPack.MessagePackObject>.Enumerator enumerator25 = nullable46.GetEnumerator();
-                    MsgPack.MessagePackObject current25;
-                    try {
-                        for (
-                        ; enumerator25.MoveNext(); 
-                        ) {
-                            current25 = enumerator25.Current;
-                            result.List_MessagePackObjectField.Add(current25);
-                        }
-                    }
-                    finally {
-                        enumerator25.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.List<System.DateTime> nullable47 = default(System.Collections.Generic.List<System.DateTime>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(48);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable47 = this._serializer48.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable44 = default(MsgPack.Unpacker);
-                        disposable44 = unpacker.ReadSubtree();
-                        try {
-                            nullable47 = this._serializer48.UnpackFrom(disposable44);
-                        }
-                        finally {
-                            if (((disposable44 == null) 
-                                        == false)) {
-                                disposable44.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable47 == null) 
-                            == false)) {
-                    System.Collections.Generic.List<System.DateTime>.Enumerator enumerator26 = nullable47.GetEnumerator();
-                    System.DateTime current26;
-                    try {
-                        for (
-                        ; enumerator26.MoveNext(); 
-                        ) {
-                            current26 = enumerator26.Current;
-                            result.ListDateTimeField.Add(current26);
-                        }
-                    }
-                    finally {
-                        enumerator26.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.List<object> nullable48 = default(System.Collections.Generic.List<object>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(49);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable48 = this._serializer49.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable45 = default(MsgPack.Unpacker);
-                        disposable45 = unpacker.ReadSubtree();
-                        try {
-                            nullable48 = this._serializer49.UnpackFrom(disposable45);
-                        }
-                        finally {
-                            if (((disposable45 == null) 
-                                        == false)) {
-                                disposable45.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable48 == null) 
-                            == false)) {
-                    System.Collections.Generic.List<object>.Enumerator enumerator27 = nullable48.GetEnumerator();
-                    object current27;
-                    try {
-                        for (
-                        ; enumerator27.MoveNext(); 
-                        ) {
-                            current27 = enumerator27.Current;
-                            result.ListObjectField.Add(current27);
-                        }
-                    }
-                    finally {
-                        enumerator27.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<byte> nullable49 = default(System.Nullable<byte>);
-                if ((unpacked < itemsCount)) {
-                    nullable49 = MsgPack.Serialization.UnpackHelpers.UnpackNullableByteValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Byte MaxByteField");
-                }
-                if (nullable49.HasValue) {
-                    result.MaxByteField = nullable49.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<int> nullable50 = default(System.Nullable<int>);
-                if ((unpacked < itemsCount)) {
-                    nullable50 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Int32 MaxInt32Field");
-                }
-                if (nullable50.HasValue) {
-                    result.MaxInt32Field = nullable50.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<long> nullable51 = default(System.Nullable<long>);
-                if ((unpacked < itemsCount)) {
-                    nullable51 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt64Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Int64 MaxInt64Field");
-                }
-                if (nullable51.HasValue) {
-                    result.MaxInt64Field = nullable51.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<ushort> nullable52 = default(System.Nullable<ushort>);
-                if ((unpacked < itemsCount)) {
-                    nullable52 = MsgPack.Serialization.UnpackHelpers.UnpackNullableUInt16Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "UInt16 MaxUInt16Field");
-                }
-                if (nullable52.HasValue) {
-                    result.MaxUInt16Field = nullable52.Value;
-                }
-                unpacked = (unpacked + 1);
-                MsgPack.MessagePackObject nullable53 = default(MsgPack.MessagePackObject);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(54);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable53 = unpacker.LastReadData;
-                    }
-                    else {
-                        nullable53 = unpacker.UnpackSubtreeData();
-                    }
-                }
-                if ((nullable53.IsNil == false)) {
-                    result.MessagePackObject_Field = nullable53;
-                }
-                unpacked = (unpacked + 1);
-                MsgPack.MessagePackObject[] nullable54 = default(MsgPack.MessagePackObject[]);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(55);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable54 = this._serializer54.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable46 = default(MsgPack.Unpacker);
-                        disposable46 = unpacker.ReadSubtree();
-                        try {
-                            nullable54 = this._serializer54.UnpackFrom(disposable46);
-                        }
-                        finally {
-                            if (((disposable46 == null) 
-                                        == false)) {
-                                disposable46.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable54 == null) 
-                            == false)) {
-                    result.MessagePackObjectArray_Field = nullable54;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<int> nullable55 = default(System.Nullable<int>);
-                if ((unpacked < itemsCount)) {
-                    nullable55 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Int32 MinInt32Field");
-                }
-                if (nullable55.HasValue) {
-                    result.MinInt32Field = nullable55.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<long> nullable56 = default(System.Nullable<long>);
-                if ((unpacked < itemsCount)) {
-                    nullable56 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt64Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Int64 MinInt64Field");
-                }
-                if (nullable56.HasValue) {
-                    result.MinInt64Field = nullable56.Value;
-                }
-                unpacked = (unpacked + 1);
-                object nullable57 = default(object);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(58);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable57 = this._serializer55.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable47 = default(MsgPack.Unpacker);
-                        disposable47 = unpacker.ReadSubtree();
-                        try {
-                            nullable57 = this._serializer55.UnpackFrom(disposable47);
-                        }
-                        finally {
-                            if (((disposable47 == null) 
-                                        == false)) {
-                                disposable47.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable57 == null) 
-                            == false)) {
-                    result.NullField = nullable57;
-                }
-                unpacked = (unpacked + 1);
-                object[] nullable58 = default(object[]);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(59);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable58 = this._serializer56.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable48 = default(MsgPack.Unpacker);
-                        disposable48 = unpacker.ReadSubtree();
-                        try {
-                            nullable58 = this._serializer56.UnpackFrom(disposable48);
-                        }
-                        finally {
-                            if (((disposable48 == null) 
-                                        == false)) {
-                                disposable48.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable58 == null) 
-                            == false)) {
-                    result.ObjectArrayField = nullable58;
-                }
-                unpacked = (unpacked + 1);
-                object nullable59 = default(object);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(60);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable59 = this._serializer55.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable49 = default(MsgPack.Unpacker);
-                        disposable49 = unpacker.ReadSubtree();
-                        try {
-                            nullable59 = this._serializer55.UnpackFrom(disposable49);
-                        }
-                        finally {
-                            if (((disposable49 == null) 
-                                        == false)) {
-                                disposable49.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable59 == null) 
-                            == false)) {
-                    result.ObjectField = nullable59;
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject> nullable60 = default(System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(61);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable60 = this._serializer57.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable50 = default(MsgPack.Unpacker);
-                        disposable50 = unpacker.ReadSubtree();
-                        try {
-                            nullable60 = this._serializer57.UnpackFrom(disposable50);
-                        }
-                        finally {
-                            if (((disposable50 == null) 
-                                        == false)) {
-                                disposable50.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable60 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator28 = nullable60.GetEnumerator();
-                    MsgPack.MessagePackObject current28;
-                    try {
-                        for (
-                        ; enumerator28.MoveNext(); 
-                        ) {
-                            current28 = enumerator28.Current;
-                            result.ObservableCollection_MessagePackObjectField.Add(current28);
-                        }
-                    }
-                    finally {
-                        enumerator28.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.ObjectModel.ObservableCollection<System.DateTime> nullable61 = default(System.Collections.ObjectModel.ObservableCollection<System.DateTime>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(62);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable61 = this._serializer58.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable51 = default(MsgPack.Unpacker);
-                        disposable51 = unpacker.ReadSubtree();
-                        try {
-                            nullable61 = this._serializer58.UnpackFrom(disposable51);
-                        }
-                        finally {
-                            if (((disposable51 == null) 
-                                        == false)) {
-                                disposable51.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable61 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<System.DateTime> enumerator29 = nullable61.GetEnumerator();
-                    System.DateTime current29;
-                    try {
-                        for (
-                        ; enumerator29.MoveNext(); 
-                        ) {
-                            current29 = enumerator29.Current;
-                            result.ObservableCollectionDateTimeField.Add(current29);
-                        }
-                    }
-                    finally {
-                        enumerator29.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.ObjectModel.ObservableCollection<object> nullable62 = default(System.Collections.ObjectModel.ObservableCollection<object>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(63);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable62 = this._serializer59.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable52 = default(MsgPack.Unpacker);
-                        disposable52 = unpacker.ReadSubtree();
-                        try {
-                            nullable62 = this._serializer59.UnpackFrom(disposable52);
-                        }
-                        finally {
-                            if (((disposable52 == null) 
-                                        == false)) {
-                                disposable52.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable62 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<object> enumerator30 = nullable62.GetEnumerator();
-                    object current30;
-                    try {
-                        for (
-                        ; enumerator30.MoveNext(); 
-                        ) {
-                            current30 = enumerator30.Current;
-                            result.ObservableCollectionObjectField.Add(current30);
-                        }
-                    }
-                    finally {
-                        enumerator30.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                string nullable63 = default(string);
-                if ((unpacked < itemsCount)) {
-                    nullable63 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "System.String StringField");
-                }
-                if (((nullable63 == null) 
-                            == false)) {
-                    result.StringField = nullable63;
-                }
-                unpacked = (unpacked + 1);
-                MsgPack.Serialization.StringKeyedCollection<System.DateTime> nullable64 = default(MsgPack.Serialization.StringKeyedCollection<System.DateTime>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(65);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable64 = this._serializer60.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable53 = default(MsgPack.Unpacker);
-                        disposable53 = unpacker.ReadSubtree();
-                        try {
-                            nullable64 = this._serializer60.UnpackFrom(disposable53);
-                        }
-                        finally {
-                            if (((disposable53 == null) 
-                                        == false)) {
-                                disposable53.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable64 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<System.DateTime> enumerator31 = nullable64.GetEnumerator();
-                    System.DateTime current31;
-                    try {
-                        for (
-                        ; enumerator31.MoveNext(); 
-                        ) {
-                            current31 = enumerator31.Current;
-                            result.StringKeyedCollection_DateTimeField.Add(current31);
-                        }
-                    }
-                    finally {
-                        enumerator31.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject> nullable65 = default(MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(66);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable65 = this._serializer61.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable54 = default(MsgPack.Unpacker);
-                        disposable54 = unpacker.ReadSubtree();
-                        try {
-                            nullable65 = this._serializer61.UnpackFrom(disposable54);
-                        }
-                        finally {
-                            if (((disposable54 == null) 
-                                        == false)) {
-                                disposable54.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable65 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator32 = nullable65.GetEnumerator();
-                    MsgPack.MessagePackObject current32;
-                    try {
-                        for (
-                        ; enumerator32.MoveNext(); 
-                        ) {
-                            current32 = enumerator32.Current;
-                            result.StringKeyedCollection_MessagePackObjectField.Add(current32);
-                        }
-                    }
-                    finally {
-                        enumerator32.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                MsgPack.Serialization.StringKeyedCollection<object> nullable66 = default(MsgPack.Serialization.StringKeyedCollection<object>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(67);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable66 = this._serializer62.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable55 = default(MsgPack.Unpacker);
-                        disposable55 = unpacker.ReadSubtree();
-                        try {
-                            nullable66 = this._serializer62.UnpackFrom(disposable55);
-                        }
-                        finally {
-                            if (((disposable55 == null) 
-                                        == false)) {
-                                disposable55.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable66 == null) 
-                            == false)) {
-                    System.Collections.Generic.IEnumerator<object> enumerator33 = nullable66.GetEnumerator();
-                    object current33;
-                    try {
-                        for (
-                        ; enumerator33.MoveNext(); 
-                        ) {
-                            current33 = enumerator33.Current;
-                            result.StringKeyedCollection_ObjectField.Add(current33);
-                        }
-                    }
-                    finally {
-                        enumerator33.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<System.TimeSpan> nullable67 = default(System.Nullable<System.TimeSpan>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(68);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable67 = this._serializer82.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable56 = default(MsgPack.Unpacker);
-                        disposable56 = unpacker.ReadSubtree();
-                        try {
-                            nullable67 = this._serializer82.UnpackFrom(disposable56);
-                        }
-                        finally {
-                            if (((disposable56 == null) 
-                                        == false)) {
-                                disposable56.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable67.HasValue) {
-                    result.TimeSpanField = nullable67.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<byte> nullable68 = default(System.Nullable<byte>);
-                if ((unpacked < itemsCount)) {
-                    nullable68 = MsgPack.Serialization.UnpackHelpers.UnpackNullableByteValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Byte TinyByteField");
-                }
-                if (nullable68.HasValue) {
-                    result.TinyByteField = nullable68.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<int> nullable69 = default(System.Nullable<int>);
-                if ((unpacked < itemsCount)) {
-                    nullable69 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Int32 TinyInt32Field");
-                }
-                if (nullable69.HasValue) {
-                    result.TinyInt32Field = nullable69.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<long> nullable70 = default(System.Nullable<long>);
-                if ((unpacked < itemsCount)) {
-                    nullable70 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt64Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Int64 TinyInt64Field");
-                }
-                if (nullable70.HasValue) {
-                    result.TinyInt64Field = nullable70.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<ushort> nullable71 = default(System.Nullable<ushort>);
-                if ((unpacked < itemsCount)) {
-                    nullable71 = MsgPack.Serialization.UnpackHelpers.UnpackNullableUInt16Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "UInt16 TinyUInt16Field");
-                }
-                if (nullable71.HasValue) {
-                    result.TinyUInt16Field = nullable71.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<bool> nullable72 = default(System.Nullable<bool>);
-                if ((unpacked < itemsCount)) {
-                    nullable72 = MsgPack.Serialization.UnpackHelpers.UnpackNullableBooleanValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Boolean TrueField");
-                }
-                if (nullable72.HasValue) {
-                    result.TrueField = nullable72.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Tuple<int, string, MsgPack.MessagePackObject, object> nullable73 = default(System.Tuple<int, string, MsgPack.MessagePackObject, object>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(74);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable73 = this._serializer65.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable57 = default(MsgPack.Unpacker);
-                        disposable57 = unpacker.ReadSubtree();
-                        try {
-                            nullable73 = this._serializer65.UnpackFrom(disposable57);
-                        }
-                        finally {
-                            if (((disposable57 == null) 
-                                        == false)) {
-                                disposable57.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable73 == null) 
-                            == false)) {
-                    result.Tuple_Int32_String_MessagePackObject_ObjectField = nullable73;
-                }
-                unpacked = (unpacked + 1);
-                System.Uri nullable74 = default(System.Uri);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(75);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable74 = this._serializer66.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable58 = default(MsgPack.Unpacker);
-                        disposable58 = unpacker.ReadSubtree();
-                        try {
-                            nullable74 = this._serializer66.UnpackFrom(disposable58);
-                        }
-                        finally {
-                            if (((disposable58 == null) 
-                                        == false)) {
-                                disposable58.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable74 == null) 
-                            == false)) {
-                    result.UriField = nullable74;
-                }
-                unpacked = (unpacked + 1);
-                System.Version nullable75 = default(System.Version);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(76);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable75 = this._serializer67.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable59 = default(MsgPack.Unpacker);
-                        disposable59 = unpacker.ReadSubtree();
-                        try {
-                            nullable75 = this._serializer67.UnpackFrom(disposable59);
-                        }
-                        finally {
-                            if (((disposable59 == null) 
-                                        == false)) {
-                                disposable59.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable75 == null) 
-                            == false)) {
-                    result.VersionField = nullable75;
-                }
-                unpacked = (unpacked + 1);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.ComplexTypeGenerated>(), this._memberNames, this._unpackOperationList);
             }
             else {
-                int itemsCount0 = default(int);
-                itemsCount0 = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                for (int i = 0; (i < itemsCount0); i = (i + 1)) {
-                    string key = default(string);
-                    string nullable76 = default(string);
-                    nullable76 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "MemberName");
-                    if (((nullable76 == null) 
-                                == false)) {
-                        key = nullable76;
-                    }
-                    else {
-                        throw MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited("MemberName");
-                    }
-                    if ((key == "VersionField")) {
-                        System.Version nullable153 = default(System.Version);
-                        if ((unpacker.Read() == false)) {
-                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                        }
-                        if (((unpacker.IsArrayHeader == false) 
-                                    && (unpacker.IsMapHeader == false))) {
-                            nullable153 = this._serializer67.UnpackFrom(unpacker);
-                        }
-                        else {
-                            MsgPack.Unpacker disposable120 = default(MsgPack.Unpacker);
-                            disposable120 = unpacker.ReadSubtree();
-                            try {
-                                nullable153 = this._serializer67.UnpackFrom(disposable120);
-                            }
-                            finally {
-                                if (((disposable120 == null) 
-                                            == false)) {
-                                    disposable120.Dispose();
-                                }
-                            }
-                        }
-                        if (((nullable153 == null) 
-                                    == false)) {
-                            result.VersionField = nullable153;
-                        }
-                    }
-                    else {
-                        if ((key == "UriField")) {
-                            System.Uri nullable152 = default(System.Uri);
-                            if ((unpacker.Read() == false)) {
-                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                            }
-                            if (((unpacker.IsArrayHeader == false) 
-                                        && (unpacker.IsMapHeader == false))) {
-                                nullable152 = this._serializer66.UnpackFrom(unpacker);
-                            }
-                            else {
-                                MsgPack.Unpacker disposable119 = default(MsgPack.Unpacker);
-                                disposable119 = unpacker.ReadSubtree();
-                                try {
-                                    nullable152 = this._serializer66.UnpackFrom(disposable119);
-                                }
-                                finally {
-                                    if (((disposable119 == null) 
-                                                == false)) {
-                                        disposable119.Dispose();
-                                    }
-                                }
-                            }
-                            if (((nullable152 == null) 
-                                        == false)) {
-                                result.UriField = nullable152;
-                            }
-                        }
-                        else {
-                            if ((key == "Tuple_Int32_String_MessagePackObject_ObjectField")) {
-                                System.Tuple<int, string, MsgPack.MessagePackObject, object> nullable151 = default(System.Tuple<int, string, MsgPack.MessagePackObject, object>);
-                                if ((unpacker.Read() == false)) {
-                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                }
-                                if (((unpacker.IsArrayHeader == false) 
-                                            && (unpacker.IsMapHeader == false))) {
-                                    nullable151 = this._serializer65.UnpackFrom(unpacker);
-                                }
-                                else {
-                                    MsgPack.Unpacker disposable118 = default(MsgPack.Unpacker);
-                                    disposable118 = unpacker.ReadSubtree();
-                                    try {
-                                        nullable151 = this._serializer65.UnpackFrom(disposable118);
-                                    }
-                                    finally {
-                                        if (((disposable118 == null) 
-                                                    == false)) {
-                                            disposable118.Dispose();
-                                        }
-                                    }
-                                }
-                                if (((nullable151 == null) 
-                                            == false)) {
-                                    result.Tuple_Int32_String_MessagePackObject_ObjectField = nullable151;
-                                }
-                            }
-                            else {
-                                if ((key == "TrueField")) {
-                                    System.Nullable<bool> nullable150 = default(System.Nullable<bool>);
-                                    nullable150 = MsgPack.Serialization.UnpackHelpers.UnpackNullableBooleanValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Boolean TrueField");
-                                    if (nullable150.HasValue) {
-                                        result.TrueField = nullable150.Value;
-                                    }
-                                }
-                                else {
-                                    if ((key == "TinyUInt16Field")) {
-                                        System.Nullable<ushort> nullable149 = default(System.Nullable<ushort>);
-                                        nullable149 = MsgPack.Serialization.UnpackHelpers.UnpackNullableUInt16Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "UInt16 TinyUInt16Field");
-                                        if (nullable149.HasValue) {
-                                            result.TinyUInt16Field = nullable149.Value;
-                                        }
-                                    }
-                                    else {
-                                        if ((key == "TinyInt64Field")) {
-                                            System.Nullable<long> nullable148 = default(System.Nullable<long>);
-                                            nullable148 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt64Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Int64 TinyInt64Field");
-                                            if (nullable148.HasValue) {
-                                                result.TinyInt64Field = nullable148.Value;
-                                            }
-                                        }
-                                        else {
-                                            if ((key == "TinyInt32Field")) {
-                                                System.Nullable<int> nullable147 = default(System.Nullable<int>);
-                                                nullable147 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Int32 TinyInt32Field");
-                                                if (nullable147.HasValue) {
-                                                    result.TinyInt32Field = nullable147.Value;
-                                                }
-                                            }
-                                            else {
-                                                if ((key == "TinyByteField")) {
-                                                    System.Nullable<byte> nullable146 = default(System.Nullable<byte>);
-                                                    nullable146 = MsgPack.Serialization.UnpackHelpers.UnpackNullableByteValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Byte TinyByteField");
-                                                    if (nullable146.HasValue) {
-                                                        result.TinyByteField = nullable146.Value;
-                                                    }
-                                                }
-                                                else {
-                                                    if ((key == "TimeSpanField")) {
-                                                        System.Nullable<System.TimeSpan> nullable145 = default(System.Nullable<System.TimeSpan>);
-                                                        if ((unpacker.Read() == false)) {
-                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                        }
-                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                    && (unpacker.IsMapHeader == false))) {
-                                                            nullable145 = this._serializer82.UnpackFrom(unpacker);
-                                                        }
-                                                        else {
-                                                            MsgPack.Unpacker disposable117 = default(MsgPack.Unpacker);
-                                                            disposable117 = unpacker.ReadSubtree();
-                                                            try {
-                                                                nullable145 = this._serializer82.UnpackFrom(disposable117);
-                                                            }
-                                                            finally {
-                                                                if (((disposable117 == null) 
-                                                                            == false)) {
-                                                                    disposable117.Dispose();
-                                                                }
-                                                            }
-                                                        }
-                                                        if (nullable145.HasValue) {
-                                                            result.TimeSpanField = nullable145.Value;
-                                                        }
-                                                    }
-                                                    else {
-                                                        if ((key == "StringKeyedCollection_ObjectField")) {
-                                                            MsgPack.Serialization.StringKeyedCollection<object> nullable144 = default(MsgPack.Serialization.StringKeyedCollection<object>);
-                                                            if ((unpacker.Read() == false)) {
-                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                            }
-                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                nullable144 = this._serializer62.UnpackFrom(unpacker);
-                                                            }
-                                                            else {
-                                                                MsgPack.Unpacker disposable116 = default(MsgPack.Unpacker);
-                                                                disposable116 = unpacker.ReadSubtree();
-                                                                try {
-                                                                    nullable144 = this._serializer62.UnpackFrom(disposable116);
-                                                                }
-                                                                finally {
-                                                                    if (((disposable116 == null) 
-                                                                                == false)) {
-                                                                        disposable116.Dispose();
-                                                                    }
-                                                                }
-                                                            }
-                                                            if (((nullable144 == null) 
-                                                                        == false)) {
-                                                                System.Collections.Generic.IEnumerator<object> enumerator68 = nullable144.GetEnumerator();
-                                                                object current68;
-                                                                try {
-                                                                    for (
-                                                                    ; enumerator68.MoveNext(); 
-                                                                    ) {
-                                                                        current68 = enumerator68.Current;
-                                                                        result.StringKeyedCollection_ObjectField.Add(current68);
-                                                                    }
-                                                                }
-                                                                finally {
-                                                                    enumerator68.Dispose();
-                                                                }
-                                                            }
-                                                        }
-                                                        else {
-                                                            if ((key == "StringKeyedCollection_MessagePackObjectField")) {
-                                                                MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject> nullable143 = default(MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>);
-                                                                if ((unpacker.Read() == false)) {
-                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                }
-                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                    nullable143 = this._serializer61.UnpackFrom(unpacker);
-                                                                }
-                                                                else {
-                                                                    MsgPack.Unpacker disposable115 = default(MsgPack.Unpacker);
-                                                                    disposable115 = unpacker.ReadSubtree();
-                                                                    try {
-                                                                        nullable143 = this._serializer61.UnpackFrom(disposable115);
-                                                                    }
-                                                                    finally {
-                                                                        if (((disposable115 == null) 
-                                                                                    == false)) {
-                                                                            disposable115.Dispose();
-                                                                        }
-                                                                    }
-                                                                }
-                                                                if (((nullable143 == null) 
-                                                                            == false)) {
-                                                                    System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator67 = nullable143.GetEnumerator();
-                                                                    MsgPack.MessagePackObject current67;
-                                                                    try {
-                                                                        for (
-                                                                        ; enumerator67.MoveNext(); 
-                                                                        ) {
-                                                                            current67 = enumerator67.Current;
-                                                                            result.StringKeyedCollection_MessagePackObjectField.Add(current67);
-                                                                        }
-                                                                    }
-                                                                    finally {
-                                                                        enumerator67.Dispose();
-                                                                    }
-                                                                }
-                                                            }
-                                                            else {
-                                                                if ((key == "StringKeyedCollection_DateTimeField")) {
-                                                                    MsgPack.Serialization.StringKeyedCollection<System.DateTime> nullable142 = default(MsgPack.Serialization.StringKeyedCollection<System.DateTime>);
-                                                                    if ((unpacker.Read() == false)) {
-                                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                    }
-                                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                                && (unpacker.IsMapHeader == false))) {
-                                                                        nullable142 = this._serializer60.UnpackFrom(unpacker);
-                                                                    }
-                                                                    else {
-                                                                        MsgPack.Unpacker disposable114 = default(MsgPack.Unpacker);
-                                                                        disposable114 = unpacker.ReadSubtree();
-                                                                        try {
-                                                                            nullable142 = this._serializer60.UnpackFrom(disposable114);
-                                                                        }
-                                                                        finally {
-                                                                            if (((disposable114 == null) 
-                                                                                        == false)) {
-                                                                                disposable114.Dispose();
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    if (((nullable142 == null) 
-                                                                                == false)) {
-                                                                        System.Collections.Generic.IEnumerator<System.DateTime> enumerator66 = nullable142.GetEnumerator();
-                                                                        System.DateTime current66;
-                                                                        try {
-                                                                            for (
-                                                                            ; enumerator66.MoveNext(); 
-                                                                            ) {
-                                                                                current66 = enumerator66.Current;
-                                                                                result.StringKeyedCollection_DateTimeField.Add(current66);
-                                                                            }
-                                                                        }
-                                                                        finally {
-                                                                            enumerator66.Dispose();
-                                                                        }
-                                                                    }
-                                                                }
-                                                                else {
-                                                                    if ((key == "StringField")) {
-                                                                        string nullable141 = default(string);
-                                                                        nullable141 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "System.String StringField");
-                                                                        if (((nullable141 == null) 
-                                                                                    == false)) {
-                                                                            result.StringField = nullable141;
-                                                                        }
-                                                                    }
-                                                                    else {
-                                                                        if ((key == "ObservableCollectionObjectField")) {
-                                                                            System.Collections.ObjectModel.ObservableCollection<object> nullable140 = default(System.Collections.ObjectModel.ObservableCollection<object>);
-                                                                            if ((unpacker.Read() == false)) {
-                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                            }
-                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                nullable140 = this._serializer59.UnpackFrom(unpacker);
-                                                                            }
-                                                                            else {
-                                                                                MsgPack.Unpacker disposable113 = default(MsgPack.Unpacker);
-                                                                                disposable113 = unpacker.ReadSubtree();
-                                                                                try {
-                                                                                    nullable140 = this._serializer59.UnpackFrom(disposable113);
-                                                                                }
-                                                                                finally {
-                                                                                    if (((disposable113 == null) 
-                                                                                                == false)) {
-                                                                                        disposable113.Dispose();
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            if (((nullable140 == null) 
-                                                                                        == false)) {
-                                                                                System.Collections.Generic.IEnumerator<object> enumerator65 = nullable140.GetEnumerator();
-                                                                                object current65;
-                                                                                try {
-                                                                                    for (
-                                                                                    ; enumerator65.MoveNext(); 
-                                                                                    ) {
-                                                                                        current65 = enumerator65.Current;
-                                                                                        result.ObservableCollectionObjectField.Add(current65);
-                                                                                    }
-                                                                                }
-                                                                                finally {
-                                                                                    enumerator65.Dispose();
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        else {
-                                                                            if ((key == "ObservableCollectionDateTimeField")) {
-                                                                                System.Collections.ObjectModel.ObservableCollection<System.DateTime> nullable139 = default(System.Collections.ObjectModel.ObservableCollection<System.DateTime>);
-                                                                                if ((unpacker.Read() == false)) {
-                                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                }
-                                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                                    nullable139 = this._serializer58.UnpackFrom(unpacker);
-                                                                                }
-                                                                                else {
-                                                                                    MsgPack.Unpacker disposable112 = default(MsgPack.Unpacker);
-                                                                                    disposable112 = unpacker.ReadSubtree();
-                                                                                    try {
-                                                                                        nullable139 = this._serializer58.UnpackFrom(disposable112);
-                                                                                    }
-                                                                                    finally {
-                                                                                        if (((disposable112 == null) 
-                                                                                                    == false)) {
-                                                                                            disposable112.Dispose();
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                if (((nullable139 == null) 
-                                                                                            == false)) {
-                                                                                    System.Collections.Generic.IEnumerator<System.DateTime> enumerator64 = nullable139.GetEnumerator();
-                                                                                    System.DateTime current64;
-                                                                                    try {
-                                                                                        for (
-                                                                                        ; enumerator64.MoveNext(); 
-                                                                                        ) {
-                                                                                            current64 = enumerator64.Current;
-                                                                                            result.ObservableCollectionDateTimeField.Add(current64);
-                                                                                        }
-                                                                                    }
-                                                                                    finally {
-                                                                                        enumerator64.Dispose();
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            else {
-                                                                                if ((key == "ObservableCollection_MessagePackObjectField")) {
-                                                                                    System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject> nullable138 = default(System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>);
-                                                                                    if ((unpacker.Read() == false)) {
-                                                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                    }
-                                                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                                                && (unpacker.IsMapHeader == false))) {
-                                                                                        nullable138 = this._serializer57.UnpackFrom(unpacker);
-                                                                                    }
-                                                                                    else {
-                                                                                        MsgPack.Unpacker disposable111 = default(MsgPack.Unpacker);
-                                                                                        disposable111 = unpacker.ReadSubtree();
-                                                                                        try {
-                                                                                            nullable138 = this._serializer57.UnpackFrom(disposable111);
-                                                                                        }
-                                                                                        finally {
-                                                                                            if (((disposable111 == null) 
-                                                                                                        == false)) {
-                                                                                                disposable111.Dispose();
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                    if (((nullable138 == null) 
-                                                                                                == false)) {
-                                                                                        System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator63 = nullable138.GetEnumerator();
-                                                                                        MsgPack.MessagePackObject current63;
-                                                                                        try {
-                                                                                            for (
-                                                                                            ; enumerator63.MoveNext(); 
-                                                                                            ) {
-                                                                                                current63 = enumerator63.Current;
-                                                                                                result.ObservableCollection_MessagePackObjectField.Add(current63);
-                                                                                            }
-                                                                                        }
-                                                                                        finally {
-                                                                                            enumerator63.Dispose();
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                else {
-                                                                                    if ((key == "ObjectField")) {
-                                                                                        object nullable137 = default(object);
-                                                                                        if ((unpacker.Read() == false)) {
-                                                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                        }
-                                                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                                                    && (unpacker.IsMapHeader == false))) {
-                                                                                            nullable137 = this._serializer55.UnpackFrom(unpacker);
-                                                                                        }
-                                                                                        else {
-                                                                                            MsgPack.Unpacker disposable110 = default(MsgPack.Unpacker);
-                                                                                            disposable110 = unpacker.ReadSubtree();
-                                                                                            try {
-                                                                                                nullable137 = this._serializer55.UnpackFrom(disposable110);
-                                                                                            }
-                                                                                            finally {
-                                                                                                if (((disposable110 == null) 
-                                                                                                            == false)) {
-                                                                                                    disposable110.Dispose();
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                        if (((nullable137 == null) 
-                                                                                                    == false)) {
-                                                                                            result.ObjectField = nullable137;
-                                                                                        }
-                                                                                    }
-                                                                                    else {
-                                                                                        if ((key == "ObjectArrayField")) {
-                                                                                            object[] nullable136 = default(object[]);
-                                                                                            if ((unpacker.Read() == false)) {
-                                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                            }
-                                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                                nullable136 = this._serializer56.UnpackFrom(unpacker);
-                                                                                            }
-                                                                                            else {
-                                                                                                MsgPack.Unpacker disposable109 = default(MsgPack.Unpacker);
-                                                                                                disposable109 = unpacker.ReadSubtree();
-                                                                                                try {
-                                                                                                    nullable136 = this._serializer56.UnpackFrom(disposable109);
-                                                                                                }
-                                                                                                finally {
-                                                                                                    if (((disposable109 == null) 
-                                                                                                                == false)) {
-                                                                                                        disposable109.Dispose();
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            if (((nullable136 == null) 
-                                                                                                        == false)) {
-                                                                                                result.ObjectArrayField = nullable136;
-                                                                                            }
-                                                                                        }
-                                                                                        else {
-                                                                                            if ((key == "NullField")) {
-                                                                                                object nullable135 = default(object);
-                                                                                                if ((unpacker.Read() == false)) {
-                                                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                }
-                                                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                                                    nullable135 = this._serializer55.UnpackFrom(unpacker);
-                                                                                                }
-                                                                                                else {
-                                                                                                    MsgPack.Unpacker disposable108 = default(MsgPack.Unpacker);
-                                                                                                    disposable108 = unpacker.ReadSubtree();
-                                                                                                    try {
-                                                                                                        nullable135 = this._serializer55.UnpackFrom(disposable108);
-                                                                                                    }
-                                                                                                    finally {
-                                                                                                        if (((disposable108 == null) 
-                                                                                                                    == false)) {
-                                                                                                            disposable108.Dispose();
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                                if (((nullable135 == null) 
-                                                                                                            == false)) {
-                                                                                                    result.NullField = nullable135;
-                                                                                                }
-                                                                                            }
-                                                                                            else {
-                                                                                                if ((key == "MinInt64Field")) {
-                                                                                                    System.Nullable<long> nullable134 = default(System.Nullable<long>);
-                                                                                                    nullable134 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt64Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Int64 MinInt64Field");
-                                                                                                    if (nullable134.HasValue) {
-                                                                                                        result.MinInt64Field = nullable134.Value;
-                                                                                                    }
-                                                                                                }
-                                                                                                else {
-                                                                                                    if ((key == "MinInt32Field")) {
-                                                                                                        System.Nullable<int> nullable133 = default(System.Nullable<int>);
-                                                                                                        nullable133 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Int32 MinInt32Field");
-                                                                                                        if (nullable133.HasValue) {
-                                                                                                            result.MinInt32Field = nullable133.Value;
-                                                                                                        }
-                                                                                                    }
-                                                                                                    else {
-                                                                                                        if ((key == "MessagePackObjectArray_Field")) {
-                                                                                                            MsgPack.MessagePackObject[] nullable132 = default(MsgPack.MessagePackObject[]);
-                                                                                                            if ((unpacker.Read() == false)) {
-                                                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                            }
-                                                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                                                nullable132 = this._serializer54.UnpackFrom(unpacker);
-                                                                                                            }
-                                                                                                            else {
-                                                                                                                MsgPack.Unpacker disposable107 = default(MsgPack.Unpacker);
-                                                                                                                disposable107 = unpacker.ReadSubtree();
-                                                                                                                try {
-                                                                                                                    nullable132 = this._serializer54.UnpackFrom(disposable107);
-                                                                                                                }
-                                                                                                                finally {
-                                                                                                                    if (((disposable107 == null) 
-                                                                                                                                == false)) {
-                                                                                                                        disposable107.Dispose();
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                            if (((nullable132 == null) 
-                                                                                                                        == false)) {
-                                                                                                                result.MessagePackObjectArray_Field = nullable132;
-                                                                                                            }
-                                                                                                        }
-                                                                                                        else {
-                                                                                                            if ((key == "MessagePackObject_Field")) {
-                                                                                                                MsgPack.MessagePackObject nullable131 = default(MsgPack.MessagePackObject);
-                                                                                                                if ((unpacker.Read() == false)) {
-                                                                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                }
-                                                                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                                                                    nullable131 = unpacker.LastReadData;
-                                                                                                                }
-                                                                                                                else {
-                                                                                                                    nullable131 = unpacker.UnpackSubtreeData();
-                                                                                                                }
-                                                                                                                if ((nullable131.IsNil == false)) {
-                                                                                                                    result.MessagePackObject_Field = nullable131;
-                                                                                                                }
-                                                                                                            }
-                                                                                                            else {
-                                                                                                                if ((key == "MaxUInt16Field")) {
-                                                                                                                    System.Nullable<ushort> nullable130 = default(System.Nullable<ushort>);
-                                                                                                                    nullable130 = MsgPack.Serialization.UnpackHelpers.UnpackNullableUInt16Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "UInt16 MaxUInt16Field");
-                                                                                                                    if (nullable130.HasValue) {
-                                                                                                                        result.MaxUInt16Field = nullable130.Value;
-                                                                                                                    }
-                                                                                                                }
-                                                                                                                else {
-                                                                                                                    if ((key == "MaxInt64Field")) {
-                                                                                                                        System.Nullable<long> nullable129 = default(System.Nullable<long>);
-                                                                                                                        nullable129 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt64Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Int64 MaxInt64Field");
-                                                                                                                        if (nullable129.HasValue) {
-                                                                                                                            result.MaxInt64Field = nullable129.Value;
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                    else {
-                                                                                                                        if ((key == "MaxInt32Field")) {
-                                                                                                                            System.Nullable<int> nullable128 = default(System.Nullable<int>);
-                                                                                                                            nullable128 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Int32 MaxInt32Field");
-                                                                                                                            if (nullable128.HasValue) {
-                                                                                                                                result.MaxInt32Field = nullable128.Value;
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                        else {
-                                                                                                                            if ((key == "MaxByteField")) {
-                                                                                                                                System.Nullable<byte> nullable127 = default(System.Nullable<byte>);
-                                                                                                                                nullable127 = MsgPack.Serialization.UnpackHelpers.UnpackNullableByteValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Byte MaxByteField");
-                                                                                                                                if (nullable127.HasValue) {
-                                                                                                                                    result.MaxByteField = nullable127.Value;
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                            else {
-                                                                                                                                if ((key == "ListObjectField")) {
-                                                                                                                                    System.Collections.Generic.List<object> nullable126 = default(System.Collections.Generic.List<object>);
-                                                                                                                                    if ((unpacker.Read() == false)) {
-                                                                                                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                    }
-                                                                                                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                && (unpacker.IsMapHeader == false))) {
-                                                                                                                                        nullable126 = this._serializer49.UnpackFrom(unpacker);
-                                                                                                                                    }
-                                                                                                                                    else {
-                                                                                                                                        MsgPack.Unpacker disposable106 = default(MsgPack.Unpacker);
-                                                                                                                                        disposable106 = unpacker.ReadSubtree();
-                                                                                                                                        try {
-                                                                                                                                            nullable126 = this._serializer49.UnpackFrom(disposable106);
-                                                                                                                                        }
-                                                                                                                                        finally {
-                                                                                                                                            if (((disposable106 == null) 
-                                                                                                                                                        == false)) {
-                                                                                                                                                disposable106.Dispose();
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                    if (((nullable126 == null) 
-                                                                                                                                                == false)) {
-                                                                                                                                        System.Collections.Generic.List<object>.Enumerator enumerator62 = nullable126.GetEnumerator();
-                                                                                                                                        object current62;
-                                                                                                                                        try {
-                                                                                                                                            for (
-                                                                                                                                            ; enumerator62.MoveNext(); 
-                                                                                                                                            ) {
-                                                                                                                                                current62 = enumerator62.Current;
-                                                                                                                                                result.ListObjectField.Add(current62);
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                        finally {
-                                                                                                                                            enumerator62.Dispose();
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                                else {
-                                                                                                                                    if ((key == "ListDateTimeField")) {
-                                                                                                                                        System.Collections.Generic.List<System.DateTime> nullable125 = default(System.Collections.Generic.List<System.DateTime>);
-                                                                                                                                        if ((unpacker.Read() == false)) {
-                                                                                                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                        }
-                                                                                                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                    && (unpacker.IsMapHeader == false))) {
-                                                                                                                                            nullable125 = this._serializer48.UnpackFrom(unpacker);
-                                                                                                                                        }
-                                                                                                                                        else {
-                                                                                                                                            MsgPack.Unpacker disposable105 = default(MsgPack.Unpacker);
-                                                                                                                                            disposable105 = unpacker.ReadSubtree();
-                                                                                                                                            try {
-                                                                                                                                                nullable125 = this._serializer48.UnpackFrom(disposable105);
-                                                                                                                                            }
-                                                                                                                                            finally {
-                                                                                                                                                if (((disposable105 == null) 
-                                                                                                                                                            == false)) {
-                                                                                                                                                    disposable105.Dispose();
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                        if (((nullable125 == null) 
-                                                                                                                                                    == false)) {
-                                                                                                                                            System.Collections.Generic.List<System.DateTime>.Enumerator enumerator61 = nullable125.GetEnumerator();
-                                                                                                                                            System.DateTime current61;
-                                                                                                                                            try {
-                                                                                                                                                for (
-                                                                                                                                                ; enumerator61.MoveNext(); 
-                                                                                                                                                ) {
-                                                                                                                                                    current61 = enumerator61.Current;
-                                                                                                                                                    result.ListDateTimeField.Add(current61);
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                            finally {
-                                                                                                                                                enumerator61.Dispose();
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                    else {
-                                                                                                                                        if ((key == "List_MessagePackObjectField")) {
-                                                                                                                                            System.Collections.Generic.List<MsgPack.MessagePackObject> nullable124 = default(System.Collections.Generic.List<MsgPack.MessagePackObject>);
-                                                                                                                                            if ((unpacker.Read() == false)) {
-                                                                                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                            }
-                                                                                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                nullable124 = this._serializer47.UnpackFrom(unpacker);
-                                                                                                                                            }
-                                                                                                                                            else {
-                                                                                                                                                MsgPack.Unpacker disposable104 = default(MsgPack.Unpacker);
-                                                                                                                                                disposable104 = unpacker.ReadSubtree();
-                                                                                                                                                try {
-                                                                                                                                                    nullable124 = this._serializer47.UnpackFrom(disposable104);
-                                                                                                                                                }
-                                                                                                                                                finally {
-                                                                                                                                                    if (((disposable104 == null) 
-                                                                                                                                                                == false)) {
-                                                                                                                                                        disposable104.Dispose();
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                            if (((nullable124 == null) 
-                                                                                                                                                        == false)) {
-                                                                                                                                                System.Collections.Generic.List<MsgPack.MessagePackObject>.Enumerator enumerator60 = nullable124.GetEnumerator();
-                                                                                                                                                MsgPack.MessagePackObject current60;
-                                                                                                                                                try {
-                                                                                                                                                    for (
-                                                                                                                                                    ; enumerator60.MoveNext(); 
-                                                                                                                                                    ) {
-                                                                                                                                                        current60 = enumerator60.Current;
-                                                                                                                                                        result.List_MessagePackObjectField.Add(current60);
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                                finally {
-                                                                                                                                                    enumerator60.Dispose();
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                        else {
-                                                                                                                                            if ((key == "KeyValuePairStringDateTimeOffsetField")) {
-                                                                                                                                                System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>> nullable123 = default(System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>);
-                                                                                                                                                if ((unpacker.Read() == false)) {
-                                                                                                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                }
-                                                                                                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                    nullable123 = this._serializer81.UnpackFrom(unpacker);
-                                                                                                                                                }
-                                                                                                                                                else {
-                                                                                                                                                    MsgPack.Unpacker disposable103 = default(MsgPack.Unpacker);
-                                                                                                                                                    disposable103 = unpacker.ReadSubtree();
-                                                                                                                                                    try {
-                                                                                                                                                        nullable123 = this._serializer81.UnpackFrom(disposable103);
-                                                                                                                                                    }
-                                                                                                                                                    finally {
-                                                                                                                                                        if (((disposable103 == null) 
-                                                                                                                                                                    == false)) {
-                                                                                                                                                            disposable103.Dispose();
-                                                                                                                                                        }
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                                if (nullable123.HasValue) {
-                                                                                                                                                    result.KeyValuePairStringDateTimeOffsetField = nullable123.Value;
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                            else {
-                                                                                                                                                if ((key == "KeyValuePairStringComplexField")) {
-                                                                                                                                                    System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>> nullable122 = default(System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>);
-                                                                                                                                                    if ((unpacker.Read() == false)) {
-                                                                                                                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                    }
-                                                                                                                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                        nullable122 = this._serializer80.UnpackFrom(unpacker);
-                                                                                                                                                    }
-                                                                                                                                                    else {
-                                                                                                                                                        MsgPack.Unpacker disposable102 = default(MsgPack.Unpacker);
-                                                                                                                                                        disposable102 = unpacker.ReadSubtree();
-                                                                                                                                                        try {
-                                                                                                                                                            nullable122 = this._serializer80.UnpackFrom(disposable102);
-                                                                                                                                                        }
-                                                                                                                                                        finally {
-                                                                                                                                                            if (((disposable102 == null) 
-                                                                                                                                                                        == false)) {
-                                                                                                                                                                disposable102.Dispose();
-                                                                                                                                                            }
-                                                                                                                                                        }
-                                                                                                                                                    }
-                                                                                                                                                    if (nullable122.HasValue) {
-                                                                                                                                                        result.KeyValuePairStringComplexField = nullable122.Value;
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                                else {
-                                                                                                                                                    if ((key == "ISetObjectField")) {
-                                                                                                                                                        System.Collections.Generic.ISet<object> nullable121 = default(System.Collections.Generic.ISet<object>);
-                                                                                                                                                        if ((unpacker.Read() == false)) {
-                                                                                                                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                        }
-                                                                                                                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                    && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                            nullable121 = this._serializer44.UnpackFrom(unpacker);
-                                                                                                                                                        }
-                                                                                                                                                        else {
-                                                                                                                                                            MsgPack.Unpacker disposable101 = default(MsgPack.Unpacker);
-                                                                                                                                                            disposable101 = unpacker.ReadSubtree();
-                                                                                                                                                            try {
-                                                                                                                                                                nullable121 = this._serializer44.UnpackFrom(disposable101);
-                                                                                                                                                            }
-                                                                                                                                                            finally {
-                                                                                                                                                                if (((disposable101 == null) 
-                                                                                                                                                                            == false)) {
-                                                                                                                                                                    disposable101.Dispose();
-                                                                                                                                                                }
-                                                                                                                                                            }
-                                                                                                                                                        }
-                                                                                                                                                        if (((nullable121 == null) 
-                                                                                                                                                                    == false)) {
-                                                                                                                                                            System.Collections.Generic.IEnumerator<object> enumerator59 = nullable121.GetEnumerator();
-                                                                                                                                                            object current59;
-                                                                                                                                                            try {
-                                                                                                                                                                for (
-                                                                                                                                                                ; enumerator59.MoveNext(); 
-                                                                                                                                                                ) {
-                                                                                                                                                                    current59 = enumerator59.Current;
-                                                                                                                                                                    result.ISetObjectField.Add(current59);
-                                                                                                                                                                }
-                                                                                                                                                            }
-                                                                                                                                                            finally {
-                                                                                                                                                                enumerator59.Dispose();
-                                                                                                                                                            }
-                                                                                                                                                        }
-                                                                                                                                                    }
-                                                                                                                                                    else {
-                                                                                                                                                        if ((key == "ISetDateTimeField")) {
-                                                                                                                                                            System.Collections.Generic.ISet<System.DateTime> nullable120 = default(System.Collections.Generic.ISet<System.DateTime>);
-                                                                                                                                                            if ((unpacker.Read() == false)) {
-                                                                                                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                            }
-                                                                                                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                nullable120 = this._serializer43.UnpackFrom(unpacker);
-                                                                                                                                                            }
-                                                                                                                                                            else {
-                                                                                                                                                                MsgPack.Unpacker disposable100 = default(MsgPack.Unpacker);
-                                                                                                                                                                disposable100 = unpacker.ReadSubtree();
-                                                                                                                                                                try {
-                                                                                                                                                                    nullable120 = this._serializer43.UnpackFrom(disposable100);
-                                                                                                                                                                }
-                                                                                                                                                                finally {
-                                                                                                                                                                    if (((disposable100 == null) 
-                                                                                                                                                                                == false)) {
-                                                                                                                                                                        disposable100.Dispose();
-                                                                                                                                                                    }
-                                                                                                                                                                }
-                                                                                                                                                            }
-                                                                                                                                                            if (((nullable120 == null) 
-                                                                                                                                                                        == false)) {
-                                                                                                                                                                System.Collections.Generic.IEnumerator<System.DateTime> enumerator58 = nullable120.GetEnumerator();
-                                                                                                                                                                System.DateTime current58;
-                                                                                                                                                                try {
-                                                                                                                                                                    for (
-                                                                                                                                                                    ; enumerator58.MoveNext(); 
-                                                                                                                                                                    ) {
-                                                                                                                                                                        current58 = enumerator58.Current;
-                                                                                                                                                                        result.ISetDateTimeField.Add(current58);
-                                                                                                                                                                    }
-                                                                                                                                                                }
-                                                                                                                                                                finally {
-                                                                                                                                                                    enumerator58.Dispose();
-                                                                                                                                                                }
-                                                                                                                                                            }
-                                                                                                                                                        }
-                                                                                                                                                        else {
-                                                                                                                                                            if ((key == "ISet_MessagePackObjectField")) {
-                                                                                                                                                                System.Collections.Generic.ISet<MsgPack.MessagePackObject> nullable119 = default(System.Collections.Generic.ISet<MsgPack.MessagePackObject>);
-                                                                                                                                                                if ((unpacker.Read() == false)) {
-                                                                                                                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                }
-                                                                                                                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                    nullable119 = this._serializer42.UnpackFrom(unpacker);
-                                                                                                                                                                }
-                                                                                                                                                                else {
-                                                                                                                                                                    MsgPack.Unpacker disposable99 = default(MsgPack.Unpacker);
-                                                                                                                                                                    disposable99 = unpacker.ReadSubtree();
-                                                                                                                                                                    try {
-                                                                                                                                                                        nullable119 = this._serializer42.UnpackFrom(disposable99);
-                                                                                                                                                                    }
-                                                                                                                                                                    finally {
-                                                                                                                                                                        if (((disposable99 == null) 
-                                                                                                                                                                                    == false)) {
-                                                                                                                                                                            disposable99.Dispose();
-                                                                                                                                                                        }
-                                                                                                                                                                    }
-                                                                                                                                                                }
-                                                                                                                                                                if (((nullable119 == null) 
-                                                                                                                                                                            == false)) {
-                                                                                                                                                                    System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator57 = nullable119.GetEnumerator();
-                                                                                                                                                                    MsgPack.MessagePackObject current57;
-                                                                                                                                                                    try {
-                                                                                                                                                                        for (
-                                                                                                                                                                        ; enumerator57.MoveNext(); 
-                                                                                                                                                                        ) {
-                                                                                                                                                                            current57 = enumerator57.Current;
-                                                                                                                                                                            result.ISet_MessagePackObjectField.Add(current57);
-                                                                                                                                                                        }
-                                                                                                                                                                    }
-                                                                                                                                                                    finally {
-                                                                                                                                                                        enumerator57.Dispose();
-                                                                                                                                                                    }
-                                                                                                                                                                }
-                                                                                                                                                            }
-                                                                                                                                                            else {
-                                                                                                                                                                if ((key == "InvariantCultureField")) {
-                                                                                                                                                                    System.Globalization.CultureInfo nullable118 = default(System.Globalization.CultureInfo);
-                                                                                                                                                                    if ((unpacker.Read() == false)) {
-                                                                                                                                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                    }
-                                                                                                                                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                        nullable118 = this._serializer17.UnpackFrom(unpacker);
-                                                                                                                                                                    }
-                                                                                                                                                                    else {
-                                                                                                                                                                        MsgPack.Unpacker disposable98 = default(MsgPack.Unpacker);
-                                                                                                                                                                        disposable98 = unpacker.ReadSubtree();
-                                                                                                                                                                        try {
-                                                                                                                                                                            nullable118 = this._serializer17.UnpackFrom(disposable98);
-                                                                                                                                                                        }
-                                                                                                                                                                        finally {
-                                                                                                                                                                            if (((disposable98 == null) 
-                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                disposable98.Dispose();
-                                                                                                                                                                            }
-                                                                                                                                                                        }
-                                                                                                                                                                    }
-                                                                                                                                                                    if (((nullable118 == null) 
-                                                                                                                                                                                == false)) {
-                                                                                                                                                                        result.InvariantCultureField = nullable118;
-                                                                                                                                                                    }
-                                                                                                                                                                }
-                                                                                                                                                                else {
-                                                                                                                                                                    if ((key == "Image_Field")) {
-                                                                                                                                                                        MsgPack.Image nullable117 = default(MsgPack.Image);
-                                                                                                                                                                        if ((unpacker.Read() == false)) {
-                                                                                                                                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                        }
-                                                                                                                                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                    && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                            nullable117 = this._serializer41.UnpackFrom(unpacker);
-                                                                                                                                                                        }
-                                                                                                                                                                        else {
-                                                                                                                                                                            MsgPack.Unpacker disposable97 = default(MsgPack.Unpacker);
-                                                                                                                                                                            disposable97 = unpacker.ReadSubtree();
-                                                                                                                                                                            try {
-                                                                                                                                                                                nullable117 = this._serializer41.UnpackFrom(disposable97);
-                                                                                                                                                                            }
-                                                                                                                                                                            finally {
-                                                                                                                                                                                if (((disposable97 == null) 
-                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                    disposable97.Dispose();
-                                                                                                                                                                                }
-                                                                                                                                                                            }
-                                                                                                                                                                        }
-                                                                                                                                                                        if (((nullable117 == null) 
-                                                                                                                                                                                    == false)) {
-                                                                                                                                                                            result.Image_Field = nullable117;
-                                                                                                                                                                        }
-                                                                                                                                                                    }
-                                                                                                                                                                    else {
-                                                                                                                                                                        if ((key == "IListObjectField")) {
-                                                                                                                                                                            System.Collections.Generic.IList<object> nullable116 = default(System.Collections.Generic.IList<object>);
-                                                                                                                                                                            if ((unpacker.Read() == false)) {
-                                                                                                                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                            }
-                                                                                                                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                nullable116 = this._serializer40.UnpackFrom(unpacker);
-                                                                                                                                                                            }
-                                                                                                                                                                            else {
-                                                                                                                                                                                MsgPack.Unpacker disposable96 = default(MsgPack.Unpacker);
-                                                                                                                                                                                disposable96 = unpacker.ReadSubtree();
-                                                                                                                                                                                try {
-                                                                                                                                                                                    nullable116 = this._serializer40.UnpackFrom(disposable96);
-                                                                                                                                                                                }
-                                                                                                                                                                                finally {
-                                                                                                                                                                                    if (((disposable96 == null) 
-                                                                                                                                                                                                == false)) {
-                                                                                                                                                                                        disposable96.Dispose();
-                                                                                                                                                                                    }
-                                                                                                                                                                                }
-                                                                                                                                                                            }
-                                                                                                                                                                            if (((nullable116 == null) 
-                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                System.Collections.Generic.IEnumerator<object> enumerator56 = nullable116.GetEnumerator();
-                                                                                                                                                                                object current56;
-                                                                                                                                                                                try {
-                                                                                                                                                                                    for (
-                                                                                                                                                                                    ; enumerator56.MoveNext(); 
-                                                                                                                                                                                    ) {
-                                                                                                                                                                                        current56 = enumerator56.Current;
-                                                                                                                                                                                        result.IListObjectField.Add(current56);
-                                                                                                                                                                                    }
-                                                                                                                                                                                }
-                                                                                                                                                                                finally {
-                                                                                                                                                                                    enumerator56.Dispose();
-                                                                                                                                                                                }
-                                                                                                                                                                            }
-                                                                                                                                                                        }
-                                                                                                                                                                        else {
-                                                                                                                                                                            if ((key == "IListDateTimeField")) {
-                                                                                                                                                                                System.Collections.Generic.IList<System.DateTime> nullable115 = default(System.Collections.Generic.IList<System.DateTime>);
-                                                                                                                                                                                if ((unpacker.Read() == false)) {
-                                                                                                                                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                }
-                                                                                                                                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                    nullable115 = this._serializer39.UnpackFrom(unpacker);
-                                                                                                                                                                                }
-                                                                                                                                                                                else {
-                                                                                                                                                                                    MsgPack.Unpacker disposable95 = default(MsgPack.Unpacker);
-                                                                                                                                                                                    disposable95 = unpacker.ReadSubtree();
-                                                                                                                                                                                    try {
-                                                                                                                                                                                        nullable115 = this._serializer39.UnpackFrom(disposable95);
-                                                                                                                                                                                    }
-                                                                                                                                                                                    finally {
-                                                                                                                                                                                        if (((disposable95 == null) 
-                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                            disposable95.Dispose();
-                                                                                                                                                                                        }
-                                                                                                                                                                                    }
-                                                                                                                                                                                }
-                                                                                                                                                                                if (((nullable115 == null) 
-                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                    System.Collections.Generic.IEnumerator<System.DateTime> enumerator55 = nullable115.GetEnumerator();
-                                                                                                                                                                                    System.DateTime current55;
-                                                                                                                                                                                    try {
-                                                                                                                                                                                        for (
-                                                                                                                                                                                        ; enumerator55.MoveNext(); 
-                                                                                                                                                                                        ) {
-                                                                                                                                                                                            current55 = enumerator55.Current;
-                                                                                                                                                                                            result.IListDateTimeField.Add(current55);
-                                                                                                                                                                                        }
-                                                                                                                                                                                    }
-                                                                                                                                                                                    finally {
-                                                                                                                                                                                        enumerator55.Dispose();
-                                                                                                                                                                                    }
-                                                                                                                                                                                }
-                                                                                                                                                                            }
-                                                                                                                                                                            else {
-                                                                                                                                                                                if ((key == "IList_MessagePackObjectField")) {
-                                                                                                                                                                                    System.Collections.Generic.IList<MsgPack.MessagePackObject> nullable114 = default(System.Collections.Generic.IList<MsgPack.MessagePackObject>);
-                                                                                                                                                                                    if ((unpacker.Read() == false)) {
-                                                                                                                                                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                    }
-                                                                                                                                                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                        nullable114 = this._serializer38.UnpackFrom(unpacker);
-                                                                                                                                                                                    }
-                                                                                                                                                                                    else {
-                                                                                                                                                                                        MsgPack.Unpacker disposable94 = default(MsgPack.Unpacker);
-                                                                                                                                                                                        disposable94 = unpacker.ReadSubtree();
-                                                                                                                                                                                        try {
-                                                                                                                                                                                            nullable114 = this._serializer38.UnpackFrom(disposable94);
-                                                                                                                                                                                        }
-                                                                                                                                                                                        finally {
-                                                                                                                                                                                            if (((disposable94 == null) 
-                                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                                disposable94.Dispose();
-                                                                                                                                                                                            }
-                                                                                                                                                                                        }
-                                                                                                                                                                                    }
-                                                                                                                                                                                    if (((nullable114 == null) 
-                                                                                                                                                                                                == false)) {
-                                                                                                                                                                                        System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator54 = nullable114.GetEnumerator();
-                                                                                                                                                                                        MsgPack.MessagePackObject current54;
-                                                                                                                                                                                        try {
-                                                                                                                                                                                            for (
-                                                                                                                                                                                            ; enumerator54.MoveNext(); 
-                                                                                                                                                                                            ) {
-                                                                                                                                                                                                current54 = enumerator54.Current;
-                                                                                                                                                                                                result.IList_MessagePackObjectField.Add(current54);
-                                                                                                                                                                                            }
-                                                                                                                                                                                        }
-                                                                                                                                                                                        finally {
-                                                                                                                                                                                            enumerator54.Dispose();
-                                                                                                                                                                                        }
-                                                                                                                                                                                    }
-                                                                                                                                                                                }
-                                                                                                                                                                                else {
-                                                                                                                                                                                    if ((key == "IDictionaryStringDateTimeField")) {
-                                                                                                                                                                                        System.Collections.Generic.IDictionary<string, System.DateTime> nullable113 = default(System.Collections.Generic.IDictionary<string, System.DateTime>);
-                                                                                                                                                                                        if ((unpacker.Read() == false)) {
-                                                                                                                                                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                        }
-                                                                                                                                                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                    && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                            nullable113 = this._serializer37.UnpackFrom(unpacker);
-                                                                                                                                                                                        }
-                                                                                                                                                                                        else {
-                                                                                                                                                                                            MsgPack.Unpacker disposable93 = default(MsgPack.Unpacker);
-                                                                                                                                                                                            disposable93 = unpacker.ReadSubtree();
-                                                                                                                                                                                            try {
-                                                                                                                                                                                                nullable113 = this._serializer37.UnpackFrom(disposable93);
-                                                                                                                                                                                            }
-                                                                                                                                                                                            finally {
-                                                                                                                                                                                                if (((disposable93 == null) 
-                                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                                    disposable93.Dispose();
-                                                                                                                                                                                                }
-                                                                                                                                                                                            }
-                                                                                                                                                                                        }
-                                                                                                                                                                                        if (((nullable113 == null) 
-                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                            System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, System.DateTime>> enumerator53 = nullable113.GetEnumerator();
-                                                                                                                                                                                            System.Collections.Generic.KeyValuePair<string, System.DateTime> current53;
-                                                                                                                                                                                            try {
-                                                                                                                                                                                                for (
-                                                                                                                                                                                                ; enumerator53.MoveNext(); 
-                                                                                                                                                                                                ) {
-                                                                                                                                                                                                    current53 = enumerator53.Current;
-                                                                                                                                                                                                    result.IDictionaryStringDateTimeField.Add(current53.Key, current53.Value);
-                                                                                                                                                                                                }
-                                                                                                                                                                                            }
-                                                                                                                                                                                            finally {
-                                                                                                                                                                                                enumerator53.Dispose();
-                                                                                                                                                                                            }
-                                                                                                                                                                                        }
-                                                                                                                                                                                    }
-                                                                                                                                                                                    else {
-                                                                                                                                                                                        if ((key == "IDictionaryObjectObjectField")) {
-                                                                                                                                                                                            System.Collections.Generic.IDictionary<object, object> nullable112 = default(System.Collections.Generic.IDictionary<object, object>);
-                                                                                                                                                                                            if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                            }
-                                                                                                                                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                nullable112 = this._serializer36.UnpackFrom(unpacker);
-                                                                                                                                                                                            }
-                                                                                                                                                                                            else {
-                                                                                                                                                                                                MsgPack.Unpacker disposable92 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                disposable92 = unpacker.ReadSubtree();
-                                                                                                                                                                                                try {
-                                                                                                                                                                                                    nullable112 = this._serializer36.UnpackFrom(disposable92);
-                                                                                                                                                                                                }
-                                                                                                                                                                                                finally {
-                                                                                                                                                                                                    if (((disposable92 == null) 
-                                                                                                                                                                                                                == false)) {
-                                                                                                                                                                                                        disposable92.Dispose();
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                }
-                                                                                                                                                                                            }
-                                                                                                                                                                                            if (((nullable112 == null) 
-                                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                                System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<object, object>> enumerator52 = nullable112.GetEnumerator();
-                                                                                                                                                                                                System.Collections.Generic.KeyValuePair<object, object> current52;
-                                                                                                                                                                                                try {
-                                                                                                                                                                                                    for (
-                                                                                                                                                                                                    ; enumerator52.MoveNext(); 
-                                                                                                                                                                                                    ) {
-                                                                                                                                                                                                        current52 = enumerator52.Current;
-                                                                                                                                                                                                        result.IDictionaryObjectObjectField.Add(current52.Key, current52.Value);
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                }
-                                                                                                                                                                                                finally {
-                                                                                                                                                                                                    enumerator52.Dispose();
-                                                                                                                                                                                                }
-                                                                                                                                                                                            }
-                                                                                                                                                                                        }
-                                                                                                                                                                                        else {
-                                                                                                                                                                                            if ((key == "IDictionary_MessagePackObject_MessagePackObjectField")) {
-                                                                                                                                                                                                System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> nullable111 = default(System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>);
-                                                                                                                                                                                                if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                }
-                                                                                                                                                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                    nullable111 = this._serializer35.UnpackFrom(unpacker);
-                                                                                                                                                                                                }
-                                                                                                                                                                                                else {
-                                                                                                                                                                                                    MsgPack.Unpacker disposable91 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                    disposable91 = unpacker.ReadSubtree();
-                                                                                                                                                                                                    try {
-                                                                                                                                                                                                        nullable111 = this._serializer35.UnpackFrom(disposable91);
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                    finally {
-                                                                                                                                                                                                        if (((disposable91 == null) 
-                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                            disposable91.Dispose();
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                }
-                                                                                                                                                                                                if (((nullable111 == null) 
-                                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                                    System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> enumerator51 = nullable111.GetEnumerator();
-                                                                                                                                                                                                    System.Collections.Generic.KeyValuePair<MsgPack.MessagePackObject, MsgPack.MessagePackObject> current51;
-                                                                                                                                                                                                    try {
-                                                                                                                                                                                                        for (
-                                                                                                                                                                                                        ; enumerator51.MoveNext(); 
-                                                                                                                                                                                                        ) {
-                                                                                                                                                                                                            current51 = enumerator51.Current;
-                                                                                                                                                                                                            result.IDictionary_MessagePackObject_MessagePackObjectField.Add(current51.Key, current51.Value);
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                    finally {
-                                                                                                                                                                                                        enumerator51.Dispose();
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                }
-                                                                                                                                                                                            }
-                                                                                                                                                                                            else {
-                                                                                                                                                                                                if ((key == "ICollectionObjectField")) {
-                                                                                                                                                                                                    System.Collections.Generic.ICollection<object> nullable110 = default(System.Collections.Generic.ICollection<object>);
-                                                                                                                                                                                                    if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                        nullable110 = this._serializer34.UnpackFrom(unpacker);
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                    else {
-                                                                                                                                                                                                        MsgPack.Unpacker disposable90 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                        disposable90 = unpacker.ReadSubtree();
-                                                                                                                                                                                                        try {
-                                                                                                                                                                                                            nullable110 = this._serializer34.UnpackFrom(disposable90);
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                        finally {
-                                                                                                                                                                                                            if (((disposable90 == null) 
-                                                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                                                disposable90.Dispose();
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                    if (((nullable110 == null) 
-                                                                                                                                                                                                                == false)) {
-                                                                                                                                                                                                        System.Collections.Generic.IEnumerator<object> enumerator50 = nullable110.GetEnumerator();
-                                                                                                                                                                                                        object current50;
-                                                                                                                                                                                                        try {
-                                                                                                                                                                                                            for (
-                                                                                                                                                                                                            ; enumerator50.MoveNext(); 
-                                                                                                                                                                                                            ) {
-                                                                                                                                                                                                                current50 = enumerator50.Current;
-                                                                                                                                                                                                                result.ICollectionObjectField.Add(current50);
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                        finally {
-                                                                                                                                                                                                            enumerator50.Dispose();
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                }
-                                                                                                                                                                                                else {
-                                                                                                                                                                                                    if ((key == "ICollectionDateTimeField")) {
-                                                                                                                                                                                                        System.Collections.Generic.ICollection<System.DateTime> nullable109 = default(System.Collections.Generic.ICollection<System.DateTime>);
-                                                                                                                                                                                                        if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                    && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                            nullable109 = this._serializer33.UnpackFrom(unpacker);
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                        else {
-                                                                                                                                                                                                            MsgPack.Unpacker disposable89 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                            disposable89 = unpacker.ReadSubtree();
-                                                                                                                                                                                                            try {
-                                                                                                                                                                                                                nullable109 = this._serializer33.UnpackFrom(disposable89);
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                            finally {
-                                                                                                                                                                                                                if (((disposable89 == null) 
-                                                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                                                    disposable89.Dispose();
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                        if (((nullable109 == null) 
-                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                            System.Collections.Generic.IEnumerator<System.DateTime> enumerator49 = nullable109.GetEnumerator();
-                                                                                                                                                                                                            System.DateTime current49;
-                                                                                                                                                                                                            try {
-                                                                                                                                                                                                                for (
-                                                                                                                                                                                                                ; enumerator49.MoveNext(); 
-                                                                                                                                                                                                                ) {
-                                                                                                                                                                                                                    current49 = enumerator49.Current;
-                                                                                                                                                                                                                    result.ICollectionDateTimeField.Add(current49);
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                            finally {
-                                                                                                                                                                                                                enumerator49.Dispose();
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                    else {
-                                                                                                                                                                                                        if ((key == "ICollection_MessagePackObjectField")) {
-                                                                                                                                                                                                            System.Collections.Generic.ICollection<MsgPack.MessagePackObject> nullable108 = default(System.Collections.Generic.ICollection<MsgPack.MessagePackObject>);
-                                                                                                                                                                                                            if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                nullable108 = this._serializer32.UnpackFrom(unpacker);
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                MsgPack.Unpacker disposable88 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                disposable88 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                try {
-                                                                                                                                                                                                                    nullable108 = this._serializer32.UnpackFrom(disposable88);
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                                finally {
-                                                                                                                                                                                                                    if (((disposable88 == null) 
-                                                                                                                                                                                                                                == false)) {
-                                                                                                                                                                                                                        disposable88.Dispose();
-                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                            if (((nullable108 == null) 
-                                                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                                                System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator48 = nullable108.GetEnumerator();
-                                                                                                                                                                                                                MsgPack.MessagePackObject current48;
-                                                                                                                                                                                                                try {
-                                                                                                                                                                                                                    for (
-                                                                                                                                                                                                                    ; enumerator48.MoveNext(); 
-                                                                                                                                                                                                                    ) {
-                                                                                                                                                                                                                        current48 = enumerator48.Current;
-                                                                                                                                                                                                                        result.ICollection_MessagePackObjectField.Add(current48);
-                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                                finally {
-                                                                                                                                                                                                                    enumerator48.Dispose();
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                        else {
-                                                                                                                                                                                                            if ((key == "HashtableField")) {
-                                                                                                                                                                                                                System.Collections.Hashtable nullable107 = default(System.Collections.Hashtable);
-                                                                                                                                                                                                                if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                    nullable107 = this._serializer31.UnpackFrom(unpacker);
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                    MsgPack.Unpacker disposable87 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                    disposable87 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                    try {
-                                                                                                                                                                                                                        nullable107 = this._serializer31.UnpackFrom(disposable87);
-                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                    finally {
-                                                                                                                                                                                                                        if (((disposable87 == null) 
-                                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                                            disposable87.Dispose();
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                                if (((nullable107 == null) 
-                                                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                                                    System.Collections.IDictionaryEnumerator enumerator47 = nullable107.GetEnumerator();
-                                                                                                                                                                                                                    System.Collections.DictionaryEntry current47;
-                                                                                                                                                                                                                    for (
-                                                                                                                                                                                                                    ; enumerator47.MoveNext(); 
-                                                                                                                                                                                                                    ) {
-                                                                                                                                                                                                                        current47 = enumerator47.Entry;
-                                                                                                                                                                                                                        result.HashtableField.Add(current47.Key, current47.Value);
-                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                if ((key == "HashSetObjectField")) {
-                                                                                                                                                                                                                    System.Collections.Generic.HashSet<object> nullable106 = default(System.Collections.Generic.HashSet<object>);
-                                                                                                                                                                                                                    if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                        nullable106 = this._serializer30.UnpackFrom(unpacker);
-                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                        MsgPack.Unpacker disposable86 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                        disposable86 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                        try {
-                                                                                                                                                                                                                            nullable106 = this._serializer30.UnpackFrom(disposable86);
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                        finally {
-                                                                                                                                                                                                                            if (((disposable86 == null) 
-                                                                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                                                                disposable86.Dispose();
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                    if (((nullable106 == null) 
-                                                                                                                                                                                                                                == false)) {
-                                                                                                                                                                                                                        System.Collections.Generic.HashSet<object>.Enumerator enumerator46 = nullable106.GetEnumerator();
-                                                                                                                                                                                                                        object current46;
-                                                                                                                                                                                                                        try {
-                                                                                                                                                                                                                            for (
-                                                                                                                                                                                                                            ; enumerator46.MoveNext(); 
-                                                                                                                                                                                                                            ) {
-                                                                                                                                                                                                                                current46 = enumerator46.Current;
-                                                                                                                                                                                                                                result.HashSetObjectField.Add(current46);
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                        finally {
-                                                                                                                                                                                                                            enumerator46.Dispose();
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                    if ((key == "HashSetDateTimeField")) {
-                                                                                                                                                                                                                        System.Collections.Generic.HashSet<System.DateTime> nullable105 = default(System.Collections.Generic.HashSet<System.DateTime>);
-                                                                                                                                                                                                                        if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                    && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                            nullable105 = this._serializer29.UnpackFrom(unpacker);
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                        else {
-                                                                                                                                                                                                                            MsgPack.Unpacker disposable85 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                            disposable85 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                            try {
-                                                                                                                                                                                                                                nullable105 = this._serializer29.UnpackFrom(disposable85);
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                            finally {
-                                                                                                                                                                                                                                if (((disposable85 == null) 
-                                                                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                                                                    disposable85.Dispose();
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                        if (((nullable105 == null) 
-                                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                                            System.Collections.Generic.HashSet<System.DateTime>.Enumerator enumerator45 = nullable105.GetEnumerator();
-                                                                                                                                                                                                                            System.DateTime current45;
-                                                                                                                                                                                                                            try {
-                                                                                                                                                                                                                                for (
-                                                                                                                                                                                                                                ; enumerator45.MoveNext(); 
-                                                                                                                                                                                                                                ) {
-                                                                                                                                                                                                                                    current45 = enumerator45.Current;
-                                                                                                                                                                                                                                    result.HashSetDateTimeField.Add(current45);
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                            finally {
-                                                                                                                                                                                                                                enumerator45.Dispose();
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                        if ((key == "HashSet_MessagePackObjectField")) {
-                                                                                                                                                                                                                            System.Collections.Generic.HashSet<MsgPack.MessagePackObject> nullable104 = default(System.Collections.Generic.HashSet<MsgPack.MessagePackObject>);
-                                                                                                                                                                                                                            if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                nullable104 = this._serializer28.UnpackFrom(unpacker);
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                                MsgPack.Unpacker disposable84 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                disposable84 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                try {
-                                                                                                                                                                                                                                    nullable104 = this._serializer28.UnpackFrom(disposable84);
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                finally {
-                                                                                                                                                                                                                                    if (((disposable84 == null) 
-                                                                                                                                                                                                                                                == false)) {
-                                                                                                                                                                                                                                        disposable84.Dispose();
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                            if (((nullable104 == null) 
-                                                                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                                                                System.Collections.Generic.HashSet<MsgPack.MessagePackObject>.Enumerator enumerator44 = nullable104.GetEnumerator();
-                                                                                                                                                                                                                                MsgPack.MessagePackObject current44;
-                                                                                                                                                                                                                                try {
-                                                                                                                                                                                                                                    for (
-                                                                                                                                                                                                                                    ; enumerator44.MoveNext(); 
-                                                                                                                                                                                                                                    ) {
-                                                                                                                                                                                                                                        current44 = enumerator44.Current;
-                                                                                                                                                                                                                                        result.HashSet_MessagePackObjectField.Add(current44);
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                finally {
-                                                                                                                                                                                                                                    enumerator44.Dispose();
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                        else {
-                                                                                                                                                                                                                            if ((key == "GuidField")) {
-                                                                                                                                                                                                                                System.Nullable<System.Guid> nullable103 = default(System.Nullable<System.Guid>);
-                                                                                                                                                                                                                                if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                    nullable103 = this._serializer79.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                                    MsgPack.Unpacker disposable83 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                    disposable83 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                    try {
-                                                                                                                                                                                                                                        nullable103 = this._serializer79.UnpackFrom(disposable83);
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                    finally {
-                                                                                                                                                                                                                                        if (((disposable83 == null) 
-                                                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                                                            disposable83.Dispose();
-                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                if (nullable103.HasValue) {
-                                                                                                                                                                                                                                    result.GuidField = nullable103.Value;
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                                if ((key == "FILETIMEField")) {
-                                                                                                                                                                                                                                    System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME> nullable102 = default(System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME>);
-                                                                                                                                                                                                                                    if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                        nullable102 = this._serializer78.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                                        MsgPack.Unpacker disposable82 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                        disposable82 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                        try {
-                                                                                                                                                                                                                                            nullable102 = this._serializer78.UnpackFrom(disposable82);
-                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                        finally {
-                                                                                                                                                                                                                                            if (((disposable82 == null) 
-                                                                                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                                                                                disposable82.Dispose();
-                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                    if (nullable102.HasValue) {
-                                                                                                                                                                                                                                        result.FILETIMEField = nullable102.Value;
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                                    if ((key == "FalseField")) {
-                                                                                                                                                                                                                                        System.Nullable<bool> nullable101 = default(System.Nullable<bool>);
-                                                                                                                                                                                                                                        nullable101 = MsgPack.Serialization.UnpackHelpers.UnpackNullableBooleanValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Boolean FalseField");
-                                                                                                                                                                                                                                        if (nullable101.HasValue) {
-                                                                                                                                                                                                                                            result.FalseField = nullable101.Value;
-                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                                        if ((key == "DictionaryStringDateTimeField")) {
-                                                                                                                                                                                                                                            System.Collections.Generic.Dictionary<string, System.DateTime> nullable100 = default(System.Collections.Generic.Dictionary<string, System.DateTime>);
-                                                                                                                                                                                                                                            if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                nullable100 = this._serializer24.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                                                MsgPack.Unpacker disposable81 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                disposable81 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                try {
-                                                                                                                                                                                                                                                    nullable100 = this._serializer24.UnpackFrom(disposable81);
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                finally {
-                                                                                                                                                                                                                                                    if (((disposable81 == null) 
-                                                                                                                                                                                                                                                                == false)) {
-                                                                                                                                                                                                                                                        disposable81.Dispose();
-                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                            if (((nullable100 == null) 
-                                                                                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                                                                                System.Collections.Generic.Dictionary<string, System.DateTime>.Enumerator enumerator43 = nullable100.GetEnumerator();
-                                                                                                                                                                                                                                                System.Collections.Generic.KeyValuePair<string, System.DateTime> current43;
-                                                                                                                                                                                                                                                try {
-                                                                                                                                                                                                                                                    for (
-                                                                                                                                                                                                                                                    ; enumerator43.MoveNext(); 
-                                                                                                                                                                                                                                                    ) {
-                                                                                                                                                                                                                                                        current43 = enumerator43.Current;
-                                                                                                                                                                                                                                                        result.DictionaryStringDateTimeField.Add(current43.Key, current43.Value);
-                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                finally {
-                                                                                                                                                                                                                                                    enumerator43.Dispose();
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                        else {
-                                                                                                                                                                                                                                            if ((key == "DictionaryObjectObjectField")) {
-                                                                                                                                                                                                                                                System.Collections.Generic.Dictionary<object, object> nullable99 = default(System.Collections.Generic.Dictionary<object, object>);
-                                                                                                                                                                                                                                                if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                    nullable99 = this._serializer23.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                                                    MsgPack.Unpacker disposable80 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                    disposable80 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                    try {
-                                                                                                                                                                                                                                                        nullable99 = this._serializer23.UnpackFrom(disposable80);
-                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                    finally {
-                                                                                                                                                                                                                                                        if (((disposable80 == null) 
-                                                                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                                                                            disposable80.Dispose();
-                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                if (((nullable99 == null) 
-                                                                                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                                                                                    System.Collections.Generic.Dictionary<object, object>.Enumerator enumerator42 = nullable99.GetEnumerator();
-                                                                                                                                                                                                                                                    System.Collections.Generic.KeyValuePair<object, object> current42;
-                                                                                                                                                                                                                                                    try {
-                                                                                                                                                                                                                                                        for (
-                                                                                                                                                                                                                                                        ; enumerator42.MoveNext(); 
-                                                                                                                                                                                                                                                        ) {
-                                                                                                                                                                                                                                                            current42 = enumerator42.Current;
-                                                                                                                                                                                                                                                            result.DictionaryObjectObjectField.Add(current42.Key, current42.Value);
-                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                    finally {
-                                                                                                                                                                                                                                                        enumerator42.Dispose();
-                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                                                if ((key == "DictionaryEntryField")) {
-                                                                                                                                                                                                                                                    System.Nullable<System.Collections.DictionaryEntry> nullable98 = default(System.Nullable<System.Collections.DictionaryEntry>);
-                                                                                                                                                                                                                                                    if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                        nullable98 = this._serializer77.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                                                        MsgPack.Unpacker disposable79 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                        disposable79 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                        try {
-                                                                                                                                                                                                                                                            nullable98 = this._serializer77.UnpackFrom(disposable79);
-                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                        finally {
-                                                                                                                                                                                                                                                            if (((disposable79 == null) 
-                                                                                                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                                                                                                disposable79.Dispose();
-                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                    if (nullable98.HasValue) {
-                                                                                                                                                                                                                                                        result.DictionaryEntryField = nullable98.Value;
-                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                                                    if ((key == "Dictionary_MessagePackObject_MessagePackObjectField")) {
-                                                                                                                                                                                                                                                        System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> nullable97 = default(System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>);
-                                                                                                                                                                                                                                                        if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                    && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                            nullable97 = this._serializer21.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                        else {
-                                                                                                                                                                                                                                                            MsgPack.Unpacker disposable78 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                            disposable78 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                            try {
-                                                                                                                                                                                                                                                                nullable97 = this._serializer21.UnpackFrom(disposable78);
-                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                            finally {
-                                                                                                                                                                                                                                                                if (((disposable78 == null) 
-                                                                                                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                                                                                                    disposable78.Dispose();
-                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                        if (((nullable97 == null) 
-                                                                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                                                                            System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>.Enumerator enumerator41 = nullable97.GetEnumerator();
-                                                                                                                                                                                                                                                            System.Collections.Generic.KeyValuePair<MsgPack.MessagePackObject, MsgPack.MessagePackObject> current41;
-                                                                                                                                                                                                                                                            try {
-                                                                                                                                                                                                                                                                for (
-                                                                                                                                                                                                                                                                ; enumerator41.MoveNext(); 
-                                                                                                                                                                                                                                                                ) {
-                                                                                                                                                                                                                                                                    current41 = enumerator41.Current;
-                                                                                                                                                                                                                                                                    result.Dictionary_MessagePackObject_MessagePackObjectField.Add(current41.Key, current41.Value);
-                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                            finally {
-                                                                                                                                                                                                                                                                enumerator41.Dispose();
-                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                                                        if ((key == "DecimalField")) {
-                                                                                                                                                                                                                                                            System.Nullable<decimal> nullable96 = default(System.Nullable<decimal>);
-                                                                                                                                                                                                                                                            if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                nullable96 = this._serializer76.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                                                                MsgPack.Unpacker disposable77 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                disposable77 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                try {
-                                                                                                                                                                                                                                                                    nullable96 = this._serializer76.UnpackFrom(disposable77);
-                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                finally {
-                                                                                                                                                                                                                                                                    if (((disposable77 == null) 
-                                                                                                                                                                                                                                                                                == false)) {
-                                                                                                                                                                                                                                                                        disposable77.Dispose();
-                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                            if (nullable96.HasValue) {
-                                                                                                                                                                                                                                                                result.DecimalField = nullable96.Value;
-                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                        else {
-                                                                                                                                                                                                                                                            if ((key == "DateTimeOffsetField")) {
-                                                                                                                                                                                                                                                                System.Nullable<System.DateTimeOffset> nullable95 = default(System.Nullable<System.DateTimeOffset>);
-                                                                                                                                                                                                                                                                if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                    nullable95 = this._serializer75.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                                                                    MsgPack.Unpacker disposable76 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                    disposable76 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                    try {
-                                                                                                                                                                                                                                                                        nullable95 = this._serializer75.UnpackFrom(disposable76);
-                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                    finally {
-                                                                                                                                                                                                                                                                        if (((disposable76 == null) 
-                                                                                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                                                                                            disposable76.Dispose();
-                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                if (nullable95.HasValue) {
-                                                                                                                                                                                                                                                                    result.DateTimeOffsetField = nullable95.Value;
-                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                                                                if ((key == "DateTimeField")) {
-                                                                                                                                                                                                                                                                    System.Nullable<System.DateTime> nullable94 = default(System.Nullable<System.DateTime>);
-                                                                                                                                                                                                                                                                    if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                        nullable94 = this._serializer74.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                                                                        MsgPack.Unpacker disposable75 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                        disposable75 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                        try {
-                                                                                                                                                                                                                                                                            nullable94 = this._serializer74.UnpackFrom(disposable75);
-                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                        finally {
-                                                                                                                                                                                                                                                                            if (((disposable75 == null) 
-                                                                                                                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                                                                                                                disposable75.Dispose();
-                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                    if (nullable94.HasValue) {
-                                                                                                                                                                                                                                                                        result.DateTimeField = nullable94.Value;
-                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                                                                    if ((key == "CurrentCultureField")) {
-                                                                                                                                                                                                                                                                        System.Globalization.CultureInfo nullable93 = default(System.Globalization.CultureInfo);
-                                                                                                                                                                                                                                                                        if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                    && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                            nullable93 = this._serializer17.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                        else {
-                                                                                                                                                                                                                                                                            MsgPack.Unpacker disposable74 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                            disposable74 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                            try {
-                                                                                                                                                                                                                                                                                nullable93 = this._serializer17.UnpackFrom(disposable74);
-                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                            finally {
-                                                                                                                                                                                                                                                                                if (((disposable74 == null) 
-                                                                                                                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                                                                                                                    disposable74.Dispose();
-                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                        if (((nullable93 == null) 
-                                                                                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                                                                                            result.CurrentCultureField = nullable93;
-                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                                                                        if ((key == "ComplexField")) {
-                                                                                                                                                                                                                                                                            System.Nullable<System.Numerics.Complex> nullable92 = default(System.Nullable<System.Numerics.Complex>);
-                                                                                                                                                                                                                                                                            if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                nullable92 = this._serializer73.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                                                                                MsgPack.Unpacker disposable73 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                                disposable73 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                                try {
-                                                                                                                                                                                                                                                                                    nullable92 = this._serializer73.UnpackFrom(disposable73);
-                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                finally {
-                                                                                                                                                                                                                                                                                    if (((disposable73 == null) 
-                                                                                                                                                                                                                                                                                                == false)) {
-                                                                                                                                                                                                                                                                                        disposable73.Dispose();
-                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                            if (nullable92.HasValue) {
-                                                                                                                                                                                                                                                                                result.ComplexField = nullable92.Value;
-                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                        else {
-                                                                                                                                                                                                                                                                            if ((key == "CollectionObjectField")) {
-                                                                                                                                                                                                                                                                                System.Collections.ObjectModel.Collection<object> nullable91 = default(System.Collections.ObjectModel.Collection<object>);
-                                                                                                                                                                                                                                                                                if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                    nullable91 = this._serializer15.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                                                                                    MsgPack.Unpacker disposable72 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                                    disposable72 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                                    try {
-                                                                                                                                                                                                                                                                                        nullable91 = this._serializer15.UnpackFrom(disposable72);
-                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                    finally {
-                                                                                                                                                                                                                                                                                        if (((disposable72 == null) 
-                                                                                                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                                                                                                            disposable72.Dispose();
-                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                if (((nullable91 == null) 
-                                                                                                                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                                                                                                                    System.Collections.Generic.IEnumerator<object> enumerator40 = nullable91.GetEnumerator();
-                                                                                                                                                                                                                                                                                    object current40;
-                                                                                                                                                                                                                                                                                    try {
-                                                                                                                                                                                                                                                                                        for (
-                                                                                                                                                                                                                                                                                        ; enumerator40.MoveNext(); 
-                                                                                                                                                                                                                                                                                        ) {
-                                                                                                                                                                                                                                                                                            current40 = enumerator40.Current;
-                                                                                                                                                                                                                                                                                            result.CollectionObjectField.Add(current40);
-                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                    finally {
-                                                                                                                                                                                                                                                                                        enumerator40.Dispose();
-                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                                                                                if ((key == "CollectionDateTimeField")) {
-                                                                                                                                                                                                                                                                                    System.Collections.ObjectModel.Collection<System.DateTime> nullable90 = default(System.Collections.ObjectModel.Collection<System.DateTime>);
-                                                                                                                                                                                                                                                                                    if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                                && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                        nullable90 = this._serializer14.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                                                                                        MsgPack.Unpacker disposable71 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                                        disposable71 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                                        try {
-                                                                                                                                                                                                                                                                                            nullable90 = this._serializer14.UnpackFrom(disposable71);
-                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                        finally {
-                                                                                                                                                                                                                                                                                            if (((disposable71 == null) 
-                                                                                                                                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                                                                                                                                disposable71.Dispose();
-                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                    if (((nullable90 == null) 
-                                                                                                                                                                                                                                                                                                == false)) {
-                                                                                                                                                                                                                                                                                        System.Collections.Generic.IEnumerator<System.DateTime> enumerator39 = nullable90.GetEnumerator();
-                                                                                                                                                                                                                                                                                        System.DateTime current39;
-                                                                                                                                                                                                                                                                                        try {
-                                                                                                                                                                                                                                                                                            for (
-                                                                                                                                                                                                                                                                                            ; enumerator39.MoveNext(); 
-                                                                                                                                                                                                                                                                                            ) {
-                                                                                                                                                                                                                                                                                                current39 = enumerator39.Current;
-                                                                                                                                                                                                                                                                                                result.CollectionDateTimeField.Add(current39);
-                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                        finally {
-                                                                                                                                                                                                                                                                                            enumerator39.Dispose();
-                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                                                                                    if ((key == "Collection_MessagePackObjectField")) {
-                                                                                                                                                                                                                                                                                        System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> nullable89 = default(System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>);
-                                                                                                                                                                                                                                                                                        if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                                    && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                            nullable89 = this._serializer13.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                        else {
-                                                                                                                                                                                                                                                                                            MsgPack.Unpacker disposable70 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                                            disposable70 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                                            try {
-                                                                                                                                                                                                                                                                                                nullable89 = this._serializer13.UnpackFrom(disposable70);
-                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                            finally {
-                                                                                                                                                                                                                                                                                                if (((disposable70 == null) 
-                                                                                                                                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                                                                                                                                    disposable70.Dispose();
-                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                        if (((nullable89 == null) 
-                                                                                                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                                                                                                            System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator38 = nullable89.GetEnumerator();
-                                                                                                                                                                                                                                                                                            MsgPack.MessagePackObject current38;
-                                                                                                                                                                                                                                                                                            try {
-                                                                                                                                                                                                                                                                                                for (
-                                                                                                                                                                                                                                                                                                ; enumerator38.MoveNext(); 
-                                                                                                                                                                                                                                                                                                ) {
-                                                                                                                                                                                                                                                                                                    current38 = enumerator38.Current;
-                                                                                                                                                                                                                                                                                                    result.Collection_MessagePackObjectField.Add(current38);
-                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                            finally {
-                                                                                                                                                                                                                                                                                                enumerator38.Dispose();
-                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                                                                                        if ((key == "CharField")) {
-                                                                                                                                                                                                                                                                                            System.Nullable<char> nullable88 = default(System.Nullable<char>);
-                                                                                                                                                                                                                                                                                            if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                nullable88 = this._serializer72.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                                                                                                MsgPack.Unpacker disposable69 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                                                disposable69 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                                                try {
-                                                                                                                                                                                                                                                                                                    nullable88 = this._serializer72.UnpackFrom(disposable69);
-                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                finally {
-                                                                                                                                                                                                                                                                                                    if (((disposable69 == null) 
-                                                                                                                                                                                                                                                                                                                == false)) {
-                                                                                                                                                                                                                                                                                                        disposable69.Dispose();
-                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                            if (nullable88.HasValue) {
-                                                                                                                                                                                                                                                                                                result.CharField = nullable88.Value;
-                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                        else {
-                                                                                                                                                                                                                                                                                            if ((key == "CharArrayField")) {
-                                                                                                                                                                                                                                                                                                char[] nullable87 = default(char[]);
-                                                                                                                                                                                                                                                                                                if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                    nullable87 = this._serializer11.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                                                                                                    MsgPack.Unpacker disposable68 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                                                    disposable68 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                                                    try {
-                                                                                                                                                                                                                                                                                                        nullable87 = this._serializer11.UnpackFrom(disposable68);
-                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                    finally {
-                                                                                                                                                                                                                                                                                                        if (((disposable68 == null) 
-                                                                                                                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                                                                                                                            disposable68.Dispose();
-                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                if (((nullable87 == null) 
-                                                                                                                                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                                                                                                                                    result.CharArrayField = nullable87;
-                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                                                                                                if ((key == "ByteField")) {
-                                                                                                                                                                                                                                                                                                    System.Nullable<byte> nullable86 = default(System.Nullable<byte>);
-                                                                                                                                                                                                                                                                                                    nullable86 = MsgPack.Serialization.UnpackHelpers.UnpackNullableByteValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Byte ByteField");
-                                                                                                                                                                                                                                                                                                    if (nullable86.HasValue) {
-                                                                                                                                                                                                                                                                                                        result.ByteField = nullable86.Value;
-                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                                                                                                    if ((key == "ByteArrayField")) {
-                                                                                                                                                                                                                                                                                                        byte[] nullable85 = default(byte[]);
-                                                                                                                                                                                                                                                                                                        nullable85 = MsgPack.Serialization.UnpackHelpers.UnpackBinaryValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Byte[] ByteArrayField");
-                                                                                                                                                                                                                                                                                                        if (((nullable85 == null) 
-                                                                                                                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                                                                                                                            result.ByteArrayField = nullable85;
-                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                                                                                                        if ((key == "BigIntegerField")) {
-                                                                                                                                                                                                                                                                                                            System.Nullable<System.Numerics.BigInteger> nullable84 = default(System.Nullable<System.Numerics.BigInteger>);
-                                                                                                                                                                                                                                                                                                            if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                                nullable84 = this._serializer71.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                                                                                                                MsgPack.Unpacker disposable67 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                                                                disposable67 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                                                                try {
-                                                                                                                                                                                                                                                                                                                    nullable84 = this._serializer71.UnpackFrom(disposable67);
-                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                finally {
-                                                                                                                                                                                                                                                                                                                    if (((disposable67 == null) 
-                                                                                                                                                                                                                                                                                                                                == false)) {
-                                                                                                                                                                                                                                                                                                                        disposable67.Dispose();
-                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                            if (nullable84.HasValue) {
-                                                                                                                                                                                                                                                                                                                result.BigIntegerField = nullable84.Value;
-                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                        else {
-                                                                                                                                                                                                                                                                                                            if ((key == "ArraySegmentInt32Field")) {
-                                                                                                                                                                                                                                                                                                                System.Nullable<System.ArraySegment<int>> nullable83 = default(System.Nullable<System.ArraySegment<int>>);
-                                                                                                                                                                                                                                                                                                                if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                                    nullable83 = this._serializer70.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                                                                                                                    MsgPack.Unpacker disposable66 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                                                                    disposable66 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                                                                    try {
-                                                                                                                                                                                                                                                                                                                        nullable83 = this._serializer70.UnpackFrom(disposable66);
-                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                    finally {
-                                                                                                                                                                                                                                                                                                                        if (((disposable66 == null) 
-                                                                                                                                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                                                                                                                                            disposable66.Dispose();
-                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                if (nullable83.HasValue) {
-                                                                                                                                                                                                                                                                                                                    result.ArraySegmentInt32Field = nullable83.Value;
-                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                                                                                                                if ((key == "ArraySegmentDecimalField")) {
-                                                                                                                                                                                                                                                                                                                    System.Nullable<System.ArraySegment<decimal>> nullable82 = default(System.Nullable<System.ArraySegment<decimal>>);
-                                                                                                                                                                                                                                                                                                                    if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                                                                && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                                        nullable82 = this._serializer69.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                                                                                                                        MsgPack.Unpacker disposable65 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                                                                        disposable65 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                                                                        try {
-                                                                                                                                                                                                                                                                                                                            nullable82 = this._serializer69.UnpackFrom(disposable65);
-                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                        finally {
-                                                                                                                                                                                                                                                                                                                            if (((disposable65 == null) 
-                                                                                                                                                                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                                                                                                                                                                disposable65.Dispose();
-                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                    if (nullable82.HasValue) {
-                                                                                                                                                                                                                                                                                                                        result.ArraySegmentDecimalField = nullable82.Value;
-                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                                                                                                                    if ((key == "ArraySegmentByteField")) {
-                                                                                                                                                                                                                                                                                                                        System.Nullable<System.ArraySegment<byte>> nullable81 = default(System.Nullable<System.ArraySegment<byte>>);
-                                                                                                                                                                                                                                                                                                                        if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                                                                    && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                                            nullable81 = this._serializer68.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                        else {
-                                                                                                                                                                                                                                                                                                                            MsgPack.Unpacker disposable64 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                                                                            disposable64 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                                                                            try {
-                                                                                                                                                                                                                                                                                                                                nullable81 = this._serializer68.UnpackFrom(disposable64);
-                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                            finally {
-                                                                                                                                                                                                                                                                                                                                if (((disposable64 == null) 
-                                                                                                                                                                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                                                                                                                                                                    disposable64.Dispose();
-                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                        if (nullable81.HasValue) {
-                                                                                                                                                                                                                                                                                                                            result.ArraySegmentByteField = nullable81.Value;
-                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                                                                                                                        if ((key == "ArrayListField")) {
-                                                                                                                                                                                                                                                                                                                            System.Collections.ArrayList nullable80 = default(System.Collections.ArrayList);
-                                                                                                                                                                                                                                                                                                                            if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                                                nullable80 = this._serializer4.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                                                                                                                                MsgPack.Unpacker disposable63 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                                                                                disposable63 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                                                                                try {
-                                                                                                                                                                                                                                                                                                                                    nullable80 = this._serializer4.UnpackFrom(disposable63);
-                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                                finally {
-                                                                                                                                                                                                                                                                                                                                    if (((disposable63 == null) 
-                                                                                                                                                                                                                                                                                                                                                == false)) {
-                                                                                                                                                                                                                                                                                                                                        disposable63.Dispose();
-                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                            if (((nullable80 == null) 
-                                                                                                                                                                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                                                                                                                                                                System.Collections.IEnumerator enumerator37 = nullable80.GetEnumerator();
-                                                                                                                                                                                                                                                                                                                                object current37;
-                                                                                                                                                                                                                                                                                                                                for (
-                                                                                                                                                                                                                                                                                                                                ; enumerator37.MoveNext(); 
-                                                                                                                                                                                                                                                                                                                                ) {
-                                                                                                                                                                                                                                                                                                                                    current37 = enumerator37.Current;
-                                                                                                                                                                                                                                                                                                                                    result.ArrayListField.Add(current37);
-                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                        else {
-                                                                                                                                                                                                                                                                                                                            if ((key == "AddOnlyCollection_ObjectField")) {
-                                                                                                                                                                                                                                                                                                                                MsgPack.Serialization.AddOnlyCollection<object> nullable79 = default(MsgPack.Serialization.AddOnlyCollection<object>);
-                                                                                                                                                                                                                                                                                                                                if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                                                    nullable79 = this._serializer3.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                                                                                                                                    MsgPack.Unpacker disposable62 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                                                                                    disposable62 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                                                                                    try {
-                                                                                                                                                                                                                                                                                                                                        nullable79 = this._serializer3.UnpackFrom(disposable62);
-                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                    finally {
-                                                                                                                                                                                                                                                                                                                                        if (((disposable62 == null) 
-                                                                                                                                                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                                                                                                                                                            disposable62.Dispose();
-                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                                if (((nullable79 == null) 
-                                                                                                                                                                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                                                                                                                                                                    System.Collections.Generic.IEnumerator<object> enumerator36 = nullable79.GetEnumerator();
-                                                                                                                                                                                                                                                                                                                                    object current36;
-                                                                                                                                                                                                                                                                                                                                    try {
-                                                                                                                                                                                                                                                                                                                                        for (
-                                                                                                                                                                                                                                                                                                                                        ; enumerator36.MoveNext(); 
-                                                                                                                                                                                                                                                                                                                                        ) {
-                                                                                                                                                                                                                                                                                                                                            current36 = enumerator36.Current;
-                                                                                                                                                                                                                                                                                                                                            result.AddOnlyCollection_ObjectField.Add(current36);
-                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                    finally {
-                                                                                                                                                                                                                                                                                                                                        enumerator36.Dispose();
-                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                            else {
-                                                                                                                                                                                                                                                                                                                                if ((key == "AddOnlyCollection_MessagePackObjectField")) {
-                                                                                                                                                                                                                                                                                                                                    MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject> nullable78 = default(MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>);
-                                                                                                                                                                                                                                                                                                                                    if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                                                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                                                                                && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                                                        nullable78 = this._serializer2.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                                                                                                                                        MsgPack.Unpacker disposable61 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                                                                                        disposable61 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                                                                                        try {
-                                                                                                                                                                                                                                                                                                                                            nullable78 = this._serializer2.UnpackFrom(disposable61);
-                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                        finally {
-                                                                                                                                                                                                                                                                                                                                            if (((disposable61 == null) 
-                                                                                                                                                                                                                                                                                                                                                        == false)) {
-                                                                                                                                                                                                                                                                                                                                                disposable61.Dispose();
-                                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                    if (((nullable78 == null) 
-                                                                                                                                                                                                                                                                                                                                                == false)) {
-                                                                                                                                                                                                                                                                                                                                        System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator35 = nullable78.GetEnumerator();
-                                                                                                                                                                                                                                                                                                                                        MsgPack.MessagePackObject current35;
-                                                                                                                                                                                                                                                                                                                                        try {
-                                                                                                                                                                                                                                                                                                                                            for (
-                                                                                                                                                                                                                                                                                                                                            ; enumerator35.MoveNext(); 
-                                                                                                                                                                                                                                                                                                                                            ) {
-                                                                                                                                                                                                                                                                                                                                                current35 = enumerator35.Current;
-                                                                                                                                                                                                                                                                                                                                                result.AddOnlyCollection_MessagePackObjectField.Add(current35);
-                                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                        finally {
-                                                                                                                                                                                                                                                                                                                                            enumerator35.Dispose();
-                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                                else {
-                                                                                                                                                                                                                                                                                                                                    if ((key == "AddOnlyCollection_DateTimeField")) {
-                                                                                                                                                                                                                                                                                                                                        MsgPack.Serialization.AddOnlyCollection<System.DateTime> nullable77 = default(MsgPack.Serialization.AddOnlyCollection<System.DateTime>);
-                                                                                                                                                                                                                                                                                                                                        if ((unpacker.Read() == false)) {
-                                                                                                                                                                                                                                                                                                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                                                                                                                                                                                                                                                                                                    && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                                                            nullable77 = this._serializer1.UnpackFrom(unpacker);
-                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                        else {
-                                                                                                                                                                                                                                                                                                                                            MsgPack.Unpacker disposable60 = default(MsgPack.Unpacker);
-                                                                                                                                                                                                                                                                                                                                            disposable60 = unpacker.ReadSubtree();
-                                                                                                                                                                                                                                                                                                                                            try {
-                                                                                                                                                                                                                                                                                                                                                nullable77 = this._serializer1.UnpackFrom(disposable60);
-                                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                                            finally {
-                                                                                                                                                                                                                                                                                                                                                if (((disposable60 == null) 
-                                                                                                                                                                                                                                                                                                                                                            == false)) {
-                                                                                                                                                                                                                                                                                                                                                    disposable60.Dispose();
-                                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                        if (((nullable77 == null) 
-                                                                                                                                                                                                                                                                                                                                                    == false)) {
-                                                                                                                                                                                                                                                                                                                                            System.Collections.Generic.IEnumerator<System.DateTime> enumerator34 = nullable77.GetEnumerator();
-                                                                                                                                                                                                                                                                                                                                            System.DateTime current34;
-                                                                                                                                                                                                                                                                                                                                            try {
-                                                                                                                                                                                                                                                                                                                                                for (
-                                                                                                                                                                                                                                                                                                                                                ; enumerator34.MoveNext(); 
-                                                                                                                                                                                                                                                                                                                                                ) {
-                                                                                                                                                                                                                                                                                                                                                    current34 = enumerator34.Current;
-                                                                                                                                                                                                                                                                                                                                                    result.AddOnlyCollection_DateTimeField.Add(current34);
-                                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                                            finally {
-                                                                                                                                                                                                                                                                                                                                                enumerator34.Dispose();
-                                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                                                                                                                                        unpacker.Skip();
-                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                }
-                                                                                                                                                                                            }
-                                                                                                                                                                                        }
-                                                                                                                                                                                    }
-                                                                                                                                                                                }
-                                                                                                                                                                            }
-                                                                                                                                                                        }
-                                                                                                                                                                    }
-                                                                                                                                                                }
-                                                                                                                                                            }
-                                                                                                                                                        }
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.ComplexTypeGenerated>(), this._unpackOperationTable);
             }
-            return result;
         }
     }
 }

@@ -15,89 +15,84 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class MsgPack_Serialization_ComplexTypeWithOneBaseOrderSerializer : MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.ComplexTypeWithOneBaseOrder> {
         
-        private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
+        private MsgPack.Serialization.MessagePackSerializer<int> _serializer0;
         
-        private MsgPack.Serialization.MessagePackSerializer<int> _serializer1;
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder>> _packOperationTable;
+        
+        private System.Collections.Generic.IList<string> _memberNames;
+        
+        private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>> _unpackOperationList;
+        
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>> _unpackOperationTable;
         
         public MsgPack_Serialization_ComplexTypeWithOneBaseOrderSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             schema0 = null;
-            this._serializer0 = context.GetSerializer<string>(schema0);
-            MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema1 = null;
-            this._serializer1 = context.GetSerializer<int>(schema1);
+            this._serializer0 = context.GetSerializer<int>(schema0);
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder>>);
+            packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder>>(2);
+            packOperationTable["One"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder>(this.PackValueOfOne);
+            packOperationTable["Two"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder>(this.PackValueOfTwo);
+            this._packOperationTable = packOperationTable;
+            System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>[]);
+            unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>[3];
+            unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>(this.UnpackMemberPlaceHolder);
+            unpackOperationList[1] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>(this.UnpackValueOfOne);
+            unpackOperationList[2] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>(this.UnpackValueOfTwo);
+            this._unpackOperationList = unpackOperationList;
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>>);
+            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>>(2);
+            unpackOperationTable["One"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>(this.UnpackValueOfOne);
+            unpackOperationTable["Two"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>(this.UnpackValueOfTwo);
+            this._unpackOperationTable = unpackOperationTable;
+            this._memberNames = new string[] {
+                    null,
+                    "One",
+                    "Two"};
+        }
+        
+        private void PackValueOfOne(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder objectTree) {
+            this._serializer0.PackTo(packer, objectTree.One);
+        }
+        
+        private void PackValueOfTwo(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder objectTree) {
+            this._serializer0.PackTo(packer, objectTree.Two);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder objectTree) {
-            packer.PackMapHeader(2);
-            this._serializer0.PackTo(packer, "One");
-            this._serializer1.PackTo(packer, objectTree.One);
-            this._serializer0.PackTo(packer, "Two");
-            this._serializer1.PackTo(packer, objectTree.Two);
+            MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+        }
+        
+        private void UnpackMemberPlaceHolder(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder unpackingContext, int indexOfItem) {
+            unpacker.Read();
+        }
+        
+        private void UnpackValueOfOne(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder unpackingContext, int indexOfItem) {
+            System.Nullable<int> nullable = default(System.Nullable<int>);
+            nullable = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeWithOneBaseOrder), "One");
+            if (nullable.HasValue) {
+                unpackingContext.One = nullable.Value;
+            }
+        }
+        
+        private void UnpackValueOfTwo(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder unpackingContext, int indexOfItem) {
+            System.Nullable<int> nullable0 = default(System.Nullable<int>);
+            nullable0 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeWithOneBaseOrder), "Two");
+            if (nullable0.HasValue) {
+                unpackingContext.Two = nullable0.Value;
+            }
         }
         
         protected internal override MsgPack.Serialization.ComplexTypeWithOneBaseOrder UnpackFromCore(MsgPack.Unpacker unpacker) {
             MsgPack.Serialization.ComplexTypeWithOneBaseOrder result = default(MsgPack.Serialization.ComplexTypeWithOneBaseOrder);
             result = new MsgPack.Serialization.ComplexTypeWithOneBaseOrder();
             if (unpacker.IsArrayHeader) {
-                int unpacked = default(int);
-                int itemsCount = default(int);
-                itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                unpacker.Read();
-                System.Nullable<int> nullable = default(System.Nullable<int>);
-                if ((unpacked < itemsCount)) {
-                    nullable = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeWithOneBaseOrder), "Int32 One");
-                }
-                if (nullable.HasValue) {
-                    result.One = nullable.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<int> nullable0 = default(System.Nullable<int>);
-                if ((unpacked < itemsCount)) {
-                    nullable0 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeWithOneBaseOrder), "Int32 Two");
-                }
-                if (nullable0.HasValue) {
-                    result.Two = nullable0.Value;
-                }
-                unpacked = (unpacked + 1);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.ComplexTypeWithOneBaseOrder>(), this._memberNames, this._unpackOperationList);
             }
             else {
-                int itemsCount0 = default(int);
-                itemsCount0 = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                for (int i = 0; (i < itemsCount0); i = (i + 1)) {
-                    string key = default(string);
-                    string nullable1 = default(string);
-                    nullable1 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.ComplexTypeWithOneBaseOrder), "MemberName");
-                    if (((nullable1 == null) 
-                                == false)) {
-                        key = nullable1;
-                    }
-                    else {
-                        throw MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited("MemberName");
-                    }
-                    if ((key == "Two")) {
-                        System.Nullable<int> nullable3 = default(System.Nullable<int>);
-                        nullable3 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeWithOneBaseOrder), "Int32 Two");
-                        if (nullable3.HasValue) {
-                            result.Two = nullable3.Value;
-                        }
-                    }
-                    else {
-                        if ((key == "One")) {
-                            System.Nullable<int> nullable2 = default(System.Nullable<int>);
-                            nullable2 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.ComplexTypeWithOneBaseOrder), "Int32 One");
-                            if (nullable2.HasValue) {
-                                result.One = nullable2.Value;
-                            }
-                        }
-                        else {
-                            unpacker.Skip();
-                        }
-                    }
-                }
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.ComplexTypeWithOneBaseOrder>(), this._unpackOperationTable);
             }
-            return result;
         }
     }
 }

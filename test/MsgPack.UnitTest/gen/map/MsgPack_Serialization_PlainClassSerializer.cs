@@ -15,176 +15,131 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class MsgPack_Serialization_PlainClassSerializer : MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.PlainClass> {
         
-        private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<int>> _serializer0;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<int>> _serializer1;
+        private MsgPack.Serialization.MessagePackSerializer<int> _serializer1;
         
-        private MsgPack.Serialization.MessagePackSerializer<int> _serializer2;
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass>> _packOperationTable;
+        
+        private System.Collections.Generic.IList<string> _memberNames;
+        
+        private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int>> _unpackOperationList;
+        
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int>> _unpackOperationTable;
         
         public MsgPack_Serialization_PlainClassSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             schema0 = null;
-            this._serializer0 = context.GetSerializer<string>(schema0);
+            this._serializer0 = context.GetSerializer<System.Collections.Generic.List<int>>(schema0);
             MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
             schema1 = null;
-            this._serializer1 = context.GetSerializer<System.Collections.Generic.List<int>>(schema1);
-            MsgPack.Serialization.PolymorphismSchema schema2 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema2 = null;
-            this._serializer2 = context.GetSerializer<int>(schema2);
+            this._serializer1 = context.GetSerializer<int>(schema1);
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass>>);
+            packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass>>(3);
+            packOperationTable["CollectionReadOnlyProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass>(this.PackValueOfCollectionReadOnlyProperty);
+            packOperationTable["PublicField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass>(this.PackValueOfPublicField);
+            packOperationTable["PublicProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass>(this.PackValueOfPublicProperty);
+            this._packOperationTable = packOperationTable;
+            System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int>[]);
+            unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int>[3];
+            unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int>(this.UnpackValueOfCollectionReadOnlyProperty);
+            unpackOperationList[1] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int>(this.UnpackValueOfPublicField);
+            unpackOperationList[2] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int>(this.UnpackValueOfPublicProperty);
+            this._unpackOperationList = unpackOperationList;
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int>>);
+            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int>>(3);
+            unpackOperationTable["CollectionReadOnlyProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int>(this.UnpackValueOfCollectionReadOnlyProperty);
+            unpackOperationTable["PublicField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int>(this.UnpackValueOfPublicField);
+            unpackOperationTable["PublicProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int>(this.UnpackValueOfPublicProperty);
+            this._unpackOperationTable = unpackOperationTable;
+            this._memberNames = new string[] {
+                    "CollectionReadOnlyProperty",
+                    "PublicField",
+                    "PublicProperty"};
+        }
+        
+        private void PackValueOfCollectionReadOnlyProperty(MsgPack.Packer packer, MsgPack.Serialization.PlainClass objectTree) {
+            this._serializer0.PackTo(packer, objectTree.CollectionReadOnlyProperty);
+        }
+        
+        private void PackValueOfPublicField(MsgPack.Packer packer, MsgPack.Serialization.PlainClass objectTree) {
+            this._serializer1.PackTo(packer, objectTree.PublicField);
+        }
+        
+        private void PackValueOfPublicProperty(MsgPack.Packer packer, MsgPack.Serialization.PlainClass objectTree) {
+            this._serializer1.PackTo(packer, objectTree.PublicProperty);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.PlainClass objectTree) {
-            packer.PackMapHeader(3);
-            this._serializer0.PackTo(packer, "CollectionReadOnlyProperty");
-            this._serializer1.PackTo(packer, objectTree.CollectionReadOnlyProperty);
-            this._serializer0.PackTo(packer, "PublicField");
-            this._serializer2.PackTo(packer, objectTree.PublicField);
-            this._serializer0.PackTo(packer, "PublicProperty");
-            this._serializer2.PackTo(packer, objectTree.PublicProperty);
+            MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+        }
+        
+        private void UnpackValueOfCollectionReadOnlyProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.PlainClass unpackingContext, int indexOfItem) {
+            System.Collections.Generic.List<int> nullable = default(System.Collections.Generic.List<int>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "CollectionReadOnlyProperty", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable = this._serializer0.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
+                disposable = unpacker.ReadSubtree();
+                try {
+                    nullable = this._serializer0.UnpackFrom(disposable);
+                }
+                finally {
+                    if (((disposable == null) 
+                                == false)) {
+                        disposable.Dispose();
+                    }
+                }
+            }
+            if (((nullable == null) 
+                        == false)) {
+                System.Collections.Generic.List<int>.Enumerator enumerator = nullable.GetEnumerator();
+                int current;
+                try {
+                    for (
+                    ; enumerator.MoveNext(); 
+                    ) {
+                        current = enumerator.Current;
+                        unpackingContext.CollectionReadOnlyProperty.Add(current);
+                    }
+                }
+                finally {
+                    enumerator.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfPublicField(MsgPack.Unpacker unpacker, MsgPack.Serialization.PlainClass unpackingContext, int indexOfItem) {
+            System.Nullable<int> nullable0 = default(System.Nullable<int>);
+            nullable0 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.PlainClass), "PublicField");
+            if (nullable0.HasValue) {
+                unpackingContext.PublicField = nullable0.Value;
+            }
+        }
+        
+        private void UnpackValueOfPublicProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.PlainClass unpackingContext, int indexOfItem) {
+            System.Nullable<int> nullable1 = default(System.Nullable<int>);
+            nullable1 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.PlainClass), "PublicProperty");
+            if (nullable1.HasValue) {
+                unpackingContext.PublicProperty = nullable1.Value;
+            }
         }
         
         protected internal override MsgPack.Serialization.PlainClass UnpackFromCore(MsgPack.Unpacker unpacker) {
             MsgPack.Serialization.PlainClass result = default(MsgPack.Serialization.PlainClass);
             result = new MsgPack.Serialization.PlainClass();
             if (unpacker.IsArrayHeader) {
-                int unpacked = default(int);
-                int itemsCount = default(int);
-                itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                System.Collections.Generic.List<int> nullable = default(System.Collections.Generic.List<int>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(0);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable = this._serializer1.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
-                        disposable = unpacker.ReadSubtree();
-                        try {
-                            nullable = this._serializer1.UnpackFrom(disposable);
-                        }
-                        finally {
-                            if (((disposable == null) 
-                                        == false)) {
-                                disposable.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable == null) 
-                            == false)) {
-                    System.Collections.Generic.List<int>.Enumerator enumerator = nullable.GetEnumerator();
-                    int current;
-                    try {
-                        for (
-                        ; enumerator.MoveNext(); 
-                        ) {
-                            current = enumerator.Current;
-                            result.CollectionReadOnlyProperty.Add(current);
-                        }
-                    }
-                    finally {
-                        enumerator.Dispose();
-                    }
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<int> nullable0 = default(System.Nullable<int>);
-                if ((unpacked < itemsCount)) {
-                    nullable0 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.PlainClass), "Int32 PublicField");
-                }
-                if (nullable0.HasValue) {
-                    result.PublicField = nullable0.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<int> nullable1 = default(System.Nullable<int>);
-                if ((unpacked < itemsCount)) {
-                    nullable1 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.PlainClass), "Int32 PublicProperty");
-                }
-                if (nullable1.HasValue) {
-                    result.PublicProperty = nullable1.Value;
-                }
-                unpacked = (unpacked + 1);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PlainClass>(), this._memberNames, this._unpackOperationList);
             }
             else {
-                int itemsCount0 = default(int);
-                itemsCount0 = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                for (int i = 0; (i < itemsCount0); i = (i + 1)) {
-                    string key = default(string);
-                    string nullable2 = default(string);
-                    nullable2 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.PlainClass), "MemberName");
-                    if (((nullable2 == null) 
-                                == false)) {
-                        key = nullable2;
-                    }
-                    else {
-                        throw MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited("MemberName");
-                    }
-                    if ((key == "PublicProperty")) {
-                        System.Nullable<int> nullable5 = default(System.Nullable<int>);
-                        nullable5 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.PlainClass), "Int32 PublicProperty");
-                        if (nullable5.HasValue) {
-                            result.PublicProperty = nullable5.Value;
-                        }
-                    }
-                    else {
-                        if ((key == "PublicField")) {
-                            System.Nullable<int> nullable4 = default(System.Nullable<int>);
-                            nullable4 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.PlainClass), "Int32 PublicField");
-                            if (nullable4.HasValue) {
-                                result.PublicField = nullable4.Value;
-                            }
-                        }
-                        else {
-                            if ((key == "CollectionReadOnlyProperty")) {
-                                System.Collections.Generic.List<int> nullable3 = default(System.Collections.Generic.List<int>);
-                                if ((unpacker.Read() == false)) {
-                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                }
-                                if (((unpacker.IsArrayHeader == false) 
-                                            && (unpacker.IsMapHeader == false))) {
-                                    nullable3 = this._serializer1.UnpackFrom(unpacker);
-                                }
-                                else {
-                                    MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
-                                    disposable0 = unpacker.ReadSubtree();
-                                    try {
-                                        nullable3 = this._serializer1.UnpackFrom(disposable0);
-                                    }
-                                    finally {
-                                        if (((disposable0 == null) 
-                                                    == false)) {
-                                            disposable0.Dispose();
-                                        }
-                                    }
-                                }
-                                if (((nullable3 == null) 
-                                            == false)) {
-                                    System.Collections.Generic.List<int>.Enumerator enumerator0 = nullable3.GetEnumerator();
-                                    int current0;
-                                    try {
-                                        for (
-                                        ; enumerator0.MoveNext(); 
-                                        ) {
-                                            current0 = enumerator0.Current;
-                                            result.CollectionReadOnlyProperty.Add(current0);
-                                        }
-                                    }
-                                    finally {
-                                        enumerator0.Dispose();
-                                    }
-                                }
-                            }
-                            else {
-                                unpacker.Skip();
-                            }
-                        }
-                    }
-                }
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PlainClass>(), this._unpackOperationTable);
             }
-            return result;
         }
     }
 }

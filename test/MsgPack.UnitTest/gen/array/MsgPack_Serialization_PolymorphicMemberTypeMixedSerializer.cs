@@ -41,6 +41,14 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Tuple<string, MsgPack.Serialization.FileSystemEntry, MsgPack.Serialization.FileSystemEntry, object>> _serializer12;
         
+        private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>> _packOperationList;
+        
+        private System.Collections.Generic.IList<string> _memberNames;
+        
+        private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>> _unpackOperationList;
+        
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>> _unpackOperationTable;
+        
         public MsgPack_Serialization_PolymorphicMemberTypeMixedSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
@@ -49,8 +57,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
             System.Collections.Generic.Dictionary<string, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
             typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
             typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
-            typeMap0.Add("2", typeof(System.Collections.Generic.Dictionary<string, MsgPack.Serialization.FileSystemEntry>));
             typeMap0.Add("1", typeof(System.Collections.Generic.SortedDictionary<string, MsgPack.Serialization.FileSystemEntry>));
+            typeMap0.Add("2", typeof(System.Collections.Generic.Dictionary<string, MsgPack.Serialization.FileSystemEntry>));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicDictionary(typeof(System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>), typeMap0, null, valuesSchema0);
             this._serializer0 = context.GetSerializer<System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>>(schema0);
             MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
@@ -85,8 +93,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
             System.Collections.Generic.Dictionary<string, System.Type> typeMap1 = default(System.Collections.Generic.Dictionary<string, System.Type>);
             typeMap1 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
             typeMap1 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
-            typeMap1.Add("2", typeof(System.Collections.Generic.List<MsgPack.Serialization.FileSystemEntry>));
             typeMap1.Add("1", typeof(System.Collections.ObjectModel.Collection<MsgPack.Serialization.FileSystemEntry>));
+            typeMap1.Add("2", typeof(System.Collections.Generic.List<MsgPack.Serialization.FileSystemEntry>));
             schema5 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicCollection(typeof(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>), typeMap1, itemsSchema1);
             this._serializer5 = context.GetSerializer<System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>>(schema5);
             MsgPack.Serialization.PolymorphismSchema schema6 = default(MsgPack.Serialization.PolymorphismSchema);
@@ -134,812 +142,516 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
             tupleItemsSchema0[3] = tupleItemSchema3;
             schema12 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicTuple(typeof(System.Tuple<string, MsgPack.Serialization.FileSystemEntry, MsgPack.Serialization.FileSystemEntry, object>), tupleItemsSchema0);
             this._serializer12 = context.GetSerializer<System.Tuple<string, MsgPack.Serialization.FileSystemEntry, MsgPack.Serialization.FileSystemEntry, object>>(schema12);
+            System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>[]);
+            packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>[14];
+            packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfDictionaryKnownContainerRuntimeValue);
+            packOperationList[1] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfDictionaryKnownValue);
+            packOperationList[2] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfDictionaryObjectRuntimeValue);
+            packOperationList[3] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfDictionaryVanilla);
+            packOperationList[4] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfListKnownItem);
+            packOperationList[5] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfListKnwonContainerRuntimeItem);
+            packOperationList[6] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfListObjectRuntimeItem);
+            packOperationList[7] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfListVanilla);
+            packOperationList[8] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfNormalKnown);
+            packOperationList[9] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfNormalRuntime);
+            packOperationList[10] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfNormalVanilla);
+            packOperationList[11] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfObjectRuntime);
+            packOperationList[12] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfObjectRuntimeOmittedType);
+            packOperationList[13] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfTuple);
+            this._packOperationList = packOperationList;
+            System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>[]);
+            unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>[14];
+            unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfDictionaryKnownContainerRuntimeValue);
+            unpackOperationList[1] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfDictionaryKnownValue);
+            unpackOperationList[2] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfDictionaryObjectRuntimeValue);
+            unpackOperationList[3] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfDictionaryVanilla);
+            unpackOperationList[4] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfListKnownItem);
+            unpackOperationList[5] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfListKnwonContainerRuntimeItem);
+            unpackOperationList[6] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfListObjectRuntimeItem);
+            unpackOperationList[7] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfListVanilla);
+            unpackOperationList[8] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfNormalKnown);
+            unpackOperationList[9] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfNormalRuntime);
+            unpackOperationList[10] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfNormalVanilla);
+            unpackOperationList[11] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfObjectRuntime);
+            unpackOperationList[12] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfObjectRuntimeOmittedType);
+            unpackOperationList[13] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfTuple);
+            this._unpackOperationList = unpackOperationList;
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>>);
+            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>>(14);
+            unpackOperationTable["DictionaryKnownContainerRuntimeValue"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfDictionaryKnownContainerRuntimeValue);
+            unpackOperationTable["DictionaryKnownValue"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfDictionaryKnownValue);
+            unpackOperationTable["DictionaryObjectRuntimeValue"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfDictionaryObjectRuntimeValue);
+            unpackOperationTable["DictionaryVanilla"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfDictionaryVanilla);
+            unpackOperationTable["ListKnownItem"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfListKnownItem);
+            unpackOperationTable["ListKnwonContainerRuntimeItem"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfListKnwonContainerRuntimeItem);
+            unpackOperationTable["ListObjectRuntimeItem"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfListObjectRuntimeItem);
+            unpackOperationTable["ListVanilla"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfListVanilla);
+            unpackOperationTable["NormalKnown"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfNormalKnown);
+            unpackOperationTable["NormalRuntime"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfNormalRuntime);
+            unpackOperationTable["NormalVanilla"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfNormalVanilla);
+            unpackOperationTable["ObjectRuntime"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfObjectRuntime);
+            unpackOperationTable["ObjectRuntimeOmittedType"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfObjectRuntimeOmittedType);
+            unpackOperationTable["Tuple"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int>(this.UnpackValueOfTuple);
+            this._unpackOperationTable = unpackOperationTable;
+            this._memberNames = new string[] {
+                    "DictionaryKnownContainerRuntimeValue",
+                    "DictionaryKnownValue",
+                    "DictionaryObjectRuntimeValue",
+                    "DictionaryVanilla",
+                    "ListKnownItem",
+                    "ListKnwonContainerRuntimeItem",
+                    "ListObjectRuntimeItem",
+                    "ListVanilla",
+                    "NormalKnown",
+                    "NormalRuntime",
+                    "NormalVanilla",
+                    "ObjectRuntime",
+                    "ObjectRuntimeOmittedType",
+                    "Tuple"};
+        }
+        
+        private void PackValueOfDictionaryKnownContainerRuntimeValue(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            this._serializer0.PackTo(packer, objectTree.DictionaryKnownContainerRuntimeValue);
+        }
+        
+        private void PackValueOfDictionaryKnownValue(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            this._serializer1.PackTo(packer, objectTree.DictionaryKnownValue);
+        }
+        
+        private void PackValueOfDictionaryObjectRuntimeValue(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            this._serializer2.PackTo(packer, objectTree.DictionaryObjectRuntimeValue);
+        }
+        
+        private void PackValueOfDictionaryVanilla(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            this._serializer3.PackTo(packer, objectTree.DictionaryVanilla);
+        }
+        
+        private void PackValueOfListKnownItem(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            this._serializer4.PackTo(packer, objectTree.ListKnownItem);
+        }
+        
+        private void PackValueOfListKnwonContainerRuntimeItem(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            this._serializer5.PackTo(packer, objectTree.ListKnwonContainerRuntimeItem);
+        }
+        
+        private void PackValueOfListObjectRuntimeItem(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            this._serializer6.PackTo(packer, objectTree.ListObjectRuntimeItem);
+        }
+        
+        private void PackValueOfListVanilla(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            this._serializer7.PackTo(packer, objectTree.ListVanilla);
+        }
+        
+        private void PackValueOfNormalKnown(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            this._serializer8.PackTo(packer, objectTree.NormalKnown);
+        }
+        
+        private void PackValueOfNormalRuntime(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            this._serializer9.PackTo(packer, objectTree.NormalRuntime);
+        }
+        
+        private void PackValueOfNormalVanilla(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            this._serializer10.PackTo(packer, objectTree.NormalVanilla);
+        }
+        
+        private void PackValueOfObjectRuntime(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            this._serializer11.PackTo(packer, objectTree.ObjectRuntime);
+        }
+        
+        private void PackValueOfObjectRuntimeOmittedType(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            this._serializer11.PackTo(packer, objectTree.ObjectRuntimeOmittedType);
+        }
+        
+        private void PackValueOfTuple(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            this._serializer12.PackTo(packer, objectTree.Tuple);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
-            packer.PackArrayHeader(14);
-            this._serializer0.PackTo(packer, objectTree.DictionaryKnownContainerRuntimeValue);
-            this._serializer1.PackTo(packer, objectTree.DictionaryKnownValue);
-            this._serializer2.PackTo(packer, objectTree.DictionaryObjectRuntimeValue);
-            this._serializer3.PackTo(packer, objectTree.DictionaryVanilla);
-            this._serializer4.PackTo(packer, objectTree.ListKnownItem);
-            this._serializer5.PackTo(packer, objectTree.ListKnwonContainerRuntimeItem);
-            this._serializer6.PackTo(packer, objectTree.ListObjectRuntimeItem);
-            this._serializer7.PackTo(packer, objectTree.ListVanilla);
-            this._serializer8.PackTo(packer, objectTree.NormalKnown);
-            this._serializer9.PackTo(packer, objectTree.NormalRuntime);
-            this._serializer10.PackTo(packer, objectTree.NormalVanilla);
-            this._serializer11.PackTo(packer, objectTree.ObjectRuntime);
-            this._serializer11.PackTo(packer, objectTree.ObjectRuntimeOmittedType);
-            this._serializer12.PackTo(packer, objectTree.Tuple);
+            MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
+        }
+        
+        private void UnpackValueOfDictionaryKnownContainerRuntimeValue(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry> nullable = default(System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "DictionaryKnownContainerRuntimeValue", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable = this._serializer0.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
+                disposable = unpacker.ReadSubtree();
+                try {
+                    nullable = this._serializer0.UnpackFrom(disposable);
+                }
+                finally {
+                    if (((disposable == null) 
+                                == false)) {
+                        disposable.Dispose();
+                    }
+                }
+            }
+            if (((nullable == null) 
+                        == false)) {
+                unpackingContext.DictionaryKnownContainerRuntimeValue = nullable;
+            }
+        }
+        
+        private void UnpackValueOfDictionaryKnownValue(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry> nullable0 = default(System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "DictionaryKnownValue", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable0 = this._serializer1.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
+                disposable0 = unpacker.ReadSubtree();
+                try {
+                    nullable0 = this._serializer1.UnpackFrom(disposable0);
+                }
+                finally {
+                    if (((disposable0 == null) 
+                                == false)) {
+                        disposable0.Dispose();
+                    }
+                }
+            }
+            if (((nullable0 == null) 
+                        == false)) {
+                unpackingContext.DictionaryKnownValue = nullable0;
+            }
+        }
+        
+        private void UnpackValueOfDictionaryObjectRuntimeValue(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IDictionary<string, object> nullable1 = default(System.Collections.Generic.IDictionary<string, object>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "DictionaryObjectRuntimeValue", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable1 = this._serializer2.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable1 = default(MsgPack.Unpacker);
+                disposable1 = unpacker.ReadSubtree();
+                try {
+                    nullable1 = this._serializer2.UnpackFrom(disposable1);
+                }
+                finally {
+                    if (((disposable1 == null) 
+                                == false)) {
+                        disposable1.Dispose();
+                    }
+                }
+            }
+            if (((nullable1 == null) 
+                        == false)) {
+                unpackingContext.DictionaryObjectRuntimeValue = nullable1;
+            }
+        }
+        
+        private void UnpackValueOfDictionaryVanilla(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IDictionary<string, string> nullable2 = default(System.Collections.Generic.IDictionary<string, string>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "DictionaryVanilla", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable2 = this._serializer3.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable2 = default(MsgPack.Unpacker);
+                disposable2 = unpacker.ReadSubtree();
+                try {
+                    nullable2 = this._serializer3.UnpackFrom(disposable2);
+                }
+                finally {
+                    if (((disposable2 == null) 
+                                == false)) {
+                        disposable2.Dispose();
+                    }
+                }
+            }
+            if (((nullable2 == null) 
+                        == false)) {
+                unpackingContext.DictionaryVanilla = nullable2;
+            }
+        }
+        
+        private void UnpackValueOfListKnownItem(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry> nullable3 = default(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ListKnownItem", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable3 = this._serializer4.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable3 = default(MsgPack.Unpacker);
+                disposable3 = unpacker.ReadSubtree();
+                try {
+                    nullable3 = this._serializer4.UnpackFrom(disposable3);
+                }
+                finally {
+                    if (((disposable3 == null) 
+                                == false)) {
+                        disposable3.Dispose();
+                    }
+                }
+            }
+            if (((nullable3 == null) 
+                        == false)) {
+                unpackingContext.ListKnownItem = nullable3;
+            }
+        }
+        
+        private void UnpackValueOfListKnwonContainerRuntimeItem(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry> nullable4 = default(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ListKnwonContainerRuntimeItem", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable4 = this._serializer5.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable4 = default(MsgPack.Unpacker);
+                disposable4 = unpacker.ReadSubtree();
+                try {
+                    nullable4 = this._serializer5.UnpackFrom(disposable4);
+                }
+                finally {
+                    if (((disposable4 == null) 
+                                == false)) {
+                        disposable4.Dispose();
+                    }
+                }
+            }
+            if (((nullable4 == null) 
+                        == false)) {
+                unpackingContext.ListKnwonContainerRuntimeItem = nullable4;
+            }
+        }
+        
+        private void UnpackValueOfListObjectRuntimeItem(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IList<object> nullable5 = default(System.Collections.Generic.IList<object>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ListObjectRuntimeItem", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable5 = this._serializer6.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable5 = default(MsgPack.Unpacker);
+                disposable5 = unpacker.ReadSubtree();
+                try {
+                    nullable5 = this._serializer6.UnpackFrom(disposable5);
+                }
+                finally {
+                    if (((disposable5 == null) 
+                                == false)) {
+                        disposable5.Dispose();
+                    }
+                }
+            }
+            if (((nullable5 == null) 
+                        == false)) {
+                unpackingContext.ListObjectRuntimeItem = nullable5;
+            }
+        }
+        
+        private void UnpackValueOfListVanilla(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IList<string> nullable6 = default(System.Collections.Generic.IList<string>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ListVanilla", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable6 = this._serializer7.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable6 = default(MsgPack.Unpacker);
+                disposable6 = unpacker.ReadSubtree();
+                try {
+                    nullable6 = this._serializer7.UnpackFrom(disposable6);
+                }
+                finally {
+                    if (((disposable6 == null) 
+                                == false)) {
+                        disposable6.Dispose();
+                    }
+                }
+            }
+            if (((nullable6 == null) 
+                        == false)) {
+                unpackingContext.ListVanilla = nullable6;
+            }
+        }
+        
+        private void UnpackValueOfNormalKnown(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem) {
+            MsgPack.Serialization.FileSystemEntry nullable7 = default(MsgPack.Serialization.FileSystemEntry);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "NormalKnown", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable7 = this._serializer8.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable7 = default(MsgPack.Unpacker);
+                disposable7 = unpacker.ReadSubtree();
+                try {
+                    nullable7 = this._serializer8.UnpackFrom(disposable7);
+                }
+                finally {
+                    if (((disposable7 == null) 
+                                == false)) {
+                        disposable7.Dispose();
+                    }
+                }
+            }
+            if (((nullable7 == null) 
+                        == false)) {
+                unpackingContext.NormalKnown = nullable7;
+            }
+        }
+        
+        private void UnpackValueOfNormalRuntime(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem) {
+            MsgPack.Serialization.FileSystemEntry nullable8 = default(MsgPack.Serialization.FileSystemEntry);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "NormalRuntime", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable8 = this._serializer9.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable8 = default(MsgPack.Unpacker);
+                disposable8 = unpacker.ReadSubtree();
+                try {
+                    nullable8 = this._serializer9.UnpackFrom(disposable8);
+                }
+                finally {
+                    if (((disposable8 == null) 
+                                == false)) {
+                        disposable8.Dispose();
+                    }
+                }
+            }
+            if (((nullable8 == null) 
+                        == false)) {
+                unpackingContext.NormalRuntime = nullable8;
+            }
+        }
+        
+        private void UnpackValueOfNormalVanilla(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem) {
+            string nullable9 = default(string);
+            nullable9 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.PolymorphicMemberTypeMixed), "NormalVanilla");
+            if (((nullable9 == null) 
+                        == false)) {
+                unpackingContext.NormalVanilla = nullable9;
+            }
+        }
+        
+        private void UnpackValueOfObjectRuntime(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem) {
+            object nullable10 = default(object);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ObjectRuntime", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable10 = this._serializer11.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable9 = default(MsgPack.Unpacker);
+                disposable9 = unpacker.ReadSubtree();
+                try {
+                    nullable10 = this._serializer11.UnpackFrom(disposable9);
+                }
+                finally {
+                    if (((disposable9 == null) 
+                                == false)) {
+                        disposable9.Dispose();
+                    }
+                }
+            }
+            if (((nullable10 == null) 
+                        == false)) {
+                unpackingContext.ObjectRuntime = nullable10;
+            }
+        }
+        
+        private void UnpackValueOfObjectRuntimeOmittedType(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem) {
+            object nullable11 = default(object);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ObjectRuntimeOmittedType", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable11 = this._serializer11.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable10 = default(MsgPack.Unpacker);
+                disposable10 = unpacker.ReadSubtree();
+                try {
+                    nullable11 = this._serializer11.UnpackFrom(disposable10);
+                }
+                finally {
+                    if (((disposable10 == null) 
+                                == false)) {
+                        disposable10.Dispose();
+                    }
+                }
+            }
+            if (((nullable11 == null) 
+                        == false)) {
+                unpackingContext.ObjectRuntimeOmittedType = nullable11;
+            }
+        }
+        
+        private void UnpackValueOfTuple(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem) {
+            System.Tuple<string, MsgPack.Serialization.FileSystemEntry, MsgPack.Serialization.FileSystemEntry, object> nullable12 = default(System.Tuple<string, MsgPack.Serialization.FileSystemEntry, MsgPack.Serialization.FileSystemEntry, object>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "Tuple", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable12 = this._serializer12.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable11 = default(MsgPack.Unpacker);
+                disposable11 = unpacker.ReadSubtree();
+                try {
+                    nullable12 = this._serializer12.UnpackFrom(disposable11);
+                }
+                finally {
+                    if (((disposable11 == null) 
+                                == false)) {
+                        disposable11.Dispose();
+                    }
+                }
+            }
+            if (((nullable12 == null) 
+                        == false)) {
+                unpackingContext.Tuple = nullable12;
+            }
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeMixed UnpackFromCore(MsgPack.Unpacker unpacker) {
             MsgPack.Serialization.PolymorphicMemberTypeMixed result = default(MsgPack.Serialization.PolymorphicMemberTypeMixed);
             result = new MsgPack.Serialization.PolymorphicMemberTypeMixed();
             if (unpacker.IsArrayHeader) {
-                int unpacked = default(int);
-                int itemsCount = default(int);
-                itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry> nullable = default(System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(0);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable = this._serializer0.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
-                        disposable = unpacker.ReadSubtree();
-                        try {
-                            nullable = this._serializer0.UnpackFrom(disposable);
-                        }
-                        finally {
-                            if (((disposable == null) 
-                                        == false)) {
-                                disposable.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable == null) 
-                            == false)) {
-                    result.DictionaryKnownContainerRuntimeValue = nullable;
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry> nullable0 = default(System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(1);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable0 = this._serializer1.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
-                        disposable0 = unpacker.ReadSubtree();
-                        try {
-                            nullable0 = this._serializer1.UnpackFrom(disposable0);
-                        }
-                        finally {
-                            if (((disposable0 == null) 
-                                        == false)) {
-                                disposable0.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable0 == null) 
-                            == false)) {
-                    result.DictionaryKnownValue = nullable0;
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.IDictionary<string, object> nullable1 = default(System.Collections.Generic.IDictionary<string, object>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(2);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable1 = this._serializer2.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable1 = default(MsgPack.Unpacker);
-                        disposable1 = unpacker.ReadSubtree();
-                        try {
-                            nullable1 = this._serializer2.UnpackFrom(disposable1);
-                        }
-                        finally {
-                            if (((disposable1 == null) 
-                                        == false)) {
-                                disposable1.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable1 == null) 
-                            == false)) {
-                    result.DictionaryObjectRuntimeValue = nullable1;
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.IDictionary<string, string> nullable2 = default(System.Collections.Generic.IDictionary<string, string>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(3);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable2 = this._serializer3.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable2 = default(MsgPack.Unpacker);
-                        disposable2 = unpacker.ReadSubtree();
-                        try {
-                            nullable2 = this._serializer3.UnpackFrom(disposable2);
-                        }
-                        finally {
-                            if (((disposable2 == null) 
-                                        == false)) {
-                                disposable2.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable2 == null) 
-                            == false)) {
-                    result.DictionaryVanilla = nullable2;
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry> nullable3 = default(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(4);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable3 = this._serializer4.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable3 = default(MsgPack.Unpacker);
-                        disposable3 = unpacker.ReadSubtree();
-                        try {
-                            nullable3 = this._serializer4.UnpackFrom(disposable3);
-                        }
-                        finally {
-                            if (((disposable3 == null) 
-                                        == false)) {
-                                disposable3.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable3 == null) 
-                            == false)) {
-                    result.ListKnownItem = nullable3;
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry> nullable4 = default(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(5);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable4 = this._serializer5.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable4 = default(MsgPack.Unpacker);
-                        disposable4 = unpacker.ReadSubtree();
-                        try {
-                            nullable4 = this._serializer5.UnpackFrom(disposable4);
-                        }
-                        finally {
-                            if (((disposable4 == null) 
-                                        == false)) {
-                                disposable4.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable4 == null) 
-                            == false)) {
-                    result.ListKnwonContainerRuntimeItem = nullable4;
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.IList<object> nullable5 = default(System.Collections.Generic.IList<object>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(6);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable5 = this._serializer6.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable5 = default(MsgPack.Unpacker);
-                        disposable5 = unpacker.ReadSubtree();
-                        try {
-                            nullable5 = this._serializer6.UnpackFrom(disposable5);
-                        }
-                        finally {
-                            if (((disposable5 == null) 
-                                        == false)) {
-                                disposable5.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable5 == null) 
-                            == false)) {
-                    result.ListObjectRuntimeItem = nullable5;
-                }
-                unpacked = (unpacked + 1);
-                System.Collections.Generic.IList<string> nullable6 = default(System.Collections.Generic.IList<string>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(7);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable6 = this._serializer7.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable6 = default(MsgPack.Unpacker);
-                        disposable6 = unpacker.ReadSubtree();
-                        try {
-                            nullable6 = this._serializer7.UnpackFrom(disposable6);
-                        }
-                        finally {
-                            if (((disposable6 == null) 
-                                        == false)) {
-                                disposable6.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable6 == null) 
-                            == false)) {
-                    result.ListVanilla = nullable6;
-                }
-                unpacked = (unpacked + 1);
-                MsgPack.Serialization.FileSystemEntry nullable7 = default(MsgPack.Serialization.FileSystemEntry);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(8);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable7 = this._serializer8.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable7 = default(MsgPack.Unpacker);
-                        disposable7 = unpacker.ReadSubtree();
-                        try {
-                            nullable7 = this._serializer8.UnpackFrom(disposable7);
-                        }
-                        finally {
-                            if (((disposable7 == null) 
-                                        == false)) {
-                                disposable7.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable7 == null) 
-                            == false)) {
-                    result.NormalKnown = nullable7;
-                }
-                unpacked = (unpacked + 1);
-                MsgPack.Serialization.FileSystemEntry nullable8 = default(MsgPack.Serialization.FileSystemEntry);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(9);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable8 = this._serializer9.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable8 = default(MsgPack.Unpacker);
-                        disposable8 = unpacker.ReadSubtree();
-                        try {
-                            nullable8 = this._serializer9.UnpackFrom(disposable8);
-                        }
-                        finally {
-                            if (((disposable8 == null) 
-                                        == false)) {
-                                disposable8.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable8 == null) 
-                            == false)) {
-                    result.NormalRuntime = nullable8;
-                }
-                unpacked = (unpacked + 1);
-                string nullable9 = default(string);
-                if ((unpacked < itemsCount)) {
-                    nullable9 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.PolymorphicMemberTypeMixed), "System.String NormalVanilla");
-                }
-                if (((nullable9 == null) 
-                            == false)) {
-                    result.NormalVanilla = nullable9;
-                }
-                unpacked = (unpacked + 1);
-                object nullable10 = default(object);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(11);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable10 = this._serializer11.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable9 = default(MsgPack.Unpacker);
-                        disposable9 = unpacker.ReadSubtree();
-                        try {
-                            nullable10 = this._serializer11.UnpackFrom(disposable9);
-                        }
-                        finally {
-                            if (((disposable9 == null) 
-                                        == false)) {
-                                disposable9.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable10 == null) 
-                            == false)) {
-                    result.ObjectRuntime = nullable10;
-                }
-                unpacked = (unpacked + 1);
-                object nullable11 = default(object);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(12);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable11 = this._serializer11.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable10 = default(MsgPack.Unpacker);
-                        disposable10 = unpacker.ReadSubtree();
-                        try {
-                            nullable11 = this._serializer11.UnpackFrom(disposable10);
-                        }
-                        finally {
-                            if (((disposable10 == null) 
-                                        == false)) {
-                                disposable10.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable11 == null) 
-                            == false)) {
-                    result.ObjectRuntimeOmittedType = nullable11;
-                }
-                unpacked = (unpacked + 1);
-                System.Tuple<string, MsgPack.Serialization.FileSystemEntry, MsgPack.Serialization.FileSystemEntry, object> nullable12 = default(System.Tuple<string, MsgPack.Serialization.FileSystemEntry, MsgPack.Serialization.FileSystemEntry, object>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(13);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable12 = this._serializer12.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable11 = default(MsgPack.Unpacker);
-                        disposable11 = unpacker.ReadSubtree();
-                        try {
-                            nullable12 = this._serializer12.UnpackFrom(disposable11);
-                        }
-                        finally {
-                            if (((disposable11 == null) 
-                                        == false)) {
-                                disposable11.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable12 == null) 
-                            == false)) {
-                    result.Tuple = nullable12;
-                }
-                unpacked = (unpacked + 1);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeMixed>(), this._memberNames, this._unpackOperationList);
             }
             else {
-                int itemsCount0 = default(int);
-                itemsCount0 = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                for (int i = 0; (i < itemsCount0); i = (i + 1)) {
-                    string key = default(string);
-                    string nullable13 = default(string);
-                    nullable13 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.PolymorphicMemberTypeMixed), "MemberName");
-                    if (((nullable13 == null) 
-                                == false)) {
-                        key = nullable13;
-                    }
-                    else {
-                        throw MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited("MemberName");
-                    }
-                    if ((key == "Tuple")) {
-                        System.Tuple<string, MsgPack.Serialization.FileSystemEntry, MsgPack.Serialization.FileSystemEntry, object> nullable27 = default(System.Tuple<string, MsgPack.Serialization.FileSystemEntry, MsgPack.Serialization.FileSystemEntry, object>);
-                        if ((unpacker.Read() == false)) {
-                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                        }
-                        if (((unpacker.IsArrayHeader == false) 
-                                    && (unpacker.IsMapHeader == false))) {
-                            nullable27 = this._serializer12.UnpackFrom(unpacker);
-                        }
-                        else {
-                            MsgPack.Unpacker disposable24 = default(MsgPack.Unpacker);
-                            disposable24 = unpacker.ReadSubtree();
-                            try {
-                                nullable27 = this._serializer12.UnpackFrom(disposable24);
-                            }
-                            finally {
-                                if (((disposable24 == null) 
-                                            == false)) {
-                                    disposable24.Dispose();
-                                }
-                            }
-                        }
-                        if (((nullable27 == null) 
-                                    == false)) {
-                            result.Tuple = nullable27;
-                        }
-                    }
-                    else {
-                        if ((key == "ObjectRuntimeOmittedType")) {
-                            object nullable26 = default(object);
-                            if ((unpacker.Read() == false)) {
-                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                            }
-                            if (((unpacker.IsArrayHeader == false) 
-                                        && (unpacker.IsMapHeader == false))) {
-                                nullable26 = this._serializer11.UnpackFrom(unpacker);
-                            }
-                            else {
-                                MsgPack.Unpacker disposable23 = default(MsgPack.Unpacker);
-                                disposable23 = unpacker.ReadSubtree();
-                                try {
-                                    nullable26 = this._serializer11.UnpackFrom(disposable23);
-                                }
-                                finally {
-                                    if (((disposable23 == null) 
-                                                == false)) {
-                                        disposable23.Dispose();
-                                    }
-                                }
-                            }
-                            if (((nullable26 == null) 
-                                        == false)) {
-                                result.ObjectRuntimeOmittedType = nullable26;
-                            }
-                        }
-                        else {
-                            if ((key == "ObjectRuntime")) {
-                                object nullable25 = default(object);
-                                if ((unpacker.Read() == false)) {
-                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                }
-                                if (((unpacker.IsArrayHeader == false) 
-                                            && (unpacker.IsMapHeader == false))) {
-                                    nullable25 = this._serializer11.UnpackFrom(unpacker);
-                                }
-                                else {
-                                    MsgPack.Unpacker disposable22 = default(MsgPack.Unpacker);
-                                    disposable22 = unpacker.ReadSubtree();
-                                    try {
-                                        nullable25 = this._serializer11.UnpackFrom(disposable22);
-                                    }
-                                    finally {
-                                        if (((disposable22 == null) 
-                                                    == false)) {
-                                            disposable22.Dispose();
-                                        }
-                                    }
-                                }
-                                if (((nullable25 == null) 
-                                            == false)) {
-                                    result.ObjectRuntime = nullable25;
-                                }
-                            }
-                            else {
-                                if ((key == "NormalVanilla")) {
-                                    string nullable24 = default(string);
-                                    nullable24 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.PolymorphicMemberTypeMixed), "System.String NormalVanilla");
-                                    if (((nullable24 == null) 
-                                                == false)) {
-                                        result.NormalVanilla = nullable24;
-                                    }
-                                }
-                                else {
-                                    if ((key == "NormalRuntime")) {
-                                        MsgPack.Serialization.FileSystemEntry nullable23 = default(MsgPack.Serialization.FileSystemEntry);
-                                        if ((unpacker.Read() == false)) {
-                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                        }
-                                        if (((unpacker.IsArrayHeader == false) 
-                                                    && (unpacker.IsMapHeader == false))) {
-                                            nullable23 = this._serializer9.UnpackFrom(unpacker);
-                                        }
-                                        else {
-                                            MsgPack.Unpacker disposable21 = default(MsgPack.Unpacker);
-                                            disposable21 = unpacker.ReadSubtree();
-                                            try {
-                                                nullable23 = this._serializer9.UnpackFrom(disposable21);
-                                            }
-                                            finally {
-                                                if (((disposable21 == null) 
-                                                            == false)) {
-                                                    disposable21.Dispose();
-                                                }
-                                            }
-                                        }
-                                        if (((nullable23 == null) 
-                                                    == false)) {
-                                            result.NormalRuntime = nullable23;
-                                        }
-                                    }
-                                    else {
-                                        if ((key == "NormalKnown")) {
-                                            MsgPack.Serialization.FileSystemEntry nullable22 = default(MsgPack.Serialization.FileSystemEntry);
-                                            if ((unpacker.Read() == false)) {
-                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                            }
-                                            if (((unpacker.IsArrayHeader == false) 
-                                                        && (unpacker.IsMapHeader == false))) {
-                                                nullable22 = this._serializer8.UnpackFrom(unpacker);
-                                            }
-                                            else {
-                                                MsgPack.Unpacker disposable20 = default(MsgPack.Unpacker);
-                                                disposable20 = unpacker.ReadSubtree();
-                                                try {
-                                                    nullable22 = this._serializer8.UnpackFrom(disposable20);
-                                                }
-                                                finally {
-                                                    if (((disposable20 == null) 
-                                                                == false)) {
-                                                        disposable20.Dispose();
-                                                    }
-                                                }
-                                            }
-                                            if (((nullable22 == null) 
-                                                        == false)) {
-                                                result.NormalKnown = nullable22;
-                                            }
-                                        }
-                                        else {
-                                            if ((key == "ListVanilla")) {
-                                                System.Collections.Generic.IList<string> nullable21 = default(System.Collections.Generic.IList<string>);
-                                                if ((unpacker.Read() == false)) {
-                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                }
-                                                if (((unpacker.IsArrayHeader == false) 
-                                                            && (unpacker.IsMapHeader == false))) {
-                                                    nullable21 = this._serializer7.UnpackFrom(unpacker);
-                                                }
-                                                else {
-                                                    MsgPack.Unpacker disposable19 = default(MsgPack.Unpacker);
-                                                    disposable19 = unpacker.ReadSubtree();
-                                                    try {
-                                                        nullable21 = this._serializer7.UnpackFrom(disposable19);
-                                                    }
-                                                    finally {
-                                                        if (((disposable19 == null) 
-                                                                    == false)) {
-                                                            disposable19.Dispose();
-                                                        }
-                                                    }
-                                                }
-                                                if (((nullable21 == null) 
-                                                            == false)) {
-                                                    result.ListVanilla = nullable21;
-                                                }
-                                            }
-                                            else {
-                                                if ((key == "ListObjectRuntimeItem")) {
-                                                    System.Collections.Generic.IList<object> nullable20 = default(System.Collections.Generic.IList<object>);
-                                                    if ((unpacker.Read() == false)) {
-                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                    }
-                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                && (unpacker.IsMapHeader == false))) {
-                                                        nullable20 = this._serializer6.UnpackFrom(unpacker);
-                                                    }
-                                                    else {
-                                                        MsgPack.Unpacker disposable18 = default(MsgPack.Unpacker);
-                                                        disposable18 = unpacker.ReadSubtree();
-                                                        try {
-                                                            nullable20 = this._serializer6.UnpackFrom(disposable18);
-                                                        }
-                                                        finally {
-                                                            if (((disposable18 == null) 
-                                                                        == false)) {
-                                                                disposable18.Dispose();
-                                                            }
-                                                        }
-                                                    }
-                                                    if (((nullable20 == null) 
-                                                                == false)) {
-                                                        result.ListObjectRuntimeItem = nullable20;
-                                                    }
-                                                }
-                                                else {
-                                                    if ((key == "ListKnwonContainerRuntimeItem")) {
-                                                        System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry> nullable19 = default(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>);
-                                                        if ((unpacker.Read() == false)) {
-                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                        }
-                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                    && (unpacker.IsMapHeader == false))) {
-                                                            nullable19 = this._serializer5.UnpackFrom(unpacker);
-                                                        }
-                                                        else {
-                                                            MsgPack.Unpacker disposable17 = default(MsgPack.Unpacker);
-                                                            disposable17 = unpacker.ReadSubtree();
-                                                            try {
-                                                                nullable19 = this._serializer5.UnpackFrom(disposable17);
-                                                            }
-                                                            finally {
-                                                                if (((disposable17 == null) 
-                                                                            == false)) {
-                                                                    disposable17.Dispose();
-                                                                }
-                                                            }
-                                                        }
-                                                        if (((nullable19 == null) 
-                                                                    == false)) {
-                                                            result.ListKnwonContainerRuntimeItem = nullable19;
-                                                        }
-                                                    }
-                                                    else {
-                                                        if ((key == "ListKnownItem")) {
-                                                            System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry> nullable18 = default(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>);
-                                                            if ((unpacker.Read() == false)) {
-                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                            }
-                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                nullable18 = this._serializer4.UnpackFrom(unpacker);
-                                                            }
-                                                            else {
-                                                                MsgPack.Unpacker disposable16 = default(MsgPack.Unpacker);
-                                                                disposable16 = unpacker.ReadSubtree();
-                                                                try {
-                                                                    nullable18 = this._serializer4.UnpackFrom(disposable16);
-                                                                }
-                                                                finally {
-                                                                    if (((disposable16 == null) 
-                                                                                == false)) {
-                                                                        disposable16.Dispose();
-                                                                    }
-                                                                }
-                                                            }
-                                                            if (((nullable18 == null) 
-                                                                        == false)) {
-                                                                result.ListKnownItem = nullable18;
-                                                            }
-                                                        }
-                                                        else {
-                                                            if ((key == "DictionaryVanilla")) {
-                                                                System.Collections.Generic.IDictionary<string, string> nullable17 = default(System.Collections.Generic.IDictionary<string, string>);
-                                                                if ((unpacker.Read() == false)) {
-                                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                }
-                                                                if (((unpacker.IsArrayHeader == false) 
-                                                                            && (unpacker.IsMapHeader == false))) {
-                                                                    nullable17 = this._serializer3.UnpackFrom(unpacker);
-                                                                }
-                                                                else {
-                                                                    MsgPack.Unpacker disposable15 = default(MsgPack.Unpacker);
-                                                                    disposable15 = unpacker.ReadSubtree();
-                                                                    try {
-                                                                        nullable17 = this._serializer3.UnpackFrom(disposable15);
-                                                                    }
-                                                                    finally {
-                                                                        if (((disposable15 == null) 
-                                                                                    == false)) {
-                                                                            disposable15.Dispose();
-                                                                        }
-                                                                    }
-                                                                }
-                                                                if (((nullable17 == null) 
-                                                                            == false)) {
-                                                                    result.DictionaryVanilla = nullable17;
-                                                                }
-                                                            }
-                                                            else {
-                                                                if ((key == "DictionaryObjectRuntimeValue")) {
-                                                                    System.Collections.Generic.IDictionary<string, object> nullable16 = default(System.Collections.Generic.IDictionary<string, object>);
-                                                                    if ((unpacker.Read() == false)) {
-                                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                    }
-                                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                                && (unpacker.IsMapHeader == false))) {
-                                                                        nullable16 = this._serializer2.UnpackFrom(unpacker);
-                                                                    }
-                                                                    else {
-                                                                        MsgPack.Unpacker disposable14 = default(MsgPack.Unpacker);
-                                                                        disposable14 = unpacker.ReadSubtree();
-                                                                        try {
-                                                                            nullable16 = this._serializer2.UnpackFrom(disposable14);
-                                                                        }
-                                                                        finally {
-                                                                            if (((disposable14 == null) 
-                                                                                        == false)) {
-                                                                                disposable14.Dispose();
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    if (((nullable16 == null) 
-                                                                                == false)) {
-                                                                        result.DictionaryObjectRuntimeValue = nullable16;
-                                                                    }
-                                                                }
-                                                                else {
-                                                                    if ((key == "DictionaryKnownValue")) {
-                                                                        System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry> nullable15 = default(System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>);
-                                                                        if ((unpacker.Read() == false)) {
-                                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                        }
-                                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                                    && (unpacker.IsMapHeader == false))) {
-                                                                            nullable15 = this._serializer1.UnpackFrom(unpacker);
-                                                                        }
-                                                                        else {
-                                                                            MsgPack.Unpacker disposable13 = default(MsgPack.Unpacker);
-                                                                            disposable13 = unpacker.ReadSubtree();
-                                                                            try {
-                                                                                nullable15 = this._serializer1.UnpackFrom(disposable13);
-                                                                            }
-                                                                            finally {
-                                                                                if (((disposable13 == null) 
-                                                                                            == false)) {
-                                                                                    disposable13.Dispose();
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        if (((nullable15 == null) 
-                                                                                    == false)) {
-                                                                            result.DictionaryKnownValue = nullable15;
-                                                                        }
-                                                                    }
-                                                                    else {
-                                                                        if ((key == "DictionaryKnownContainerRuntimeValue")) {
-                                                                            System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry> nullable14 = default(System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>);
-                                                                            if ((unpacker.Read() == false)) {
-                                                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                                            }
-                                                                            if (((unpacker.IsArrayHeader == false) 
-                                                                                        && (unpacker.IsMapHeader == false))) {
-                                                                                nullable14 = this._serializer0.UnpackFrom(unpacker);
-                                                                            }
-                                                                            else {
-                                                                                MsgPack.Unpacker disposable12 = default(MsgPack.Unpacker);
-                                                                                disposable12 = unpacker.ReadSubtree();
-                                                                                try {
-                                                                                    nullable14 = this._serializer0.UnpackFrom(disposable12);
-                                                                                }
-                                                                                finally {
-                                                                                    if (((disposable12 == null) 
-                                                                                                == false)) {
-                                                                                        disposable12.Dispose();
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            if (((nullable14 == null) 
-                                                                                        == false)) {
-                                                                                result.DictionaryKnownContainerRuntimeValue = nullable14;
-                                                                            }
-                                                                        }
-                                                                        else {
-                                                                            unpacker.Skip();
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeMixed>(), this._unpackOperationTable);
             }
-            return result;
         }
     }
 }

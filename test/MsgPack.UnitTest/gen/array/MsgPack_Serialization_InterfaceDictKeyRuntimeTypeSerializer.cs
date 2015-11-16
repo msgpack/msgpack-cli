@@ -17,6 +17,14 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<MsgPack.Serialization.IFileSystemEntry, string>> _serializer0;
         
+        private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.InterfaceDictKeyRuntimeType>> _packOperationList;
+        
+        private System.Collections.Generic.IList<string> _memberNames;
+        
+        private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceDictKeyRuntimeType, int>> _unpackOperationList;
+        
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceDictKeyRuntimeType, int>> _unpackOperationTable;
+        
         public MsgPack_Serialization_InterfaceDictKeyRuntimeTypeSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
@@ -24,96 +32,67 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
             keysSchema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.IFileSystemEntry));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForContextSpecifiedDictionary(typeof(System.Collections.Generic.IDictionary<MsgPack.Serialization.IFileSystemEntry, string>), keysSchema0, null);
             this._serializer0 = context.GetSerializer<System.Collections.Generic.IDictionary<MsgPack.Serialization.IFileSystemEntry, string>>(schema0);
+            System.Action<MsgPack.Packer, MsgPack.Serialization.InterfaceDictKeyRuntimeType>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.InterfaceDictKeyRuntimeType>[]);
+            packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.InterfaceDictKeyRuntimeType>[1];
+            packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.InterfaceDictKeyRuntimeType>(this.PackValueOfValue);
+            this._packOperationList = packOperationList;
+            System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceDictKeyRuntimeType, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceDictKeyRuntimeType, int>[]);
+            unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceDictKeyRuntimeType, int>[1];
+            unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceDictKeyRuntimeType, int>(this.UnpackValueOfValue);
+            this._unpackOperationList = unpackOperationList;
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceDictKeyRuntimeType, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceDictKeyRuntimeType, int>>);
+            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceDictKeyRuntimeType, int>>(1);
+            unpackOperationTable["Value"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceDictKeyRuntimeType, int>(this.UnpackValueOfValue);
+            this._unpackOperationTable = unpackOperationTable;
+            this._memberNames = new string[] {
+                    "Value"};
+        }
+        
+        private void PackValueOfValue(MsgPack.Packer packer, MsgPack.Serialization.InterfaceDictKeyRuntimeType objectTree) {
+            this._serializer0.PackTo(packer, objectTree.Value);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.InterfaceDictKeyRuntimeType objectTree) {
-            packer.PackArrayHeader(1);
-            this._serializer0.PackTo(packer, objectTree.Value);
+            MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
+        }
+        
+        private void UnpackValueOfValue(MsgPack.Unpacker unpacker, MsgPack.Serialization.InterfaceDictKeyRuntimeType unpackingContext, int indexOfItem) {
+            System.Collections.Generic.IDictionary<MsgPack.Serialization.IFileSystemEntry, string> nullable = default(System.Collections.Generic.IDictionary<MsgPack.Serialization.IFileSystemEntry, string>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "Value", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable = this._serializer0.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
+                disposable = unpacker.ReadSubtree();
+                try {
+                    nullable = this._serializer0.UnpackFrom(disposable);
+                }
+                finally {
+                    if (((disposable == null) 
+                                == false)) {
+                        disposable.Dispose();
+                    }
+                }
+            }
+            if (((nullable == null) 
+                        == false)) {
+                unpackingContext.Value = nullable;
+            }
         }
         
         protected internal override MsgPack.Serialization.InterfaceDictKeyRuntimeType UnpackFromCore(MsgPack.Unpacker unpacker) {
             MsgPack.Serialization.InterfaceDictKeyRuntimeType result = default(MsgPack.Serialization.InterfaceDictKeyRuntimeType);
             result = new MsgPack.Serialization.InterfaceDictKeyRuntimeType();
             if (unpacker.IsArrayHeader) {
-                int unpacked = default(int);
-                int itemsCount = default(int);
-                itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                System.Collections.Generic.IDictionary<MsgPack.Serialization.IFileSystemEntry, string> nullable = default(System.Collections.Generic.IDictionary<MsgPack.Serialization.IFileSystemEntry, string>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(0);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable = this._serializer0.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
-                        disposable = unpacker.ReadSubtree();
-                        try {
-                            nullable = this._serializer0.UnpackFrom(disposable);
-                        }
-                        finally {
-                            if (((disposable == null) 
-                                        == false)) {
-                                disposable.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable == null) 
-                            == false)) {
-                    result.Value = nullable;
-                }
-                unpacked = (unpacked + 1);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.InterfaceDictKeyRuntimeType>(), this._memberNames, this._unpackOperationList);
             }
             else {
-                int itemsCount0 = default(int);
-                itemsCount0 = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                for (int i = 0; (i < itemsCount0); i = (i + 1)) {
-                    string key = default(string);
-                    string nullable0 = default(string);
-                    nullable0 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.InterfaceDictKeyRuntimeType), "MemberName");
-                    if (((nullable0 == null) 
-                                == false)) {
-                        key = nullable0;
-                    }
-                    else {
-                        throw MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited("MemberName");
-                    }
-                    if ((key == "Value")) {
-                        System.Collections.Generic.IDictionary<MsgPack.Serialization.IFileSystemEntry, string> nullable1 = default(System.Collections.Generic.IDictionary<MsgPack.Serialization.IFileSystemEntry, string>);
-                        if ((unpacker.Read() == false)) {
-                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                        }
-                        if (((unpacker.IsArrayHeader == false) 
-                                    && (unpacker.IsMapHeader == false))) {
-                            nullable1 = this._serializer0.UnpackFrom(unpacker);
-                        }
-                        else {
-                            MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
-                            disposable0 = unpacker.ReadSubtree();
-                            try {
-                                nullable1 = this._serializer0.UnpackFrom(disposable0);
-                            }
-                            finally {
-                                if (((disposable0 == null) 
-                                            == false)) {
-                                    disposable0.Dispose();
-                                }
-                            }
-                        }
-                        if (((nullable1 == null) 
-                                    == false)) {
-                            result.Value = nullable1;
-                        }
-                    }
-                    else {
-                        unpacker.Skip();
-                    }
-                }
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.InterfaceDictKeyRuntimeType>(), this._unpackOperationTable);
             }
-            return result;
         }
     }
 }

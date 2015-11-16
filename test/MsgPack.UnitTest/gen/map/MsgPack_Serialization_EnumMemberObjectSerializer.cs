@@ -15,640 +15,428 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class MsgPack_Serialization_EnumMemberObjectSerializer : MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumMemberObject> {
         
-        private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumByName> _serializer0;
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumByName> _serializer1;
         
-        private MsgPack.Serialization.MessagePackSerializer<string> _serializer2;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumByName> _serializer2;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumByName> _serializer3;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumByUnderlyingValue> _serializer3;
         
-        private MsgPack.Serialization.MessagePackSerializer<string> _serializer4;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumByUnderlyingValue> _serializer4;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumByName> _serializer5;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumByUnderlyingValue> _serializer5;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumByUnderlyingValue> _serializer6;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumDefault> _serializer6;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumByUnderlyingValue> _serializer7;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumDefault> _serializer7;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumByUnderlyingValue> _serializer8;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumDefault> _serializer8;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumDefault> _serializer9;
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.EnumMemberObject>> _packOperationTable;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumDefault> _serializer10;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumByName>> _serializer9;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumDefault> _serializer11;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumByName>> _serializer10;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumByName>> _serializer12;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumByName>> _serializer11;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumByName>> _serializer13;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>> _serializer12;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumByName>> _serializer14;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>> _serializer13;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>> _serializer15;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>> _serializer14;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>> _serializer16;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumDefault>> _serializer15;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>> _serializer17;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumDefault>> _serializer16;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumDefault>> _serializer18;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumDefault>> _serializer17;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumDefault>> _serializer19;
+        private System.Collections.Generic.IList<string> _memberNames;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<MsgPack.Serialization.EnumDefault>> _serializer20;
+        private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>> _unpackOperationList;
+        
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>> _unpackOperationTable;
         
         public MsgPack_Serialization_EnumMemberObjectSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
+            this._serializer0 = context.GetSerializer<MsgPack.Serialization.EnumByName>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumByName), MsgPack.Serialization.EnumMemberSerializationMethod.ByName));
+            this._serializer1 = context.GetSerializer<MsgPack.Serialization.EnumByName>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumByName), MsgPack.Serialization.EnumMemberSerializationMethod.ByUnderlyingValue));
+            this._serializer2 = context.GetSerializer<MsgPack.Serialization.EnumByName>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumByName), MsgPack.Serialization.EnumMemberSerializationMethod.Default));
+            this._serializer3 = context.GetSerializer<MsgPack.Serialization.EnumByUnderlyingValue>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumByUnderlyingValue), MsgPack.Serialization.EnumMemberSerializationMethod.ByName));
+            this._serializer4 = context.GetSerializer<MsgPack.Serialization.EnumByUnderlyingValue>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumByUnderlyingValue), MsgPack.Serialization.EnumMemberSerializationMethod.ByUnderlyingValue));
+            this._serializer5 = context.GetSerializer<MsgPack.Serialization.EnumByUnderlyingValue>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumByUnderlyingValue), MsgPack.Serialization.EnumMemberSerializationMethod.Default));
+            this._serializer6 = context.GetSerializer<MsgPack.Serialization.EnumDefault>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumDefault), MsgPack.Serialization.EnumMemberSerializationMethod.ByName));
+            this._serializer7 = context.GetSerializer<MsgPack.Serialization.EnumDefault>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumDefault), MsgPack.Serialization.EnumMemberSerializationMethod.ByUnderlyingValue));
+            this._serializer8 = context.GetSerializer<MsgPack.Serialization.EnumDefault>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumDefault), MsgPack.Serialization.EnumMemberSerializationMethod.Default));
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             schema0 = null;
-            this._serializer0 = context.GetSerializer<string>(schema0);
-            this._serializer1 = context.GetSerializer<MsgPack.Serialization.EnumByName>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumByName), MsgPack.Serialization.EnumMemberSerializationMethod.ByName));
+            this._serializer9 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumByName>>(schema0);
             MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
             schema1 = null;
-            this._serializer2 = context.GetSerializer<string>(schema1);
-            this._serializer3 = context.GetSerializer<MsgPack.Serialization.EnumByName>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumByName), MsgPack.Serialization.EnumMemberSerializationMethod.ByUnderlyingValue));
+            this._serializer10 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumByName>>(schema1);
             MsgPack.Serialization.PolymorphismSchema schema2 = default(MsgPack.Serialization.PolymorphismSchema);
             schema2 = null;
-            this._serializer4 = context.GetSerializer<string>(schema2);
-            this._serializer5 = context.GetSerializer<MsgPack.Serialization.EnumByName>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumByName), MsgPack.Serialization.EnumMemberSerializationMethod.Default));
-            this._serializer6 = context.GetSerializer<MsgPack.Serialization.EnumByUnderlyingValue>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumByUnderlyingValue), MsgPack.Serialization.EnumMemberSerializationMethod.ByName));
-            this._serializer7 = context.GetSerializer<MsgPack.Serialization.EnumByUnderlyingValue>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumByUnderlyingValue), MsgPack.Serialization.EnumMemberSerializationMethod.ByUnderlyingValue));
-            this._serializer8 = context.GetSerializer<MsgPack.Serialization.EnumByUnderlyingValue>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumByUnderlyingValue), MsgPack.Serialization.EnumMemberSerializationMethod.Default));
-            this._serializer9 = context.GetSerializer<MsgPack.Serialization.EnumDefault>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumDefault), MsgPack.Serialization.EnumMemberSerializationMethod.ByName));
-            this._serializer10 = context.GetSerializer<MsgPack.Serialization.EnumDefault>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumDefault), MsgPack.Serialization.EnumMemberSerializationMethod.ByUnderlyingValue));
-            this._serializer11 = context.GetSerializer<MsgPack.Serialization.EnumDefault>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumDefault), MsgPack.Serialization.EnumMemberSerializationMethod.Default));
+            this._serializer11 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumByName>>(schema2);
             MsgPack.Serialization.PolymorphismSchema schema3 = default(MsgPack.Serialization.PolymorphismSchema);
             schema3 = null;
-            this._serializer12 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumByName>>(schema3);
+            this._serializer12 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>>(schema3);
             MsgPack.Serialization.PolymorphismSchema schema4 = default(MsgPack.Serialization.PolymorphismSchema);
             schema4 = null;
-            this._serializer13 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumByName>>(schema4);
+            this._serializer13 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>>(schema4);
             MsgPack.Serialization.PolymorphismSchema schema5 = default(MsgPack.Serialization.PolymorphismSchema);
             schema5 = null;
-            this._serializer14 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumByName>>(schema5);
+            this._serializer14 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>>(schema5);
             MsgPack.Serialization.PolymorphismSchema schema6 = default(MsgPack.Serialization.PolymorphismSchema);
             schema6 = null;
-            this._serializer15 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>>(schema6);
+            this._serializer15 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumDefault>>(schema6);
             MsgPack.Serialization.PolymorphismSchema schema7 = default(MsgPack.Serialization.PolymorphismSchema);
             schema7 = null;
-            this._serializer16 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>>(schema7);
+            this._serializer16 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumDefault>>(schema7);
             MsgPack.Serialization.PolymorphismSchema schema8 = default(MsgPack.Serialization.PolymorphismSchema);
             schema8 = null;
-            this._serializer17 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>>(schema8);
-            MsgPack.Serialization.PolymorphismSchema schema9 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema9 = null;
-            this._serializer18 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumDefault>>(schema9);
-            MsgPack.Serialization.PolymorphismSchema schema10 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema10 = null;
-            this._serializer19 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumDefault>>(schema10);
-            MsgPack.Serialization.PolymorphismSchema schema11 = default(MsgPack.Serialization.PolymorphismSchema);
-            schema11 = null;
-            this._serializer20 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumDefault>>(schema11);
+            this._serializer17 = context.GetSerializer<System.Nullable<MsgPack.Serialization.EnumDefault>>(schema8);
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.EnumMemberObject>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.EnumMemberObject>>);
+            packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.EnumMemberObject>>(9);
+            packOperationTable["ByNameByNameProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.EnumMemberObject>(this.PackValueOfByNameByNameProperty);
+            packOperationTable["ByNameByUnderlyingValueProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.EnumMemberObject>(this.PackValueOfByNameByUnderlyingValueProperty);
+            packOperationTable["ByNameDefaultProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.EnumMemberObject>(this.PackValueOfByNameDefaultProperty);
+            packOperationTable["ByUnderlyingValueByNameProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.EnumMemberObject>(this.PackValueOfByUnderlyingValueByNameProperty);
+            packOperationTable["ByUnderlyingValueByUnderlyingValueProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.EnumMemberObject>(this.PackValueOfByUnderlyingValueByUnderlyingValueProperty);
+            packOperationTable["ByUnderlyingValueDefaultProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.EnumMemberObject>(this.PackValueOfByUnderlyingValueDefaultProperty);
+            packOperationTable["DefaultByNameProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.EnumMemberObject>(this.PackValueOfDefaultByNameProperty);
+            packOperationTable["DefaultByUnderlyingValueProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.EnumMemberObject>(this.PackValueOfDefaultByUnderlyingValueProperty);
+            packOperationTable["DefaultDefaultProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.EnumMemberObject>(this.PackValueOfDefaultDefaultProperty);
+            this._packOperationTable = packOperationTable;
+            System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>[]);
+            unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>[9];
+            unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfByNameByNameProperty);
+            unpackOperationList[1] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfByNameByUnderlyingValueProperty);
+            unpackOperationList[2] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfByNameDefaultProperty);
+            unpackOperationList[3] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfByUnderlyingValueByNameProperty);
+            unpackOperationList[4] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfByUnderlyingValueByUnderlyingValueProperty);
+            unpackOperationList[5] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfByUnderlyingValueDefaultProperty);
+            unpackOperationList[6] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfDefaultByNameProperty);
+            unpackOperationList[7] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfDefaultByUnderlyingValueProperty);
+            unpackOperationList[8] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfDefaultDefaultProperty);
+            this._unpackOperationList = unpackOperationList;
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>>);
+            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>>(9);
+            unpackOperationTable["ByNameByNameProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfByNameByNameProperty);
+            unpackOperationTable["ByNameByUnderlyingValueProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfByNameByUnderlyingValueProperty);
+            unpackOperationTable["ByNameDefaultProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfByNameDefaultProperty);
+            unpackOperationTable["ByUnderlyingValueByNameProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfByUnderlyingValueByNameProperty);
+            unpackOperationTable["ByUnderlyingValueByUnderlyingValueProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfByUnderlyingValueByUnderlyingValueProperty);
+            unpackOperationTable["ByUnderlyingValueDefaultProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfByUnderlyingValueDefaultProperty);
+            unpackOperationTable["DefaultByNameProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfDefaultByNameProperty);
+            unpackOperationTable["DefaultByUnderlyingValueProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfDefaultByUnderlyingValueProperty);
+            unpackOperationTable["DefaultDefaultProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int>(this.UnpackValueOfDefaultDefaultProperty);
+            this._unpackOperationTable = unpackOperationTable;
+            this._memberNames = new string[] {
+                    "ByNameByNameProperty",
+                    "ByNameByUnderlyingValueProperty",
+                    "ByNameDefaultProperty",
+                    "ByUnderlyingValueByNameProperty",
+                    "ByUnderlyingValueByUnderlyingValueProperty",
+                    "ByUnderlyingValueDefaultProperty",
+                    "DefaultByNameProperty",
+                    "DefaultByUnderlyingValueProperty",
+                    "DefaultDefaultProperty"};
+        }
+        
+        private void PackValueOfByNameByNameProperty(MsgPack.Packer packer, MsgPack.Serialization.EnumMemberObject objectTree) {
+            this._serializer0.PackTo(packer, objectTree.ByNameByNameProperty);
+        }
+        
+        private void PackValueOfByNameByUnderlyingValueProperty(MsgPack.Packer packer, MsgPack.Serialization.EnumMemberObject objectTree) {
+            this._serializer1.PackTo(packer, objectTree.ByNameByUnderlyingValueProperty);
+        }
+        
+        private void PackValueOfByNameDefaultProperty(MsgPack.Packer packer, MsgPack.Serialization.EnumMemberObject objectTree) {
+            this._serializer2.PackTo(packer, objectTree.ByNameDefaultProperty);
+        }
+        
+        private void PackValueOfByUnderlyingValueByNameProperty(MsgPack.Packer packer, MsgPack.Serialization.EnumMemberObject objectTree) {
+            this._serializer3.PackTo(packer, objectTree.ByUnderlyingValueByNameProperty);
+        }
+        
+        private void PackValueOfByUnderlyingValueByUnderlyingValueProperty(MsgPack.Packer packer, MsgPack.Serialization.EnumMemberObject objectTree) {
+            this._serializer4.PackTo(packer, objectTree.ByUnderlyingValueByUnderlyingValueProperty);
+        }
+        
+        private void PackValueOfByUnderlyingValueDefaultProperty(MsgPack.Packer packer, MsgPack.Serialization.EnumMemberObject objectTree) {
+            this._serializer5.PackTo(packer, objectTree.ByUnderlyingValueDefaultProperty);
+        }
+        
+        private void PackValueOfDefaultByNameProperty(MsgPack.Packer packer, MsgPack.Serialization.EnumMemberObject objectTree) {
+            this._serializer6.PackTo(packer, objectTree.DefaultByNameProperty);
+        }
+        
+        private void PackValueOfDefaultByUnderlyingValueProperty(MsgPack.Packer packer, MsgPack.Serialization.EnumMemberObject objectTree) {
+            this._serializer7.PackTo(packer, objectTree.DefaultByUnderlyingValueProperty);
+        }
+        
+        private void PackValueOfDefaultDefaultProperty(MsgPack.Packer packer, MsgPack.Serialization.EnumMemberObject objectTree) {
+            this._serializer8.PackTo(packer, objectTree.DefaultDefaultProperty);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.EnumMemberObject objectTree) {
-            packer.PackMapHeader(9);
-            this._serializer0.PackTo(packer, "ByNameByNameProperty");
-            this._serializer1.PackTo(packer, objectTree.ByNameByNameProperty);
-            this._serializer2.PackTo(packer, "ByNameByUnderlyingValueProperty");
-            this._serializer3.PackTo(packer, objectTree.ByNameByUnderlyingValueProperty);
-            this._serializer4.PackTo(packer, "ByNameDefaultProperty");
-            this._serializer5.PackTo(packer, objectTree.ByNameDefaultProperty);
-            this._serializer0.PackTo(packer, "ByUnderlyingValueByNameProperty");
-            this._serializer6.PackTo(packer, objectTree.ByUnderlyingValueByNameProperty);
-            this._serializer2.PackTo(packer, "ByUnderlyingValueByUnderlyingValueProperty");
-            this._serializer7.PackTo(packer, objectTree.ByUnderlyingValueByUnderlyingValueProperty);
-            this._serializer4.PackTo(packer, "ByUnderlyingValueDefaultProperty");
-            this._serializer8.PackTo(packer, objectTree.ByUnderlyingValueDefaultProperty);
-            this._serializer0.PackTo(packer, "DefaultByNameProperty");
-            this._serializer9.PackTo(packer, objectTree.DefaultByNameProperty);
-            this._serializer2.PackTo(packer, "DefaultByUnderlyingValueProperty");
-            this._serializer10.PackTo(packer, objectTree.DefaultByUnderlyingValueProperty);
-            this._serializer4.PackTo(packer, "DefaultDefaultProperty");
-            this._serializer11.PackTo(packer, objectTree.DefaultDefaultProperty);
+            MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+        }
+        
+        private void UnpackValueOfByNameByNameProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem) {
+            System.Nullable<MsgPack.Serialization.EnumByName> nullable = default(System.Nullable<MsgPack.Serialization.EnumByName>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ByNameByNameProperty", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable = this._serializer9.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
+                disposable = unpacker.ReadSubtree();
+                try {
+                    nullable = this._serializer9.UnpackFrom(disposable);
+                }
+                finally {
+                    if (((disposable == null) 
+                                == false)) {
+                        disposable.Dispose();
+                    }
+                }
+            }
+            if (nullable.HasValue) {
+                unpackingContext.ByNameByNameProperty = nullable.Value;
+            }
+        }
+        
+        private void UnpackValueOfByNameByUnderlyingValueProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem) {
+            System.Nullable<MsgPack.Serialization.EnumByName> nullable0 = default(System.Nullable<MsgPack.Serialization.EnumByName>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ByNameByUnderlyingValueProperty", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable0 = this._serializer10.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
+                disposable0 = unpacker.ReadSubtree();
+                try {
+                    nullable0 = this._serializer10.UnpackFrom(disposable0);
+                }
+                finally {
+                    if (((disposable0 == null) 
+                                == false)) {
+                        disposable0.Dispose();
+                    }
+                }
+            }
+            if (nullable0.HasValue) {
+                unpackingContext.ByNameByUnderlyingValueProperty = nullable0.Value;
+            }
+        }
+        
+        private void UnpackValueOfByNameDefaultProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem) {
+            System.Nullable<MsgPack.Serialization.EnumByName> nullable1 = default(System.Nullable<MsgPack.Serialization.EnumByName>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ByNameDefaultProperty", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable1 = this._serializer11.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable1 = default(MsgPack.Unpacker);
+                disposable1 = unpacker.ReadSubtree();
+                try {
+                    nullable1 = this._serializer11.UnpackFrom(disposable1);
+                }
+                finally {
+                    if (((disposable1 == null) 
+                                == false)) {
+                        disposable1.Dispose();
+                    }
+                }
+            }
+            if (nullable1.HasValue) {
+                unpackingContext.ByNameDefaultProperty = nullable1.Value;
+            }
+        }
+        
+        private void UnpackValueOfByUnderlyingValueByNameProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem) {
+            System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue> nullable2 = default(System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ByUnderlyingValueByNameProperty", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable2 = this._serializer12.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable2 = default(MsgPack.Unpacker);
+                disposable2 = unpacker.ReadSubtree();
+                try {
+                    nullable2 = this._serializer12.UnpackFrom(disposable2);
+                }
+                finally {
+                    if (((disposable2 == null) 
+                                == false)) {
+                        disposable2.Dispose();
+                    }
+                }
+            }
+            if (nullable2.HasValue) {
+                unpackingContext.ByUnderlyingValueByNameProperty = nullable2.Value;
+            }
+        }
+        
+        private void UnpackValueOfByUnderlyingValueByUnderlyingValueProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem) {
+            System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue> nullable3 = default(System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ByUnderlyingValueByUnderlyingValueProperty", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable3 = this._serializer13.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable3 = default(MsgPack.Unpacker);
+                disposable3 = unpacker.ReadSubtree();
+                try {
+                    nullable3 = this._serializer13.UnpackFrom(disposable3);
+                }
+                finally {
+                    if (((disposable3 == null) 
+                                == false)) {
+                        disposable3.Dispose();
+                    }
+                }
+            }
+            if (nullable3.HasValue) {
+                unpackingContext.ByUnderlyingValueByUnderlyingValueProperty = nullable3.Value;
+            }
+        }
+        
+        private void UnpackValueOfByUnderlyingValueDefaultProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem) {
+            System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue> nullable4 = default(System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "ByUnderlyingValueDefaultProperty", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable4 = this._serializer14.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable4 = default(MsgPack.Unpacker);
+                disposable4 = unpacker.ReadSubtree();
+                try {
+                    nullable4 = this._serializer14.UnpackFrom(disposable4);
+                }
+                finally {
+                    if (((disposable4 == null) 
+                                == false)) {
+                        disposable4.Dispose();
+                    }
+                }
+            }
+            if (nullable4.HasValue) {
+                unpackingContext.ByUnderlyingValueDefaultProperty = nullable4.Value;
+            }
+        }
+        
+        private void UnpackValueOfDefaultByNameProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem) {
+            System.Nullable<MsgPack.Serialization.EnumDefault> nullable5 = default(System.Nullable<MsgPack.Serialization.EnumDefault>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "DefaultByNameProperty", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable5 = this._serializer15.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable5 = default(MsgPack.Unpacker);
+                disposable5 = unpacker.ReadSubtree();
+                try {
+                    nullable5 = this._serializer15.UnpackFrom(disposable5);
+                }
+                finally {
+                    if (((disposable5 == null) 
+                                == false)) {
+                        disposable5.Dispose();
+                    }
+                }
+            }
+            if (nullable5.HasValue) {
+                unpackingContext.DefaultByNameProperty = nullable5.Value;
+            }
+        }
+        
+        private void UnpackValueOfDefaultByUnderlyingValueProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem) {
+            System.Nullable<MsgPack.Serialization.EnumDefault> nullable6 = default(System.Nullable<MsgPack.Serialization.EnumDefault>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "DefaultByUnderlyingValueProperty", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable6 = this._serializer16.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable6 = default(MsgPack.Unpacker);
+                disposable6 = unpacker.ReadSubtree();
+                try {
+                    nullable6 = this._serializer16.UnpackFrom(disposable6);
+                }
+                finally {
+                    if (((disposable6 == null) 
+                                == false)) {
+                        disposable6.Dispose();
+                    }
+                }
+            }
+            if (nullable6.HasValue) {
+                unpackingContext.DefaultByUnderlyingValueProperty = nullable6.Value;
+            }
+        }
+        
+        private void UnpackValueOfDefaultDefaultProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem) {
+            System.Nullable<MsgPack.Serialization.EnumDefault> nullable7 = default(System.Nullable<MsgPack.Serialization.EnumDefault>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "DefaultDefaultProperty", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable7 = this._serializer17.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable7 = default(MsgPack.Unpacker);
+                disposable7 = unpacker.ReadSubtree();
+                try {
+                    nullable7 = this._serializer17.UnpackFrom(disposable7);
+                }
+                finally {
+                    if (((disposable7 == null) 
+                                == false)) {
+                        disposable7.Dispose();
+                    }
+                }
+            }
+            if (nullable7.HasValue) {
+                unpackingContext.DefaultDefaultProperty = nullable7.Value;
+            }
         }
         
         protected internal override MsgPack.Serialization.EnumMemberObject UnpackFromCore(MsgPack.Unpacker unpacker) {
             MsgPack.Serialization.EnumMemberObject result = default(MsgPack.Serialization.EnumMemberObject);
             result = new MsgPack.Serialization.EnumMemberObject();
             if (unpacker.IsArrayHeader) {
-                int unpacked = default(int);
-                int itemsCount = default(int);
-                itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                System.Nullable<MsgPack.Serialization.EnumByName> nullable = default(System.Nullable<MsgPack.Serialization.EnumByName>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(0);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable = this._serializer12.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
-                        disposable = unpacker.ReadSubtree();
-                        try {
-                            nullable = this._serializer12.UnpackFrom(disposable);
-                        }
-                        finally {
-                            if (((disposable == null) 
-                                        == false)) {
-                                disposable.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable.HasValue) {
-                    result.ByNameByNameProperty = nullable.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<MsgPack.Serialization.EnumByName> nullable0 = default(System.Nullable<MsgPack.Serialization.EnumByName>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(1);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable0 = this._serializer13.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
-                        disposable0 = unpacker.ReadSubtree();
-                        try {
-                            nullable0 = this._serializer13.UnpackFrom(disposable0);
-                        }
-                        finally {
-                            if (((disposable0 == null) 
-                                        == false)) {
-                                disposable0.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable0.HasValue) {
-                    result.ByNameByUnderlyingValueProperty = nullable0.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<MsgPack.Serialization.EnumByName> nullable1 = default(System.Nullable<MsgPack.Serialization.EnumByName>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(2);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable1 = this._serializer14.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable1 = default(MsgPack.Unpacker);
-                        disposable1 = unpacker.ReadSubtree();
-                        try {
-                            nullable1 = this._serializer14.UnpackFrom(disposable1);
-                        }
-                        finally {
-                            if (((disposable1 == null) 
-                                        == false)) {
-                                disposable1.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable1.HasValue) {
-                    result.ByNameDefaultProperty = nullable1.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue> nullable2 = default(System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(3);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable2 = this._serializer15.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable2 = default(MsgPack.Unpacker);
-                        disposable2 = unpacker.ReadSubtree();
-                        try {
-                            nullable2 = this._serializer15.UnpackFrom(disposable2);
-                        }
-                        finally {
-                            if (((disposable2 == null) 
-                                        == false)) {
-                                disposable2.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable2.HasValue) {
-                    result.ByUnderlyingValueByNameProperty = nullable2.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue> nullable3 = default(System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(4);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable3 = this._serializer16.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable3 = default(MsgPack.Unpacker);
-                        disposable3 = unpacker.ReadSubtree();
-                        try {
-                            nullable3 = this._serializer16.UnpackFrom(disposable3);
-                        }
-                        finally {
-                            if (((disposable3 == null) 
-                                        == false)) {
-                                disposable3.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable3.HasValue) {
-                    result.ByUnderlyingValueByUnderlyingValueProperty = nullable3.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue> nullable4 = default(System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(5);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable4 = this._serializer17.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable4 = default(MsgPack.Unpacker);
-                        disposable4 = unpacker.ReadSubtree();
-                        try {
-                            nullable4 = this._serializer17.UnpackFrom(disposable4);
-                        }
-                        finally {
-                            if (((disposable4 == null) 
-                                        == false)) {
-                                disposable4.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable4.HasValue) {
-                    result.ByUnderlyingValueDefaultProperty = nullable4.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<MsgPack.Serialization.EnumDefault> nullable5 = default(System.Nullable<MsgPack.Serialization.EnumDefault>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(6);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable5 = this._serializer18.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable5 = default(MsgPack.Unpacker);
-                        disposable5 = unpacker.ReadSubtree();
-                        try {
-                            nullable5 = this._serializer18.UnpackFrom(disposable5);
-                        }
-                        finally {
-                            if (((disposable5 == null) 
-                                        == false)) {
-                                disposable5.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable5.HasValue) {
-                    result.DefaultByNameProperty = nullable5.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<MsgPack.Serialization.EnumDefault> nullable6 = default(System.Nullable<MsgPack.Serialization.EnumDefault>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(7);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable6 = this._serializer19.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable6 = default(MsgPack.Unpacker);
-                        disposable6 = unpacker.ReadSubtree();
-                        try {
-                            nullable6 = this._serializer19.UnpackFrom(disposable6);
-                        }
-                        finally {
-                            if (((disposable6 == null) 
-                                        == false)) {
-                                disposable6.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable6.HasValue) {
-                    result.DefaultByUnderlyingValueProperty = nullable6.Value;
-                }
-                unpacked = (unpacked + 1);
-                System.Nullable<MsgPack.Serialization.EnumDefault> nullable7 = default(System.Nullable<MsgPack.Serialization.EnumDefault>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(8);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable7 = this._serializer20.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable7 = default(MsgPack.Unpacker);
-                        disposable7 = unpacker.ReadSubtree();
-                        try {
-                            nullable7 = this._serializer20.UnpackFrom(disposable7);
-                        }
-                        finally {
-                            if (((disposable7 == null) 
-                                        == false)) {
-                                disposable7.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable7.HasValue) {
-                    result.DefaultDefaultProperty = nullable7.Value;
-                }
-                unpacked = (unpacked + 1);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.EnumMemberObject>(), this._memberNames, this._unpackOperationList);
             }
             else {
-                int itemsCount0 = default(int);
-                itemsCount0 = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                for (int i = 0; (i < itemsCount0); i = (i + 1)) {
-                    string key = default(string);
-                    string nullable8 = default(string);
-                    nullable8 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.EnumMemberObject), "MemberName");
-                    if (((nullable8 == null) 
-                                == false)) {
-                        key = nullable8;
-                    }
-                    else {
-                        throw MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited("MemberName");
-                    }
-                    if ((key == "DefaultDefaultProperty")) {
-                        System.Nullable<MsgPack.Serialization.EnumDefault> nullable17 = default(System.Nullable<MsgPack.Serialization.EnumDefault>);
-                        if ((unpacker.Read() == false)) {
-                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                        }
-                        if (((unpacker.IsArrayHeader == false) 
-                                    && (unpacker.IsMapHeader == false))) {
-                            nullable17 = this._serializer20.UnpackFrom(unpacker);
-                        }
-                        else {
-                            MsgPack.Unpacker disposable16 = default(MsgPack.Unpacker);
-                            disposable16 = unpacker.ReadSubtree();
-                            try {
-                                nullable17 = this._serializer20.UnpackFrom(disposable16);
-                            }
-                            finally {
-                                if (((disposable16 == null) 
-                                            == false)) {
-                                    disposable16.Dispose();
-                                }
-                            }
-                        }
-                        if (nullable17.HasValue) {
-                            result.DefaultDefaultProperty = nullable17.Value;
-                        }
-                    }
-                    else {
-                        if ((key == "DefaultByUnderlyingValueProperty")) {
-                            System.Nullable<MsgPack.Serialization.EnumDefault> nullable16 = default(System.Nullable<MsgPack.Serialization.EnumDefault>);
-                            if ((unpacker.Read() == false)) {
-                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                            }
-                            if (((unpacker.IsArrayHeader == false) 
-                                        && (unpacker.IsMapHeader == false))) {
-                                nullable16 = this._serializer19.UnpackFrom(unpacker);
-                            }
-                            else {
-                                MsgPack.Unpacker disposable15 = default(MsgPack.Unpacker);
-                                disposable15 = unpacker.ReadSubtree();
-                                try {
-                                    nullable16 = this._serializer19.UnpackFrom(disposable15);
-                                }
-                                finally {
-                                    if (((disposable15 == null) 
-                                                == false)) {
-                                        disposable15.Dispose();
-                                    }
-                                }
-                            }
-                            if (nullable16.HasValue) {
-                                result.DefaultByUnderlyingValueProperty = nullable16.Value;
-                            }
-                        }
-                        else {
-                            if ((key == "DefaultByNameProperty")) {
-                                System.Nullable<MsgPack.Serialization.EnumDefault> nullable15 = default(System.Nullable<MsgPack.Serialization.EnumDefault>);
-                                if ((unpacker.Read() == false)) {
-                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                }
-                                if (((unpacker.IsArrayHeader == false) 
-                                            && (unpacker.IsMapHeader == false))) {
-                                    nullable15 = this._serializer18.UnpackFrom(unpacker);
-                                }
-                                else {
-                                    MsgPack.Unpacker disposable14 = default(MsgPack.Unpacker);
-                                    disposable14 = unpacker.ReadSubtree();
-                                    try {
-                                        nullable15 = this._serializer18.UnpackFrom(disposable14);
-                                    }
-                                    finally {
-                                        if (((disposable14 == null) 
-                                                    == false)) {
-                                            disposable14.Dispose();
-                                        }
-                                    }
-                                }
-                                if (nullable15.HasValue) {
-                                    result.DefaultByNameProperty = nullable15.Value;
-                                }
-                            }
-                            else {
-                                if ((key == "ByUnderlyingValueDefaultProperty")) {
-                                    System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue> nullable14 = default(System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>);
-                                    if ((unpacker.Read() == false)) {
-                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                    }
-                                    if (((unpacker.IsArrayHeader == false) 
-                                                && (unpacker.IsMapHeader == false))) {
-                                        nullable14 = this._serializer17.UnpackFrom(unpacker);
-                                    }
-                                    else {
-                                        MsgPack.Unpacker disposable13 = default(MsgPack.Unpacker);
-                                        disposable13 = unpacker.ReadSubtree();
-                                        try {
-                                            nullable14 = this._serializer17.UnpackFrom(disposable13);
-                                        }
-                                        finally {
-                                            if (((disposable13 == null) 
-                                                        == false)) {
-                                                disposable13.Dispose();
-                                            }
-                                        }
-                                    }
-                                    if (nullable14.HasValue) {
-                                        result.ByUnderlyingValueDefaultProperty = nullable14.Value;
-                                    }
-                                }
-                                else {
-                                    if ((key == "ByUnderlyingValueByUnderlyingValueProperty")) {
-                                        System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue> nullable13 = default(System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>);
-                                        if ((unpacker.Read() == false)) {
-                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                        }
-                                        if (((unpacker.IsArrayHeader == false) 
-                                                    && (unpacker.IsMapHeader == false))) {
-                                            nullable13 = this._serializer16.UnpackFrom(unpacker);
-                                        }
-                                        else {
-                                            MsgPack.Unpacker disposable12 = default(MsgPack.Unpacker);
-                                            disposable12 = unpacker.ReadSubtree();
-                                            try {
-                                                nullable13 = this._serializer16.UnpackFrom(disposable12);
-                                            }
-                                            finally {
-                                                if (((disposable12 == null) 
-                                                            == false)) {
-                                                    disposable12.Dispose();
-                                                }
-                                            }
-                                        }
-                                        if (nullable13.HasValue) {
-                                            result.ByUnderlyingValueByUnderlyingValueProperty = nullable13.Value;
-                                        }
-                                    }
-                                    else {
-                                        if ((key == "ByUnderlyingValueByNameProperty")) {
-                                            System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue> nullable12 = default(System.Nullable<MsgPack.Serialization.EnumByUnderlyingValue>);
-                                            if ((unpacker.Read() == false)) {
-                                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                            }
-                                            if (((unpacker.IsArrayHeader == false) 
-                                                        && (unpacker.IsMapHeader == false))) {
-                                                nullable12 = this._serializer15.UnpackFrom(unpacker);
-                                            }
-                                            else {
-                                                MsgPack.Unpacker disposable11 = default(MsgPack.Unpacker);
-                                                disposable11 = unpacker.ReadSubtree();
-                                                try {
-                                                    nullable12 = this._serializer15.UnpackFrom(disposable11);
-                                                }
-                                                finally {
-                                                    if (((disposable11 == null) 
-                                                                == false)) {
-                                                        disposable11.Dispose();
-                                                    }
-                                                }
-                                            }
-                                            if (nullable12.HasValue) {
-                                                result.ByUnderlyingValueByNameProperty = nullable12.Value;
-                                            }
-                                        }
-                                        else {
-                                            if ((key == "ByNameDefaultProperty")) {
-                                                System.Nullable<MsgPack.Serialization.EnumByName> nullable11 = default(System.Nullable<MsgPack.Serialization.EnumByName>);
-                                                if ((unpacker.Read() == false)) {
-                                                    throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                }
-                                                if (((unpacker.IsArrayHeader == false) 
-                                                            && (unpacker.IsMapHeader == false))) {
-                                                    nullable11 = this._serializer14.UnpackFrom(unpacker);
-                                                }
-                                                else {
-                                                    MsgPack.Unpacker disposable10 = default(MsgPack.Unpacker);
-                                                    disposable10 = unpacker.ReadSubtree();
-                                                    try {
-                                                        nullable11 = this._serializer14.UnpackFrom(disposable10);
-                                                    }
-                                                    finally {
-                                                        if (((disposable10 == null) 
-                                                                    == false)) {
-                                                            disposable10.Dispose();
-                                                        }
-                                                    }
-                                                }
-                                                if (nullable11.HasValue) {
-                                                    result.ByNameDefaultProperty = nullable11.Value;
-                                                }
-                                            }
-                                            else {
-                                                if ((key == "ByNameByUnderlyingValueProperty")) {
-                                                    System.Nullable<MsgPack.Serialization.EnumByName> nullable10 = default(System.Nullable<MsgPack.Serialization.EnumByName>);
-                                                    if ((unpacker.Read() == false)) {
-                                                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                    }
-                                                    if (((unpacker.IsArrayHeader == false) 
-                                                                && (unpacker.IsMapHeader == false))) {
-                                                        nullable10 = this._serializer13.UnpackFrom(unpacker);
-                                                    }
-                                                    else {
-                                                        MsgPack.Unpacker disposable9 = default(MsgPack.Unpacker);
-                                                        disposable9 = unpacker.ReadSubtree();
-                                                        try {
-                                                            nullable10 = this._serializer13.UnpackFrom(disposable9);
-                                                        }
-                                                        finally {
-                                                            if (((disposable9 == null) 
-                                                                        == false)) {
-                                                                disposable9.Dispose();
-                                                            }
-                                                        }
-                                                    }
-                                                    if (nullable10.HasValue) {
-                                                        result.ByNameByUnderlyingValueProperty = nullable10.Value;
-                                                    }
-                                                }
-                                                else {
-                                                    if ((key == "ByNameByNameProperty")) {
-                                                        System.Nullable<MsgPack.Serialization.EnumByName> nullable9 = default(System.Nullable<MsgPack.Serialization.EnumByName>);
-                                                        if ((unpacker.Read() == false)) {
-                                                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                                                        }
-                                                        if (((unpacker.IsArrayHeader == false) 
-                                                                    && (unpacker.IsMapHeader == false))) {
-                                                            nullable9 = this._serializer12.UnpackFrom(unpacker);
-                                                        }
-                                                        else {
-                                                            MsgPack.Unpacker disposable8 = default(MsgPack.Unpacker);
-                                                            disposable8 = unpacker.ReadSubtree();
-                                                            try {
-                                                                nullable9 = this._serializer12.UnpackFrom(disposable8);
-                                                            }
-                                                            finally {
-                                                                if (((disposable8 == null) 
-                                                                            == false)) {
-                                                                    disposable8.Dispose();
-                                                                }
-                                                            }
-                                                        }
-                                                        if (nullable9.HasValue) {
-                                                            result.ByNameByNameProperty = nullable9.Value;
-                                                        }
-                                                    }
-                                                    else {
-                                                        unpacker.Skip();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.EnumMemberObject>(), this._unpackOperationTable);
             }
-            return result;
         }
     }
 }

@@ -19,6 +19,14 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.Inner> _serializer1;
         
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.Outer>> _packOperationTable;
+        
+        private System.Collections.Generic.IList<string> _memberNames;
+        
+        private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int>> _unpackOperationList;
+        
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int>> _unpackOperationTable;
+        
         public MsgPack_Serialization_OuterSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
@@ -27,139 +35,101 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
             schema1 = null;
             this._serializer1 = context.GetSerializer<MsgPack.Serialization.Inner>(schema1);
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.Outer>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.Outer>>);
+            packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.Outer>>(3);
+            packOperationTable["A"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.Outer>(this.PackValueOfA);
+            packOperationTable["Inner"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.Outer>(this.PackValueOfInner);
+            packOperationTable["O"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.Outer>(this.PackValueOfO);
+            this._packOperationTable = packOperationTable;
+            System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int>[]);
+            unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int>[3];
+            unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int>(this.UnpackValueOfA);
+            unpackOperationList[1] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int>(this.UnpackValueOfInner);
+            unpackOperationList[2] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int>(this.UnpackValueOfO);
+            this._unpackOperationList = unpackOperationList;
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int>>);
+            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int>>(3);
+            unpackOperationTable["A"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int>(this.UnpackValueOfA);
+            unpackOperationTable["Inner"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int>(this.UnpackValueOfInner);
+            unpackOperationTable["O"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int>(this.UnpackValueOfO);
+            this._unpackOperationTable = unpackOperationTable;
+            this._memberNames = new string[] {
+                    "A",
+                    "Inner",
+                    "O"};
+        }
+        
+        private void PackValueOfA(MsgPack.Packer packer, MsgPack.Serialization.Outer objectTree) {
+            this._serializer0.PackTo(packer, objectTree.A);
+        }
+        
+        private void PackValueOfInner(MsgPack.Packer packer, MsgPack.Serialization.Outer objectTree) {
+            this._serializer1.PackTo(packer, objectTree.Inner);
+        }
+        
+        private void PackValueOfO(MsgPack.Packer packer, MsgPack.Serialization.Outer objectTree) {
+            this._serializer0.PackTo(packer, objectTree.O);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.Outer objectTree) {
-            packer.PackMapHeader(3);
-            this._serializer0.PackTo(packer, "A");
-            this._serializer0.PackTo(packer, objectTree.A);
-            this._serializer0.PackTo(packer, "Inner");
-            this._serializer1.PackTo(packer, objectTree.Inner);
-            this._serializer0.PackTo(packer, "O");
-            this._serializer0.PackTo(packer, objectTree.O);
+            MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+        }
+        
+        private void UnpackValueOfA(MsgPack.Unpacker unpacker, MsgPack.Serialization.Outer unpackingContext, int indexOfItem) {
+            string nullable = default(string);
+            nullable = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.Outer), "A");
+            if (((nullable == null) 
+                        == false)) {
+                unpackingContext.A = nullable;
+            }
+        }
+        
+        private void UnpackValueOfInner(MsgPack.Unpacker unpacker, MsgPack.Serialization.Outer unpackingContext, int indexOfItem) {
+            MsgPack.Serialization.Inner nullable0 = default(MsgPack.Serialization.Inner);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "Inner", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable0 = this._serializer1.UnpackFrom(unpacker);
+            }
+            else {
+                MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
+                disposable = unpacker.ReadSubtree();
+                try {
+                    nullable0 = this._serializer1.UnpackFrom(disposable);
+                }
+                finally {
+                    if (((disposable == null) 
+                                == false)) {
+                        disposable.Dispose();
+                    }
+                }
+            }
+            if (((nullable0 == null) 
+                        == false)) {
+                unpackingContext.Inner = nullable0;
+            }
+        }
+        
+        private void UnpackValueOfO(MsgPack.Unpacker unpacker, MsgPack.Serialization.Outer unpackingContext, int indexOfItem) {
+            string nullable1 = default(string);
+            nullable1 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.Outer), "O");
+            if (((nullable1 == null) 
+                        == false)) {
+                unpackingContext.O = nullable1;
+            }
         }
         
         protected internal override MsgPack.Serialization.Outer UnpackFromCore(MsgPack.Unpacker unpacker) {
             MsgPack.Serialization.Outer result = default(MsgPack.Serialization.Outer);
             result = new MsgPack.Serialization.Outer();
             if (unpacker.IsArrayHeader) {
-                int unpacked = default(int);
-                int itemsCount = default(int);
-                itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                string nullable = default(string);
-                if ((unpacked < itemsCount)) {
-                    nullable = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.Outer), "System.String A");
-                }
-                if (((nullable == null) 
-                            == false)) {
-                    result.A = nullable;
-                }
-                unpacked = (unpacked + 1);
-                MsgPack.Serialization.Inner nullable0 = default(MsgPack.Serialization.Inner);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(1);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable0 = this._serializer1.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
-                        disposable = unpacker.ReadSubtree();
-                        try {
-                            nullable0 = this._serializer1.UnpackFrom(disposable);
-                        }
-                        finally {
-                            if (((disposable == null) 
-                                        == false)) {
-                                disposable.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (((nullable0 == null) 
-                            == false)) {
-                    result.Inner = nullable0;
-                }
-                unpacked = (unpacked + 1);
-                string nullable1 = default(string);
-                if ((unpacked < itemsCount)) {
-                    nullable1 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.Outer), "System.String O");
-                }
-                if (((nullable1 == null) 
-                            == false)) {
-                    result.O = nullable1;
-                }
-                unpacked = (unpacked + 1);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.Outer>(), this._memberNames, this._unpackOperationList);
             }
             else {
-                int itemsCount0 = default(int);
-                itemsCount0 = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                for (int i = 0; (i < itemsCount0); i = (i + 1)) {
-                    string key = default(string);
-                    string nullable2 = default(string);
-                    nullable2 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.Outer), "MemberName");
-                    if (((nullable2 == null) 
-                                == false)) {
-                        key = nullable2;
-                    }
-                    else {
-                        throw MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited("MemberName");
-                    }
-                    if ((key == "O")) {
-                        string nullable5 = default(string);
-                        nullable5 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.Outer), "System.String O");
-                        if (((nullable5 == null) 
-                                    == false)) {
-                            result.O = nullable5;
-                        }
-                    }
-                    else {
-                        if ((key == "Inner")) {
-                            MsgPack.Serialization.Inner nullable4 = default(MsgPack.Serialization.Inner);
-                            if ((unpacker.Read() == false)) {
-                                throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                            }
-                            if (((unpacker.IsArrayHeader == false) 
-                                        && (unpacker.IsMapHeader == false))) {
-                                nullable4 = this._serializer1.UnpackFrom(unpacker);
-                            }
-                            else {
-                                MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
-                                disposable0 = unpacker.ReadSubtree();
-                                try {
-                                    nullable4 = this._serializer1.UnpackFrom(disposable0);
-                                }
-                                finally {
-                                    if (((disposable0 == null) 
-                                                == false)) {
-                                        disposable0.Dispose();
-                                    }
-                                }
-                            }
-                            if (((nullable4 == null) 
-                                        == false)) {
-                                result.Inner = nullable4;
-                            }
-                        }
-                        else {
-                            if ((key == "A")) {
-                                string nullable3 = default(string);
-                                nullable3 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.Outer), "System.String A");
-                                if (((nullable3 == null) 
-                                            == false)) {
-                                    result.A = nullable3;
-                                }
-                            }
-                            else {
-                                unpacker.Skip();
-                            }
-                        }
-                    }
-                }
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.Outer>(), this._unpackOperationTable);
             }
-            return result;
         }
     }
 }

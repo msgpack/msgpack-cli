@@ -17,105 +17,97 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         
         private MsgPack.Serialization.MessagePackSerializer<System.DateTime> _serializer0;
         
+        private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor>> _packOperationList;
+        
         private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTime>> _serializer1;
+        
+        private System.Collections.Generic.IList<string> _memberNames;
+        
+        private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, UnpackingContext, int>> _unpackOperationList;
+        
+        private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, UnpackingContext, int>> _unpackOperationTable;
         
         public MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructorSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             this._serializer0 = context.GetSerializer<System.DateTime>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
             this._serializer1 = context.GetSerializer<System.Nullable<System.DateTime>>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
+            System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor>[]);
+            packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor>[1];
+            packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor>(this.PackValueOfValue);
+            this._packOperationList = packOperationList;
+            System.Action<MsgPack.Unpacker, UnpackingContext, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, UnpackingContext, int>[]);
+            unpackOperationList = new System.Action<MsgPack.Unpacker, UnpackingContext, int>[1];
+            unpackOperationList[0] = new System.Action<MsgPack.Unpacker, UnpackingContext, int>(this.UnpackValueOfValue);
+            this._unpackOperationList = unpackOperationList;
+            System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, UnpackingContext, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, UnpackingContext, int>>);
+            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, UnpackingContext, int>>(1);
+            unpackOperationTable["Value"] = new System.Action<MsgPack.Unpacker, UnpackingContext, int>(this.UnpackValueOfValue);
+            this._unpackOperationTable = unpackOperationTable;
+            this._memberNames = new string[] {
+                    "Value"};
         }
         
-        protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor objectTree) {
-            packer.PackArrayHeader(1);
+        private void PackValueOfValue(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor objectTree) {
             this._serializer0.PackTo(packer, objectTree.Value);
         }
         
-        protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor UnpackFromCore(MsgPack.Unpacker unpacker) {
+        protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor objectTree) {
+            MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
+        }
+        
+        private MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor CreateInstanceFromContext(UnpackingContext unpackingContext) {
             MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor result = default(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor);
-            if (unpacker.IsArrayHeader) {
-                int unpacked = default(int);
-                int itemsCount = default(int);
-                itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                System.DateTime ctorArg0 = default(System.DateTime);
-                ctorArg0 = default(System.DateTime);
-                System.Nullable<System.DateTime> nullable = default(System.Nullable<System.DateTime>);
-                if ((unpacked < itemsCount)) {
-                    if ((unpacker.Read() == false)) {
-                        throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(0);
-                    }
-                    if (((unpacker.IsArrayHeader == false) 
-                                && (unpacker.IsMapHeader == false))) {
-                        nullable = this._serializer1.UnpackFrom(unpacker);
-                    }
-                    else {
-                        MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
-                        disposable = unpacker.ReadSubtree();
-                        try {
-                            nullable = this._serializer1.UnpackFrom(disposable);
-                        }
-                        finally {
-                            if (((disposable == null) 
-                                        == false)) {
-                                disposable.Dispose();
-                            }
-                        }
-                    }
-                }
-                if (nullable.HasValue) {
-                    ctorArg0 = nullable.Value;
-                }
-                unpacked = (unpacked + 1);
-                result = new MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor(ctorArg0);
+            result = new MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor(unpackingContext.Value);
+            return result;
+        }
+        
+        private void UnpackValueOfValue(MsgPack.Unpacker unpacker, UnpackingContext unpackingContext, int indexOfItem) {
+            System.Nullable<System.DateTime> nullable = default(System.Nullable<System.DateTime>);
+            if ((unpacker.Read() == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowMissingItem(indexOfItem, "Value", unpacker);
+            }
+            if (((unpacker.IsArrayHeader == false) 
+                        && (unpacker.IsMapHeader == false))) {
+                nullable = this._serializer1.UnpackFrom(unpacker);
             }
             else {
-                int itemsCount0 = default(int);
-                itemsCount0 = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-                System.DateTime ctorArg00 = default(System.DateTime);
-                ctorArg00 = default(System.DateTime);
-                for (int i = 0; (i < itemsCount0); i = (i + 1)) {
-                    string key = default(string);
-                    string nullable0 = default(string);
-                    nullable0 = MsgPack.Serialization.UnpackHelpers.UnpackStringValue(unpacker, typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor), "MemberName");
-                    if (((nullable0 == null) 
+                MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
+                disposable = unpacker.ReadSubtree();
+                try {
+                    nullable = this._serializer1.UnpackFrom(disposable);
+                }
+                finally {
+                    if (((disposable == null) 
                                 == false)) {
-                        key = nullable0;
-                    }
-                    else {
-                        throw MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited("MemberName");
-                    }
-                    if ((key == "Value")) {
-                        System.Nullable<System.DateTime> nullable1 = default(System.Nullable<System.DateTime>);
-                        if ((unpacker.Read() == false)) {
-                            throw MsgPack.Serialization.SerializationExceptions.NewMissingItem(i);
-                        }
-                        if (((unpacker.IsArrayHeader == false) 
-                                    && (unpacker.IsMapHeader == false))) {
-                            nullable1 = this._serializer1.UnpackFrom(unpacker);
-                        }
-                        else {
-                            MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
-                            disposable0 = unpacker.ReadSubtree();
-                            try {
-                                nullable1 = this._serializer1.UnpackFrom(disposable0);
-                            }
-                            finally {
-                                if (((disposable0 == null) 
-                                            == false)) {
-                                    disposable0.Dispose();
-                                }
-                            }
-                        }
-                        if (nullable1.HasValue) {
-                            ctorArg00 = nullable1.Value;
-                        }
-                    }
-                    else {
-                        unpacker.Skip();
+                        disposable.Dispose();
                     }
                 }
-                result = new MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor(ctorArg00);
             }
-            return result;
+            if (nullable.HasValue) {
+                unpackingContext.Value = nullable.Value;
+            }
+        }
+        
+        protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor UnpackFromCore(MsgPack.Unpacker unpacker) {
+            UnpackingContext unpackingContext = default(UnpackingContext);
+            System.DateTime ctorArg0 = default(System.DateTime);
+            ctorArg0 = default(System.DateTime);
+            unpackingContext = new UnpackingContext(ctorArg0);
+            if (unpacker.IsArrayHeader) {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, unpackingContext, new System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor>(this.CreateInstanceFromContext), this._memberNames, this._unpackOperationList);
+            }
+            else {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, unpackingContext, new System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor>(this.CreateInstanceFromContext), this._unpackOperationTable);
+            }
+        }
+        
+        public class UnpackingContext {
+            
+            public System.DateTime Value;
+            
+            public UnpackingContext(System.DateTime Value) {
+                this.Value = Value;
+            }
         }
     }
 }
