@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 //
 #endregion -- License Terms --
 
+// ReSharper disable InconsistentNaming
 using System;
 using System.Reflection;
 
@@ -25,6 +26,12 @@ namespace MsgPack.Serialization.Metadata
 {
 	internal static class _Type
 	{
-		public static readonly MethodInfo GetTypeFromHandle = FromExpression.ToMethod( ( RuntimeTypeHandle handle ) => Type.GetTypeFromHandle( handle ) );
+		public static readonly MethodInfo GetTypeFromHandle = 
+			FromExpression.ToMethod( ( RuntimeTypeHandle handle ) => Type.GetTypeFromHandle( handle ) );
+
+		public static readonly MethodInfo GetMethod_String =
+			FromExpression.ToMethod(
+				( Type @this, string name ) => @this.GetMethod( name ) 
+			);
 	}
 }

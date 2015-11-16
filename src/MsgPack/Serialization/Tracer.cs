@@ -26,9 +26,11 @@ namespace MsgPack.Serialization
 	internal static class Tracer
 	{
 		public static readonly TraceSource Emit = new TraceSource( "MsgPack.Serialization.Emit" );
+		public static readonly TraceSource Tracing = new TraceSource( "MsgPack.Serialization.Tracing" );
 
 		public static class EventId
 		{
+			public const int Trace = 0;
 			public const int ILTrace = 101;
 			public const int DefineType = 102;
 			public const int NoAccessorFound = 901;
@@ -39,6 +41,7 @@ namespace MsgPack.Serialization
 
 		public static class EventType
 		{
+			public const TraceEventType Trace = TraceEventType.Verbose;
 			public const TraceEventType ILTrace = TraceEventType.Verbose;
 			public const TraceEventType DefineType = TraceEventType.Verbose;
 			public const TraceEventType NoAccessorFound = TraceEventType.Verbose;

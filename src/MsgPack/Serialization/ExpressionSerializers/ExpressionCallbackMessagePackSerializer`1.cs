@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
@@ -32,6 +34,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		private readonly Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T> _packToCore;
 		private readonly Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> _unpackFromCore;
 		private readonly Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> _unpackToCore;
+		public Func<object, T> CreateInstanceFromContext { get; private set; }
+		public IList<Action<Packer, T>> PackOperationList { get; private set; }
+		public IDictionary<string, Action<Packer, T>> PackOperationTable { get; private set; }
+		public IList<Action<Unpacker, object, int>> UnpackOperationList { get; private set; }
+		public IDictionary<string, Action<Unpacker, object, int>> UnpackOperationTable { get; private set; }
+		public IList<string> MemberNames { get; private set; }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="ExpressionCallbackMessagePackSerializer{T}"/> class.
@@ -40,22 +48,66 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <param name="packToCore">The delegate to <c>PackToCore</c> method body. This value must not be <c>null</c>.</param>
 		/// <param name="unpackFromCore">The delegate to <c>UnpackFromCore</c> method body. This value must not be <c>null</c>.</param>
 		/// <param name="unpackToCore">The delegate to <c>UnpackToCore</c> method body. This value can be <c>null</c>.</param>
+		/// <param name="packOperationList">The list of <see cref="PackToCore"/> actions for array.</param>
+		/// <param name="packOperationTable">The dictionary of <see cref="PackToCore"/> actions for map.</param>
+		/// <param name="unpackOperationList">The list of <see cref="UnpackFromCore"/> actions for array.</param>
+		/// <param name="unpackOperationTable">The dictionary of <see cref="UnpackFromCore"/> actions for map.</param>
+		/// <param name="createInstanceFromContext">The delegate to <c>CreateInstanceFromContext</c> method body.</param>
+		/// <param name="memberNames">The list of member names.</param>
 		public ExpressionCallbackMessagePackSerializer(
 			SerializationContext ownerContext,
 			Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T> packToCore,
 			Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackFromCore,
-			Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackToCore
+			Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackToCore,
+			IList<Action<SerializationContext, Packer, T>> packOperationList,
+			IDictionary<string, Action<SerializationContext, Packer, T>> packOperationTable,
+			IList<Action<SerializationContext, Unpacker, object, int>> unpackOperationList,
+			IDictionary<string, Action<SerializationContext, Unpacker, object, int>> unpackOperationTable,
+			Func<SerializationContext, object, T> createInstanceFromContext,
+			IList<string> memberNames
 		)
 			: base( ownerContext )
 		{
 #if DEBUG
 			Contract.Assert( packToCore != null );
 			Contract.Assert( unpackFromCore != null );
+			Contract.Assert( packOperationList != null );
+			Contract.Assert( unpackOperationList != null );
+			Contract.Assert( unpackOperationTable != null );
+			Contract.Assert( memberNames != null );
 #endif // DEBUG
 
 			this._packToCore = packToCore;
 			this._unpackFromCore = unpackFromCore;
 			this._unpackToCore = unpackToCore;
+			this.PackOperationList =
+				packOperationList.Select(
+					a => new Action<Packer, T>( ( packer, objectTree ) => a( this.OwnerContext, packer, objectTree ) )
+				).ToArray();
+			this.PackOperationTable =
+				packOperationTable.ToDictionary(
+					kv => kv.Key,
+					kv => new Action<Packer, T>( ( packer, objectTree ) => kv.Value( this.OwnerContext, packer, objectTree ) )
+				);
+			this.UnpackOperationList =
+				unpackOperationList.Select(
+					a =>
+						new Action<Unpacker, object, int>(
+							( unpacker, unpackingContext, itemIndex ) => a( this.OwnerContext, unpacker, unpackingContext, itemIndex )
+						)
+				).ToArray();
+			this.UnpackOperationTable =
+				unpackOperationTable.ToDictionary(
+					kv => kv.Key,
+					kv =>
+						new Action<Unpacker, object, int>(
+							( unpacker, unpackingContext, itemIndex ) => kv.Value( this.OwnerContext, unpacker, unpackingContext, itemIndex )
+						)
+				);
+			this.CreateInstanceFromContext =
+				unpackingContext =>
+					createInstanceFromContext( this.OwnerContext, unpackingContext );
+			this.MemberNames = memberNames;
 		}
 
 		protected internal override void PackToCore( Packer packer, T objectTree )

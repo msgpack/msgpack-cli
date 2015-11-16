@@ -34,6 +34,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 	internal class AssemblyBuilderCodeGenerationContext : ISerializerCodeGenerationContext
 	{
 		private readonly SerializationContext _context;
+
+		public SerializationContext SerializationContext
+		{
+			get { return this._context; }
+		}
+
 		private readonly SerializationMethodGeneratorManager _generatorManager;
 		private readonly AssemblyBuilder _assemblyBuilder;
 		private readonly string _directory;
@@ -81,8 +87,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 				new AssemblyBuilderEmittingContext(
 					this._context,
 					targetType,
-					() => this._generatorManager.CreateEmitter( spec, serializerBaseClass, EmitterFlavor.FieldBased ),
-					() => this._generatorManager.CreateEnumEmitter( this._context, spec, EmitterFlavor.FieldBased ) 
+					targetType.GetIsEnum()
+						? new Func<SerializerEmitter>( () => this._generatorManager.CreateEnumEmitter( this._context, spec ) )
+						: () => this._generatorManager.CreateObjectEmitter( spec, serializerBaseClass )
 				);
 		}
 

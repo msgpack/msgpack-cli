@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -34,12 +34,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public ConditionalILConstruct( ILConstruct condition, ILConstruct thenExpression, ILConstruct elseExpression )
 			: base( thenExpression.ContextType )
 		{
-			if ( condition.ContextType != typeof( bool ) )
+			if ( condition.ContextType.ResolveRuntimeType() != typeof( bool ) )
 			{
 				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "condition must be boolean: {0}", condition ), "condition" );
 			}
 
-			if ( elseExpression != null && elseExpression.ContextType != thenExpression.ContextType )
+			if ( elseExpression != null && elseExpression.ContextType.ResolveRuntimeType() != thenExpression.ContextType.ResolveRuntimeType() )
 			{
 				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "elseExpression type must be '{0}' but '{1}':{2}", thenExpression.ContextType, elseExpression.ContextType, elseExpression ), "elseExpression" );
 			}

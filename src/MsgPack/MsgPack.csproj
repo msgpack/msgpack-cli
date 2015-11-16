@@ -176,11 +176,20 @@
       <DependentUpon>Packer.Nullable.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\AbstractSerializers\CollectionSerializerMethod.cs" />
+    <Compile Include="Serialization\AbstractSerializers\ActionType.cs" />
+    <Compile Include="Serialization\AbstractSerializers\FieldDefinition.cs" />
+    <Compile Include="Serialization\AbstractSerializers\DynamicUnpackingContext.cs" />
+    <Compile Include="Serialization\AbstractSerializers\FieldName.cs" />
     <Compile Include="Serialization\AbstractSerializers\ICodeConstruct.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerBuilder.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
+    <Compile Include="Serialization\AbstractSerializers\ConstructorDefinition.cs" />
+    <Compile Include="Serialization\AbstractSerializers\MethodName.cs" />
+    <Compile Include="Serialization\AbstractSerializers\MethodNamePrefix.cs" />
+    <Compile Include="Serialization\AbstractSerializers\TypeDefinition.cs" />
+    <Compile Include="Serialization\AbstractSerializers\MethodDefinition.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilderHelper.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Collection.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Nullable.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerSpecification.cs" />
@@ -229,6 +238,8 @@
     <Compile Include="Serialization\DefaultSerializers\System_Globalization_CultureInfoMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\UnixEpocDateTimeMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
+    <Compile Include="Serialization\EmittingSerializers\ILMethodConctext.cs" />
+    <Compile Include="Serialization\EmittingSerializers\SerializerEmitter.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackCollectionMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackDictionaryMessagePackSerializer`3.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackEnumerableMessagePackSerializer`2.cs" />
@@ -253,6 +264,11 @@
       <DependentUpon>MessagePackKnownTypeAttributes.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\Metadata\_DateTimeMessagePackSerializerHelpers.cs" />
+    <Compile Include="Serialization\Metadata\_Delegate.cs" />
+    <Compile Include="Serialization\Metadata\_DynamicUnpackingContext.cs" />
+    <Compile Include="Serialization\Metadata\_Object.cs" />
+    <Compile Include="Serialization\Metadata\_MethodInfo.cs" />
+    <Compile Include="Serialization\PackHelpers.cs" />
     <Compile Include="Serialization\Polymorphic\IPolymorphicHelperAttributes.cs" />
     <Compile Include="Serialization\Polymorphic\IPolymorphicDeserializer.cs" />
     <Compile Include="Serialization\Polymorphic\KnownTypePolymorphicMessagePackSerializer`1.cs" />
@@ -287,7 +303,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\AbstractSerializers\SerializerFieldKey.cs" />
-    <Compile Include="Serialization\AbstractSerializers\SerializerMethod.cs" />
     <Compile Include="Serialization\CodeDomSerializers\CodeDomConstruct.cs" />
     <Compile Include="Serialization\CodeDomSerializers\CodeDomContext.cs" />
     <Compile Include="Serialization\CodeDomSerializers\CodeDomSerializerBuilder`1.cs" />
@@ -314,7 +329,7 @@
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_Dictionary_2MessagePackSerializer`2.cs" />
     <Compile Include="Serialization\AbstractSerializers\EnumSerializerMethod.cs" />
-    <Compile Include="Serialization\EmittingSerializers\EnumSerializerEmitter.cs" />
+    <Compile Include="Serialization\EmittingSerializers\SerializerEmitter.enum.cs" />
     <Compile Include="Serialization\EnumMemberSerializationMethod.cs" />
     <Compile Include="Serialization\EnumMessagePackSerializerHelpers.cs" />
     <Compile Include="Serialization\EnumMessagePackSerializerProvider.cs" />
@@ -342,7 +357,6 @@
     <Compile Include="Serialization\EmittingSerializers\ILConstruct.cs" />
     <Compile Include="Serialization\EmittingSerializers\AssemblyBuilderSerializerBuilder`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\ArraySerializer`1.cs" />
-    <Compile Include="Serialization\AbstractSerializers\SerializerBuilderContract`3.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.CommonConstructs.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.cs" />
     <Compile Include="Serialization\DefaultConcreteTypeRepository.cs" />
@@ -434,7 +448,7 @@
     <Compile Include="Serialization\SerializationMethod.cs" />
     <Compile Include="Serialization\EmittingSerializers\SerializationMethodGeneratorManager.cs" />
     <Compile Include="Serialization\SerializationMethodGeneratorOption.cs" />
-    <Compile Include="Serialization\EmittingSerializers\SerializerEmitter.cs" />
+    <Compile Include="Serialization\EmittingSerializers\SerializerEmitter.object.cs" />
     <Compile Include="Serialization\SerializerGenerator.cs" />
     <Compile Include="Serialization\SerializerRepository.defaults.cs">
       <AutoGen>True</AutoGen>

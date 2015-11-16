@@ -166,7 +166,9 @@ namespace MsgPack.Serialization
 				return;
 			}
 
+			_ilTraceWriter.WriteLine();
 			Tracer.Emit.TraceData( Tracer.EventType.DefineType, Tracer.EventId.DefineType, _ilTraceWriter.ToString() );
+			_ilTraceWriter.GetStringBuilder().Length = 0;
 #endif // !NETFX_CORE && !WINDOWS_PHONE
 		}
 

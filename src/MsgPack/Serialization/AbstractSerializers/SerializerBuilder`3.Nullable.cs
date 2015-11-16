@@ -38,24 +38,18 @@ namespace MsgPack.Serialization.AbstractSerializers
 			 * 	this._valueSerializer.PackToCore( packer, objectTree.Value );
 			 */
 
-			this.EmitMethodPrologue( context, SerializerMethod.PackToCore );
-			TConstruct construct = null;
-			try
-			{
-				construct =
-					this.EmitSerializeItemExpressionCore(
-						context,
-						context.Packer,
-						underlyingType,
-						this.EmitGetProperty( context, context.PackToTarget, typeof( TObject ).GetProperty( "Value" ), false ),
-						null,
-						null
-					);
-			}
-			finally
-			{
-				this.EmitMethodEpilogue( context, SerializerMethod.PackToCore, construct );
-			}
+			context.BeginMethodOverride( MethodName.PackToCore );
+			context.EndMethodOverride( 
+				MethodName.PackToCore,
+				this.EmitSerializeItemExpressionCore(
+					context,
+					context.Packer,
+					underlyingType,
+					this.EmitGetProperty( context, context.PackToTarget, typeof( TObject ).GetProperty( "Value" ), false ),
+					null,
+					null
+				)
+			);
 		}
 
 		private void BuildNullableUnpackFrom( TContext context, Type underlyingType )
@@ -65,32 +59,26 @@ namespace MsgPack.Serialization.AbstractSerializers
 			 *	return this._valueSerializer.UnpackFromCore( unpacker );
 			 */
 
-			this.EmitMethodPrologue( context, SerializerMethod.UnpackFromCore );
-			TConstruct construct = null;
-			try
-			{
-				var result = this.DeclareLocal( context, typeof( TObject ), "result" );
-				construct =
-					this.EmitRetrunStatement(
+			context.BeginMethodOverride( MethodName.UnpackFromCore );
+
+			var result = this.DeclareLocal( context, typeof( TObject ), "result" );
+			context.EndMethodOverride( MethodName.UnpackFromCore,
+				this.EmitRetrunStatement(
+					context,
+					this.EmitCreateNewObjectExpression(
 						context,
-						this.EmitCreateNewObjectExpression(
+						result,
+						typeof( TObject ).GetConstructors().Single( c => c.GetParameters().Length == 1 ),
+						this.EmitDeserializeItemExpressionCore(
 							context,
-							result,
-							typeof( TObject ).GetConstructors().Single( c => c.GetParameters().Length == 1 ),
-							this.EmitDeserializeItemExpressionCore(
-								context,
-								context.Unpacker,
-								underlyingType,
-								null,
-								null
-							)
+							context.Unpacker,
+							underlyingType,
+							null,
+							null
 						)
-					);
-			}
-			finally
-			{
-				this.EmitMethodEpilogue( context, SerializerMethod.UnpackFromCore, construct );
-			}
+					)
+				)
+			);
 		}
 	}
 }

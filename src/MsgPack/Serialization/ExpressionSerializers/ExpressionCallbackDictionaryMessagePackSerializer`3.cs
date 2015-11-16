@@ -53,7 +53,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			SerializationContext ownerContext,
 			PolymorphismSchema schema,
 			Func<ExpressionCallbackDictionaryMessagePackSerializer<TDictionary, TKey, TValue>, SerializationContext, int, TDictionary> createInstance
-			)
+		)
 			: base( ownerContext, schema )
 		{
 			this._createInstance = createInstance;

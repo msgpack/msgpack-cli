@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Security;
 using System.Text;
@@ -53,6 +54,13 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		private readonly SerializerCodeGenerationConfiguration _configuration;
 
+		private Type _targetType;
+
+		private bool IsDictionary
+		{
+			get { return this.KeyToAdd != null; }
+		}
+
 		private CodeTypeDeclaration _buildingType;
 
 		/// <summary>
@@ -66,13 +74,16 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			get { return this._buildingType; }
 		}
 
+		private readonly Stack<MethodContext> _methodContextStack;
+
 		public CodeDomContext( SerializationContext context, SerializerCodeGenerationConfiguration configuration )
 			: base( context )
 		{
 			this._configuration = configuration;
+			this._methodContextStack = new Stack<MethodContext>();
 		}
 
-		public string GetSerializerFieldName( Type targetType, EnumMemberSerializationMethod enumSerializationMethod, DateTimeMemberConversionMethod dateTimeConversionMethod, PolymorphismSchema polymorphismSchema )
+		public string RegisterSerializer( Type targetType, EnumMemberSerializationMethod enumSerializationMethod, DateTimeMemberConversionMethod dateTimeConversionMethod, PolymorphismSchema polymorphismSchema )
 		{
 			var key = new SerializerFieldKey( targetType, enumSerializationMethod, dateTimeConversionMethod, polymorphismSchema );
 
@@ -81,6 +92,15 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			{
 				fieldName = "_serializer" + this._dependentSerializers.Count.ToString( CultureInfo.InvariantCulture );
 				this._dependentSerializers.Add( key, fieldName );
+				this._buildingType.Members.Add( 
+					new CodeMemberField( 
+						typeof( MessagePackSerializer<> ).MakeGenericType( Type.GetTypeFromHandle( key.TypeHandle ) ), 
+						fieldName
+					)
+					{
+						Attributes = MemberAttributes.Private
+					} 
+				);
 			}
 
 			return fieldName;
@@ -91,7 +111,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return this._dependentSerializers;
 		}
 
-		public string GetCachedFieldInfoName( FieldInfo field )
+		public string RegisterCachedFieldInfo( FieldInfo field )
 		{
 			var key = field.FieldHandle;
 			CachedFieldInfo cachedField;
@@ -105,9 +125,28 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						"_field" + field.DeclaringType.Name.Replace( '`', '_' ) + "_" + field.Name + this._cachedTargetFields.Count.ToString( CultureInfo.InvariantCulture )
 					);
 				this._cachedTargetFields.Add( key, cachedField );
+				this._buildingType.Members.Add(
+					new CodeMemberField(
+						typeof( FieldInfo ),
+						cachedField.StorageFieldName
+					)
+				);
 			}
 
 			return cachedField.StorageFieldName;
+		}
+
+		// For the field identified by its name.
+		protected override FieldDefinition DeclarePrivateFieldCore( string name, TypeDefinition type )
+		{
+			this._buildingType.Members.Add(
+				new CodeMemberField( CodeDomSerializerBuilder.ToCodeTypeReference( type ), name )
+				{
+					Attributes = MemberAttributes.Private
+				}
+			);
+
+			return new FieldDefinition( null, name, type );
 		}
 
 		public Dictionary<RuntimeFieldHandle, CachedFieldInfo> GetCachedFieldInfos()
@@ -115,7 +154,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return this._cachedTargetFields;
 		}
 
-		public string GetCachedMethodBaseName( MethodBase method )
+		public string RegisterCachedMethodBase( MethodBase method )
 		{
 			var key = method.MethodHandle;
 			CachedMethodBase cachedMethod;
@@ -129,6 +168,12 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						"_methodBase" + method.DeclaringType.Name.Replace( '`', '_' ) + "_" + method.Name + this._cachedPropertyAccessors.Count.ToString( CultureInfo.InvariantCulture )
 					);
 				this._cachedPropertyAccessors.Add( key, cachedMethod );
+				this._buildingType.Members.Add(
+					new CodeMemberField(
+						typeof( MethodBase ),
+						cachedMethod.StorageFieldName
+					)
+				);
 			}
 
 			return cachedMethod.StorageFieldName;
@@ -139,8 +184,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return this._cachedPropertyAccessors;
 		}
 
-		private readonly Dictionary<string, int> _uniqueVariableSuffixes = new Dictionary<string, int>();
-
 		/// <summary>
 		///		Gets a unique name of a local variable.
 		/// </summary>
@@ -148,14 +191,15 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		/// <returns>A unique name of a local variable.</returns>
 		public override string GetUniqueVariableName( string prefix )
 		{
+			var uniqueVariableSuffixes = this._methodContextStack.Peek().UniqueVariableSuffixes;
 			int counter;
-			if ( !this._uniqueVariableSuffixes.TryGetValue( prefix, out counter ) )
+			if ( !uniqueVariableSuffixes.TryGetValue( prefix, out counter ) )
 			{
-				this._uniqueVariableSuffixes.Add( prefix, 0 );
+				uniqueVariableSuffixes.Add( prefix, 0 );
 				return prefix;
 			}
 
-			this._uniqueVariableSuffixes[ prefix ] = counter + 1;
+			uniqueVariableSuffixes[ prefix ] = counter + 1;
 
 			return prefix + counter.ToString( CultureInfo.InvariantCulture );
 		}
@@ -202,6 +246,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				new CodeAttributeDeclaration( new CodeTypeReference( typeof( DebuggerNonUserCodeAttribute ) ) )
 			);
 
+			this._targetType = targetType;
 			this._declaringTypes.Add( targetType, declaringType );
 			this._dependentSerializers.Clear();
 			this._cachedTargetFields.Clear();
@@ -211,6 +256,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			this.Packer = CodeDomConstruct.Parameter( typeof( Packer ), "packer" );
 			this.PackToTarget = CodeDomConstruct.Parameter( targetType, "objectTree" );
 			this.Unpacker = CodeDomConstruct.Parameter( typeof( Unpacker ), "unpacker" );
+			this.IndexOfItem = CodeDomConstruct.Parameter( typeof( int ), "indexOfItem" );
 			this.UnpackToTarget = CodeDomConstruct.Parameter( targetType, "collection" );
 			var traits = targetType.GetCollectionTraits();
 			if ( traits.ElementType != null )
@@ -226,16 +272,262 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					this.KeyToAdd = CodeDomConstruct.Parameter( traits.ElementType.GetGenericArguments()[ 0 ], "key" );
 					this.ValueToAdd = CodeDomConstruct.Parameter( traits.ElementType.GetGenericArguments()[ 1 ], "value" );
 				}
+				else
+				{
+					this.KeyToAdd = null;
+					this.ValueToAdd = null;
+				}
 				this.InitialCapacity = CodeDomConstruct.Parameter( typeof( int ), "initialCapacity" );
 			}
 		}
 
-		/// <summary>
-		///		Resets internal states for new method.
-		/// </summary>
-		public void ResetMethodContext()
+		public override void BeginMethodOverride( string name )
 		{
-			this._uniqueVariableSuffixes.Clear();
+			this._methodContextStack.Push( new MethodContext( name, false, typeof( object ), SerializerBuilderHelper.EmptyParameters ) );
+		}
+
+		public override void BeginPrivateMethod( string name, bool isStatic, TypeDefinition returnType, params CodeDomConstruct[] parameters )
+		{
+			this._methodContextStack.Push(
+				new MethodContext(
+					name,
+					isStatic,
+					returnType,
+					parameters
+						.Select( p => new KeyValuePair<string, TypeDefinition>( p.AsParameter().Name, p.ContextType ) )
+						.ToArray()
+				) 
+			);
+		}
+
+		protected override MethodDefinition EndMethodOverrideCore( string name, CodeDomConstruct body )
+		{
+			var context = this._methodContextStack.Pop();
+#if DEBUG
+			Contract.Assert( context.Name == name, "context.Name == name" );
+#endif // DEBUG
+			if ( body == null )
+			{
+				return null;
+			}
+
+			CodeMemberMethod codeMethod = new CodeMemberMethod { Name = name };
+			switch ( name )
+			{
+				case MethodName.PackToCore:
+				{
+					codeMethod.Parameters.Add( this.Packer.AsParameter() );
+					codeMethod.Parameters.Add( this.PackToTarget.AsParameter() );
+					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+					codeMethod.Attributes = ( this.IsInternalToMsgPackLibrary ? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
+					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
+
+					break;
+				}
+				case MethodName.UnpackFromCore:
+				{
+					codeMethod.ReturnType = new CodeTypeReference( this._targetType );
+					codeMethod.Parameters.Add( this.Unpacker.AsParameter() );
+					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+					codeMethod.Attributes = ( this.IsInternalToMsgPackLibrary ? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
+					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
+
+					break;
+				}
+				case MethodName.UnpackToCore:
+				{
+					codeMethod.Parameters.Add( this.Unpacker.AsParameter() );
+					codeMethod.Parameters.Add( this.UnpackToTarget.AsParameter() );
+					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+					codeMethod.Attributes = ( this.IsInternalToMsgPackLibrary? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
+					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
+
+					break;
+				}
+				case MethodName.PackUnderlyingValueTo:
+				{
+					codeMethod.Parameters.Add( this.Packer.AsParameter() );
+					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( this._targetType, "enumValue" ) );
+					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+					codeMethod.Attributes = ( this.IsInternalToMsgPackLibrary ? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
+					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
+
+					break;
+				}
+				case MethodName.UnpackFromUnderlyingValue:
+				{
+					codeMethod.ReturnType = new CodeTypeReference( this._targetType );
+					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( MessagePackObject ), "messagePackObject" ) );
+					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+					codeMethod.Attributes = ( this.IsInternalToMsgPackLibrary ? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
+					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
+
+					break;
+				}
+				case MethodName.AddItem:
+				{
+					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( this._targetType, "collection" ) );
+					if ( this.IsDictionary )
+					{
+						codeMethod.Parameters.Add(
+							new CodeParameterDeclarationExpression( 
+								CodeDomSerializerBuilder.ToCodeTypeReference( this.KeyToAdd.ContextType ), 
+								"key"
+							)
+						);
+						codeMethod.Parameters.Add(
+							new CodeParameterDeclarationExpression( 
+								CodeDomSerializerBuilder.ToCodeTypeReference( this.ValueToAdd.ContextType ),
+								"value" 
+							)
+						);
+					}
+					else
+					{
+						codeMethod.Parameters.Add( 
+							new CodeParameterDeclarationExpression( 
+								CodeDomSerializerBuilder.ToCodeTypeReference( this.ItemToAdd.ContextType ),
+								"item" 
+							)
+						);
+					}
+					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+					codeMethod.Attributes = MemberAttributes.Family | MemberAttributes.Override;
+					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
+					break;
+				}
+				case MethodName.CreateInstance:
+				{
+					codeMethod.ReturnType = new CodeTypeReference( this._targetType );
+					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( int ), "initialCapacity" ) );
+
+					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+					codeMethod.Attributes = MemberAttributes.Family | MemberAttributes.Override;
+					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
+					break;
+				}
+				default:
+				{
+					throw new ArgumentOutOfRangeException( "name", name );
+				}
+			}
+
+			codeMethod.Statements.AddRange( body.AsStatements().ToArray() );
+
+			this.DeclaringType.Members.Add( codeMethod );
+			return
+				new MethodDefinition(
+					context.Name,
+					null,
+					null,
+					context.ReturnType,
+					context.Parameters.Select( kv => kv.Value ).ToArray()
+				);
+		}
+
+		protected override MethodDefinition EndPrivateMethodCore( string name, CodeDomConstruct body )
+		{
+			var context = this._methodContextStack.Pop();
+#if DEBUG
+			Contract.Assert( context.Name == name, "context.Name == name" );
+#endif // DEBUG
+			if ( body == null )
+			{
+				return null;
+			}
+
+			// ReSharper disable once BitwiseOperatorOnEnumWithoutFlags
+			var codeMethod = new CodeMemberMethod { Name = context.Name, Attributes = MemberAttributes.Private | ( context.IsStatic ? MemberAttributes.Static : 0 ) };
+			// ReSharper disable once ImpureMethodCallOnReadonlyValueField
+			if ( context.ReturnType.TryGetRuntimeType() != typeof( void ) )
+			{
+				codeMethod.ReturnType = CodeDomSerializerBuilder.ToCodeTypeReference( context.ReturnType );
+			}
+
+			codeMethod.Parameters.AddRange(
+				context.Parameters.Select( kv =>
+					new CodeParameterDeclarationExpression(CodeDomSerializerBuilder.ToCodeTypeReference( kv.Value ), kv.Key ) 
+				).ToArray()
+			);
+
+			codeMethod.Statements.AddRange( body.AsStatements().ToArray() );
+
+			this.DeclaringType.Members.Add( codeMethod );
+			return
+				new MethodDefinition(
+					context.Name,
+					null,
+					null,
+					context.ReturnType,
+					context.Parameters.Select( kv => kv.Value ).ToArray()
+				);
+		}
+
+		// For stack
+		public void BeginConstructor()
+		{
+			this._methodContextStack.Push( new MethodContext( ".ctor", false, typeof( object ), SerializerBuilderHelper.EmptyParameters ) );
+		}
+
+		public void EndConstructor()
+		{
+			this._methodContextStack.Pop();
+		}
+
+		protected override void DefineUnpackingContextCore(
+			IList<KeyValuePair<string, TypeDefinition>> fields,
+			out TypeDefinition type,
+			out ConstructorDefinition constructor,
+			out CodeDomConstruct parameterInUnpackValueMethods,
+			out CodeDomConstruct parameterInCreateObjectFromContext
+		)
+		{
+			var codeType = new CodeTypeDeclaration( SerializerBuilderHelper.UnpackingContextTypeName );
+			var ctor =
+				new CodeConstructor
+				{
+					Attributes = MemberAttributes.Public
+				};
+			foreach ( var kv in fields )
+			{
+				var field =
+					new CodeMemberField( CodeDomSerializerBuilder.ToCodeTypeReference( kv.Value ), kv.Key )
+					{
+						Attributes = MemberAttributes.Public
+					};
+				codeType.Members.Add( field );
+
+				var param = new CodeParameterDeclarationExpression( CodeDomSerializerBuilder.ToCodeTypeReference( kv.Value ), kv.Key );
+
+				ctor.Parameters.Add( param );
+				ctor.Statements.Add(
+					new CodeAssignStatement(
+						new CodeFieldReferenceExpression(
+							new CodeThisReferenceExpression(),
+							kv.Key
+						),
+						new CodeArgumentReferenceExpression( kv.Key )
+					)
+				);
+			}
+
+			codeType.Members.Add( ctor );
+			this._buildingType.Members.Add( codeType );
+			type = TypeDefinition.Object( codeType.Name );
+			constructor = new ConstructorDefinition( type, fields.Select( kv => kv.Value ).ToArray() );
+			parameterInUnpackValueMethods = CodeDomConstruct.Parameter( type, "unpackingContext" );
+			parameterInCreateObjectFromContext = CodeDomConstruct.Parameter( type, "unpackingContext" );
+		}
+
+		protected override void DefineUnpackingContextWithResultObjectCore(
+			out TypeDefinition type,
+			out CodeDomConstruct parameterInUnpackValueMethods,
+			out CodeDomConstruct parameterInCreateObjectFromContext
+		)
+		{
+			type = TypeDefinition.Object( this._targetType );
+			parameterInUnpackValueMethods = CodeDomConstruct.Parameter( type, "unpackingContext" );
+			parameterInCreateObjectFromContext = CodeDomConstruct.Parameter( type, "unpackingContext" );
 		}
 
 		/// <summary>
@@ -343,6 +635,28 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			{
 				this.Target = target;
 				this.StorageFieldName = storageFieldName;
+			}
+		}
+
+		private sealed class MethodContext
+		{
+			public readonly IDictionary<string, int> UniqueVariableSuffixes;
+
+			public readonly string Name;
+
+			public readonly bool IsStatic;
+
+			public readonly TypeDefinition ReturnType;
+
+			public readonly KeyValuePair<string, TypeDefinition>[] Parameters;
+
+			public MethodContext( string name, bool isStatic, TypeDefinition returnType, KeyValuePair<string, TypeDefinition>[] parameters )
+			{
+				this.Name = name;
+				this.IsStatic = isStatic;
+				this.ReturnType = returnType;
+				this.Parameters = parameters;
+				this.UniqueVariableSuffixes = new Dictionary<string, int>();
 			}
 		}
 	}

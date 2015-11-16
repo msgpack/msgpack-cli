@@ -37,64 +37,38 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private void BuildPackUnderlyingValueTo( TContext context, Type underlyingType )
 		{
-			this.EmitMethodPrologue(
-				context,
-				EnumSerializerMethod.PackUnderlyingValueTo
-			);
+			context.BeginMethodOverride( MethodName.PackUnderlyingValueTo );
 
-			TConstruct construct = null;
-			try
-			{
-				construct =
-					this.EmitInvokeVoidMethod(
-						context,
-						this.ReferArgument( context, typeof( Packer ), "packer", 1 ),
-						typeof( Packer ).GetMethod( "Pack", new[] { underlyingType } ),
-						this.EmitEnumToUnderlyingCastExpression( context, underlyingType, this.ReferArgument( context, typeof( TObject ), "enumValue", 2 ) )
-					);
-			}
-			finally
-			{
-				this.EmitMethodEpilogue(
+			context.EndMethodOverride(
+				MethodName.PackUnderlyingValueTo,
+				this.EmitInvokeVoidMethod(
 					context,
-					EnumSerializerMethod.PackUnderlyingValueTo,
-					construct
-				);
-			}
+					this.ReferArgument( context, typeof( Packer ), "packer", 1 ),
+					typeof( Packer ).GetMethod( "Pack", new[] { underlyingType } ),
+					this.EmitEnumToUnderlyingCastExpression( context, underlyingType, this.ReferArgument( context, typeof( TObject ), "enumValue", 2 ) )
+				)
+			);
 		}
 
 		private void BuildUnpackFromUnderlyingValue( TContext context, Type underlyingType )
 		{
-			this.EmitMethodPrologue(
-				context,
-				EnumSerializerMethod.UnpackFromUnderlyingValue
-			);
+			context.BeginMethodOverride( MethodName.UnpackFromUnderlyingValue );
 
-			TConstruct construct = null;
-			try
-			{
-				construct =
-					this.EmitRetrunStatement(
-						context,
-						this.EmitEnumFromUnderlyingCastExpression(
-							context,
-							typeof( TObject ),
-							this.EmitInvokeMethodExpression(
-								context,
-								this.ReferArgument( context, typeof( MessagePackObject ), "messagePackObject", 1 ),
-								typeof( MessagePackObject ).GetMethod( "As" + underlyingType.Name, ReflectionAbstractions.EmptyTypes )
-							)
-						)
-					);
-			}
-			finally
-			{
-				this.EmitMethodEpilogue(
+			context.EndMethodOverride(
+				MethodName.UnpackFromUnderlyingValue,
+				this.EmitRetrunStatement(
 					context,
-					EnumSerializerMethod.UnpackFromUnderlyingValue,
-					construct
-				);
-			}
+					this.EmitEnumFromUnderlyingCastExpression(
+						context,
+						typeof( TObject ),
+						this.EmitInvokeMethodExpression(
+							context,
+							this.ReferArgument( context, typeof( MessagePackObject ), "messagePackObject", 1 ),
+							typeof( MessagePackObject ).GetMethod( "As" + underlyingType.Name, ReflectionAbstractions.EmptyTypes )
+						)
+					)
+				)
+			);
 		}
 
 		protected abstract TConstruct EmitEnumToUnderlyingCastExpression( TContext context, Type underlyingType, TConstruct enumValue );

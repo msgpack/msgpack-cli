@@ -46,214 +46,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 	{
 		public CodeDomSerializerBuilder() { }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override void EmitMethodPrologue( CodeDomContext context, SerializerMethod method )
-		{
-			context.ResetMethodContext();
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override void EmitMethodPrologue( CodeDomContext context, EnumSerializerMethod method )
-		{
-			context.ResetMethodContext();
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override void EmitMethodPrologue( CodeDomContext context, CollectionSerializerMethod method, MethodInfo declaration )
-		{
-			context.ResetMethodContext();
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override void EmitMethodEpilogue( CodeDomContext context, SerializerMethod method, CodeDomConstruct construct )
-		{
-			if ( construct == null )
-			{
-				return;
-			}
-			CodeMemberMethod codeMethod;
-			switch ( method )
-			{
-				case SerializerMethod.PackToCore:
-				{
-					codeMethod =
-						new CodeMemberMethod
-						{
-							Name = "PackToCore",
-						};
-					codeMethod.Parameters.Add( context.Packer.AsParameter() );
-					codeMethod.Parameters.Add( context.PackToTarget.AsParameter() );
-
-					break;
-				}
-				case SerializerMethod.UnpackFromCore:
-				{
-					codeMethod =
-						new CodeMemberMethod
-						{
-							Name = "UnpackFromCore",
-							ReturnType = new CodeTypeReference( typeof( TObject ) )
-						};
-					codeMethod.Parameters.Add( context.Unpacker.AsParameter() );
-
-					break;
-				}
-				case SerializerMethod.UnpackToCore:
-				{
-					codeMethod =
-						new CodeMemberMethod
-						{
-							Name = "UnpackToCore",
-						};
-					codeMethod.Parameters.Add( context.Unpacker.AsParameter() );
-					codeMethod.Parameters.Add( context.UnpackToTarget.AsParameter() );
-
-					break;
-				}
-				default:
-				{
-					throw new ArgumentOutOfRangeException( "method" );
-				}
-			}
-
-			// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-			codeMethod.Attributes = ( context.IsInternalToMsgPackLibrary ? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
-			// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
-			codeMethod.Statements.AddRange( construct.AsStatements().ToArray() );
-
-			context.DeclaringType.Members.Add( codeMethod );
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override void EmitMethodEpilogue( CodeDomContext context, EnumSerializerMethod method, CodeDomConstruct construct )
-		{
-			if ( construct == null )
-			{
-				return;
-			}
-
-			CodeMemberMethod codeMethod;
-			switch ( method )
-			{
-				case EnumSerializerMethod.PackUnderlyingValueTo:
-				{
-					codeMethod =
-						new CodeMemberMethod
-						{
-							Name = "PackUnderlyingValueTo",
-						};
-					codeMethod.Parameters.Add( context.Packer.AsParameter() );
-					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( TObject ), "enumValue" ) );
-
-					break;
-				}
-				case EnumSerializerMethod.UnpackFromUnderlyingValue:
-				{
-					codeMethod =
-						new CodeMemberMethod
-						{
-							Name = "UnpackFromUnderlyingValue",
-							ReturnType = new CodeTypeReference( typeof( TObject ) )
-						};
-					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( MessagePackObject ), "messagePackObject" ) );
-
-					break;
-				}
-				default:
-				{
-					throw new ArgumentOutOfRangeException( "method" );
-				}
-			}
-
-			// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-			codeMethod.Attributes = ( context.IsInternalToMsgPackLibrary ? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
-			// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
-			codeMethod.Statements.AddRange( construct.AsStatements().ToArray() );
-
-			context.DeclaringType.Members.Add( codeMethod );
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override void EmitMethodEpilogue( CodeDomContext context, CollectionSerializerMethod method, CodeDomConstruct construct )
-		{
-			if ( construct == null )
-			{
-				return;
-			}
-			CodeMemberMethod codeMethod;
-			switch ( method )
-			{
-				case CollectionSerializerMethod.AddItem:
-				{
-					codeMethod =
-						new CodeMemberMethod
-						{
-							Name = "AddItem",
-						};
-					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( TObject ), "collection" ) );
-					if ( CollectionTraitsOfThis.DetailedCollectionType == CollectionDetailedKind.GenericDictionary
-#if !NETFX_35 && !NETFX_40
-						|| CollectionTraitsOfThis.DetailedCollectionType == CollectionDetailedKind.GenericReadOnlyDictionary
-#endif // !NETFX_35 && !NETFX_40 
-					)
-					{
-						codeMethod.Parameters.Add(
-							new CodeParameterDeclarationExpression( CollectionTraitsOfThis.ElementType.GetGenericArguments()[ 0 ], "key" ) 
-						);
-						codeMethod.Parameters.Add(
-							new CodeParameterDeclarationExpression( CollectionTraitsOfThis.ElementType.GetGenericArguments()[ 1 ], "value" ) 
-						);
-					}
-					else
-					{
-						codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( CollectionTraitsOfThis.ElementType, "item" ) );
-					}
-					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-					codeMethod.Attributes = MemberAttributes.Family | MemberAttributes.Override;
-					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
-					break;
-				}
-				case CollectionSerializerMethod.CreateInstance:
-				{
-					codeMethod =
-						new CodeMemberMethod
-						{
-							Name = "CreateInstance",
-							ReturnType = new CodeTypeReference( typeof( TObject ) )
-						};
-					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( int ), "initialCapacity" ) );
-
-					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-					codeMethod.Attributes = MemberAttributes.Family | MemberAttributes.Override;
-					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
-					break;
-				}
-				case CollectionSerializerMethod.RestoreSchema:
-				{
-					codeMethod =
-						new CodeMemberMethod
-						{
-							Name = "RestoreSchema",
-							ReturnType = new CodeTypeReference( typeof( PolymorphismSchema ) )
-						};
-
-					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-					codeMethod.Attributes = MemberAttributes.Private | MemberAttributes.Static;
-					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
-					break;
-				}
-				default:
-				{
-					throw new ArgumentOutOfRangeException( "method" );
-				}
-			}
-
-			codeMethod.Statements.AddRange( construct.AsStatements().ToArray() );
-
-			context.DeclaringType.Members.Add( codeMethod );
-		}
-
-		protected override CodeDomConstruct MakeNullLiteral( CodeDomContext context, Type contextType )
+		protected override CodeDomConstruct MakeNullLiteral( CodeDomContext context, TypeDefinition contextType )
 		{
 			return CodeDomConstruct.Expression( contextType, new CodePrimitiveExpression( null ) );
 		}
@@ -318,7 +111,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return CodeDomConstruct.Expression( typeof( char ), new CodePrimitiveExpression( constant ) );
 		}
 
-		protected override CodeDomConstruct MakeEnumLiteral( CodeDomContext context, Type type, object constant )
+		protected override CodeDomConstruct MakeEnumLiteral( CodeDomContext context, TypeDefinition type, object constant )
 		{
 			var asString = constant.ToString();
 			if ( ( '0' <= asString[ 0 ] && asString[ 0 ] <= '9' ) || asString.Contains( ',' ) )
@@ -328,7 +121,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					CodeDomConstruct.Expression(
 						type,
 						new CodeCastExpression(
-							type,
+							CodeDomSerializerBuilder.ToCodeTypeReference( type ),
 							// Only support integrals.
 							new CodePrimitiveExpression(
 								UInt64.Parse( ( ( Enum ) constant ).ToString( "D" ), CultureInfo.InvariantCulture ) 
@@ -341,16 +134,16 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				return
 					CodeDomConstruct.Expression(
 						type,
-						new CodeFieldReferenceExpression( 
-							new CodeTypeReferenceExpression( type ), constant.ToString() 
+						new CodeFieldReferenceExpression(
+							CodeDomSerializerBuilder.ToCodeTypeReferenceExpression( type ), constant.ToString() 
 						)
 					);
 			}
 		}
 
-		protected override CodeDomConstruct MakeDefaultLiteral( CodeDomContext context, Type type )
+		protected override CodeDomConstruct MakeDefaultLiteral( CodeDomContext context, TypeDefinition type )
 		{
-			return CodeDomConstruct.Expression( type, new CodeDefaultValueExpression( new CodeTypeReference( type ) ) );
+			return CodeDomConstruct.Expression( type, new CodeDefaultValueExpression( CodeDomSerializerBuilder.ToCodeTypeReference( type ) ) );
 		}
 
 		protected override CodeDomConstruct MakeStringLiteral( CodeDomContext context, string constant )
@@ -364,15 +157,19 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override CodeDomConstruct EmitBoxExpression( CodeDomContext context, Type valueType, CodeDomConstruct value )
+		protected override CodeDomConstruct EmitBoxExpression( CodeDomContext context, TypeDefinition valueType, CodeDomConstruct value )
 		{
 			return CodeDomConstruct.Expression( typeof( object ), new CodeCastExpression( typeof( object ), value.AsExpression() ) );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override CodeDomConstruct EmitUnboxAnyExpression( CodeDomContext context, Type targetType, CodeDomConstruct value )
+		protected override CodeDomConstruct EmitUnboxAnyExpression( CodeDomContext context, TypeDefinition targetType, CodeDomConstruct value )
 		{
-			return CodeDomConstruct.Expression( targetType, new CodeCastExpression( targetType, value.AsExpression() ) );
+			return
+				CodeDomConstruct.Expression(
+					targetType,
+					new CodeCastExpression( CodeDomSerializerBuilder.ToCodeTypeReference( targetType ), value.AsExpression() )
+				);
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
@@ -450,9 +247,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 		}
 
-		protected override CodeDomConstruct EmitTypeOfExpression( CodeDomContext context, Type type )
+		protected override CodeDomConstruct EmitTypeOfExpression( CodeDomContext context, TypeDefinition type )
 		{
-			return CodeDomConstruct.Expression( typeof( Type ), new CodeTypeOfExpression( type ) );
+			return CodeDomConstruct.Expression( typeof( Type ), new CodeTypeOfExpression( CodeDomSerializerBuilder.ToCodeTypeReference( type ) ) );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
@@ -463,7 +260,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					typeof( FieldInfo ),
 					new CodeFieldReferenceExpression(
 						new CodeThisReferenceExpression(),
-						context.GetCachedFieldInfoName(
+						context.RegisterCachedFieldInfo(
 							field
 						)
 					)
@@ -478,14 +275,14 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					typeof( MethodBase ),
 					new CodeFieldReferenceExpression(
 						new CodeThisReferenceExpression(),
-						context.GetCachedMethodBaseName(
+						context.RegisterCachedMethodBase(
 							method
 						)
 					)
 				);
 		}
 
-		protected override CodeDomConstruct EmitSequentialStatements( CodeDomContext context, Type contextType, IEnumerable<CodeDomConstruct> statements )
+		protected override CodeDomConstruct EmitSequentialStatements( CodeDomContext context, TypeDefinition contextType, IEnumerable<CodeDomConstruct> statements )
 		{
 #if DEBUG
 			statements = statements.ToArray();
@@ -495,15 +292,15 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override CodeDomConstruct DeclareLocal( CodeDomContext context, Type type, string name )
+		protected override CodeDomConstruct DeclareLocal( CodeDomContext context, TypeDefinition nestedType, string name )
 		{
 #if DEBUG
 			Contract.Assert( !name.Contains( "." ) );
 #endif
-			return CodeDomConstruct.Variable( type, context.GetUniqueVariableName( name ) );
+			return CodeDomConstruct.Variable( nestedType, context.GetUniqueVariableName( name ) );
 		}
 
-		protected override CodeDomConstruct ReferArgument( CodeDomContext context, Type type, string name, int index )
+		protected override CodeDomConstruct ReferArgument( CodeDomContext context, TypeDefinition type, string name, int index )
 		{
 #if DEBUG
 			Contract.Assert( !name.Contains( "." ) );
@@ -512,7 +309,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override CodeDomConstruct EmitCreateNewObjectExpression( CodeDomContext context, CodeDomConstruct variable, ConstructorInfo constructor, params CodeDomConstruct[] arguments )
+		protected override CodeDomConstruct EmitCreateNewObjectExpression( CodeDomContext context, CodeDomConstruct variable, ConstructorDefinition constructor, params CodeDomConstruct[] arguments )
 		{
 #if DEBUG
 			Contract.Assert( constructor.DeclaringType != null );
@@ -521,18 +318,21 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return
 				CodeDomConstruct.Expression(
 					constructor.DeclaringType,
-					new CodeObjectCreateExpression( constructor.DeclaringType, arguments.Select( a => a.AsExpression() ).ToArray() )
+					new CodeObjectCreateExpression( 
+						CodeDomSerializerBuilder.ToCodeTypeReference( constructor.DeclaringType ), 
+						arguments.Select( a => a.AsExpression() ).ToArray()
+					)
 				);
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override CodeDomConstruct EmitInvokeVoidMethod( CodeDomContext context, CodeDomConstruct instance, MethodInfo method, params CodeDomConstruct[] arguments )
+		protected override CodeDomConstruct EmitInvokeVoidMethod( CodeDomContext context, CodeDomConstruct instance, MethodDefinition method, params CodeDomConstruct[] arguments )
 		{
 #if DEBUG
 			Contract.Assert( instance == null || instance.IsExpression );
+			Contract.Assert( instance != null || method.DeclaringType != null );
 			arguments = arguments.Where( a => a != null ).ToArray();
 			Contract.Assert( arguments.All( c => c.IsExpression ), String.Join( ",", arguments.Select( c => c.ToString() ).ToArray() ) );
-			Contract.Assert( method.DeclaringType != null );
 #endif
 			return
 				CodeDomConstruct.Statement(
@@ -540,11 +340,11 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						new CodeMethodInvokeExpression(
 							new CodeMethodReferenceExpression(
 								instance == null
-								? new CodeTypeReferenceExpression( method.DeclaringType )
+								? new CodeTypeReferenceExpression( method.DeclaringType.TypeName )
 								: instance.AsExpression(),
-								method.Name,
-								method.IsGenericMethod
-								? method.GetGenericArguments().Select( t => new CodeTypeReference( t ) ).ToArray()
+								method.MethodName,
+								( method.TryGetRuntimeMethod() != null && method.TryGetRuntimeMethod().IsGenericMethod )
+								? method.TryGetRuntimeMethod().GetGenericArguments().Select( t => new CodeTypeReference( t ) ).ToArray()
 								: CodeDomSerializerBuilder.EmptyGenericArguments
 							),
 							arguments.Select( a => a.AsExpression() ).ToArray()
@@ -554,13 +354,13 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override CodeDomConstruct EmitInvokeMethodExpression( CodeDomContext context, CodeDomConstruct instance, MethodInfo method, IEnumerable<CodeDomConstruct> arguments )
+		protected override CodeDomConstruct EmitInvokeMethodExpression( CodeDomContext context, CodeDomConstruct instance, MethodDefinition method, IEnumerable<CodeDomConstruct> arguments )
 		{
 #if DEBUG
 			Contract.Assert( instance == null || instance.IsExpression );
+			Contract.Assert( instance != null || method.DeclaringType != null );
 			arguments = arguments.Where( a => a != null ).ToArray();
 			Contract.Assert( arguments.All( c => c.IsExpression ), String.Join( ",", arguments.Select( c => c.ToString() ).ToArray() ) );
-			Contract.Assert( method.DeclaringType != null );
 #endif
 			return
 				CodeDomConstruct.Expression(
@@ -568,13 +368,34 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					new CodeMethodInvokeExpression(
 						new CodeMethodReferenceExpression(
 							instance == null
-							? new CodeTypeReferenceExpression( method.DeclaringType )
+							? new CodeTypeReferenceExpression( method.DeclaringType.TypeName )
 							: instance.AsExpression(),
-							method.Name,
-							method.IsGenericMethod
-							? method.GetGenericArguments().Select( t => new CodeTypeReference(t)).ToArray()
+							method.MethodName,
+							( method.TryGetRuntimeMethod() != null && method.TryGetRuntimeMethod().IsGenericMethod )
+							? method.TryGetRuntimeMethod().GetGenericArguments().Select( t => new CodeTypeReference( t ) ).ToArray()
 							: CodeDomSerializerBuilder.EmptyGenericArguments
 						),
+						arguments.Select( a => a.AsExpression() ).ToArray()
+					)
+				);
+		}
+
+		protected override CodeDomConstruct EmitInvokeDelegateExpression( CodeDomContext context, TypeDefinition delegateReturnType, CodeDomConstruct @delegate, params CodeDomConstruct[] arguments )
+		{
+#if DEBUG
+			Contract.Assert( @delegate.IsExpression );
+			Contract.Assert(
+				@delegate.ContextType.TypeName.StartsWith( "System.Action" )
+				|| @delegate.ContextType.TypeName.StartsWith( "System.Func" ) 
+			);
+			arguments = arguments.Where( a => a != null ).ToArray();
+			Contract.Assert( arguments.All( c => c.IsExpression ), String.Join( ",", arguments.Select( c => c.ToString() ).ToArray() ) );
+#endif
+			return
+				CodeDomConstruct.Expression(
+					delegateReturnType,
+					new CodeDelegateInvokeExpression(
+						@delegate.AsExpression(),
 						arguments.Select( a => a.AsExpression() ).ToArray()
 					)
 				);
@@ -600,7 +421,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override CodeDomConstruct EmitGetFieldExpression( CodeDomContext context, CodeDomConstruct instance, FieldInfo field )
+		protected override CodeDomConstruct EmitGetFieldExpression( CodeDomContext context, CodeDomConstruct instance, FieldDefinition field )
 		{
 #if DEBUG
 			Contract.Assert( instance == null || instance.IsExpression );
@@ -611,9 +432,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					field.FieldType,
 					new CodeFieldReferenceExpression(
 						instance == null
-						? new CodeTypeReferenceExpression( field.DeclaringType )
+						? CodeDomSerializerBuilder.ToCodeTypeReferenceExpression( field.DeclaringType )
 						: instance.AsExpression(),
-						field.Name
+						field.FieldName
 					)
 				);
 		}
@@ -641,13 +462,35 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Asserted internally" )]
-		protected override CodeDomConstruct EmitSetField( CodeDomContext context, CodeDomConstruct instance, FieldInfo field, CodeDomConstruct value )
+		protected override CodeDomConstruct EmitSetIndexedProperty( CodeDomContext context, CodeDomConstruct instance, TypeDefinition declaringType, string proeprtyName, CodeDomConstruct key, CodeDomConstruct value )
 		{
 #if DEBUG
 			Contract.Assert( instance == null || instance.IsExpression );
-			Contract.Assert( field.DeclaringType != null );
+			Contract.Assert( instance != null || declaringType.HasRuntimeTypeFully() );
+			Contract.Assert( key.IsExpression );
+			Contract.Assert( value.IsExpression );
+#endif
+			return
+				CodeDomConstruct.Statement(
+					new CodeAssignStatement(
+						new CodeIndexerExpression(
+							instance == null
+							? new CodeTypeReferenceExpression( declaringType.ResolveRuntimeType() )
+							: instance.AsExpression(),
+							key.AsExpression()
+						), 
+						value.AsExpression()
+					)
+				);
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Asserted internally" )]
+		protected override CodeDomConstruct EmitSetField( CodeDomContext context, CodeDomConstruct instance, FieldDefinition field, CodeDomConstruct value )
+		{
+#if DEBUG
+			Contract.Assert( instance == null || instance.IsExpression );
+			Contract.Assert( instance != null || field.DeclaringType != null );
 			Contract.Assert( value.IsExpression );
 #endif
 			return
@@ -655,9 +498,29 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					new CodeAssignStatement(
 						new CodeFieldReferenceExpression(
 							instance == null
-							? new CodeTypeReferenceExpression( field.DeclaringType )
+							? CodeDomSerializerBuilder.ToCodeTypeReferenceExpression( field.DeclaringType )
 							: instance.AsExpression(),
-							field.Name
+							field.FieldName
+						),
+						value.AsExpression()
+					)
+				);
+		}
+
+		protected override CodeDomConstruct EmitSetField( CodeDomContext context, CodeDomConstruct instance, TypeDefinition nestedType, string fieldName, CodeDomConstruct value )
+		{
+#if DEBUG
+			Contract.Assert( instance == null || instance.IsExpression );
+			Contract.Assert( value.IsExpression );
+#endif
+			return
+				CodeDomConstruct.Statement(
+					new CodeAssignStatement(
+						new CodeFieldReferenceExpression(
+							instance == null
+							? CodeDomSerializerBuilder.ToCodeTypeReferenceExpression( nestedType )
+							: instance.AsExpression(),
+							fieldName
 						),
 						value.AsExpression()
 					)
@@ -687,15 +550,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override CodeDomConstruct EmitThrowExpression( CodeDomContext context, Type expressionType, CodeDomConstruct exceptionExpression )
-		{
-#if DEBUG
-			Contract.Assert( exceptionExpression.IsExpression );
-#endif
-			return CodeDomConstruct.Statement( new CodeThrowExceptionStatement( exceptionExpression.AsExpression() ) );
-		}
-
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override CodeDomConstruct EmitTryFinally( CodeDomContext context, CodeDomConstruct tryStatement, CodeDomConstruct finallyStatement )
@@ -715,20 +569,20 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
-		protected override CodeDomConstruct EmitCreateNewArrayExpression( CodeDomContext context, Type elementType, int length )
+		protected override CodeDomConstruct EmitCreateNewArrayExpression( CodeDomContext context, TypeDefinition elementType, int length )
 		{
 			return
 				CodeDomConstruct.Expression(
-					elementType.MakeArrayType(),
+					TypeDefinition.Array( elementType ),
 					new CodeArrayCreateExpression(
-						elementType,
+						CodeDomSerializerBuilder.ToCodeTypeReference( elementType ),
 						new CodePrimitiveExpression( length )
 					)
 				);
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
-		protected override CodeDomConstruct EmitCreateNewArrayExpression( CodeDomContext context, Type elementType, int length, IEnumerable<CodeDomConstruct> initialElements )
+		protected override CodeDomConstruct EmitCreateNewArrayExpression( CodeDomContext context, TypeDefinition elementType, int length, IEnumerable<CodeDomConstruct> initialElements )
 		{
 #if DEBUG
 			initialElements = initialElements.ToArray();
@@ -736,14 +590,23 @@ namespace MsgPack.Serialization.CodeDomSerializers
 #endif
 			return
 				CodeDomConstruct.Expression(
-					elementType.MakeArrayType(),
+					TypeDefinition.Array( elementType ),
 					new CodeArrayCreateExpression(
-						elementType,
+						CodeDomSerializerBuilder.ToCodeTypeReference( elementType ),
 						initialElements.Select( i => i.AsExpression() ).ToArray()
 					)
 					{
 						Size = length
 					}
+				);
+		}
+
+		protected override CodeDomConstruct EmitGetArrayElementExpression( CodeDomContext context, CodeDomConstruct array, CodeDomConstruct index )
+		{
+			return
+				CodeDomConstruct.Expression(
+					array.ContextType.ElementType,
+					new CodeArrayIndexerExpression( array.AsExpression(), index.AsExpression() )
 				);
 		}
 
@@ -769,7 +632,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
 					new CodeFieldReferenceExpression(
 						new CodeThisReferenceExpression(),
-						context.GetSerializerFieldName(
+						context.RegisterSerializer(
 							targetType,
 							memberInfo == null
 								? EnumMemberSerializationMethod.Default
@@ -783,23 +646,124 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 		}
 
+		protected override CodeDomConstruct EmitGetActionsExpression( CodeDomContext context, ActionType actionType )
+		{
+			TypeDefinition type;
+			string name;
+			switch ( actionType )
+			{
+				case ActionType.PackToArray:
+				{
+					type = typeof( IList<Action<Packer, TObject>> );
+					name = FieldName.PackOperationList;
+					break;
+				}
+				case ActionType.PackToMap:
+				{
+					type = typeof( IDictionary<string, Action<Packer, TObject>> );
+					name = FieldName.PackOperationTable;
+					break;
+				}
+				case ActionType.UnpackFromArray:
+				{
+					type =
+						TypeDefinition.GenericReferenceType(
+							typeof( IList<> ),
+							TypeDefinition.GenericReferenceType(
+								typeof( Action<,,> ),
+								typeof( Unpacker ),
+								context.UnpackingContextType ?? typeof( TObject ),
+								typeof( int )
+							)
+						);
+					name = FieldName.UnpackOperationList;
+					break;
+				}
+				case ActionType.UnpackFromMap:
+				{
+					type =
+						TypeDefinition.GenericReferenceType(
+							typeof( IDictionary<,> ),
+							typeof( string),
+							TypeDefinition.GenericReferenceType(
+								typeof( Action<,,> ),
+								typeof( Unpacker ),
+								context.UnpackingContextType ?? typeof( TObject ),
+								typeof( int )
+							)
+						);
+					name = FieldName.UnpackOperationTable;
+					break;
+				}
+				case ActionType.UnpackTo:
+				{
+					type = typeof( Action<Unpacker, TObject, int> );
+					name = FieldName.UnpackTo;
+					break;
+				}
+				default:
+				{
+					throw new ArgumentOutOfRangeException( "actionType" );
+				}
+			}
+
+			var field = context.DeclarePrivateField( name, type );
+
+			return
+				CodeDomConstruct.Expression(
+					type,
+					new CodeFieldReferenceExpression(
+						new CodeThisReferenceExpression(),
+						field.FieldName
+					)
+				);
+		}
+
+		protected override CodeDomConstruct EmitGetMemberNamesExpression( CodeDomContext context )
+		{
+			var field = context.DeclarePrivateField( FieldName.MemberNames, typeof( IList<string> ) );
+
+			return
+				CodeDomConstruct.Expression(
+					typeof( IList<string> ),
+					new CodeFieldReferenceExpression(
+						new CodeThisReferenceExpression(),
+						field.FieldName
+					)
+				);
+		}
+
+		protected override CodeDomConstruct EmitFinishFieldInitializationStatement( CodeDomContext context, string name, CodeDomConstruct value )
+		{
+			return
+				CodeDomConstruct.Statement(
+					new CodeAssignStatement(
+						new CodeFieldReferenceExpression(
+							new CodeThisReferenceExpression(),
+							name
+						),
+						value.AsExpression()
+					)
+				);
+		}
+
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override CodeDomConstruct EmitConditionalExpression( CodeDomContext context, CodeDomConstruct conditionExpression, CodeDomConstruct thenExpression, CodeDomConstruct elseExpression )
 		{
 #if DEBUG
 			Contract.Assert(
-				elseExpression == null ||
-				thenExpression.ContextType == typeof( void ) ||
-				( thenExpression.ContextType == elseExpression.ContextType ),
-				thenExpression.ContextType + " != " + ( elseExpression == null ? "(null)" : elseExpression.ContextType.FullName )
+				elseExpression == null
+				|| thenExpression.ContextType.TryGetRuntimeType() == typeof( void )
+				|| ( thenExpression.ContextType.TryGetRuntimeType() == elseExpression.ContextType.TryGetRuntimeType() ),
+				thenExpression.ContextType + " != " + ( elseExpression == null ? "(null)" : elseExpression.ContextType.TypeName )
 			);
 			Contract.Assert( conditionExpression.IsExpression );
 			Contract.Assert(
-				elseExpression == null ||
-				thenExpression.ContextType == typeof( void ) ||
-				( thenExpression.ContextType == elseExpression.ContextType &&
-				  thenExpression.IsExpression == elseExpression.IsExpression )
+				elseExpression == null 
+				|| thenExpression.ContextType.TryGetRuntimeType() == typeof( void )
+				|| ( thenExpression.ContextType.TryGetRuntimeType() == elseExpression.ContextType.TryGetRuntimeType() 
+				&& thenExpression.IsExpression == elseExpression.IsExpression )
 			);
 
 #endif
@@ -812,14 +776,14 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						thenExpression.AsStatements().ToArray()
 					)
 				)
-				: thenExpression.ContextType == typeof( void ) || thenExpression.IsStatement
+				: thenExpression.ContextType.TryGetRuntimeType() == typeof( void ) || thenExpression.IsStatement
 				? CodeDomConstruct.Statement(
 					new CodeConditionStatement(
 						conditionExpression.AsExpression(),
 						thenExpression.AsStatements().ToArray(),
 						elseExpression.AsStatements().ToArray()
 					)
-				) as CodeDomConstruct
+				)
 				: CreateConditionalExpression(
 					context,
 					conditionExpression,
@@ -872,31 +836,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 		}
 
-		protected override CodeDomConstruct EmitStringSwitchStatement( CodeDomContext context, CodeDomConstruct target, IDictionary<string, CodeDomConstruct> cases, CodeDomConstruct defaultCase )
-		{
-#if DEBUG
-			Contract.Assert( target.IsExpression );
-			Contract.Assert( defaultCase.IsStatement );
-			Contract.Assert( cases.Values.All( c => c.IsStatement ) );
-#endif
-
-			var statements = cases.Aggregate<KeyValuePair<string, CodeDomConstruct>, CodeConditionStatement>(
-				null,
-				( current, caseStatement ) =>
-				new CodeConditionStatement(
-					new CodeBinaryOperatorExpression(
-						target.AsExpression(),
-						CodeBinaryOperatorType.ValueEquality,
-						new CodePrimitiveExpression( caseStatement.Key )
-					),
-					caseStatement.Value.AsStatements().ToArray(),
-					current == null ? defaultCase.AsStatements().ToArray() : new CodeStatement[] { current }
-				)
-			);
-
-			return CodeDomConstruct.Statement( statements );
-		}
-
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override CodeDomConstruct EmitRetrunStatement( CodeDomContext context, CodeDomConstruct expression )
 		{
@@ -906,42 +845,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return
 				CodeDomConstruct.Statement(
 					new CodeMethodReturnStatement( expression.AsExpression() )
-				);
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override CodeDomConstruct EmitForLoop( CodeDomContext context, CodeDomConstruct count, Func<ForLoopContext, CodeDomConstruct> loopBodyEmitter )
-		{
-#if DEBUG
-			Contract.Assert( count.IsExpression );
-#endif
-			var counterName = context.GetUniqueVariableName( "i" );
-			var counter = CodeDomConstruct.Variable( typeof( int ), counterName );
-			var loopContext = new ForLoopContext( counter );
-
-			return
-				CodeDomConstruct.Statement(
-					new CodeIterationStatement(
-						new CodeVariableDeclarationStatement(
-							typeof( int ), counterName, new CodePrimitiveExpression( 0 )
-						),
-						new CodeBinaryOperatorExpression(
-							counter.AsExpression(),
-							CodeBinaryOperatorType.LessThan,
-							count.AsExpression()
-						),
-						new CodeAssignStatement(
-							counter.AsExpression(),
-							new CodeBinaryOperatorExpression(
-								counter.AsExpression(),
-								CodeBinaryOperatorType.Add,
-								new CodePrimitiveExpression( 1 )
-							)
-						),
-						loopBodyEmitter( loopContext ).AsStatements().ToArray()
-					)
 				);
 		}
 
@@ -992,7 +895,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				{
 					CodeDomConstruct.Statement(
 						new CodeVariableDeclarationStatement(
-							enumerator.ContextType,
+							CodeDomSerializerBuilder.ToCodeTypeReference( enumerator.ContextType ),
 							enumeratorName,
 							new CodeMethodInvokeExpression(
 								collection.AsExpression(),
@@ -1000,7 +903,12 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							)
 						)
 					),
-					CodeDomConstruct.Statement( new CodeVariableDeclarationStatement( current.ContextType, currentName ) )
+					CodeDomConstruct.Statement( 
+						new CodeVariableDeclarationStatement( 
+							CodeDomSerializerBuilder.ToCodeTypeReference( current.ContextType ), 
+							currentName
+						)
+					)
 				};
 
 			if ( isDisposable )
@@ -1054,6 +962,29 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return CodeDomConstruct.Expression( underlyingType, new CodeCastExpression( underlyingType, enumValue.AsExpression() ) );
 		}
 
+		protected override CodeDomConstruct EmitNewPrivateMethodDelegateExpression( CodeDomContext context, MethodDefinition method )
+		{
+			var delegateBaseType = SerializerBuilderHelper.FindDelegateType( method.ReturnType, method.ParameterTypes );
+
+			var delegateType =
+				TypeDefinition.GenericReferenceType(
+					delegateBaseType,
+					method.ReturnType.TryGetRuntimeType() == typeof( void )
+						? method.ParameterTypes
+						: method.ParameterTypes.Concat( new[] { method.ReturnType } ).ToArray()
+				);
+
+			return
+				CodeDomConstruct.Expression(
+					delegateType,
+					new CodeDelegateCreateExpression(
+						CodeDomSerializerBuilder.ToCodeTypeReference( delegateType ),
+						new CodeThisReferenceExpression(),
+						method.MethodName
+					)
+				);
+		}
+
 		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema )
 		{
 			var asCodeDomContext = context as CodeDomContext;
@@ -1067,21 +998,23 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 			asCodeDomContext.Reset( typeof( TObject ), BaseClass );
 
+			SerializationTarget targetInfo;
 			if ( !typeof( TObject ).GetIsEnum() )
 			{
-				this.BuildSerializer( asCodeDomContext, concreteType, itemSchema );
+				this.BuildSerializer( asCodeDomContext, concreteType, itemSchema, out targetInfo );
 			}
 			else
 			{
+				targetInfo = null;
 				this.BuildEnumSerializer( asCodeDomContext );
 			}
 
-			this.Finish( asCodeDomContext, typeof( TObject ).GetIsEnum() );
+			this.Finish( asCodeDomContext, targetInfo, typeof( TObject ).GetIsEnum() );
 		}
 
-		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( CodeDomContext codeGenerationContext, PolymorphismSchema schema )
+		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( CodeDomContext codeGenerationContext, SerializationTarget targetInfo, PolymorphismSchema schema )
 		{
-			this.Finish( codeGenerationContext, false );
+			this.Finish( codeGenerationContext, targetInfo, false );
 			var targetType = PrepareSerializerConstructorCreation( codeGenerationContext );
 
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
@@ -1094,7 +1027,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateEnumSerializerConstructor( CodeDomContext codeGenerationContext )
 		{
-			this.Finish( codeGenerationContext, true );
+			this.Finish( codeGenerationContext, null, true );
 			var targetType = PrepareSerializerConstructorCreation( codeGenerationContext );
 
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
@@ -1135,13 +1068,13 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							CompilerOptions = "/optimize+"
 						}
 #endif
-,
+						,
 						cu
 					);
 				var errors = cr.Errors.OfType<CompilerError>().Where( e => !e.IsWarning ).ToArray();
 				if ( errors.Length > 0 )
 				{
-					if ( SerializerDebugging.TraceEnabled )
+					if ( SerializerDebugging.TraceEnabled && !SerializerDebugging.DumpEnabled )
 					{
 						codeProvider.GenerateCodeFromCompileUnit( cu, SerializerDebugging.ILTraceWriter, new CodeGeneratorOptions() );
 						SerializerDebugging.FlushTraceData();
@@ -1217,43 +1150,8 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "CodeDOM" )]
-		private void Finish( CodeDomContext context, bool isEnum )
+		private void Finish( CodeDomContext context, SerializationTarget targetInfo, bool isEnum )
 		{
-			// fields
-			foreach ( var dependentSerializer in context.GetDependentSerializers() )
-			{
-				var targetType = Type.GetTypeFromHandle( dependentSerializer.Key.TypeHandle );
-
-				context.DeclaringType.Members.Add(
-					new CodeMemberField(
-						typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
-						dependentSerializer.Value
-					)
-				);
-			}
-
-			foreach ( var cachedFieldInfo in context.GetCachedFieldInfos() )
-			{
-				context.DeclaringType.Members.Add(
-					new CodeMemberField(
-						typeof( FieldInfo ),
-						cachedFieldInfo.Value.StorageFieldName
-					)
-				);
-			}
-
-
-			foreach ( var cachedMethodBase in context.GetCachedMethodBases() )
-			{
-				context.DeclaringType.Members.Add(
-					new CodeMemberField(
-						typeof( MethodBase ),
-						cachedMethodBase.Value.StorageFieldName
-					)
-				);
-			}
-
-
 			// ctor
 			if ( isEnum )
 			{
@@ -1289,208 +1187,273 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			}
 			else
 			{
-				var ctor =
-					new CodeConstructor
-					{
-						Attributes = MemberAttributes.Public
-					};
-
-				ctor.Parameters.Add( new CodeParameterDeclarationExpression( typeof( SerializationContext ), "context" ) );
-				var contextArgument = new CodeArgumentReferenceExpression( "context" );
-				ctor.BaseConstructorArgs.Add( contextArgument );
-
-				if (
-					BaseClass.GetConstructors( BindingFlags.NonPublic | BindingFlags.Instance )
-						.Any( c => c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( CollectionSerializerHelpers.CollectionConstructorTypes ) )
-					)
+				context.BeginConstructor();
+				try
 				{
-					ctor.BaseConstructorArgs.Add(
-						new CodeMethodInvokeExpression(
-							new CodeMethodReferenceExpression(
-								new CodeTypeReferenceExpression( context.DeclaringType.Name ),
-								"RestoreSchema"
-							)
+					var ctor =
+						new CodeConstructor
+						{
+							Attributes = MemberAttributes.Public
+						};
+
+					ctor.Parameters.Add( new CodeParameterDeclarationExpression( typeof( SerializationContext ), "context" ) );
+					var contextArgument = new CodeArgumentReferenceExpression( "context" );
+					ctor.BaseConstructorArgs.Add( contextArgument );
+
+					if ( BaseClass.GetConstructors( BindingFlags.NonPublic | BindingFlags.Instance )
+						.Any( c =>
+							c.GetParameters()
+							.Select( p => p.ParameterType )
+							.SequenceEqual( CollectionSerializerHelpers.CollectionConstructorTypes ) 
 						)
-					);
+					)
+					{
+						ctor.BaseConstructorArgs.Add(
+							new CodeMethodInvokeExpression(
+								new CodeMethodReferenceExpression(
+									new CodeTypeReferenceExpression( context.DeclaringType.Name ),
+									MethodName.RestoreSchema
+								)
+							)
+						);
 
 #if DEBUG
-					Contract.Assert( context.GetDependentSerializers().Count == 0, "Dependent serializers are found in collection serializer." );
+						Contract.Assert(
+							context.GetDependentSerializers().Count == 0,
+							"Dependent serializers are found in collection serializer."
+						);
 #endif // DEBUG
-				}
-
-				int schemaNumber = -1;
-				foreach ( var dependentSerializer in context.GetDependentSerializers() )
-				{
-					var targetType = Type.GetTypeFromHandle( dependentSerializer.Key.TypeHandle );
-
-					if ( targetType.GetIsEnum() )
-					{
-						ctor.Statements.Add(
-							new CodeAssignStatement(
-								new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), dependentSerializer.Value ),
-								new CodeMethodInvokeExpression(
-									new CodeMethodReferenceExpression(
-										contextArgument,
-										"GetSerializer",
-										new CodeTypeReference( targetType )
-									),
-									new CodeMethodInvokeExpression(
-										new CodeTypeReferenceExpression( typeof( EnumMessagePackSerializerHelpers ) ),
-										Metadata._EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethodMethod.Name,
-										contextArgument,
-										new CodeTypeOfExpression( @targetType ),
-										new CodeFieldReferenceExpression(
-											new CodeTypeReferenceExpression( typeof( EnumMemberSerializationMethod ) ),
-											dependentSerializer.Key.EnumSerializationMethod.ToString()
-										)
-									)
-								)
-							)
-						);
 					}
-					else if ( DateTimeMessagePackSerializerHelpers.IsDateTime( targetType ) )
+
+					int schemaNumber = -1;
+					foreach ( var dependentSerializer in context.GetDependentSerializers() )
 					{
-						ctor.Statements.Add(
-							new CodeAssignStatement(
-								new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), dependentSerializer.Value ),
-								new CodeMethodInvokeExpression(
-									new CodeMethodReferenceExpression(
-										contextArgument,
-										"GetSerializer",
-										new CodeTypeReference( targetType )
-									),
-									new CodeMethodInvokeExpression(
-										new CodeTypeReferenceExpression( typeof( DateTimeMessagePackSerializerHelpers ) ),
-										Metadata._DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethodMethod.Name,
-										contextArgument,
-										new CodeFieldReferenceExpression(
-											new CodeTypeReferenceExpression( typeof( DateTimeMemberConversionMethod ) ),
-											dependentSerializer.Key.DateTimeConversionMethod.ToString()
-										)
-									)
-								)
-							)
-						);
-					}
-					else
-					{
-						CodeExpression schemaExpression;
-						if ( dependentSerializer.Key.PolymorphismSchema == null )
+						var targetType = Type.GetTypeFromHandle( dependentSerializer.Key.TypeHandle );
+
+						if ( targetType.GetIsEnum() )
 						{
-							schemaExpression = new CodePrimitiveExpression( null );
+							ctor.Statements.Add(
+								new CodeAssignStatement(
+									new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), dependentSerializer.Value ),
+									new CodeMethodInvokeExpression(
+										new CodeMethodReferenceExpression(
+											contextArgument,
+											"GetSerializer",
+											new CodeTypeReference( targetType )
+										),
+										new CodeMethodInvokeExpression(
+											new CodeTypeReferenceExpression( typeof( EnumMessagePackSerializerHelpers ) ),
+											Metadata._EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethodMethod.Name,
+											contextArgument,
+											new CodeTypeOfExpression( @targetType ),
+											new CodeFieldReferenceExpression(
+												new CodeTypeReferenceExpression( typeof( EnumMemberSerializationMethod ) ),
+												dependentSerializer.Key.EnumSerializationMethod.ToString()
+											)
+										)
+									)
+								)
+							);
+						}
+						else if ( DateTimeMessagePackSerializerHelpers.IsDateTime( targetType ) )
+						{
+							ctor.Statements.Add(
+								new CodeAssignStatement(
+									new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), dependentSerializer.Value ),
+									new CodeMethodInvokeExpression(
+										new CodeMethodReferenceExpression(
+											contextArgument,
+											"GetSerializer",
+											new CodeTypeReference( targetType )
+										),
+										new CodeMethodInvokeExpression(
+											new CodeTypeReferenceExpression( typeof( DateTimeMessagePackSerializerHelpers ) ),
+											Metadata._DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethodMethod.Name,
+											contextArgument,
+											new CodeFieldReferenceExpression(
+												new CodeTypeReferenceExpression( typeof( DateTimeMemberConversionMethod ) ),
+												dependentSerializer.Key.DateTimeConversionMethod.ToString()
+											)
+										)
+									)
+								)
+							);
 						}
 						else
 						{
-							schemaNumber++;
-							var variableName = "schema" + schemaNumber;
-							var schema = this.DeclareLocal( context, typeof( PolymorphismSchema ), variableName );
-							ctor.Statements.AddRange( schema.AsStatements().ToArray() );
-							ctor.Statements.AddRange(
-								this.EmitConstructPolymorphismSchema(
-									context,
-									schema,
-									dependentSerializer.Key.PolymorphismSchema
-								).SelectMany( st => st.AsStatements() ).ToArray()
+							CodeExpression schemaExpression;
+							if ( dependentSerializer.Key.PolymorphismSchema == null )
+							{
+								schemaExpression = new CodePrimitiveExpression( null );
+							}
+							else
+							{
+								schemaNumber++;
+								var variableName = "schema" + schemaNumber;
+								var schema = this.DeclareLocal( context, typeof( PolymorphismSchema ), variableName );
+								ctor.Statements.AddRange( schema.AsStatements().ToArray() );
+								ctor.Statements.AddRange(
+									this.EmitConstructPolymorphismSchema(
+										context,
+										schema,
+										dependentSerializer.Key.PolymorphismSchema
+									).SelectMany( st => st.AsStatements() ).ToArray()
+								);
+
+								schemaExpression = new CodeVariableReferenceExpression( variableName );
+							}
+
+							ctor.Statements.Add(
+								new CodeAssignStatement(
+									new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), dependentSerializer.Value ),
+									new CodeMethodInvokeExpression(
+										new CodeMethodReferenceExpression(
+											contextArgument,
+											"GetSerializer",
+											new CodeTypeReference( targetType )
+										),
+										schemaExpression
+									)
+								)
 							);
-
-							schemaExpression = new CodeVariableReferenceExpression( variableName );
 						}
+					} // foreach ( in context.GetDependentSerializers() )
 
+					foreach ( var cachedFieldInfo in context.GetCachedFieldInfos() )
+					{
+						var fieldInfo = cachedFieldInfo.Value.Target;
+#if DEBUG
+						Contract.Assert( fieldInfo != null, "fieldInfo != null" );
+						Contract.Assert( fieldInfo.DeclaringType != null, "fieldInfo.DeclaringType != null" );
+#endif // DEBUG
 						ctor.Statements.Add(
 							new CodeAssignStatement(
-								new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), dependentSerializer.Value ),
+								new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), cachedFieldInfo.Value.StorageFieldName ),
 								new CodeMethodInvokeExpression(
 									new CodeMethodReferenceExpression(
-										contextArgument,
-										"GetSerializer",
-										new CodeTypeReference( targetType )
+										new CodeTypeOfExpression( fieldInfo.DeclaringType ),
+										"GetField"
 									),
-									schemaExpression
+									new CodePrimitiveExpression( fieldInfo.Name ),
+									new CodeBinaryOperatorExpression(
+										new CodeFieldReferenceExpression(
+											new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
+											"Instance"
+										),
+										CodeBinaryOperatorType.BitwiseOr,
+										new CodeBinaryOperatorExpression(
+											new CodeFieldReferenceExpression(
+												new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
+												"Public"
+											),
+											CodeBinaryOperatorType.BitwiseOr,
+											new CodeFieldReferenceExpression(
+												new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
+												"NonPublic"
+											)
+										)
+									)
 								)
 							)
 						);
-					}
-				}
+					} // foreach ( in context.GetCachedFieldInfos() )
 
-				foreach ( var cachedFieldInfo in context.GetCachedFieldInfos() )
-				{
-					var fieldInfo = cachedFieldInfo.Value.Target;
-					ctor.Statements.Add(
-						new CodeAssignStatement(
-							new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), cachedFieldInfo.Value.StorageFieldName ),
-							new CodeMethodInvokeExpression(
-								new CodeMethodReferenceExpression(
-									new CodeTypeOfExpression( fieldInfo.DeclaringType ),
-									"GetField"
-								),
-								new CodePrimitiveExpression( fieldInfo.Name ),
-								new CodeBinaryOperatorExpression(
-									new CodeFieldReferenceExpression(
-										new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
-										"Instance"
+
+					foreach ( var cachedMethodBase in context.GetCachedMethodBases() )
+					{
+						var methodBase = cachedMethodBase.Value.Target;
+						ctor.Statements.Add(
+							new CodeAssignStatement(
+								new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), cachedMethodBase.Value.StorageFieldName ),
+								new CodeMethodInvokeExpression(
+									new CodeMethodReferenceExpression(
+										// ReSharper disable once AssignNullToNotNullAttribute
+										new CodeTypeOfExpression( methodBase.DeclaringType ),
+										"GetMethod"
 									),
-									CodeBinaryOperatorType.BitwiseOr,
+									new CodePrimitiveExpression( methodBase.Name ),
 									new CodeBinaryOperatorExpression(
 										new CodeFieldReferenceExpression(
 											new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
-											"Public"
+											"Instance"
 										),
 										CodeBinaryOperatorType.BitwiseOr,
-										new CodeFieldReferenceExpression(
-											new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
-											"NonPublic"
+										new CodeBinaryOperatorExpression(
+											new CodeFieldReferenceExpression(
+												new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
+												"Public"
+											),
+											CodeBinaryOperatorType.BitwiseOr,
+											new CodeFieldReferenceExpression(
+												new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
+												"NonPublic"
+											)
 										)
-									)
+									),
+									new CodePrimitiveExpression( null ),
+									new CodeArrayCreateExpression(
+										typeof( Type ),
+										// ReSharper disable once CoVariantArrayConversion
+										methodBase.GetParameters().Select( pi => new CodeTypeOfExpression( pi.ParameterType ) ).ToArray()
+									),
+									new CodePrimitiveExpression( null )
 								)
 							)
-						)
-					);
-				}
+						);
+					} // foreach ( in context.GetCachedMethodBases() )
 
-
-				foreach ( var cachedMethodBase in context.GetCachedMethodBases() )
-				{
-					var methodBase = cachedMethodBase.Value.Target;
-					ctor.Statements.Add(
-						new CodeAssignStatement(
-							new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), cachedMethodBase.Value.StorageFieldName ),
-							new CodeMethodInvokeExpression(
-								new CodeMethodReferenceExpression(
-									// ReSharper disable once AssignNullToNotNullAttribute
-									new CodeTypeOfExpression( methodBase.DeclaringType ),
-									"GetMethod"
-								),
-								new CodePrimitiveExpression( methodBase.Name ),
-								new CodeBinaryOperatorExpression(
-									new CodeFieldReferenceExpression(
-										new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
-										"Instance"
-									),
-									CodeBinaryOperatorType.BitwiseOr,
-									new CodeBinaryOperatorExpression(
-										new CodeFieldReferenceExpression(
-											new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
-											"Public"
-										),
-										CodeBinaryOperatorType.BitwiseOr,
-										new CodeFieldReferenceExpression(
-											new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
-											"NonPublic"
-										)
-									)
-								),
-								new CodePrimitiveExpression( null ),
-								new CodeArrayCreateExpression(
-									typeof( Type ),
-									// ReSharper disable once CoVariantArrayConversion
-									methodBase.GetParameters().Select( pi => new CodeTypeOfExpression( pi.ParameterType ) ).ToArray()
-								),
-								new CodePrimitiveExpression( null )
+					if ( targetInfo != null )
+					{ 
+						// For object only.
+						if ( !typeof( IPackable ).IsAssignableFrom( typeof( TObject ) ) )
+						{
+							if ( context.SerializationContext.SerializationMethod == SerializationMethod.Array
+								|| targetInfo.Members.All( m => m.Member == null ) // Tuple
 							)
-						)
-					);
+							{
+								ctor.Statements.AddRange(
+									this.EmitPackOperationListInitialization( context, targetInfo ).AsStatements().ToArray()
+								);
+							}
+							else
+							{
+								ctor.Statements.AddRange(
+									this.EmitPackOperationTableInitialization( context, targetInfo ).AsStatements().ToArray()
+								);
+							}
+						}
+
+						if ( !typeof( IUnpackable ).IsAssignableFrom( typeof( TObject ) ) )
+						{
+							ctor.Statements.AddRange(
+								this.EmitUnpackOperationListInitialization( context, targetInfo ).AsStatements().ToArray()
+							);
+
+							if ( targetInfo.Members.Any( m => m.Member != null ) )
+							{
+								// Except tuples
+								ctor.Statements.AddRange(
+									this.EmitUnpackOperationTableInitialization( context, targetInfo ).AsStatements().ToArray()
+								);
+							}
+
+							ctor.Statements.AddRange(
+								this.EmitMemberListInitialization( context, targetInfo ).AsStatements().ToArray()
+							);
+						}
+					}
+
+					if ( context.IsUnpackToUsed )
+					{
+						ctor.Statements.AddRange( this.EmitUnpackToInitialization( context  ).AsStatements().ToArray() );
+					}
+
+					context.DeclaringType.Members.Add( ctor );
 				}
-				context.DeclaringType.Members.Add( ctor );
+				finally
+				{
+					context.EndConstructor();
+				}
 			} // else of isEnum
 
 			// __Condition

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ using System;
 using System.Globalization;
 using System.Reflection.Emit;
 
+using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -34,7 +35,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private readonly Action<TracingILGenerator, ILConstruct, ILConstruct> _operation;
 		private readonly Action<TracingILGenerator, ILConstruct, ILConstruct, Label> _branchOperation;
 
-		public BinaryOperatorILConstruct( string @operator, Type resultType, ILConstruct left, ILConstruct right, Action<TracingILGenerator, ILConstruct, ILConstruct> operation, Action<TracingILGenerator, ILConstruct, ILConstruct, Label> branchOperation )
+		public BinaryOperatorILConstruct( string @operator, TypeDefinition resultType, ILConstruct left, ILConstruct right, Action<TracingILGenerator, ILConstruct, ILConstruct> operation, Action<TracingILGenerator, ILConstruct, ILConstruct, Label> branchOperation )
 			: base( resultType )
 		{
 			ValidateContextTypeMatch( left, right );

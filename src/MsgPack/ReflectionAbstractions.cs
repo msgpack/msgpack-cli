@@ -145,6 +145,71 @@ namespace MsgPack
 #endif
 		}
 
+		public static MethodInfo GetRuntimeMethod( this Type source, string name )
+		{
+			var candidates = source.GetRuntimeMethods().Where( m => m.Name == name ).ToArray();
+			switch ( candidates.Length )
+			{
+				case 0:
+				{
+					return null;
+				}
+				case 1:
+				{
+					return candidates[ 0 ];
+				}
+				default:
+				{
+					throw new AmbiguousMatchException();
+				}
+			}
+		}
+
+#if NETFX_CORE
+		public static MethodInfo GetRuntimeMethod( this Type source, string name, Type[] parameters )
+		{
+			return
+				source.GetRuntimeMethods()
+					.SingleOrDefault(
+						m => m.Name == name && m.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameters )
+					);
+		}
+
+#else
+		public static MethodInfo GetRuntimeMethod( this Type source, string name, Type[] parameters )
+		{
+			return
+				source.GetMethod(
+					name,
+					BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic,
+					null,
+					parameters,
+					null
+				);
+		}
+
+		public static IEnumerable<MethodInfo> GetRuntimeMethods( this Type source )
+		{
+			return
+				source.GetMethods(
+					BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic
+				);
+		}
+#endif // NETFX_CORE
+
+#if NETFX_35 || NETFX_40 || SILVERLIGHT
+		public static Delegate CreateDelegate( this MethodInfo source, Type delegateType )
+		{
+			return Delegate.CreateDelegate( delegateType, source );
+		}
+
+		public static Delegate CreateDelegate( this MethodInfo source, Type delegateType, object target )
+		{
+			return Delegate.CreateDelegate( delegateType, target, source );
+		}
+
+#endif // NETFX_35 || NETFX_40 || SILVERLIGHT
+
 #if NETFX_CORE
 		public static MethodInfo GetMethod( this Type source, string name )
 		{
@@ -166,7 +231,6 @@ namespace MsgPack
 			return source.GetRuntimeProperty( name );
 		}
 
-#if DEBUG
 		public static IEnumerable<PropertyInfo> GetProperties( this Type source )
 		{
 			return source.GetRuntimeProperties();
@@ -176,7 +240,6 @@ namespace MsgPack
 		{
 			return source.GetRuntimeField( name );
 		}
-#endif
 
 		public static ConstructorInfo GetConstructor( this Type source, Type[] parameteres )
 		{
@@ -384,13 +447,6 @@ namespace MsgPack
 			}
 		}
 #endif // SILVERLIGHT
-
-#if NETFX_35 || NETFX_40 || UNITY
-		public static Delegate CreateDelegate( this MethodInfo source, Type delegateType )
-		{
-			return Delegate.CreateDelegate( delegateType, source );
-		}
-#endif // NETFX_35 || NETFX_40 || UNITY
 
 		public static bool GetHasDefaultValue( this ParameterInfo source )
 		{

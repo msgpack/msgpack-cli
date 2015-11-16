@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using MsgPack.Serialization.AbstractSerializers;
@@ -39,120 +40,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		public AssemblyBuilderSerializerBuilder() { }
 
-		protected override void EmitMethodPrologue( AssemblyBuilderEmittingContext context, SerializerMethod method )
+		protected override ILConstruct EmitSequentialStatements( AssemblyBuilderEmittingContext context, TypeDefinition contextType, IEnumerable<ILConstruct> statements )
 		{
-			switch ( method )
-			{
-				case SerializerMethod.PackToCore:
-				{
-					context.IL = context.Emitter.GetPackToMethodILGenerator();
-					break;
-				}
-				case SerializerMethod.UnpackFromCore:
-				{
-					context.IL = context.Emitter.GetUnpackFromMethodILGenerator();
-					break;
-				}
-				case SerializerMethod.UnpackToCore:
-				{
-					context.IL = context.Emitter.GetUnpackToMethodILGenerator();
-					break;
-				}
-				default:
-				{
-					throw new ArgumentOutOfRangeException( "method", method.ToString() );
-				}
-			}
+			return ILConstruct.Sequence( contextType.ResolveRuntimeType(), statements );
 		}
 
-		protected override void EmitMethodPrologue( AssemblyBuilderEmittingContext context, EnumSerializerMethod method )
+		protected override ILConstruct MakeNullLiteral( AssemblyBuilderEmittingContext context, TypeDefinition contextType )
 		{
-			switch ( method )
-			{
-				case EnumSerializerMethod.PackUnderlyingValueTo:
-				{
-					context.IL = context.EnumEmitter.GetPackUnderyingValueToMethodILGenerator();
-					break;
-				}
-				case EnumSerializerMethod.UnpackFromUnderlyingValue:
-				{
-					context.IL = context.EnumEmitter.GetUnpackFromUnderlyingValueMethodILGenerator();
-					break;
-				}
-				default:
-				{
-					throw new ArgumentOutOfRangeException( "method", method.ToString() );
-				}
-			}
-		}
-
-		protected override void EmitMethodPrologue( AssemblyBuilderEmittingContext context, CollectionSerializerMethod method, MethodInfo declaration )
-		{
-			switch ( method )
-			{
-				case CollectionSerializerMethod.AddItem:
-				{
-					context.IL = context.Emitter.GetAddItemMethodILGenerator( declaration );
-					break;
-				}
-				case CollectionSerializerMethod.CreateInstance:
-				{
-					context.IL = context.Emitter.GetCreateInstanceMethodILGenerator( declaration );
-					break;
-				}
-				case CollectionSerializerMethod.RestoreSchema:
-				{
-					context.IL = context.Emitter.GetRestoreSchemaMethodILGenerator();
-					break;
-				}
-				default:
-				{
-					throw new ArgumentOutOfRangeException( "method", method.ToString() );
-				}
-			}
-		}
-
-		protected override void EmitMethodEpilogue( AssemblyBuilderEmittingContext context, SerializerMethod method, ILConstruct construct )
-		{
-			EmitMethodEpilogue( context, construct );
-		}
-
-		protected override void EmitMethodEpilogue( AssemblyBuilderEmittingContext context, EnumSerializerMethod method, ILConstruct construct )
-		{
-			EmitMethodEpilogue( context, construct );
-		}
-
-		protected override void EmitMethodEpilogue( AssemblyBuilderEmittingContext context, CollectionSerializerMethod method, ILConstruct construct )
-		{
-			EmitMethodEpilogue( context, construct );
-		}
-
-		private static void EmitMethodEpilogue( AssemblyBuilderEmittingContext context, ILConstruct construct )
-		{
-			try
-			{
-				if ( construct != null )
-				{
-					construct.Evaluate( context.IL );
-				}
-
-				context.IL.EmitRet();
-			}
-			finally
-			{
-				context.IL.FlushTrace();
-				SerializerDebugging.FlushTraceData();
-			}
-		}
-
-		protected override ILConstruct EmitSequentialStatements( AssemblyBuilderEmittingContext context, Type contextType, IEnumerable<ILConstruct> statements )
-		{
-			return ILConstruct.Sequence( contextType, statements );
-		}
-
-		protected override ILConstruct MakeNullLiteral( AssemblyBuilderEmittingContext context, Type contextType )
-		{
-			return ILConstruct.Literal( contextType, default( object ), il => il.EmitLdnull() );
+			return ILConstruct.Literal( contextType.ResolveRuntimeType(), default( object ), il => il.EmitLdnull() );
 		}
 
 		protected override ILConstruct MakeByteLiteral( AssemblyBuilderEmittingContext context, byte constant )
@@ -279,9 +174,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Literal( typeof( string ), constant, il => il.EmitLdstr( constant ) );
 		}
 
-		protected override ILConstruct MakeEnumLiteral( AssemblyBuilderEmittingContext context, Type type, object constant )
+		protected override ILConstruct MakeEnumLiteral( AssemblyBuilderEmittingContext context, TypeDefinition type, object constant )
 		{
-			var underyingType = Enum.GetUnderlyingType( type );
+			var underyingType = Enum.GetUnderlyingType( type.ResolveRuntimeType() );
 
 			switch ( Type.GetTypeCode( underyingType ) )
 			{
@@ -339,17 +234,17 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
-		protected override ILConstruct MakeDefaultLiteral( AssemblyBuilderEmittingContext context, Type type )
+		protected override ILConstruct MakeDefaultLiteral( AssemblyBuilderEmittingContext context, TypeDefinition type )
 		{
 			return
 				ILConstruct.Literal(
-					type,
+					type.ResolveRuntimeType(),
 					"default(" + type + ")",
 					il =>
 					{
-						var temp = il.DeclareLocal( type );
+						var temp = il.DeclareLocal( type.ResolveRuntimeType(), context.GetUniqueVariableName( "tmp" ) );
 						il.EmitAnyLdloca( temp );
-						il.EmitInitobj( type );
+						il.EmitInitobj( type.ResolveRuntimeType() );
 						il.EmitAnyLdloc( temp );
 					}
 				);
@@ -360,7 +255,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Literal( context.GetSerializerType( typeof( TObject ) ), "(this)", il => il.EmitLdarg_0() );
 		}
 
-		protected override ILConstruct EmitBoxExpression( AssemblyBuilderEmittingContext context, Type valueType, ILConstruct value )
+		protected override ILConstruct EmitBoxExpression( AssemblyBuilderEmittingContext context, TypeDefinition valueType, ILConstruct value )
 		{
 			return
 				ILConstruct.UnaryOperator(
@@ -369,12 +264,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 					( il, val ) =>
 					{
 						val.LoadValue( il, false );
-						il.EmitBox( valueType );
+						il.EmitBox( valueType.ResolveRuntimeType() );
 					}
 				);
 		}
 
-		protected override ILConstruct EmitUnboxAnyExpression( AssemblyBuilderEmittingContext context, Type targetType, ILConstruct value )
+		protected override ILConstruct EmitUnboxAnyExpression( AssemblyBuilderEmittingContext context, TypeDefinition targetType, ILConstruct value )
 		{
 			return
 				ILConstruct.UnaryOperator(
@@ -383,7 +278,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					( il, val ) =>
 					{
 						val.LoadValue( il, false );
-						il.EmitUnbox_Any( targetType );
+						il.EmitUnbox_Any( targetType.ResolveRuntimeType() );
 					}
 				);
 		}
@@ -391,7 +286,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitNotExpression( AssemblyBuilderEmittingContext context, ILConstruct booleanExpression )
 		{
-			if ( booleanExpression.ContextType != typeof( bool ) )
+			if ( booleanExpression.ContextType.ResolveRuntimeType() != typeof( bool ) )
 			{
 				throw new ArgumentException(
 					String.Format( CultureInfo.CurrentCulture, "Not expression must be Boolean elementType, but actual is '{0}'.", booleanExpression.ContextType ),
@@ -420,7 +315,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitEqualsExpression( AssemblyBuilderEmittingContext context, ILConstruct left, ILConstruct right )
 		{
-			var equality = left.ContextType.GetMethod( "op_Equality" );
+			var equality = left.ContextType.ResolveRuntimeType().GetMethod( "op_Equality" );
 			return
 				ILConstruct.BinaryOperator(
 					"==",
@@ -462,9 +357,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override ILConstruct EmitGreaterThanExpression( AssemblyBuilderEmittingContext context, ILConstruct left, ILConstruct right )
 		{
 #if DEBUG
-			Contract.Assert( left.ContextType.IsPrimitive && left.ContextType != typeof( string ) );
+			Contract.Assert( left.ContextType.ResolveRuntimeType().IsPrimitive && left.ContextType.ResolveRuntimeType() != typeof( string ) );
 #endif
-			var greaterThan = left.ContextType.GetMethod( "op_GreaterThan" );
+			var greaterThan = left.ContextType.ResolveRuntimeType().GetMethod( "op_GreaterThan" );
 			return
 				ILConstruct.BinaryOperator(
 					">",
@@ -505,9 +400,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override ILConstruct EmitLessThanExpression( AssemblyBuilderEmittingContext context, ILConstruct left, ILConstruct right )
 		{
 #if DEBUG
-			Contract.Assert( left.ContextType.IsPrimitive && left.ContextType != typeof( string ) );
+			Contract.Assert( left.ContextType.ResolveRuntimeType().IsPrimitive && left.ContextType.ResolveRuntimeType() != typeof( string ) );
 #endif
-			var lessThan = left.ContextType.GetMethod( "op_LessThan" );
+			var lessThan = left.ContextType.ResolveRuntimeType().GetMethod( "op_LessThan" );
 			return
 				ILConstruct.BinaryOperator(
 					"<",
@@ -561,13 +456,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitTypeOfExpression( AssemblyBuilderEmittingContext context, Type type )
+		protected override ILConstruct EmitTypeOfExpression( AssemblyBuilderEmittingContext context, TypeDefinition type )
 		{
 			return
 				ILConstruct.Literal(
 					typeof( Type ),
 					type,
-					il => il.EmitTypeOf( type )
+					il => il.EmitTypeOf( type.ResolveRuntimeType() )
 				);
 		}
 
@@ -575,7 +470,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override ILConstruct EmitMethodOfExpression( AssemblyBuilderEmittingContext context, MethodBase method )
 		{
 			var instructions =
-				context.Emitter.RegisterMethod(
+				context.Emitter.RegisterMethodCache(
 					method
 				);
 
@@ -593,7 +488,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override ILConstruct EmitFieldOfExpression( AssemblyBuilderEmittingContext context, FieldInfo field )
 		{
 			var instructions =
-				context.Emitter.RegisterField(
+				context.Emitter.RegisterFieldCache(
 					field
 				);
 
@@ -607,48 +502,49 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct DeclareLocal( AssemblyBuilderEmittingContext context, Type type, string name )
+		protected override ILConstruct DeclareLocal( AssemblyBuilderEmittingContext context, TypeDefinition nestedType, string name )
 		{
 			return
 				ILConstruct.Variable(
-					type,
+					nestedType,
 					name
 				);
 		}
 
-		protected override ILConstruct ReferArgument( AssemblyBuilderEmittingContext context, Type type, string name, int index )
+		protected override ILConstruct ReferArgument( AssemblyBuilderEmittingContext context, TypeDefinition type, string name, int index )
 		{
-			return ILConstruct.Argument( index, type, name );
+			return ILConstruct.Argument( index, type.ResolveRuntimeType(), name );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override ILConstruct EmitInvokeVoidMethod( AssemblyBuilderEmittingContext context, ILConstruct instance, MethodInfo method, params ILConstruct[] arguments )
+		protected override ILConstruct EmitInvokeVoidMethod( AssemblyBuilderEmittingContext context, ILConstruct instance, MethodDefinition method, params ILConstruct[] arguments )
 		{
+			var runtimeMethod = method.ResolveRuntimeMethod();
 			return
-				method.ReturnType == typeof( void )
-					? ILConstruct.Invoke( instance, method, arguments )
+				runtimeMethod.ReturnType == typeof( void )
+					? ILConstruct.Invoke( instance, runtimeMethod, arguments )
 					: ILConstruct.Sequence(
 						typeof( void ),
 						new[]
 						{
-							ILConstruct.Invoke( instance, method, arguments ),
+							ILConstruct.Invoke( instance, runtimeMethod, arguments ),
 							ILConstruct.Instruction( "pop", typeof( void ), false, il => il.EmitPop() )
 						}
 					);
 		}
 
-		protected override ILConstruct EmitCreateNewObjectExpression( AssemblyBuilderEmittingContext context, ILConstruct variable, ConstructorInfo constructor, params ILConstruct[] arguments )
+		protected override ILConstruct EmitCreateNewObjectExpression( AssemblyBuilderEmittingContext context, ILConstruct variable, ConstructorDefinition constructor, params ILConstruct[] arguments )
 		{
-			return ILConstruct.NewObject( variable, constructor, arguments );
+			return ILConstruct.NewObject( variable, constructor.ResolveRuntimeConstructor(), arguments );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Asserted internally" )]
-		protected override ILConstruct EmitCreateNewArrayExpression( AssemblyBuilderEmittingContext context, Type elementType, int length )
+		protected override ILConstruct EmitCreateNewArrayExpression( AssemblyBuilderEmittingContext context, TypeDefinition elementType, int length )
 		{
 			var array =
 				ILConstruct.Variable(
-					elementType.MakeArrayType(),
+					elementType.ResolveRuntimeType().MakeArrayType(),
 					"array"
 				);
 
@@ -665,7 +561,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 								false,
 								il =>
 								{
-									il.EmitNewarr( elementType, length );
+									il.EmitNewarr( elementType.ResolveRuntimeType(), length );
 									array.StoreValue( il );
 								}
 							)
@@ -677,11 +573,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Asserted internally" )]
-		protected override ILConstruct EmitCreateNewArrayExpression( AssemblyBuilderEmittingContext context, Type elementType, int length, IEnumerable<ILConstruct> initialElements )
+		protected override ILConstruct EmitCreateNewArrayExpression( AssemblyBuilderEmittingContext context, TypeDefinition elementType, int length, IEnumerable<ILConstruct> initialElements )
 		{
 			var array =
 				ILConstruct.Variable(
-					elementType.MakeArrayType(),
+					elementType.ResolveRuntimeType().MakeArrayType(),
 					"array"
 				);
 
@@ -698,7 +594,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 								false,
 								il =>
 								{
-									il.EmitNewarr( elementType, length );
+									il.EmitNewarr( elementType.ResolveRuntimeType(), length );
 									array.StoreValue( il );
 									var index = 0;
 									foreach ( var initialElement in initialElements )
@@ -706,7 +602,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 										array.LoadValue( il, false );
 										this.MakeInt32Literal( context, index ).LoadValue( il, false );
 										initialElement.LoadValue( il, false );
-										il.EmitStelem( elementType );
+										il.EmitStelem( elementType.ResolveRuntimeType() );
 										index++;
 									}
 								}
@@ -714,6 +610,24 @@ namespace MsgPack.Serialization.EmittingSerializers
 						}
 					),
 					array
+				);
+		}
+
+		protected override ILConstruct EmitGetArrayElementExpression( AssemblyBuilderEmittingContext context, ILConstruct array, ILConstruct index )
+		{
+			return
+				ILConstruct.Instruction(
+					"SetArrayElement",
+					array.ContextType,
+					false,
+					il =>
+					{
+						il.EmitAnyLdelem(
+							array.ContextType.ResolveRuntimeType().GetElementType(),
+							il0 => array.LoadValue( il0, false ),
+							il0 => index.LoadValue( il0, false )
+						);
+					}
 				);
 		}
 
@@ -728,27 +642,23 @@ namespace MsgPack.Serialization.EmittingSerializers
 					il =>
 					{
 						il.EmitAnyStelem(
-							value.ContextType,
-							il0 =>
-							{
-								array.LoadValue( il0, false );
-							},
-							il0 =>
-							{
-								index.LoadValue( il0, false );
-							},
-							il0 =>
-							{
-								value.LoadValue( il0, true );
-							}
+							value.ContextType.ResolveRuntimeType(),
+							il0 => array.LoadValue( il0, false ),
+							il0 => index.LoadValue( il0, false ),
+							il0 => value.LoadValue( il0, true )
 						);
 					}
 				);
 		}
 
-		protected override ILConstruct EmitInvokeMethodExpression( AssemblyBuilderEmittingContext context, ILConstruct instance, MethodInfo method, IEnumerable<ILConstruct> arguments )
+		protected override ILConstruct EmitInvokeMethodExpression( AssemblyBuilderEmittingContext context, ILConstruct instance, MethodDefinition method, IEnumerable<ILConstruct> arguments )
 		{
-			return ILConstruct.Invoke( instance, method, arguments );
+			return ILConstruct.Invoke( instance, method.ResolveRuntimeMethod(), arguments );
+		}
+
+		protected override ILConstruct EmitInvokeDelegateExpression( AssemblyBuilderEmittingContext context, TypeDefinition delegateReturnType, ILConstruct @delegate, params ILConstruct[] arguments )
+		{
+			return ILConstruct.Invoke( @delegate, @delegate.ContextType.ResolveRuntimeType().GetMethod( "Invoke" ), arguments );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
@@ -757,9 +667,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Invoke( instance, property.GetGetMethod( true ), ILConstruct.NoArguments );
 		}
 
-		protected override ILConstruct EmitGetFieldExpression( AssemblyBuilderEmittingContext context, ILConstruct instance, FieldInfo field )
+		protected override ILConstruct EmitGetFieldExpression( AssemblyBuilderEmittingContext context, ILConstruct instance, FieldDefinition field )
 		{
-			return ILConstruct.LoadField( instance, field );
+			return ILConstruct.LoadField( instance, field.ResolveRuntimeField() );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
@@ -776,9 +686,24 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Invoke( instance, property.GetSetMethod( true ), new[] { value } );
 		}
 
-		protected override ILConstruct EmitSetField( AssemblyBuilderEmittingContext context, ILConstruct instance, FieldInfo field, ILConstruct value )
+		protected override ILConstruct EmitSetIndexedProperty( AssemblyBuilderEmittingContext context, ILConstruct instance, TypeDefinition declaringType, string proeprtyName, ILConstruct key, ILConstruct value )
 		{
-			return ILConstruct.StoreField( instance, field, value );
+#if DEBUG
+			Contract.Assert( declaringType.HasRuntimeTypeFully() );
+			Contract.Assert( key.ContextType.HasRuntimeTypeFully() );
+#endif
+			var indexer = declaringType.ResolveRuntimeType().GetProperty( proeprtyName, new[] { key.ContextType.ResolveRuntimeType() } );
+			return ILConstruct.Invoke( instance, indexer.GetSetMethod( true ), new[] { key, value } );
+		}
+
+		protected override ILConstruct EmitSetField( AssemblyBuilderEmittingContext context, ILConstruct instance, FieldDefinition field, ILConstruct value )
+		{
+			return ILConstruct.StoreField( instance, field.ResolveRuntimeField(), value );
+		}
+
+		protected override ILConstruct EmitSetField( AssemblyBuilderEmittingContext context, ILConstruct instance, TypeDefinition nestedType, string fieldName, ILConstruct value )
+		{
+			return ILConstruct.StoreField( instance, nestedType.ResolveRuntimeType().GetField( fieldName ), value );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
@@ -790,21 +715,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override ILConstruct EmitStoreVariableStatement( AssemblyBuilderEmittingContext context, ILConstruct variable, ILConstruct value )
 		{
 			return ILConstruct.StoreLocal( variable, value );
-		}
-
-		protected override ILConstruct EmitThrowExpression( AssemblyBuilderEmittingContext context, Type expressionType, ILConstruct exceptionExpression )
-		{
-			return
-				ILConstruct.Instruction(
-					"throw",
-					expressionType,
-					true,
-					il =>
-					{
-						exceptionExpression.LoadValue( il, false );
-						il.EmitThrow();
-					}
-				);
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
@@ -843,72 +753,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 					ILConstruct.AndCondition( conditionExpressions ),
 					thenExpression,
 					elseExpression
-				);
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override ILConstruct EmitStringSwitchStatement( AssemblyBuilderEmittingContext context, ILConstruct target, IDictionary<string, ILConstruct> cases, ILConstruct defaultCase )
-		{
-			// Simple if statements
-			ILConstruct @else = defaultCase;
-			foreach ( var @case in cases )
-			{
-				@else =
-					this.EmitConditionalExpression(
-						context,
-						this.EmitInvokeMethodExpression(
-							context,
-							null,
-							Metadata._String.op_Equality,
-							target,
-							this.MakeStringLiteral( context, @case.Key )
-						),
-						@case.Value,
-						@else
-					);
-			}
-
-			return @else;
-		}
-
-		protected override ILConstruct EmitForLoop( AssemblyBuilderEmittingContext context, ILConstruct count, Func<ForLoopContext, ILConstruct> loopBodyEmitter )
-		{
-			var i =
-				this.DeclareLocal(
-					context,
-					typeof( int ),
-					"i"
-				);
-
-			var loopContext = new ForLoopContext( i );
-			return
-				this.EmitSequentialStatements(
-					context,
-					i.ContextType,
-					i,
-					ILConstruct.Instruction(
-						"for",
-						typeof( void ),
-						false,
-						il =>
-						{
-							var forCond = il.DefineLabel( "FOR_COND" );
-							il.EmitBr( forCond );
-							var body = il.DefineLabel( "BODY" );
-							il.MarkLabel( body );
-							loopBodyEmitter( loopContext ).Evaluate( il );
-							// increment
-							i.LoadValue( il, false );
-							il.EmitLdc_I4_1();
-							il.EmitAdd();
-							i.StoreValue( il );
-							// cond
-							il.MarkLabel( forCond );
-							i.LoadValue( il, false );
-							count.LoadValue( il, false );
-							il.EmitBlt( body );
-						}
-					)
 				);
 		}
 
@@ -1028,15 +872,19 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return enumValue;
 		}
 
-		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( AssemblyBuilderEmittingContext codeGenerationContext, PolymorphismSchema schema )
+		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( 
+			AssemblyBuilderEmittingContext codeGenerationContext,
+			SerializationTarget targetInfo,
+			PolymorphismSchema schema 
+		)
 		{
-			return context => codeGenerationContext.Emitter.CreateInstance<TObject>( context, schema );
+			return context => codeGenerationContext.Emitter.CreateObjectInstance( codeGenerationContext, this, targetInfo, schema );
 		}
 
 		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateEnumSerializerConstructor( AssemblyBuilderEmittingContext codeGenerationContext )
 		{
 			return context =>
-				codeGenerationContext.EnumEmitter.CreateInstance<TObject>(
+				codeGenerationContext.Emitter.CreateEnumInstance<TObject>(
 					context,
 					EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod( context, typeof( TObject ), EnumMemberSerializationMethod.Default )
 				);
@@ -1046,7 +894,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override ILConstruct EmitGetSerializerExpression( AssemblyBuilderEmittingContext context, Type targetType, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
 		{
 			var realSchema = itemsSchema ?? PolymorphismSchema.Create( targetType, memberInfo );
-			var instructions =
+			var field =
 				context.Emitter.RegisterSerializer(
 					targetType,
 					memberInfo == null
@@ -1059,14 +907,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					() => this.EmitConstructPolymorphismSchema( context, realSchema ) 
 				);
 
-			return
-				ILConstruct.Instruction(
-					"getserializer",
-					typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
-					false,
-					// Both of this pointer for FieldBasedSerializerEmitter and context argument of methods for ContextBasedSerializerEmitter are 0.
-					il => instructions( il, 0 )
-				);
+			return this.EmitGetFieldExpression( context, this.EmitThisReferenceExpression( context ), field );
 		}
 
 		private IEnumerable<ILConstruct> EmitConstructPolymorphismSchema(
@@ -1084,6 +925,85 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 
 			yield return this.EmitLoadVariableExpression( context, schema );
+		}
+
+		protected override ILConstruct EmitGetActionsExpression( AssemblyBuilderEmittingContext context, ActionType actionType )
+		{
+			Type type;
+			string name;
+			switch ( actionType )
+			{
+				case ActionType.PackToArray:
+				{
+					type = typeof( IList<Action<Packer, TObject>> );
+					name = FieldName.PackOperationList;
+					break;
+				}
+				case ActionType.PackToMap:
+				{
+					type = typeof( IDictionary<string, Action<Packer, TObject>> );
+					name = FieldName.PackOperationTable;
+					break;
+				}
+				case ActionType.UnpackFromArray:
+				{
+					type =
+						typeof( IList<> ).MakeGenericType(
+							typeof( Action<,,> ).MakeGenericType(
+								typeof( Unpacker ),
+								context.UnpackingContextType == null
+									? typeof( TObject )
+									: context.UnpackingContextType.ResolveRuntimeType(),
+									typeof( int )
+							)
+						);
+					name = FieldName.UnpackOperationList;
+					break;
+				}
+				case ActionType.UnpackFromMap:
+				{
+					type =
+						typeof( IDictionary<,> ).MakeGenericType(
+							typeof( string ),
+							typeof( Action<,,> ).MakeGenericType( 
+								typeof( Unpacker ), 
+								context.UnpackingContextType == null
+									? typeof( TObject )
+									: context.UnpackingContextType.ResolveRuntimeType(),
+								typeof( int )
+							)
+						);
+					name = FieldName.UnpackOperationTable;
+					break;
+				}
+				case ActionType.UnpackTo:
+				{
+					type = typeof( Action<Unpacker, TObject, int> );
+					name = FieldName.UnpackTo;
+					break;
+				}
+				default: // UnpackFromMap
+				{
+					throw new ArgumentOutOfRangeException( "actionType" );
+				}
+			}
+
+			var field = context.DeclarePrivateField( name, type );
+
+			return this.EmitGetFieldExpression( context, this.EmitThisReferenceExpression( context ), field );
+		}
+
+		protected override ILConstruct EmitGetMemberNamesExpression( AssemblyBuilderEmittingContext context )
+		{
+			var field = context.DeclarePrivateField( FieldName.MemberNames, typeof( IList<string> ) );
+
+			return this.EmitGetFieldExpression( context, this.EmitThisReferenceExpression( context ), field );
+		}
+
+		protected override ILConstruct EmitFinishFieldInitializationStatement( AssemblyBuilderEmittingContext context, string name, ILConstruct value )
+		{
+			var field = context.DeclarePrivateField( name, value.ContextType.ResolveRuntimeType() );
+			return this.EmitSetField( context, this.EmitThisReferenceExpression( context ), field, value );
 		}
 
 		protected override AssemblyBuilderEmittingContext CreateCodeGenerationContextForSerializerCreation( SerializationContext context )
@@ -1108,8 +1028,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 				new AssemblyBuilderEmittingContext(
 					context,
 					typeof( TObject ),
-					() => SerializationMethodGeneratorManager.Get().CreateEmitter( spec, BaseClass, EmitterFlavor.FieldBased ),
-					() => SerializationMethodGeneratorManager.Get().CreateEnumEmitter( context, spec, EmitterFlavor.FieldBased )
+					typeof( TObject ).GetIsEnum()
+						? new Func<SerializerEmitter>( () => SerializationMethodGeneratorManager.Get().CreateEnumEmitter( context, spec ) ) 
+						: () => SerializationMethodGeneratorManager.Get().CreateObjectEmitter( spec, BaseClass )
 				);
 		}
 
@@ -1134,17 +1055,38 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			if ( !typeof( TObject ).GetIsEnum() )
 			{
-				this.BuildSerializer( emittingContext, concreteType, itemSchema );
+				SerializationTarget targetInfo;
+				this.BuildSerializer( emittingContext, concreteType, itemSchema, out targetInfo );
 				// Finish type creation, and discard returned ctor.
-				emittingContext.Emitter.CreateConstructor<TObject>();
+				emittingContext.Emitter.CreateObjectConstructor( emittingContext, this, targetInfo );
 			}
 			else
 			{
 				this.BuildEnumSerializer( emittingContext );
 				// Finish type creation, and discard returned ctor.
-				emittingContext.EnumEmitter.CreateConstructor<TObject>();
+				emittingContext.Emitter.CreateEnumConstructor<TObject>();
 			}
 		}
 #endif
+
+		protected override ILConstruct EmitNewPrivateMethodDelegateExpression( AssemblyBuilderEmittingContext context, MethodDefinition method )
+		{
+			var delegateType = SerializerBuilderHelper.GetDelegateType( method.ReturnType, method.ParameterTypes );
+				
+			return
+				ILConstruct.Instruction(
+					"CreateDelegate",
+					delegateType,
+					false,
+					il =>
+					{
+						il.EmitLdargThis();
+						// OK this should not be ldvirtftn because target is private.
+						il.EmitLdftn( method.ResolveRuntimeMethod() );
+						// call extern .ctor(Object, void*)
+						il.EmitNewobj( delegateType.GetConstructors().Single() );
+					}
+				);
+		}
 	}
 }

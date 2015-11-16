@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -22,13 +22,14 @@ using System;
 using System.Globalization;
 using System.Reflection.Emit;
 
+using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
 	internal abstract class ContextfulILConstruct : ILConstruct
 	{
-		protected ContextfulILConstruct( Type contextType )
+		protected ContextfulILConstruct( TypeDefinition contextType )
 			: base( contextType )
 		{
 		}
@@ -36,7 +37,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public sealed override void Branch( TracingILGenerator il, Label @else )
 		{
 			il.TraceWriteLine( "// Brnc->: {0}", this );
-			if ( this.ContextType != typeof( bool ) )
+			if ( this.ContextType.ResolveRuntimeType() != typeof( bool ) )
 			{
 				throw new InvalidOperationException(
 					String.Format( CultureInfo.CurrentCulture, "Cannot branch with non boolean type '{0}'.", this.ContextType )

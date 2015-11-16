@@ -1,7 +1,6 @@
 ﻿
 
 
- 
 #region -- License Terms --
 //
 // MessagePack for CLI

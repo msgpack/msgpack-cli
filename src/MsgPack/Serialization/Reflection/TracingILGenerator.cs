@@ -1038,7 +1038,7 @@ namespace MsgPack.Serialization.Reflection
 				var endOfAssemblySimpleName = type.Assembly.FullName.IndexOf( ',' );
 				writer.Write( "[{0}]{1}", endOfAssemblySimpleName < 0 ? type.Assembly.FullName : type.Assembly.FullName.Remove( endOfAssemblySimpleName ), type.FullName );
 #else
-				writer.Write( "[{0}]{1}", type.Assembly.GetName().Name, type.FullName );
+				writer.Write( "[{0}]{1}", type.Assembly.GetName().Name, type.GetFullName() );
 #endif
 			}
 		}
@@ -1157,6 +1157,18 @@ namespace MsgPack.Serialization.Reflection
 #if !WINDOWS_PHONE
 			bool isMethodBuilder = method is MethodBuilder || method is ConstructorBuilder;
 #endif
+			if ( !isMethodBuilder )
+			{
+				try
+				{
+					method.GetParameters();
+				}
+				catch ( NotSupportedException )
+				{
+					// For internal MethodBuilderInstantiationType
+					isMethodBuilder = true;
+				}
+			}
 
 			/*
 			 *	<instr_method> <callConv> <type> [ <typeSpec> :: ] <methodName> ( <parameters> ) 

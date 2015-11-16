@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -22,15 +22,16 @@ using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Globalization;
+
 using MsgPack.Serialization.AbstractSerializers;
 
 namespace MsgPack.Serialization.CodeDomSerializers
 {
 	internal class CodeDomConstruct : ICodeConstruct
 	{
-		private readonly Type _contextType;
+		private readonly TypeDefinition _contextType;
 
-		public Type ContextType
+		public TypeDefinition ContextType
 		{
 			get { return this._contextType; }
 		}
@@ -76,12 +77,12 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			);
 		}
 
-		protected CodeDomConstruct( Type contextType )
+		protected CodeDomConstruct( TypeDefinition contextType )
 		{
 			this._contextType = contextType;
 		}
 
-		public static ParameterCodeDomConstruct Parameter( Type type, string name )
+		public static ParameterCodeDomConstruct Parameter( TypeDefinition type, string name )
 		{
 			return new ParameterCodeDomConstruct( type, name );
 		}
@@ -96,12 +97,12 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return new StatementCodeDomConstruct( statements );
 		}
 
-		public static ExpressionCodeDomConstruct Expression( Type contextType, CodeExpression expression )
+		public static ExpressionCodeDomConstruct Expression( TypeDefinition contextType, CodeExpression expression )
 		{
 			return new ExpressionCodeDomConstruct( contextType, expression );
 		}
 
-		public static CodeDomConstruct Variable( Type type, string name )
+		public static CodeDomConstruct Variable( TypeDefinition type, string name )
 		{
 			return new VariableCodeDomConstruct( type, name );
 		}

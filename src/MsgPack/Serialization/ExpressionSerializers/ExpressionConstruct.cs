@@ -71,7 +71,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <remarks>
 		///		This property wraps <see cref="System.Linq.Expressions.Expression.Type"/> property for <see cref="Expression"/> property.
 		/// </remarks>
-		public Type ContextType
+		public TypeDefinition ContextType
 		{
 			get { return this._expression.Type; }
 		}

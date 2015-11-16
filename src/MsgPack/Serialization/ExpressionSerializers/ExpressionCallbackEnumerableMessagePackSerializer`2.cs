@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 using MsgPack.Serialization.CollectionSerializers;
 
@@ -40,6 +41,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		private readonly Action<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, SerializationContext, TCollection, TItem> _addItem;
 
+		public Action<Unpacker, TCollection, int> UnpackToAction { get; private set; }
+
+		public Action<Unpacker, TCollection, int> UnpackCollectionItem { get; private set; }
+
 		/// <summary>
 		///		Initializes a new instance of the <see cref="ExpressionCallbackEnumerableMessagePackSerializer{TCollection, TItem}"/> class.
 		/// </summary>
@@ -51,6 +56,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <param name="createInstance">The delegate to <c>CreateInstance</c> method body. This value must not be <c>null</c>.</param>
 		/// <param name="unpackFromCore">The delegate to <c>UnpackFromCore</c> method body. This value must not be <c>null</c>.</param>
 		/// <param name="addItem">The delegate to <c>AddItem</c> method body. This value can be <c>null</c>.</param>
+		/// <param name="unpackTo">The delegate to <c>UnpackToCore</c> method body.</param>
+		/// <param name="unpackCollectionItem">The delegate to <c>UnpackCollectionItem</c> method body.</param>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="ownerContext"/> is <c>null</c>.
 		/// </exception>
@@ -59,13 +66,28 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			PolymorphismSchema schema,
 			Func<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, SerializationContext, int, TCollection> createInstance,
 			Func<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, SerializationContext, Unpacker, TCollection> unpackFromCore,
-			Action<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, SerializationContext, TCollection, TItem> addItem
-			)
+			Action<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, SerializationContext, TCollection, TItem> addItem,
+			Delegate unpackTo,
+			Action<SerializationContext,Unpacker, TCollection, int> unpackCollectionItem
+		)
 			: base( ownerContext, schema )
 		{
 			this._createInstance = createInstance;
 			this._unpackFromCore = unpackFromCore;
 			this._addItem = addItem;
+
+			if ( unpackTo != null )
+			{
+#if DEBUG
+				Contract.Assert( unpackTo is Action<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, Unpacker, TCollection, int> );
+#endif // DEBUG
+				var noContextUnpackTo =
+					unpackTo as Action<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, Unpacker, TCollection, int>;
+				this.UnpackToAction = ( unpacker, collection, itemsCount ) => noContextUnpackTo( this, unpacker, collection, itemsCount );
+			}
+
+			this.UnpackCollectionItem =
+				( unpacker, collection, indexOfItem ) => unpackCollectionItem( this.OwnerContext, unpacker, collection, indexOfItem );
 		}
 
 		protected override TCollection CreateInstance( int initialCapacity )

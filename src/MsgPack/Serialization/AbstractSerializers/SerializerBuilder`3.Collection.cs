@@ -24,9 +24,6 @@ using System.Linq;
 #if !UNITY
 using System.Diagnostics.Contracts;
 #endif // !UNITY
-using System.Reflection;
-
-using MsgPack.Serialization.CollectionSerializers;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -44,8 +41,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 #endif // DEBUG
 			bool isUnpackFromRequired;
 			bool isAddItemRequired;
-			Type declaringType;
-			DetermineSerializationStrategy( out isUnpackFromRequired, out isAddItemRequired, out declaringType );
+			DetermineSerializationStrategy( out isUnpackFromRequired, out isAddItemRequired );
 
 			if ( isAddItemRequired )
 			{
@@ -53,26 +49,26 @@ namespace MsgPack.Serialization.AbstractSerializers
 				if ( CollectionTraitsOfThis.AddMethod != null )
 				{
 					// For standard path.
-					this.BuildCollectionAddItem( context, declaringType, CollectionTraitsOfThis );
+					this.BuildCollectionAddItem( context, CollectionTraitsOfThis );
 				}
 				else
 				{
 					// For concrete collection path.
-					this.BuildCollectionAddItem( context, declaringType, concreteType.GetCollectionTraits() );
+					this.BuildCollectionAddItem( context, concreteType.GetCollectionTraits() );
 				}
 			}
+
+			this.BuildCollectionCreateInstance( context, concreteType );
 
 			if ( isUnpackFromRequired )
 			{
 				this.BuildCollectionUnpackFromCore( context, concreteType, schema );
 			}
 
-			this.BuildCollectionCreateInstance( context, concreteType, declaringType );
-
 			this.BuildRestoreSchema( context, schema );
 		}
 
-		private static void DetermineSerializationStrategy( out bool isUnpackFromRequired, out bool isAddItemRequired, out Type declaringType )
+		private static void DetermineSerializationStrategy( out bool isUnpackFromRequired, out bool isAddItemRequired )
 		{
 			switch ( CollectionTraitsOfThis.DetailedCollectionType )
 			{
@@ -81,54 +77,30 @@ namespace MsgPack.Serialization.AbstractSerializers
 				{
 					isUnpackFromRequired = true;
 					isAddItemRequired = true;
-					declaringType =
-						typeof( NonGenericEnumerableMessagePackSerializerBase<> ).MakeGenericType(
-							typeof( TObject )
-						);
 					break;
 				}
 				case CollectionDetailedKind.NonGenericList:
 				{
 					isUnpackFromRequired = false;
 					isAddItemRequired = false;
-					declaringType =
-						typeof( NonGenericEnumerableMessagePackSerializerBase<> ).MakeGenericType(
-							typeof( TObject )
-						);
 					break;
 				}
 				case CollectionDetailedKind.NonGenericDictionary:
 				{
 					isUnpackFromRequired = false;
 					isAddItemRequired = false;
-					declaringType =
-						typeof( NonGenericDictionaryMessagePackSerializer<> ).MakeGenericType(
-							typeof( TObject )
-						);
 					break;
 				}
 				case CollectionDetailedKind.GenericEnumerable:
 				{
 					isUnpackFromRequired = true;
 					isAddItemRequired = true;
-					declaringType =
-						typeof( EnumerableMessagePackSerializerBase<,> ).MakeGenericType(
-							typeof( TObject ),
-							CollectionTraitsOfThis.ElementType
-						);
 					break;
 				}
 				case CollectionDetailedKind.GenericDictionary:
 				{
 					isUnpackFromRequired = false;
 					isAddItemRequired = false;
-					var keyValurPairGenericArguments = CollectionTraitsOfThis.ElementType.GetGenericArguments();
-					declaringType =
-						typeof( DictionaryMessagePackSerializer<,,> ).MakeGenericType(
-							typeof( TObject ),
-							keyValurPairGenericArguments[ 0 ],
-							keyValurPairGenericArguments[ 1 ]
-						);
 					break;
 				}
 #if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
@@ -136,13 +108,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 				{
 					isUnpackFromRequired = false;
 					isAddItemRequired = true;
-					var keyValurPairGenericArguments = CollectionTraitsOfThis.ElementType.GetGenericArguments();
-					declaringType =
-						typeof( ReadOnlyDictionaryMessagePackSerializer<,,> ).MakeGenericType(
-							typeof( TObject ),
-							keyValurPairGenericArguments[ 0 ],
-							keyValurPairGenericArguments[ 1 ]
-						);
 					break;
 				}
 				case CollectionDetailedKind.GenericReadOnlyList:
@@ -150,11 +115,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 				{
 					isUnpackFromRequired = false;
 					isAddItemRequired = true;
-					declaringType =
-						typeof( ReadOnlyCollectionMessagePackSerializer<,> ).MakeGenericType(
-							typeof( TObject ),
-							CollectionTraitsOfThis.ElementType
-						); 
 					break;
 				}
 #endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
@@ -162,98 +122,63 @@ namespace MsgPack.Serialization.AbstractSerializers
 				{
 					isUnpackFromRequired = false;
 					isAddItemRequired = false;
-					declaringType =
-						typeof( EnumerableMessagePackSerializerBase<,> ).MakeGenericType(
-							typeof( TObject ),
-							CollectionTraitsOfThis.ElementType
-						);
 					break;
 				}
 			} // switch
 		}
 
-		private void BuildCollectionAddItem( TContext context, Type declaringType, CollectionTraits traits )
+		#region -- AddItem --
+
+		private void BuildCollectionAddItem( TContext context, CollectionTraits traits )
 		{
-			var addItem = GetCollectionSerializerMethod( "AddItem", declaringType );
-			this.EmitMethodPrologue( context, CollectionSerializerMethod.AddItem, addItem );
-			TConstruct construct = null;
-			try
-			{
-				construct =
-					traits.CollectionType == CollectionKind.Map
-					? this.EmitAppendDictionaryItem(
-						context,
-						traits,
-						context.CollectionToBeAdded,
-						addItem.GetParameters()[ 0 ].ParameterType,
-						context.KeyToAdd,
-						addItem.GetParameters()[ 1 ].ParameterType,
-						context.ValueToAdd,
-						false
-					)
-					: this.EmitAppendCollectionItem(
-						context,
-						null,
-						traits,
-						context.CollectionToBeAdded,
-						context.ItemToAdd
-					);
-			}
-			finally
-			{
-				this.EmitMethodEpilogue( context, CollectionSerializerMethod.AddItem, construct );
-			}
+			var addItem = BaseClass.GetRuntimeMethod( MethodName.AddItem );
+			context.BeginMethodOverride( MethodName.AddItem );
+			context.EndMethodOverride(
+				MethodName.AddItem,
+				traits.CollectionType == CollectionKind.Map
+				? this.EmitAppendDictionaryItem(
+					context,
+					traits,
+					context.CollectionToBeAdded,
+					addItem.GetParameters()[ 0 ].ParameterType,
+					context.KeyToAdd,
+					addItem.GetParameters()[ 1 ].ParameterType,
+					context.ValueToAdd,
+					false
+				)
+				: this.EmitAppendCollectionItem(
+					context,
+					null,
+					traits,
+					context.CollectionToBeAdded,
+					context.ItemToAdd
+				)
+			);
 		}
+
+		#endregion -- AddItem --
+
+		#region -- UnpackFromCore --
 
 		private void BuildCollectionUnpackFromCore( TContext context, Type concreteType, PolymorphismSchema schema )
 		{
-			this.EmitMethodPrologue( context, SerializerMethod.UnpackFromCore );
+			context.BeginMethodOverride( MethodName.UnpackFromCore );
 
-			TConstruct construct = null;
-			try
-			{
-				var instanceType = concreteType ?? typeof( TObject );
-				var collection =
-					this.DeclareLocal(
-						context,
-						instanceType,
-						"collection"
-					);
-				construct =
-					this.EmitSequentialStatements(
-						context,
-						collection.ContextType,
-						this.EmitCollectionUnpackFromStatements( context, instanceType, schema, collection )
-					);
-			}
-			finally
-			{
-				this.EmitMethodEpilogue( context, SerializerMethod.UnpackFromCore, construct );
-			}
+			var instanceType = concreteType ?? typeof( TObject );
+
+			context.EndMethodOverride(
+				MethodName.UnpackFromCore,
+				this.EmitSequentialStatements(
+					context,
+					instanceType,
+					this.EmitCollectionUnpackFromStatements( context, instanceType, schema )
+				)
+			);
 		}
 
-		private IEnumerable<TConstruct> EmitCollectionUnpackFromStatements( TContext context, Type instanceType, PolymorphismSchema schema, TConstruct collection )
+		private IEnumerable<TConstruct> EmitCollectionUnpackFromStatements( TContext context, Type instanceType, PolymorphismSchema schema )
 		{
-			/*
-			 * #if ARRAY
-			 *	if (!unpacker.IsArrayHeader)
-			 * #else
-			 *	if (!unpacker.IsMapHeader)
-			 * #endif
-			 *	{
-			 *		throw SerializationExceptions.NewIsNotArrayHeader();
-			 *	}
-			 *	int capacity = ITEMS_COUNT(unpacker);
-			 *	TCollection collection = new ...;
-			 * #if HAS_ADD_IN_TYPE
-			 *	this.UnpackToCore(unpacker, array);
-			 * #else // Add only exists in concrete type
-			 *  UNPACK_TO_SPECIFIED_COLLECTION
-			 * #endif
-			 *	return collection;
-			 */
-			var ctor = UnpackHelpers.GetCollectionConstructor( instanceType );
-
+			// Header check
 			yield return
 				CollectionTraitsOfThis.CollectionType == CollectionKind.Array
 					? this.EmitCheckIsArrayHeaderExpression( context, context.Unpacker )
@@ -261,19 +186,133 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			var itemsCount = this.DeclareLocal( context, typeof( int ), "itemsCount" );
 
+			// Unpack items count and store it
 			yield return itemsCount;
 			yield return
 				this.EmitStoreVariableStatement(
-					context, 
+					context,
 					itemsCount,
 					this.EmitGetItemsCountExpression( context, context.Unpacker )
 				);
-			yield return collection;
 
+			var createInstance =
+				this.EmitInvokeMethodExpression(
+					context,
+					this.EmitThisReferenceExpression( context ),
+					context.GetDeclaredMethod( MethodName.CreateInstance ),
+					itemsCount
+				);
+			var collection =
+				instanceType == typeof( TObject )
+					? createInstance
+					: this.EmitUnboxAnyExpression( context, instanceType, createInstance );
+
+			// Get delegates to UnpackHelpers
+			TConstruct iterative;
+			TConstruct bulk;
 			if ( CollectionTraitsOfThis.CollectionType == CollectionKind.Array && CollectionTraitsOfThis.AddMethod == null )
 			{
-				// deserialize with concrete collection's UnpackTo.
-				yield return
+				// Try to use concrete collection's Add.
+				var traitsOfTheCollection = instanceType.GetCollectionTraits();
+
+				bulk =
+					this.MakeNullLiteral(
+						context,
+						TypeDefinition.GenericReferenceType( typeof( Action<,,> ), typeof( Unpacker ), collection.ContextType, typeof( int ) )
+					);
+
+				var indexOfItem = context.IndexOfItem;
+				iterative =
+					this.ExtractPrivateMethod(
+						context,
+						MethodName.UnpackCollectionItem,
+						typeof( void ),
+						this.EmitUnpackItemValueExpression(
+							context,
+							traitsOfTheCollection.ElementType,
+							context.CollectionItemNilImplication,
+							context.Unpacker,
+							indexOfItem,
+							this.EmitInvariantStringFormat( context, "item{0}", indexOfItem ),
+							null,
+							( schema ?? PolymorphismSchema.Default ).ItemSchema,
+							unpackedItem =>
+								this.EmitAppendCollectionItem(
+									context,
+									null,
+									traitsOfTheCollection,
+									context.UnpackToTarget,
+									unpackedItem
+								)
+						),
+						context.Unpacker,
+						context.UnpackToTarget,
+						indexOfItem
+					);
+			}
+			else
+			{
+				// Invoke UnpackToCore because AddItem override/inheritance is available.
+				bulk = this.EmitGetActionsExpression( context, ActionType.UnpackTo );
+				context.IsUnpackToUsed = true;
+				iterative =
+					this.MakeNullLiteral(
+						context,
+						TypeDefinition.GenericReferenceType( typeof( Action<,,> ), typeof( Unpacker ), collection.ContextType, typeof( int ) )
+					);
+			}
+
+			// Call UnpackHelpers
+			yield return
+				this.EmitRetrunStatement(
+					context,
+					this.EmitInvokeMethodExpression(
+						context,
+						null,
+						Metadata._UnpackHelpers.UnpackCollection_1Method.MakeGenericMethod( instanceType ),
+						context.Unpacker,
+						itemsCount,
+						collection,
+						bulk,
+						iterative
+					)
+				);
+		}
+
+		private TConstruct EmitGetItemsCountExpression( TContext context, TConstruct unpacker )
+		{
+			return
+				this.EmitInvokeMethodExpression(
+					context,
+					null,
+					Metadata._UnpackHelpers.GetItemsCount,
+					unpacker
+				);
+		}
+
+		#endregion -- UnpackFromCore --
+		
+		#region -- CreateInstance --
+
+		private void BuildCollectionCreateInstance( TContext context, Type concreteType )
+		{
+			context.BeginMethodOverride( MethodName.CreateInstance );
+
+			var instanceType = concreteType ?? typeof( TObject );
+			var collection =
+				this.DeclareLocal(
+					context,
+					typeof( TObject ),
+					"collection"
+				);
+			var ctor = UnpackHelpers.GetCollectionConstructor( instanceType );
+			var ctorArguments = this.DetermineCollectionConstructorArguments( context, ctor );
+			context.EndMethodOverride(
+				MethodName.CreateInstance,
+				this.EmitSequentialStatements(
+					context,
+					typeof( TObject ),
+					collection,
 					this.EmitStoreVariableStatement(
 						context,
 						collection,
@@ -281,222 +320,63 @@ namespace MsgPack.Serialization.AbstractSerializers
 							context,
 							collection,
 							ctor,
-							ctor.GetParameters().Length == 0
-								? NoConstructs
-								: new[] { itemsCount }
+							ctorArguments
 						)
-					);
-
-				yield return
-					this.EmitForLoop(
+					),
+					this.EmitRetrunStatement(
 						context,
-						itemsCount,
-						flc =>
-							this.EmitUnpackToCollectionLoopBody(
-								context,
-								flc,
-								instanceType.GetCollectionTraits(),
-								context.Unpacker,
-								collection,
-								( schema ?? PolymorphismSchema.Default ).ItemSchema
-							)
-					);
-			}
-			else
-			{
-				// use generated AddItem override.
-				yield return
-					this.EmitUnpackCollectionWithUnpackToExpression(
-						context,
-						ctor,
-						itemsCount,
-						context.Unpacker,
-						collection
-					);
-			}
-
-			yield return
-				this.EmitRetrunStatement(
-					context,
-					this.EmitLoadVariableExpression( context, collection )
-				);
+						this.EmitLoadVariableExpression( context, collection )
+					)
+				)
+			);
 		}
 
-		private void BuildCollectionCreateInstance( TContext context, Type concreteType, Type declaringType )
-		{
-			var createInstance = GetCollectionSerializerMethod( "CreateInstance", declaringType );
-			this.EmitMethodPrologue( context, CollectionSerializerMethod.CreateInstance, createInstance );
-			TConstruct construct = null;
-			try
-			{
-				var instanceType = concreteType ?? typeof( TObject );
-				var collection =
-					this.DeclareLocal(
-						context,
-						typeof( TObject ),
-						"collection"
-					);
-				var ctor = UnpackHelpers.GetCollectionConstructor( instanceType );
-				var ctorArguments = this.DetermineCollectionConstructorArguments( context, ctor );
-				construct =
-					this.EmitSequentialStatements(
-						context,
-						typeof( TObject ),
-						collection,
-						this.EmitStoreVariableStatement(
-							context,
-							collection,
-							this.EmitCreateNewObjectExpression(
-								context,
-								collection,
-								ctor,
-								ctorArguments
-							)
-						),
-						this.EmitRetrunStatement(
-							context,
-							this.EmitLoadVariableExpression( context, collection )
-						)
-					);
-			}
-			finally
-			{
-				this.EmitMethodEpilogue( context, CollectionSerializerMethod.CreateInstance, construct );
-			}
-		}
+		#endregion -- CreateInstance --
+
+		#region -- RestoreSchema --
 
 		private void BuildRestoreSchema( TContext context, PolymorphismSchema schema )
 		{
-			this.EmitMethodPrologue( context, CollectionSerializerMethod.RestoreSchema, null );
-			TConstruct construct = null;
-			try
-			{
-				var storage =
-					this.DeclareLocal(
-						context,
-						typeof( PolymorphismSchema ),
-						"schema"
-					);
-				construct =
-					this.EmitSequentialStatements(
-						context,
-						typeof( PolymorphismSchema ),
-						new [] { storage }
-						.Concat( this.EmitConstructPolymorphismSchema( context, storage, schema ) )
-						.Concat( new[] { this.EmitRetrunStatement( context, this.EmitLoadVariableExpression( context, storage ) ) } )
-					);
-			}
-			finally
-			{
-				this.EmitMethodEpilogue( context, CollectionSerializerMethod.RestoreSchema, construct );
-			}
-		}
+			context.BeginPrivateMethod( MethodName.RestoreSchema, true, typeof( PolymorphismSchema ) );
 
-
-		private static MethodInfo GetCollectionSerializerMethod( string name, Type declaringType )
-		{
-#if !NETFX_CORE
-			return declaringType.GetMethod( name, BindingFlags.NonPublic | BindingFlags.Instance );
-#else
-			return declaringType.GetRuntimeMethods().Single( m => m.Name == name );
-#endif
-		}
-
-		private TConstruct EmitPutArrayHeaderExpression( TContext context, TConstruct length )
-		{
-			return
-				this.EmitInvokeVoidMethod( context, context.Packer, Metadata._Packer.PackArrayHeader, length );
-		}
-
-		private TConstruct EmitPutMapHeaderExpression( TContext context, TConstruct collectionCount )
-		{
-			return
-				this.EmitInvokeVoidMethod( context, context.Packer, Metadata._Packer.PackMapHeader, collectionCount );
-		}
-
-		private TConstruct EmitCheckIsArrayHeaderExpression( TContext context, TConstruct unpacker )
-		{
-			return
-				this.EmitConditionalExpression(
+			var storage =
+				this.DeclareLocal(
 					context,
-					this.EmitNotExpression(
+					typeof( PolymorphismSchema ),
+					"schema"
+				);
+			context.EndPrivateMethod(
+				MethodName.RestoreSchema,
+				this.EmitSequentialStatements(
+					context,
+					typeof( PolymorphismSchema ),
+					new[] { storage }
+					.Concat( this.EmitConstructPolymorphismSchema( context, storage, schema ) )
+					.Concat( new[] { this.EmitRetrunStatement( context, this.EmitLoadVariableExpression( context, storage ) ) } )
+				)
+			);
+		}
+
+		#endregion -- RestoreSchema --
+
+		#region -- Constructor Helpers --
+
+		protected internal TConstruct EmitUnpackToInitialization( TContext context )
+		{
+			// This method should be called at most once, so caching follosing array should be wasting.
+			var parameterTypes = new[] { typeof( Unpacker ), typeof( TObject ), typeof( int ) };
+			return
+				this.EmitSetField(
+					context,
+					this.EmitThisReferenceExpression( context ),
+					context.GetDeclaredField( FieldName.UnpackTo ),
+					this.EmitNewPrivateMethodDelegateExpression(
 						context,
-						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.IsArrayHeader )
-					),
-					this.EmitInvokeVoidMethod(
-						context,
-						null,
-						SerializationExceptions.ThrowIsNotArrayHeaderMethod,
-						context.Unpacker
-					),
-					null
+						BaseClass.GetRuntimeMethod( MethodName.UnpackToCore, parameterTypes )
+					)
 				);
 		}
-
-		private TConstruct EmitCheckIsMapHeaderExpression( TContext context, TConstruct unpacker )
-		{
-			return
-				this.EmitConditionalExpression(
-					context,
-					this.EmitNotExpression(
-						context,
-						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.IsMapHeader )
-					),
-					this.EmitInvokeVoidMethod(
-						context,
-						null,
-						SerializationExceptions.ThrowIsNotMapHeaderMethod,
-						context.Unpacker
-					),
-					null
-				);
-		}
-
-		private TConstruct EmitUnpackToCollectionLoopBody( TContext context, ForLoopContext forLoopContext, CollectionTraits traitsOfTheCollection, TConstruct unpacker, TConstruct collection, PolymorphismSchema itemsSchema )
-		{
-			/*
-			    if ( !unpacker.Read() )
-				{
-					throw SerializationExceptions.NewMissingItem( i );
-				}
-
-				T item;
-				if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
-				{
-					item = serializer.UnpackFrom( unpacker );
-				}
-				else
-				{
-					using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
-					{
-						item = serializer.UnpackFrom( subtreeUnpacker );
-					}
-				}
-
-				addition( item );
-			 */
-
-			return
-				this.EmitUnpackItemValueExpression(
-					context,
-					traitsOfTheCollection.ElementType,
-					context.CollectionItemNilImplication,
-					unpacker,
-					forLoopContext.Counter,
-					this.EmitInvariantStringFormat( context, "item{0}", forLoopContext.Counter ),
-					null,
-					null,
-					null,
-					itemsSchema,
-					unpackedItem =>
-						this.EmitAppendCollectionItem(
-							context,
-							null,
-							traitsOfTheCollection,
-							collection,
-							unpackedItem
-						)
-				);
-		}
+		
+		#endregion -- Constructor Helpers --
 	}
 }

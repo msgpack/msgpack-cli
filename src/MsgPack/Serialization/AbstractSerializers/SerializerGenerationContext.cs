@@ -19,6 +19,10 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Globalization;
+using System.Linq;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -130,6 +134,34 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// </returns>
 		public TConstruct InitialCapacity { get; protected set; }
 
+
+		/// <summary>
+		///		Gets the code construct which represents the unpacking context for unpacking operations.
+		/// </summary>
+		/// <value>
+		///		The code construct which represents the the unpacking context for unpacking operations.
+		///		This value is initialized in <see cref="DefineUnpackingContext"/>.
+		/// </value>
+		public TConstruct UnpackingContextInUnpackValueMethods { get; private set; }
+
+		/// <summary>
+		///		Gets the code construct which represents the unpacking context for CreateObjectFromContext method.
+		/// </summary>
+		/// <value>
+		///		The code construct which represents the the unpacking context for CreateObjectFromContext method.
+		///		This value is initialized in <see cref="DefineUnpackingContext"/>.
+		/// </value>
+		public TConstruct UnpackingContextInCreateObjectFromContext { get; private set; }
+
+		/// <summary>
+		///		Gets the code construct which represents the index of unpacking item in the source array or map.
+		/// </summary>
+		/// <value>
+		///		The code construct which represents the index of unpacking item in the source array or map.
+		///		This value will not be <c>null</c>.
+		/// </value>
+		public TConstruct IndexOfItem { get; protected set; }
+
 		/// <summary>
 		///		Gets the configured nil-implication for collection items.
 		/// </summary>
@@ -156,6 +188,90 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// </value>
 		public NilImplication TupleItemNilImplication { get; private set; }
 
+		private readonly IDictionary<string, MethodDefinition> _declaredMethods;
+
+		/// <summary>
+		///		Gets the declared method.
+		/// </summary>
+		/// <param name="name">The name of the method.</param>
+		/// <returns>
+		///		The <see cref="MethodDefinition"/>. This value will not be <c>null</c>.
+		/// </returns>
+		/// <exception cref="InvalidOperationException">The specified method has not been declared yet.</exception>
+		public MethodDefinition GetDeclaredMethod( string name )
+		{
+			MethodDefinition method;
+			if ( !this._declaredMethods.TryGetValue( name, out method ) )
+			{
+				throw new InvalidOperationException( 
+					String.Format( 
+						CultureInfo.CurrentCulture,
+						"Method '{0}' is not declared yet.",
+						name
+					)
+				);
+			}
+			return method;
+		}
+
+		/// <summary>
+		///		Determines whether specified named private method is already declared or not.
+		/// </summary>
+		/// <param name="name">The name of the method.</param>
+		/// <returns><c>true</c>, if specified named method is already declared; <c>fale</c>, otherwise.</returns>
+		public bool IsDeclaredMethod( string name )
+		{
+			return this._declaredMethods.ContainsKey( name );
+		}
+
+		private readonly IDictionary<string, FieldDefinition> _declaredFields;
+
+		/// <summary>
+		///		Gets the declared field.
+		/// </summary>
+		/// <param name="name">The name of the field.</param>
+		/// <returns>
+		///		The <see cref="FieldDefinition"/>. This value will not be <c>null</c>.
+		/// </returns>
+		/// <exception cref="FieldDefinition">The specified field has not been declared yet.</exception>
+		public FieldDefinition GetDeclaredField( string name )
+		{
+			FieldDefinition field;
+			if ( !this._declaredFields.TryGetValue( name, out field ) )
+			{
+				throw new InvalidOperationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"Field '{0}' is not declared yet.",
+						name
+					)
+				);
+			}
+			return field;
+		}
+
+		private KeyValuePair<TypeDefinition, ConstructorDefinition> _unpackingContextDefinition;
+
+		/// <summary>
+		///		Gets the type of the unpacking context.
+		/// </summary>
+		/// <value>
+		///		The type of the unpacking context. This value is <c>null</c> until <see cref="DefineUnpackingContext"/> called after last <see cref="Reset"/>.
+		/// </value>
+		public TypeDefinition UnpackingContextType { get { return this._unpackingContextDefinition.Key; } }
+
+		/// <summary>
+		///		Gets or sets a value indicating whether an UnpackTo method call is emitted or not. 
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if an UnpackTo method call is emitted; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsUnpackToUsed { get; set; }
+
+#if DEBUG
+		private KeyValuePair<string, TypeDefinition>[] _lastUnpackingContextFields;
+#endif // DEBUG
+
 		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializerGenerationContext{TConstruct}"/> class.
 		/// </summary>
@@ -166,6 +282,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 			this.CollectionItemNilImplication = NilImplication.Null;
 			this.DictionaryKeyNilImplication = NilImplication.Prohibit;
 			this.TupleItemNilImplication = NilImplication.Null;
+			this._declaredMethods = new Dictionary<string, MethodDefinition>();
+			this._declaredFields = new Dictionary<string, FieldDefinition>();
 		}
 
 		/// <summary>
@@ -176,6 +294,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 		public void Reset( Type targetType, Type baseClass )
 		{
 			this.ResetCore( targetType, baseClass );
+			this._declaredMethods.Clear();
+			this._declaredFields.Clear();
+			this._unpackingContextDefinition = default( KeyValuePair<TypeDefinition, ConstructorDefinition> );
+			this.IsUnpackToUsed = false;
+#if DEBUG
+			this._lastUnpackingContextFields = null;
+#endif // DEBUG
 		}
 
 		/// <summary>
@@ -195,5 +320,183 @@ namespace MsgPack.Serialization.AbstractSerializers
 			// Many implementations do not need local variable name, so this method is not needed to do anything.
 			return prefix;
 		}
+
+		/// <summary>
+		///		Begins implementing overriding method.
+		/// </summary>
+		/// <param name="name">The name of the method.</param>
+		public abstract void BeginMethodOverride( string name );
+
+		/// <summary>
+		///		Ends implementing overriding method.
+		/// </summary>
+		/// <param name="name">The name of the method.</param>
+		/// <param name="body">The construct which represents whole method body.</param>
+		/// <returns>
+		///		The method definition of the overridden method.
+		/// </returns>
+		public MethodDefinition EndMethodOverride( string name, TConstruct body )
+		{
+			var method = this.EndMethodOverrideCore( name, body );
+			this._declaredMethods[ name ] = method;
+			return method;
+		}
+
+		/// <summary>
+		///		Ends implementing overriding method.
+		/// </summary>
+		/// <param name="name">The name of the method.</param>
+		/// <param name="body">The construct which represents whole method body.</param>
+		/// <returns>
+		///		The method definition of the overridden method.
+		/// </returns>
+		protected abstract MethodDefinition EndMethodOverrideCore( string name, TConstruct body );
+
+		/// <summary>
+		///		Begins implementing private method.
+		/// </summary>
+		/// <param name="name">The name of the method.</param>
+		/// <param name="isStatic"><c>true</c> for static method.</param>
+		/// <param name="returnType">The type of the method return value.</param>
+		/// <param name="parameters">The name and type pairs of the method parameters.</param>
+		public abstract void BeginPrivateMethod( string name, bool isStatic, TypeDefinition returnType, params TConstruct[] parameters );
+
+		/// <summary>
+		///		Ends current implementing private method.
+		/// </summary>
+		/// <param name="name">The name of the method.</param>
+		/// <param name="body">The construct which represents whole method body.</param>
+		/// <returns>
+		///		The method definition of the private method.
+		/// </returns>
+		public MethodDefinition EndPrivateMethod( string name, TConstruct body )
+		{
+			var method = this.EndPrivateMethodCore( name, body );
+			this._declaredMethods[ name ] = method;
+			return method;
+		}
+
+		/// <summary>
+		///		Ends current implementing private method.
+		/// </summary>
+		/// <param name="name">The name of the method.</param>
+		/// <param name="body">The construct which represents whole method body.</param>
+		/// <returns>
+		///		The method definition of the private method.
+		/// </returns>
+		protected abstract MethodDefinition EndPrivateMethodCore( string name, TConstruct body );
+
+		/// <summary>
+		///		Declares new private field.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <param name="type">The type.</param>
+		/// <returns></returns>
+		public FieldDefinition DeclarePrivateField( string name, TypeDefinition type )
+		{
+			var field = this.DeclarePrivateFieldCore( name, type );
+			this._declaredFields[ name ] = field;
+			return field;
+		}
+
+		/// <summary>
+		///		Declares new private field.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <param name="type">The type.</param>
+		/// <returns></returns>
+		protected abstract FieldDefinition DeclarePrivateFieldCore( string name, TypeDefinition type );
+
+		/// <summary>
+		///		Defines the unpacking context type.
+		/// </summary>
+		/// <param name="fields">The fields must be declared.</param>
+		/// <param name="type">
+		///		The type definition of the unpacking context.
+		///		Note that this type will be existing property bag or generated private type.
+		/// </param>
+		/// <param name="constructor">
+		///		The constructor of the context.
+		/// </param>
+		public void DefineUnpackingContext(
+			KeyValuePair<string, TypeDefinition>[] fields,
+			out TypeDefinition type,
+			out ConstructorDefinition constructor
+		)
+		{
+			if ( this.UnpackingContextType != null )
+			{
+#if DEBUG
+				Contract.Assert(
+					this._lastUnpackingContextFields.Select( kv => kv.Key + ":" + kv.Value )
+						.SequenceEqual( fields.Select( kv => kv.Key + ":" + kv.Value ) ),
+					"Duplicated UnpackingContext registration."
+				);
+#endif // DEBUG
+				type = this._unpackingContextDefinition.Key;
+				constructor = this._unpackingContextDefinition.Value;
+				return;
+			}
+
+#if DEBUG
+			this._lastUnpackingContextFields = fields.ToArray();
+#endif // DEBUG
+			TConstruct parameterInUnpackValueMethods, parameterInCreateObjectFromContext;
+			this.DefineUnpackingContextCore( fields, out type, out constructor, out parameterInUnpackValueMethods, out parameterInCreateObjectFromContext );
+			this.UnpackingContextInUnpackValueMethods = parameterInUnpackValueMethods;
+			this.UnpackingContextInCreateObjectFromContext = parameterInCreateObjectFromContext;
+			this._unpackingContextDefinition = new KeyValuePair<TypeDefinition, ConstructorDefinition>( type, constructor );
+		}
+
+		/// <summary>
+		///		Defines the unpacking context type.
+		/// </summary>
+		/// <param name="fields">The fields must be declared.</param>
+		/// <param name="type">
+		///		The type definition of the unpacking context.
+		///		Note that this type will be existing property bag or generated private type.
+		/// </param>
+		/// <param name="constructor">
+		///		The constructor of the context.
+		/// </param>
+		/// <param name="parameterInUnpackValueMethods">The <paramref name="type"/> typed parameter for unpacking operations.</param>
+		/// <param name="parameterInCreateObjectFromContext">The <paramref name="type"/> typed parameter for CreateObjectFromContext method.</param>
+		protected abstract void DefineUnpackingContextCore(
+			IList<KeyValuePair<string, TypeDefinition>> fields,
+			out TypeDefinition type,
+			out ConstructorDefinition constructor,
+			out TConstruct parameterInUnpackValueMethods,
+			out TConstruct parameterInCreateObjectFromContext
+		);
+
+		/// <summary>
+		///		Defines the unpacking context type with result object type.
+		/// </summary>
+		/// <returns>The unpacking context type.</returns>
+		public TypeDefinition DefineUnpackingContextWithResultObject()
+		{
+			TypeDefinition type;
+			TConstruct parameterInUnpackValueMethods, parameterInCreateObjectFromContext;
+			this.DefineUnpackingContextWithResultObjectCore( out type,  out parameterInUnpackValueMethods, out parameterInCreateObjectFromContext );
+			this.UnpackingContextInUnpackValueMethods = parameterInUnpackValueMethods;
+			this.UnpackingContextInCreateObjectFromContext = parameterInCreateObjectFromContext;
+			this._unpackingContextDefinition = new KeyValuePair<TypeDefinition, ConstructorDefinition>( type, null );
+			return type;
+		}
+
+		/// <summary>
+		///		Defines the unpacking context type with result object type.
+		/// </summary>
+		/// <param name="type">
+		///		The type definition of the unpacking context.
+		///		Note that this type will be existing property bag or generated private type.
+		/// </param>
+		/// <param name="parameterInUnpackValueMethods">The <paramref name="type"/> typed parameter for unpacking operations.</param>
+		/// <param name="parameterInCreateObjectFromContext">The <paramref name="type"/> typed parameter for CreateObjectFromContext method.</param>
+		protected abstract void DefineUnpackingContextWithResultObjectCore(
+			out TypeDefinition type,
+			out TConstruct parameterInUnpackValueMethods,
+			out TConstruct parameterInCreateObjectFromContext
+		);
 	}
 }

@@ -226,9 +226,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		/// <param name="specification">The specification of the serializer.</param>
 		/// <param name="baseClass">Type of the base class of the serializer.</param>
-		/// <param name="emitterFlavor"><see cref="EmitterFlavor"/>.</param>
 		/// <returns>New <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.</returns>
-		public SerializerEmitter CreateEmitter( SerializerSpecification specification, Type baseClass, EmitterFlavor emitterFlavor )
+		public SerializerEmitter CreateObjectEmitter( SerializerSpecification specification, Type baseClass )
 		{
 			Contract.Requires( specification != null );
 			Contract.Requires( baseClass != null );
@@ -238,19 +237,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		/// <summary>
-		///		Creates new <see cref="EnumSerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
+		///		Creates new <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
 		/// </summary>
 		/// <param name="context">The <see cref="SerializationContext"/>.</param>
 		/// <param name="specification">The specification of the serializer.</param>
-		/// <param name="emitterFlavor"><see cref="EmitterFlavor"/>.</param>
-		/// <returns>New <see cref="EnumSerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.</returns>
-		public EnumSerializerEmitter CreateEnumEmitter( SerializationContext context, SerializerSpecification specification, EmitterFlavor emitterFlavor )
+		/// <returns>New <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.</returns>
+		public SerializerEmitter CreateEnumEmitter( SerializationContext context, SerializerSpecification specification )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( specification != null );
-			Contract.Ensures( Contract.Result<EnumSerializerEmitter>() != null );
+			Contract.Ensures( Contract.Result<SerializerEmitter>() != null );
 
-			return new EnumSerializerEmitter( context, this._module, specification, this._isDebuggable );
+			return new SerializerEmitter( context, this._module, specification, this._isDebuggable );
 		}
 	}
 }

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 
+using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -32,7 +33,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private int _index;
 		private readonly string _name;
 
-		public VariableILConstruct( string name, Type valueType )
+		public string Name { get { return this._name; } }
+
+		public VariableILConstruct( string name, TypeDefinition valueType )
 			: base( valueType )
 		{
 			Contract.Assert( name != null );
@@ -41,7 +44,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this._index = -1;
 		}
 
-		public VariableILConstruct( string name, Type valueType, int parameterIndex )
+		public VariableILConstruct( string name, TypeDefinition valueType, int parameterIndex )
 			: base( valueType )
 		{
 			Contract.Assert( name != null );
@@ -56,7 +59,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			{
 				il.TraceWriteLine( "// Eval->: {0}", this );
 
-				this._index = il.DeclareLocal( this.ContextType, this._name ).LocalIndex;
+				this._index = il.DeclareLocal( this.ContextType.ResolveRuntimeType(), this._name ).LocalIndex;
 
 				il.TraceWriteLine( "// ->Eval: {0}", this );
 			}
@@ -66,7 +69,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			this.Evaluate( il );
 			il.TraceWriteLine( "// Load->: {0}", this );
-			if ( this.ContextType.GetIsValueType() && shouldBeAddress )
+			if ( this.ContextType.ResolveRuntimeType().GetIsValueType() && shouldBeAddress )
 			{
 				if ( this._isLocal )
 				{

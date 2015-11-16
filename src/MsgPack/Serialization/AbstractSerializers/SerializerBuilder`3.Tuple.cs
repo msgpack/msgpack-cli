@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -31,13 +30,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 {
 	partial class SerializerBuilder<TContext, TConstruct, TObject>
 	{
-		private void BuildTupleSerializer( TContext context, IList<PolymorphismSchema> itemSchemaList )
+		private void BuildTupleSerializer( TContext context, IList<PolymorphismSchema> itemSchemaList, out SerializationTarget targetInfo )
 		{
 			var itemTypes = TupleItems.GetTupleItemTypes( typeof( TObject ) );
+			targetInfo = SerializationTarget.CreateForTuple( itemTypes );
 
 			this.BuildTuplePackTo( context, itemTypes, itemSchemaList );
 			this.BuildTupleUnpackFrom( context, itemTypes, itemSchemaList );
 		}
+
+		#region -- PackTo --
 
 		private void BuildTuplePackTo( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList )
 		{
@@ -49,27 +51,20 @@ namespace MsgPack.Serialization.AbstractSerializers
 				 _serializer7.PackTo( packer, tuple.Rest.Item1 );
 			*/
 
-			this.EmitMethodPrologue( context, SerializerMethod.PackToCore );
-			TConstruct construct = null;
-			try
-			{
-				construct =
-					this.EmitSequentialStatements(
-						context,
-						typeof( void ),
-						this.BuildTuplePackToCore( context, itemTypes, itemSchemaList )
-					);
-			}
-			finally
-			{
-				this.EmitMethodEpilogue( context, SerializerMethod.PackToCore, construct );
-			}
+			context.BeginMethodOverride( MethodName.PackToCore );
+			context.EndMethodOverride(
+				MethodName.PackToCore,
+				this.EmitSequentialStatements(
+					context,
+					typeof( void ),
+					this.BuildTuplePackToCore( context, itemTypes, itemSchemaList )
+				)
+			);
 		}
 
 		private IEnumerable<TConstruct> BuildTuplePackToCore( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList )
 		{
-			// Put cardinality as array length.
-			yield return this.EmitPutArrayHeaderExpression( context, this.MakeInt32Literal( context, itemTypes.Count ) );
+			// Note: cardinality is put as array length by PackHelper.
 			var depth = -1;
 			var tupleTypeList = TupleItems.CreateTupleTypeList( itemTypes );
 			var propertyInvocationChain = new List<PropertyInfo>( itemTypes.Count % 7 + 1 );
@@ -97,22 +92,51 @@ namespace MsgPack.Serialization.AbstractSerializers
 					itemNProperty != null,
 					tupleTypeList[ depth ].GetFullName() + "::Item" + ( ( i % 7 ) + 1 ) + " [ " + depth + " ] @ " + i );
 #endif
-				foreach ( var packTupleItem in
-					this.EmitPackTupleItemStatements(
+				var count = i;
+				this.EmitPrivateMethod(
+					context,
+					MethodNamePrefix.PackValue + SerializationTarget.GetTupleItemNameFromIndex( i ),
+					typeof( void ),
+					() => this.EmitSequentialStatements(
 						context,
-						itemTypes[ i ],
-						context.Packer,
-						context.PackToTarget,
-						propertyInvocationChain,
-						itemSchemaList.Count == 0 ? null : itemSchemaList[ i ]
-					)
-				)
-				{
-					yield return packTupleItem;
-				}
+						typeof( void ),
+						this.EmitPackTupleItemStatements(
+							context,
+							itemTypes[ count ],
+							context.Packer,
+							context.PackToTarget,
+							propertyInvocationChain,
+							itemSchemaList.Count == 0 ? null : itemSchemaList[ count ]
+						)
+					),
+					context.Packer,
+					context.PackToTarget
+				);
 
 				propertyInvocationChain.Clear();
 			}
+
+			var packHelperArguments =
+				new[]
+				{
+					context.Packer,
+					context.PackToTarget,
+					this.EmitGetActionsExpression( context, ActionType.PackToArray )
+				};
+
+			yield return
+				this.EmitInvokeMethodExpression(
+					context,
+					null,
+					new MethodDefinition(
+						MethodName.PackToArray,
+						new [] { TypeDefinition.Object( typeof( TObject ) ) },
+						typeof( PackHelpers ),
+						typeof( void ),
+						packHelperArguments.Select( a => a.ContextType ).ToArray()
+					),
+					packHelperArguments
+				);
 		}
 
 		private IEnumerable<TConstruct> EmitPackTupleItemStatements(
@@ -139,6 +163,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 		}
 
+		#endregion -- PackTo --
+
+		#region -- UnpackFrom --
 
 		private void BuildTupleUnpackFrom( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList )
 		{
@@ -167,21 +194,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 			 *			);
 			 *	}
 			 */
-			this.EmitMethodPrologue( context, SerializerMethod.UnpackFromCore );
-			TConstruct construct = null;
-			try
-			{
-				construct =
-					this.EmitSequentialStatements(
-						context,
-						typeof( TObject ),
-						this.BuildTupleUnpackFromCore( context, itemTypes, itemSchemaList )
-					);
-			}
-			finally
-			{
-				this.EmitMethodEpilogue( context, SerializerMethod.UnpackFromCore, construct );
-			}
+			context.BeginMethodOverride( MethodName.UnpackFromCore );
+			context.EndMethodOverride(
+				MethodName.UnpackFromCore,
+				this.EmitSequentialStatements(
+					context,
+					typeof( TObject ),
+					this.BuildTupleUnpackFromCore( context, itemTypes, itemSchemaList )
+				)
+			);
 		}
 
 		private IEnumerable<TConstruct> BuildTupleUnpackFromCore( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList )
@@ -197,63 +218,186 @@ namespace MsgPack.Serialization.AbstractSerializers
 					itemTypes.Count
 				);
 
-			var unpackedItems =
-				itemTypes.Select(
-					( type, i ) =>
-					this.DeclareLocal(
-						context,
-						type,
-						"item" + i
-					)
-				).ToArray();
+			var unpackingContext = this.GetTupleUnpackingContextInfo( context, itemTypes );
 
-			var unpackItems =
-				itemTypes.Select(
-					( unpackedNullableItemType, i ) =>
-					this.EmitUnpackItemValueExpression(
+			foreach ( var statement in unpackingContext.Statements )
+			{
+				yield return statement;
+			}
+
+			for ( var i = 0; i < itemTypes.Count; i++ )
+			{
+				var propertyName = SerializationTarget.GetTupleItemNameFromIndex( i );
+				var index = i;
+				this.EmitPrivateMethod(
+					context,
+					MethodNamePrefix.UnpackValue + propertyName,
+					typeof( void ),
+					() => this.EmitUnpackItemValueExpression(
 						context,
-						unpackedNullableItemType,
+						itemTypes[ index ],
 						context.TupleItemNilImplication,
 						context.Unpacker,
-						this.MakeInt32Literal( context, i ),
-						this.MakeStringLiteral( context, "Item" + i.ToString( CultureInfo.InvariantCulture ) ),
+						this.MakeInt32Literal( context, index ),
+						this.MakeStringLiteral( context, propertyName ),
 						null,
-						null,
-						null,
-						itemSchemaList.Count == 0 ? null : itemSchemaList[ i ],
+						itemSchemaList.Count == 0 ? null : itemSchemaList[ index ],
 						unpackedItem =>
-							this.EmitStoreVariableStatement(
-								context,
-								unpackedItems[ i ],
-								unpackedItem
-							)
-					)
+							unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
+								? this.EmitInvokeVoidMethod(
+									context,
+									context.UnpackingContextInUnpackValueMethods,
+									Metadata._DynamicUnpackingContext.Set,
+									this.MakeStringLiteral( context, propertyName ),
+									this.EmitBoxExpression( 
+										context,
+										itemTypes[ index ],
+										unpackedItem
+									)
+								) : this.EmitSetField(
+									context,
+									context.UnpackingContextInUnpackValueMethods,
+									unpackingContext.VariableType,
+									propertyName,
+									unpackedItem
+								)
+					),
+					context.Unpacker,
+					context.UnpackingContextInUnpackValueMethods,
+					context.IndexOfItem
 				);
+			}
 
 			TConstruct currentTuple = null;
 			for ( int nest = tupleTypeList.Count - 1; nest >= 0; nest-- )
 			{
-				var items = unpackedItems.Skip( nest * 7 ).Take( Math.Min( unpackedItems.Length, 7 ) );
+				var gets =
+					Enumerable.Range( nest * 7, Math.Min( itemTypes.Count - nest * 7, 7 ) )
+						.Select( i =>
+							unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
+								? this.EmitUnboxAnyExpression(
+									context,
+									itemTypes[ i ],
+									this.EmitInvokeMethodExpression(
+										context,
+										context.UnpackingContextInCreateObjectFromContext,
+										Metadata._DynamicUnpackingContext.Get,
+										this.MakeStringLiteral( context, SerializationTarget.GetTupleItemNameFromIndex( i ) )
+									)
+								) : this.EmitGetFieldExpression(
+									context,
+									context.UnpackingContextInCreateObjectFromContext,
+									new FieldDefinition( 
+										unpackingContext.VariableType,
+										SerializationTarget.GetTupleItemNameFromIndex( i ),
+										itemTypes[ i ]
+									)
+								)
+						);
+				if ( currentTuple != null )
+				{
+					gets = gets.Concat( new[] { currentTuple } );
+				}
+
 				currentTuple =
 					this.EmitCreateNewObjectExpression(
 						context,
 						null, // Tuple is reference contextType.
 						tupleTypeList[ nest ].GetConstructors().Single(),
-						currentTuple == null
-							? items.ToArray()
-							: items.ToArray().Concat( new[] { currentTuple } ).ToArray()
-						);
+						gets.ToArray()
+					);
 			}
 
 #if DEBUG
 			Contract.Assert( currentTuple != null );
 #endif
-			yield return
-				this.EmitSequentialStatements(
+			unpackingContext.Factory =
+				this.EmitNewPrivateMethodDelegateExpressionWithCreation(
 					context,
-					typeof( TObject ),
-					unpackedItems.Concat( unpackItems ).Concat( new[] { this.EmitRetrunStatement( context, currentTuple ) } )
+					new MethodDefinition(
+						MethodName.CreateObjectFromContext,
+						null,
+						null,
+						typeof( TObject ),
+						unpackingContext.Type
+					),
+					() => 
+						this.EmitRetrunStatement(
+							context,
+							currentTuple
+						),
+					context.UnpackingContextInCreateObjectFromContext
 				);
+
+
+			var unpackHelperArguments =
+				new[]
+				{
+					context.Unpacker,
+					unpackingContext.Variable,
+					unpackingContext.Factory,
+					this.EmitGetMemberNamesExpression( context ),
+					this.EmitGetActionsExpression( context, ActionType.UnpackFromArray )
+				};
+
+			yield return
+				this.EmitRetrunStatement(
+					context,
+					this.EmitInvokeMethodExpression(
+						context,
+						null,
+						new MethodDefinition(
+							MethodName.UnpackFromArray,
+							new [] { unpackingContext.Type, typeof( TObject ) },
+							typeof( UnpackHelpers ),
+							typeof( TObject ),
+							unpackHelperArguments.Select( a => a.ContextType ).ToArray()
+						),
+						unpackHelperArguments
+					)
+				);
+		}
+
+		private UnpackingContextInfo GetTupleUnpackingContextInfo( TContext context, IList<Type> itemTypes )
+		{
+			TypeDefinition type;
+			ConstructorDefinition constructor;
+			context.DefineUnpackingContext(
+				itemTypes.Select( ( t, i ) =>
+					new KeyValuePair<string, TypeDefinition>( SerializationTarget.GetTupleItemNameFromIndex( i ), t )
+				).ToArray(),
+				out type,
+				out constructor
+			);
+
+			var unpackingContext = UnpackingContextInfo.Create( type, constructor, new HashSet<string>() );
+
+			unpackingContext.Variable = this.DeclareLocal( context, unpackingContext.VariableType, "unpackingContext" );
+			unpackingContext.Statements.Add( unpackingContext.Variable );
+			unpackingContext.Statements.Add(
+				unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
+					? this.EmitStoreVariableStatement(
+						context,
+						unpackingContext.Variable,
+						this.EmitCreateNewObjectExpression(
+							context,
+							unpackingContext.Variable,
+							unpackingContext.Constructor,
+							this.MakeInt32Literal( context, itemTypes.Count )
+						)
+					)
+					: this.EmitStoreVariableStatement(
+						context,
+						unpackingContext.Variable,
+						this.EmitCreateNewObjectExpression(
+							context,
+							unpackingContext.Variable,
+							unpackingContext.Constructor,
+							itemTypes.Select( t => this.MakeDefaultLiteral( context, t ) ).ToArray()
+						)
+					)
+				);
+			return unpackingContext;
 		}
 
 		private TConstruct EmitCheckTupleCardinarityExpression( TContext context, TConstruct unpacker, int cardinarity )
@@ -264,18 +408,20 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitNotEqualsExpression(
 						context,
 						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.ItemsCount ),
-						this.MakeInt64Literal( context, cardinarity )
+						this.MakeInt64Literal( context, cardinarity ) // as i8 for compile time optimization
 					),
 					this.EmitInvokeVoidMethod(
 						context,
 						null,
 						SerializationExceptions.ThrowTupleCardinarityIsNotMatchMethod,
-						this.MakeInt64Literal( context, cardinarity ),
+						this.MakeInt32Literal( context, cardinarity ), // as i4 for valid API call
 						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.ItemsCount ),
 						context.Unpacker
 					),
 					null
 				);
 		}
+
+		#endregion -- UnpackFrom --
 	}
 }

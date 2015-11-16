@@ -253,6 +253,7 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitAnyLdloc( temporaryLocalArrayIndex );
 			this.EmitCall( _string_Format );
 		}
+#endif // DEBUG
 
 		/// <summary>
 		///		Emit load 'this' pointer instruction (namely 'ldarg.0').
@@ -262,7 +263,6 @@ namespace MsgPack.Serialization.Reflection
 		{
 			this.EmitLdarg_0();
 		}
-#endif // DEBUG
 
 		/// <summary>
 		///		Emit apprpriate 'ldarg.*' instruction.
@@ -628,7 +628,6 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitNewarr( elementType );
 		}
 
-#if DEBUG
 		/// <summary>
 		///		Emit array element loading instructions. 
 		///		Post condition is that exactly one loaded element will be placed on the top of stack and its element type is <paramref name="elementType"/>.
@@ -642,12 +641,33 @@ namespace MsgPack.Serialization.Reflection
 		/// <param name="index">Index of array element.</param>
 		public void EmitAnyLdelem( Type elementType, Action<TracingILGenerator> arrayLoadingEmitter, long index )
 		{
-			Contract.Assert( elementType != null );
 			Contract.Assert( 0 <= index );
+			this.EmitAnyLdelem( elementType, arrayLoadingEmitter, il => il.EmitLiteralInteger( index ) );
+		}
+
+		/// <summary>
+		///		Emit array element storing instructions.
+		///		Post condition is evaluation stack will no be modified as previous state.
+		/// </summary>
+		/// <param name="elementType"><see cref="Type"/> of array element. This can be generaic parameter.</param>
+		/// <param name="arrayLoadingEmitter">
+		///		Delegate to emittion of array loading instruction. 
+		///		1st argument is this instance.
+		///		Post condition is that exactly one target array will be added on the top of stack and its element type is <paramref name="elementType"/>.
+		///	</param>
+		/// <param name="indexEmitter">
+		///		Delegate to emittion of array index. 
+		///		1st argument is this instance.
+		///		Post condition is that int4 or int8 type value will be added on the top of stack and its element type is <paramref name="elementType"/>.
+		/// </param>
+		public void EmitAnyLdelem( Type elementType, Action<TracingILGenerator> arrayLoadingEmitter, Action<TracingILGenerator> indexEmitter )
+		{
+			Contract.Assert( elementType != null );
+			Contract.Assert( indexEmitter != null );
 			Contract.Assert( arrayLoadingEmitter != null );
 
 			arrayLoadingEmitter( this );
-			this.EmitLiteralInteger( index );
+			indexEmitter( this );
 
 			if ( elementType.IsGenericParameter )
 			{
@@ -724,6 +744,7 @@ namespace MsgPack.Serialization.Reflection
 			}
 		}
 
+#if DEBUG
 		/// <summary>
 		///		Emit array element storing instructions.
 		///		Post condition is evaluation stack will no be modified as previous state.

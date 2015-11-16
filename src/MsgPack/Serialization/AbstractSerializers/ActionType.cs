@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -22,21 +22,15 @@ using System;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
-	internal enum CollectionSerializerMethod
+	/// <summary>
+	///		Indicates type of action delegates.
+	/// </summary>
+	internal enum ActionType
 	{
-		/// <summary>
-		///		void AddItem(TCollection, TItem) or void AddItem(TCollection, object)
-		/// </summary>
-		AddItem,
-
-		/// <summary>
-		///		TCollection CreateInstance(int)
-		/// </summary>
-		CreateInstance,
-
-		/// <summary>
-		///		PolymorphismSchema RestoreSchema()
-		/// </summary>
-		RestoreSchema,
+		PackToArray,
+		PackToMap,
+		UnpackFromArray,
+		UnpackFromMap,
+		UnpackTo
 	}
 }

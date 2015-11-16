@@ -22,6 +22,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
+
+using MsgPack.Serialization.AbstractSerializers;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
@@ -99,14 +102,22 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		// Ok this is generic, but private dependencies are non-generic.
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Well patterned" )]
-		public static Func<SerializationContext, MessagePackSerializer<TObject>> CreateFactory<TObject>( ExpressionTreeContext codeGenerationContext, CollectionTraits traits, PolymorphismSchema schema )
+		public static Func<SerializationContext, MessagePackSerializer<TObject>> CreateFactory<TObject>(
+			ExpressionTreeContext codeGenerationContext,
+			CollectionTraits traits,
+			PolymorphismSchema schema,
+			IList<Action<SerializationContext, Packer, TObject>> packOperationList,
+			IDictionary<string, Action<SerializationContext, Packer, TObject>> packOperationTable,
+			IList<Action<SerializationContext, Unpacker, object, int>> unpackOperationList,
+			IDictionary<string, Action<SerializationContext, Unpacker, object, int>> unpackOperationTable,
+			IList<string> memberNames
+		)
 		{
 			// Get at this point to prevent unexpected context change.
-			var packToCore = codeGenerationContext.GetPackToCore();
-			var unpackFromCore = codeGenerationContext.GetUnpackFromCore();
-			var unpackToCore = codeGenerationContext.GetUnpackToCore();
-			var createInstance = codeGenerationContext.GetCreateInstance();
-			var addItem = codeGenerationContext.GetAddItem();
+			var packToCore = codeGenerationContext.GetDelegate( MethodName.PackToCore );
+			var unpackFromCore = codeGenerationContext.GetDelegate( MethodName.UnpackFromCore );
+			var createInstance = codeGenerationContext.GetDelegate( MethodName.CreateInstance );
+			var addItem = codeGenerationContext.GetDelegate( MethodName.AddItem );
 
 			switch ( traits.DetailedCollectionType )
 			{
@@ -119,10 +130,23 @@ namespace MsgPack.Serialization.ExpressionSerializers
 #if DEBUG
 					Contract.Assert( factory != null );
 #endif // DEBUG
+					var serializerType =
+						typeof( ExpressionCallbackNonGenericEnumerableMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
+					var unpackToCore = 
+						GetActionForInstanceMethod(
+							codeGenerationContext,
+							serializerType,
+							MethodName.UnpackToCore,
+							typeof( Unpacker ),
+							typeof( TObject ),
+							typeof( int )
+						);
+					var unpackCollectionItem =
+						codeGenerationContext.GetDelegate( MethodName.UnpackCollectionItem );
 
 					return
 						context =>
-							factory.Create( context, schema, createInstance, unpackFromCore, addItem ) as MessagePackSerializer<TObject>;
+							factory.Create( context, schema, createInstance, unpackFromCore, addItem, unpackToCore, unpackCollectionItem ) as MessagePackSerializer<TObject>;
 				}
 				case CollectionDetailedKind.NonGenericCollection:
 				{
@@ -133,10 +157,23 @@ namespace MsgPack.Serialization.ExpressionSerializers
 #if DEBUG
 					Contract.Assert( factory != null );
 #endif // DEBUG
+					var serializerType =
+						typeof( ExpressionCallbackNonGenericCollectionMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
+					var unpackToCore =
+						GetActionForInstanceMethod(
+							codeGenerationContext,
+							serializerType,
+							MethodName.UnpackToCore,
+							typeof( Unpacker ),
+							typeof( TObject ),
+							typeof( int )
+						);
+					var unpackCollectionItem =
+						codeGenerationContext.GetDelegate( MethodName.UnpackCollectionItem );
 
 					return
 						context =>
-							factory.Create( context, schema, createInstance, unpackFromCore, addItem ) as MessagePackSerializer<TObject>;
+							factory.Create( context, schema, createInstance, unpackFromCore, addItem, unpackToCore, unpackCollectionItem ) as MessagePackSerializer<TObject>;
 				}
 				case CollectionDetailedKind.NonGenericList:
 				{
@@ -175,10 +212,23 @@ namespace MsgPack.Serialization.ExpressionSerializers
 #if DEBUG
 					Contract.Assert( factory != null );
 #endif // DEBUG
+					var serializerType =
+						typeof( ExpressionCallbackEnumerableMessagePackSerializer<,> ).MakeGenericType( typeof( TObject ), traits.ElementType );
+					var unpackToCore =
+						GetActionForInstanceMethod(
+							codeGenerationContext,
+							serializerType,
+							MethodName.UnpackToCore,
+							typeof( Unpacker ),
+							typeof( TObject ),
+							typeof( int )
+						);
+					var unpackCollectionItem =
+						codeGenerationContext.GetDelegate( MethodName.UnpackCollectionItem );
 
 					return
 						context =>
-							factory.Create( context, schema, createInstance, unpackFromCore, addItem ) as MessagePackSerializer<TObject>;
+							factory.Create( context, schema, createInstance, unpackFromCore, addItem, unpackToCore, unpackCollectionItem ) as MessagePackSerializer<TObject>;
 				}
 				case CollectionDetailedKind.GenericCollection:
 				case CollectionDetailedKind.GenericSet:
@@ -227,7 +277,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 #if DEBUG
 					Contract.Assert( factory != null );
 #endif // DEBUG
-
 					return
 						context =>
 							factory.Create( context, schema, createInstance, addItem ) as MessagePackSerializer<TObject>;
@@ -264,11 +313,52 @@ namespace MsgPack.Serialization.ExpressionSerializers
 #if DEBUG
 					Contract.Assert( factory != null );
 #endif // DEBUG
+
 					return
 						context =>
-							factory.Create( context, packToCore, unpackFromCore, unpackToCore ) as MessagePackSerializer<TObject>;
+							factory.Create(
+								context,
+								packToCore,
+								unpackFromCore,
+								codeGenerationContext.GetDelegate( MethodName.UnpackToCore ),
+								packOperationList,
+								packOperationTable,
+								unpackOperationList,
+								unpackOperationTable,
+								codeGenerationContext.GetDelegate( MethodName.CreateObjectFromContext ),
+								memberNames
+							) as MessagePackSerializer<TObject>;
 				}
 			}
+		}
+
+		private static Delegate GetActionForInstanceMethod( ExpressionTreeContext codeGenerationContext, Type serializerType, string name, params Type[] parameterTypes )
+		{
+			var result =
+				codeGenerationContext.GetDelegate( name );
+			if ( result == null )
+			{
+				var method =
+					codeGenerationContext.This.ContextType.ResolveRuntimeType()
+						.GetRuntimeMethod( name, parameterTypes );
+				if ( method != null )
+				{
+					var genericArguments = new Type[ parameterTypes.Length +1];
+					genericArguments[ 0 ] = serializerType;
+					Array.ConstrainedCopy( parameterTypes, 0, genericArguments, 1, parameterTypes.Length );
+					result =
+						method.CreateDelegate(
+							// ReSharper disable once PossibleNullReferenceException
+							Type.GetType(
+								"System.Action`" +
+								( parameterTypes.Length + 1 ).ToString( CultureInfo.InvariantCulture ) )
+							.MakeGenericType( genericArguments ),
+							null
+						);
+				}
+			}
+
+			return result;
 		}
 
 		private interface ICallbackSerializerFactory
@@ -277,7 +367,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				SerializationContext context,
 				Delegate packTo,
 				Delegate unpackFrom,
-				Delegate unpackTo
+				Delegate unpackTo,
+				object packOperationList,
+				object packOperationTable,
+				object unpackOperationList,
+				object unpackOperationTable,
+				object createInstanceFromContext,
+				IList<string> memberNames
 			);
 		}
 
@@ -289,15 +385,29 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				SerializationContext context,
 				Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T> packTo,
 				Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackFrom,
-				Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackTo
+				Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackTo,
+				IList<Action<SerializationContext, Packer, T>> packOperationList,
+				IDictionary<string, Action<SerializationContext, Packer, T>> packOperationTable,
+				IList<Action<SerializationContext, Unpacker, object, int>> unpackOperationList,
+				IDictionary<string, Action<SerializationContext, Unpacker, object, int>> unpackOperationTable,
+				Func<SerializationContext, object, T> createInstanceFromContext,
+				IList<string> memberNames
 			)
 			{
+
+
 				return
 					new ExpressionCallbackMessagePackSerializer<T>(
 						context,
 						packTo,
 						unpackFrom,
-						unpackTo
+						unpackTo,
+						packOperationList,
+						packOperationTable,
+						unpackOperationList,
+						unpackOperationTable,
+						createInstanceFromContext,
+						memberNames
 					);
 			}
 
@@ -305,7 +415,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				SerializationContext context,
 				Delegate packTo,
 				Delegate unpackFrom,
-				Delegate unpackTo
+				Delegate unpackTo,
+				object packOperationList,
+				object packOperationTable,
+				object unpackOperationList,
+				object unpackOperationTable,
+				object createInstanceFromContext,
+				IList<string> memberNames
 			)
 			{
 				return
@@ -313,7 +429,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						context,
 						( Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T> )packTo,
 						( Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> )unpackFrom,
-						( Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> )unpackTo
+						( Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> )unpackTo,
+						( IList<Action<SerializationContext, Packer, T>> )packOperationList,
+						( IDictionary<string, Action<SerializationContext, Packer, T>> )packOperationTable,
+						( IList<Action<SerializationContext, Unpacker, object, int>> )unpackOperationList,
+						( IDictionary<string, Action<SerializationContext, Unpacker, object, int>> )unpackOperationTable,
+						( Func<SerializationContext, object, T> )createInstanceFromContext,
+						memberNames
 					);
 			}
 		}
@@ -325,7 +447,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				PolymorphismSchema schema,
 				Delegate createInstance,
 				Delegate unpackFrom,
-				Delegate addItem
+				Delegate addItem,
+				Delegate unpackToCore,
+				Delegate unpackCollectionItem
 			);
 		}
 
@@ -337,7 +461,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				PolymorphismSchema schema,
 				Func<TSerializer, SerializationContext, int, TCollection> createInstance,
 				Func<TSerializer, SerializationContext, Unpacker, TCollection> unpackFrom,
-				Action<TSerializer, SerializationContext, TCollection, TItem> addItem
+				Action<TSerializer, SerializationContext, TCollection, TItem> addItem,
+				Delegate unpackToCore,
+				Action<SerializationContext, Unpacker, TCollection, int> unpackCollectionItem
 			);
 
 			public object Create(
@@ -345,7 +471,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				PolymorphismSchema schema,
 				Delegate createInstance,
 				Delegate unpackFrom,
-				Delegate addItem
+				Delegate addItem,
+				Delegate unpackToCore,
+				Delegate unpackCollectionItem
 			)
 			{
 				return
@@ -354,7 +482,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						schema,
 						( Func<TSerializer, SerializationContext, int, TCollection> )createInstance,
 						( Func<TSerializer, SerializationContext, Unpacker, TCollection> )unpackFrom,
-						( Action<TSerializer, SerializationContext, TCollection, TItem> )addItem
+						( Action<TSerializer, SerializationContext, TCollection, TItem> )addItem,
+						unpackToCore,
+						( Action<SerializationContext, Unpacker, TCollection, int> )unpackCollectionItem
 					);
 
 			}
@@ -370,7 +500,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				PolymorphismSchema schema,
 				Func<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, SerializationContext, int, TCollection> createInstance,
 				Func<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, SerializationContext, Unpacker, TCollection> unpackFrom,
-				Action<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, SerializationContext, TCollection, TItem> addItem
+				Action<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, SerializationContext, TCollection, TItem> addItem,
+				Delegate unpackToCore,
+				Action<SerializationContext, Unpacker, TCollection, int> unpackCollectionItem
 			)
 			{
 				return
@@ -379,7 +511,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						schema,
 						createInstance,
 						unpackFrom,
-						addItem
+						addItem,
+						unpackToCore,
+						unpackCollectionItem
 					);
 			}
 		}
@@ -394,7 +528,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				PolymorphismSchema schema,
 				Func<ExpressionCallbackNonGenericEnumerableMessagePackSerializer<TCollection>, SerializationContext, int, TCollection> createInstance,
 				Func<ExpressionCallbackNonGenericEnumerableMessagePackSerializer<TCollection>, SerializationContext, Unpacker, TCollection> unpackFrom,
-				Action<ExpressionCallbackNonGenericEnumerableMessagePackSerializer<TCollection>, SerializationContext, TCollection, object> addItem
+				Action<ExpressionCallbackNonGenericEnumerableMessagePackSerializer<TCollection>, SerializationContext, TCollection, object> addItem,
+				Delegate unpackToCore,
+				Action<SerializationContext, Unpacker, TCollection, int> unpackCollectionItem
 			)
 			{
 				return
@@ -403,7 +539,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						schema,
 						createInstance,
 						unpackFrom,
-						addItem
+						addItem,
+						unpackToCore,
+						unpackCollectionItem
 					);
 			}
 		}
@@ -418,7 +556,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				PolymorphismSchema schema,
 				Func<ExpressionCallbackNonGenericCollectionMessagePackSerializer<TCollection>, SerializationContext, int, TCollection> createInstance,
 				Func<ExpressionCallbackNonGenericCollectionMessagePackSerializer<TCollection>, SerializationContext, Unpacker, TCollection> unpackFrom,
-				Action<ExpressionCallbackNonGenericCollectionMessagePackSerializer<TCollection>, SerializationContext, TCollection, object> addItem
+				Action<ExpressionCallbackNonGenericCollectionMessagePackSerializer<TCollection>, SerializationContext, TCollection, object> addItem,
+				Delegate unpackToCore,
+				Action<SerializationContext, Unpacker, TCollection, int> unpackCollectionItem
 			)
 			{
 				return
@@ -427,7 +567,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						schema,
 						createInstance,
 						unpackFrom,
-						addItem
+						addItem,
+						unpackToCore,
+						unpackCollectionItem
 					);
 			}
 		}
@@ -634,5 +776,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 		}
 #endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+
 	}
 }

@@ -1,5 +1,4 @@
-﻿ 
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -48,19 +47,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Boolean UnpackBooleanValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				Boolean result;
 				if ( !unpacker.ReadBoolean( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Boolean ); // never reaches.
 			}
 		}
 
@@ -80,19 +86,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Boolean? UnpackNullableBooleanValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				Boolean? result;
 				if ( !unpacker.ReadNullableBoolean( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Boolean? ); // never reaches.
 			}
 		}
 
@@ -112,19 +125,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Byte UnpackByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				Byte result;
 				if ( !unpacker.ReadByte( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Byte ); // never reaches.
 			}
 		}
 
@@ -144,19 +164,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Byte? UnpackNullableByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				Byte? result;
 				if ( !unpacker.ReadNullableByte( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Byte? ); // never reaches.
 			}
 		}
 
@@ -176,19 +203,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int16 UnpackInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				Int16 result;
 				if ( !unpacker.ReadInt16( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Int16 ); // never reaches.
 			}
 		}
 
@@ -208,19 +242,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int16? UnpackNullableInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				Int16? result;
 				if ( !unpacker.ReadNullableInt16( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Int16? ); // never reaches.
 			}
 		}
 
@@ -240,19 +281,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int32 UnpackInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				Int32 result;
 				if ( !unpacker.ReadInt32( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Int32 ); // never reaches.
 			}
 		}
 
@@ -272,19 +320,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int32? UnpackNullableInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				Int32? result;
 				if ( !unpacker.ReadNullableInt32( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Int32? ); // never reaches.
 			}
 		}
 
@@ -304,19 +359,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int64 UnpackInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				Int64 result;
 				if ( !unpacker.ReadInt64( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Int64 ); // never reaches.
 			}
 		}
 
@@ -336,19 +398,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int64? UnpackNullableInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				Int64? result;
 				if ( !unpacker.ReadNullableInt64( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Int64? ); // never reaches.
 			}
 		}
 
@@ -371,19 +440,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static SByte UnpackSByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				SByte result;
 				if ( !unpacker.ReadSByte( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( SByte ); // never reaches.
 			}
 		}
 
@@ -406,19 +482,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static SByte? UnpackNullableSByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				SByte? result;
 				if ( !unpacker.ReadNullableSByte( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( SByte? ); // never reaches.
 			}
 		}
 
@@ -441,19 +524,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt16 UnpackUInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				UInt16 result;
 				if ( !unpacker.ReadUInt16( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( UInt16 ); // never reaches.
 			}
 		}
 
@@ -476,19 +566,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt16? UnpackNullableUInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				UInt16? result;
 				if ( !unpacker.ReadNullableUInt16( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( UInt16? ); // never reaches.
 			}
 		}
 
@@ -511,19 +608,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt32 UnpackUInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				UInt32 result;
 				if ( !unpacker.ReadUInt32( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( UInt32 ); // never reaches.
 			}
 		}
 
@@ -546,19 +650,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt32? UnpackNullableUInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				UInt32? result;
 				if ( !unpacker.ReadNullableUInt32( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( UInt32? ); // never reaches.
 			}
 		}
 
@@ -581,19 +692,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt64 UnpackUInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				UInt64 result;
 				if ( !unpacker.ReadUInt64( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( UInt64 ); // never reaches.
 			}
 		}
 
@@ -616,19 +734,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt64? UnpackNullableUInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				UInt64? result;
 				if ( !unpacker.ReadNullableUInt64( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( UInt64? ); // never reaches.
 			}
 		}
 
@@ -648,19 +773,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Single UnpackSingleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				Single result;
 				if ( !unpacker.ReadSingle( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Single ); // never reaches.
 			}
 		}
 
@@ -680,19 +812,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Single? UnpackNullableSingleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				Single? result;
 				if ( !unpacker.ReadNullableSingle( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Single? ); // never reaches.
 			}
 		}
 
@@ -712,19 +851,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Double UnpackDoubleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				Double result;
 				if ( !unpacker.ReadDouble( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Double ); // never reaches.
 			}
 		}
 
@@ -744,19 +890,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Double? UnpackNullableDoubleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				Double? result;
 				if ( !unpacker.ReadNullableDouble( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Double? ); // never reaches.
 			}
 		}
 
@@ -777,19 +930,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static string UnpackStringValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				string result;
 				if ( !unpacker.ReadString( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( string ); // never reaches.
 			}
 		}
 
@@ -809,19 +969,26 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static byte[] UnpackBinaryValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
 			try
 			{
 				byte[] result;
 				if ( !unpacker.ReadBinary( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( byte[] ); // never reaches.
 			}
 		}
 	}

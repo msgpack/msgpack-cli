@@ -38,6 +38,7 @@ namespace MsgPack.Serialization
 	{
 		public readonly MemberInfo Member;
 		public readonly DataMemberContract Contract;
+		public readonly string MemberName;
 
 #if UNITY
 		public SerializingMember()
@@ -51,7 +52,19 @@ namespace MsgPack.Serialization
 		{
 			this.Member = member;
 			this.Contract = contract;
+			// Use contract name for aliased map serialization.
+			this.MemberName = member == null ? null : contract.Name;
 		}
+
+#if !NETFX_35
+		// For Tuple
+		public SerializingMember( string name )
+		{
+			this.Member = null;
+			this.Contract = default ( DataMemberContract );
+			this.MemberName = name;
+		}
+#endif // !NETFX_35
 
 		public EnumMemberSerializationMethod GetEnumMemberSerializationMethod()
 		{

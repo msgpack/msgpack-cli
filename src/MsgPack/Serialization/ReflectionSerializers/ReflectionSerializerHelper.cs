@@ -45,6 +45,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 	/// </summary>
 	internal static class ReflectionSerializerHelper
 	{
+		internal static readonly PropertyInfo DictionaryEntryKeyProperty = typeof( DictionaryEntry ).GetProperty( "Key" );
+		internal static readonly PropertyInfo DictionaryEntryValueProperty = typeof( DictionaryEntry ).GetProperty( "Value" );
+
 		public static MessagePackSerializer<T> CreateReflectionEnumMessagePackSerializer<T>( SerializationContext context )
 		{
 #if !UNITY

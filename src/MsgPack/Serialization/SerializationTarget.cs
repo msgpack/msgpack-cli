@@ -523,6 +523,18 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if !NETFX_35
+		public static SerializationTarget CreateForTuple( IList<Type> itemTypes )
+		{
+			return new SerializationTarget( itemTypes.Select( ( _, i ) => new SerializingMember( GetTupleItemNameFromIndex( i ) ) ).ToArray(), null );
+		}
+
+		public static string GetTupleItemNameFromIndex( int i )
+		{
+			return "Item" + ( i + 1 ).ToString( "D", CultureInfo.InvariantCulture );
+		}
+#endif // !NETFX_35
+
 #if !NETFX_CORE && !SILVERLIGHT
 		public static bool BuiltInSerializerExists( ISerializerGeneratorConfiguration configuration, Type type, CollectionTraits traits )
 		{

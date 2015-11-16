@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				throw new ArgumentException( "Empty expressions.", "expressions" );
 			}
 
-			if ( expressions.Any( c => c.ContextType != typeof( bool ) ) )
+			if ( expressions.Any( c => c.ContextType.ResolveRuntimeType() != typeof( bool ) ) )
 			{
 				throw new ArgumentException( "An argument expressions cannot contains non boolean expression.", "expressions" );
 			}

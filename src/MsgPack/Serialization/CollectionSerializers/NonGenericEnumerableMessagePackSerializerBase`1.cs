@@ -87,8 +87,8 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <summary>
 		///		Deserializes collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/>.
 		/// </summary>
-		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
-		/// <param name="collection">Collection that the items to be stored. This value will not be <c>null</c>.</param>
+		/// <param name="unpacker">The <see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
+		/// <param name="collection">The collection that the items to be stored. This value will not be <c>null</c>.</param>
 		/// <exception cref="SerializationException">
 		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
 		/// </exception>
@@ -107,7 +107,16 @@ namespace MsgPack.Serialization.CollectionSerializers
 			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
 		}
 
-		internal void UnpackToCore( Unpacker unpacker, TCollection collection, int itemsCount )
+		/// <summary>
+		///		Deserializes collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/>.
+		/// </summary>
+		/// <param name="unpacker">The <see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
+		/// <param name="collection">The collection that the items to be stored. This value will not be <c>null</c>.</param>
+		/// <param name="itemsCount">The count of items of the collection in the msgpack stream.</param>
+		/// <exception cref="SerializationException">
+		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		/// </exception>
+		protected internal void UnpackToCore( Unpacker unpacker, TCollection collection, int itemsCount )
 		{
 			for ( var i = 0; i < itemsCount; i++ )
 			{

@@ -19,6 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.Reflection;
@@ -30,20 +33,20 @@ namespace MsgPack.Serialization.EmittingSerializers
 	/// </summary>
 	internal class AssemblyBuilderEmittingContext : SerializerGenerationContext<ILConstruct>
 	{
-	
-				/// <summary>
+		private readonly Type _targetType;
+
+		/// <summary>
 		///		Gets or sets the <see cref="TracingILGenerator"/> to emit IL for current method.
 		/// </summary>
 		/// <value>
 		///		The <see cref="TracingILGenerator"/> to emit IL for current method.
 		/// </value>
-		internal TracingILGenerator IL { get; set; }
+		internal TracingILGenerator IL { get { return this._ilGeneratorStack.Peek().ILGenerator; } }
 
 		private readonly Func<SerializerEmitter> _emitterFactory;
-		private readonly Func<EnumSerializerEmitter> _enumEmitterFactory;
+		private readonly Stack<ILMethodConctext> _ilGeneratorStack;
 
 		private SerializerEmitter _emitter;
-		private EnumSerializerEmitter _enumEmitter;
 
 		/// <summary>
 		///		Gets the <see cref="SerializerEmitter"/>.
@@ -65,25 +68,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		/// <summary>
-		///		Gets the <see cref="EnumSerializerEmitter"/>.
-		/// </summary>
-		/// <value>
-		///		The <see cref="EnumSerializerEmitter"/>.
-		/// </value>
-		internal EnumSerializerEmitter EnumEmitter
-		{
-			get
-			{
-				if ( this._enumEmitter == null )
-				{
-					this._enumEmitter = this._enumEmitterFactory();
-				}
-
-				return this._enumEmitter;
-			}
-		}
-
-		/// <summary>
 		///		Gets the type of the serializer.
 		/// </summary>
 		/// <param name="targetType">Type of the serialization target.</param>
@@ -93,7 +77,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			return typeof( MessagePackSerializer<> ).MakeGenericType( targetType );
 		}
-		
+
 		///  <summary>
 		///  Initializes a new instance of the <see cref="AssemblyBuilderEmittingContext"/> class.
 		///  </summary>
@@ -102,16 +86,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <param name="emitterFactory">
 		///		The factory for <see cref="SerializerEmitter"/> to be used.
 		/// </param>
-		/// <param name="enumEmitterFactory">
-		///		The factory for <see cref="EnumSerializerEmitter"/> to be used.
-		/// </param>
-		public AssemblyBuilderEmittingContext( SerializationContext context, Type targetType,
-			Func<SerializerEmitter> emitterFactory, Func<EnumSerializerEmitter> enumEmitterFactory )
+		public AssemblyBuilderEmittingContext( SerializationContext context, Type targetType, Func<SerializerEmitter> emitterFactory )
 			: base( context )
 		{
-
+			this._targetType = targetType;
 			this._emitterFactory = emitterFactory;
-			this._enumEmitterFactory = enumEmitterFactory;
+			this._ilGeneratorStack = new Stack<ILMethodConctext>();
 			this.Reset( targetType, null );
 		}
 
@@ -121,6 +101,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this.Packer = ILConstruct.Argument( 1, typeof( Packer ), "packer" );
 			this.PackToTarget = ILConstruct.Argument( 2, targetType, "objectTree" );
 			this.Unpacker = ILConstruct.Argument( 1, typeof( Unpacker ), "unpacker" );
+			this.IndexOfItem = ILConstruct.Argument( 3, typeof( int ), "indexOfItem" );
 			this.UnpackToTarget = ILConstruct.Argument( 2, targetType, "collection" );
 			var traits = targetType.GetCollectionTraits();
 			if ( traits.ElementType != null )
@@ -138,8 +119,100 @@ namespace MsgPack.Serialization.EmittingSerializers
 				}
 				this.InitialCapacity = ILConstruct.Argument( 1, typeof( int ), "initialCapacity" );
 			}
+
 			this._emitter = null;
-			this._enumEmitter = null;
+			this._ilGeneratorStack.Clear();
+		}
+
+		public override void BeginMethodOverride( string name )
+		{
+			this._ilGeneratorStack.Push( this.Emitter.DefineOverrideMethod( name ) );
+		}
+
+		public override void BeginPrivateMethod( string name, bool isStatic, TypeDefinition returnType, params ILConstruct[] parameters )
+		{
+			this._ilGeneratorStack.Push(
+				this.Emitter.DefinePrivateMethod(
+					name,
+					isStatic,
+					returnType.ResolveRuntimeType(),
+					parameters.Select( p => p.ContextType.ResolveRuntimeType() ).ToArray()
+				)
+			);
+		}
+
+		protected override MethodDefinition EndPrivateMethodCore( string name, ILConstruct body )
+		{
+			return this.EndMethod( body );
+		}
+
+		protected override MethodDefinition EndMethodOverrideCore( string name, ILConstruct body )
+		{
+			return this.EndMethod( body );
+		}
+
+		private MethodDefinition EndMethod( ILConstruct body )
+		{
+			ILMethodConctext lastMethod;
+			try
+			{
+				if ( body != null )
+				{
+					body.Evaluate( this.IL );
+				}
+
+				this.IL.EmitRet();
+			}
+			finally
+			{
+				this.IL.FlushTrace();
+				SerializerDebugging.FlushTraceData();
+				lastMethod = this._ilGeneratorStack.Pop();
+			}
+
+			return new MethodDefinition( lastMethod.Method, lastMethod.ParameterTypes );
+		}
+
+		protected override FieldDefinition DeclarePrivateFieldCore( string name, TypeDefinition type )
+		{
+			return this.Emitter.RegisterField( name, type.ResolveRuntimeType() );
+		}
+
+		protected override void DefineUnpackingContextCore(
+			IList<KeyValuePair<string, TypeDefinition>> fields,
+			out TypeDefinition type,
+			out ConstructorDefinition constructor,
+			out ILConstruct parameterInUnpackValueMethods,
+			out ILConstruct parameterInCreateObjectFromContext
+		)
+		{
+			Type runtimeType;
+			ConstructorInfo runtimeConstructor;
+			this.Emitter.DefineUnpackingContext(
+				SerializerBuilderHelper.UnpackingContextTypeName,
+				fields.Select( kv => new KeyValuePair<string, Type>( kv.Key, kv.Value.ResolveRuntimeType() ) ).ToArray(),
+				out runtimeType,
+				out runtimeConstructor
+			);
+			type = runtimeType;
+			constructor =
+				new ConstructorDefinition(
+					runtimeConstructor,
+					fields.Select( kv => TypeDefinition.Object( kv.Value.ResolveRuntimeType() ) )
+				);
+			parameterInUnpackValueMethods = ILConstruct.Argument( 2, type, "unpackingContext" );
+			parameterInCreateObjectFromContext = ILConstruct.Argument( 1, type, "unpackingContext" );
+		}
+
+		protected override void DefineUnpackingContextWithResultObjectCore(
+			out TypeDefinition type,
+			out ILConstruct parameterInUnpackValueMethods,
+			out ILConstruct parameterInCreateObjectFromContext
+		)
+		{
+			type = this._targetType;
+			parameterInUnpackValueMethods = ILConstruct.Argument( 2, type, "unpackingContext" );
+			parameterInCreateObjectFromContext = ILConstruct.Argument( 1, type, "unpackingContext" );
 		}
 	}
 }

@@ -42,9 +42,6 @@ namespace MsgPack.Serialization.ReflectionSerializers
 	/// </summary>
 	internal class ReflectionObjectMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
-		private static readonly PropertyInfo DictionaryEntryKeyProperty = typeof( DictionaryEntry ).GetProperty( "Key" );
-		private static readonly PropertyInfo DictionaryEntryValueProperty = typeof( DictionaryEntry ).GetProperty( "Value" );
-
 		private readonly Func<object, object>[] _getters;
 		private readonly Action<object, object>[] _setters;
 		private readonly MemberInfo[] _memberInfos;
@@ -78,7 +75,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 #if SILVERLIGHT && !WINDOWS_PHONE
 						this._constructorParameters.FindIndex( 
 #else
-							Array.FindIndex( this._constructorParameters,
+						Array.FindIndex( this._constructorParameters,
 #endif // SILVERLIGHT && !WINDOWS_PHONE
 							item => item.Name.Equals( member.Contract.Name, StringComparison.OrdinalIgnoreCase ) && item.ParameterType == member.Member.GetMemberValueType()
 						);
@@ -189,7 +186,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					string name;
 					if ( !unpacker.ReadString( out name ) )
 					{
-						SerializationExceptions.ThrowUnexpectedEndOfStream();
+						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
 
 					if ( name == null )
@@ -365,8 +362,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						var arguments = new object[ 2 ];
 						foreach ( var item in source )
 						{
-							arguments[ 0 ] = DictionaryEntryKeyProperty.GetValue( item, null );
-							arguments[ 1 ] = DictionaryEntryValueProperty.GetValue( item, null );
+							arguments[ 0 ] = ReflectionSerializerHelper.DictionaryEntryKeyProperty.GetValue( item, null );
+							arguments[ 1 ] = ReflectionSerializerHelper.DictionaryEntryValueProperty.GetValue( item, null );
 							traits.AddMethod.InvokePreservingExceptionType( destination, arguments );
 						}
 						break;

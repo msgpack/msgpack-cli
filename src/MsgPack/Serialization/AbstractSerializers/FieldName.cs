@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -22,10 +22,13 @@ using System;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
-	internal enum SerializerMethod
+	internal class FieldName
 	{
-		PackToCore,
-		UnpackFromCore,
-		UnpackToCore
+		public const string PackOperationList = "_packOperationList";
+		public const string PackOperationTable = "_packOperationTable";
+		public const string UnpackOperationList = "_unpackOperationList";
+		public const string UnpackOperationTable = "_unpackOperationTable";
+		public const string UnpackTo = "_unpackTo";
+		public const string MemberNames = "_memberNames";
 	}
 }

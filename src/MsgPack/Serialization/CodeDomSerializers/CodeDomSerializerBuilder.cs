@@ -20,6 +20,9 @@
 
 using System;
 using System.CodeDom;
+using System.Linq;
+
+using MsgPack.Serialization.AbstractSerializers;
 
 namespace MsgPack.Serialization.CodeDomSerializers
 {
@@ -29,5 +32,58 @@ namespace MsgPack.Serialization.CodeDomSerializers
 	internal static class CodeDomSerializerBuilder
 	{
 		public static readonly CodeTypeReference[] EmptyGenericArguments = new CodeTypeReference[ 0 ];
+
+		public static CodeTypeReference ToCodeTypeReference( TypeDefinition type )
+		{
+			if ( type == null )
+			{
+				return null;
+			}
+
+			if ( type.IsArray )
+			{
+				return new CodeTypeReference( ToCodeTypeReference( type.ElementType ), 1 );
+			}
+
+			if ( type.HasRuntimeTypeFully() )
+			{
+				if ( type.GenericArguments.Length == 0 )
+				{
+					return new CodeTypeReference( type.ResolveRuntimeType() );
+				}
+				else
+				{
+					return
+						new CodeTypeReference(
+							GetGenericTypeBaseName( type ),
+							type.GenericArguments.Select( ToCodeTypeReference ).ToArray()
+						);
+				}
+			}
+			else
+			{
+				if ( type.GenericArguments.Length == 0 )
+				{
+					return new CodeTypeReference( type.TypeName );
+				}
+				else
+				{
+					return new CodeTypeReference( type.TypeName, type.GenericArguments.Select( ToCodeTypeReference ).ToArray() );
+				}
+			}
+		}
+
+		private static string GetGenericTypeBaseName( TypeDefinition genericType )
+		{
+			return
+				genericType.HasRuntimeTypeFully()
+				? genericType.ResolveRuntimeType().FullName.Remove( genericType.ResolveRuntimeType().FullName.IndexOf( '`' ) )
+				: genericType.TypeName;
+		}
+
+		internal static CodeTypeReferenceExpression ToCodeTypeReferenceExpression( TypeDefinition type )
+		{
+			return new CodeTypeReferenceExpression( ToCodeTypeReference( type ) );
+		}
 	}
 }

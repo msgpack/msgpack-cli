@@ -1815,6 +1815,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Cpobj, type );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'ldobj' instruction with specified arguments.
@@ -1833,7 +1834,6 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Ldobj, type );
 		}
-#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'ldstr' instruction with specified arguments.
@@ -2395,7 +2395,6 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Ldelema, type );
 		}
 
-#if DEBUG
 		///	<summary>
 		///		Emit 'ldelem.i1' instruction with specified arguments.
 		///	</summary>
@@ -2575,7 +2574,6 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Stelem_I );
 		}
-#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'stelem.i1' instruction with specified arguments.
@@ -2682,7 +2680,6 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Stelem_Ref );
 		}
 
-#if DEBUG
 		///	<summary>
 		///		Emit 'ldelem' instruction with specified arguments.
 		///	</summary>
@@ -2700,7 +2697,6 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Ldelem, type );
 		}
-#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'stelem' instruction with specified arguments.
@@ -3326,6 +3322,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Clt_Un );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'ldftn' instruction with specified arguments.
@@ -3345,6 +3342,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Ldftn, method );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'ldvirtftn' instruction with specified arguments.
 		///	</summary>
