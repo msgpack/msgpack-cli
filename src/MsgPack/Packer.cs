@@ -22,10 +22,6 @@
 #define UNITY
 #endif
 
-#if !NETFX_35 && !NETFX_40 && !UNITY
-#define FEATURE_TAP
-#endif // !NETFX_35 && !NETFX_40 && !UNITY
-
 using System;
 using System.Collections.Generic;
 #if !UNITY
@@ -38,6 +34,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 #if FEATURE_TAP
+using System.Threading;
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
 
@@ -273,6 +270,31 @@ namespace MsgPack
 		/// <param name="value">A byte to be written.</param>
 		protected abstract void WriteByte( byte value );
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		When overridden by derived class, writes specified byte to stream using implementation specific manner asynchronously.
+		/// </summary>
+		/// <param name="value">A byte to be written.</param>
+		/// <returns>A <see cref="Task"/> to represent pending asynchronous operation.</returns>
+		protected Task WriteByteAsync( byte value )
+		{
+			return this.WriteByteAsync( value, CancellationToken.None );
+		}
+
+		/// <summary>
+		///		When overridden by derived class, writes specified byte to stream using implementation specific manner asynchronously.
+		/// </summary>
+		/// <param name="value">A byte to be written.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> to represent pending asynchronous operation.</returns>
+		protected virtual Task WriteByteAsync( byte value, CancellationToken cancellationToken )
+		{
+			return Task.Run( () => this.WriteByte( value ), cancellationToken );
+		}
+
+#endif // FEATURE_TAP
+
 		#region -- Bulk writing --
 
 		/// <summary>
@@ -297,6 +319,44 @@ namespace MsgPack
 			}
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Writes specified bytes to stream using implementation specific most efficient manner asynchronously.
+		/// </summary>
+		/// <param name="value">Collection of bytes to be written.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected Task WriteBytesAsync( ICollection<byte> value )
+		{
+			return this.WriteBytesAsync( value, CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Writes specified bytes to stream using implementation specific most efficient manner asynchronously.
+		/// </summary>
+		/// <param name="value">Collection of bytes to be written.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected virtual async Task WriteBytesAsync( ICollection<byte> value, CancellationToken cancellationToken )
+		{
+			if ( value == null )
+			{
+				ThrowArgumentNullException( "value" );
+			}
+
+#if !UNITY
+			Contract.EndContractBlock();
+#endif // !UNITY
+
+			// ReSharper disable once PossibleNullReferenceException
+			foreach ( var b in value )
+			{
+				await this.WriteByteAsync( b, cancellationToken ).ConfigureAwait( false );
+			}
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Writes specified bytes to stream using implementation specific most efficient manner.
 		/// </summary>
@@ -320,6 +380,45 @@ namespace MsgPack
 			}
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Writes specified bytes to stream using implementation specific most efficient manner asynchronously.
+		/// </summary>
+		/// <param name="value">Bytes to be written.</param>
+		/// <param name="isImmutable">If the <paramref name="value"/> can be treat as immutable (that is, can be used safely without copying) then <c>true</c>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected Task WriteBytesAsync( byte[] value, bool isImmutable )
+		{
+			return this.WriteBytesAsync( value, isImmutable, CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Writes specified bytes to stream using implementation specific most efficient manner asynchronously.
+		/// </summary>
+		/// <param name="value">Bytes to be written.</param>
+		/// <param name="isImmutable">If the <paramref name="value"/> can be treat as immutable (that is, can be used safely without copying) then <c>true</c>.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected virtual async Task WriteBytesAsync( byte[] value, bool isImmutable, CancellationToken cancellationToken )
+		{
+			if ( value == null )
+			{
+				ThrowArgumentNullException( "value" );
+			}
+
+#if !UNITY
+			Contract.EndContractBlock();
+#endif // !UNITY
+
+			// ReSharper disable once PossibleNullReferenceException
+			foreach ( var b in value )
+			{
+				await this.WriteByteAsync( b, cancellationToken ).ConfigureAwait( false );
+			}
+		}
+
+#endif // FEATURE_TAP
 		#endregion -- Bulk writing --
 
 		#region -- Int8 --
@@ -343,6 +442,43 @@ namespace MsgPack
 			return this;
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Packs <see cref="SByte"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="SByte"/> value.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+		public Task PackAsync( sbyte value )
+		{
+			return this.PackAsync( value, CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Packs <see cref="SByte"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="SByte"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+		public Task PackAsync( sbyte value, CancellationToken cancellationToken )
+		{
+			this.VerifyNotDisposed();
+#if !UNITY
+			Contract.EndContractBlock();
+#endif // !UNITY
+			return this.PrivatePackAsyncCore( value, cancellationToken );
+		}
+
+#endif // FEATURE_TAP
+
 		private void PrivatePackCore( sbyte value )
 		{
 			if ( this.TryPackTinySignedInteger( value ) )
@@ -357,6 +493,25 @@ namespace MsgPack
 			Contract.Assert( b, "success" );
 #endif // !UNITY && DEBUG
 		}
+
+#if FEATURE_TAP
+
+		private async Task PrivatePackAsyncCore( sbyte value, CancellationToken cancellationToken )
+		{
+			if ( await this.TryPackTinySignedIntegerAsync( value, cancellationToken ).ConfigureAwait( false ) )
+			{
+				return;
+			}
+
+#pragma warning disable 168
+			var b = await this.TryPackInt8Async( value, cancellationToken ).ConfigureAwait( false );
+#pragma warning restore 168
+#if !UNITY && DEBUG
+			Contract.Assert( b, "success" );
+#endif // !UNITY && DEBUG
+		}
+
+#endif // FEATURE_TAP
 
 		/// <summary>
 		///		Try packs <see cref="SByte"/> value to current stream strictly.
@@ -374,6 +529,46 @@ namespace MsgPack
 			this.WriteByte( ( byte )value );
 			return true;
 		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Try packs <see cref="SByte"/> value to current stream strictly asynchronously.
+		/// </summary>
+		/// <param name="value">Maybe <see cref="SByte"/> value.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains the value
+		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
+		/// </returns>
+		protected Task<bool> TryPackInt8Async( long value )
+		{
+			return this.TryPackInt8Async( value, CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Try packs <see cref="SByte"/> value to current stream strictly asynchronously.
+		/// </summary>
+		/// <param name="value">Maybe <see cref="SByte"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains the value
+		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
+		/// </returns>
+		protected async Task<bool> TryPackInt8Async( long value, CancellationToken cancellationToken )
+		{
+			if ( value > SByte.MaxValue || value < SByte.MinValue )
+			{
+				return false;
+			}
+
+			await this.WriteByteAsync( MessagePackCode.SignedInt8, cancellationToken ).ConfigureAwait( false );
+			await this.WriteByteAsync( ( byte )value, cancellationToken ).ConfigureAwait( false );
+			return true;
+		}
+
+#endif // FEATURE_TAP
 
 		#endregion -- Int8 --
 
@@ -395,6 +590,37 @@ namespace MsgPack
 			return this;
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Packs <see cref="Byte"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="Byte"/> value.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		public Task PackAsync( byte value )
+		{
+			return this.PackAsync( value, CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Packs <see cref="Byte"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="Byte"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		public Task PackAsync( byte value, CancellationToken cancellationToken )
+		{
+			this.VerifyNotDisposed();
+#if !UNITY
+			Contract.EndContractBlock();
+#endif // !UNITY
+			return this.PrivatePackAsyncCore( value, cancellationToken );
+		}
+
+#endif // FEATURE_TAP
+
 		private void PrivatePackCore( byte value )
 		{
 			if ( this.TryPackTinyUnsignedInteger( value ) )
@@ -410,12 +636,34 @@ namespace MsgPack
 #endif // !UNITY && DEBUG
 		}
 
+#if FEATURE_TAP
+
+		private async Task PrivatePackAsyncCore( byte value, CancellationToken cancellationToken )
+		{
+			if ( await this.TryPackTinyUnsignedIntegerAsync( value, cancellationToken ).ConfigureAwait( false ) )
+			{
+				return;
+			}
+
+#pragma warning disable 168
+			var b = await this.TryPackUInt8Async( value, cancellationToken ).ConfigureAwait( false );
+#pragma warning restore 168
+#if !UNITY && DEBUG
+			Contract.Assert( b, "success" );
+#endif // !UNITY && DEBUG
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Try packs <see cref="Byte"/> value to current stream strictly.
 		/// </summary>
 		/// <param name="value">Maybe <see cref="Byte"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
-		private bool TryPackUInt8( ulong value )
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+		protected bool TryPackUInt8( ulong value )
 		{
 			if ( value > Byte.MaxValue )
 			{
@@ -426,6 +674,52 @@ namespace MsgPack
 			this.WriteByte( ( byte )value );
 			return true;
 		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Try packs <see cref="Byte"/> value to current stream strictly asynchronously.
+		/// </summary>
+		/// <param name="value">Maybe <see cref="Byte"/> value.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains the value
+		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
+		/// </returns>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+		protected Task<bool> TryPackUInt8Async( ulong value )
+		{
+			return this.TryPackUInt8Async( value, CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Try packs <see cref="Byte"/> value to current stream strictly asynchronously.
+		/// </summary>
+		/// <param name="value">Maybe <see cref="Byte"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains the value
+		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
+		/// </returns>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+		protected async Task<bool> TryPackUInt8Async( ulong value, CancellationToken cancellationToken )
+		{
+			if ( value > Byte.MaxValue )
+			{
+				return false;
+			}
+
+			await this.WriteByteAsync( MessagePackCode.UnsignedInt8, cancellationToken ).ConfigureAwait( false );
+			await this.WriteByteAsync( ( byte )value, cancellationToken ).ConfigureAwait( false );
+			return true;
+		}
+
+#endif // FEATURE_TAP
 
 		#endregion -- UInt8 --
 
@@ -443,10 +737,45 @@ namespace MsgPack
 			return this;
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Packs <see cref="Boolean"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="Boolean"/> value.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		public Task PackAsync( bool value )
+		{
+			return this.PackAsync( value, CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Packs <see cref="Boolean"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="Boolean"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		public Task PackAsync( bool value, CancellationToken cancellationToken )
+		{
+			this.VerifyNotDisposed();
+			return this.PrivatePackAsyncCore( value, cancellationToken );
+		}
+
+#endif // FEATURE_TAP
+
 		private void PrivatePackCore( bool value )
 		{
 			this.WriteByte( value ? ( byte )MessagePackCode.TrueValue : ( byte )MessagePackCode.FalseValue );
 		}
+
+#if FEATURE_TAP
+
+		private async Task PrivatePackAsyncCore( bool value, CancellationToken cancellationToken )
+		{
+			await this.WriteByteAsync( value ? ( byte )MessagePackCode.TrueValue : ( byte )MessagePackCode.FalseValue, cancellationToken ).ConfigureAwait( false );
+		}
+
+#endif // FEATURE_TAP
 
 		#endregion -- Boolean --
 
@@ -474,6 +803,53 @@ namespace MsgPack
 			return false;
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Try packs <see cref="SByte"/> value to current stream as tiny fix num asynchronously.
+		/// </summary>
+		/// <param name="value">Maybe tiny <see cref="SByte"/> value.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains the value
+		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
+		/// </returns>
+		protected Task<bool> TryPackTinySignedIntegerAsync( long value )
+		{
+			return this.TryPackTinySignedIntegerAsync( value, CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Try packs <see cref="SByte"/> value to current stream as tiny fix num asynchronously.
+		/// </summary>
+		/// <param name="value">Maybe tiny <see cref="SByte"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains the value
+		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
+		/// </returns>
+		protected async Task<bool> TryPackTinySignedIntegerAsync( long value, CancellationToken cancellationToken )
+		{
+			// positive fixnum
+			if ( value >= 0 && value < 128L )
+			{
+				await this.WriteByteAsync( unchecked( ( byte )value ), cancellationToken ).ConfigureAwait( false );
+				return true;
+			}
+
+			// negative fixnum
+			if ( value >= -32L && value <= -1L )
+			{
+				await this.WriteByteAsync( unchecked( ( byte )value ), cancellationToken ).ConfigureAwait( false );
+				return true;
+			}
+
+			return false;
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Try packs <see cref="Byte"/> value to current stream as tiny fix num.
 		/// </summary>
@@ -494,6 +870,52 @@ namespace MsgPack
 			return false;
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Try packs <see cref="Byte"/> value to current stream as tiny fix num asynchronously.
+		/// </summary>
+		/// <param name="value">Maybe tiny <see cref="Byte"/> value.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains the value
+		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
+		/// </returns>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+		protected Task<bool> TryPackTinyUnsignedIntegerAsync( ulong value )
+		{
+			return this.TryPackTinyUnsignedIntegerAsync( value, CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Try packs <see cref="Byte"/> value to current stream as tiny fix num asynchronously.
+		/// </summary>
+		/// <param name="value">Maybe tiny <see cref="Byte"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains the value
+		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
+		/// </returns>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+		protected async Task<bool> TryPackTinyUnsignedIntegerAsync( ulong value, CancellationToken cancellationToken )
+		{
+			// positive fixnum
+			if ( value < 128L )
+			{
+				await this.WriteByteAsync( unchecked( ( byte )value ), cancellationToken ).ConfigureAwait( false );
+				return true;
+			}
+
+			return false;
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Packs a null value to current stream.
 		/// </summary>
@@ -510,10 +932,49 @@ namespace MsgPack
 			return this;
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Packs a null value to current stream asynchronously.
+		/// </summary>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		public Task PackNullAsync()
+		{
+			return this.PackNullAsync( CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Packs a null value to current stream asynchronously.
+		/// </summary>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		public async Task PackNullAsync( CancellationToken cancellationToken )
+		{
+			this.VerifyNotDisposed();
+#if !UNITY
+			Contract.EndContractBlock();
+#endif // !UNITY
+
+			await this.PrivatePackNullAsyncCore( cancellationToken ).ConfigureAwait( false );
+		}
+
+#endif // FEATURE_TAP
+
 		private void PrivatePackNullCore()
 		{
 			this.WriteByte( MessagePackCode.NilValue );
 		}
+
+#if FEATURE_TAP
+
+		private async Task PrivatePackNullAsyncCore( CancellationToken cancellationToken )
+		{
+			await this.WriteByteAsync( MessagePackCode.NilValue, cancellationToken ).ConfigureAwait( false );
+		}
+
+#endif // FEATURE_TAP
 
 		private static void ThrowArgumentNullException( string parameterName )
 		{

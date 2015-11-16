@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,8 +18,16 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.IO;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack
 {
@@ -87,6 +95,19 @@ namespace MsgPack
 			this._stream.Write( asArray, 0, asArray.Length );
 		}
 
+#if FEATURE_TAP
+
+		protected override Task WriteByteAsync( byte value, CancellationToken cancellationToken )
+		{
+			return this._stream.WriteAsync( new [] { value }, 0, 1, cancellationToken );
+		}
+
+		protected override Task WriteBytesAsync( byte[] asArray, bool isImmutable, CancellationToken cancellationToken )
+		{
+			return this._stream.WriteAsync( asArray, 0, asArray.Length, cancellationToken );
+		}
+
+#endif // FEATURE_TAP
 
 		private static void ThrowCannotSeekException()
 		{
