@@ -16,9 +16,6 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
-// Contributors:
-//    Takeshi KIRIYA
-//
 #endregion -- License Terms --
 
 using System;
