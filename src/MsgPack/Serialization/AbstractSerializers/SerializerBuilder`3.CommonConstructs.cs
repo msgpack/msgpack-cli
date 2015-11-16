@@ -1510,8 +1510,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 							context,
 							this.EmitInvokeMethodExpression( context, unpacker, Metadata._Unpacker.Read )
 						),
-						this.EmitThrowExpression(
-							context, typeof( Unpacker ), SerializationExceptions.NewMissingItemMethod, itemIndex
+						this.EmitInvokeVoidMethod(
+							context, null, SerializationExceptions.ThrowMissingItemMethod, itemIndex, memberName, context.Unpacker
 						),
 						null
 					),

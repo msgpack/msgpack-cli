@@ -122,14 +122,14 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
 			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
 
 			if ( itemsCount != this._itemSerializers.Count )
 			{
-				throw SerializationExceptions.NewTupleCardinarityIsNotMatch( this._itemSerializers.Count, itemsCount );
+				SerializationExceptions.ThrowTupleCardinarityIsNotMatch( this._itemSerializers.Count, itemsCount, unpacker );
 			}
 
 			var unpackedItems = new List<object>( this._itemSerializers.Count );
@@ -138,7 +138,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			{
 				if ( !unpacker.Read() )
 				{
-					throw SerializationExceptions.NewMissingItem( i );
+					SerializationExceptions.ThrowMissingItem( i, unpacker );
 				}
 
 				unpackedItems.Add( this._itemSerializers[ i ].UnpackFrom( unpacker ) );

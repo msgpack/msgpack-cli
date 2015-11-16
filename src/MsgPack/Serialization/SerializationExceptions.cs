@@ -40,6 +40,8 @@ using System.Runtime.Serialization;
 using MsgPack.Serialization.CollectionSerializers;
 using MsgPack.Serialization.Reflection;
 
+#warning TODO: All goes to be Throw...
+
 namespace MsgPack.Serialization
 {
 	/// <summary>
@@ -52,7 +54,7 @@ namespace MsgPack.Serialization
 	public static class SerializationExceptions
 	{
 #if !XAMIOS && !XAMDROID && !UNITY
-		internal static readonly MethodInfo NewValueTypeCannotBeNull3Method = FromExpression.ToMethod( ( string name, Type memberType, Type declaringType ) => NewValueTypeCannotBeNull( name, memberType, declaringType ) );
+		internal static readonly MethodInfo ThrowValueTypeCannotBeNull3Method = FromExpression.ToMethod( ( string name, Type memberType, Type declaringType ) => ThrowValueTypeCannotBeNull( name, memberType, declaringType ) );
 #endif // !XAMIOS && !XAMDROID && !UNITY
 
 		/// <summary>
@@ -73,6 +75,20 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Member '{0}' of type '{1}' cannot be null because it is value type('{2}').", name, declaringType, memberType ) );
+		}
+
+		/// <summary>
+		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		///		Throws an exception to notify that value type cannot be <c>null</c> on deserialization.
+		/// </summary>
+		/// <param name="name">The name of the member.</param>
+		/// <param name="memberType">The type of the member.</param>
+		/// <param name="declaringType">The type that declares the member.</param>
+		/// <exception cref="Exception">Always thrown.</exception>
+		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+		public static void ThrowValueTypeCannotBeNull( string name, Type memberType, Type declaringType )
+		{
+			throw NewValueTypeCannotBeNull( name, memberType, declaringType );
 		}
 
 		/// <summary>
@@ -144,10 +160,12 @@ namespace MsgPack.Serialization
 		}
 
 #if !XAMIOS && !XAMDROID && !UNITY
+		// ReSharper disable InconsistentNaming
 		/// <summary>
-		///		<see cref="MethodInfo"/> of <see cref="NewMissingItem"/> method.
+		///		<see cref="ThrowMissingItem(int,string,Unpacker)"/>
 		/// </summary>
-		internal static readonly MethodInfo NewMissingItemMethod = FromExpression.ToMethod( ( int index ) => NewMissingItem( index ) );
+		internal static readonly MethodInfo ThrowMissingItemMethod = FromExpression.ToMethod( ( int index, string name, Unpacker unpacker ) => ThrowMissingItem( index, name, unpacker ) );
+		// ReSharper restore InconsistentNaming
 #endif // !XAMIOS && !XAMDROID && !UNITY
 
 		/// <summary>
@@ -156,7 +174,10 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="index">The index to be unpacking.</param>
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
-		public static Exception NewMissingItem( int index )
+#if DEBUG
+		[Obsolete( "Use ThrowMissingItem(int, Unpacker) instead." )]
+#endif
+		public static Exception NewMissingItem( int index ) // For compatibility only.
 		{
 #if !UNITY
 			Contract.Requires( index >= 0 );
@@ -164,6 +185,143 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 
 			return new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Items at index '{0}' is missing.", index ) );
+		}
+
+		/// <summary>
+		/// 	<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		/// 	Throws a exception to notify that item is not found on the unpacking stream.
+		/// </summary>
+		/// <param name="index">The index to be unpacking.</param>
+		/// <param name="unpacker">The unpacker for pretty message.</param>
+		/// <exception cref="Exception">Always thrown.</exception>
+		public static void ThrowMissingItem( int index, Unpacker unpacker )
+		{
+			ThrowMissingItem( index, null, unpacker );
+		}
+
+		/// <summary>
+		/// 	<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		/// 	Throws a exception to notify that item is not found on the unpacking stream.
+		/// </summary>
+		/// <param name="index">The index to be unpacking.</param>
+		/// <param name="name">The name of the item to be unpacking.</param>
+		/// <param name="unpacker">The unpacker for pretty message.</param>
+		/// <exception cref="Exception">Always thrown.</exception>
+		public static void ThrowMissingItem( int index, string name, Unpacker unpacker )
+		{
+			long offsetOrPosition;
+			var isRealPosition = unpacker.GetPreviousPosition( out offsetOrPosition );
+			if ( String.IsNullOrEmpty( name ) )
+			{
+				if ( offsetOrPosition >= 0L )
+				{
+					if ( isRealPosition )
+					{
+						throw new InvalidMessagePackStreamException(
+							String.Format(
+								CultureInfo.CurrentCulture,
+								"Value for '{0}' at index {1} is missing, at position {2}",
+								name,
+								index,
+								offsetOrPosition
+							)
+						);
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException(
+							String.Format(
+								CultureInfo.CurrentCulture,
+								"Value for '{0}' at index {1} is missing, at offset {2}",
+								name,
+								index,
+								offsetOrPosition
+							)
+						);
+					}
+				}
+				else
+				{
+					throw new InvalidMessagePackStreamException(
+						String.Format( CultureInfo.CurrentCulture, "Value for '{0}' at index {1} is missing.", name, index )
+					);
+				}
+			}
+			else
+			{
+				if ( offsetOrPosition >= 0L )
+				{
+					if ( isRealPosition )
+					{
+						throw new InvalidMessagePackStreamException(
+							String.Format(
+								CultureInfo.CurrentCulture,
+								"Item at index {0} is missing, at position {1}",
+								index,
+								offsetOrPosition
+							)
+						);
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException(
+							String.Format(
+								CultureInfo.CurrentCulture,
+								"Item at index {0} is missing, at offset {1}",
+								index,
+								offsetOrPosition
+							)
+						);
+					}
+				}
+				else
+				{
+					throw new InvalidMessagePackStreamException(
+						String.Format( CultureInfo.CurrentCulture, "Item at index '{0}' is missing.", index )
+					);
+				}
+			}
+		}
+
+		internal static void ThrowMissingKey( int index, Unpacker unpacker )
+		{
+			long offsetOrPosition;
+			var isRealPosition = unpacker.GetPreviousPosition( out offsetOrPosition );
+			if ( offsetOrPosition >= 0L )
+			{
+				if ( isRealPosition )
+				{
+					throw new InvalidMessagePackStreamException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Key of map entry at index {0} is missing, at position {1}",
+							index,
+							offsetOrPosition
+						)
+					);
+				}
+				else
+				{
+					throw new InvalidMessagePackStreamException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Key of map entry at index {0} is missing, at offset {1}",
+							index,
+							offsetOrPosition
+						)
+					);
+				}
+			}
+			else
+			{
+				throw new InvalidMessagePackStreamException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"Key of map entry at index {0} is missing.",
+						index
+					)
+				);
+			}
 		}
 
 		/// <summary>
@@ -198,6 +356,11 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have both of default (parameterless) public constructor and  public constructor with an Int32 parameter.", type ) );
 		}
 
+		internal static void ThrowTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( Type type )
+		{
+			throw NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( type );
+		}
+
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 		///		Returns new exception to notify that required field is not found on the unpacking stream.
@@ -214,6 +377,11 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Property '{0}' is missing.", name ) );
 		}
 
+		internal static void ThrowMissingProperty( string name )
+		{
+			throw NewMissingProperty( name );
+		}
+
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 		///		Returns new exception to notify that unpacking stream ends on unexpectedly position.
@@ -226,6 +394,39 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 
 			return new SerializationException( "Stream unexpectedly ends." );
+		}
+
+		internal static void ThrowUnexpectedEndOfStream( Unpacker unpacker )
+		{
+			long offsetOrPosition;
+			var isRealPosition = unpacker.GetPreviousPosition( out offsetOrPosition );
+			if ( offsetOrPosition >= 0L )
+			{
+				if ( isRealPosition )
+				{
+					throw new InvalidMessagePackStreamException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Stream unexpectedly ends at position {0}",
+							offsetOrPosition
+						)
+					);
+				}
+				else
+				{
+					throw new InvalidMessagePackStreamException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Stream unexpectedly ends at offset {0}",
+							offsetOrPosition
+						)
+					);
+				}
+			}
+			else
+			{
+				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+			}
 		}
 
 		/// <summary>
@@ -245,7 +446,8 @@ namespace MsgPack.Serialization
 		}
 
 #if !XAMIOS && !XAMDROID && !UNITY
-		internal static readonly MethodInfo NewIsNotArrayHeaderMethod = FromExpression.ToMethod( () => NewIsNotArrayHeader() );
+		internal static readonly MethodInfo ThrowIsNotArrayHeaderMethod =
+			FromExpression.ToMethod( ( Unpacker unpacker ) => ThrowIsNotArrayHeader( unpacker ) );
 #endif // !XAMIOS && !XAMDROID && !UNITY
 
 		/// <summary>
@@ -253,13 +455,48 @@ namespace MsgPack.Serialization
 		///		Returns new exception to notify that unpacker is not in the array header, that is the state is invalid.
 		/// </summary>
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+#if DEBUG
+		[Obsolete]
+#endif // DEBUG
 		public static Exception NewIsNotArrayHeader()
 		{
 			return new SerializationException( "Unpacker is not in the array header. The stream may not be array." );
 		}
 
+		/// <summary>
+		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		///		Throws an exception to notify that unpacker is not in the array header, that is the state is invalid.
+		/// </summary>
+		/// <param name="unpacker">The unpacker for pretty message.</param>
+		/// <exception cref="Exception">Always thrown.</exception>
+		public static void ThrowIsNotArrayHeader( Unpacker unpacker )
+		{
+			long offsetOrPosition;
+			if ( unpacker.GetPreviousPosition( out offsetOrPosition ) )
+			{
+				throw new SerializationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"Unpacker is not in the array header at position {0}. The stream may not be array.",
+						offsetOrPosition
+					)
+				);
+			}
+			else
+			{
+				throw new SerializationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"Unpacker is not in the array header at offset {0}. The stream may not be array.",
+						offsetOrPosition
+					)
+				);
+			}
+		}
+
 #if !XAMIOS && !XAMDROID && !UNITY
-		internal static readonly MethodInfo NewIsNotMapHeaderMethod = FromExpression.ToMethod( () => NewIsNotMapHeader() );
+		internal static readonly MethodInfo ThrowIsNotMapHeaderMethod =
+			FromExpression.ToMethod( ( Unpacker unpacker ) => ThrowIsNotMapHeader( unpacker ) );
 #endif // !XAMIOS && !XAMDROID && !UNITY
 
 		/// <summary>
@@ -267,13 +504,47 @@ namespace MsgPack.Serialization
 		///		Returns new exception to notify that unpacker is not in the array header, that is the state is invalid.
 		/// </summary>
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
-		public static Exception NewIsNotMapHeader()
+#if DEBUG
+		[Obsolete]
+#endif // DEBUG
+		public static Exception NewIsNotMapHeader() 
 		{
 #if !UNITY
 			Contract.Ensures( Contract.Result<Exception>() != null );
 #endif // !UNITY
 
 			return new SerializationException( "Unpacker is not in the map header. The stream may not be map." );
+		}
+
+		/// <summary>
+		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		///		Throws an exception to notify that unpacker is not in the map header, that is the state is invalid.
+		/// </summary>
+		/// <param name="unpacker">The unpacker for pretty message.</param>
+		/// <exception cref="Exception">Always thrown.</exception>
+		public static void ThrowIsNotMapHeader( Unpacker unpacker )
+		{
+			long offsetOrPosition;
+			if ( unpacker.GetPreviousPosition( out offsetOrPosition ) )
+			{
+				throw new SerializationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"Unpacker is not in the map header at position {0}. The stream may not be map.",
+						offsetOrPosition
+					)
+				);
+			}
+			else
+			{
+				throw new SerializationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"Unpacker is not in the map header at offset {0}. The stream may not be map.",
+						offsetOrPosition
+					)
+				);
+			}
 		}
 
 		/// <summary>
@@ -292,6 +563,17 @@ namespace MsgPack.Serialization
 			return new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported because '{0}' cannot be instanciated.", type ) );
 		}
 
+#if !XAMIOS && !XAMDROID && !UNITY
+		/// <summary>
+		///		<see cref="ThrowTupleCardinarityIsNotMatch(int,long,Unpacker)"/>
+		/// </summary>
+		internal static readonly MethodInfo ThrowTupleCardinarityIsNotMatchMethod =
+			FromExpression.ToMethod(
+				( int expectedTupleCardinality, long actualArrayLength, Unpacker unpacker ) =>
+					ThrowTupleCardinarityIsNotMatch( expectedTupleCardinality, actualArrayLength, unpacker )
+			);
+#endif // !XAMIOS && !XAMDROID && !UNITY
+
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 		///		Returns new exception to notify that the array length does not match to expected tuple cardinality.
@@ -299,6 +581,9 @@ namespace MsgPack.Serialization
 		/// <param name="expectedTupleCardinality">The expected cardinality of the tuple.</param>
 		/// <param name="actualArrayLength">The actual serialized array length.</param>
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+#if DEBUG
+		[Obsolete]
+#endif // DEBUG
 		public static Exception NewTupleCardinarityIsNotMatch( int expectedTupleCardinality, int actualArrayLength )
 		{
 #if !UNITY
@@ -307,6 +592,66 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The length of array ({0}) does not match to tuple cardinality ({1}).", actualArrayLength, expectedTupleCardinality ) );
+		}
+
+		/// <summary>
+		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		///		Throws an exception to notify that the array length does not match to expected tuple cardinality.
+		/// </summary>
+		/// <param name="expectedTupleCardinality">The expected cardinality of the tuple.</param>
+		/// <param name="actualArrayLength">The actual serialized array length.</param>
+		/// <param name="unpacker">The unpacker for pretty message.</param>
+		/// <exception cref="Exception">Always thrown.</exception>
+		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+		public static void ThrowTupleCardinarityIsNotMatch(
+			int expectedTupleCardinality,
+			long actualArrayLength,
+			Unpacker unpacker 
+		)
+		{
+#if !UNITY
+			Contract.Requires( expectedTupleCardinality > 0 );
+#endif // !UNITY
+			long offsetOrPosition;
+			var isRealPosition = unpacker.GetPreviousPosition( out offsetOrPosition );
+			if ( offsetOrPosition >= 0L )
+			{
+				if ( isRealPosition )
+				{
+					throw new InvalidMessagePackStreamException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"The length of array ({0}) does not match to tuple cardinality ({1}), at position {2}",
+							actualArrayLength,
+							expectedTupleCardinality,
+							offsetOrPosition
+						)
+					);
+				}
+				else
+				{
+					throw new InvalidMessagePackStreamException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"The length of array ({0}) does not match to tuple cardinality ({1}), at offset {2}",
+							actualArrayLength,
+							expectedTupleCardinality,
+							offsetOrPosition
+						)
+					);
+				}
+			}
+			else
+			{
+				throw new InvalidMessagePackStreamException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"The length of array ({0}) does not match to tuple cardinality ({1}).",
+						actualArrayLength,
+						expectedTupleCardinality
+					)
+				);
+			}
 		}
 
 		/// <summary>
@@ -324,6 +669,11 @@ namespace MsgPack.Serialization
 			return new SerializationException( "Failed to unpack items count of the collection.", innerException );
 		}
 
+		internal static void ThrowIsIncorrectStream( Exception innerException )
+		{
+			throw NewIsIncorrectStream( innerException );
+		}
+
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 		///		Returns new exception to notify that the unpacking collection is too large to represents in the current runtime environment.
@@ -338,8 +688,15 @@ namespace MsgPack.Serialization
 			return new MessageNotSupportedException( "The collection which has more than Int32.MaxValue items is not supported." );
 		}
 
+		internal static void ThrowIsTooLargeCollection()
+		{
+			throw NewIsTooLargeCollection();
+		}
+
 #if !XAMIOS && !XAMDROID && !UNITY
+		[Obsolete( "Use ThrowNullIsProhibitedMethod" )]
 		internal static readonly MethodInfo NewNullIsProhibitedMethod = FromExpression.ToMethod( ( string memberName ) => NewNullIsProhibited( memberName ) );
+		internal static readonly MethodInfo ThrowNullIsProhibitedMethod = FromExpression.ToMethod( ( string memberName ) => ThrowNullIsProhibited( memberName ) );
 #endif // !XAMIOS && !XAMDROID && !UNITY
 
 		/// <summary>
@@ -356,6 +713,17 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member '{0}' cannot be nil.", memberName ) );
+		}
+
+		/// <summary>
+		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		///		Throws an exception to notify that the member cannot be <c>null</c> or the unpacking value cannot be nil because nil value is explicitly prohibitted.
+		/// </summary>
+		/// <param name="memberName">The name of the member.</param>
+		/// <exception cref="Exception">Always thrown.</exception>
+		public static void ThrowNullIsProhibited( string memberName )
+		{
+			throw NewNullIsProhibited( memberName );
 		}
 
 		/// <summary>
@@ -428,6 +796,18 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize member '{0}' of type '{1}'.", memberName, targetType ), inner );
 		}
 
+		/// <summary>
+		///		Throws an exception to notify that it is failed to deserialize member.
+		/// </summary>
+		/// <param name="targetType">Deserializing type.</param>
+		/// <param name="memberName">The name of the deserializing member.</param>
+		/// <param name="inner">The exception which caused current error.</param>
+		internal static void ThrowFailedToDeserializeMember( Type targetType, string memberName, Exception inner )
+		{
+			throw NewFailedToDeserializeMember( targetType, memberName, inner );
+		}
+
+
 		internal static Exception NewUnpackToIsNotSupported( Type type, Exception inner )
 		{
 #if !UNITY
@@ -449,11 +829,45 @@ namespace MsgPack.Serialization
 			return new SerializationException( "Cannot deserialize with type-embedding based serializer. Root object must be 3 element array." );
 		}
 
+		internal static void ThrowUnknownTypeEmbedding( Unpacker unpacker )
+		{
+
+			long offsetOrPosition;
+			var isRealPosition = unpacker.GetPreviousPosition( out offsetOrPosition );
+			if ( offsetOrPosition >= 0L )
+			{
+				if ( isRealPosition )
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Cannot deserialize with type-embedding based serializer. Root object must be 3 element array at position {0}",
+							offsetOrPosition
+						)
+					);
+				}
+				else
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Cannot deserialize with type-embedding based serializer. Root object must be 3 element array at offset {0}",
+							offsetOrPosition
+						)
+					);
+				}
+			}
+			else
+			{
+				throw new SerializationException( "Cannot deserialize with type-embedding based serializer. Root object must be 3 element array." );
+			}
+		}
+
 		internal static Exception NewIncompatibleCollectionSerializer( Type targetType, Type incompatibleType, Type exampleClass )
 		{
-			return 
+			return
 				new SerializationException(
-					String.Format( 
+					String.Format(
 						CultureInfo.CurrentCulture,
 						"Cannot serialize type '{0}' because registered or generated serializer '{1}' does not implement '{2}', which is implemented by '{3}', for example.",
 						targetType.GetFullName(),
@@ -462,6 +876,26 @@ namespace MsgPack.Serialization
 						exampleClass.GetFullName()
 					)
 				);
+		}
+
+		internal static void ThrowArgumentNullException( string parameterName )
+		{
+			throw new ArgumentNullException( parameterName );
+		}
+
+		internal static void ThrowArgumentException( string message )
+		{
+			throw new ArgumentException( message );
+		}
+
+		internal static void ThrowSerializationException( string message )
+		{
+			throw new SerializationException( message );
+		}
+
+		internal static void ThrowSerializationException( string message, Exception innerException )
+		{
+			throw new SerializationException( message, innerException );
 		}
 	}
 }

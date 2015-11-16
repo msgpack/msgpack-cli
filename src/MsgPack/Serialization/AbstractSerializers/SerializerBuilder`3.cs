@@ -375,20 +375,21 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			protected override TConstruct OnPackingCore(
 				SerializerBuilderOnPackingParameter parameter,
-				TConstruct condition )
+				TConstruct condition 
+			)
 			{
 				return
 					parameter.Builder.EmitConditionalExpression(
 						parameter.Context,
 						condition,
-						parameter.Builder.EmitThrowExpression(
+						parameter.Builder.EmitInvokeVoidMethod(
 							parameter.Context,
-							parameter.ItemType,
-							SerializationExceptions.NewNullIsProhibitedMethod,
+							null,
+							SerializationExceptions.ThrowNullIsProhibitedMethod,
 							parameter.Builder.MakeStringLiteral( parameter.Context, parameter.MemberName )
-							),
+						),
 						null
-						);
+					);
 			}
 
 			protected override TConstruct OnNopOnUnpacked( SerializerBuilderOnUnpacedParameter parameter )
@@ -399,10 +400,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 			protected override TConstruct OnThrowNullIsProhibitedExceptionOnUnpacked( SerializerBuilderOnUnpacedParameter parameter )
 			{
 				return
-					parameter.Builder.EmitThrowExpression(
+					parameter.Builder.EmitInvokeVoidMethod(
 						parameter.Context,
-						parameter.Store.ContextType,
-						SerializationExceptions.NewNullIsProhibitedMethod,
+						null,
+						SerializationExceptions.ThrowNullIsProhibitedMethod,
 						parameter.MemberName
 					);
 			}
@@ -410,10 +411,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 			protected override TConstruct OnThrowValueTypeCannotBeNull3OnUnpacked( SerializerBuilderOnUnpacedParameter parameter )
 			{
 				return
-					parameter.Builder.EmitThrowExpression(
+					parameter.Builder.EmitInvokeVoidMethod(
 						parameter.Context,
-						parameter.Store.ContextType,
-						SerializationExceptions.NewValueTypeCannotBeNull3Method,
+						null,
+						SerializationExceptions.ThrowValueTypeCannotBeNull3Method,
 						parameter.MemberName,
 						parameter.Builder.EmitTypeOfExpression( parameter.Context, parameter.ItemType ),
 						parameter.Builder.EmitTypeOfExpression( parameter.Context, typeof( TObject ) )

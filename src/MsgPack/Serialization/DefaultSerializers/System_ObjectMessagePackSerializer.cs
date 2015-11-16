@@ -52,7 +52,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					if ( !unpacker.ReadObject( out result[ i ] ) )
 					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
+						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
 				}
 
@@ -67,13 +67,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 					MessagePackObject key;
 					if ( !unpacker.ReadObject( out key ) )
 					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
+						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
 
 					MessagePackObject value;
 					if ( !unpacker.ReadObject( out value ) )
 					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
+						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
 
 					result.Add( key, value );

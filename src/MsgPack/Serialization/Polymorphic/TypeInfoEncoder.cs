@@ -101,14 +101,14 @@ namespace MsgPack.Serialization.Polymorphic
 			{
 				if ( !subTreeUnpacker.Read() )
 				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
+					SerializationExceptions.ThrowUnexpectedEndOfStream( subTreeUnpacker );
 				}
 
 				var type = typeFinder( subTreeUnpacker );
 
 				if ( !subTreeUnpacker.Read() )
 				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
+					SerializationExceptions.ThrowUnexpectedEndOfStream( subTreeUnpacker );
 				}
 
 				return unpacking( type, subTreeUnpacker );

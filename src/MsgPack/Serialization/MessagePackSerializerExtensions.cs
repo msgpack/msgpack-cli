@@ -107,7 +107,7 @@ namespace MsgPack.Serialization
 			var unpacker = Unpacker.Create( stream );
 			if ( !unpacker.Read() )
 			{
-				throw SerializationExceptions.NewUnexpectedEndOfStream();
+				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
 
 			return source.UnpackFrom( unpacker );

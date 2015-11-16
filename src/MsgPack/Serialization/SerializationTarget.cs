@@ -445,7 +445,7 @@ namespace MsgPack.Serialization
 						&& itemType.GetIsValueType()
 						&& Nullable.GetUnderlyingType( itemType ) == null )
 					{
-						throw SerializationExceptions.NewValueTypeCannotBeNull( serializingMember.Member.ToString(), itemType, type );
+						SerializationExceptions.ThrowValueTypeCannotBeNull( serializingMember.Member.ToString(), itemType, type );
 					}
 
 					bool isReadOnly;
@@ -466,7 +466,7 @@ namespace MsgPack.Serialization
 
 					if ( isReadOnly )
 					{
-						throw SerializationExceptions.NewNullIsProhibited( serializingMember.Member.ToString() );
+						SerializationExceptions.ThrowNullIsProhibited( serializingMember.Member.ToString() );
 					}
 				}
 			}

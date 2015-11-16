@@ -89,7 +89,7 @@ internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -103,7 +103,7 @@ internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -116,7 +116,7 @@ internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 			SByte item;
 			if ( !unpacker.ReadSByte( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -145,7 +145,7 @@ internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -159,7 +159,7 @@ internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -172,7 +172,7 @@ internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 			Int16 item;
 			if ( !unpacker.ReadInt16( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -201,7 +201,7 @@ internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -215,7 +215,7 @@ internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -228,7 +228,7 @@ internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 			Int32 item;
 			if ( !unpacker.ReadInt32( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -257,7 +257,7 @@ internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -271,7 +271,7 @@ internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -284,7 +284,7 @@ internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 			Int64 item;
 			if ( !unpacker.ReadInt64( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -313,7 +313,7 @@ internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -327,7 +327,7 @@ internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -340,7 +340,7 @@ internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 			Byte item;
 			if ( !unpacker.ReadByte( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -369,7 +369,7 @@ internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -383,7 +383,7 @@ internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -396,7 +396,7 @@ internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 			UInt16 item;
 			if ( !unpacker.ReadUInt16( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -425,7 +425,7 @@ internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -439,7 +439,7 @@ internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -452,7 +452,7 @@ internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 			UInt32 item;
 			if ( !unpacker.ReadUInt32( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -481,7 +481,7 @@ internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -495,7 +495,7 @@ internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -508,7 +508,7 @@ internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 			UInt64 item;
 			if ( !unpacker.ReadUInt64( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -537,7 +537,7 @@ internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -551,7 +551,7 @@ internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -564,7 +564,7 @@ internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 			Single item;
 			if ( !unpacker.ReadSingle( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -593,7 +593,7 @@ internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -607,7 +607,7 @@ internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -620,7 +620,7 @@ internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 			Double item;
 			if ( !unpacker.ReadDouble( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -649,7 +649,7 @@ internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -663,7 +663,7 @@ internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -676,7 +676,7 @@ internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 			Boolean item;
 			if ( !unpacker.ReadBoolean( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -705,7 +705,7 @@ internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -719,7 +719,7 @@ internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -732,7 +732,7 @@ internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte
 			SByte? item;
 			if ( !unpacker.ReadNullableSByte( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -761,7 +761,7 @@ internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -775,7 +775,7 @@ internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -788,7 +788,7 @@ internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16
 			Int16? item;
 			if ( !unpacker.ReadNullableInt16( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -817,7 +817,7 @@ internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -831,7 +831,7 @@ internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -844,7 +844,7 @@ internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32
 			Int32? item;
 			if ( !unpacker.ReadNullableInt32( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -873,7 +873,7 @@ internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -887,7 +887,7 @@ internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -900,7 +900,7 @@ internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64
 			Int64? item;
 			if ( !unpacker.ReadNullableInt64( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -929,7 +929,7 @@ internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -943,7 +943,7 @@ internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -956,7 +956,7 @@ internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[
 			Byte? item;
 			if ( !unpacker.ReadNullableByte( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -985,7 +985,7 @@ internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -999,7 +999,7 @@ internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -1012,7 +1012,7 @@ internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt
 			UInt16? item;
 			if ( !unpacker.ReadNullableUInt16( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -1041,7 +1041,7 @@ internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -1055,7 +1055,7 @@ internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -1068,7 +1068,7 @@ internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt
 			UInt32? item;
 			if ( !unpacker.ReadNullableUInt32( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -1097,7 +1097,7 @@ internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -1111,7 +1111,7 @@ internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -1124,7 +1124,7 @@ internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt
 			UInt64? item;
 			if ( !unpacker.ReadNullableUInt64( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -1153,7 +1153,7 @@ internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Sing
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -1167,7 +1167,7 @@ internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Sing
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -1180,7 +1180,7 @@ internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Sing
 			Single? item;
 			if ( !unpacker.ReadNullableSingle( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -1209,7 +1209,7 @@ internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Doub
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -1223,7 +1223,7 @@ internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Doub
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -1236,7 +1236,7 @@ internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Doub
 			Double? item;
 			if ( !unpacker.ReadNullableDouble( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -1265,7 +1265,7 @@ internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boo
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -1279,7 +1279,7 @@ internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boo
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -1292,7 +1292,7 @@ internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boo
 			Boolean? item;
 			if ( !unpacker.ReadNullableBoolean( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -1321,7 +1321,7 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -1335,7 +1335,7 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -1348,7 +1348,7 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 			String item;
 			if ( !unpacker.ReadString( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -1377,7 +1377,7 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -1391,7 +1391,7 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -1404,7 +1404,7 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 			Byte[] item;
 			if ( !unpacker.ReadBinary( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;
@@ -1433,7 +1433,7 @@ internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<M
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -1447,7 +1447,7 @@ internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<M
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -1460,7 +1460,7 @@ internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<M
 			MessagePackObject item;
 			if ( !unpacker.ReadObject( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;

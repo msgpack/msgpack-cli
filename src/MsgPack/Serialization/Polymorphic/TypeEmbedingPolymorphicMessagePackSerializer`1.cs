@@ -48,7 +48,7 @@ namespace MsgPack.Serialization.Polymorphic
 			var result = this.OwnerContext.GetSerializer( actualType, this._schema );
 			if ( result == null )
 			{
-				throw new SerializationException(
+				SerializationExceptions.ThrowSerializationException(
 					String.Format( CultureInfo.CurrentCulture, "Cannot get serializer for actual type {0} from context.", actualType )
 				);
 			}

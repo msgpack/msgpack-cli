@@ -101,7 +101,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
 			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -113,7 +113,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 			{
 				if ( !unpacker.Read() )
 				{
-					throw SerializationExceptions.NewMissingItem( i );
+					SerializationExceptions.ThrowMissingItem( i, unpacker );
 				}
 
 				object item;

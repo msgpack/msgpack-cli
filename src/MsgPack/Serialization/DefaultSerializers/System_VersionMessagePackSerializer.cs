@@ -48,7 +48,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				if ( !unpacker.Read() )
 				{
-					throw SerializationExceptions.NewMissingItem( i );
+					SerializationExceptions.ThrowMissingItem( i, unpacker );
 				}
 
 				array[ i ] = unpacker.LastReadData.AsInt32();

@@ -52,7 +52,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
 			return new Stack<TItem>( this.UnpackItemsInReverseOrder( unpacker, UnpackHelpers.GetItemsCount( unpacker ) ) );
@@ -64,7 +64,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
 			foreach ( var item in this.UnpackItemsInReverseOrder( unpacker, UnpackHelpers.GetItemsCount( unpacker ) ) )
@@ -84,7 +84,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					if ( !subTreeUnpacker.Read() )
 					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
+						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
 
 					buffer[ i ] = this._itemSerializer.UnpackFrom( subTreeUnpacker );

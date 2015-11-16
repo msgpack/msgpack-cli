@@ -7,7 +7,7 @@
 <#@ import namespace="System.Diagnostics" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Collections" #>
-<#@ import namespace="System.Collections.Generic" #> 
+<#@ import namespace="System.Collections.Generic" #>
 #region -- License Terms --
 //
 // MessagePack for CLI
@@ -99,14 +99,15 @@ namespace MsgPack.Serialization
 				<#= type.Name #> result;
 				if ( !unpacker.Read<#= type.Name #>( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( <#= type.Name #> ); // never reaches.
 			}
 		}
 
@@ -141,14 +142,15 @@ namespace MsgPack.Serialization
 				<#= type.Name #>? result;
 				if ( !unpacker.ReadNullable<#= type.Name #>( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( <#= type.Name #>? ); // never reaches.
 			}
 		}
 
@@ -177,14 +179,15 @@ namespace MsgPack.Serialization
 				string result;
 				if ( !unpacker.ReadString( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( string ); // never reaches.
 			}
 		}
 
@@ -209,14 +212,15 @@ namespace MsgPack.Serialization
 				byte[] result;
 				if ( !unpacker.ReadBinary( out result ) )
 				{
-					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
 
 				return result;
 			}
 			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( byte[] ); // never reaches.
 			}
 		}
 	}

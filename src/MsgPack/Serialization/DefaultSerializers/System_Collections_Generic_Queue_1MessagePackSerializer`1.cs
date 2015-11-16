@@ -52,7 +52,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
 			var queue = new Queue<TItem>( UnpackHelpers.GetItemsCount( unpacker ) );
@@ -70,7 +70,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				if ( !unpacker.Read() )
 				{
-					throw SerializationExceptions.NewMissingItem( i );
+					SerializationExceptions.ThrowMissingItem( i, unpacker );
 				}
 
 				TItem item;

@@ -140,19 +140,19 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
 			if ( UnpackHelpers.GetItemsCount( unpacker ) != 2 )
 			{
-				throw new SerializationException( "Multidimensional array must be encoded as 2 element array." );
+				SerializationExceptions.ThrowSerializationException( "Multidimensional array must be encoded as 2 element array." );
 			}
 
 			using ( var wholeUnpacker = unpacker.ReadSubtree() )
 			{
 				if ( !wholeUnpacker.Read() )
 				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 				}
 
 				MessagePackExtendedTypeObject metadata;
@@ -162,12 +162,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 				}
 				catch ( InvalidOperationException ex )
 				{
-					throw new SerializationException( "Multidimensional array must be encoded as ext type.", ex );
+					SerializationExceptions.ThrowSerializationException( "Multidimensional array must be encoded as ext type.", ex );
+					metadata = default ( MessagePackExtendedTypeObject ); // never reaches
 				}
 
 				if ( metadata.TypeCode != this.OwnerContext.ExtTypeCodeMapping[ KnownExtTypeName.MultidimensionalArray ] )
 				{
-					throw new SerializationException(
+					SerializationExceptions.ThrowSerializationException(
 						String.Format(
 							CultureInfo.CurrentCulture,
 							"Multidimensional array must be encoded as ext type 0x{0:X2}.",
@@ -183,17 +184,17 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					if ( !metadataUnpacker.Read() )
 					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
+						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
 
 					if ( !metadataUnpacker.IsArrayHeader )
 					{
-						throw SerializationExceptions.NewIsNotArrayHeader();
+						SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 					}
 
 					if ( UnpackHelpers.GetItemsCount( metadataUnpacker ) != 2 )
 					{
-						throw new SerializationException( "Multidimensional metadata array must be encoded as 2 element array." );
+						SerializationExceptions.ThrowSerializationException( "Multidimensional metadata array must be encoded as 2 element array." );
 					}
 
 					this.ReadArrayMetadata( metadataUnpacker, out lengths, out lowerBounds );
@@ -210,12 +211,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // SILVERLIGHT
 				if ( !wholeUnpacker.Read() )
 				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 				}
 
 				if ( !wholeUnpacker.IsArrayHeader )
 				{
-					throw SerializationExceptions.NewIsNotArrayHeader();
+					SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 				}
 
 				using ( var arrayUnpacker = wholeUnpacker.ReadSubtree() )
@@ -248,7 +249,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 								// ReSharper disable AccessToDisposedClosure
 								if ( !arrayUnpacker.Read() )
 								{
-									throw SerializationExceptions.NewUnexpectedEndOfStream();
+									SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 								}
 
 								result.SetValue(
@@ -273,12 +274,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			if ( !metadataUnpacker.Read() )
 			{
-				throw SerializationExceptions.NewUnexpectedEndOfStream();
+				SerializationExceptions.ThrowUnexpectedEndOfStream( metadataUnpacker );
 			}
 
 			if ( !metadataUnpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( metadataUnpacker );
 			}
 
 			using ( var lengthsUnpacker = metadataUnpacker.ReadSubtree() )
@@ -292,12 +293,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			if ( !metadataUnpacker.Read() )
 			{
-				throw SerializationExceptions.NewUnexpectedEndOfStream();
+				SerializationExceptions.ThrowUnexpectedEndOfStream( metadataUnpacker );
 			}
 
 			if ( !metadataUnpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( metadataUnpacker );
 			}
 
 			using ( var lowerBoundsUnpacker = metadataUnpacker.ReadSubtree() )

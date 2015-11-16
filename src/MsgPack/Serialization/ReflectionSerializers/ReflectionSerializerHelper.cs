@@ -377,14 +377,15 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					break;
 				}
 			}
-			
-			throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity(
+
+			SerializationExceptions.ThrowTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity(
 #if !UNITY
 				typeof( T )
 #else
 				abstractType
 #endif // !UNITY
 			);
+			return null; // Never reach
 		}
 
 #if !UNITY

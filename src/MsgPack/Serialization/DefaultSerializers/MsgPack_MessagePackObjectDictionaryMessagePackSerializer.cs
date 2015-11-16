@@ -47,7 +47,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			if ( !unpacker.IsMapHeader )
 			{
-				throw SerializationExceptions.NewIsNotMapHeader();
+				SerializationExceptions.ThrowIsNotMapHeader( unpacker );
 			}
 
 			var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -67,14 +67,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				if ( !unpacker.Read() )
 				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 				}
 
 				var key = unpacker.LastReadData;
 
 				if ( !unpacker.Read() )
 				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 				}
 
 				if ( unpacker.IsCollectionHeader )
@@ -82,7 +82,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					MessagePackObject value;
 					if ( !unpacker.UnpackSubtreeDataCore( out value ) )
 					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
+						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
 
 					collection.Add( key, value );

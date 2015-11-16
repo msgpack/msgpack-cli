@@ -39,7 +39,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
 			var buffer = new TItem[ UnpackHelpers.GetItemsCount( unpacker ) ];
@@ -51,7 +51,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					if ( !subTreeUnpacker.Read() )
 					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
+						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
 
 					buffer[ i ] = this._itemSerializer.UnpackFrom( subTreeUnpacker );

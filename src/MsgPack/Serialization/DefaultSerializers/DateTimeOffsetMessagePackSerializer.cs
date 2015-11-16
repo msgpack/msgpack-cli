@@ -77,13 +77,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 				long ticks;
 				if ( !unpacker.ReadInt64( out ticks ) )
 				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 				}
 
 				short offsetMinutes;
 				if ( !unpacker.ReadInt16( out offsetMinutes ) )
 				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 				}
 
 				return new DateTimeOffset( DateTime.FromBinary( ticks ), TimeSpan.FromMinutes( offsetMinutes ) );

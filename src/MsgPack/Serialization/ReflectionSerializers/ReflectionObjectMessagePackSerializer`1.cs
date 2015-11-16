@@ -189,15 +189,15 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					string name;
 					if ( !unpacker.ReadString( out name ) )
 					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
+						SerializationExceptions.ThrowUnexpectedEndOfStream();
 					}
 
 					if ( name == null )
 					{
 						// missing member, drain the value and discard it.
-						if ( !unpacker.Read() )
+						if ( !unpacker.Read() && i < itemsCount - 1 )
 						{
-							throw SerializationExceptions.NewMissingItem( i );
+							SerializationExceptions.ThrowMissingKey( i + 1, unpacker );
 						}
 						continue;
 					}
@@ -208,7 +208,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						// key does not exist in the object, skip the associated value
 						if ( unpacker.Skip() == null )
 						{
-							throw SerializationExceptions.NewMissingItem( i );
+							SerializationExceptions.ThrowMissingItem( i, unpacker );
 						}
 						continue;
 					}
@@ -236,7 +236,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			{
 				if ( !unpacker.Read() )
 				{
-					throw SerializationExceptions.NewMissingItem( unpackerOffset );
+					SerializationExceptions.ThrowMissingItem( unpackerOffset, unpacker );
 				}
 
 				if ( !unpacker.LastReadData.IsNil )

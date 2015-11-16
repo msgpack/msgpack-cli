@@ -121,7 +121,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			if ( !unpacker.IsMapHeader )
 			{
-				throw SerializationExceptions.NewIsNotMapHeader();
+				SerializationExceptions.ThrowIsNotMapHeader( unpacker );
 			}
 
 			var buffer = new KeyValuePair<TKey, TValue>[ UnpackHelpers.GetItemsCount( unpacker ) ];
@@ -132,14 +132,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					if ( !subTreeUnpacker.Read() )
 					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
+						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
 
 					var key = this._keySerializer.UnpackFrom( unpacker );
 
 					if ( !subTreeUnpacker.Read() )
 					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
+						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
 
 					var value = this._valueSerializer.UnpackFrom( unpacker );

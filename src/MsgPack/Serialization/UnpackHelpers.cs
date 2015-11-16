@@ -77,7 +77,7 @@ namespace MsgPack.Serialization
 			{
 				throw new ArgumentNullException( "serializer" );
 			}
-			
+
 			if ( array == null )
 			{
 				throw new ArgumentNullException( "array" );
@@ -431,7 +431,7 @@ namespace MsgPack.Serialization
 
 			if ( !unpacker.IsMapHeader )
 			{
-				throw SerializationExceptions.NewIsNotMapHeader();
+				SerializationExceptions.ThrowIsNotMapHeader( unpacker );
 			}
 
 #if !UNITY
@@ -508,7 +508,7 @@ namespace MsgPack.Serialization
 
 			if ( !unpacker.IsMapHeader )
 			{
-				throw SerializationExceptions.NewIsNotMapHeader();
+				SerializationExceptions.ThrowIsNotMapHeader( unpacker );
 			}
 
 #if !UNITY
@@ -575,24 +575,25 @@ namespace MsgPack.Serialization
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		public static int GetItemsCount( Unpacker unpacker )
 		{
-			if( unpacker == null )
+			if ( unpacker == null )
 			{
-				throw new ArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
-			long rawItemsCount;
+			long rawItemsCount = 0L;
 			try
 			{
+				// ReSharper disable once PossibleNullReferenceException
 				rawItemsCount = unpacker.ItemsCount;
 			}
 			catch ( InvalidOperationException ex )
 			{
-				throw SerializationExceptions.NewIsIncorrectStream( ex );
+				SerializationExceptions.ThrowIsIncorrectStream( ex );
 			}
 
 			if ( rawItemsCount > Int32.MaxValue )
 			{
-				throw SerializationExceptions.NewIsTooLargeCollection();
+				SerializationExceptions.ThrowIsTooLargeCollection();
 			}
 
 			int count = unchecked( ( int )rawItemsCount );
@@ -641,7 +642,6 @@ namespace MsgPack.Serialization
 
 			return serializer.UnpackFromCore( unpacker );
 		}
-
 
 		/// <summary>
 		///		Retrieves a most appropriate constructor with <see cref="Int32"/> capacity parameter and <see cref="IEqualityComparer{T}"/> comparer parameter or both of them, >or default constructor of the <paramref name="instanceType"/>.
@@ -756,6 +756,6 @@ namespace MsgPack.Serialization
 			// AotHelper is internal because it should not be API -- it is subject to change when the Unity's Mono is updated or IL2CPP becomes stable.
 			return AotHelper.GetEqualityComparer<T>();
 #endif // !UNITY
-		} 
+		}
 	}
 }

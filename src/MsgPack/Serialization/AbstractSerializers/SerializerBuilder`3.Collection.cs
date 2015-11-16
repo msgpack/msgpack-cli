@@ -423,10 +423,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.IsArrayHeader )
 					),
-					this.EmitThrowExpression(
+					this.EmitInvokeVoidMethod(
 						context,
-						typeof( Unpacker ),
-						SerializationExceptions.NewIsNotArrayHeaderMethod
+						null,
+						SerializationExceptions.ThrowIsNotArrayHeaderMethod,
+						context.Unpacker
 					),
 					null
 				);
@@ -441,10 +442,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.IsMapHeader )
 					),
-					this.EmitThrowExpression(
+					this.EmitInvokeVoidMethod(
 						context,
-						typeof( Unpacker ),
-						SerializationExceptions.NewIsNotMapHeaderMethod
+						null,
+						SerializationExceptions.ThrowIsNotMapHeaderMethod,
+						context.Unpacker
 					),
 					null
 				);

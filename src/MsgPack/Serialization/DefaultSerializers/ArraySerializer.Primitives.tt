@@ -162,7 +162,7 @@ internal sealed class <#= simpleName #>ArraySerializer : MessagePackSerializer<#
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
@@ -189,7 +189,7 @@ internal sealed class <#= simpleName #>ArraySerializer : MessagePackSerializer<#
 	{
 		if ( !unpacker.IsArrayHeader )
 		{
-			throw SerializationExceptions.NewIsNotArrayHeader();
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 		}
 
 		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -202,7 +202,7 @@ internal sealed class <#= simpleName #>ArraySerializer : MessagePackSerializer<#
 			<#= itemTypeName #> item;
 			if ( !unpacker.Read<#= simpleName == "MessagePackObject" ? "Object" : simpleName #>( out item ) )
 			{
-				throw SerializationExceptions.NewMissingItem( i );
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
 
 			collection[ i ] = item;

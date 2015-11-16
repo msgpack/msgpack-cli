@@ -266,10 +266,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.ItemsCount ),
 						this.MakeInt64Literal( context, cardinarity )
 					),
-					this.EmitThrowExpression(
+					this.EmitInvokeVoidMethod(
 						context,
-						typeof( Unpacker ),
-						SerializationExceptions.NewIsNotArrayHeaderMethod
+						null,
+						SerializationExceptions.ThrowTupleCardinarityIsNotMatchMethod,
+						this.MakeInt64Literal( context, cardinarity ),
+						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.ItemsCount ),
+						context.Unpacker
 					),
 					null
 				);

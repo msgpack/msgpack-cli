@@ -80,7 +80,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
 			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );

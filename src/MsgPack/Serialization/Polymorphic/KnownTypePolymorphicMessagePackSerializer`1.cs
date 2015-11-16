@@ -67,7 +67,7 @@ namespace MsgPack.Serialization.Polymorphic
 			{
 				if ( typeHandleTypeCodeMapping.Count() > 1 )
 				{
-					throw new SerializationException(
+					SerializationExceptions.ThrowSerializationException(
 						String.Format(
 							CultureInfo.CurrentCulture,
 							"Type '{0}' is mapped to multiple extension type codes({1}).",
@@ -94,7 +94,7 @@ namespace MsgPack.Serialization.Polymorphic
 			var result = this.OwnerContext.GetSerializer( actualType, this._schema );
 			if ( result == null )
 			{
-				throw new SerializationException(
+				SerializationExceptions.ThrowSerializationException(
 					String.Format( CultureInfo.CurrentCulture, "Cannot get serializer for actual type {0} from context.", actualType )
 				);
 			}
@@ -109,7 +109,7 @@ namespace MsgPack.Serialization.Polymorphic
 			string typeCode;
 			if ( !this._typeCodeMap.TryGetValue( objectTree.GetType().TypeHandle, out typeCode ) )
 			{
-				throw new SerializationException( 
+				SerializationExceptions.ThrowSerializationException( 
 					String.Format( 
 						CultureInfo.CurrentCulture, 
 						"Type '{0}' in assembly '{1}' is not defined as known types.",
@@ -136,7 +136,7 @@ namespace MsgPack.Serialization.Polymorphic
 						RuntimeTypeHandle typeHandle;
 						if ( !this._typeHandleMap.TryGetValue( typeCode, out typeHandle ) )
 						{
-							throw new SerializationException(
+							SerializationExceptions.ThrowSerializationException(
 								String.Format( CultureInfo.CurrentCulture, "Unknown type {0}.", StringEscape.ForDisplay( typeCode ) )
 							);
 						}

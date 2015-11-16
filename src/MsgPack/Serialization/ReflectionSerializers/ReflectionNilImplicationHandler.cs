@@ -51,7 +51,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				{
 					if ( condition( value ) )
 					{
-						throw SerializationExceptions.NewNullIsProhibited( parameter.MemberName );
+						SerializationExceptions.ThrowNullIsProhibited( parameter.MemberName );
 					}
 				};
 		}
@@ -66,7 +66,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			return
 				_ =>
 				{
-					throw SerializationExceptions.NewNullIsProhibited( parameter.MemberName );
+					SerializationExceptions.ThrowNullIsProhibited( parameter.MemberName );
 				};
 		}
 
@@ -75,7 +75,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			return
 				_ =>
 				{
-					throw SerializationExceptions.NewValueTypeCannotBeNull(
+					SerializationExceptions.ThrowValueTypeCannotBeNull(
 						parameter.MemberName,
 						parameter.ItemType,
 						parameter.DeclaringType 
