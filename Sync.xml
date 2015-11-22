@@ -46,6 +46,24 @@
     <Exclude File="*.ttinclude" />
   </Project>
 
+  <Project Name="MsgPack.CoreClr" Base="MsgPack">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
+    <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
+    <Exclude Path="Serialization\CodeDomSerializers\*.cs" />
+    <Exclude Path="Serialization\EmittingSerializers\AssemblyBuilderCodeGenerationContext.cs" />
+    <Exclude Path="Serialization\Reflection\ReflectionHelpers.cs" />
+    <Exclude Path="Serialization\SerializerCodeGenerationConfiguration.cs" />
+    <Exclude Path="Serialization\SerializerCodeGenerationResult.cs" />
+    <Exclude Path="Serialization\SerializerGeneration.cs" />
+    <Exclude Path="Serialization\Tracer.cs" />
+    <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
+    <Preserve Path="BufferedStream.cs" />
+    <Preserve Path="MPContract.cs" />
+    <Preserve Path="WinRTCompatibility.cs" />
+  </Project>
+
   <Project Name="MsgPack.Xamarin.iOS" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve Path="MPContract.cs" />

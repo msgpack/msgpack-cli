@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,16 +19,18 @@
 #endregion -- License Terms --
 
 using System;
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 using System.Runtime.Serialization;
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 
 namespace MsgPack
 {
 	/// <summary>
 	///		Exception occured when inbound stream is invalid as serialized Message Pack stream.
 	/// </summary>
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	[Serializable]
-#endif
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	public sealed class InvalidMessagePackStreamException : Exception
 	{
 		/// <summary>
@@ -51,7 +53,7 @@ namespace MsgPack
 		/// </param>
 		public InvalidMessagePackStreamException( string message, Exception inner ) : base( message ?? "Stream is not valid as serialized Message Pack object.", inner ) { }
 
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 		/// <summary>
 		///		Initializes a new instance of the <see cref="InvalidMessagePackStreamException"/> class with serialized data.
 		/// </summary>
@@ -68,6 +70,6 @@ namespace MsgPack
 		///	</exception>
 		private InvalidMessagePackStreamException( SerializationInfo info, StreamingContext context )
 			: base( info, context ) { }
-#endif
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	}
 }

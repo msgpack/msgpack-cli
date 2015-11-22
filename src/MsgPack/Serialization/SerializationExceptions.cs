@@ -27,11 +27,11 @@ using System;
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 using System.Globalization;
 using System.Reflection;
@@ -39,8 +39,6 @@ using System.Runtime.Serialization;
 
 using MsgPack.Serialization.CollectionSerializers;
 using MsgPack.Serialization.Reflection;
-
-#warning TODO: All goes to be Throw...
 
 namespace MsgPack.Serialization
 {

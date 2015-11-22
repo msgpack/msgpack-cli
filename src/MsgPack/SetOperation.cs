@@ -26,12 +26,14 @@
 using System;
 using System.Collections.Generic;
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
+#if !CORE_CLR
 using PureAttribute = System.Diagnostics.Contracts.PureAttribute;
+#endif // !CORE_CLR
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 using System.Linq;
 
@@ -50,7 +52,7 @@ namespace MsgPack
 		public static bool IsProperSubsetOf<T>( ISet<T> set, IEnumerable<T> other )
 #endif
 		{
-			#region CONTRACT
+#region CONTRACT
 #if DEBUG
 			Contract.Assert( set != null, "set != null " );
 #endif // DEBUG
@@ -59,7 +61,7 @@ namespace MsgPack
 			{
 				throw new ArgumentNullException( "other" );
 			}
-			#endregion CONTRACT
+#endregion CONTRACT
 
 			var asCollection = other as ICollection<T>;
 			if ( asCollection != null )
@@ -91,7 +93,7 @@ namespace MsgPack
 		public static bool IsSubsetOf<T>( ISet<T> set, IEnumerable<T> other )
 #endif
 		{
-			#region CONTRACT
+#region CONTRACT
 #if DEBUG
 			Contract.Assert( set != null, "set != null" );
 #endif // DEBUG
@@ -100,7 +102,7 @@ namespace MsgPack
 			{
 				throw new ArgumentNullException( "other" );
 			}
-			#endregion CONTRACT
+#endregion CONTRACT
 
 			if ( set.Count == 0 )
 			{
@@ -161,7 +163,7 @@ namespace MsgPack
 		public static bool IsProperSupersetOf<T>( ISet<T> set, IEnumerable<T> other )
 #endif
 		{
-			#region CONTRACT
+#region CONTRACT
 #if DEBUG
 			Contract.Assert( set != null, "set != null" );
 #endif // DEBUG
@@ -170,7 +172,7 @@ namespace MsgPack
 			{
 				throw new ArgumentNullException( "other" );
 			}
-			#endregion CONTRACT
+#endregion CONTRACT
 
 			var asCollection = other as ICollection<T>;
 			if ( asCollection != null )
@@ -197,7 +199,7 @@ namespace MsgPack
 		public static bool IsSupersetOf<T>( ISet<T> set, IEnumerable<T> other )
 #endif
 		{
-			#region CONTRACT
+#region CONTRACT
 #if DEBUG
 			Contract.Assert( set != null, "set != null" );
 #endif // DEBUG
@@ -206,7 +208,7 @@ namespace MsgPack
 			{
 				throw new ArgumentNullException( "other" );
 			}
-			#endregion CONTRACT
+#endregion CONTRACT
 
 			var asCollection = other as ICollection<T>;
 			if ( asCollection != null && asCollection.Count < set.Count )
@@ -268,7 +270,7 @@ namespace MsgPack
 		public static bool Overlaps<T>( ISet<T> set, IEnumerable<T> other )
 #endif
 		{
-			#region CONTRACT
+#region CONTRACT
 #if DEBUG
 			Contract.Assert( set != null, "set != null" );
 #endif // DEBUG
@@ -277,7 +279,7 @@ namespace MsgPack
 			{
 				throw new ArgumentNullException( "other" );
 			}
-			#endregion CONTRACT
+#endregion CONTRACT
 
 			if ( set.Count == 0 )
 			{
@@ -294,7 +296,7 @@ namespace MsgPack
 		public static bool SetEquals<T>( ISet<T> set, IEnumerable<T> other )
 #endif
 		{
-			#region CONTRACT
+#region CONTRACT
 #if DEBUG
 			Contract.Assert( set != null, "set != null" );
 #endif // DEBUG
@@ -303,7 +305,7 @@ namespace MsgPack
 			{
 				throw new ArgumentNullException( "other" );
 			}
-			#endregion CONTRACT
+#endregion CONTRACT
 
 			if ( set.Count == 0 )
 			{

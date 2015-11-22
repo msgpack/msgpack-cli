@@ -24,7 +24,11 @@
 
 using System;
 #if !UNITY
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif
 #endif // !UNITY
 using System.Runtime.Serialization;
 

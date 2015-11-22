@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,13 +20,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Reflection;
 
 namespace MsgPack
 {
+	// ReSharper disable once InconsistentNaming
 	internal static class WinRTCompatibility
 	{
 		private static readonly Dictionary<Type, TypeCode> _typeCodeTable =
@@ -84,6 +81,7 @@ namespace MsgPack
 		DateTime,
 		Decimal,
 		Empty,
+		// ReSharper disable once InconsistentNaming
 		DBNull, // Never used
 		Object
 	}

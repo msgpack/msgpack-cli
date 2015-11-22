@@ -28,11 +28,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 
 namespace MsgPack
@@ -42,9 +42,9 @@ namespace MsgPack
 		/// <summary>
 		///		Represents the set of <see cref="MessagePackObjectDictionary"/> keys.
 		/// </summary>
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 		[Serializable]
-#endif
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 		[DebuggerDisplay( "Count={Count}" )]
 		[DebuggerTypeProxy( typeof( CollectionDebuggerProxy<> ) )]
 		[SuppressMessage( "Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Justification = "ICollection implementing dictionary should return ICollection implementing values." )]

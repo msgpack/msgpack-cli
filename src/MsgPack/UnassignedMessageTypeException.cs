@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,16 +19,18 @@
 #endregion -- License Terms --
 
 using System;
+#if !CORE_CLR
 using System.Runtime.Serialization;
+#endif // !CORE_CLR
 
 namespace MsgPack
 {
 	/// <summary>
 	///		Represents unpacking error when message type is not valid because 0xC1 will never be assigned.
 	/// </summary>
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	[Serializable]
-#endif
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	public sealed class UnassignedMessageTypeException : MessageTypeException
 	{
 		/// <summary>
@@ -51,7 +53,7 @@ namespace MsgPack
 		/// </param>
 		public UnassignedMessageTypeException( string message, Exception inner ) : base( message ?? "Invalid message type.", inner ) { }
 
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 		/// <summary>
 		///		Initializes a new instance of the <see cref="UnassignedMessageTypeException"/> class with serialized data.
 		/// </summary>
@@ -67,6 +69,6 @@ namespace MsgPack
 		///		The class name is <c>null</c> or <see cref="P:HResult"/> is zero (0).
 		///	</exception>
 		private UnassignedMessageTypeException( SerializationInfo info, StreamingContext context ) : base( info, context ) { }
-#endif
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	}
 }

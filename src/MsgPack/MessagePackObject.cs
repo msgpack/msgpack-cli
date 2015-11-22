@@ -24,11 +24,11 @@
 
 using System;
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 using System.Runtime.InteropServices;
 
@@ -801,9 +801,9 @@ namespace MsgPack
 			}
 
 			var asString = this._handleOrTypeCode as MessagePackString;
-#if !UNITY && DEBUG
-			Contract.Assert( asString != null, "asString != null" );
-#endif // !UNITY && DEBUG
+#if !UNITY
+			Contract.Assert( asString != null );
+#endif // !UNITY
 			return asString.GetString();
 		}
 
@@ -822,9 +822,9 @@ namespace MsgPack
 			}
 
 			var asString = this._handleOrTypeCode as MessagePackString;
-#if !UNITY && DEBUG
-			Contract.Assert( asString != null, "asString != null" );
-#endif // !UNITY && DEBUG
+#if !UNITY
+			Contract.Assert( asString != null );
+#endif // !UNITY
 			return asString.GetBytes();
 		}
 
@@ -1650,9 +1650,9 @@ namespace MsgPack
 			}
 
 			var asString = value._handleOrTypeCode as MessagePackString;
-#if !UNITY && DEBUG
-			Contract.Assert( asString != null, "asString != null" );
-#endif // !UNITY && DEBUG
+#if !UNITY
+			Contract.Assert( asString != null );
+#endif // !UNITY
 			return asString.GetString();
 		}
 
@@ -1672,9 +1672,9 @@ namespace MsgPack
 			}
 
 			var asString = value._handleOrTypeCode as MessagePackString;
-#if !UNITY && DEBUG
-			Contract.Assert( asString != null, "asString != null" );
-#endif // !UNITY && DEBUG
+#if !UNITY
+			Contract.Assert( asString != null );
+#endif // !UNITY
 			return asString.GetBytes();
 		}
 

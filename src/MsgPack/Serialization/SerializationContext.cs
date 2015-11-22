@@ -29,18 +29,15 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 #if UNITY || NETFX_CORE
 using System.Linq;
 #endif // UNITY || NETFX_CORE
-#if NETFX_CORE
-using System.Linq.Expressions;
-#endif // NETFX_CORE
 #if UNITY || XAMIOS || XAMDROID || NETFX_CORE
 using System.Reflection;
 #endif // UNITY || XAMIOS || XAMDROID || NETFX_CORE
@@ -957,26 +954,17 @@ namespace MsgPack.Serialization
 #endif // SILVERLIGHT || NETFX_35 || UNITY
 				if ( !this._cache.TryGetValue( targetType.TypeHandle, out func ) || func == null )
 				{
-#if !NETFX_CORE
+#if !NETFX_CORE && !CORE_CLR
 					func =
 						Delegate.CreateDelegate(
 							typeof( Func<SerializationContext, object, IMessagePackSingleObjectSerializer> ),
 							typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" )
 						) as Func<SerializationContext, object, IMessagePackSingleObjectSerializer>;
 #else
-					var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
-					var providerParameterParameter = Expression.Parameter( typeof( Object ), "providerParameter" );
 					func =
-						Expression.Lambda<Func<SerializationContext, object, IMessagePackSingleObjectSerializer>>(
-							Expression.Call(
-								null,
-								typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetRuntimeMethods().Single( m => m.Name == "Get" ),
-								contextParameter,
-								providerParameterParameter
-							),
-							contextParameter,
-							providerParameterParameter
-						).Compile();
+						typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" ).CreateDelegate(
+							typeof( Func<SerializationContext, object, IMessagePackSingleObjectSerializer> )
+						) as Func<SerializationContext, object, IMessagePackSingleObjectSerializer>;
 #endif // !NETFX_CORE
 #if DEBUG && !UNITY
 					Contract.Assert( func != null, "func != null" );
@@ -994,8 +982,8 @@ namespace MsgPack.Serialization
 #if !UNITY
 		private static class SerializerGetter<T>
 		{
-#if !NETFX_CORE
 			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
+#if !NETFX_CORE && !CORE_CLR
 				Delegate.CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> ),
 #if XAMIOS || XAMDROID
@@ -1005,24 +993,9 @@ namespace MsgPack.Serialization
 #endif // XAMIOS || XAMDROID
 				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
 #else
-			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
-				CreateFunc();
-
-			private static Func<SerializationContext, object, MessagePackSerializer<T>> CreateFunc()
-			{
-				var thisParameter = Expression.Parameter( typeof( SerializationContext ), "this" );
-				var providerParameterParameter = Expression.Parameter( typeof( Object ), "providerParameter" );
-				return
-					Expression.Lambda<Func<SerializationContext, object, MessagePackSerializer<T>>>(
-						Expression.Call(
-							thisParameter,
-							Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) ),
-							providerParameterParameter
-						),
-						thisParameter,
-						providerParameterParameter
-					).Compile();
-			}
+				Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) ).CreateDelegate(
+					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> )
+				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
 #endif // if !NETFX_CORE
 
 			// ReSharper disable UnusedMember.Local

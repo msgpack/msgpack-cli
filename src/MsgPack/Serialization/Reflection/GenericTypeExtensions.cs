@@ -25,12 +25,14 @@
 using System;
 using System.Collections.Generic;
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
+#if !CORE_CLR
 using PureAttribute = System.Diagnostics.Contracts.PureAttribute;
+#endif // !CORE_CLR
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 using System.Linq;
 #if NETFX_CORE

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,16 +19,18 @@
 #endregion -- License Terms --
 
 using System;
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 using System.Runtime.Serialization;
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 
 namespace MsgPack
 {
 	/// <summary>
 	///		Represents generic unpacking error.
 	/// </summary>
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	[Serializable]
-#endif
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	public sealed class UnpackException : Exception
 	{
 		/// <summary>
@@ -51,7 +53,7 @@ namespace MsgPack
 		/// </param>
 		public UnpackException( string message, Exception inner ) : base( message ?? "Failed to unpacking.", inner ) { }
 
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 		/// <summary>
 		///		Initializes a new instance of the <see cref="UnpackException"/> class with serialized data.
 		/// </summary>
@@ -67,7 +69,7 @@ namespace MsgPack
 		///		The class name is <c>null</c> or <see cref="P:HResult"/> is zero (0).
 		///	</exception>
 		private UnpackException( SerializationInfo info, StreamingContext context ) : base( info, context ) { }
-#endif
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	}
 }
  

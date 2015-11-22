@@ -20,7 +20,11 @@
 
 using System;
 using System.Collections.Generic;
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // CORE_CLR
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -97,9 +101,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		#endregion -- Dependent Serializer Management --
 
-		#region -- FieldInfo Cache Management --
+#region -- FieldInfo Cache Management --
 
+#if !CORE_CLR
 		private readonly Dictionary<RuntimeFieldHandle, CachedFieldInfo> _cachedFieldInfos = new Dictionary<RuntimeFieldHandle, CachedFieldInfo>();
+#else
+		private readonly Dictionary<FieldInfo, CachedFieldInfo> _cachedFieldInfos = new Dictionary<FieldInfo, CachedFieldInfo>();
+#endif // !CORE_CLR
 
 		/// <summary>
 		///		Regisgters <see cref="FieldInfo"/> usage to the current emitting session.
@@ -113,8 +121,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </returns>
 		public Action<TracingILGenerator, int> RegisterFieldCache( FieldInfo field )
 		{
+#if !CORE_CLR
 			var key = field.FieldHandle;
-			
+#else
+			var key = field;
+#endif // !CORE_CLR
+
 			CachedFieldInfo result;
 			if ( !this._cachedFieldInfos.TryGetValue( key, out result ) )
 			{
@@ -154,7 +166,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		#region -- MethodInfo Cache Management --
 
+#if !CORE_CLR
 		private readonly Dictionary<RuntimeMethodHandle, CachedMethodBase> _cachedMethodBases = new Dictionary<RuntimeMethodHandle, CachedMethodBase>();
+#else
+		private readonly Dictionary<MethodBase, CachedMethodBase> _cachedMethodBases = new Dictionary<MethodBase, CachedMethodBase>();
+#endif // !CORE_CLR
 
 		/// <summary>
 		///		Regisgters <see cref="MethodBase"/> usage to the current emitting session.
@@ -168,7 +184,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </returns>
 		public Action<TracingILGenerator, int> RegisterMethodCache( MethodBase method )
 		{
+#if !CORE_CLR
 			var key = method.MethodHandle;
+#else
+			var key = method;
+#endif // CORE_CLR
 
 			CachedMethodBase result;
 			if ( !this._cachedMethodBases.TryGetValue( key, out result ) )
@@ -205,9 +225,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
-		#endregion -- MethodInfo Cache Management --
+#endregion -- MethodInfo Cache Management --
 
-		#region -- UnpackingContext Management --
+#region -- UnpackingContext Management --
 
 		private TypeBuilder _unpackingContextType;
 
@@ -251,11 +271,15 @@ namespace MsgPack.Serialization.EmittingSerializers
 				SerializerDebugging.FlushTraceData();
 			}
 
+#if !CORE_CLR
 			type = this._unpackingContextType.CreateType();
+#else
+			type = this._unpackingContextType.CreateTypeInfo().AsType();
+#endif // !CORE_CLR
 			constructor = type.GetConstructors().Single();
 		}
 
-		#endregion -- UnpackingContext Management --
+#endregion -- UnpackingContext Management --
 
 		/// <summary>
 		///		Creates the serializer type built now and returns its new instance.
@@ -327,7 +351,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 				( _, il ) => CreateDefaultObjectConstructor( contextfulConstructor, il )
 			);
 
+#if !CORE_CLR
 			var ctor = this._typeBuilder.CreateType().GetConstructor( ConstructorParameterTypes );
+#else
+			var ctor = this._typeBuilder.CreateTypeInfo().GetConstructor( ConstructorParameterTypes );
+#endif // !CORE_CLR
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 			var schemaParameter = Expression.Parameter( typeof( PolymorphismSchema ), "schema" );
 #if DEBUG
@@ -383,18 +411,26 @@ namespace MsgPack.Serialization.EmittingSerializers
 			if ( this._specification.TargetCollectionTraits.CollectionType == CollectionKind.NotCollection )
 			{
 				il.EmitCallConstructor(
+#if !CORE_CLR
 					baseType.GetConstructor(
 						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, ConstructorParameterTypes, null
 					)
+#else
+					baseType.GetConstructor( ConstructorParameterTypes )
+#endif // !CORE_CLR
 				);
 			}
 			else
 			{
 				il.EmitCall( this._methodTable[ MethodName.RestoreSchema ] );
 				il.EmitCallConstructor(
+#if !CORE_CLR
 					baseType.GetConstructor(
 						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, CollectionConstructorParameterTypes, null
 					)
+#else
+					baseType.GetConstructor( CollectionConstructorParameterTypes )
+#endif // !CORE_CLR
 				);
 			}
 

@@ -21,7 +21,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // CORE_CLR
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -199,6 +203,7 @@ namespace MsgPack.Serialization.Reflection
 #endif
 #endif // DEBUG
 
+#if !CORE_CLR
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TracingILGenerator"/> class.
 		/// </summary>
@@ -209,6 +214,7 @@ namespace MsgPack.Serialization.Reflection
 		{
 			Contract.Assert( dynamicMethod != null );
 		}
+#endif // !CORECLR
 
 		// TODO: NLIblet
 #if !WINDOWS_PHONE
@@ -283,7 +289,7 @@ namespace MsgPack.Serialization.Reflection
 			}
 		}
 
-		#region -- Locals --
+#region -- Locals --
 
 		/// <summary>
 		///		Declare local without pinning and name for debugging.
@@ -358,6 +364,7 @@ namespace MsgPack.Serialization.Reflection
 			var result = this._underlying.DeclareLocal( localType );
 			this._localDeclarations.Add( result, name );
 			// TODO: NLiblet
+#if !CORE_CLR
 			if ( !this._isInDynamicMethod && this._isDebuggable )
 			{
 				try
@@ -369,6 +376,7 @@ namespace MsgPack.Serialization.Reflection
 					this._isInDynamicMethod = true;
 				}
 			}
+#endif // !CORE_CLR
 			return result;
 		}
 
@@ -378,6 +386,7 @@ namespace MsgPack.Serialization.Reflection
 			var result = this._underlying.DeclareLocal( localType, pinned );
 			this._localDeclarations.Add( result, name );
 			// TODO: NLiblet
+#if !CORE_CLR
 			if ( !this._isInDynamicMethod && this._isDebuggable )
 			{
 				try
@@ -389,6 +398,7 @@ namespace MsgPack.Serialization.Reflection
 					this._isInDynamicMethod = true;
 				}
 			}
+#endif // !CORE_CLR
 			return result;
 		}
 #endif // DEBUG
@@ -426,9 +436,9 @@ namespace MsgPack.Serialization.Reflection
 			this._realTrace.WriteLine( ")" );
 		}
 
-		#endregion
+#endregion
 
-		#region -- Exceptions --
+#region -- Exceptions --
 
 		// Note: Leave always leave not leave.s.
 		// FIXME: Integration check.
@@ -473,7 +483,9 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( firstCatchBlock != null );
 			Contract.Assert( firstCatchBlock.Item1 != null && firstCatchBlock.Item2 != null );
 			Contract.Assert( remainingCatchBlockEmitters != null );
+#if !CORE_CLR
 			Contract.Assert( Contract.ForAll( remainingCatchBlockEmitters, item => item != null && item.Item1 != null && item.Item2 != null ) );
+#endif // !CORE_CLR
 
 			this.EmitExceptionBlockCore( tryBlockEmitter, firstCatchBlock, remainingCatchBlockEmitters, null );
 		}
@@ -512,7 +524,9 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( tryBlockEmitter != null );
 			Contract.Assert( finallyBlockEmitter != null );
 			Contract.Assert( catchBlockEmitters != null );
+#if !CORE_CLR
 			Contract.Assert( Contract.ForAll( catchBlockEmitters, item => item != null && item.Item1 != null && item.Item2 != null ) );
+#endif // !CORE_CLR
 
 			this.EmitExceptionBlockCore( tryBlockEmitter, null, catchBlockEmitters, finallyBlockEmitter );
 		}
@@ -543,11 +557,11 @@ namespace MsgPack.Serialization.Reflection
 		}
 #endif // DEBUG
 
-		/// <summary>
-		///		Begin exception block (try in C#) here.
-		///		Note that you do not have to emit leave or laeve.s instrauction at tail of the body.
-		/// </summary>
-		/// <returns><see cref="Label"/> will to be end of begun exception block.</returns>
+			/// <summary>
+			///		Begin exception block (try in C#) here.
+			///		Note that you do not have to emit leave or laeve.s instrauction at tail of the body.
+			/// </summary>
+			/// <returns><see cref="Label"/> will to be end of begun exception block.</returns>
 		public Label BeginExceptionBlock()
 		{
 			Contract.Assert( !this.IsEnded );
@@ -645,9 +659,9 @@ namespace MsgPack.Serialization.Reflection
 			this._endOfExceptionBlocks.Pop();
 		}
 
-		#endregion
+#endregion
 
-		#region -- Labels --
+#region -- Labels --
 
 #if DEBUG
 		/// <summary>
@@ -694,6 +708,7 @@ namespace MsgPack.Serialization.Reflection
 		#region -- Calli --
 
 #if DEBUG
+#if !CORE_CLR
 		/// <summary>
 		///		Emit 'calli' instruction for indirect unmanaged function call.
 		/// </summary>
@@ -740,6 +755,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.EmitCalli( OpCodes.Calli, managedCallingConventions, returnType, requiredParameterTypes, optionalParameterTypes );
 		}
 
+#endif // !CORE_CLR
 #endif // DEBUG
 		#endregion
 #endif // !SILVERLIGHT
@@ -768,9 +784,9 @@ namespace MsgPack.Serialization.Reflection
 		}
 #endif // DEBUG
 
-		#endregion
+#endregion
 
-		#region -- Readonly. --
+#region -- Readonly. --
 
 #if DEBUG
 		/// <summary>
@@ -795,6 +811,7 @@ namespace MsgPack.Serialization.Reflection
 		#region -- Tail. --
 
 #if DEBUG
+#if !CORE_CLR
 		///	<summary>
 		///		Emit 'call' instruction with specified arguments as tail call.
 		///	</summary>
@@ -896,6 +913,7 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitRet();
 		}
 #endif // SILVERLIGHT
+#endif // !CORE_CLR
 #endif // DEBUG
 
 		#endregion
@@ -920,9 +938,9 @@ namespace MsgPack.Serialization.Reflection
 		}
 #endif // DEBUG
 
-		#endregion
+#endregion
 
-		#region -- Tracing --
+#region -- Tracing --
 
 		/// <summary>
 		///		Write trace message.
@@ -1030,7 +1048,7 @@ namespace MsgPack.Serialization.Reflection
 			}
 			else if ( type.IsGenericParameter )
 			{
-				writer.Write( "{0}{1}", type.DeclaringMethod == null ? "!" : "!!", type.Name );
+				writer.Write( "{0}{1}", type.GetDeclaringMethod() == null ? "!" : "!!", type.Name );
 			}
 			else
 			{
@@ -1038,7 +1056,7 @@ namespace MsgPack.Serialization.Reflection
 				var endOfAssemblySimpleName = type.Assembly.FullName.IndexOf( ',' );
 				writer.Write( "[{0}]{1}", endOfAssemblySimpleName < 0 ? type.Assembly.FullName : type.Assembly.FullName.Remove( endOfAssemblySimpleName ), type.FullName );
 #else
-				writer.Write( "[{0}]{1}", type.Assembly.GetName().Name, type.GetFullName() );
+				writer.Write( "[{0}]{1}", type.GetAssembly().GetName().Name, type.GetFullName() );
 #endif
 			}
 		}
@@ -1054,6 +1072,7 @@ namespace MsgPack.Serialization.Reflection
 			// TODO: NLiblet
 #if !SILVERLIGHT
 			var asFieldBuilder = field as FieldBuilder;
+#if !CORE_CLR
 			if ( asFieldBuilder == null )
 			{
 				var modreqs = field.GetRequiredCustomModifiers();
@@ -1082,11 +1101,12 @@ namespace MsgPack.Serialization.Reflection
 					this._trace.Write( ") " );
 				}
 			}
-#endif
+#endif // !CORE_CLR
+#endif // !SILVERLIGHT
 
 #if !SILVERLIGHT
 			if ( this._isInDynamicMethod || asFieldBuilder == null ) // declaring type of the field should be omitted for same type.
-#endif
+#endif // !SILVERLIGHT
 			{
 				WriteType( this._trace, field.DeclaringType );
 			}
@@ -1187,7 +1207,7 @@ namespace MsgPack.Serialization.Reflection
 #endif
 			{
 				// TODO: C++/CLI etc...
-				var dllImport = Attribute.GetCustomAttribute( method, typeof( DllImportAttribute ) ) as DllImportAttribute;
+				var dllImport = method.GetCustomAttribute<DllImportAttribute>();
 				if ( dllImport != null )
 				{
 					unamanagedCallingConvention = dllImport.CallingConvention;
@@ -1384,22 +1404,28 @@ namespace MsgPack.Serialization.Reflection
 
 		private void TraceOperandToken( Type target )
 		{
+#if !CORE_CLR
 			this.TraceType( target );
 			this.TraceOperandTokenValue( target.MetadataToken );
+#endif // !CORE_CLR
 		}
 
 		private void TraceOperandToken( FieldInfo target )
 		{
+#if !CORE_CLR
 			this._trace.Write( "field " );
 			this.TraceField( target );
 			this.TraceOperandTokenValue( target.MetadataToken );
+#endif // !CORE_CLR
 		}
 
 		private void TraceOperandToken( MethodBase target )
 		{
+#if !CORE_CLR
 			this._trace.Write( "method " );
 			this.TraceMethod( target );
 			this.TraceOperandTokenValue( target.MetadataToken );
+#endif // !CORE_CLR
 		}
 
 		private void TraceOperandTokenValue( int value )
@@ -1451,6 +1477,6 @@ namespace MsgPack.Serialization.Reflection
 			this._indentLevel--;
 		}
 
-		#endregion
+#endregion
 	}
 }

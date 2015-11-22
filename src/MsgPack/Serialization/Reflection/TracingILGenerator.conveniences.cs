@@ -2,7 +2,7 @@
 //
 // NLiblet
 //
-// Copyright (C) 2011 FUJIWARA, Yusuke
+// Copyright (C) 2011-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,7 +19,11 @@
 #endregion -- License Terms --
 
 using System;
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // CORE_CLR
 using System.Globalization;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -37,7 +41,7 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( target != null );
 
 			// TODO: NLiblet
-			if ( target.IsStatic || target.DeclaringType.IsValueType )
+			if ( target.IsStatic || target.DeclaringType.GetIsValueType() )
 			{
 				this.EmitCall( target );
 			}
@@ -90,6 +94,7 @@ namespace MsgPack.Serialization.Reflection
 		}
 
 #if DEBUG
+#if !CORE_CLR
 		private static readonly PropertyInfo _cultureInfo_CurrentCulture = typeof( CultureInfo ).GetProperty( "CurrentCulture" );
 		private static readonly PropertyInfo _cultureInfo_InvariantCulture = typeof( CultureInfo ).GetProperty( "InvariantCulture" );
 
@@ -253,6 +258,7 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitAnyLdloc( temporaryLocalArrayIndex );
 			this.EmitCall( _string_Format );
 		}
+#endif // !CORE_CLR
 #endif // DEBUG
 
 		/// <summary>
@@ -545,6 +551,7 @@ namespace MsgPack.Serialization.Reflection
 		}
 
 #if DEBUG
+#if !CORE_CLR
 		/// <summary>
 		///		Emit array initialization code with initializer.
 		///		Post condition is evaluation stack will no be modified as previous state. 
@@ -620,6 +627,7 @@ namespace MsgPack.Serialization.Reflection
 				this.EmitAnyStelem( elementType, null, i, elementLoadingEmitters[ i ] );
 			}
 		}
+#endif // !CORE_CLR
 #endif // DEBUG
 
 		private void EmitNewarrCore( Type elementType, long length )
@@ -676,14 +684,18 @@ namespace MsgPack.Serialization.Reflection
 				return;
 			}
 
-			if ( !elementType.IsValueType )
+			if ( !elementType.GetIsValueType() )
 			{
 				// ref
 				this.EmitLdelem_Ref();
 				return;
 			}
 
+#if !CORE_CLR
 			switch ( Type.GetTypeCode( elementType ) )
+#else
+			switch ( WinRTCompatibility.GetTypeCode( elementType ) )
+#endif // !CORE_CLR
 			{
 				case TypeCode.Boolean:
 				case TypeCode.SByte:
@@ -805,14 +817,18 @@ namespace MsgPack.Serialization.Reflection
 				return;
 			}
 
-			if ( !elementType.IsValueType )
+			if ( !elementType.GetIsValueType() )
 			{
 				// ref
 				this.EmitStelem_Ref();
 				return;
 			}
 
+#if !CORE_CLR
 			switch ( Type.GetTypeCode( elementType ) )
+#else
+			switch ( WinRTCompatibility.GetTypeCode( elementType ) )
+#endif // !CORE_CLR
 			{
 				case TypeCode.Boolean:
 				case TypeCode.SByte:

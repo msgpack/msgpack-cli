@@ -26,9 +26,9 @@ namespace MsgPack.Serialization.Metadata
 {
 	internal static class _Delegate
 	{
-#if !NETFX_CORE
+#if !NETFX_CORE && !CORE_CLR
 		public static readonly MethodInfo CreateDelegate3 =
 			FromExpression.ToMethod( ( Type type, object firstArgument, MethodInfo method ) => Delegate.CreateDelegate( type, firstArgument, method ) );
-#endif // !NETFX_CORE
+#endif // !NETFX_CORE && !CORE_CLR
 	}
 }

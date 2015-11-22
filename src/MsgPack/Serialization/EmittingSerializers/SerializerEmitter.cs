@@ -20,7 +20,11 @@
 
 using System;
 using System.Collections.Generic;
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // CORE_CLR
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -56,7 +60,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Contract.Requires( specification != null );
 			Contract.Requires( baseClass != null );
 
+#if !CORE_CLR
 			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, "Create {0}", specification.SerializerTypeFullName );
+#endif // !CORE_CLR
 			this._methodTable = new Dictionary<string, MethodBuilder>();
 			this._fieldTable = new Dictionary<string, FieldBuilder>();
 			this._specification = specification;
@@ -73,12 +79,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 #endif // DEBUG
 			this._isDebuggable = isDebuggable;
 
-#if !NETFX_35
+#if !NETFX_35 && !CORE_CLR
 			if ( isDebuggable && SerializerDebugging.DumpEnabled )
 			{
 				SerializerDebugging.PrepareDump( host.Assembly as AssemblyBuilder );
 			}
-#endif // !NETFX_35
+#endif // !NETFX_35 && !CORE_CLR
 		}
 
 		#region -- Field --
@@ -111,10 +117,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		#endregion -- Field --
+#endregion -- Field --
 
 
-		#region -- Method --
+#region -- Method --
 
 		/// <summary>
 		///		Gets the IL generator to implement specified method override.
@@ -198,9 +204,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		#endregion -- Method --
+#endregion -- Method --
 
-		#region -- IL Generation --
+#region -- IL Generation --
 
 		private TracingILGenerator GetILGenerator( ConstructorBuilder builder, Type[] parameterTypes )
 		{
@@ -248,9 +254,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return new TracingILGenerator( builder, SerializerDebugging.ILTraceWriter, this._isDebuggable );
 		}
 
-		#endregion -- IL Generation --
+#endregion -- IL Generation --
 
-		#region -- Constructor --
+#region -- Constructor --
 
 		private ConstructorBuilder DefineConstructor( MethodAttributes attributes, params Type[] parameterTypes )
 		{
@@ -270,6 +276,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return builder;
 		}
 
-		#endregion -- Constructor --
+#endregion -- Constructor --
 	}
 }

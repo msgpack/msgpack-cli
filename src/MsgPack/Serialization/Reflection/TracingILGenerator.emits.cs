@@ -23,7 +23,11 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // CORE_CLR
 using System.Linq;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
@@ -1967,7 +1971,7 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( field != null );
 
 			// TODO: NLiblet
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !CORE_CLR
 			if ( !( field is FieldBuilder ) )
 			{
 				if ( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
@@ -1977,7 +1981,7 @@ namespace MsgPack.Serialization.Reflection
 					this.TraceWriteLine();
 				}
 			}
-#endif
+#endif // !SILVERLIGHT && !CORE_CLR
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldfld );
@@ -1998,7 +2002,7 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( field != null );
 
 			// TODO: NLiblet
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !CORE_CLR
 			if ( !( field is FieldBuilder ) )
 			{
 				if ( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
@@ -2008,7 +2012,7 @@ namespace MsgPack.Serialization.Reflection
 					this.TraceWriteLine();
 				}
 			}
-#endif
+#endif // !SILVERLIGHT && !CORE_CLR
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldflda );
@@ -2029,7 +2033,7 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( field != null );
 
 			// TODO: NLiblet
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !CORE_CLR
 			if ( !( field is FieldBuilder ) )
 			{
 				if ( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
@@ -2039,7 +2043,7 @@ namespace MsgPack.Serialization.Reflection
 					this.TraceWriteLine();
 				}
 			}
-#endif
+#endif // !SILVERLIGHT && !CORE_CLR
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stfld );
@@ -2061,7 +2065,7 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( field != null );
 
 			// TODO: NLiblet
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !CORE_CLR
 			if ( !( field is FieldBuilder ) )
 			{
 				if ( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
@@ -2071,7 +2075,7 @@ namespace MsgPack.Serialization.Reflection
 					this.TraceWriteLine();
 				}
 			}
-#endif
+#endif // !SILVERLIGHT && !CORE_CLR
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldsfld );
@@ -2092,7 +2096,7 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( field != null );
 
 			// TODO: NLiblet
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !CORE_CLR
 			if ( !( field is FieldBuilder ) )
 			{
 				if ( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
@@ -2102,7 +2106,7 @@ namespace MsgPack.Serialization.Reflection
 					this.TraceWriteLine();
 				}
 			}
-#endif
+#endif // !SILVERLIGHT && !CORE_CLR
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldsflda );
@@ -2122,7 +2126,7 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( !this.IsEnded );
 			Contract.Assert( field != null );
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !CORE_CLR
 			// TODO: NLiblet
 			if ( !( field is FieldBuilder ) )
 			{
@@ -2133,7 +2137,7 @@ namespace MsgPack.Serialization.Reflection
 					this.TraceWriteLine();
 				}
 			}
-#endif
+#endif // !SILVERLIGHT && !CORE_CLR
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stsfld );
@@ -2962,7 +2966,7 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( target != null );
 
 			// TODO: NLiblet
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !CORE_CLR
 			if ( !( target is FieldBuilder ) )
 			{
 				if ( target.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
@@ -2972,7 +2976,7 @@ namespace MsgPack.Serialization.Reflection
 					this.TraceWriteLine();
 				}
 			}
-#endif
+#endif // !SILVERLIGHT && !CORE_CLR
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldtoken );

@@ -24,11 +24,11 @@
 
 using System;
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 using System.Globalization;
 using System.Reflection;
@@ -172,7 +172,7 @@ namespace MsgPack.Serialization.Polymorphic
 					throw new SerializationException( "Failed to decode public key token component." );
 				}
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !CORE_CLR
 				var assemblyName =
 					new AssemblyName
 					{
@@ -211,7 +211,7 @@ namespace MsgPack.Serialization.Polymorphic
 							( publicKeyToken == null || publicKeyToken.Length == 0 ) ? "null" : Binary.ToHexString( publicKeyToken, false )
 						)
 					);
-#endif // !NETFX_CORE
+#endif // !NETFX_CORE && !CORE_CLR
 
 				return
 					Assembly.Load(
@@ -223,7 +223,7 @@ namespace MsgPack.Serialization.Polymorphic
 						compressedTypeName.StartsWith( Elipsis, StringComparison.Ordinal )
 							? assemblySimpleName + compressedTypeName
 							: compressedTypeName
-#if !NETFX_CORE
+#if !NETFX_CORE && !CORE_CLR
 						, throwOnError: true
 #endif // !NETFX_CORE
 				);

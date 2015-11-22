@@ -26,11 +26,11 @@
 using System;
 using System.Collections.Generic;
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 using System.Linq;
 #if NETFX_CORE
@@ -104,15 +104,10 @@ namespace MsgPack
 			if ( itemTypes.Count == 8 )
 			{
 				var trest = itemTypes[ 7 ];
-#if !NETFX_CORE
 #if DEBUG
-				Contract.Assert( trest.Name.StartsWith( "Tuple`" ) && trest.Assembly == typeof( Tuple ).Assembly, "trest.Name.StartsWith( \"Tuple`\" ) && trest.Assembly == typeof( Tuple ).Assembly" );
+				Contract.Assert( trest.Name.StartsWith( "Tuple`" ) && trest.GetAssembly().Equals( typeof( Tuple ).GetAssembly() ), "trest.Name.StartsWith( \"Tuple`\" ) && trest.Assembly == typeof( Tuple ).Assembly" );
 #endif // DEBUG
 				GetTupleItemTypes( trest.GetGenericArguments(), result );
-#else
-				Contract.Assert( trest.Name.StartsWith( "Tuple`" ) && trest.GetTypeInfo().Assembly.Equals( typeof( Tuple ).GetTypeInfo().Assembly ) );
-				GetTupleItemTypes( trest.GenericTypeArguments, result );
-#endif
 			}
 		}
 

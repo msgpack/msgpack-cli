@@ -28,11 +28,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 using System.Globalization;
 using System.Linq;
@@ -47,9 +47,9 @@ namespace MsgPack
 	///		Additionally, this dictionary implements 'freezing' feature. 
 	///		For details, see <see cref="IsFrozen"/>, <see cref="Freeze"/>, and <see cref="AsFrozen"/>.
 	/// </remarks>
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	[Serializable]
-#endif
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	[DebuggerTypeProxy( typeof( DictionaryDebuggerProxy<,> ) )]
 	public partial class MessagePackObjectDictionary :
 		IDictionary<MessagePackObject, MessagePackObject>, IDictionary
@@ -509,7 +509,7 @@ namespace MsgPack
 				return new MessagePackObject( asMessagePackString );
 			}
 
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			switch ( WinRTCompatibility.GetTypeCode( value.GetType() ) )
 #else
 			switch ( Type.GetTypeCode( value.GetType() ) )

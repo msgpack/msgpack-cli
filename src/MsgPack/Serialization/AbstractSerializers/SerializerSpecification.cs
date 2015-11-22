@@ -20,7 +20,11 @@
 
 using System;
 #if DEBUG
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // CORE_CLR
 #endif // DEBUG
 
 namespace MsgPack.Serialization.AbstractSerializers

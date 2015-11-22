@@ -68,7 +68,7 @@ namespace MsgPack.Serialization
 
 		public EnumMemberSerializationMethod GetEnumMemberSerializationMethod()
 		{
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			var messagePackEnumMemberAttribute = 
 				this.Member.GetCustomAttribute<MessagePackEnumMemberAttribute>();
 			if ( messagePackEnumMemberAttribute != null)
@@ -82,7 +82,7 @@ namespace MsgPack.Serialization
 				return
 					// ReSharper disable once PossibleNullReferenceException
 					( messagePackEnumMemberAttributes[ 0 ] as MessagePackEnumMemberAttribute ).SerializationMethod;
-#endif // NETFX_CORE
+#endif // NETFX_CORE || CORE_CLR
 			}
 
 			return EnumMemberSerializationMethod.Default;
@@ -90,7 +90,7 @@ namespace MsgPack.Serialization
 
 		public DateTimeMemberConversionMethod GetDateTimeMemberConversionMethod()
 		{
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			var messagePackDateTimeMemberAttribute = 
 				this.Member.GetCustomAttribute<MessagePackDateTimeMemberAttribute>();
 			if ( messagePackDateTimeMemberAttribute != null)
@@ -104,7 +104,7 @@ namespace MsgPack.Serialization
 				return
 					// ReSharper disable once PossibleNullReferenceException
 					( messagePackDateTimeMemberAttribute[ 0 ] as MessagePackDateTimeMemberAttribute ).DateTimeConversionMethod;
-#endif // NETFX_CORE
+#endif // NETFX_CORE || CORE_CLR
 			}
 
 			return DateTimeMemberConversionMethod.Default;

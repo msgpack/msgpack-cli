@@ -28,11 +28,11 @@
 using System;
 using System.Collections.Generic;
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 using System.Globalization;
 using System.Linq;
@@ -124,7 +124,7 @@ namespace MsgPack.Serialization
 #if DEBUG && !UNITY
 			Contract.Assert( type != null, "type != null" );
 #endif // DEBUG && !UNITY
-#if !NETFX_CORE
+#if !NETFX_CORE && !CORE_CLR
 			var members =
 				type.FindMembers(
 					MemberTypes.Field | MemberTypes.Property,
@@ -240,7 +240,7 @@ namespace MsgPack.Serialization
 		{
 			return members.Where(
 				member => member.GetIsPublic()
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 						&& !Attribute.IsDefined( member, typeof( NonSerializedAttribute ) )
 #endif // !SILVERLIGHT && !NETFX_CORE
 						&& !member.IsDefined( typeof( MessagePackIgnoreAttribute ) ) 

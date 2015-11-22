@@ -27,11 +27,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 using System.Globalization;
 using System.Linq;
@@ -776,9 +776,9 @@ namespace MsgPack.Serialization
 		{
 #if !NETFX_CORE
 #if !UNITY
-			Contract.Assert( type.IsInterface, "type.IsInterface" );
+			Contract.Assert( type.GetIsInterface(), "type.IsInterface" );
 #endif // !UNITY
-			return type.Assembly.Equals( typeof( Array ).Assembly ) && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
+			return type.GetAssembly().Equals( typeof( Array ).GetAssembly() ) && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
 #else
 			var typeInfo = type.GetTypeInfo();
 			Contract.Assert( typeInfo.IsInterface );
@@ -852,9 +852,9 @@ namespace MsgPack.Serialization
 			PropertyInfo asProperty;
 			FieldInfo asField;
 			MethodBase asMethod;
-#if !NETFX_CORE
+#if !NETFX_CORE && !CORE_CLR
 			Type asType;
-#endif
+#endif // !NETFX_CORE && !CORE_CLR
 			if ( ( asProperty = source as PropertyInfo ) != null )
 			{
 #if !NETFX_CORE
@@ -872,25 +872,16 @@ namespace MsgPack.Serialization
 			{
 				return asMethod.IsPublic;
 			}
-#if !NETFX_CORE
+#if !NETFX_CORE && !CORE_CLR
 			else if ( ( asType = source as Type ) != null )
 			{
 				return asType.IsPublic;
 			}
-#endif
+#endif // !NETFX_CORE && !CORE_CLR
 			else
 			{
 				throw new NotSupportedException( source.GetType() + " is not supported." );
 			}
-		}
-
-		public static bool GetIsVisible( this Type source )
-		{
-#if !NETFX_CORE
-			return source.IsVisible;
-#else
-			return source.GetTypeInfo().IsVisible;
-#endif
 		}
 	}
 }

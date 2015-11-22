@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@ using System.Threading;
 namespace MsgPack
 {
 
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	[SuppressUnmanagedCodeSecurity]
-#endif
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 #if !NETFX_35
 	[SecurityCritical]
 #endif // !NETFX_35

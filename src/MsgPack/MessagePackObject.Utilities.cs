@@ -27,11 +27,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 using System.Globalization;
 using System.Linq;
@@ -43,12 +43,12 @@ using System.Text;
 
 namespace MsgPack
 {
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	[Serializable]
-#endif
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	partial struct MessagePackObject
 	{
-		#region -- Type Code Constants --
+#region -- Type Code Constants --
 
 		private static readonly ValueTypeCode _sbyteTypeCode = new ValueTypeCode( typeof( sbyte ), MessagePackValueTypeCode.Int8 );
 		private static readonly ValueTypeCode _byteTypeCode = new ValueTypeCode( typeof( byte ), MessagePackValueTypeCode.UInt8 );
@@ -62,14 +62,14 @@ namespace MsgPack
 		private static readonly ValueTypeCode _doubleTypeCode = new ValueTypeCode( typeof( double ), MessagePackValueTypeCode.Double );
 		private static readonly ValueTypeCode _booleanTypeCode = new ValueTypeCode( typeof( bool ), MessagePackValueTypeCode.Boolean );
 
-		#endregion -- Type Code Constants --
+#endregion -- Type Code Constants --
 
 		/// <summary>
 		///		Instance represents nil. This is equal to default value.
 		/// </summary>
 		public static readonly MessagePackObject Nil = new MessagePackObject();
 
-		#region -- Type Code Fields & Properties --
+#region -- Type Code Fields & Properties --
 
 		private object _handleOrTypeCode;
 
@@ -84,9 +84,9 @@ namespace MsgPack
 
 		private ulong _value;
 
-		#endregion -- Type Code Fields & Properties --
+#endregion -- Type Code Fields & Properties --
 
-		#region -- Constructors --
+#region -- Constructors --
 
 		/// <summary>
 		///		Initializes a new instance wraps <see cref="IList&lt;MessagePackObject&gt;"/>.
@@ -199,9 +199,9 @@ namespace MsgPack
 			this._handleOrTypeCode = messagePackString;
 		}
 
-		#endregion -- Constructors --
+#endregion -- Constructors --
 
-		#region -- Structure Methods --
+#region -- Structure Methods --
 
 		/// <summary>
 		///		Compare two instances are equal.
@@ -826,9 +826,9 @@ namespace MsgPack
 			}
 		}
 
-		#endregion -- Structure Methods --
+#endregion -- Structure Methods --
 
-		#region -- Type Of Methods --
+#region -- Type Of Methods --
 
 		/// <summary>
 		///		Determine whether the underlying value of this instance is specified type or not.
@@ -865,7 +865,7 @@ namespace MsgPack
 #if NETFX_CORE
 				return ( type.GetTypeInfo().IsValueType && Nullable.GetUnderlyingType( type ) == null ) ? false : default( bool? );
 #else
-				return ( type.IsValueType && Nullable.GetUnderlyingType( type ) == null ) ? false : default( bool? );
+				return ( type.GetIsValueType() && Nullable.GetUnderlyingType( type ) == null ) ? false : default( bool? );
 #endif
 			}
 
@@ -900,7 +900,7 @@ namespace MsgPack
 			}
 
 			// Lifting support.
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			switch ( WinRTCompatibility.GetTypeCode( type ) )
 #else
 			switch ( Type.GetTypeCode( type ) )
@@ -1027,7 +1027,7 @@ namespace MsgPack
 			}
 		}
 
-		#endregion -- Type Of Methods --
+#endregion -- Type Of Methods --
 
 		/// <summary>
 		///		Pack this instance itself using specified <see cref="Packer"/>.
@@ -1157,7 +1157,7 @@ namespace MsgPack
 			}
 		}
 
-		#region -- Primitive Type Conversion Methods --
+#region -- Primitive Type Conversion Methods --
 
 		/// <summary>
 		///		Gets the underlying value as string encoded with specified <see cref="Encoding"/>.
@@ -1287,9 +1287,9 @@ namespace MsgPack
 			return this.AsString().ToCharArray();
 		}
 
-		#endregion -- Primitive Type Conversion Methods --
+#endregion -- Primitive Type Conversion Methods --
 
-		#region -- Container Type Conversion Methods --
+#region -- Container Type Conversion Methods --
 
 		/// <summary>
 		///		Get underlying value as <see cref="IEnumerable&lt;MessagePackObject&gt;"/>.
@@ -1334,19 +1334,15 @@ namespace MsgPack
 			return this._handleOrTypeCode as MessagePackObjectDictionary;
 		}
 
-		#endregion -- Container Type Conversion Methods --
+#endregion -- Container Type Conversion Methods --
 
-		#region -- Utility Methods --
+#region -- Utility Methods --
 
 		private static void VerifyUnderlyingType<T>( MessagePackObject instance, string parameterName )
 		{
 			if ( instance.IsNil )
 			{
-#if NETFX_CORE
-				if ( !typeof( T ).GetTypeInfo().IsValueType || Nullable.GetUnderlyingType( typeof( T ) ) != null )
-#else
-				if ( !typeof( T ).IsValueType || Nullable.GetUnderlyingType( typeof( T ) ) != null )
-#endif
+				if ( !typeof( T ).GetIsValueType() || Nullable.GetUnderlyingType( typeof( T ) ) != null )
 				{
 					return;
 				}
@@ -1392,7 +1388,7 @@ namespace MsgPack
 			}
 		}
 
-		#endregion -- Utility Methods --
+#endregion -- Utility Methods --
 
 		/// <summary>
 		///		Wraps specified object as <see cref="MessagePackObject"/> recursively.
@@ -1615,7 +1611,7 @@ namespace MsgPack
 			}
 		}
 
-		#region -- Structure Operator Overloads --
+#region -- Structure Operator Overloads --
 
 		/// <summary>
 		///		Compare two instances are equal.
@@ -1643,10 +1639,10 @@ namespace MsgPack
 			return !left.Equals( right );
 		}
 
-		#endregion -- Structure Operator Overloads --
+#endregion -- Structure Operator Overloads --
 
 
-		#region -- Conversion Operator Overloads --
+#region -- Conversion Operator Overloads --
 
 		/// <summary>
 		///		Convert <see cref="MessagePackObject"/>[] instance to <see cref="MessagePackObject"/> instance.
@@ -1660,9 +1656,9 @@ namespace MsgPack
 
 		#endregion -- Conversion Operator Overloads --
 
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 		[Serializable]
-#endif
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 		private enum MessagePackValueTypeCode
 		{
 			// ReSharper disable once UnusedMember.Local
@@ -1681,9 +1677,9 @@ namespace MsgPack
 			Object = 16
 		}
 
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 		[Serializable]
-#endif
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 		private sealed class ValueTypeCode
 		{
 			private readonly MessagePackValueTypeCode _typeCode;

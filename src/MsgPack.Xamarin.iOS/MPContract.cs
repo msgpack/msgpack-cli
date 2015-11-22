@@ -27,6 +27,15 @@ namespace MsgPack
 	internal static class MPContract
 	{
 		[Conditional( "DEBUG" )]
+		public static void Assert( bool condition )
+		{
+			if ( !condition )
+			{
+				throw new Exception( "Assertion error." );
+			}
+		}
+
+		[Conditional( "DEBUG" )]
 		public static void Assert( bool condition, string userMessage )
 		{
 			if ( !condition )
@@ -58,4 +67,8 @@ namespace MsgPack
 			return default( T );
 		}
 	}
+
+#if CORE_CLR
+	internal sealed class PureAttribute : Attribute { }
+#endif // CORE_CLR
 }

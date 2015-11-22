@@ -24,7 +24,11 @@
 
 using System;
 #if DEBUG && !UNITY
+#if XAMIOS || XAMDROID || CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // DEBUG && !UNITY
 
 namespace MsgPack.Serialization.DefaultSerializers

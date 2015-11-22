@@ -20,7 +20,11 @@
 
 using System;
 using System.Collections.Generic;
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // CORE_CLR
 using System.Linq;
 using System.Linq.Expressions;
 #if !NETFX_CORE && !SILVERLIGHT
@@ -61,9 +65,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 		}
 
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
 		private readonly TypeBuilder _typeBuilder;
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
 		private readonly ExpressionConstruct _context;
 
 		/// <summary>
@@ -145,13 +149,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			this._methodLambdas = new Dictionary<string, LambdaExpression>();
 			this._methodContextStack = new Stack<MethodContext>();
 			this.Reset( targetType, baseSerializerType );
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
 			if ( SerializerDebugging.DumpEnabled )
 			{
 				SerializerDebugging.PrepareDump();
 				this._typeBuilder = SerializerDebugging.NewTypeBuilder( targetType );
 			}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
 		}
 
 		protected override void ResetCore( Type targetType, Type baseClass )
@@ -299,7 +303,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					context.Parameters
 				);
 
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
 			if ( SerializerDebugging.DumpEnabled )
 			{
 				var mb =
@@ -311,7 +315,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						);
 				lambda.CompileToMethod( mb );
 			}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
 			this._methodLambdas[ name ] = lambda;
 			this._delegates[ name ] = lambda.Compile();
 			return
@@ -477,7 +481,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					context.Parameters
 				);
 
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
 			if ( SerializerDebugging.DumpEnabled )
 			{
 				var mb =
@@ -489,7 +493,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					);
 				lambda.CompileToMethod( mb );
 			}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
 			this._methodLambdas[ name ] = lambda;
 			this._delegates[ name ] = lambda.Compile();
 
@@ -555,12 +559,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		public void Finish()
 		{
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
 			if ( SerializerDebugging.DumpEnabled )
 			{
 				this._typeBuilder.CreateType();
 			}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
 		}
 
 		private sealed class MethodContext

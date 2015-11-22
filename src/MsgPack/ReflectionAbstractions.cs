@@ -26,11 +26,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 using System.Linq;
 using System.Reflection;
@@ -45,104 +45,122 @@ namespace MsgPack
 
 		public static bool GetIsValueType( this Type source )
 		{
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			return source.GetTypeInfo().IsValueType;
 #else
 			return source.IsValueType;
-#endif
+#endif // NETFX_CORE || CORE_CLR
 		}
 
 		public static bool GetIsEnum( this Type source )
 		{
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			return source.GetTypeInfo().IsEnum;
 #else
 			return source.IsEnum;
-#endif
+#endif // NETFX_CORE || CORE_CLR
 		}
 
 		public static bool GetIsInterface( this Type source )
 		{
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			return source.GetTypeInfo().IsInterface;
 #else
 			return source.IsInterface;
-#endif
+#endif // NETFX_CORE || CORE_CLR
 		}
 
 		public static bool GetIsAbstract( this Type source )
 		{
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			return source.GetTypeInfo().IsAbstract;
 #else
 			return source.IsAbstract;
-#endif
+#endif // NETFX_CORE || CORE_CLR
 		}
 
 		public static bool GetIsGenericType( this Type source )
 		{
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			return source.GetTypeInfo().IsGenericType;
 #else
 			return source.IsGenericType;
-#endif
+#endif // NETFX_CORE || CORE_CLR
 		}
 
 		public static bool GetIsGenericTypeDefinition( this Type source )
 		{
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			return source.GetTypeInfo().IsGenericTypeDefinition;
 #else
 			return source.IsGenericTypeDefinition;
-#endif
+#endif // NETFX_CORE || CORE_CLR
 		}
 
 #if DEBUG
 		public static bool GetContainsGenericParameters( this Type source )
 		{
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			return source.GetTypeInfo().ContainsGenericParameters;
 #else
 			return source.ContainsGenericParameters;
-#endif
+#endif // NETFX_CORE || CORE_CLR
 		}
 #endif // DEBUG
 
 		public static Assembly GetAssembly( this Type source )
 		{
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			return source.GetTypeInfo().Assembly;
 #else
 			return source.Assembly;
-#endif
+#endif // NETFX_CORE || CORE_CLR
+		}
+
+		public static bool GetIsVisible( this Type source )
+		{
+#if !NETFX_CORE && !CORE_CLR
+			return source.IsVisible;
+#else
+			return source.GetTypeInfo().IsVisible;
+#endif // !NETFX_CORE && !CORE_CLR
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Wrong detection" )]
 		public static bool GetIsPublic( this Type source )
 		{
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			return source.GetTypeInfo().IsPublic;
 #else
 			return source.IsPublic;
-#endif
+#endif // NETFX_CORE || CORE_CLR
 		}
 
 		public static Type GetBaseType( this Type source )
 		{
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			return source.GetTypeInfo().BaseType;
 #else
 			return source.BaseType;
-#endif
+#endif // NETFX_CORE || CORE_CLR
 		}
+		public static MethodBase GetDeclaringMethod( this Type source )
+		{
+#if NETFX_CORE || CORE_CLR
+			return source.GetTypeInfo().DeclaringMethod;
+#else
+			return source.DeclaringMethod;
+#endif // NETFX_CORE || CORE_CLR
+		}
+
 
 		public static Type[] GetGenericTypeParameters( this Type source )
 		{
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			return source.GetTypeInfo().GenericTypeParameters;
 #else
 			return source.GetGenericArguments().Where( t => t.IsGenericParameter ).ToArray();
-#endif
+#endif // NETFX_CORE || CORE_CLR
 		}
 
 		public static MethodInfo GetRuntimeMethod( this Type source, string name )
@@ -165,7 +183,7 @@ namespace MsgPack
 			}
 		}
 
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 		public static MethodInfo GetRuntimeMethod( this Type source, string name, Type[] parameters )
 		{
 			return
@@ -195,7 +213,7 @@ namespace MsgPack
 					BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic
 				);
 		}
-#endif // NETFX_CORE
+#endif // NETFX_CORE || CORE_CLR
 
 #if NETFX_35 || NETFX_40 || SILVERLIGHT
 		public static Delegate CreateDelegate( this MethodInfo source, Type delegateType )
@@ -210,7 +228,7 @@ namespace MsgPack
 
 #endif // NETFX_35 || NETFX_40 || SILVERLIGHT
 
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 		public static MethodInfo GetMethod( this Type source, string name )
 		{
 			return source.GetRuntimeMethods().SingleOrDefault( m => m.Name == name );
@@ -231,6 +249,15 @@ namespace MsgPack
 			return source.GetRuntimeProperty( name );
 		}
 
+		public static PropertyInfo GetProperty( this Type source, string name, Type[] keyTypes )
+		{
+			return
+				source.GetRuntimeProperties()
+					.SingleOrDefault(
+						p => p.Name == name && p.GetMethod.GetParameters().Select( r => r.ParameterType ).SequenceEqual( keyTypes )
+					);
+		}
+
 		public static IEnumerable<PropertyInfo> GetProperties( this Type source )
 		{
 			return source.GetRuntimeProperties();
@@ -243,8 +270,14 @@ namespace MsgPack
 
 		public static ConstructorInfo GetConstructor( this Type source, Type[] parameteres )
 		{
-			return source.GetTypeInfo().DeclaredConstructors.SingleOrDefault( c => c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameteres ) );
+			return source.GetTypeInfo().GetConstructor( parameteres );
 		}
+
+		public static ConstructorInfo GetConstructor( this TypeInfo source, Type[] parameteres )
+		{
+			return source.DeclaredConstructors.SingleOrDefault( c => c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameteres ) );
+		}
+
 
 		public static IEnumerable<ConstructorInfo> GetConstructors( this Type source )
 		{
@@ -350,7 +383,7 @@ namespace MsgPack
 			return source.GetType();
 		}
 #endif // !SILVERLIGHT
-#endif // NETFX_CORE
+#endif // NETFX_CORE || CORE_CLR
 
 		public static string GetCultureName( this AssemblyName source )
 		{
@@ -373,12 +406,12 @@ namespace MsgPack
 		}
 #endif // NETFX_35 || UNITY
 
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this ParameterInfo source )
 		{
 			return source.CustomAttributes;
 		}
-#endif // NETFX_CORE
+#endif // NETFX_CORE || CORE_CLR
 
 #if SILVERLIGHT
 		public static IEnumerable<Attribute> GetCustomAttributesData( this MemberInfo source )

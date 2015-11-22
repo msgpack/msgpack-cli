@@ -19,7 +19,11 @@
 #endregion -- License Terms --
 
 using System;
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // CORE_CLR
 using System.Globalization;
 
 using MsgPack.Serialization.AbstractSerializers;

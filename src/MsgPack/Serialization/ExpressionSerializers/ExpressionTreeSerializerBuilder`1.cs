@@ -20,15 +20,19 @@
 
 using System;
 using System.Collections.Generic;
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // CORE_CLR
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
 using MsgPack.Serialization.AbstractSerializers;
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 using MsgPack.Serialization.Reflection;
-#endif // NETFX_CORE
+#endif // NETFX_CORE || CORE_CLR
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
@@ -205,7 +209,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 			else
 			{
-#if !NETFX_CORE
+#if !NETFX_CORE && !CORE_CLR
 				// WinRT expression tree cannot handle Type constants, but handle RuntimeTypeHandle.
 #if DEBUG
 				Contract.Assert( method.DeclaringType != null, "method.DeclaringType != null" );
@@ -224,7 +228,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 							method.GetParameters().Select( p => this.EmitTypeOfExpression( context, p.ParameterType ).Expression )
 						)
 					);
-#endif
+#endif // !NETFX_CORE && !CORE_CLR
 			}
 		}
 
@@ -238,7 +242,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 			else
 			{
-#if !NETFX_CORE
+#if !NETFX_CORE && !CORE_CLR
 #if DEBUG
 				Contract.Assert( field.DeclaringType != null, "field.DeclaringType != null" );
 #endif // DEBUG
@@ -252,7 +256,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						this.EmitTypeOfExpression( context, field.DeclaringType ).Expression,
 						Expression.Constant( field.Name )
 					);
-#endif
+#endif // !NETFX_CORE && !CORE_CLR
 			}
 		}
 

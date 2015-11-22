@@ -21,7 +21,14 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Globalization;
+#if XAMIOS || XAMDROID || CORE_CLR
+using Contract = MsgPack.MPContract;
+#if CORE_CLR
+using PureAttribute = MsgPack.PureAttribute;
+#endif // CORE_CLR
+#else
 using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID || CORE_CLR
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Collections.ObjectModel;

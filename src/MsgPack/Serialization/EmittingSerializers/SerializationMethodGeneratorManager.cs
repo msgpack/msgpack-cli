@@ -20,7 +20,11 @@
 
 using System;
 using System.Diagnostics;
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // CORE_CLR
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Security;
@@ -139,13 +143,19 @@ namespace MsgPack.Serialization.EmittingSerializers
 			string assemblyName;
 			if ( assemblyBuilder != null )
 			{
-				assemblyName = assemblyBuilder.GetName( false ).Name;
+				assemblyName =
+#if !CORE_CLR
+					assemblyBuilder.GetName( false ).Name;
+#else
+					assemblyBuilder.GetName().Name;
+#endif // !CORE_CLR
 				this._assembly = assemblyBuilder;
 			}
 			else
 			{
 				assemblyName = typeof( SerializationMethodGeneratorManager ).Namespace + ".GeneratedSerealizers" + Interlocked.Increment( ref _assemblySequence );
 				var dedicatedAssemblyBuilder =
+#if !CORE_CLR
 					AppDomain.CurrentDomain.DefineDynamicAssembly(
 						new AssemblyName( assemblyName ),
 						isDebuggable
@@ -156,11 +166,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 						: AssemblyBuilderAccess.Run
 #endif // !NETFX_35
 					);
+#else
+					AssemblyBuilder.DefineDynamicAssembly(
+						new AssemblyName( assemblyName ),
+						isCollectable ? AssemblyBuilderAccess.RunAndCollect : AssemblyBuilderAccess.Run
+					);
+#endif // !CORE_CLR
 
 				SetUpAssemblyBuilderAttributes( dedicatedAssemblyBuilder, isDebuggable );
 				this._assembly = dedicatedAssemblyBuilder;
 			}
 
+#if !CORE_CLR
 			if ( isDebuggable )
 			{
 				this._module = this._assembly.DefineDynamicModule( assemblyName, assemblyName + ".dll", true );
@@ -169,6 +186,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			{
 				this._module = this._assembly.DefineDynamicModule( assemblyName, true );
 			}
+#else
+			this._module = this._assembly.DefineDynamicModule( assemblyName );
+#endif // !CORE_CLR
 		}
 
 		internal static void SetUpAssemblyBuilderAttributes( AssemblyBuilder dedicatedAssemblyBuilder, bool isDebuggable )
@@ -195,7 +215,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					new object[] { 8 }
 				)
 			);
-#if !NETFX_35
+#if !NETFX_35 && !CORE_CLR
 			dedicatedAssemblyBuilder.SetCustomAttribute(
 				new CustomAttributeBuilder(
 					// ReSharper disable once AssignNullToNotNullAttribute
@@ -205,7 +225,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					new object[] { true }
 				)
 			);
-#endif // !NETFX_35
+#endif // !NETFX_35 && !CORE_CLR
 		}
 
 		/// <summary>

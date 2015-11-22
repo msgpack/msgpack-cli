@@ -21,7 +21,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // CORE_CLR
 using System.Globalization;
 
 using MsgPack.Serialization.AbstractSerializers;

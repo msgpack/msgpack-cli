@@ -26,9 +26,9 @@ using System;
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 using System.Reflection;
-#endif
+#endif // NETFX_CORE || CORE_CLR
 
 namespace MsgPack.Serialization
 {
@@ -84,7 +84,7 @@ namespace MsgPack.Serialization
 				}
 				default:
 				{
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 					var messagePackEnumAttribute = 
 						enumType.GetTypeInfo().GetCustomAttribute<MessagePackEnumAttribute>();
 					if ( messagePackEnumAttribute != null)
@@ -97,7 +97,7 @@ namespace MsgPack.Serialization
 					{
 						// ReSharper disable once PossibleNullReferenceException
 						method = ( messagePackEnumAttributes[ 0 ] as MessagePackEnumAttribute ).SerializationMethod;
-#endif // NETFX_CORE
+#endif // NETFX_CORE || CORE_CLR
 					}
 
 					break;

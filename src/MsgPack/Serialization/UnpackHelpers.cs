@@ -28,16 +28,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif //!UNITY || MSGPACK_UNITY_FULL
+using System.Diagnostics;
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -1057,15 +1057,12 @@ namespace MsgPack.Serialization
 		}
 
 		[Conditional( "TRACING" )]
-		[MethodImpl( MethodImplOptions.NoInlining )]
 		// ReSharper disable once RedundantAssignment
-		private static void InitializeUnpackerTrace( Unpacker unpacker, ref UnpackerTraceContext context )
+		private static void InitializeUnpackerTrace( Unpacker unpacker, ref UnpackerTraceContext context, [CallerMemberName]string callerMemberName = null )
 		{
 			long positionOrOffset;
 			unpacker.GetPreviousPosition( out positionOrOffset );
-#if !NETFX_CORE
-			context = new UnpackerTraceContext( positionOrOffset, new StackFrame( 1 ).GetMethod().Name );
-#endif // !NETFX_CORE
+			context = new UnpackerTraceContext( positionOrOffset, callerMemberName );
 		}
 
 		[Conditional( "TRACING" )]
@@ -1152,9 +1149,9 @@ namespace MsgPack.Serialization
 		[Conditional( "TRACING" )]
 		private static void TraceCore( string format, params object[] args )
 		{
-#if !UNITY && !SILVERLIGHT && !NETFX_CORE && !XAMIOS && !XAMDROID
+#if !UNITY && !SILVERLIGHT && !NETFX_CORE && !XAMIOS && !XAMDROID && !CORE_CLR
 			Tracer.Tracing.TraceEvent( Tracer.EventType.Trace, Tracer.EventId.Trace, format, args );
-#endif // !UNITY && !SILVERLIGHT && !NETFX_CORE && !XAMIOS && !XAMDROID
+#endif // !UNITY && !SILVERLIGHT && !NETFX_CORE && !XAMIOS && !XAMDROID && !CORE_CLR
 		}
 
 		private sealed class UnpackerTraceContext
@@ -1170,3 +1167,11 @@ namespace MsgPack.Serialization
 		}
 	}
 }
+#if ( SILVERLIGHT && !WINDOWS_PHONE ) || NETFX_35 || NETFX_40 || UNITY
+namespace System.Runtime.CompilerServices
+{
+	[AttributeUsage( AttributeTargets.Parameter, Inherited = false )]
+	internal sealed class CallerMemberNameAttribute : Attribute { }
+}
+#endif // SILVERLIGHT || NETFX_35 || NETFX_40 || UNITY
+

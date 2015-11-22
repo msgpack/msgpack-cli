@@ -19,7 +19,11 @@
 #endregion -- License Terms --
 
 using System;
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // CORE_CLR
 
 using MsgPack.Serialization.CollectionSerializers;
 
@@ -32,7 +36,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 	/// <typeparam name="TConstruct">The type of the construct which abstracts code constructs.</typeparam>
 	/// <typeparam name="TObject">The type of the object which will be target of the generating serializer.</typeparam>
 	internal abstract partial class SerializerBuilder<TContext, TConstruct, TObject> :
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
 		ISerializerCodeGenerator,
 #endif
 		ISerializerBuilder<TObject>
@@ -302,7 +306,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		);
 
 
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
 		/// <summary>
 		///		Builds the serializer code using specified code generation context.
 		/// </summary>
@@ -343,7 +347,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			throw new NotSupportedException();
 		}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
 		internal class SerializerBuilderNilImplicationHandler :
 			NilImplicationHandler<TConstruct, TConstruct, SerializerBuilderOnPackingParameter, SerializerBuilderOnUnpacedParameter>
 		{

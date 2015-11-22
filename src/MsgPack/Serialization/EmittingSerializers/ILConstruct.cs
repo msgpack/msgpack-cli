@@ -237,11 +237,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		private static Type GetNormalizedType( Type type )
 		{
-			if ( !type.IsPrimitive )
-			{
-				return type;
-			}
-
 			if ( type == typeof( sbyte ) || type == typeof( short ) || type == typeof( int ) ||
 				type == typeof( byte ) || type == typeof( ushort ) || type == typeof( uint ) )
 			{

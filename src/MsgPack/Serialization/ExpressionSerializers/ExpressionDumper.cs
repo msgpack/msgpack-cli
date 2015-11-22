@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Linq.Expressions;
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 using  System.Reflection;
 #endif
 
@@ -498,7 +498,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return node;
 		}
 
-#if !NETFX_CORE && !WINDOWS_PHONE
+#if !NETFX_CORE && !WINDOWS_PHONE && !CORE_CLR
 		protected override Expression VisitDynamic( DynamicExpression node )
 		{
 			this.ThrowUnsupportedNodeException( node );
@@ -1140,7 +1140,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		private void ThrowUnsupportedNodeException( Expression node )
 		{
 #if DEBUG
-#if !NETFX_CORE
+#if !NETFX_CORE && !CORE_CLR
 			Type expressionType = node.GetType();
 			while ( expressionType != null && expressionType.IsNotPublic )
 			{

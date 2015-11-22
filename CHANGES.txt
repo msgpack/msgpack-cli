@@ -379,7 +379,7 @@ Release 0.6.5.1 - 2015/10/25
 Release 0.7.0-alpha1 - 2015/11/22
 
   NEW FEATURES
-  * Add .NET Core support.
+  * Add .NET Core support. Note that .NET Core does NOT support CodeDOM or persistance of AsemblyBuilder, so MsgPack for CLI .NET Core build cannot support code generation. To generate source code or assembly of serializers in non-Windows environment, you must use Mono with .NET 4.5 build. #Issue 128
   * Add buffering option for Packer/Unpacker which can be enabled by PackerUnpackerStreamOptions.WithBuffering = true. It should improve performance for non-buffered stream like NetworkStream.
 
   IMPROVEMENTS

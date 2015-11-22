@@ -20,7 +20,11 @@
 
 using System;
 using System.Collections.Generic;
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // CORE_CLR
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -178,7 +182,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			var underyingType = Enum.GetUnderlyingType( type.ResolveRuntimeType() );
 
+#if !CORE_CLR
 			switch ( Type.GetTypeCode( underyingType ) )
+#else
+			switch ( WinRTCompatibility.GetTypeCode( underyingType ) )
+#endif // CORE_CLR
 			{
 				case TypeCode.Byte:
 				{
@@ -356,9 +364,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitGreaterThanExpression( AssemblyBuilderEmittingContext context, ILConstruct left, ILConstruct right )
 		{
-#if DEBUG
+#if DEBUG && !CORE_CLR
 			Contract.Assert( left.ContextType.ResolveRuntimeType().IsPrimitive && left.ContextType.ResolveRuntimeType() != typeof( string ) );
-#endif
+#endif // DEBUG && !CORE_CLR
 			var greaterThan = left.ContextType.ResolveRuntimeType().GetMethod( "op_GreaterThan" );
 			return
 				ILConstruct.BinaryOperator(
@@ -399,9 +407,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitLessThanExpression( AssemblyBuilderEmittingContext context, ILConstruct left, ILConstruct right )
 		{
-#if DEBUG
+#if DEBUG && !CORE_CLR
 			Contract.Assert( left.ContextType.ResolveRuntimeType().IsPrimitive && left.ContextType.ResolveRuntimeType() != typeof( string ) );
-#endif
+#endif // DEBUG && !CORE_CLR
 			var lessThan = left.ContextType.ResolveRuntimeType().GetMethod( "op_LessThan" );
 			return
 				ILConstruct.BinaryOperator(
@@ -796,7 +804,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 						Contract.Assert( currentProperty != null, enumeratorType.ToString() );
 
 						// iterates
-						if ( traits.GetEnumeratorMethod.ReturnType.IsValueType )
+						if ( traits.GetEnumeratorMethod.ReturnType.GetIsValueType() )
 						{
 							il.EmitAnyLdloca( enumerator );
 						}
@@ -809,7 +817,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 						il.EmitBrfalse( endLoop );
 
 						// get current item
-						if ( traits.GetEnumeratorMethod.ReturnType.IsValueType )
+						if ( traits.GetEnumeratorMethod.ReturnType.GetIsValueType() )
 						{
 							il.EmitAnyLdloca( enumerator );
 						}
@@ -833,7 +841,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 						{
 							il.BeginFinallyBlock();
 
-							if ( traits.GetEnumeratorMethod.ReturnType.IsValueType )
+							if ( traits.GetEnumeratorMethod.ReturnType.GetIsValueType() )
 							{
 								var disposeMethod = traits.GetEnumeratorMethod.ReturnType.GetMethod( "Dispose" );
 								if ( disposeMethod != null && disposeMethod.GetParameters().Length == 0 && disposeMethod.ReturnType == typeof( void ) )
@@ -1034,7 +1042,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !CORE_CLR
 		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema )
 		{
 			var asAssemblyBuilderCodeGenerationContext = context as AssemblyBuilderCodeGenerationContext;
@@ -1067,7 +1075,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				emittingContext.Emitter.CreateEnumConstructor<TObject>();
 			}
 		}
-#endif
+#endif // !SILVERLIGHT && !CORE_CLR
 
 		protected override ILConstruct EmitNewPrivateMethodDelegateExpression( AssemblyBuilderEmittingContext context, MethodDefinition method )
 		{

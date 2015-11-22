@@ -34,11 +34,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 #if NETFX_CORE || WINDOWS_PHONE
 using System.Linq.Expressions;
@@ -46,7 +46,9 @@ using System.Linq.Expressions;
 #if !XAMIOS && !XAMDROID && !UNITY
 using MsgPack.Serialization.AbstractSerializers;
 #if !NETFX_CORE && !WINDOWS_PHONE && !SILVERLIGHT
+#if !CORE_CLR
 using MsgPack.Serialization.CodeDomSerializers;
+#endif // !CORE_CLR
 using MsgPack.Serialization.EmittingSerializers;
 #endif // NETFX_CORE && !WINDOWS_PHONE && !SILVERLIGHT
 #endif // !!XAMIOS && !XAMDROID && !UNITY
@@ -278,7 +280,9 @@ namespace MsgPack.Serialization
 				default:
 				{
 #if !NETFX_35
+#if !CORE_CLR
 					if ( !SerializerDebugging.OnTheFlyCodeDomEnabled )
+#endif // !CORE_CLR
 					{
 						throw new NotSupportedException(
 							String.Format(
@@ -289,8 +293,10 @@ namespace MsgPack.Serialization
 						);
 					}
 #endif // if !NETFX_35
+#if !CORE_CLR
 					builder = new CodeDomSerializerBuilder<T>();
 					break;
+#endif // !CORE_CLR
 				}
 			}
 #endif // !XAMIOS && !XAMDROID && !UNITY
@@ -366,24 +372,15 @@ namespace MsgPack.Serialization
 			return CreateInternal( context, targetType, null );
 #else
 			// MPS.Create should always return new instance, and creator delegate should be cached for performance.
-#if NETFX_CORE
+#if NETFX_CORE || CORE_CLR
 			var factory =
 				_creatorCache.GetOrAdd(
 					targetType,
 					type =>
-					{
-						var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 						// Utilize covariance of delegate.
-						return
-							Expression.Lambda<Func<SerializationContext, IMessagePackSingleObjectSerializer>>(
-								Expression.Call(
-									null,
-									Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type ),
-									contextParameter
-								),
-								contextParameter
-							).Compile();
-					}
+						Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type ).CreateDelegate(
+							typeof( Func<SerializationContext, IMessagePackSingleObjectSerializer> )
+						) as Func<SerializationContext, IMessagePackSingleObjectSerializer>
 				);
 #elif SILVERLIGHT || NETFX_35
 			Func<SerializationContext, IMessagePackSingleObjectSerializer> factory;

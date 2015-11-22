@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,6 +20,11 @@
 
 using System;
 using System.Collections.Generic;
+#if XAMIOS || XAMDROID || CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
+using System.Diagnostics.Contracts;
+#endif // XAMIOS || XAMDROID || CORE_CLR
 using System.Reflection;
 
 namespace MsgPack.Serialization.Metadata
@@ -80,7 +85,7 @@ namespace MsgPack.Serialization.Metadata
 			if ( _directUnpackMethods.TryGetValue( type, out result ) )
 			{
 #if DEBUG
-				System.Diagnostics.Contracts.Contract.Assert( result != null, "Failed to initialize value for " + type );
+				Contract.Assert( result != null, "Failed to initialize value for " + type );
 #endif
 			}
 			return result;

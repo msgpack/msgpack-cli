@@ -25,11 +25,11 @@
 using System;
 using System.Diagnostics;
 #if !UNITY
-#if XAMIOS || XAMDROID
+#if XAMIOS || XAMDROID || CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID
+#endif // XAMIOS || XAMDROID || CORE_CLR
 #endif // !UNITY
 using System.Globalization;
 using System.Linq;
@@ -45,9 +45,9 @@ namespace MsgPack
 	/// <summary>
 	///		Encapselates <see cref="String"/> and its serialized UTF-8 bytes.
 	/// </summary>
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	[Serializable]
-#endif // if !SILVERLIGHT && !NETFX_CORE
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 #if !NETFX_35 && !UNITY
 	[SecuritySafeCritical]
 #endif // !NETFX_35 && !UNITY
@@ -342,9 +342,9 @@ namespace MsgPack
 		}
 #endif // if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
 
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 		[Serializable]
-#endif // if !SILVERLIGHT && !NETFX_CORE
+#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 		private enum BinaryType
 		{
 			Unknwon = 0,
