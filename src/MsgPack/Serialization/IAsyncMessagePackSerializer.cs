@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,25 +18,28 @@
 //
 #endregion -- License Terms --
 
-#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
+#if FEATURE_TAP
 
 using System;
-using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MsgPack.Serialization
 {
 	/// <summary>
-	///		Defines non-generic message pack serializer interface.
+	///		Defines common intarfaces for serializers which has new capability API and asynchronous serialization.
 	/// </summary>
-	public interface IMessagePackSerializer
+	public interface IAsyncMessagePackSerializer : IMessagePackSerializer, ISupportMessagePackSerializerCapability
 	{
 		/// <summary>
-		///		Serialize specified object with specified <see cref="Packer"/>.
+		///		Serialize specified object with specified <see cref="Packer"/> asynchronously.
 		/// </summary>
 		/// <param name="packer"><see cref="Packer"/> which packs values in <paramref name="objectTree"/>.</param>
 		/// <param name="objectTree">Object to be serialized.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		/// </returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="packer"/> is <c>null</c>.
 		/// </exception>
@@ -44,20 +47,23 @@ namespace MsgPack.Serialization
 		///		<paramref name="objectTree"/> is not compatible for this serializer.
 		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
-		///		Failed to serialize object.
+		///		Failed to serialize object due to invalid unpacker state, stream content, or so.
 		/// </exception>
 		/// <exception cref="NotSupportedException">
 		///		The type of <paramref name="objectTree"/> is not serializable even if it can be deserialized.
 		/// </exception>
 		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
-		[SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "'objectTree' does not mean System.Object." )]
-		void PackTo( Packer packer, object objectTree );
+		Task PackToAsync( Packer packer, object objectTree, CancellationToken cancellationToken );
 
 		/// <summary>
-		///		Deserialize object with specified <see cref="Unpacker"/>.
+		///		Deserialize object with specified <see cref="Unpacker"/> asynchronously.
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree.</param>
-		/// <returns>The deserialized object.</returns>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains the deserialized object.
+		/// </returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="unpacker"/> is <c>null</c>.
 		/// </exception>
@@ -74,13 +80,17 @@ namespace MsgPack.Serialization
 		///		The type of deserializing is not serializable even if it can be serialized.
 		/// </exception>
 		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
-		object UnpackFrom( Unpacker unpacker );
+		Task<object> UnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken );
 
 		/// <summary>
-		///		Deserialize collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/>.
+		///		Deserialize collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/> asynchronously.
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree.</param>
 		/// <param name="collection">Collection that the items to be stored.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		/// </returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="unpacker"/> is <c>null</c>.
 		///		Or <paramref name="collection"/> is <c>null</c>.
@@ -101,6 +111,8 @@ namespace MsgPack.Serialization
 		///		The type of deserializing is not mutable collection.
 		/// </exception>
 		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
-		void UnpackTo( Unpacker unpacker, object collection );
+		Task UnpackToAsync( Unpacker unpacker, object collection, CancellationToken cancellationToken );
 	}
 }
+
+#endif // FEATURE_TAP

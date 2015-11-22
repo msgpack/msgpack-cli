@@ -31,6 +31,9 @@ namespace MsgPack
 		internal static readonly PackerUnpackerStreamOptions SingletonOwnsStream =
 			new PackerUnpackerStreamOptions { OwnsStream = true };
 
+		internal static readonly PackerUnpackerStreamOptions SingletonForAsync =
+			new PackerUnpackerStreamOptions { OwnsStream = true, WithBuffering = true };
+
 		internal static readonly PackerUnpackerStreamOptions None = new PackerUnpackerStreamOptions();
 
 		/// <summary>

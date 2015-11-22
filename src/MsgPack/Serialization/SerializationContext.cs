@@ -49,6 +49,12 @@ using System.Threading;
 using MsgPack.Serialization.DefaultSerializers;
 using MsgPack.Serialization.Polymorphic;
 
+#if FEATURE_TAP
+using ISerializer = MsgPack.Serialization.IAsyncMessagePackSingleObjectSerializer;
+#else
+using ISerializer = MsgPack.Serialization.IMessagePackSingleObjectSerializer;
+#endif // FEATURE_TAP
+
 namespace MsgPack.Serialization
 {
 	/// <summary>
@@ -883,6 +889,7 @@ namespace MsgPack.Serialization
 		///		<see cref="IMessagePackSingleObjectSerializer"/>.
 		///		If there is exiting one, returns it.
 		///		Else the new instance will be created.
+		///		If the platform supports async/await programming model, return type is <c>IAsyncMessagePackSingleObjectSerializer</c>.
 		/// </returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="targetType"/> is <c>null</c>.
@@ -891,7 +898,7 @@ namespace MsgPack.Serialization
 		///		Although <see cref="GetSerializer{T}()"/> is preferred,
 		///		this method can be used from non-generic type or methods.
 		/// </remarks>
-		public IMessagePackSingleObjectSerializer GetSerializer( Type targetType )
+		public ISerializer GetSerializer( Type targetType )
 		{
 			return this.GetSerializer( targetType, null );
 		}
@@ -905,6 +912,7 @@ namespace MsgPack.Serialization
 		///		<see cref="IMessagePackSingleObjectSerializer"/>.
 		///		If there is exiting one, returns it.
 		///		Else the new instance will be created.
+		///		If the platform supports async/await programming model, return type is <c>IAsyncMessagePackSingleObjectSerializer</c>.
 		/// </returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="targetType"/> is <c>null</c>.
@@ -913,7 +921,7 @@ namespace MsgPack.Serialization
 		///		Although <see cref="GetSerializer{T}(Object)"/> is preferred,
 		///		this method can be used from non-generic type or methods.
 		/// </remarks>
-		public IMessagePackSingleObjectSerializer GetSerializer( Type targetType, object providerParameter )
+		public ISerializer GetSerializer( Type targetType, object providerParameter )
 		{
 			if ( targetType == null )
 			{
@@ -932,8 +940,8 @@ namespace MsgPack.Serialization
 			public static readonly SerializerGetter Instance = new SerializerGetter();
 
 #if !SILVERLIGHT && !NETFX_35 && !UNITY
-			private readonly ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>> _cache =
-				new ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>>();
+			private readonly ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, ISerializer>> _cache =
+				new ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, ISerializer>>();
 #elif UNITY
 			private readonly Dictionary<RuntimeTypeHandle, MethodInfo> _cache =
 				new Dictionary<RuntimeTypeHandle, MethodInfo>();
@@ -944,7 +952,7 @@ namespace MsgPack.Serialization
 
 			private SerializerGetter() { }
 
-			public IMessagePackSingleObjectSerializer Get( SerializationContext context, Type targetType, object providerParameter )
+			public ISerializer Get( SerializationContext context, Type targetType, object providerParameter )
 			{
 #if UNITY
 				MethodInfo method;
@@ -954,9 +962,9 @@ namespace MsgPack.Serialization
 					this._cache[ targetType.TypeHandle ] = method;
 				}
 
-				return ( IMessagePackSingleObjectSerializer )method.InvokePreservingExceptionType( context, providerParameter );
+				return ( ISerializer )method.InvokePreservingExceptionType( context, providerParameter );
 #else
-				Func<SerializationContext, object, IMessagePackSingleObjectSerializer> func;
+				Func<SerializationContext, object, ISerializer> func;
 #if SILVERLIGHT || NETFX_35 || UNITY
 				lock ( this._cache )
 				{
@@ -966,9 +974,9 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE && !CORE_CLR
 					func =
 						Delegate.CreateDelegate(
-							typeof( Func<SerializationContext, object, IMessagePackSingleObjectSerializer> ),
+							typeof( Func<SerializationContext, object, ISerializer> ),
 							typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" )
-						) as Func<SerializationContext, object, IMessagePackSingleObjectSerializer>;
+						) as Func<SerializationContext, object, ISerializer>;
 #else
 					func =
 						typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" ).CreateDelegate(

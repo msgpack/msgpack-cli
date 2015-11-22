@@ -264,8 +264,11 @@
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilderHelpers.cs" />
+    <Compile Include="Serialization\IAsyncMessagePackSerializer.cs" />
+    <Compile Include="Serialization\IAsyncMessagePackSingleObjectSerializer.cs" />
     <Compile Include="Serialization\INilImplicationHandlerOnUnpackedParameter.cs" />
     <Compile Include="Serialization\INilImplicationHandlerParameter.cs" />
+    <Compile Include="Serialization\ISupportMessagePackSerializerCapability.cs" />
     <Compile Include="Serialization\MessagePackDateTimeMemberAttribute.cs" />
     <Compile Include="Serialization\MessagePackRuntimeTypeAttributes.cs">
       <DependentUpon>MessagePackRuntimeTypeAttributes.tt</DependentUpon>
@@ -356,6 +359,7 @@
     <Compile Include="Serialization\Metadata\_MethodBase.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionObjectMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
+    <Compile Include="Serialization\SerializerCapabilities.cs" />
     <Compile Include="Serialization\SerializerCodeGenerationConfiguration.cs" />
     <Compile Include="Serialization\EmittingSerializers\AndConditionILConstruct.cs" />
     <Compile Include="Serialization\EmittingSerializers\AssemblyBuilderCodeGenerationContext.cs" />
