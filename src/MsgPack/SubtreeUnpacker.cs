@@ -30,6 +30,10 @@ using Contract = MsgPack.MPContract;
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
 #endif // !UNITY
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 #if !UNITY || MSGPACK_UNITY_FULL
 using BooleanStack = System.Collections.Generic.Stack<System.Boolean>;
@@ -160,6 +164,25 @@ namespace MsgPack
 			this._state  = State.Drained;
 		}
 
+#if FEATURE_TAP
+
+		public override async Task DrainAsync( CancellationToken cancellationToken )
+		{
+			if ( this._state >= State.Drained )
+			{
+				return;
+			}
+
+			while ( await this.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+			{
+				// nop
+			}
+
+			this._state = State.Drained;
+		}
+
+#endif // FEATURE_TAP
+
 		protected internal override void EndReadSubtree()
 		{
 			base.EndReadSubtree();
@@ -237,6 +260,46 @@ namespace MsgPack
 			return true;
 		}
 
+#if FEATURE_TAP
+
+		protected override async Task<bool> ReadAsyncCore( CancellationToken cancellationToken )
+		{
+			this.DiscardCompletedStacks();
+
+			if ( this._itemsCount.Count == 0 || !( await this._root.ReadSubtreeItemAsync( cancellationToken ).ConfigureAwait( false ) ) )
+			{
+				return false;
+			}
+
+			switch ( this._root.InternalCollectionType )
+			{
+				case ItemsUnpacker.CollectionType.Array:
+				{
+					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._unpacked.Push( 0 );
+					this._isMap.Push( false );
+					break;
+				}
+				case ItemsUnpacker.CollectionType.Map:
+				{
+					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._unpacked.Push( 0 );
+					this._isMap.Push( true );
+					break;
+				}
+				default:
+				{
+					this._unpacked.Push( this._unpacked.Pop() + 1 );
+					break;
+				}
+			}
+
+			this._state = State.InProgress;
+			return true;
+		}
+
+#endif // FEATURE_TAP
+
 		protected override long? SkipCore()
 		{
 			this.DiscardCompletedStacks();
@@ -254,6 +317,28 @@ namespace MsgPack
 
 			return result;
 		}
+
+#if FEATURE_TAP
+
+		protected override async Task<long?> SkipAsyncCore( CancellationToken cancellationToken )
+		{
+			this.DiscardCompletedStacks();
+
+			if ( this._itemsCount.Count == 0 )
+			{
+				return 0;
+			}
+
+			var result = await this._root.SkipSubtreeItemAsync( cancellationToken ).ConfigureAwait( false );
+			if ( result != null )
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+
+			return result;
+		}
+
+#endif // FEATURE_TAP
 
 		private void DiscardCompletedStacks()
 		{

@@ -36,6 +36,10 @@
 
 using System;
 using System.Text;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack
 {
@@ -44,21 +48,82 @@ namespace MsgPack
 
 	partial class ItemsUnpacker
 	{
+<#
+foreach ( var isAsync in new [] { false, true } )
+{
+	var asyncPrefix = isAsync ? "result." : String.Empty;
+
+	if ( !isAsync )
+	{
+#>
 		private ReadValueResult ReadValue( out byte header, out long integral, out float real32, out double real64 )
 		{
 			var readHeader = this.ReadByteFromSource();
+<#
+	}
+	else
+	{
+#>
+#if FEATURE_TAP
+
+		private async Task<AsyncReadValueResult> ReadValueAsync( CancellationToken cancellationToken )
+		{
+			var readHeader = await this.ReadByteFromSourceAsync( cancellationToken ).ConfigureAwait( false );
+<#
+	}
+
+	if ( !isAsync )
+	{
+#>
 			// This is BAD practice for out, but it reduces IL size very well for this method.
 			integral = default( long );
 			real32 = default( float );
 			real64 = default( double );
+<#
+	}
+	else
+	{
+#>
+			var result = default( AsyncReadValueResult );
+<#
+	}
+#>
 
 			if ( readHeader < 0 )
 			{
+<#
+	if ( !isAsync )
+	{
+#>
 				header = 0;
 				return ReadValueResult.Eof;
+<#
+	}
+	else
+	{
+#>
+				return result;
+<#
+	}
+#>
 			}
 
+<#
+	if ( !isAsync )
+	{
+#>
 			header = unchecked( ( byte )readHeader );
+<#
+	}
+	else
+	{
+#>
+			var header = unchecked( ( byte )readHeader );
+			result.header = header;
+<#
+	}
+#>
+
 			switch ( header >> 4 )
 			{
 				case 0x0:
@@ -72,34 +137,34 @@ namespace MsgPack
 				{
 					// PositiveFixNum
 					this.InternalCollectionType = CollectionType.None;
-					integral = header;
+					<#= asyncPrefix #>integral = header;
 <#
-					ReturnValue( "Byte" );
+					ReturnValue( "Byte", isAsync );
 #>
 				}
 				case 0x8:
 				{
 					// FixMap
-					integral = header & 0xF;
+					<#= asyncPrefix #>integral = header & 0xF;
 <#
-					ReturnValue( "MapLength" );
+					ReturnValue( "MapLength", isAsync );
 #>
 				}
 				case 0x9:
 				{
 					// FixArray
-					integral = header & 0xF;
+					<#= asyncPrefix #>integral = header & 0xF;
 <#
-					ReturnValue( "ArrayLength" );
+					ReturnValue( "ArrayLength", isAsync );
 #>
 				}
 				case 0xA:
 				case 0xB:
 				{
 					// FixRaw
-					integral = header & 0x1F;
+					<#= asyncPrefix #>integral = header & 0x1F;
 <#
-					ReturnValue( "String" );
+					ReturnValue( "String", isAsync );
 #>
 				}
 				case 0xE:
@@ -107,9 +172,9 @@ namespace MsgPack
 				{
 					// NegativeFixNum
 					this.InternalCollectionType = CollectionType.None;
-					integral = header | unchecked( ( long )0xFFFFFFFFFFFFFF00 );
+					<#= asyncPrefix #>integral = header | unchecked( ( long )0xFFFFFFFFFFFFFF00 );
 <#
-					ReturnValue( "SByte" );
+					ReturnValue( "SByte", isAsync );
 #>
 				}
 			}
@@ -119,229 +184,229 @@ namespace MsgPack
 				case MessagePackCode.NilValue:
 				{
 <#
-					ReturnValue( "Nil" );
+					ReturnValue( "Nil", isAsync );
 #>
 				}
 				case MessagePackCode.TrueValue:
 				{
-					integral = 1;
+					<#= asyncPrefix #>integral = 1;
 <#
-					ReturnValue( "Boolean" );
+					ReturnValue( "Boolean", isAsync );
 #>
 				}
 				case MessagePackCode.FalseValue:
 				{
-					integral = 0;
+					<#= asyncPrefix #>integral = 0;
 <#
-					ReturnValue( "Boolean" );
+					ReturnValue( "Boolean", isAsync );
 #>
 				}
 				case MessagePackCode.SignedInt8:
 				{
-					<#= ReadStrict( "sbyte" ) #>;
-					integral = BigEndianBinary.ToSByte( this._scalarBuffer, 0 );
+					<#= ReadStrict( "sbyte", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToSByte( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "SByte" );
+					ReturnValue( "SByte", isAsync );
 #>
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					<#= ReadStrict( "short" ) #>;
-					integral = BigEndianBinary.ToInt16( this._scalarBuffer, 0 );
+					<#= ReadStrict( "short", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToInt16( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "Int16" );
+					ReturnValue( "Int16", isAsync );
 #>
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					<#= ReadStrict( "int" ) #>;
-					integral = BigEndianBinary.ToInt32( this._scalarBuffer, 0 );
+					<#= ReadStrict( "int", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToInt32( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "Int32" );
+					ReturnValue( "Int32", isAsync );
 #>
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					<#= ReadStrict( "long" ) #>;
-					integral = BigEndianBinary.ToInt64( this._scalarBuffer, 0 );
+					<#= ReadStrict( "long", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToInt64( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "Int64" );
+					ReturnValue( "Int64", isAsync );
 #>
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					<#= ReadStrict( "byte" ) #>;
-					integral = BigEndianBinary.ToByte( this._scalarBuffer, 0 );
+					<#= ReadStrict( "byte", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToByte( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "Byte" );
+					ReturnValue( "Byte", isAsync );
 #>
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					<#= ReadStrict( "ushort" ) #>;
-					integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
+					<#= ReadStrict( "ushort", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "UInt16" );
+					ReturnValue( "UInt16", isAsync );
 #>
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					<#= ReadStrict( "uint" ) #>;
-					integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
+					<#= ReadStrict( "uint", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "UInt32" );
+					ReturnValue( "UInt32", isAsync );
 #>
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					<#= ReadStrict( "ulong" ) #>;
-					integral = unchecked( ( long )BigEndianBinary.ToUInt64( this._scalarBuffer, 0 ) );
+					<#= ReadStrict( "ulong", isAsync ) #>;
+					<#= asyncPrefix #>integral = unchecked( ( long )BigEndianBinary.ToUInt64( this._scalarBuffer, 0 ) );
 <#
-					ReturnValue( "UInt64" );
+					ReturnValue( "UInt64", isAsync );
 #>
 				}
 				case MessagePackCode.Real32:
 				{
-					<#= ReadStrict( "float" ) #>;
-					real32 = BigEndianBinary.ToSingle( this._scalarBuffer, 0 );
+					<#= ReadStrict( "float", isAsync ) #>;
+					<#= asyncPrefix #>real32 = BigEndianBinary.ToSingle( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "Single" );
+					ReturnValue( "Single", isAsync );
 #>
 				}
 				case MessagePackCode.Real64:
 				{
-					<#= ReadStrict( "double" ) #>;
-					real64 = BigEndianBinary.ToDouble( this._scalarBuffer, 0 );
+					<#= ReadStrict( "double", isAsync ) #>;
+					<#= asyncPrefix #>real64 = BigEndianBinary.ToDouble( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "Double" );
+					ReturnValue( "Double", isAsync );
 #>
 				}
 				case MessagePackCode.Bin8:
 				{
-					<#= ReadStrict( "byte" ) #>;
-					integral = BigEndianBinary.ToByte( this._scalarBuffer, 0 );
+					<#= ReadStrict( "byte", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToByte( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "Binary" );
+					ReturnValue( "Binary", isAsync );
 #>
 				}
 				case MessagePackCode.Str8:
 				{
-					<#= ReadStrict( "byte" ) #>;
-					integral = BigEndianBinary.ToByte( this._scalarBuffer, 0 );
+					<#= ReadStrict( "byte", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToByte( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "String" );
+					ReturnValue( "String", isAsync );
 #>
 				}
 				case MessagePackCode.Bin16:
 				{
-					<#= ReadStrict( "ushort" ) #>;
-					integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
+					<#= ReadStrict( "ushort", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "Binary" );
+					ReturnValue( "Binary", isAsync );
 #>
 				}
 				case MessagePackCode.Raw16:
 				{
-					<#= ReadStrict( "ushort" ) #>;
-					integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
+					<#= ReadStrict( "ushort", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "String" );
+					ReturnValue( "String", isAsync );
 #>
 				}
 				case MessagePackCode.Bin32:
 				{
-					<#= ReadStrict( "uint" ) #>;
-					integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
+					<#= ReadStrict( "uint", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "Binary" );
+					ReturnValue( "Binary", isAsync );
 #>
 				}
 				case MessagePackCode.Raw32:
 				{
-					<#= ReadStrict( "uint" ) #>;
-					integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
+					<#= ReadStrict( "uint", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "String" );
+					ReturnValue( "String", isAsync );
 #>
 				}
 				case MessagePackCode.Array16:
 				{
-					<#= ReadStrict( "ushort" ) #>;
-					integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
+					<#= ReadStrict( "ushort", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "ArrayLength" );
+					ReturnValue( "ArrayLength", isAsync );
 #>
 				}
 				case MessagePackCode.Array32:
 				{
-					<#= ReadStrict( "uint" ) #>;
-					integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
+					<#= ReadStrict( "uint", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "ArrayLength" );
+					ReturnValue( "ArrayLength", isAsync );
 #>
 				}
 				case MessagePackCode.Map16:
 				{
-					<#= ReadStrict( "ushort" ) #>;
-					integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
+					<#= ReadStrict( "ushort", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "MapLength" );
+					ReturnValue( "MapLength", isAsync );
 #>
 				}
 				case MessagePackCode.Map32:
 				{
-					<#= ReadStrict( "uint" ) #>;
-					integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
+					<#= ReadStrict( "uint", isAsync ) #>;
+					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
 <#
-					ReturnValue( "MapLength" );
+					ReturnValue( "MapLength", isAsync );
 #>
 				}
 				case MessagePackCode.FixExt1:
 				{
 <#
-					ReturnValue( "FixExt1" );
+					ReturnValue( "FixExt1", isAsync );
 #>
 				}
 				case MessagePackCode.FixExt2:
 				{
 <#
-					ReturnValue( "FixExt2" );
+					ReturnValue( "FixExt2", isAsync );
 #>
 				}
 				case MessagePackCode.FixExt4:
 				{
 <#
-					ReturnValue( "FixExt4" );
+					ReturnValue( "FixExt4", isAsync );
 #>
 				}
 				case MessagePackCode.FixExt8:
 				{
 <#
-					ReturnValue( "FixExt8" );
+					ReturnValue( "FixExt8", isAsync );
 #>
 				}
 				case MessagePackCode.FixExt16:
 				{
 <#
-					ReturnValue( "FixExt16" );
+					ReturnValue( "FixExt16", isAsync );
 #>
 				}
 				case MessagePackCode.Ext8:
 				{
 <#
-					ReturnValue( "Ext8" );
+					ReturnValue( "Ext8", isAsync );
 #>
 				}
 				case MessagePackCode.Ext16:
 				{
 <#
-					ReturnValue( "Ext16" );
+					ReturnValue( "Ext16", isAsync );
 #>
 				}
 				case MessagePackCode.Ext32:
 				{
 <#
-					ReturnValue( "Ext32" );
+					ReturnValue( "Ext32", isAsync );
 #>
 				}
 				default:
@@ -349,11 +414,21 @@ namespace MsgPack
 					this.ThrowUnassignedMessageTypeException( readHeader );
 					// Never reach
 <#
-					ReturnValue( "Eof" );
+					ReturnValue( "Eof", isAsync );
 #>
 				}
 			}
 		}
+
+<#
+	if ( isAsync )
+	{
+#>
+#endif // FEATURE_TAP
+<#
+	}
+}
+#>
 
 		private long ReadArrayLengthCore( long length )
 		{
@@ -371,7 +446,18 @@ namespace MsgPack
 			return length;
 		}
 
-		private byte[] ReadBinaryCore( long length )
+<#
+foreach ( var isAsync in new [] { false, true } )
+{
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+
+<#
+	}
+#>
+		private <#= AsyncReturnValue( "byte[]", isAsync ) #> ReadBinary<#= AsyncSuffix( isAsync ) #>Core( long length<#= Parameter( isAsync ) #> )
 		{
 			if ( length == 0 )
 			{
@@ -381,12 +467,33 @@ namespace MsgPack
 
 			this.CheckLength( length, ReadValueResult.Binary );
 			var buffer = new byte[ length ];
-			this.ReadStrict( buffer, buffer.Length );
+			<#= Await( isAsync, "this.ReadStrict" + AsyncSuffix( isAsync ) + "( buffer, buffer.Length" + LastArgument( isAsync ) + " )" ) #>;
 			this.InternalCollectionType = CollectionType.None;
 			return buffer;
 		}
 
-		private string ReadStringCore( long length )
+<#
+	if ( isAsync )
+	{
+#>
+#endif // FEATURE_TAP
+<#
+	}
+}
+#>
+
+<#
+foreach ( var isAsync in new [] { false, true } )
+{
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+
+<#
+	}
+#>
+		private <#= AsyncReturnValue( "string", isAsync ) #> ReadString<#= AsyncSuffix( isAsync ) #>Core( long length<#= Parameter( isAsync ) #> )
 		{
 			if ( length == 0 )
 			{
@@ -405,7 +512,7 @@ namespace MsgPack
 
 				if ( length32 <= bytes.Length )
 				{
-					this.ReadStrict( bytes, length32 );
+					<#= Await( isAsync, "this.ReadStrict" + AsyncSuffix( isAsync ) + "( bytes, length32" + LastArgument( isAsync ) + " )" ) #>;
 					var result = Encoding.UTF8.GetString( bytes, 0, length32 );
 					this.InternalCollectionType = CollectionType.None;
 					return result;
@@ -423,7 +530,7 @@ namespace MsgPack
 					{
 						var reading = Math.Min( remaining, bytes.Length );
 						this._lastOffset = this._offset;
-						var bytesRead = this._source.Read( bytes, 0, reading );
+						var bytesRead = <#= Await( isAsync, "this._source.Read" + AsyncSuffix( isAsync ) + "( bytes, 0, reading" + LastArgument( isAsync ) + " )" ) #>;
 						this._offset += bytesRead;
 						if ( bytesRead == 0 )
 						{
@@ -474,7 +581,27 @@ namespace MsgPack
 #endif // DEBUG
 		}
 
-		private MessagePackExtendedTypeObject ReadMessagePackExtendedTypeObjectCore( ReadValueResult type )
+<#
+	if ( isAsync )
+	{
+#>
+#endif // FEATURE_TAP
+
+<#
+	}
+}
+
+foreach ( var isAsync in new [] { false, true } )
+{
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+
+<#
+	}
+#>
+		private <#= AsyncReturnValue( "MessagePackExtendedTypeObject", isAsync ) #> ReadMessagePackExtendedTypeObject<#= AsyncSuffix( isAsync ) #>Core( ReadValueResult type<#= Parameter( isAsync ) #> )
 		{
 			byte typeCode;
 			uint length;
@@ -482,51 +609,51 @@ namespace MsgPack
 			{
 				case ReadValueResult.FixExt1:
 				{
-					typeCode = <#= ReadByteStrict() #>;
+					typeCode = <#= ReadByteStrict( isAsync ) #>;
 					length = 1;
 					break;
 				}
 				case ReadValueResult.FixExt2:
 				{
-					typeCode = <#= ReadByteStrict() #>;
+					typeCode = <#= ReadByteStrict( isAsync ) #>;
 					length = 2;
 					break;
 				}
 				case ReadValueResult.FixExt4:
 				{
-					typeCode = <#= ReadByteStrict() #>;
+					typeCode = <#= ReadByteStrict( isAsync ) #>;
 					length = 4;
 					break;
 				}
 				case ReadValueResult.FixExt8:
 				{
-					typeCode = <#= ReadByteStrict() #>;
+					typeCode = <#= ReadByteStrict( isAsync ) #>;
 					length = 8;
 					break;
 				}
 				case ReadValueResult.FixExt16:
 				{
-					typeCode = <#= ReadByteStrict() #>;
+					typeCode = <#= ReadByteStrict( isAsync ) #>;
 					length = 16;
 					break;
 				}
 				case ReadValueResult.Ext8:
 				{
-					<#= ReadStrict( "byte" ) #>;
+					<#= ReadStrict( "byte", isAsync ) #>;
 					length = BigEndianBinary.ToByte( this._scalarBuffer, 0 );
 					typeCode = this.ReadByteStrict();
 					break;
 				}
 				case ReadValueResult.Ext16:
 				{
-					<#= ReadStrict( "ushort" ) #>;
+					<#= ReadStrict( "ushort", isAsync ) #>;
 					length = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
 					typeCode = this.ReadByteStrict();
 					break;
 				}
 				case ReadValueResult.Ext32:
 				{
-					<#= ReadStrict( "uint" ) #>;
+					<#= ReadStrict( "uint", isAsync ) #>;
 					length = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
 					typeCode = this.ReadByteStrict();
 					break;
@@ -539,31 +666,95 @@ namespace MsgPack
 			}
 
 			var data = new byte[ length ];
+<#
+	if ( !isAsync )
+	{
+#>
 			this.ReadStrict( data, data.Length );
+<#
+	}
+	else
+	{
+#>
+			await this.ReadStrictAsync( data, data.Length, cancellationToken ).ConfigureAwait( false );
+<#
+	}
+#>
 			this.InternalCollectionType = CollectionType.None;
 			return new MessagePackExtendedTypeObject( typeCode, data );
 		}
+
+<#
+	if ( isAsync )
+	{
+#>
+#endif // FEATURE_TAP
+
+<#
+	}
+}
+#>
 	}
 }
 <#+
-private static string ReadStrict( string type )
+private static string ReadStrict( string type, bool isAsync )
 {
 	return 
-		"this.ReadStrict" + 
+		( isAsync ? "await this.ReadStrictAsync" : "this.ReadStrict" ) + 
 		"( this._scalarBuffer, sizeof( " + type + " )" +
-		" )";
+		( isAsync ? ", cancellationToken ).ConfigureAwait( false )" : " )" );
 }
 
-private static string ReadByteStrict()
+private static string ReadByteStrict( bool isAsync )
 {
-	return "this.ReadByteStrict()";
+	return isAsync ? "await this.ReadByteStrictAsync( cancellationToken ).ConfigureAwait( false )" : "this.ReadByteStrict()";
 }
 
 
-private void ReturnValue( string type )
+private void ReturnValue( string type, bool isAsync )
 {
+	if( !isAsync )
+	{
 #>
 					return ReadValueResult.<#= type #>;
 <#+
+	}
+	else
+	{
+#>
+					result.type = ReadValueResult.<#= type #>;
+					return result;
+<#+
+	}
+}
+
+private static string Await( bool isAsync, string expression )
+{
+	return ( isAsync ? "await ": String.Empty ) + expression + ( isAsync ? ".ConfigureAwait( false )" : String.Empty );
+}
+
+private static string AsyncSuffix( bool isAsync )
+{
+	return isAsync ? "Async": String.Empty;
+}
+
+private static string AsyncReturnValue( string type, bool isAsync )
+{
+	return ( isAsync ? "async Task<" : String.Empty ) + type + ( isAsync ? ">" : String.Empty );
+}
+
+private static string Parameter( bool isAsync )
+{
+	return isAsync ? ", CancellationToken cancellationToken" : String.Empty;
+}
+
+private static string LastArgument( bool isAsync )
+{
+	return isAsync ? ", cancellationToken" : String.Empty;
+}
+
+private static string Argument( bool isAsync )
+{
+	return isAsync ? " cancellationToken " : String.Empty;
 }
 #>

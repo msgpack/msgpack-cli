@@ -33,6 +33,10 @@
 #endif
 
 using System;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack
 {
@@ -95,6 +99,72 @@ foreach( var type in
 			return true;
 		}
 
+#if FEATURE_TAP
+
+<#
+foreach ( var withCancel in new [] { false, true } )
+{
+#>
+		/// <summary>
+		///		Reads next <see cref="<#= GetTypeName( type ) #>" /> value from current stream asynchronously.
+		///	</summary>
+<#
+	if ( withCancel )
+	{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#
+	}
+#>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		a <see cref="<#= GetTypeName( type ) #>" /> value read from current stream.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not compatible for the <see cref="<#= GetTypeName( type ) #>" /> type.
+		/// </exception>
+<#
+	if( IsNotCLSCompliant( type as Type ) )
+	{
+#>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+<#
+	}
+#>
+		public  <#= AsyncReturn( type, withCancel ) #> Read<#= GetTypeName( type ) #>Async(<#= Parameter( withCancel ) #>)
+		{
+<#
+	if ( !withCancel )
+	{
+#>
+			return this.Read<#= GetTypeName( type ) #>Async( CancellationToken.None );
+<#
+	}
+	else
+	{
+#>
+			if( !( await this.ReadAsync(<#= Argument( withCancel ) #>).ConfigureAwait( false ) ) )
+			{
+				return AsyncReadResult.Fail<#= "<" + GetTypeName( type ) + ">" #>();
+			}
+
+			return AsyncReadResult.Success( this.LastReadData.As<#= GetTypeName( type ) #>() );
+<#
+	}
+#>
+		}
+
+<#
+}
+#>
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Reads next nullable <see cref="<#= GetTypeName( type ) #>" /> value from current stream.
 		///	</summary>
@@ -132,6 +202,72 @@ foreach( var type in
 			result = this.LastReadData.IsNil ? default( <#= GetTypeName( type ) #>? ) : this.LastReadData.As<#= GetTypeName( type ) #>();
 			return true;
 		}
+
+#if FEATURE_TAP
+
+<#
+foreach ( var withCancel in new [] { false, true } )
+{
+#>
+		/// <summary>
+		///		Reads next nullable <see cref="<#= GetTypeName( type ) #>" /> value from current stream asynchronously.
+		///	</summary>
+<#
+	if ( withCancel )
+	{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#
+	}
+#>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		a nullable <see cref="<#= GetTypeName( type ) #>" /> value read from current stream.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not compatible for the nullable <see cref="<#= GetTypeName( type ) #>" /> type.
+		/// </exception>
+<#
+	if( IsNotCLSCompliant( type as Type ) )
+	{
+#>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+<#
+	}
+#>
+		public <#= AsyncReturnNullable( type, withCancel ) #> ReadNullable<#= GetTypeName( type ) #>Async(<#= Parameter( withCancel ) #>)
+		{
+<#
+	if ( !withCancel )
+	{
+#>
+			return this.ReadNullable<#= GetTypeName( type ) #>Async( CancellationToken.None );
+<#
+	}
+	else
+	{
+#>
+			if( !( await this.ReadAsync(<#= Argument( withCancel ) #>).ConfigureAwait( false ) ) )
+			{
+				return AsyncReadResult.Fail<#= "<" + GetTypeName( type ) + "?>" #>();
+			}
+
+			return AsyncReadResult.Success( this.LastReadData.IsNil ? default( <#= GetTypeName( type ) #>? ) : this.LastReadData.As<#= GetTypeName( type ) #>() );
+<#
+	}
+#>
+		}
+
+<#
+}
+#>
+#endif // FEATURE_TAP
 
 <#
 }
@@ -171,6 +307,69 @@ foreach( var type in
 			return true;
 		}
 
+#if FEATURE_TAP
+
+<#
+foreach ( var withCancel in new [] { false, true } )
+{
+#>
+		/// <summary>
+		///		Reads next array length value from current stream asynchronously.
+		///	</summary>
+<#
+	if ( withCancel )
+	{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#
+	}
+#>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an array length read from current stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not an array.
+		/// </exception>
+		public <#= AsyncReturn( "long", withCancel ) #> ReadArrayLengthAsync(<#= Parameter( withCancel ) #>)
+		{
+<#
+	if ( !withCancel )
+	{
+#>
+			return this.ReadArrayLengthAsync( CancellationToken.None );
+<#
+	}
+	else
+	{
+#>
+			if( !( await this.ReadAsync(<#= Argument( withCancel ) #>).ConfigureAwait( false ) ) )
+			{
+				return AsyncReadResult.Fail<long>();
+			}
+
+			if( !this.IsArrayHeader )
+			{
+				throw new MessageTypeException( "Not in array header." );
+			}
+
+			return AsyncReadResult.Success( this.LastReadData.AsInt64() );
+<#
+	}
+#>
+		}
+
+<#
+}
+#>
+#endif // FEATURE_TAP
+
+
 		/// <summary>
 		///		Reads next map length value from current stream.
 		///	</summary>
@@ -205,6 +404,68 @@ foreach( var type in
 			return true;
 		}
 
+#if FEATURE_TAP
+
+<#
+foreach ( var withCancel in new [] { false, true } )
+{
+#>
+		/// <summary>
+		///		Reads next map length value from current stream asynchronously.
+		///	</summary>
+<#
+	if ( withCancel )
+	{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#
+	}
+#>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an map length read from current stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not a map.
+		/// </exception>
+		public <#= AsyncReturn( "long", withCancel ) #> ReadMapLengthAsync(<#= Parameter( withCancel ) #>)
+		{
+<#
+	if ( !withCancel )
+	{
+#>
+			return this.ReadMapLengthAsync( CancellationToken.None );
+<#
+	}
+	else
+	{
+#>
+			if( !( await this.ReadAsync(<#= Argument( withCancel ) #>).ConfigureAwait( false ) ) )
+			{
+				return AsyncReadResult.Fail<long>();
+			}
+
+			if( !this.IsMapHeader )
+			{
+				throw new MessageTypeException( "Not in map header." );
+			}
+
+			return AsyncReadResult.Success( this.LastReadData.AsInt64() );
+<#
+	}
+#>
+		}
+
+<#
+}
+#>
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Reads next byte array value from current stream.
 		///	</summary>
@@ -233,6 +494,63 @@ foreach( var type in
 			result = this.LastReadData.AsBinary();
 			return true;
 		}
+
+#if FEATURE_TAP
+
+<#
+foreach ( var withCancel in new [] { false, true } )
+{
+#>
+		/// <summary>
+		///		Reads next byte array value from current stream asynchronously.
+		///	</summary>
+<#
+	if ( withCancel )
+	{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#
+	}
+#>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		a byte array read from current stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not a raw.
+		/// </exception>
+		public <#= AsyncReturn( "byte[]", withCancel ) #> ReadBinaryAsync(<#= Parameter( withCancel ) #>)
+		{
+<#
+	if ( !withCancel )
+	{
+#>
+			return this.ReadBinaryAsync( CancellationToken.None );
+<#
+	}
+	else
+	{
+#>
+			if( !( await this.ReadAsync(<#= Argument( withCancel ) #>).ConfigureAwait( false ) ) )
+			{
+				return AsyncReadResult.Fail<byte[]>();
+			}
+
+			return AsyncReadResult.Success( this.LastReadData.AsBinary() );
+<#
+	}
+#>
+		}
+
+<#
+}
+#>
+#endif // FEATURE_TAP
 
 		/// <summary>
 		///		Reads next utf-8 encoded string value from current stream.
@@ -263,6 +581,63 @@ foreach( var type in
 			return true;
 		}
 
+#if FEATURE_TAP
+
+<#
+foreach ( var withCancel in new [] { false, true } )
+{
+#>
+		/// <summary>
+		///		Reads next utf-8 encoded string value from current stream asynchronously.
+		///	</summary>
+<#
+	if ( withCancel )
+	{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#
+	}
+#>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		a decoded utf-8 encoded string read from current stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not a raw.
+		/// </exception>
+		public <#= AsyncReturn( "string", withCancel ) #> ReadStringAsync(<#= Parameter( withCancel ) #>)
+		{
+<#
+	if ( !withCancel )
+	{
+#>
+			return this.ReadStringAsync( CancellationToken.None );
+<#
+	}
+	else
+	{
+#>
+			if( !( await this.ReadAsync(<#= Argument( withCancel ) #>).ConfigureAwait( false ) ) )
+			{
+				return AsyncReadResult.Fail<string>();
+			}
+
+			return AsyncReadResult.Success( this.LastReadData.AsString() );
+<#
+	}
+#>
+		}
+
+<#
+}
+#>
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Reads next value from current stream.
 		///	</summary>
@@ -288,6 +663,60 @@ foreach( var type in
 			result = this.LastReadData;
 			return true;
 		}
+
+#if FEATURE_TAP
+
+<#
+foreach ( var withCancel in new [] { false, true } )
+{
+#>
+		/// <summary>
+		///		Reads next value from current stream asynchronously.
+		///	</summary>
+<#
+	if ( withCancel )
+	{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#
+	}
+#>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		a <see cref="MessagePackObject"/> which represents a value read from current stream
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		public <#= AsyncReturn( "MessagePackObject", withCancel ) #> ReadObjectAsync(<#= Parameter( withCancel ) #>)
+		{
+<#
+	if ( !withCancel )
+	{
+#>
+			return this.ReadObjectAsync( CancellationToken.None );
+<#
+	}
+	else
+	{
+#>
+			if( !( await this.ReadAsync(<#= Argument( withCancel ) #>).ConfigureAwait( false ) ) )
+			{
+				return AsyncReadResult.Fail<MessagePackObject>();
+			}
+
+			return AsyncReadResult.Success( this.LastReadData );
+<#
+	}
+#>
+		}
+
+<#
+}
+#>
+#endif // FEATURE_TAP
 	}
 }
 <#+
@@ -318,5 +747,26 @@ private static bool IsNotCLSCompliant( Type type )
 private static string GetTypeName( object typeOrTypeName )
 {
 	return ( typeOrTypeName as string ) ?? ( typeOrTypeName as Type ).Name;
+}
+
+private static string AsyncReturn( object typeOrTypeName, bool withCancel )
+{
+	return ( withCancel ? "virtual async " : string.Empty ) + "Task<AsyncReadResult<" + GetTypeName( typeOrTypeName ) + ">>";
+}
+
+private static string AsyncReturnNullable( object typeOrTypeName, bool withCancel )
+{
+	return ( withCancel ? "virtual async " : string.Empty ) + "Task<AsyncReadResult<" + GetTypeName( typeOrTypeName ) + "?>>";
+}
+
+
+private static string Parameter( bool withCancel )
+{
+	return withCancel ? " CancellationToken cancellationToken " : String.Empty;
+}
+
+private static string Argument( bool withCancel )
+{
+	return withCancel ? " cancellationToken " : String.Empty;
 }
 #>

@@ -1009,7 +1009,7 @@ namespace MsgPack.Serialization
 
 			// ReSharper disable UnusedMember.Local
 			// This method is invoked via Reflection on SerializerGetter.Get().
-			public static ISerializer Get( SerializationContext context, object providerParameter )
+			public static IMessagePackSingleObjectSerializer Get( SerializationContext context, object providerParameter )
 			{
 				return _func( context, providerParameter );
 			}

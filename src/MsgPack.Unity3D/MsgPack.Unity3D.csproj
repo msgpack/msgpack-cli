@@ -79,6 +79,12 @@
     <Compile Include="..\MsgPack.Unity3D.Full\Serialization\TypedMessagePackSerializerWrapper`1.cs">
       <Link>Serialization\TypedMessagePackSerializerWrapper`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\AsyncReadResult.cs">
+      <Link>AsyncReadResult.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\AsyncReadResult`1.cs">
+      <Link>AsyncReadResult`1.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\BigEndianBinary.cs">
       <Link>BigEndianBinary.cs</Link>
     </Compile>
