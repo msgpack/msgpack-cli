@@ -123,6 +123,7 @@
     <Compile Include="Float32Bits.cs" />
     <Compile Include="Float64Bits.cs" />
     <Compile Include="InvalidMessagePackStreamException.cs" />
+    <Compile Include="IAsyncPackable.cs" />
     <Compile Include="IPackable.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -137,6 +138,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ItemsUnpacker.Read.tt</DependentUpon>
     </Compile>
+    <Compile Include="IAsyncUnpackable.cs" />
     <Compile Include="IUnpackable.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -162,7 +164,9 @@
     </Compile>
     <Compile Include="PackerCompatibilityOptions.cs" />
     <Compile Include="PackerUnpackerExtensions.cs">
-      <SubType>Code</SubType>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PackerUnpackerExtensions.tt</DependentUpon>
     </Compile>
     <Compile Include="PackerUnpackerStreamOptions.cs" />
     <Compile Include="PackingOptions.cs" />
@@ -619,6 +623,10 @@
     <Content Include="Packer.Packing.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Packer.Packing.cs</LastGenOutput>
+    </Content>
+    <Content Include="PackerUnpackerExtensions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PackerUnpackerExtensions.cs</LastGenOutput>
     </Content>
     <Content Include="Serialization\DefaultSerializers\SimdTypeSerializers.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
