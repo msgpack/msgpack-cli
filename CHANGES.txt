@@ -376,3 +376,19 @@ Release 0.6.5.1 - 2015/10/25
   BUG FIXES
   * mpu.exe -l option does not work in non-Windows environment. Issue #125.
 
+Release 0.7.0-alpha1 - 2015/11/22
+
+  NEW FEATURES
+  * Add .NET Core support.
+  * Add buffering option for Packer/Unpacker which can be enabled by PackerUnpackerStreamOptions.WithBuffering = true. It should improve performance for non-buffered stream like NetworkStream.
+
+  IMPROVEMENTS
+  * Exceptions now includes stream position for seekable stream or "offset from Unpacker construction" for non-seekable stream.
+  * Generated code now well structured which improves debuggability, it also remove some redundant expressions.
+  * Move throw statements from hot-path to improve performance a bit.
+
+  BREAKING CHANGES
+  * Generated serializers code has different structure, it might break your custom toolset which depends generated code structure.
+
+  BUG FIXES
+  * Fix Unpacker.Skip failes when the stream is fragmented such as raw NetworkStream.
