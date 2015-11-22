@@ -2,6 +2,16 @@ param([Switch]$Rebuild)
 
 [string]$temp = '.\nugettmp'
 [string]$builder = "$env:windir\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
+[string]$winBuilder = "${env:ProgramFiles(x86)}\MSBuild\14.0\Bin\MSBuild.exe";
+if ( ![IO.File]::Exists( "$winBuilder" ) )
+{
+	$winBuilder = "${env:ProgramFiles}\MSBuild\14.0\Bin\MSBuild.exe";
+}
+if ( ![IO.File]::Exists( "$winBuilder" ) )
+{
+	Write-Error "MSBuild v14 is required."
+	exit 1
+}
 
 [string]$sln = 'MsgPack.sln'
 [string]$slnCompat = 'MsgPack.compats.sln'
@@ -34,8 +44,22 @@ if ( ![IO.Directory]::Exists( ".\MsgPack-CLI\mpu" ) )
 
 # build
 &$builder $sln $buildOptions
+if ( $LastExitCode -ne 0 )
+{
+	exit $LastExitCode
+}
+
 &$builder $slnCompat $buildOptions
-&$builder $slnWindows $buildOptions
+if ( $LastExitCode -ne 0 )
+{
+	exit $LastExitCode
+}
+
+&$winBuilder $slnWindows $buildOptions
+if ( $LastExitCode -ne 0 )
+{
+	exit $LastExitCode
+}
 
 $winFile = New-Object IO.FileInfo( ".\bin\portable-net45+win+wpa81\MsgPack.dll" )
 $xamarinFile = New-Object IO.FileInfo( ".\bin\MonoTouch10\MsgPack.dll" )
@@ -48,8 +72,8 @@ if( ( $winFile.LastWriteTime - $xamarinFile.LastWriteTime ).Days -ne 0 )
 
 .\.nuget\nuget.exe pack $nuspec -Symbols
 
-Copy-Item .\bin\* .\MsgPack-CLI\ -Recurse -Exclude @("*.vshost.*")
-Copy-Item .\tools\mpu\bin\* .\MsgPack-CLI\mpu\ -Recurse -Exclude @("*.vshost.*")
+Copy-Item .\bin\ .\MsgPack-CLI\ -Recurse -Exclude @("*.vshost.*")
+Copy-Item .\tools\mpu\bin\ .\MsgPack-CLI\mpu\ -Recurse -Exclude @("*.vshost.*")
 [Reflection.Assembly]::LoadWithPartialName( "System.IO.Compression.FileSystem" ) | Out-Null
 # 'latest' should be rewritten with semver manually.
 if ( [IO.File]::Exists( ".\MsgPack.Cli.latest.zip" ) )
