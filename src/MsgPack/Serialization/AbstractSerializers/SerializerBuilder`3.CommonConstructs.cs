@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -34,6 +34,10 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -610,51 +614,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 		);
 
 		/// <summary>
-		///		Emits the using expression.
-		/// </summary>
-		/// <param name="context">The generation context.</param>
-		/// <param name="disposableType">Type of the disposable.</param>
-		/// <param name="instantiateIDisposableExpression">The expression which instantiate <see cref="IDisposable"/> object.</param>
-		/// <param name="usingBodyEmitter">The using body which takes disposable object and returns actual statement.</param>
-		/// <returns>The using statement.</returns>
-		private TConstruct EmitUsingStatement(
-			TContext context, Type disposableType, TConstruct instantiateIDisposableExpression, Func<TConstruct, TConstruct> usingBodyEmitter
-		)
-		{
-			var disposable =
-				this.DeclareLocal(
-					context,
-					disposableType,
-					"disposable"
-				);
-			return
-				this.EmitSequentialStatements(
-					context,
-					typeof( void ),
-					disposable,
-					this.EmitStoreVariableStatement( context, disposable, instantiateIDisposableExpression ),
-					this.EmitTryFinally(
-						context,
-						usingBodyEmitter( disposable ),
-						this.EmitConditionalExpression(
-							context,
-							this.EmitNotEqualsExpression(
-								context,
-								disposable,
-								this.MakeNullLiteral( context, disposableType )
-							),
-							this.EmitInvokeMethodExpression(
-								context,
-								disposable,
-								disposableType.GetMethod( "Dispose", ReflectionAbstractions.EmptyTypes )
-							),
-							null
-						)
-					)
-				);
-		}
-
-		/// <summary>
 		/// 	Emits the for-each loop.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
@@ -748,28 +707,47 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="context">The generation context.</param>
 		/// <param name="name">The name of the private method.</param>
 		/// <param name="returnType">The type of return value.</param>
-		/// <param name="body">The body of the private method.</param>
+		/// <param name="bodyFactory">The delegate to the factory which returns body of the private method.</param>
 		/// <param name="parameters">The parameters of the private method.</param>
 		/// <returns>
 		///		The generated construct which represents delegate creation instruction to call the private method.
 		///		Note that returned value remains in context.
 		/// </returns>
-		private TConstruct ExtractPrivateMethod( TContext context, string name, TypeDefinition returnType, TConstruct body, params TConstruct[] parameters )
+		private TConstruct ExtractPrivateMethod( TContext context, string name, TypeDefinition returnType, Func<TConstruct> bodyFactory, params TConstruct[] parameters )
 		{
-			context.BeginPrivateMethod(
-				name,
-				false,
-				returnType,
-				parameters
-			);
+			MethodDefinition method;
+			if ( context.IsDeclaredMethod( name ) )
+			{
+				method = context.GetDeclaredMethod( name );
+			}
+			else
+			{
+				context.BeginPrivateMethod(
+					name,
+					false,
+					returnType,
+					parameters
+					);
 
-			var method = context.EndPrivateMethod( name, body );
+				method = context.EndPrivateMethod( name, bodyFactory() );
+			}
 
-			return this.EmitNewPrivateMethodDelegateExpression( context, method );
+			return this.EmitGetPrivateMethodDelegateExpression( context, method );
 		}
 
+		protected virtual TConstruct EmitGetPrivateMethodDelegateExpression( TContext context, MethodDefinition method )
+		{
+			return
+				this.EmitGetFieldExpression(
+					context,
+					this.EmitThisReferenceExpression( context ),
+					context.GetCachedPrivateMethodDelegate( method, SerializerBuilderHelper.GetDelegateTypeDefinition( method.ReturnType, method.ParameterTypes ) )
+				);
+		}
+
+
 		/// <summary>
-		///		Emits delegate for specified named private method.
+		///		Emits delegate instantiation for specified named private instance or static method.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="method">The information of the private method.</param>
@@ -780,6 +758,32 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct EmitNewPrivateMethodDelegateExpression( TContext context, MethodDefinition method );
 
 		#endregion -- Private Method --
+
+		#region -- Static Delegate --
+
+		/// <summary>
+		///		Emits getting cached delegate for specified named static method.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="method">The information of the static method.</param>
+		/// <returns>
+		///		The generated construct which represents delegate creation instruction to call the specified method.
+		///		Note that returned value remains in context.
+		/// </returns>
+		protected virtual TConstruct EmitGetStaticDelegateExpression( TContext context, MethodDefinition method )
+		{
+			return 
+				this.EmitGetFieldExpression(
+					context,
+					this.EmitThisReferenceExpression( context ),
+					context.GetCachedStaticMethodDelegate(
+						method,
+						SerializerBuilderHelper.GetDelegateTypeDefinition( method.ReturnType, method.ParameterTypes )
+					)
+				);
+		}
+
+		#endregion -- Static Delegate --
 
 		#region -- Get Helpers --
 
@@ -1219,6 +1223,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="item">The item to be packed.</param>
 		/// <param name="memberInfo">The metadata of packing member. <c>null</c> for non-object member (collection or tuple items).</param>
 		/// <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
+		/// <param name="isAsync"><c>true</c> for async.</param>
 		/// <returns>The generated code construct.</returns>
 		private IEnumerable<TConstruct> EmitPackItemStatements(
 			TContext context,
@@ -1227,7 +1232,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 			NilImplication nilImplication,
 			string memberName, TConstruct item,
 			SerializingMember? memberInfo,
-			PolymorphismSchema itemsSchema
+			PolymorphismSchema itemsSchema,
+			bool isAsync
 		)
 		{
 			var nilImplicationConstruct =
@@ -1243,7 +1249,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			/*
 			 * this._serializerN.PackTo(packer, item);
 			 */
-			yield return this.EmitSerializeItemExpressionCore( context, packer, itemType, item, memberInfo, itemsSchema );
+			yield return this.EmitSerializeItemExpressionCore( context, packer, itemType, item, memberInfo, itemsSchema, isAsync );
 		}
 
 		/// <summary>
@@ -1255,380 +1261,187 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="item">The item to be packed.</param>
 		/// <param name="memberInfo">The metadata of packing member. <c>null</c> for non-object member (collection or tuple items).</param>
 		/// <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
+		/// <param name="isAsync"><c>true</c> for async.</param>
 		/// <returns>The generated code construct.</returns>
-		private TConstruct EmitSerializeItemExpressionCore( TContext context, TConstruct packer, Type itemType, TConstruct item, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
+		private TConstruct EmitSerializeItemExpressionCore(
+			TContext context,
+			TConstruct packer,
+			Type itemType,
+			TConstruct item,
+			SerializingMember? memberInfo,
+			PolymorphismSchema itemsSchema,
+			bool isAsync
+		)
 		{
-			return
-				this.EmitInvokeVoidMethod(
-					context,
-					this.EmitGetSerializerExpression( context, itemType, memberInfo, itemsSchema ),
-					typeof( MessagePackSerializer<> )
-						.MakeGenericType( itemType )
-						.GetMethods()
-						.Single( m =>
-							m.Name == "PackTo"
-							&& !m.IsStatic
-							&& m.IsPublic
-						),
-					packer,
-					item
+			var methodName = isAsync ? "PackToAsync" : "PackTo";
+			var arguments =
+#if FEATURE_TAP
+				isAsync ? new [] { packer, item, this.ReferCancellationToken( context, 3 ) } :
+#endif // FEATURE_TAP
+				new [] { packer, item };
+			var serializerType = typeof( MessagePackSerializer<> ).MakeGenericType( itemType );
+			var getSerializer = this.EmitGetSerializerExpression( context, itemType, memberInfo, itemsSchema );
+			var method =
+				serializerType
+				.GetMethods()
+				.Single( m =>
+					m.Name == methodName
+					&& m.DeclaringType == serializerType
+					&& !m.IsStatic
+					&& m.IsPublic
+					&& m.GetParameters().Length == arguments.Length
 				);
+			return
+				isAsync
+					? this.EmitRetrunStatement( context, this.EmitInvokeMethodExpression( context, getSerializer, method, arguments ) )
+					: this.EmitInvokeVoidMethod( context, getSerializer, method, arguments );
 		}
 
 		#endregion -- Pack Constructs --
 
 		#region -- Unpack Constructs --
 
-		/// <summary>
-		///		Emits the unpack item value expression.
-		/// </summary>
-		/// <param name="context">The context.</param>
-		/// <param name="itemType">Type of the item.</param>
-		/// <param name="nilImplication">The nil implication.</param>
-		/// <param name="unpacker">The reference to the unpacker.</param>
-		/// <param name="indexOfItem">Index of the item.</param>
-		/// <param name="memberName">Name of the member.</param>
-		/// <param name="memberInfo">The metadata of unpacking member.</param>
-		/// <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
-		/// <param name="storeValueStatementEmitter">
-		///		The delegate which generates statement for storing unpacked value.
-		///		1st parameter is unpacked value, and return value is generated statement.
-		/// </param>
-		/// <returns>The sequential statement.</returns>
-		protected TConstruct EmitUnpackItemValueExpression(
+		private TConstruct EmitUnpackItemValueStatement(
 			TContext context,
-			Type itemType,
+			Type memberType,
+			TConstruct memberName,
 			NilImplication nilImplication,
-			TConstruct unpacker,
-			TConstruct indexOfItem,
-			TConstruct memberName,
 			SerializingMember? memberInfo,
 			PolymorphismSchema itemsSchema,
-			Func<TConstruct, TConstruct> storeValueStatementEmitter
-		)
-		{
-			return
-				this.EmitSequentialStatements(
-					context,
-					typeof( void ),
-					this.EmitUnpackItemValueExpressionCore(
-						context, itemType, nilImplication, unpacker, indexOfItem, memberName, memberInfo, itemsSchema, storeValueStatementEmitter
-					)
-				);
-		}
-
-		/// <summary>
-		///		Emits the unpack item value expression.
-		/// </summary>
-		/// <param name="context">The context.</param>
-		/// <param name="itemType">Type of the item.</param>
-		/// <param name="nilImplication">The nil implication.</param>
-		/// <param name="unpacker">The reference to the unpacker.</param>
-		/// <param name="indexOfItem">Index of the item.</param>
-		/// <param name="memberName">Name of the member.</param>
-		/// <param name="memberInfo">The metadata of unpacking member.</param>
-		/// <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
-		/// <param name="storeValueStatementEmitter">
-		///		The delegate which generates statement for storing unpacked value.
-		///		1st parameter is unpacked value, and return value is generated statement.
-		/// </param>
-		/// <returns>The elements of sequential statement.</returns>
-		private IEnumerable<TConstruct> EmitUnpackItemValueExpressionCore(
-			TContext context,
-			Type itemType,
-			NilImplication nilImplication,
 			TConstruct unpacker,
+			TConstruct unpackingContext,
 			TConstruct indexOfItem,
-			TConstruct memberName,
-			SerializingMember? memberInfo,
-			PolymorphismSchema itemsSchema,
-			Func<TConstruct, TConstruct> storeValueStatementEmitter
+			TConstruct countOfItem,
+			TConstruct setterDelegate,
+			bool forMap,
+			bool isAsync
 		)
 		{
-			/*
-			 *	T? nullable;
-			 *	if ( unpacked < itemsCount )
-			 *	{
-			 *		if ( !unpacker.Read() )
-			 *		{
-			 *			throw SerializationExceptiuons.MissingItem(...);
-			 *		}
-			 *	
-			 *		if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
-			 * 		{
-			 * 			nullable = serializer.UnpackFrom( unpacker );
-			 * 		}
-			 * 		else
-			 * 		{
-			 * 			using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
-			 * 			{
-			 * 				nullable = serializer.UnpackFrom( subtreeUnpacker );
-			 * 			}
-			 * 		}
-			 * 	}
-			 *	else
-			 *	{
-			 *		nullable = null;
-			 *	}
-			 * 
-			 *  if ( nullable == null )
-			 *  {
-			 *  #if MEMBER_DEFAULT
-			 *      // nop
-			 *  #elif PROHIBIT
-			 *		throw SerializationExceptiuons.NullIsProhibited(...);
-			 *  #elif VALUE_TYPE
-			 *		throw SerializationExceptiuons.ValueTypeCannotbeNull(...);
-			 *  #else
-			 *		SET_VALUE(item);
-			 *  #endif
-			 *  }
-			 *  else
-			 *  {
-			 *		SET_VALUE(item);
-			 *  }
-			 *  
-			 *	#if MEMBER_UNPACKING
-			 *	unpacked++;
-			 *	#endif
-			 *  
-			 *  context unpacker;
-			 */
-
-			// is nilable natually?
-			var isNativelyNullable =
-				itemType == typeof( MessagePackObject )
-				|| !itemType.GetIsValueType()
-				|| Nullable.GetUnderlyingType( itemType ) != null;
-
-			// type of temp var for nil implication
-			var nullableType = itemType;
-			if ( !isNativelyNullable )
+			MethodDefinition helperMethod;
+			IEnumerable<TConstruct> helperArguments;
+			if ( memberType == typeof( MessagePackObject ) )
 			{
-				nullableType = typeof( Nullable<> ).MakeGenericType( itemType );
-			}
-
-			// temp var for nil implication
-			var nullable =
-				this.DeclareLocal(
-					context,
-					nullableType,
-					"nullable"
-				);
-
-			// try direct unpack
-			var directRead =
-				Metadata._UnpackHelpers.GetDirectUnpackMethod( nullableType );
-
-			var isNotInCollectionCondition =
-				new[]
-				{
-					this.EmitNotExpression(
-						context,
-						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.IsArrayHeader )
-					),
-					this.EmitNotExpression(
-						context,
-						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.IsMapHeader )
-					)
-				};
-
-			// Unpacked item after nil implication.
-			var unpackedItem =
-				( Nullable.GetUnderlyingType( nullable.ContextType.ResolveRuntimeType() ) != null
-				  && Nullable.GetUnderlyingType( itemType ) == null )
-					? this.EmitGetPropertyExpression( context, nullable, nullable.ContextType.ResolveRuntimeType().GetProperty( "Value" ) )
-					: nullable;
-			var store =
-				storeValueStatementEmitter( unpackedItem );
-
-			// Nil Implication
-			TConstruct expressionWhenNil =
-				this._nilImplicationHandler.OnUnpacked(
-					new SerializerBuilderOnUnpacedParameter( this, context, itemType, memberName, store ),
-					nilImplication
-				);
-
-			// actually declare local now.
-			yield return nullable;
-
-			yield return
-				this.EmitSequentialStatements(
-					context,
-					typeof( void ),
-					this.EmitReadOrUnpack(
-						context,
-						itemType,
-						unpacker,
-						indexOfItem,
-						memberName,
-						memberInfo,
-						itemsSchema,
-						directRead,
-						nullable,
-						isNotInCollectionCondition,
-						nullableType
-					)
-				);
-
-			// compose nil implication and setting real var.
-			yield return
-				this.EmitConditionalExpression(
-					context,
-					( !isNativelyNullable || Nullable.GetUnderlyingType( itemType ) != null )
-						? this.EmitGetPropertyExpression( context, nullable, nullableType.GetProperty( "HasValue" ) )
-						: itemType == typeof( MessagePackObject )
-						? this.EmitNotExpression(
-							context,
-							this.EmitGetPropertyExpression( context, nullable, Metadata._MessagePackObject.IsNil )
-						) : this.EmitNotEqualsExpression( context, nullable, this.MakeNullLiteral( context, itemType ) ),
-					store,
-					expressionWhenNil
-				);
-		}
-
-		private IEnumerable<TConstruct> EmitReadOrUnpack(
-			TContext context,
-			Type itemType,
-			TConstruct unpacker,
-			TConstruct indexOfItem,
-			TConstruct memberName,
-			SerializingMember? memberInfo,
-			PolymorphismSchema itemsSchema,
-			MethodInfo directRead,
-			TConstruct nullable,
-			TConstruct[] isNotInCollectionCondition,
-			Type nullableType
-		)
-		{
-			if ( directRead != null )
-			{
-				yield return
-					this.EmitStoreVariableStatement(
-						context,
-						nullable,
-						this.EmitInvokeMethodExpression(
-							context,
-							null,
-							directRead,
-							unpacker,
-							this.EmitTypeOfExpression( context, typeof( TObject ) ),
-							memberName
+				helperMethod =
+					new MethodDefinition(
+						AdjustName( "UnpackMessagePackObjectValueFrom" + ( forMap ? "Map" : "Array" ), isAsync ),
+						new[] { unpackingContext.ContextType }, // generic type argument
+						typeof( UnpackHelpers ), // declaring type
+						unpackingContext.ContextType, // return type
+						// parameter types
+						typeof( Unpacker ),
+						unpackingContext.ContextType,
+						typeof( int ),
+						typeof( int ),
+						typeof( Type ),
+						typeof( string ),
+						typeof( NilImplication ),
+						TypeDefinition.GenericReferenceType(
+							typeof( Action<,> ),
+							unpackingContext.ContextType,
+							typeof( MessagePackObject )
 						)
 					);
-				yield break;
-			}
-
-			yield return
-				this.EmitConditionalExpression(
-					context,
-					this.EmitNotExpression(
-						context,
-						this.EmitInvokeMethodExpression(
-							context,
-							context.Unpacker,
-							Metadata._Unpacker.Read
-						)
-					),
-					this.EmitInvokeMethodExpression(
-						context,
-						null,
-						SerializationExceptions.ThrowMissingItemMethod,
-						indexOfItem,
-						memberName,
-						context.Unpacker
-					),
-					null
-				);
-
-			if ( itemType == typeof( MessagePackObject ) )
-			{
-				yield return
-					this.EmitAndConditionalExpression(
-						context,
-						isNotInCollectionCondition,
-						this.EmitStoreVariableStatement(
-							context,
-							nullable,
-							this.EmitGetPropertyExpression(
-								context,
-								unpacker,
-								Metadata._Unpacker.LastReadData
-							)
-						),
-						this.EmitStoreVariableStatement(
-							context,
-							nullable,
-							this.EmitInvokeMethodExpression(
-								context,
-								unpacker,
-								Metadata._Unpacker.UnpackSubtreeData
-							)
-						)
-					);
+				// Unpacker, TContext, int, int, Type, string, NilImplication, Action<TContext, MPO>[, CancellationToken]
+				helperArguments =
+					new [] { unpacker, unpackingContext, countOfItem, indexOfItem, memberName, this.MakeEnumLiteral( context, typeof( NilImplication ), nilImplication ), setterDelegate }
+#if FEATURE_TAP
+					.Concat( isAsync ? new [] { this.ReferCancellationToken( context, 5 ) } : NoConstructs )
+#endif // FEATURE_TAP
+					;
 			}
 			else
 			{
-				yield return
-					this.EmitAndConditionalExpression(
-						context,
-						isNotInCollectionCondition,
-						this.EmitDeserializeItemExpression( context, unpacker, nullableType, nullable, memberInfo, itemsSchema ),
-						this.EmitUsingStatement(
-							context,
-							typeof( Unpacker ),
-							this.EmitInvokeMethodExpression(
-								context,
-								unpacker,
-								Metadata._Unpacker.ReadSubtree
-							),
-							subtreeUnpacker =>
-								this.EmitDeserializeItemExpression( context, subtreeUnpacker, nullableType, nullable, memberInfo, itemsSchema )
+				var directReadMethod =
+					Metadata._UnpackHelpers.GetDirectUnpackMethod( memberType, isAsync );
+				var directReadDelegateType =
+#if FEATURE_TAP
+					isAsync ? typeof( Func<,,,,> ).MakeGenericType( typeof( Unpacker ), typeof( Type ), typeof( String ), typeof( CancellationToken ), typeof( Task<> ).MakeGenericType( memberType ) ) :
+#endif // FEATURE_TAP
+					typeof( Func<,,,> ).MakeGenericType( typeof( Unpacker ), typeof( Type ), typeof( String ), memberType );
+
+				var helperMethodParameterTypes =
+					new[]
+					{
+						typeof( Unpacker ),
+						unpackingContext.ContextType,
+						typeof( MessagePackSerializer<> ).MakeGenericType( memberType ),
+						typeof( int ),
+						typeof( int ),
+						typeof( Type ),
+						typeof( string ),
+						typeof( NilImplication )
+					};
+
+				var typeKind =
+					!memberType.GetIsValueType()
+						? "Reference"
+						: Nullable.GetUnderlyingType( memberType ) == null
+							? "Value"
+							: "Nullable";
+				helperMethod =
+					new MethodDefinition(
+						"Unpack" + typeKind + "TypeValue"
+#if FEATURE_TAP
+						+ ( isAsync ? "Async" : String.Empty )
+#endif // FEATURE_TAP
+						, new[] { unpackingContext.ContextType, Nullable.GetUnderlyingType( memberType ) ?? memberType }, // generic type argument
+						typeof( UnpackHelpers ), // declaring type
+						unpackingContext.ContextType, // return type
+						// parameter types
+						helperMethodParameterTypes.Concat(
+							new[]
+							{
+#if FEATURE_TAP
+								isAsync
+									? TypeDefinition.GenericReferenceType(
+										typeof( Func<,,,,> ),
+										typeof( Unpacker ),
+										typeof( Type ),
+										typeof( string ),
+										typeof( CancellationToken ),
+										typeof( Task<> ).MakeGenericType( memberType )
+									)
+									:
+#endif // FEATURE_TAP
+									TypeDefinition.GenericReferenceType(
+										typeof( Func<,,,> ),
+										typeof( Unpacker ),
+										typeof( Type ),
+										typeof( string ),
+										memberType
+									),
+								TypeDefinition.GenericReferenceType(
+									typeof( Action<,> ),
+									unpackingContext.ContextType,
+									memberType
+								)
+							}
 						)
+#if FEATURE_TAP
+						.Concat( isAsync ? new TypeDefinition[] { typeof( CancellationToken ) } : Enumerable.Empty<TypeDefinition>() )
+#endif // FEATURE_TAP
+						.ToArray()
 					);
+
+				// Unpacker, TContext, MPS<T> int, int, Type, string, NilImplication, Func<Unpacker,Type,string,[CancellationToken, Task of]TValue>, Action<TContext, MPO>[, CancellationToken]
+				helperArguments =
+					new [] { unpacker, unpackingContext, this.EmitGetSerializerExpression( context, memberType, memberInfo, itemsSchema ), 
+						countOfItem, indexOfItem, this.EmitTypeOfExpression( context, memberType ), memberName, this.MakeEnumLiteral( context, typeof( NilImplication ), nilImplication ),
+						directReadMethod == null
+							? this.MakeNullLiteral( context, directReadDelegateType )
+							: this.EmitGetStaticDelegateExpression( context, directReadMethod ),
+						setterDelegate
+					}
+#if FEATURE_TAP
+					.Concat( isAsync ? new [] { this.ReferCancellationToken( context, 5 ) } : NoConstructs )
+#endif // FEATURE_TAP
+					;
 			}
-		}
 
-		/// <summary>
-		///		Emits the deserialize item expression.
-		/// </summary>
-		/// <param name="context">The generation context.</param>
-		/// <param name="unpacker">The unpacker expression.</param>
-		/// <param name="itemType">Type of the item to be deserialized.</param>
-		/// <param name="unpacked">The variable which stores unpacked item.</param>
-		/// <param name="memberInfo">The metadata of unpacking member.</param>
-		/// <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
-		/// <returns>The expression which returns deserialized item.</returns>
-		private TConstruct EmitDeserializeItemExpression(
-			TContext context, TConstruct unpacker, Type itemType, TConstruct unpacked, SerializingMember? memberInfo, PolymorphismSchema itemsSchema
-		)
-		{
 			return
-				this.EmitStoreVariableStatement(
-					context,
-					unpacked,
-					this.EmitDeserializeItemExpressionCore( context, unpacker, itemType, memberInfo, itemsSchema )
-				);
-		}
-
-		/// <summary>
-		///		Emits the deserialize item expression.
-		/// </summary>
-		/// <param name="context">The generation context.</param>
-		/// <param name="unpacker">The unpacker expression.</param>
-		/// <param name="itemType">Type of the item to be deserialized.</param>
-		/// <param name="memberInfo">The metadata of unpacking member.</param>
-		/// <param name="itemsSchema">The schema for collection items. <c>null</c> for non-collection items and non-schema items.</param>
-		/// <returns>The expression which returns deserialized item.</returns>
-		private TConstruct EmitDeserializeItemExpressionCore( TContext context, TConstruct unpacker, Type itemType, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
-		{
-			return
-				this.EmitInvokeMethodExpression(
-					context,
-					this.EmitGetSerializerExpression( context, itemType, memberInfo, itemsSchema ),
-					typeof( MessagePackSerializer<> ).MakeGenericType( itemType ).GetMethod( "UnpackFrom" ),
-					unpacker
-				);
+				isAsync
+					? this.EmitRetrunStatement( context, this.EmitInvokeMethodExpression( context, null, helperMethod, helperArguments ) )
+					: this.EmitInvokeVoidMethod( context, null, helperMethod, helperArguments.ToArray() );
 		}
 
 		/// <summary>
@@ -2466,6 +2279,36 @@ namespace MsgPack.Serialization.AbstractSerializers
 		}
 
 		#endregion -- Collection Helpers --
+
+		#region -- Async Helpers --
+
+		private static string AdjustName( string methodName, bool isAsync )
+		{
+			return isAsync ? ( methodName + "Async" ) : methodName;
+		}
+
+#if !FEATURE_TAP
+
+		private static void ThrowAsyncNotSupportedException()
+		{
+			throw new NotSupportedException( "Async operation is not supported in this platform." );
+		}
+
+#else
+		protected virtual bool WithAsync( TContext context )
+		{
+			return context.SerializationContext.SerializerOptions.WithAsync;
+		}
+
+		private TConstruct ReferCancellationToken( TContext context, int index )
+		{
+			return this.ReferArgument( context, typeof( CancellationToken ), "cancellationToken", index );
+		}
+
+#endif // !FEATURE_TAP
+
+		#endregion -- Async Helpers --
+
 
 		private sealed class UnpackingContextInfo
 		{

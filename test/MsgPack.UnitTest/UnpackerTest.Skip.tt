@@ -55,6 +55,13 @@ namespace MsgPack
 <#
 foreach( var isAsync in new [] { false, true } )
 {
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+
+<#
+	}
 #>
 		[Test]
 		public <#= AsyncTest( isAsync ) #>_Empty_Null()
@@ -442,7 +449,15 @@ foreach( var isAsync in new [] { false, true } )
 				}
 			}
 		}
+
 <#
+	if ( isAsync )
+	{
+#>
+#endif // FEATURE_TAP
+
+<#
+	}
 }
 #>
 	}

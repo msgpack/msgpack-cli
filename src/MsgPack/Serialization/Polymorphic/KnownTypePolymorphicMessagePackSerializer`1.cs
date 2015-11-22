@@ -26,7 +26,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.Serialization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.Reflection;
 
@@ -151,6 +154,15 @@ namespace MsgPack.Serialization.Polymorphic
 		{
 			return this.UnpackFromCore( unpacker );
 		}
+
+#if FEATURE_TAP
+		
+		async Task<object> IPolymorphicDeserializer.PolymorphicUnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			return await this.UnpackFromAsyncCore( unpacker, cancellationToken ).ConfigureAwait( false );
+		}
+
+#endif // FEATURE_TAP
 
 		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
 		{

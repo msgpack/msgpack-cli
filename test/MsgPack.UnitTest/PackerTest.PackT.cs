@@ -926,6 +926,9 @@ namespace MsgPack
 				);
 			}
 		}
+
+#if FEATURE_TAP
+
 		[Test]
 		public async Task TestPackTAsync_DoubleMinValue_AsValue()
 		{
@@ -1811,5 +1814,8 @@ namespace MsgPack
 				);
 			}
 		}
+
+#endif // FEATURE_TAP
+
 	}
 }

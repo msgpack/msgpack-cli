@@ -1076,6 +1076,8 @@ namespace MsgPack
 			}
 		}
 
+#if FEATURE_TAP
+
 		[Test]
 		public async Task TestSkipAsync_NilValue()
 		{
@@ -2110,5 +2112,8 @@ namespace MsgPack
 				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
 			}
 		}
+
+#endif // FEATURE_TAP
+
 	}
 }

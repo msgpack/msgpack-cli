@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 #if !UNITY
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
@@ -28,6 +27,11 @@ using Contract = MsgPack.MPContract;
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
 #endif // !UNITY
+using System.Linq;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -66,7 +70,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			if ( isUnpackFromRequired )
 			{
-				this.BuildCollectionUnpackFromCore( context, concreteType, schema );
+				this.BuildCollectionUnpackFromCore( context, concreteType, schema, false );
+#if FEATURE_TAP
+				if ( this.WithAsync( context ) )
+				{
+					this.BuildCollectionUnpackFromCore( context, concreteType, schema, true );
+				}
+#endif // FEATURE_TAP
 			}
 
 			this.BuildRestoreSchema( context, schema );
@@ -164,23 +174,29 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		#region -- UnpackFromCore --
 
-		private void BuildCollectionUnpackFromCore( TContext context, Type concreteType, PolymorphismSchema schema )
+		private void BuildCollectionUnpackFromCore( TContext context, Type concreteType, PolymorphismSchema schema, bool isAsync )
 		{
-			context.BeginMethodOverride( MethodName.UnpackFromCore );
+			var methodName =
+#if FEATURE_TAP
+				 isAsync ? MethodName.UnpackFromAsyncCore :
+#endif // FEATURE_TAP
+				 MethodName.UnpackFromCore;
+
+			context.BeginMethodOverride( methodName );
 
 			var instanceType = concreteType ?? typeof( TObject );
 
 			context.EndMethodOverride(
-				MethodName.UnpackFromCore,
+				methodName,
 				this.EmitSequentialStatements(
 					context,
-					instanceType,
-					this.EmitCollectionUnpackFromStatements( context, instanceType, schema )
+					typeof( TObject ),
+					this.EmitCollectionUnpackFromStatements( context, instanceType, schema, isAsync )
 				)
 			);
 		}
 
-		private IEnumerable<TConstruct> EmitCollectionUnpackFromStatements( TContext context, Type instanceType, PolymorphismSchema schema )
+		private IEnumerable<TConstruct> EmitCollectionUnpackFromStatements( TContext context, Type instanceType, PolymorphismSchema schema, bool isAsync )
 		{
 			// Header check
 			yield return
@@ -222,49 +238,83 @@ namespace MsgPack.Serialization.AbstractSerializers
 				bulk =
 					this.MakeNullLiteral(
 						context,
-						TypeDefinition.GenericReferenceType( typeof( Action<,,> ), typeof( Unpacker ), collection.ContextType, typeof( int ) )
+#if FEATURE_TAP
+						isAsync ? TypeDefinition.GenericReferenceType( typeof( Func<,,,,> ), typeof( Unpacker ), typeof( TObject ), typeof( int ), typeof( CancellationToken ), typeof( Task ) ) :
+#endif // FEATURE_TAP
+						TypeDefinition.GenericReferenceType( typeof( Action<,,> ), typeof( Unpacker ), typeof( TObject ), typeof( int ) )
 					);
 
-				var indexOfItem = context.IndexOfItem;
+				var indexOfItemParameter = context.IndexOfItem;
+				var itemsCountParameter = context.ItemsCount;
+				var appendToTargetParameter = context.CollectionToBeAdded;
+				var unpackedItemParameter = context.DefineUnpackedItemParameterInSetValueMethods( CollectionTraitsOfThis.ElementType );
+				var unpackItemValueArguments = 
+					new[] { context.Unpacker, context.UnpackToTarget, indexOfItemParameter, itemsCountParameter }
+#if FEATURE_TAP
+					.Concat( isAsync ? new[] { this.ReferCancellationToken( context, 2 ) } : NoConstructs ).ToArray()
+#endif // FEATURE_TAP
+					;
+
 				iterative =
 					this.ExtractPrivateMethod(
 						context,
-						MethodName.UnpackCollectionItem,
+						AdjustName( MethodName.UnpackCollectionItem, isAsync ),
+#if FEATURE_TAP
+						isAsync ? typeof( Task ) :
+#endif // FEATURE_TAP
 						typeof( void ),
-						this.EmitUnpackItemValueExpression(
+						() => this.EmitUnpackItemValueStatement(	
 							context,
 							traitsOfTheCollection.ElementType,
+							this.EmitInvariantStringFormat( context, "item{0}", indexOfItemParameter ),
 							context.CollectionItemNilImplication,
-							context.Unpacker,
-							indexOfItem,
-							this.EmitInvariantStringFormat( context, "item{0}", indexOfItem ),
 							null,
 							( schema ?? PolymorphismSchema.Default ).ItemSchema,
-							unpackedItem =>
-								this.EmitAppendCollectionItem(
+							context.Unpacker,
+							context.UnpackToTarget,
+							indexOfItemParameter,
+							itemsCountParameter,
+							this.ExtractPrivateMethod(
+								context,
+								MethodName.AppendUnpackedItem,
+								typeof( void ),
+								() => this.EmitAppendCollectionItem(
 									context,
 									null,
 									traitsOfTheCollection,
-									context.UnpackToTarget,
-									unpackedItem
-								)
+									appendToTargetParameter,
+									unpackedItemParameter
+								),
+								appendToTargetParameter,
+								unpackedItemParameter
+							),
+							true, // forMap, this method should not be called IDictionary[<,>]
+							isAsync
 						),
-						context.Unpacker,
-						context.UnpackToTarget,
-						indexOfItem
+						unpackItemValueArguments
 					);
 			}
 			else
 			{
 				// Invoke UnpackToCore because AddItem override/inheritance is available.
-				bulk = this.EmitGetActionsExpression( context, ActionType.UnpackTo );
+				bulk = this.EmitGetActionsExpression( context, ActionType.UnpackTo, isAsync );
 				context.IsUnpackToUsed = true;
 				iterative =
 					this.MakeNullLiteral(
 						context,
-						TypeDefinition.GenericReferenceType( typeof( Action<,,> ), typeof( Unpacker ), collection.ContextType, typeof( int ) )
+#if FEATURE_TAP
+						isAsync ? TypeDefinition.GenericReferenceType( typeof( Func<,,,,,> ), typeof( Unpacker ), typeof( TObject ), typeof( int ), typeof( int ), typeof( CancellationToken ), typeof( Task ) ) :
+#endif // FEATURE_TAP
+						TypeDefinition.GenericReferenceType( typeof( Action<,,,> ), typeof( Unpacker ), typeof( TObject ), typeof( int ), typeof( int ) )
 					);
 			}
+
+			var arguments =
+				new[] { context.Unpacker, itemsCount, collection, bulk, iterative }
+#if FEATURE_TAP
+				.Concat( isAsync ? new[] { this.ReferCancellationToken( context, 2 ) } : NoConstructs ).ToArray()
+#endif // FEATURE_TAP
+				;
 
 			// Call UnpackHelpers
 			yield return
@@ -273,12 +323,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitInvokeMethodExpression(
 						context,
 						null,
-						Metadata._UnpackHelpers.UnpackCollection_1Method.MakeGenericMethod( instanceType ),
-						context.Unpacker,
-						itemsCount,
-						collection,
-						bulk,
-						iterative
+#if FEATURE_TAP
+						isAsync ? Metadata._UnpackHelpers.UnpackCollectionAsync_1Method.MakeGenericMethod( typeof( TObject ) ) :
+#endif // FEATURE_TAP
+						Metadata._UnpackHelpers.UnpackCollection_1Method.MakeGenericMethod( typeof( TObject ) ),
+						arguments
 					)
 				);
 		}

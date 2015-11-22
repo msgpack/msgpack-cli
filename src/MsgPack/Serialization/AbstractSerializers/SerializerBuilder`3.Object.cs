@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -28,6 +28,10 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 
 namespace MsgPack.Serialization.AbstractSerializers
@@ -45,8 +49,24 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			else
 			{
-				this.BuildObjectPackTo( context, targetInfo );
+				this.BuildObjectPackTo( context, targetInfo, false );
 			}
+
+#if FEATURE_TAP
+
+			if ( this.WithAsync( context ) )
+			{
+				if ( typeof( IAsyncPackable ).IsAssignableFrom( typeof( TObject ) ) )
+				{
+					this.BuildIAsyncPackablePackTo( context );
+				}
+				else
+				{
+					this.BuildObjectPackTo( context, targetInfo, true );
+				}
+			}
+
+#endif // FEATURE_TAP
 
 			if ( typeof( IUnpackable ).IsAssignableFrom( typeof( TObject ) ) )
 			{
@@ -54,8 +74,24 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			else
 			{
-				this.BuildObjectUnpackFrom( context, targetInfo );
+				this.BuildObjectUnpackFrom( context, targetInfo, false );
 			}
+
+#if FEATURE_TAP
+
+			if ( this.WithAsync( context ) )
+			{
+				if ( typeof( IAsyncUnpackable ).IsAssignableFrom( typeof( TObject ) ) )
+				{
+					this.BuildIAsyncUnpackableUnpackFrom( context );
+				}
+				else
+				{
+					this.BuildObjectUnpackFrom( context, targetInfo, true );
+				}
+			}
+
+#endif // FEATURE_TAP
 		}
 
 		#region -- IPackable --
@@ -65,65 +101,142 @@ namespace MsgPack.Serialization.AbstractSerializers
 			context.BeginMethodOverride( MethodName.PackToCore );
 			context.EndMethodOverride(
 				MethodName.PackToCore,
-				this.EmitInvokeVoidMethod(
-					context,
-					context.PackToTarget,
-					typeof( TObject ).GetInterfaceMap( typeof( IPackable ) ).TargetMethods.Single(),
-					context.Packer,
-					this.MakeNullLiteral( context, typeof( PackingOptions ) )
-				)
+				this.BuildIPackablePackToCore( context, typeof( IPackable ) )
 			);
 		}
-
 
 		#endregion -- IPackable --
 
-		#region -- PackTo --
-		
-		private void BuildObjectPackTo( TContext context, SerializationTarget targetInfo )
+#if FEATURE_TAP
+
+		#region -- IAsyncPackable --
+
+		private void BuildIAsyncPackablePackTo( TContext context )
 		{
-			context.BeginMethodOverride( MethodName.PackToCore );
+			context.BeginMethodOverride( MethodName.PackToAsyncCore );
 			context.EndMethodOverride(
-				MethodName.PackToCore,
+				MethodName.PackToAsyncCore,
+				this.BuildIPackablePackToCore( context, typeof( IAsyncPackable ) )
+			);
+		}
+
+		#endregion -- IAsyncPackable --
+
+#endif // FEATURE_TAP
+
+		private TConstruct BuildIPackablePackToCore( TContext context, Type @interface )
+		{
+			var packTo = typeof( TObject ).GetInterfaceMap( @interface ).TargetMethods.Single();
+
+			if ( packTo.ReturnType == typeof( void ) )
+			{
+				return
+					this.EmitInvokeVoidMethod(
+						context,
+						context.PackToTarget,
+						packTo,
+						context.Packer,
+						this.MakeNullLiteral( context, typeof( PackingOptions ) )
+					);
+			}
+			else
+			{
+#if FEATURE_TAP
+				Contract.Assert( context.SerializationContext.SerializerOptions.WithAsync );
+				return
+					this.EmitInvokeVoidMethod(
+						context,
+						context.PackToTarget,
+						packTo,
+						context.Packer,
+						this.MakeNullLiteral( context, typeof( PackingOptions ) ),
+						this.ReferCancellationToken( context, 3 )
+					);
+#else
+				ThrowAsyncNotSupportedException();
+				return default ( TConstruct ); // never reaches
+#endif // FEATURE_TAP
+			}
+		}
+
+		#region -- PackTo --
+
+		private void BuildObjectPackTo( TContext context, SerializationTarget targetInfo, bool isAsync )
+		{
+			var methodName = 
+#if FEATURE_TAP
+				isAsync ? MethodName.PackToAsyncCore : 
+#endif // FEATURE_TAP
+				MethodName.PackToCore;
+			context.BeginMethodOverride( methodName );
+			context.EndMethodOverride(
+				methodName,
 				this.EmitSequentialStatements(
 					context,
 					typeof( void ),
-					this.BuildObjectPackToCore( context, targetInfo.Members, context.SerializationContext.SerializationMethod )
+					this.BuildObjectPackToCore( context, targetInfo.Members, isAsync )
 				)
 			);
 		}
 
-		private IEnumerable<TConstruct> BuildObjectPackToCore( TContext context, IList<SerializingMember> entries, SerializationMethod method )
+		private IEnumerable<TConstruct> BuildObjectPackToCore( TContext context, IList<SerializingMember> entries, bool isAsync )
 		{
-			for ( int i = 0; i < entries.Count; i++ )
-			{
-				var count = i;
-				if ( entries[ i ].Member == null )
-				{
-					if ( method == SerializationMethod.Map )
-					{
-						// skip
-						continue;
-					}
+			var parameters =
+#if FEATURE_TAP
+				isAsync ? new[] { context.Packer, context.PackToTarget, this.ReferCancellationToken( context, 3 ) } :
+#endif // FEATURE_TAP
+				new[] { context.Packer, context.PackToTarget };
+			var argumentsForNull =
+#if FEATURE_TAP
+				isAsync ? new[] { this.ReferCancellationToken( context, 3 ) } :
+#endif // FEATURE_TAP
+				NoConstructs;
+			var methodForNull =
+#if FEATURE_TAP
+				isAsync ? Metadata._Packer.PackNullAsync :
+#endif // FEATURE_TAP
+				Metadata._Packer.PackNull;
 
-					// missing member, always nil
-					this.EmitPrivateMethod(
-						context,
-						MethodName.PackMemberPlaceHolder,
-						typeof( void ),
-						() => this.EmitInvokeVoidMethod( context, context.Packer, Metadata._Packer.PackNull ),
-						context.Packer,
-						context.PackToTarget
-					);
-				}
-				else
+			TConstruct forArray = null;
+			TConstruct forMap = null;
+
+			foreach ( var method in new [] { SerializationMethod.Array, SerializationMethod.Map } )
+			{
+				for ( int i = 0; i < entries.Count; i++ )
 				{
-					this.EmitPrivateMethod(
-						context,
-						GetPackValueMethodName( entries[ i ] ),
-						typeof( void ),
-						() =>
-							this.EmitSequentialStatements(
+					var count = i;
+					if ( entries[ i ].Member == null )
+					{
+						if ( method == SerializationMethod.Map )
+						{
+							// skip
+							continue;
+						}
+
+						// missing member, always nil
+						this.ExtractPrivateMethod(
+							context,
+							AdjustName( MethodName.PackMemberPlaceHolder, isAsync ),
+#if FEATURE_TAP
+							isAsync ? typeof( Task ) :
+#endif // FEATURE_TAP
+							typeof( void ),
+							() => isAsync
+								? this.EmitRetrunStatement( context, this.EmitInvokeMethodExpression( context, context.Packer, methodForNull, argumentsForNull ) )
+								: this.EmitInvokeVoidMethod( context, context.Packer, methodForNull, argumentsForNull ),
+							parameters
+						);
+					}
+					else
+					{
+						this.ExtractPrivateMethod(
+							context,
+							GetPackValueMethodName( entries[ i ], isAsync ),
+#if FEATURE_TAP
+							isAsync ? typeof( Task ) :
+#endif // FEATURE_TAP
+							typeof( void ),
+							() => this.EmitSequentialStatements(
 								context,
 								typeof( void ),
 								this.EmitPackItemStatements(
@@ -134,40 +247,84 @@ namespace MsgPack.Serialization.AbstractSerializers
 									entries[ count ].Member.ToString(),
 									this.EmitGetMemberValueExpression( context, context.PackToTarget, entries[ count ].Member ),
 									entries[ count ],
-									null
+									null,
+									isAsync
 								)
 							),
-						context.Packer, 
-						context.PackToTarget
-					);
+							parameters
+						);
+					}
 				}
-			}
 
-			var packHelperArguments =
-				new[]
-				{
-					context.Packer,
-					context.PackToTarget,
-					this.EmitGetActionsExpression(
-						context,
-						method == SerializationMethod.Array
-						? ActionType.PackToArray
-						: ActionType.PackToMap
-					)
-				};
+				var packHelperArguments =
+					new[]
+					{
+						context.Packer,
+						context.PackToTarget,
+						this.EmitGetActionsExpression(
+							context,
+							method == SerializationMethod.Array
+								? ActionType.PackToArray
+								: ActionType.PackToMap,
+							isAsync
+						)
+					}
+#if FEATURE_TAP
+					.Concat( isAsync ? new[] { this.ReferCancellationToken( context, 3 ) } : NoConstructs ).ToArray()
+#endif // FEATURE_TAP
+					;
 
-			yield return
-				this.EmitInvokeMethodExpression(
+				var methodInvocation =
+					this.EmitInvokeMethodExpression(
 					context,
 					null,
 					new MethodDefinition(
-						"PackTo" + method,
-						new [] { TypeDefinition.Object( typeof( TObject ) ),},
+						AdjustName( "PackTo" + method, isAsync ),
+						new[] { TypeDefinition.Object( typeof( TObject ) ), },
 						typeof( PackHelpers ),
+#if FEATURE_TAP
+						isAsync ? typeof( Task ) :
+#endif // FEATURE_TAP
 						typeof( void ),
 						packHelperArguments.Select( a => a.ContextType ).ToArray()
 					),
 					packHelperArguments
+				);
+
+				if ( isAsync )
+				{
+					// Wrap with return to return Task.
+					methodInvocation = this.EmitRetrunStatement( context, methodInvocation );
+				}
+
+				if ( method == SerializationMethod.Array )
+				{
+					forArray = methodInvocation;
+				}
+				else
+				{
+					forMap = methodInvocation;
+				}
+			} // foreach (method)
+
+			yield return
+				this.EmitConditionalExpression(
+					context,
+					this.EmitEqualsExpression(
+						context,
+						this.EmitGetPropertyExpression(
+							context,
+							this.EmitGetPropertyExpression(
+								context,
+								this.EmitThisReferenceExpression( context ),
+								Metadata._MessagePackSerializer.OwnerContext
+							),
+							Metadata._SerializationContext.SerializationMethod
+						),
+						this.MakeEnumLiteral( context, typeof( SerializationMethod ), SerializationMethod.Array )
+					),
+					forArray,
+					forMap
 				);
 		}
 
@@ -175,9 +332,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		#region -- Pack Operation Initialization --
 
-		protected internal TConstruct EmitPackOperationListInitialization( TContext context, SerializationTarget targetInfo )
+		protected internal TConstruct EmitPackOperationListInitialization( TContext context, SerializationTarget targetInfo, bool isAsync )
 		{
-			var actionType = this.GetPackOperationType( context );
+			var actionType = this.GetPackOperationType( context, isAsync );
 			var listType = TypeDefinition.Array( actionType );
 			return
 				this.EmitSequentialStatements(
@@ -187,15 +344,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						targetInfo,
 						actionType,
-						this.DeclareLocal( context, listType, "packOperationList" ),
-						SerializationMethod.Array
+						this.DeclareLocal( context, listType, AdjustName( "packOperationList", isAsync ) ),
+						SerializationMethod.Array,
+						isAsync
 					)
 				);
 		}
 
-		protected internal TConstruct EmitPackOperationTableInitialization( TContext context, SerializationTarget targetInfo )
+		protected internal TConstruct EmitPackOperationTableInitialization( TContext context, SerializationTarget targetInfo, bool isAsync )
 		{
-			var actionType = this.GetPackOperationType( context );
+			var actionType = this.GetPackOperationType( context, isAsync );
 			var listType = TypeDefinition.GenericReferenceType( typeof( Dictionary<,> ), typeof( string ), actionType );
 			return
 				this.EmitSequentialStatements(
@@ -205,29 +363,34 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						targetInfo,
 						actionType,
-						this.DeclareLocal( context, listType, "packOperationTable" ),
-						SerializationMethod.Map
+						this.DeclareLocal( context, listType, AdjustName( "packOperationTable", isAsync ) ),
+						SerializationMethod.Map,
+						isAsync
 					)
 				);
 		}
 
-		protected virtual TypeDefinition GetPackOperationType( TContext context )
+		protected virtual TypeDefinition GetPackOperationType( TContext context, bool isAsync )
 		{
-			return typeof( Action<Packer, TObject> );
+			return 
+#if FEATURE_TAP
+				isAsync ? typeof( Func<Packer, TObject, CancellationToken, Task> ) :
+#endif // FEATURE_TAP
+				typeof( Action<Packer, TObject> );
 		}
 
-		private IEnumerable<TConstruct> EmitPackActionCollectionCore( TContext context, SerializationTarget targetInfo, TypeDefinition actionType, TConstruct actionCollection, SerializationMethod method )
+		private IEnumerable<TConstruct> EmitPackActionCollectionCore( TContext context, SerializationTarget targetInfo, TypeDefinition actionType, TConstruct actionCollection, SerializationMethod method, bool isAsync )
 		{
 			yield return actionCollection;
 
 #if DEBUG
 			Contract.Assert(
-				targetInfo.Members.Where( m => m.Member != null ).All( m => context.IsDeclaredMethod( GetPackValueMethodName( m ) ) ),
+				targetInfo.Members.Where( m => m.Member != null ).All( m => context.IsDeclaredMethod( GetPackValueMethodName( m, isAsync ) ) ),
 				"Some of PackValueOfX methods are not found:" +
 					String.Join(
 						", ",
 						targetInfo.Members
-						.Where( m => m.Member != null && !context.IsDeclaredMethod( GetPackValueMethodName( m ) ) )
+						.Where( m => m.Member != null && !context.IsDeclaredMethod( GetPackValueMethodName( m, isAsync ) ) )
 						.Select( m => m.Contract.Name )
 						.ToArray()
 					)
@@ -239,7 +402,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				"No PackMemberSpaceHolder."
 			);
 #endif // DEBUG
-			var knownActions = GetKnownActions( context, targetInfo, method, GetPackValueMethodName );
+			var knownActions = GetKnownActions( context, targetInfo, method, GetPackValueMethodName, isAsync );
 
 			yield return
 				this.EmitStoreVariableStatement(
@@ -298,19 +461,25 @@ namespace MsgPack.Serialization.AbstractSerializers
 			yield return
 				this.EmitFinishFieldInitializationStatement(
 					context,
-					method == SerializationMethod.Array
-					? FieldName.PackOperationList
-					: FieldName.PackOperationTable,
+					AdjustName( 
+						method == SerializationMethod.Array
+							? FieldName.PackOperationList
+							: FieldName.PackOperationTable,
+						isAsync
+					),
 					actionCollection
 				);
 		}
 
-		private static string GetPackValueMethodName( SerializingMember member )
+		private static string GetPackValueMethodName( SerializingMember member, bool isAsync )
 		{
 			return
-				member.MemberName == null
-				? MethodName.PackMemberPlaceHolder
-				: MethodNamePrefix.PackValue + member.MemberName;
+				AdjustName(
+					member.MemberName == null
+						? MethodName.PackMemberPlaceHolder
+						: MethodNamePrefix.PackValue + member.MemberName,
+					isAsync
+				);
 		}
 
 		#endregion -- Pack Operation Initialization --
@@ -330,11 +499,32 @@ namespace MsgPack.Serialization.AbstractSerializers
 			);
 		}
 
-
 		#endregion -- IUnpackable --
-	
+
+#if FEATURE_TAP
+
+		#region -- IAsyncUnpackable --
+
+		private void BuildIAsyncUnpackableUnpackFrom( TContext context )
+		{
+
+			context.BeginMethodOverride( MethodName.UnpackFromAsyncCore );
+			context.EndMethodOverride(
+				MethodName.UnpackFromAsyncCore,
+				this.EmitSequentialStatements(
+					context,
+					typeof( TObject ),
+					this.BuildIUnpackableUnpackFromCore( context, typeof( IAsyncUnpackable ) )
+				)
+			);
+		}
+
+		#endregion -- IAsyncUnpackable --
+
+#endif // FEATURE_TAP
+
 		#region -- UnpackFrom --
-		
+
 		private IEnumerable<TConstruct> BuildIUnpackableUnpackFromCore( TContext context, Type @interface )
 		{
 			var result =
@@ -369,11 +559,26 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			else
 			{
-				throw new NotSupportedException();
+#if FEATURE_TAP
+				Contract.Assert( context.SerializationContext.SerializerOptions.WithAsync );
+				yield return
+					this.EmitRetrunStatement(
+						context,
+						this.EmitInvokeMethodExpression(
+							context,
+							result,
+							unpackFrom,
+							context.Unpacker,
+							this.ReferCancellationToken( context, 2 )
+						)
+					);
+#else
+				ThrowAsyncNotSupportedException();
+#endif // FEATURE_TAP
 			}
 		}
 
-		private void BuildObjectUnpackFrom( TContext context, SerializationTarget targetInfo )
+		private void BuildObjectUnpackFrom( TContext context, SerializationTarget targetInfo, bool isAsync )
 		{
 			/*
 			 *	#if T is IUnpackable
@@ -389,19 +594,24 @@ namespace MsgPack.Serialization.AbstractSerializers
 			 *	}
 			 *	#endif
 			 */
+			var methodName = 
+#if FEATURE_TAP
+				isAsync ? MethodName.UnpackFromAsyncCore : 
+#endif // FEATURE_TAP
+				MethodName.UnpackFromCore;
 
-			context.BeginMethodOverride( MethodName.UnpackFromCore );
+			context.BeginMethodOverride( methodName );
 			context.EndMethodOverride(
-				MethodName.UnpackFromCore,
+				methodName,
 				this.EmitSequentialStatements(
 					context,
 					typeof( TObject ),
-					this.EmitObjectUnpackFromCore( context, targetInfo )
+					this.EmitObjectUnpackFromCore( context, targetInfo, isAsync )
 				)
 			);
 		}
 
-		private IEnumerable<TConstruct> EmitObjectUnpackFromCore( TContext context, SerializationTarget targetInfo )
+		private IEnumerable<TConstruct> EmitObjectUnpackFromCore( TContext context, SerializationTarget targetInfo, bool isAsync )
 		{
 			var unpackingContext = this.EmitObjectUnpackingContextInitialization( context, targetInfo );
 
@@ -414,15 +624,20 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitConditionalExpression(
 					context,
 					this.EmitGetPropertyExpression( context, context.Unpacker, Metadata._Unpacker.IsArrayHeader ),
-					this.EmitObjectUnpackFromCore( context, targetInfo, unpackingContext, SerializationMethod.Array ),
-					this.EmitObjectUnpackFromCore( context, targetInfo, unpackingContext, SerializationMethod.Map )
+					this.EmitObjectUnpackFromCore( context, targetInfo, unpackingContext, SerializationMethod.Array, isAsync ),
+					this.EmitObjectUnpackFromCore( context, targetInfo, unpackingContext, SerializationMethod.Map, isAsync )
 				);
 
 		}
 
-		private TConstruct EmitObjectUnpackFromCore( TContext context, SerializationTarget targetInfo, UnpackingContextInfo unpackingContext, SerializationMethod method )
+		private TConstruct EmitObjectUnpackFromCore( TContext context, SerializationTarget targetInfo, UnpackingContextInfo unpackingContext, SerializationMethod method, bool isAsync )
 		{
-			var unpackOperationParameters = new[] { context.Unpacker, context.UnpackingContextInUnpackValueMethods, context.IndexOfItem };
+			var unpackOperationParameters =
+				new[] { context.Unpacker, context.UnpackingContextInUnpackValueMethods, context.IndexOfItem, context.ItemsCount }
+#if FEATURE_TAP
+				.Concat( isAsync ? new [] { this.ReferCancellationToken( context, 2 ) } : NoConstructs ).ToArray()
+#endif // FEATURE_TAP
+				;
 
 			int constructorParameterIndex = 0;
 			var fieldNames =
@@ -440,6 +655,18 @@ namespace MsgPack.Serialization.AbstractSerializers
 				{
 					// just pop
 					privateMethodBody =
+#if FEATURE_TAP
+						isAsync
+						? this.EmitRetrunStatement(
+							context,
+							this.EmitInvokeMethodExpression(
+								context,
+								context.Unpacker,
+								Metadata._Unpacker.ReadAsync,
+								this.ReferCancellationToken( context, 5 )
+							)
+						) :
+#endif // FEATURE_TAP
 						this.EmitInvokeVoidMethod(
 							context,
 							context.Unpacker,
@@ -448,14 +675,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 				else
 				{
-					Func<TConstruct, TConstruct> storeValueStatementEmitter;
+					var unpackedItem =
+						context.DefineUnpackedItemParameterInSetValueMethods( targetInfo.Members[ count ].Member.GetMemberValueType() );
+					Func<TConstruct> storeValueStatementEmitter;
 					if ( unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext ) )
 					{
 						storeValueStatementEmitter =
-							unpackedItem =>
+							() =>
 								this.EmitInvokeVoidMethod(
 									context,
-									context.UnpackingContextInUnpackValueMethods,
+									context.UnpackingContextInSetValueMethods,
 									Metadata._DynamicUnpackingContext.Set,
 									this.MakeStringLiteral( context, fieldNames[ count ] ),
 									targetInfo.Members[ count ].Member.GetMemberValueType().GetIsValueType()
@@ -470,34 +699,54 @@ namespace MsgPack.Serialization.AbstractSerializers
 					{
 						var name = fieldNames[ constructorParameterIndex ];
 						storeValueStatementEmitter =
-							unpackedItem =>
-								this.EmitSetField( context, context.UnpackingContextInUnpackValueMethods, unpackingContext.Type, name, unpackedItem );
+							() =>
+								this.EmitSetField( context, context.UnpackingContextInSetValueMethods, unpackingContext.Type, name, unpackedItem );
 						constructorParameterIndex++;
 					}
 					else
 					{
 						storeValueStatementEmitter =
-							unpackedItem =>
-								this.EmitSetMemberValueStatement( context, context.UnpackingContextInUnpackValueMethods, targetInfo.Members[ count ].Member, unpackedItem );
+							() =>
+								this.EmitSetMemberValueStatement( context, context.UnpackingContextInSetValueMethods, targetInfo.Members[ count ].Member, unpackedItem );
 					}
 
 					privateMethodBody =
-						this.EmitUnpackItemValueExpression(
+						this.EmitUnpackItemValueStatement(
 							context,
 							targetInfo.Members[ count ].Member.GetMemberValueType(),
+							this.MakeStringLiteral( context, targetInfo.Members[ count ].MemberName ),
 							targetInfo.Members[ count ].Contract.NilImplication,
+							targetInfo.Members[ count ],
+							null, // schema
 							context.Unpacker,
+							context.UnpackingContextInUnpackValueMethods,
 							context.IndexOfItem,
-							this.MakeStringLiteral( context, targetInfo.Members[ count ].Member.Name ),
-							targetInfo.Members[ i ],
-							null,
-							storeValueStatementEmitter
+							context.ItemsCount,
+							this.EmitNewPrivateMethodDelegateExpressionWithCreation(
+								context,
+								new MethodDefinition(
+									MethodNamePrefix.SetUnpackedValueOf + targetInfo.Members[ count ].Member.Name,
+									null,
+									null,
+									typeof( void ),
+									unpackingContext.VariableType,
+									targetInfo.Members[ count ].Member.GetMemberValueType()
+								),
+								storeValueStatementEmitter,
+								context.UnpackingContextInSetValueMethods,
+								unpackedItem
+							),
+							method == SerializationMethod.Map, // forMap
+							isAsync
 						);
 				}
 
-				this.EmitPrivateMethod(
+				this.ExtractPrivateMethod(
 					context,
-					GetUnpackValueMethodName( targetInfo.Members[ i ] ),
+					GetUnpackValueMethodName( targetInfo.Members[ i ], isAsync ),
+#if FEATURE_TAP
+					isAsync ? typeof( Task ) : 
+#endif // FEATURE_TAP
 					typeof( void ),
 					() => privateMethodBody,
 					unpackOperationParameters
@@ -505,7 +754,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 
 			var unpackHelperArguments =
-				new TConstruct[ method == SerializationMethod.Array ? 5 : 4 ];
+				new TConstruct[ ( ( method == SerializationMethod.Array ) ? 5 : 4 ) + ( isAsync ? 1 : 0 ) ];
 
 			unpackHelperArguments[ 0 ] = context.Unpacker;
 			unpackHelperArguments[ 1 ] = unpackingContext.Variable;
@@ -514,12 +763,19 @@ namespace MsgPack.Serialization.AbstractSerializers
 			if ( method == SerializationMethod.Array )
 			{
 				unpackHelperArguments[ 3 ] = this.EmitGetMemberNamesExpression( context );
-				unpackHelperArguments[ 4 ] = this.EmitGetActionsExpression( context, ActionType.UnpackFromArray );
+				unpackHelperArguments[ 4 ] = this.EmitGetActionsExpression( context, ActionType.UnpackFromArray, isAsync );
 			}
 			else
 			{
-				unpackHelperArguments[ 3 ] = this.EmitGetActionsExpression( context, ActionType.UnpackFromMap );
+				unpackHelperArguments[ 3 ] = this.EmitGetActionsExpression( context, ActionType.UnpackFromMap, isAsync );
 			}
+
+#if FEATURE_TAP
+			if ( isAsync )
+			{
+				unpackHelperArguments[ unpackHelperArguments.Length - 1 ] = this.ReferCancellationToken( context, 2 );
+			}
+#endif // FEATURE_TAP
 
 			return
 				this.EmitRetrunStatement(
@@ -528,7 +784,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						null,
 						new MethodDefinition(
-							MethodNamePrefix.UnpackFrom + method,
+							AdjustName( MethodNamePrefix.UnpackFrom + method, isAsync ),
 							new[] { unpackingContext.Type, typeof( TObject ) },
 							typeof( UnpackHelpers ),
 							typeof( TObject ),
@@ -560,7 +816,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						constructorArguments,
 						mappableConstructorArguments
 					).ToArray();
-				
+
 				var unpackingContext =
 					this.EmitObjectUnpackingContextInitialization(
 						context,
@@ -574,13 +830,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitNewPrivateMethodDelegateExpressionWithCreation(
 						context,
 						GetCreateObjectFromContextMethod( unpackingContext ),
-						() =>
-							this.EmitInvokeDeserializationConstructorStatement(
-								context,
-								targetInfo.DeserializationConstructor,
-								context.UnpackingContextInCreateObjectFromContext,
-								contextFields
-							),
+						() => this.EmitInvokeDeserializationConstructorStatement(
+							context,
+							targetInfo.DeserializationConstructor,
+							context.UnpackingContextInCreateObjectFromContext,
+							contextFields
+						),
 						context.UnpackingContextInCreateObjectFromContext
 					);
 
@@ -610,12 +865,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitNewPrivateMethodDelegateExpressionWithCreation(
 						context,
 						GetCreateObjectFromContextMethod( unpackingContext ),
-						() =>
-							this.EmitSequentialStatements(
-								context,
-								typeof( TObject ),
-								this.EmitCreateObjectFromContextCore( context, targetInfo, unpackingContext, contextFields )
-							),
+						() => this.EmitSequentialStatements(
+							context,
+							typeof( TObject ),
+							this.EmitCreateObjectFromContextCore( context, targetInfo, unpackingContext, contextFields )
+						),
 						context.UnpackingContextInCreateObjectFromContext
 					);
 
@@ -623,7 +877,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			else
 			{
-				// Reference tyoe without constructor deserialization.
+				// Reference type without constructor deserialization.
 				var parameterType = context.DefineUnpackingContextWithResultObject();
 				var unpackingContext =
 					UnpackingContextInfo.Create(
@@ -689,7 +943,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
 				? this.EmitSequentialStatements(
 					context,
-					typeof ( void ),
+					typeof( void ),
 					new[]
 					{
 						this.EmitStoreVariableStatement(
@@ -808,9 +1062,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		#region -- Unpack Operation Initialization --
 
-		protected internal TConstruct EmitUnpackOperationListInitialization( TContext context, SerializationTarget targetInfo )
+		protected internal TConstruct EmitUnpackOperationListInitialization( TContext context, SerializationTarget targetInfo, bool isAsync )
 		{
-			var actionType = this.GetUnpackOperationType( context );
+			var actionType = this.GetUnpackOperationType( context, isAsync );
 			var listType = TypeDefinition.Array( actionType );
 			return
 				this.EmitSequentialStatements(
@@ -820,15 +1074,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						targetInfo,
 						actionType,
-						this.DeclareLocal( context, TypeDefinition.Array( actionType ), "unpackOperationList" ),
-						SerializationMethod.Array
+						this.DeclareLocal( context, TypeDefinition.Array( actionType ), AdjustName( "unpackOperationList", isAsync ) ),
+						SerializationMethod.Array,
+						isAsync
 					)
 				);
 		}
 
-		protected internal TConstruct EmitUnpackOperationTableInitialization( TContext context, SerializationTarget targetInfo )
+		protected internal TConstruct EmitUnpackOperationTableInitialization( TContext context, SerializationTarget targetInfo, bool isAsync )
 		{
-			var actionType = this.GetUnpackOperationType( context );
+			var actionType = this.GetUnpackOperationType( context, isAsync );
 			var dictionaryType = TypeDefinition.GenericReferenceType( typeof( Dictionary<,> ), typeof( string ), actionType );
 			return
 				this.EmitSequentialStatements(
@@ -838,41 +1093,66 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						targetInfo,
 						actionType,
-						this.DeclareLocal( context, dictionaryType, "unpackOperationTable" ),
-						SerializationMethod.Map
+						this.DeclareLocal( context, dictionaryType, AdjustName( "unpackOperationTable", isAsync ) ),
+						SerializationMethod.Map,
+						isAsync
 					)
 				);
 		}
 
-		protected virtual TypeDefinition GetUnpackOperationType( TContext context )
+		protected virtual TypeDefinition GetUnpackOperationType( TContext context, bool isAsync )
 		{
 			return
-				TypeDefinition.GenericReferenceType(
-					typeof( Action<,,> ),
+#if FEATURE_TAP
+				isAsync
+				? TypeDefinition.GenericReferenceType(
+					typeof( Func<,,,,,> ),
 					typeof( Unpacker ),
 					context.UnpackingContextType ?? typeof( TObject ),
+					typeof( int ),
+					typeof( int ),
+					typeof( CancellationToken ),
+					typeof( Task )
+				) :
+#endif // FEATURE_TAP
+				TypeDefinition.GenericReferenceType(
+					typeof( Action<,,,> ),
+					typeof( Unpacker ),
+					context.UnpackingContextType ?? typeof( TObject ),
+					typeof( int ),
 					typeof( int )
 				);
 		}
 
-		private static string GetUnpackValueMethodName( SerializingMember member )
+		private static string GetUnpackValueMethodName( SerializingMember member, bool isAsync )
 		{
-			return member.MemberName == null
-				? MethodName.UnpackMemberPlaceHolder
-				: ( MethodNamePrefix.UnpackValue + member.MemberName );
+			return
+				AdjustName(
+					member.MemberName == null
+						? MethodName.UnpackMemberPlaceHolder
+						: ( MethodNamePrefix.UnpackValue + member.MemberName ),
+					isAsync
+				);
 		}
 
-		private IEnumerable<TConstruct> EmitUnpackActionCollectionInitializationCore( TContext context, SerializationTarget targetInfo, TypeDefinition actionType, TConstruct actionCollection, SerializationMethod method )
+		private IEnumerable<TConstruct> EmitUnpackActionCollectionInitializationCore(
+			TContext context,
+			SerializationTarget targetInfo,
+			TypeDefinition actionType,
+			TConstruct actionCollection,
+			SerializationMethod method,
+			bool isAsync
+		)
 		{
 			yield return actionCollection;
 
 #if DEBUG
 			Contract.Assert(
-				targetInfo.Members.All( m => context.IsDeclaredMethod( GetUnpackValueMethodName( m ) ) ),
+				targetInfo.Members.All( m => context.IsDeclaredMethod( GetUnpackValueMethodName( m, isAsync ) ) ),
 				"Some of UnpackValueOfX methods are not found."
 			);
 #endif // DEBUG
-			var knownActions = GetKnownActions( context, targetInfo, method, GetUnpackValueMethodName );
+			var knownActions = GetKnownActions( context, targetInfo, method, GetUnpackValueMethodName, isAsync );
 
 			yield return
 				this.EmitStoreVariableStatement(
@@ -931,9 +1211,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 			yield return
 				this.EmitFinishFieldInitializationStatement(
 					context,
-					method == SerializationMethod.Array
-					? FieldName.UnpackOperationList
-					: FieldName.UnpackOperationTable,
+					AdjustName( 
+						method == SerializationMethod.Array
+							? FieldName.UnpackOperationList
+							: FieldName.UnpackOperationTable,
+						isAsync
+					),
 					actionCollection
 				);
 		}
@@ -1026,7 +1309,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						fields.Select(
 							f =>
 								unpackingContext.ContextType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
-								? this.EmitUnboxAnyExpression( 
+								? this.EmitUnboxAnyExpression(
 									context,
 									f.Value,
 									this.EmitInvokeMethodExpression(
@@ -1040,9 +1323,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 						).ToArray()
 					)
 				);
-			yield return 
-				this.EmitRetrunStatement( 
-					context, 
+			yield return
+				this.EmitRetrunStatement(
+					context,
 					this.EmitLoadVariableExpression( context, resultVariable )
 				);
 		}
@@ -1053,12 +1336,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitFinishFieldInitializationStatement(
 					context,
 					FieldName.MemberNames,
-					this.EmitCreateNewArrayExpression( 
+					this.EmitCreateNewArrayExpression(
 						context,
 						typeof( string ),
 						targetInfo.Members.Count,
 						targetInfo.Members.Select(
-							m => 
+							m =>
 								m.MemberName == null
 								? this.MakeNullLiteral( context, typeof( string ) )
 								: this.MakeStringLiteral( context, m.MemberName )
@@ -1073,41 +1356,24 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		#region -- Operation Helpers --
 
-		protected abstract TConstruct EmitGetActionsExpression( TContext context, ActionType actionType );
+		protected abstract TConstruct EmitGetActionsExpression( TContext context, ActionType actionType, bool isAsync );
 
 		protected abstract TConstruct EmitFinishFieldInitializationStatement( TContext context, string name, TConstruct value );
-
-		// For PackCore and UnpackFromCore
-		private void EmitPrivateMethod( TContext context, string name, TypeDefinition returnType, Func<TConstruct> bodyFactory, params TConstruct[] privateMethodParameters )
-		{
-			if ( !context.IsDeclaredMethod( name ) )
-			{
-				this.ExtractPrivateMethod(
-					context,
-					name,
-					returnType,
-					bodyFactory(),
-					privateMethodParameters
-				);
-			}
-		}
 
 		// For factory for UnpakcHelpers.
 		private TConstruct EmitNewPrivateMethodDelegateExpressionWithCreation( TContext context, MethodDefinition method, Func<TConstruct> bodyFactory, params TConstruct[] privateMethodParameters )
 		{
 			return
-				context.IsDeclaredMethod( method.MethodName )
-				? this.EmitNewPrivateMethodDelegateExpression( context, method )
-				: this.ExtractPrivateMethod(
+				this.ExtractPrivateMethod(
 					context,
 					method.MethodName,
 					method.ReturnType,
-					bodyFactory(),
+					bodyFactory,
 					privateMethodParameters
 				);
 		}
 
-		private static KeyValuePair<string, MethodDefinition>[] GetKnownActions( TContext context, SerializationTarget targetInfo, SerializationMethod method, Func<SerializingMember, string> nameFactory )
+		private static KeyValuePair<string, MethodDefinition>[] GetKnownActions( TContext context, SerializationTarget targetInfo, SerializationMethod method, Func<SerializingMember, bool, string> nameFactory, bool isAsync )
 		{
 			var filter = method == SerializationMethod.Array ? _ => true : new Func<SerializingMember, bool>( m => m.MemberName != null );
 
@@ -1117,7 +1383,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				.Select( m =>
 					new KeyValuePair<string, MethodDefinition>(
 						m.MemberName,
-						context.GetDeclaredMethod( nameFactory( m ) )
+						context.GetDeclaredMethod( nameFactory( m, isAsync ) )
 					)
 				).ToArray();
 

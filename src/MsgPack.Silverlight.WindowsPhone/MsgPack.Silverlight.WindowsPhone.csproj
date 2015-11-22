@@ -262,6 +262,9 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\ActionType.cs">
       <Link>Serialization\AbstractSerializers\ActionType.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\CachedDelegateInfo.cs">
+      <Link>Serialization\AbstractSerializers\CachedDelegateInfo.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\ConstructorDefinition.cs">
       <Link>Serialization\AbstractSerializers\ConstructorDefinition.cs</Link>
     </Compile>
@@ -903,6 +906,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\UnpackHelpers.direct.cs">
       <Link>Serialization\UnpackHelpers.direct.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\UnpackHelpers.facade.cs">
+      <Link>Serialization\UnpackHelpers.facade.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\SetOperation.cs">
       <Link>SetOperation.cs</Link>

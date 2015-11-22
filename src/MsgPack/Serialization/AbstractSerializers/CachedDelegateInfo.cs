@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -22,15 +22,20 @@ using System;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
-	internal static class MethodNamePrefix
+	/// <summary>
+	///		Represents information of the cached delegate instance which should be stored in readonly instance field.
+	/// </summary>
+	internal struct CachedDelegateInfo
 	{
-		public const string PackValue = "PackValueOf";
+		public readonly bool IsThisInstance;
+		public readonly MethodDefinition TargetMethod;
+		public readonly FieldDefinition BackingField;
 
-		public const string UnpackValue = "UnpackValueOf";
-
-		// UnpackFromArray / UnpackFromMap
-		public const string UnpackFrom = "UnpackFrom";
-
-		public const string SetUnpackedValueOf = "SetUnpackedValueOf";
+		public CachedDelegateInfo( bool isThisInstance, MethodDefinition targetMethod, FieldDefinition backingField )
+		{
+			this.IsThisInstance = isThisInstance;
+			this.TargetMethod = targetMethod;
+			this.BackingField = backingField;
+		}
 	}
 }

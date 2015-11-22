@@ -19,6 +19,10 @@
 #endregion -- License Terms --
 
 using System;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.Polymorphic
 {
@@ -28,5 +32,9 @@ namespace MsgPack.Serialization.Polymorphic
 	internal interface IPolymorphicDeserializer
 	{
 		object PolymorphicUnpackFrom( Unpacker unpacker );
+
+#if FEATURE_TAP
+		Task<object> PolymorphicUnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken );
+#endif // FEATURE_TAP
 	}
 }

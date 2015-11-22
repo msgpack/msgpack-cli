@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -30,6 +30,10 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.CollectionSerializers;
@@ -425,7 +429,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		{
 #if DEBUG
 			Contract.Assert( instance == null || instance.IsExpression );
-			Contract.Assert( field.DeclaringType != null );
+			Contract.Assert( instance != null || field.DeclaringType != null );
 #endif
 			return
 				CodeDomConstruct.Expression(
@@ -646,7 +650,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 		}
 
-		protected override CodeDomConstruct EmitGetActionsExpression( CodeDomContext context, ActionType actionType )
+		protected override CodeDomConstruct EmitGetActionsExpression( CodeDomContext context, ActionType actionType, bool isAsync )
 		{
 			TypeDefinition type;
 			string name;
@@ -654,13 +658,21 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			{
 				case ActionType.PackToArray:
 				{
-					type = typeof( IList<Action<Packer, TObject>> );
+					type = 
+#if FEATURE_TAP
+						isAsync ? typeof( IList<Func<Packer, TObject, CancellationToken, Task>> ) :
+#endif // FEATURE_TAP
+						typeof( IList<Action<Packer, TObject>> );
 					name = FieldName.PackOperationList;
 					break;
 				}
 				case ActionType.PackToMap:
 				{
-					type = typeof( IDictionary<string, Action<Packer, TObject>> );
+					type = 
+#if FEATURE_TAP
+						isAsync ? typeof( IDictionary<string, Func<Packer, TObject, CancellationToken, Task>> ) :
+#endif // FEATURE_TAP
+						typeof( IDictionary<string, Action<Packer, TObject>> );
 					name = FieldName.PackOperationTable;
 					break;
 				}
@@ -669,10 +681,23 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					type =
 						TypeDefinition.GenericReferenceType(
 							typeof( IList<> ),
+#if FEATURE_TAP
+							isAsync ? 
 							TypeDefinition.GenericReferenceType(
-								typeof( Action<,,> ),
+								typeof( Func<,,,,,> ),
 								typeof( Unpacker ),
 								context.UnpackingContextType ?? typeof( TObject ),
+								typeof( int ),
+								typeof( int ),
+								typeof( CancellationToken ),
+								typeof( Task )
+							) :
+#endif // FEATURE_TAP
+							TypeDefinition.GenericReferenceType(
+								typeof( Action<,,,> ),
+								typeof( Unpacker ),
+								context.UnpackingContextType ?? typeof( TObject ),
+								typeof( int ),
 								typeof( int )
 							)
 						);
@@ -684,11 +709,24 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					type =
 						TypeDefinition.GenericReferenceType(
 							typeof( IDictionary<,> ),
-							typeof( string),
+							typeof( string ),
+#if FEATURE_TAP
+							isAsync ? 
 							TypeDefinition.GenericReferenceType(
-								typeof( Action<,,> ),
+								typeof( Func<,,,,,> ),
 								typeof( Unpacker ),
 								context.UnpackingContextType ?? typeof( TObject ),
+								typeof( int ),
+								typeof( int ),
+								typeof( CancellationToken ),
+								typeof( Task )
+							) :
+#endif // FEATURE_TAP
+							TypeDefinition.GenericReferenceType(
+								typeof( Action<,,,> ),
+								typeof( Unpacker ),
+								context.UnpackingContextType ?? typeof( TObject ),
+								typeof( int ),
 								typeof( int )
 							)
 						);
@@ -697,7 +735,11 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				}
 				case ActionType.UnpackTo:
 				{
-					type = typeof( Action<Unpacker, TObject, int> );
+					type = 
+#if FEATURE_TAP
+						isAsync ? typeof( Func<Unpacker, TObject, int, CancellationToken, Task> ) :
+#endif // FEATURE_TAP
+						typeof( Action<Unpacker, TObject, int> );
 					name = FieldName.UnpackTo;
 					break;
 				}
@@ -705,6 +747,11 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				{
 					throw new ArgumentOutOfRangeException( "actionType" );
 				}
+			}
+
+			if ( isAsync )
+			{
+				name += "Async";
 			}
 
 			var field = context.DeclarePrivateField( name, type );
@@ -967,7 +1014,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			var delegateBaseType = SerializerBuilderHelper.FindDelegateType( method.ReturnType, method.ParameterTypes );
 
 			var delegateType =
-				TypeDefinition.GenericReferenceType(
+				( method.ReturnType.TryGetRuntimeType() == typeof( void ) && method.ParameterTypes.Length == 0 )
+				? delegateBaseType
+				: TypeDefinition.GenericReferenceType(
 					delegateBaseType,
 					method.ReturnType.TryGetRuntimeType() == typeof( void )
 						? method.ParameterTypes
@@ -1216,13 +1265,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 								)
 							)
 						);
-
-#if DEBUG
-						Contract.Assert(
-							context.GetDependentSerializers().Count == 0,
-							"Dependent serializers are found in collection serializer."
-						);
-#endif // DEBUG
 					}
 
 					int schemaNumber = -1;
@@ -1407,40 +1449,87 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						// For object only.
 						if ( !typeof( IPackable ).IsAssignableFrom( typeof( TObject ) ) )
 						{
-							if ( context.SerializationContext.SerializationMethod == SerializationMethod.Array
-								|| targetInfo.Members.All( m => m.Member == null ) // Tuple
-							)
+
+							ctor.Statements.AddRange(
+								this.EmitPackOperationListInitialization( context, targetInfo, false ).AsStatements().ToArray()
+							);
+#if FEATURE_TAP
+							if ( this.WithAsync( context ) )
 							{
 								ctor.Statements.AddRange(
-									this.EmitPackOperationListInitialization( context, targetInfo ).AsStatements().ToArray()
+									this.EmitPackOperationListInitialization( context, targetInfo, true ).AsStatements().ToArray()
 								);
 							}
-							else
+#endif // FEATURE_TAP
+							if ( targetInfo.Members.Any( m => m.Member != null ) ) // not Tuple
 							{
 								ctor.Statements.AddRange(
-									this.EmitPackOperationTableInitialization( context, targetInfo ).AsStatements().ToArray()
+									this.EmitPackOperationTableInitialization( context, targetInfo, false ).AsStatements().ToArray()
 								);
+#if FEATURE_TAP
+								if ( this.WithAsync( context ) )
+								{
+									ctor.Statements.AddRange(
+										this.EmitPackOperationTableInitialization( context, targetInfo, true ).AsStatements().ToArray()
+									);
+								}
+#endif // FEATURE_TAP
 							}
 						}
 
 						if ( !typeof( IUnpackable ).IsAssignableFrom( typeof( TObject ) ) )
 						{
 							ctor.Statements.AddRange(
-								this.EmitUnpackOperationListInitialization( context, targetInfo ).AsStatements().ToArray()
+								this.EmitUnpackOperationListInitialization( context, targetInfo, false ).AsStatements().ToArray()
 							);
+#if FEATURE_TAP
+							if ( this.WithAsync( context ) )
+							{
+								ctor.Statements.AddRange(
+									this.EmitUnpackOperationListInitialization( context, targetInfo, true ).AsStatements().ToArray()
+								);
+							}
+#endif // FEATURE_TAP
 
 							if ( targetInfo.Members.Any( m => m.Member != null ) )
 							{
 								// Except tuples
 								ctor.Statements.AddRange(
-									this.EmitUnpackOperationTableInitialization( context, targetInfo ).AsStatements().ToArray()
+									this.EmitUnpackOperationTableInitialization( context, targetInfo, false ).AsStatements().ToArray()
 								);
+#if FEATURE_TAP
+								if ( this.WithAsync( context ) )
+								{
+									ctor.Statements.AddRange(
+										this.EmitUnpackOperationTableInitialization( context, targetInfo, true ).AsStatements().ToArray()
+									);
+								}
+#endif // FEATURE_TAP
 							}
 
 							ctor.Statements.AddRange(
 								this.EmitMemberListInitialization( context, targetInfo ).AsStatements().ToArray()
 							);
 						}
+					} // if( targetInfo != null )
+
+					foreach ( var cachedDelegateInfo in context.GetCachedDelegateInfos() )
+					{
+						ctor.Statements.Add(
+							new CodeAssignStatement(
+								new CodeFieldReferenceExpression(
+									new CodeThisReferenceExpression(),
+									cachedDelegateInfo.BackingField.FieldName
+								),
+								new CodeDelegateCreateExpression(
+									CodeDomSerializerBuilder.ToCodeTypeReference( cachedDelegateInfo.BackingField.FieldType ),
+									cachedDelegateInfo.IsThisInstance
+									? new CodeThisReferenceExpression() as CodeExpression
+									: new CodeTypeReferenceExpression( CodeDomSerializerBuilder.ToCodeTypeReference( cachedDelegateInfo.TargetMethod.DeclaringType ) ),
+									cachedDelegateInfo.TargetMethod.MethodName
+								)
+							)
+						);
 					}
 
 					if ( context.IsUnpackToUsed )

@@ -60,7 +60,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 				if ( parameterType.TryGetRuntimeType() == this._context.ContextType.TryGetRuntimeType() )
 				{
-					yield return ( ParameterExpression ) this.Context.Expression;
+					yield return ( ParameterExpression )this.Context.Expression;
 				}
 			}
 		}
@@ -95,7 +95,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		private readonly Dictionary<string, LambdaExpression> _methodLambdas;
 
 		// For lamdas which must be expose to base class or helper API, e.g. CreateObjectFromContext, PackToCore, etc.
-		public Delegate GetDelegate( string name )
+		public Delegate GetDelegate( string name ) // mainly overriding methods
 		{
 			Delegate result;
 			this._delegates.TryGetValue( name, out result );
@@ -110,9 +110,33 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return result;
 		}
 
-		public IDictionary<string, Delegate> GetDelegates()
+		public IDictionary<string, LambdaExpression> GetMethodLamdaTable()
 		{
-			return this._delegates;
+			return this._methodLambdas;
+		}
+
+		public void EnsureDelegateForStaticMethodRegistered( MethodDefinition method )
+		{
+			if (! this._methodLambdas.ContainsKey( method.MethodName ) )
+			{
+				var staticMethod = method.ResolveRuntimeMethod();
+				var parameters =
+					method.ResolveRuntimeMethod().GetParameters()
+						.Select( p => Expression.Parameter( p.ParameterType, p.Name ) )
+						.ToArray();
+
+				this._methodLambdas.Add( 
+					method.MethodName,
+					Expression.Lambda(
+						Expression.Call(
+							staticMethod,
+							// ReSharper disable once CoVariantArrayConversion
+							parameters
+						),
+						parameters
+					)
+				);
+			}
 		}
 
 		private Type _targetType;
@@ -142,8 +166,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		{
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 			this._context = contextParameter;
-			this._commonPrivateInstanceMethodParameters = new ParameterExpression[ 1 ];
-			this._commonPrivateInstanceMethodParameters[ 0 ] = contextParameter;
+			this._commonPrivateInstanceMethodParameters = new ParameterExpression[ 2 ];
 			this._context = contextParameter;
 			this._delegates = new Dictionary<string, Delegate>();
 			this._methodLambdas = new Dictionary<string, LambdaExpression>();
@@ -167,6 +190,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			this.PackToTarget = Expression.Parameter( targetType, "objectTree" );
 			this.Unpacker = Expression.Parameter( typeof( Unpacker ), "unpacker" );
 			this.IndexOfItem = Expression.Parameter( typeof( int ), "indexOfItem" );
+			this.ItemsCount = Expression.Parameter( typeof( int ), "itemsCount" );
 			this.UnpackToTarget = Expression.Parameter( targetType, "collection" );
 			this._targetType = targetType;
 			this._targetCollectionTraits = targetType.GetCollectionTraits();
@@ -174,13 +198,15 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				ExpressionTreeSerializerBuilderHelpers.GetSerializerClass( targetType, this._targetCollectionTraits );
 			var @this = Expression.Parameter( this._serializerClass, "this" );
 			this.This = @this;
+			this._commonPrivateInstanceMethodParameters[ 0 ] = @this;
+			this._commonPrivateInstanceMethodParameters[ 1 ] = ( ParameterExpression )this.Context.Expression;
 			if ( this._targetCollectionTraits.ElementType != null )
 			{
 				this.CollectionToBeAdded = Expression.Parameter( targetType, "collection" );
 				this.ItemToAdd = Expression.Parameter( this._targetCollectionTraits.ElementType, "item" );
 				if ( this._targetCollectionTraits.DetailedCollectionType == CollectionDetailedKind.GenericDictionary
 #if !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-					|| this._targetCollectionTraits.DetailedCollectionType == CollectionDetailedKind.GenericReadOnlyDictionary
+ || this._targetCollectionTraits.DetailedCollectionType == CollectionDetailedKind.GenericReadOnlyDictionary
 #endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
  )
 				{
@@ -205,9 +231,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		public override void BeginMethodOverride( string name )
 		{
-			this._methodContextStack.Push( 
-				new MethodContext( 
-					name, 
+			this._methodContextStack.Push(
+				new MethodContext(
+					name,
+					false, // isStatic
 					null,
 					this.GetParameters( name )
 				)
@@ -433,15 +460,16 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		public override void BeginPrivateMethod( string name, bool isStatic, TypeDefinition returnType, params ExpressionConstruct[] parameters )
 		{
 			// Extract operand of ConvertExpression(UnaryExpression) to take care of UnpackingContext parameter.
-			var parameterExpressions = 
-				parameters.Select( p => 
-					( p.Expression as ParameterExpression ) ?? (ParameterExpression)( (UnaryExpression )p.Expression ).Operand
+			var parameterExpressions =
+				parameters.Select( p =>
+					( p.Expression as ParameterExpression ) ?? ( ParameterExpression )( ( UnaryExpression )p.Expression ).Operand
 				);
 			this._methodContextStack.Push(
 				new MethodContext(
 					name,
+					isStatic,
 					returnType,
-					isStatic 
+					isStatic
 					? parameterExpressions
 					: this._commonPrivateInstanceMethodParameters.Concat(
 						parameterExpressions
@@ -467,7 +495,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 			var parameterTypes = context.Parameters.Select( p => TypeDefinition.Object( p.Type ) ).ToArray();
 			var delegateType =
-				SerializerBuilderHelper.GetDelegateType(
+				SerializerBuilderHelper.GetResolvedDelegateType(
 					context.ReturnType.ResolveRuntimeType(),
 					parameterTypes
 				);
@@ -503,13 +531,16 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					null,
 					null,
 					context.ReturnType,
-					parameterTypes
+					context.IsStatic
+					? parameterTypes
+					: parameterTypes.Skip( this._commonPrivateInstanceMethodParameters.Length ).ToArray()
 				);
 		}
 
 		protected override FieldDefinition DeclarePrivateFieldCore( string name, TypeDefinition type )
 		{
-			throw new NotSupportedException();
+			// just return dummy info.
+			return new FieldDefinition( this._serializerClass, name, type );
 		}
 
 		protected override void DefineUnpackingContextCore(
@@ -517,6 +548,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			out TypeDefinition type,
 			out ConstructorDefinition constructor,
 			out ExpressionConstruct parameterInUnpackValueMethods,
+			out ExpressionConstruct parameterInSetValueMethods,
 			out ExpressionConstruct parameterInCreateObjectFromContext
 		)
 		{
@@ -524,38 +556,46 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			// so it cannot have DynamicUnpackingContext nor TObject as generic argument.
 			type = typeof( object );
 			constructor = DynamicUnpackingContext.Constructor;
-			parameterInUnpackValueMethods =
-				Expression.Convert(
-					Expression.Parameter( typeof( object ), "unpackingContext" ),
-					typeof( DynamicUnpackingContext )
-				);
-			parameterInCreateObjectFromContext =
-				Expression.Convert(
-					Expression.Parameter( typeof( object ), "unpackingContext" ),
-					typeof( DynamicUnpackingContext )
-				);
+			DefineUnpackValueMethodArguments( typeof( DynamicUnpackingContext ), out parameterInUnpackValueMethods, out parameterInSetValueMethods, out parameterInCreateObjectFromContext );
 		}
 
 		protected override void DefineUnpackingContextWithResultObjectCore(
 			out TypeDefinition type,
 			out ExpressionConstruct parameterInUnpackValueMethods,
+			out ExpressionConstruct parameterInSetValueMethods,
 			out ExpressionConstruct parameterInCreateObjectFromContext
 		)
 		{
 			// Use Object because base Proeprty type must be determined too early in current design,
 			// so it cannot have DynamicUnpackingContext nor TObject as generic argument.
 			type = typeof( object );
+			DefineUnpackValueMethodArguments( this._targetType, out parameterInUnpackValueMethods, out parameterInSetValueMethods, out parameterInCreateObjectFromContext );
+		}
+
+		private static void DefineUnpackValueMethodArguments( Type type, out ExpressionConstruct parameterInUnpackValueMethods, out ExpressionConstruct parameterInSetValueMethods, out ExpressionConstruct parameterInCreateObjectFromContext )
+		{
 			parameterInUnpackValueMethods =
 				Expression.Convert(
 					Expression.Parameter( typeof( object ), "unpackingContext" ),
-					 this._targetType
+					type
+				);
+			parameterInSetValueMethods =
+				Expression.Convert(
+					Expression.Parameter( typeof( object ), "unpackingContext" ),
+					type
 				);
 			parameterInCreateObjectFromContext =
 				Expression.Convert(
 					Expression.Parameter( typeof( object ), "unpackingContext" ),
-					 this._targetType
+					type
 				);
 		}
+
+		public override ExpressionConstruct DefineUnpackedItemParameterInSetValueMethods( TypeDefinition itemType )
+		{
+			return Expression.Parameter( itemType.TryGetRuntimeType(), "unpackedValue" );
+		}
+
 
 		public void Finish()
 		{
@@ -570,12 +610,14 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		private sealed class MethodContext
 		{
 			public readonly string Name;
+			public readonly bool IsStatic;
 			public readonly TypeDefinition ReturnType;
 			public readonly ParameterExpression[] Parameters;
 
-			public MethodContext( string name, TypeDefinition returnType, IEnumerable<ParameterExpression> parameters )
+			public MethodContext( string name, bool isStatic, TypeDefinition returnType, IEnumerable<ParameterExpression> parameters )
 			{
 				this.Name = name;
+				this.IsStatic = isStatic;
 				this.ReturnType = returnType;
 				this.Parameters = parameters.ToArray();
 			}

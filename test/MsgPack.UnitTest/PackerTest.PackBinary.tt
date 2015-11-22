@@ -54,6 +54,14 @@ namespace MsgPack
 // Str
 foreach( var isAsync in new [] { false, true } )
 {
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+
+<#
+	}
+
 	foreach( var testType in
 		new []
 		{
@@ -666,10 +674,19 @@ foreach( var isAsync in new [] { false, true } )
 				Assert.Throws<ArgumentNullException>( <#= AsyncLambda( "target.PackString", isAsync ) #>( <#= testCase.Value #>, null ) );
 			}
 		}
+
 <#
 	} // foreach( var testCase
 #>
 <#
+	if ( isAsync )
+	{
+#>
+#endif // FEATURE_TAP
+
+<#
+	}
+
 } // foreach( var isAsync
 #>
 	}

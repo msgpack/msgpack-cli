@@ -57,6 +57,7 @@ namespace MsgPack.Serialization
 				TestOnWorkerAppDomain(
 					filePath,
 					PackerCompatibilityOptions.Classic,
+					SerializationMethod.Array,
 					new byte[] { ( byte )'A' },
 					new byte[] { MessagePackCode.MinimumFixedArray + 1, MessagePackCode.MinimumFixedRaw + 1, ( byte )'A' },
 					TestType.GeneratorTestObject
@@ -83,6 +84,7 @@ namespace MsgPack.Serialization
 				TestOnWorkerAppDomain(
 					Path.Combine( directory, name.Name + ".dll" ),
 					PackerCompatibilityOptions.Classic,
+					SerializationMethod.Array,
 					new byte[] { ( byte )'A' },
 					new byte[] { MessagePackCode.MinimumFixedArray + 1, MessagePackCode.MinimumFixedRaw + 1, ( byte )'A' },
 					TestType.GeneratorTestObject
@@ -110,6 +112,7 @@ namespace MsgPack.Serialization
 				TestOnWorkerAppDomain(
 					filePath,
 					PackerCompatibilityOptions.Classic,
+					SerializationMethod.Map,
 					new byte[] { ( byte )'A' },
 					new byte[] { MessagePackCode.MinimumFixedMap + 1, MessagePackCode.MinimumFixedRaw + 3, ( byte )'V', ( byte )'a', ( byte )'l',
 						MessagePackCode.MinimumFixedRaw + 1, ( byte )'A' },
@@ -137,6 +140,7 @@ namespace MsgPack.Serialization
 				TestOnWorkerAppDomain(
 					filePath,
 					PackerCompatibilityOptions.None,
+					SerializationMethod.Array,
 					new byte[] { ( byte )'A' },
 					new byte[] { MessagePackCode.MinimumFixedArray + 1, MessagePackCode.Bin8, 1, ( byte )'A' },
 					TestType.GeneratorTestObject
@@ -163,6 +167,7 @@ namespace MsgPack.Serialization
 				TestOnWorkerAppDomain(
 					Path.Combine( directory, "." + Path.DirectorySeparatorChar + name.Name + ".dll" ),
 					PackerCompatibilityOptions.Classic,
+					SerializationMethod.Array,
 					new byte[] { ( byte )'A' },
 					new byte[]
 					{
@@ -197,6 +202,7 @@ namespace MsgPack.Serialization
 				TestOnWorkerAppDomainForMultiple(
 					Path.Combine( directory, "." + Path.DirectorySeparatorChar + name.Name + ".dll" ),
 					PackerCompatibilityOptions.Classic,
+					SerializationMethod.Array,
 					new byte[] { ( byte )'A' },
 					new byte[]
 					{
@@ -235,6 +241,7 @@ namespace MsgPack.Serialization
 				TestOnWorkerAppDomain(
 					filePath,
 					PackerCompatibilityOptions.Classic,
+					SerializationMethod.Array,
 					new byte[] { ( byte )'A' },
 					new byte[] { MessagePackCode.MinimumFixedArray + 1, MessagePackCode.MinimumFixedRaw + 1, ( byte )'A' },
 					TestType.GeneratorTestObject
@@ -266,6 +273,7 @@ namespace MsgPack.Serialization
 				TestOnWorkerAppDomain(
 					filePath,
 					PackerCompatibilityOptions.Classic,
+					SerializationMethod.Array,
 					new byte[] { ( byte )'A' },
 					new byte[] { MessagePackCode.MinimumFixedArray + 1, MessagePackCode.MinimumFixedRaw + 1, ( byte )'A' },
 					TestType.GeneratorTestObject
@@ -284,7 +292,7 @@ namespace MsgPack.Serialization
 			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
 			var result =
 				SerializerGenerator.GenerateAssembly(
-					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, SerializationMethod = SerializationMethod.Map },
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name },
 					typeof( GeneratorTestObject )
 				);
 			// Assert is not polluted.
@@ -296,6 +304,7 @@ namespace MsgPack.Serialization
 				TestOnWorkerAppDomain(
 					filePath,
 					PackerCompatibilityOptions.Classic,
+					SerializationMethod.Map,
 					new byte[] { ( byte )'A' },
 					new byte[] { MessagePackCode.MinimumFixedMap + 1, MessagePackCode.MinimumFixedRaw + 3, ( byte )'V', ( byte )'a', ( byte )'l',
 						MessagePackCode.MinimumFixedRaw + 1, ( byte )'A' },
@@ -327,6 +336,7 @@ namespace MsgPack.Serialization
 				TestOnWorkerAppDomain(
 					filePath,
 					PackerCompatibilityOptions.None,
+					SerializationMethod.Array,
 					new byte[] { ( byte )'A' },
 					new byte[] { MessagePackCode.MinimumFixedArray + 1, MessagePackCode.Bin8, 1, ( byte )'A' },
 					TestType.GeneratorTestObject
@@ -358,6 +368,7 @@ namespace MsgPack.Serialization
 				TestOnWorkerAppDomain(
 					filePath,
 					PackerCompatibilityOptions.Classic,
+					SerializationMethod.Array,
 					new byte[] { ( byte )'A' },
 					new byte[]
 					{
@@ -396,6 +407,7 @@ namespace MsgPack.Serialization
 				TestOnWorkerAppDomainForMultiple(
 					filePath,
 					PackerCompatibilityOptions.Classic,
+					SerializationMethod.Array,
 					new byte[] { ( byte )'A' },
 					new byte[]
 					{
@@ -473,7 +485,7 @@ namespace MsgPack.Serialization
 				var one = result.Single( r => r.TargetType == typeof( GeneratorTestObject ) );
 				Assert.That(
 					one.SerializerTypeName,
-					Is.EqualTo( "MsgPack_Serialization_GeneratorTestObjectSerializer" ) 
+					Is.EqualTo( "MsgPack_Serialization_GeneratorTestObjectSerializer" )
 				);
 				Assert.That(
 					one.SerializerTypeNamespace,
@@ -662,8 +674,8 @@ namespace MsgPack.Serialization
 					},
 					typeof( GeneratorTestObject )
 				).ToArray();
-			try 
-			{ 
+			try
+			{
 				// Assert is not polluted.
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
 				Assert.That( resultCS.Single(), Is.EqualTo( filePathCS ) );
@@ -799,7 +811,7 @@ namespace MsgPack.Serialization
 					).ToArray();
 			try
 			{
-					// Assert is not polluted.
+				// Assert is not polluted.
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestObject ) ), Is.False );
 				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestObject ) ), Is.False );
@@ -912,7 +924,7 @@ namespace MsgPack.Serialization
 				Assert.That(
 					one.SerializerTypeFullName,
 					Is.EqualTo(
-						( configuration.Namespace.Length > 0 ? configuration.Namespace + "." : String.Empty ) + 
+						( configuration.Namespace.Length > 0 ? configuration.Namespace + "." : String.Empty ) +
 						"MsgPack_Serialization_GeneratorTestObjectSerializer"
 					)
 				);
@@ -1343,7 +1355,7 @@ namespace MsgPack.Serialization
 		}
 		#endregion -- Issue 121 --
 
-		private static void TestOnWorkerAppDomain( string geneartedAssemblyFilePath, PackerCompatibilityOptions packerCompatibilityOptions, byte[] bytesValue, byte[] expectedPackedValue, TestType testType )
+		private static void TestOnWorkerAppDomain( string geneartedAssemblyFilePath, PackerCompatibilityOptions packerCompatibilityOptions, SerializationMethod method, byte[] bytesValue, byte[] expectedPackedValue, TestType testType )
 		{
 			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
 			var workerDomain = AppDomain.CreateDomain( "Worker", null, appDomainSetUp );
@@ -1351,7 +1363,7 @@ namespace MsgPack.Serialization
 			{
 				var testerProxy =
 					workerDomain.CreateInstanceAndUnwrap( typeof( Tester ).Assembly.FullName, typeof( Tester ).FullName ) as Tester;
-				testerProxy.DoTest( geneartedAssemblyFilePath, ( int )packerCompatibilityOptions, bytesValue, expectedPackedValue, 1, testType );
+				testerProxy.DoTest( geneartedAssemblyFilePath, ( int )packerCompatibilityOptions, ( int )method, bytesValue, expectedPackedValue, 1, testType );
 			}
 			finally
 			{
@@ -1400,11 +1412,11 @@ namespace MsgPack.Serialization
 						workerDomain.CreateInstanceAndUnwrap( typeof( Tester ).Assembly.FullName, typeof( Tester ).FullName ) as Tester;
 					testerProxy.DoTest(
 						result.PathToAssembly,
-						( int ) packerCompatibilityOptions,
-						( int ) enumSerializationMethod,
+						( int )packerCompatibilityOptions,
+						( int )enumSerializationMethod,
 						enumValue,
 						expectedPackedValue,
-						1 
+						1
 					);
 				}
 				finally
@@ -1418,7 +1430,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static void TestOnWorkerAppDomainForMultiple( string geneartedAssemblyFilePath, PackerCompatibilityOptions packerCompatibilityOptions, byte[] bytesValue1, byte[] expectedPackedValue1, byte[] bytesValue2, byte[] expectedPackedValue2 )
+		private static void TestOnWorkerAppDomainForMultiple( string geneartedAssemblyFilePath, PackerCompatibilityOptions packerCompatibilityOptions, SerializationMethod method, byte[] bytesValue1, byte[] expectedPackedValue1, byte[] bytesValue2, byte[] expectedPackedValue2 )
 		{
 			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
 			var workerDomain = AppDomain.CreateDomain( "Worker", null, appDomainSetUp );
@@ -1426,8 +1438,8 @@ namespace MsgPack.Serialization
 			{
 				var testerProxy =
 					workerDomain.CreateInstanceAndUnwrap( typeof( Tester ).Assembly.FullName, typeof( Tester ).FullName ) as Tester;
-				testerProxy.DoTest( geneartedAssemblyFilePath, ( int )packerCompatibilityOptions, bytesValue1, expectedPackedValue1, 2, TestType.GeneratorTestObject );
-				testerProxy.DoTest( geneartedAssemblyFilePath, ( int )packerCompatibilityOptions, bytesValue2, expectedPackedValue2, 2, TestType.AnotherGeneratorTestObject );
+				testerProxy.DoTest( geneartedAssemblyFilePath, ( int )packerCompatibilityOptions, ( int )method, bytesValue1, expectedPackedValue1, 2, TestType.GeneratorTestObject );
+				testerProxy.DoTest( geneartedAssemblyFilePath, ( int )packerCompatibilityOptions, ( int )method, bytesValue2, expectedPackedValue2, 2, TestType.AnotherGeneratorTestObject );
 			}
 			finally
 			{
@@ -1441,13 +1453,13 @@ namespace MsgPack.Serialization
 				CodeDomProvider
 				.CreateProvider( "C#" )
 				.CompileAssemblyFromFile(
-					new CompilerParameters( 
-						new []
+					new CompilerParameters(
+						new[]
 						{
 							typeof( MessagePackObject ).Assembly.Location,
 							typeof( CodeDomProvider ).Assembly.Location,
 							Assembly.GetExecutingAssembly().Location
-						} 
+						}
 					),
 					results.Select( r => r.FilePath ).ToArray()
 				);
@@ -1469,17 +1481,17 @@ namespace MsgPack.Serialization
 		{
 			yield return error.ToString();
 			yield return File.ReadAllLines( error.FileName ).Skip( error.Line - 1 ).First();
-		} 
+		}
 
 		public sealed class Tester : MarshalByRefObject
 		{
-			public void DoTest( string testAssemblyFile, int packerCompatiblityOptions, byte[] bytesValue, byte[] expectedPackedValue, int expectedSerializerTypeCounts, TestType testType )
+			public void DoTest( string testAssemblyFile, int packerCompatiblityOptions, int serializationMethod, byte[] bytesValue, byte[] expectedPackedValue, int expectedSerializerTypeCounts, TestType testType )
 			{
 				var assembly = Assembly.LoadFrom( testAssemblyFile );
 				var types = assembly.GetTypes().Where( t => typeof( MessagePackSerializer ).IsAssignableFrom( t ) ).ToList();
 				Assert.That( types.Count, Is.EqualTo( expectedSerializerTypeCounts ), String.Join( ", ", types.Select( t => t.ToString() ).ToArray() ) );
 
-				var context = new SerializationContext( ( PackerCompatibilityOptions )packerCompatiblityOptions );
+				var context = new SerializationContext( ( PackerCompatibilityOptions )packerCompatiblityOptions ) { SerializationMethod = ( SerializationMethod )serializationMethod };
 
 				byte[] binary;
 				switch ( testType )
@@ -1528,7 +1540,7 @@ namespace MsgPack.Serialization
 					Is.EqualTo( expectedPackedValue ),
 					"{0} != {1}",
 					Binary.ToHexString( binary ),
-					Binary.ToHexString( expectedPackedValue ) 
+					Binary.ToHexString( expectedPackedValue )
 				);
 			}
 		}

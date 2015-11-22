@@ -231,7 +231,7 @@ namespace MsgPack
 #if NETFX_CORE || CORE_CLR
 		public static MethodInfo GetMethod( this Type source, string name )
 		{
-			return source.GetRuntimeMethods().SingleOrDefault( m => m.Name == name );
+			return source.GetRuntimeMethods().SingleOrDefault( m => m.Name == name && m.DeclaringType == source );
 		}
 
 		public static MethodInfo GetMethod( this Type source, string name, Type[] parameters )

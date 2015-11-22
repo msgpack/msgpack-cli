@@ -4846,6 +4846,7 @@ namespace MsgPack
 				Assert.Throws<ArgumentNullException>( () => target.PackString( new char[] { 'A', 'B', 'C' }, null ) );
 			}
 		}
+
 		[Test]
 		public void TestPackString_String_NotNull()
 		{
@@ -4945,6 +4946,9 @@ namespace MsgPack
 				Assert.Throws<ArgumentNullException>( () => target.PackString( "ABC", null ) );
 			}
 		}
+
+#if FEATURE_TAP
+
 #if !NETFX_CORE
 
 		[Test]
@@ -9750,6 +9754,7 @@ namespace MsgPack
 				Assert.Throws<ArgumentNullException>( async () => await target.PackStringAsync( new char[] { 'A', 'B', 'C' }, null ) );
 			}
 		}
+
 		[Test]
 		public async Task TestPackStringAsync_String_NotNull()
 		{
@@ -9849,5 +9854,8 @@ namespace MsgPack
 				Assert.Throws<ArgumentNullException>( async () => await target.PackStringAsync( "ABC", null ) );
 			}
 		}
+
+#endif // FEATURE_TAP
+
 	}
 }

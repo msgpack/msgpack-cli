@@ -184,6 +184,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\AbstractSerializers\ActionType.cs" />
+    <Compile Include="Serialization\AbstractSerializers\CachedDelegateInfo.cs" />
     <Compile Include="Serialization\AbstractSerializers\FieldDefinition.cs" />
     <Compile Include="Serialization\AbstractSerializers\DynamicUnpackingContext.cs" />
     <Compile Include="Serialization\AbstractSerializers\FieldName.cs" />
@@ -492,6 +493,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackHelpers.direct.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\UnpackHelpers.facade.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackHelpers.facade.tt</DependentUpon>
+    </Compile>
     <Compile Include="SetOperation.cs" />
     <Compile Include="StreamPacker.cs" />
     <Compile Include="StringEscape.cs" />
@@ -626,6 +632,10 @@
     <Content Include="PackerUnpackerExtensions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PackerUnpackerExtensions.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\UnpackHelpers.facade.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackHelpers.facade.cs</LastGenOutput>
     </Content>
     <Content Include="Serialization\DefaultSerializers\SimdTypeSerializers.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

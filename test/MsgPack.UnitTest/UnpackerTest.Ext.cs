@@ -5294,6 +5294,8 @@ namespace MsgPack
 			}
 		}
 
+#if FEATURE_TAP
+
 		[Test]
 		public async Task TestReadAsync_FixExt1_AndBinaryLengthIs1JustLength_Success()
 		{
@@ -10683,5 +10685,8 @@ namespace MsgPack
 				Assert.That( result.Body.Length, Is.EqualTo( 65536 ) );
 			}
 		}
+
+#endif // FEATURE_TAP
+
 	}
 }

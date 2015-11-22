@@ -115,6 +115,14 @@ namespace MsgPack
 <#
 foreach( var isAsync in new [] { false, true } )
 {
+	if ( isAsync )
+	{
+#>
+
+#if FEATURE_TAP
+<#
+	}
+
 	foreach( var testSituation in testSituations )
 	{
 		foreach( var testCase in strVariations )
@@ -127,6 +135,15 @@ foreach( var isAsync in new [] { false, true } )
 		{
 			PutTest( testSituation, testCase, false, isAsync );
 		}
+	}
+
+	if ( isAsync )
+	{
+#>
+
+#endif // FEATURE_TAP
+
+<#
 	}
 }
 #>

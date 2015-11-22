@@ -26,6 +26,10 @@ using System;
 #if !UNITY
 using System.Collections;
 #endif // !UNITY
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.CollectionSerializers;
 using MsgPack.Serialization.Polymorphic;
@@ -99,6 +103,27 @@ namespace MsgPack.Serialization.DefaultSerializers
 					this._concreteSerializer.UnpackFrom( unpacker );
 			}
 		}
+
+#if FEATURE_TAP
+
+		protected internal override async Task<TCollection> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			var polymorPhicSerializer = this._concreteSerializer as IPolymorphicDeserializer;
+			if ( polymorPhicSerializer != null )
+			{
+				return
+					( TCollection )
+						( await polymorPhicSerializer.PolymorphicUnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false ) );
+			}
+			else
+			{
+				return
+					( TCollection )
+						( await this._concreteSerializer.UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false ) );
+			}
+		}
+
+#endif // FEATURE_TAP
 
 #if !UNITY
 		protected override TCollection CreateInstance( int initialCapacity )

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -34,6 +34,10 @@ using Contract = MsgPack.MPContract;
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
 #endif // !UNITY
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization
 {
@@ -68,7 +72,7 @@ namespace MsgPack.Serialization
 			Packer packer,
 			TObject target,
 			IList<Action<Packer, TObject>> operations
-			)
+		)
 		{
 			if ( packer == null )
 			{
@@ -91,6 +95,58 @@ namespace MsgPack.Serialization
 				operation( packer, target );
 			}
 		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Packs object to msgpack array.
+		/// </summary>
+		/// <typeparam name="TObject">The type of the packing object.</typeparam>
+		/// <param name="packer">The packer.</param>
+		/// <param name="target">The object to be packed.</param>
+		/// <param name="operations">
+		///		Delegates each ones unpack single member in order.
+		///		The 1st argument will be <paramref name="packer"/> and 2nd argument will be <paramref name="target"/>.
+		/// </param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+		/// <returns>The unpacked object.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="packer"/> is <c>null</c>.
+		///		Or, <paramref name="operations"/> is <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static async Task PackToArrayAsync<TObject>(
+			Packer packer,
+			TObject target,
+			IList<Func<Packer, TObject, CancellationToken, Task>> operations,
+			CancellationToken cancellationToken
+		)
+		{
+			if ( packer == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "packer" );
+			}
+
+			if ( operations == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "operations" );
+			}
+
+#if DEBUG && !UNITY
+			Contract.Assert( packer != null );
+			Contract.Assert( operations != null );
+#endif // DEBUG && !UNITY
+
+			await packer.PackArrayHeaderAsync( operations.Count, cancellationToken ).ConfigureAwait( false );
+			foreach ( var operation in operations )
+			{
+				await operation( packer, target, cancellationToken ).ConfigureAwait( false );
+			}
+		}
+
+#endif // FEATURE_TAP
 
 		/// <summary>
 		///		Packs object to msgpack map.
@@ -137,5 +193,58 @@ namespace MsgPack.Serialization
 				operation.Value( packer, target );
 			}
 		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Packs object to msgpack map.
+		/// </summary>
+		/// <typeparam name="TObject">The type of the packing object.</typeparam>
+		/// <param name="packer">The packer.</param>
+		/// <param name="target">The object to be packed.</param>
+		/// <param name="operations">
+		///		Delegates table each ones unpack single member and their keys correspond to unpacking membmer names.
+		///		The 1st argument will be <paramref name="packer"/> and 2nd argument will be <paramref name="target"/>.
+		/// </param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="packer"/> is <c>null</c>.
+		///		Or, <paramref name="operations"/> is <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static async Task PackToMapAsync<TObject>(
+			Packer packer,
+			TObject target,
+			IDictionary<string, Func<Packer, TObject, CancellationToken, Task>> operations,
+			CancellationToken cancellationToken
+		)
+		{
+			if ( packer == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( operations == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "operations" );
+			}
+
+#if DEBUG && !UNITY
+			Contract.Assert( packer != null );
+			Contract.Assert( operations != null );
+#endif // DEBUG && !UNITY
+
+			await packer.PackMapHeaderAsync( operations.Count, cancellationToken ).ConfigureAwait( false );
+			foreach ( var operation in operations )
+			{
+				await packer.PackStringAsync( operation.Key, cancellationToken ).ConfigureAwait( false );
+				await operation.Value( packer, target, cancellationToken ).ConfigureAwait( false );
+			}
+		}
+
+#endif // FEATURE_TAP
+
 	}
 }

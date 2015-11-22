@@ -87,16 +87,31 @@ namespace MsgPack
 <#
 foreach ( var isAsync in new [] { false, true } )
 {
+	if ( isAsync )
+	{
+#>
+
+#if FEATURE_TAP
+<#
+	}
+
 	foreach ( var testCase in fixVariations )
 	{
 		PutTest( testCase.Item1, testCase.Item2, null, testCase.Item3, isAsync );
-		// FIXME: Invalid Type Code
 	}
 
 	foreach ( var testCase in variableVariations )
 	{
 		PutTest( testCase.Item1, testCase.Item2, testCase.Item3, testCase.Item4, isAsync );
-		// FIXME: Invalid Type Code
+	}
+
+	if ( isAsync )
+	{
+#>
+
+#endif // FEATURE_TAP
+
+<#
 	}
 }
 #>

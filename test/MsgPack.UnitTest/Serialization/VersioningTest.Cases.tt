@@ -135,7 +135,7 @@ namespace MsgPack.Serialization
 <#
 foreach( var __method in new []{ "Array", "Map" } )
 {
-	foreach( var __flavor in new [] { "Field", "Expression" } )
+	foreach( var __flavor in new [] { "Field", "Expression", "CodeDom" } )
 	{
 		if ( __flavor == "Expression" )
 		{

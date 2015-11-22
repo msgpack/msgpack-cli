@@ -662,6 +662,9 @@
     <Compile Include="..\MsgPack\Serialization\UnpackHelpers.direct.cs">
       <Link>Serialization\UnpackHelpers.direct.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\UnpackHelpers.facade.cs">
+      <Link>Serialization\UnpackHelpers.facade.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\SetOperation.cs">
       <Link>SetOperation.cs</Link>
     </Compile>

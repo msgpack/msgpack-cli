@@ -26,6 +26,10 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Runtime.Serialization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.CollectionSerializers
 {
@@ -75,6 +79,42 @@ namespace MsgPack.Serialization.CollectionSerializers
 				this.ItemSerializer.PackTo( packer, item );
 			}
 		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Serializes specified object with specified <see cref="Packer"/> asynchronously.
+		/// </summary>
+		/// <param name="packer"><see cref="Packer"/> which packs values in <paramref name="objectTree"/>. This value will not be <c>null</c>.</param>
+		/// <param name="objectTree">Object to be serialized.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to serialize object.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		<typeparamref name="TCollection"/> is not serializable even if it can be deserialized.
+		/// </exception>
+		/// <seealso cref="P:Capabilities"/>
+		protected internal sealed override async Task PackToAsyncCore( Packer packer, TCollection objectTree, CancellationToken cancellationToken )
+		{
+			ICollection asICollection;
+			if ( ( asICollection = objectTree as ICollection ) == null )
+			{
+				asICollection = objectTree.Cast<object>().ToArray();
+			}
+
+			await packer.PackArrayHeaderAsync( asICollection.Count, cancellationToken ).ConfigureAwait( false );
+
+			foreach ( var item in asICollection )
+			{
+				await this.ItemSerializer.PackToAsync( packer, item, cancellationToken ).ConfigureAwait( false );
+			}
+		}
+
+#endif // FEATURE_TAP
 	}
 
 #if UNITY

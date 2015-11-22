@@ -52,6 +52,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			packer.PackRawBody( objectTree.Array.Skip( objectTree.Offset ).Take( objectTree.Count ) );
 		}
 
+#warning TODO: Async for DefaultSerializers and ReflectionSerializers
+
 		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemSerializer", Justification = "For Delegate signature compatibility" )]
 #if !UNITY
 		public static void PackCharArraySegmentTo( Packer packer, ArraySegment<char> objectTree, MessagePackSerializer<char> itemSerializer )

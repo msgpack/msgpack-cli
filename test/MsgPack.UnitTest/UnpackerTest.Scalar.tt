@@ -113,6 +113,7 @@ namespace MsgPack
 	// This file was generated from UnpackerTest.Scalar.tt T4Template.
 	// Do not modify this file. Edit UnpackerTest.Scalar.tt instead.
 
+	#warning TODO: Read int and unpack as real and vice versa.
 	[TestFixture]
 	[Timeout( 500 )]
 	public class UnpackerTest_Scalar
@@ -120,6 +121,14 @@ namespace MsgPack
 <#
 foreach( var isAsync in new [] { false, true } )
 {
+	if ( isAsync )
+	{
+#>
+
+#if FEATURE_TAP
+<#
+	}
+
 	foreach( var __testCase in __integers )
 	{
 #>
@@ -478,6 +487,15 @@ foreach( var isAsync in new [] { false, true } )
 		}
 <#
 	} // foreach( var __scalarType
+
+	if ( isAsync )
+	{
+#>
+
+#endif // FEATURE_TAP
+
+<#
+	}
 } // foreach( var isAsync
 #>
 	}

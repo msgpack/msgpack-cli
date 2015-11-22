@@ -106,6 +106,14 @@ namespace MsgPack
 <#
 foreach( var isAsync in new [] { false, true } )
 {
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+
+<#
+	}
+
 	foreach( var __numeric in __numerics )
 	{
 #>
@@ -207,7 +215,15 @@ foreach( var isAsync in new [] { false, true } )
 				);
 			}
 		}
+
 <#
+	if ( isAsync )
+	{
+#>
+#endif // FEATURE_TAP
+
+<#
+	}
 } // foreach( var isAsync
 #>
 	}

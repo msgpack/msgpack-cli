@@ -74,6 +74,13 @@ namespace MsgPack
 <#
 foreach( var isAsync in new [] { false, true } )
 {
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+
+<#
+	}
 #>
 		[Test]
 		public <#= AsyncTest( "Read", isAsync ) #>_ScalarSequence_AsIs()
@@ -823,7 +830,14 @@ foreach( var isAsync in new [] { false, true } )
 		}
 
 <#
-}
+	if ( isAsync )
+	{
+#>
+#endif // FEATURE_TAP
+
+<#
+	}
+} // foreach(isAsync)
 #>
 	}
 }

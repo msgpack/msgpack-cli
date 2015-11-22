@@ -20,6 +20,10 @@
 
 using System;
 using System.Globalization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.Polymorphic
 {
@@ -78,6 +82,15 @@ namespace MsgPack.Serialization.Polymorphic
 		{
 			return this.UnpackFromCore( unpacker );
 		}
+
+#if FEATURE_TAP
+
+		async Task<object> IPolymorphicDeserializer.PolymorphicUnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			return await this.UnpackFromAsyncCore( unpacker, cancellationToken ).ConfigureAwait( false );
+		}
+
+#endif // FEATURE_TAP
 
 		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
 		{

@@ -29,60 +29,67 @@ using System.Reflection;
 
 namespace MsgPack.Serialization.Metadata
 {
-	// This file was generated from _Unpacker.Read.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit _Unpacker.Read.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from _UnpackHelpers.direct.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit _UnpackHelpers.direct.tt and StreamingUnapkcerBase.ttinclude instead.
 
 	partial class _UnpackHelpers
 	{
-		private static readonly Dictionary<Type, MethodInfo> _directUnpackMethods = GetDirectUnpackMethods();
+		private static readonly Dictionary<Type, MethodInfo> _directUnpackMethods = GetDirectUnpackMethods( false );
+		private static readonly Dictionary<Type, MethodInfo> _asyncDirectUnpackMethods =
+#if FEATURE_TAP
+		 GetDirectUnpackMethods( true );
+#else
+		_directUnpackMethods;
+#endif // FEATURE_TAP
 
-		private static Dictionary<Type, MethodInfo> GetDirectUnpackMethods()
+		private static Dictionary<Type, MethodInfo> GetDirectUnpackMethods( bool forAsync )
 		{
+			var suffix = forAsync ? "ValueAsync" : "Value";
 			return
 				new Dictionary<Type, MethodInfo>( 14 )
 				{
 			
-					{ typeof( SByte ), typeof( UnpackHelpers ).GetMethod( "UnpackSByteValue" ) },
-					{ typeof( SByte? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableSByteValue" ) },
+					{ typeof( SByte ), typeof( UnpackHelpers ).GetMethod( "UnpackSByte" + suffix ) },
+					{ typeof( SByte? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableSByte" + suffix ) },
 			
-					{ typeof( Int16 ), typeof( UnpackHelpers ).GetMethod( "UnpackInt16Value" ) },
-					{ typeof( Int16? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableInt16Value" ) },
+					{ typeof( Int16 ), typeof( UnpackHelpers ).GetMethod( "UnpackInt16" + suffix ) },
+					{ typeof( Int16? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableInt16" + suffix ) },
 			
-					{ typeof( Int32 ), typeof( UnpackHelpers ).GetMethod( "UnpackInt32Value" ) },
-					{ typeof( Int32? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableInt32Value" ) },
+					{ typeof( Int32 ), typeof( UnpackHelpers ).GetMethod( "UnpackInt32" + suffix ) },
+					{ typeof( Int32? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableInt32" + suffix ) },
 			
-					{ typeof( Int64 ), typeof( UnpackHelpers ).GetMethod( "UnpackInt64Value" ) },
-					{ typeof( Int64? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableInt64Value" ) },
+					{ typeof( Int64 ), typeof( UnpackHelpers ).GetMethod( "UnpackInt64" + suffix ) },
+					{ typeof( Int64? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableInt64" + suffix ) },
 			
-					{ typeof( Byte ), typeof( UnpackHelpers ).GetMethod( "UnpackByteValue" ) },
-					{ typeof( Byte? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableByteValue" ) },
+					{ typeof( Byte ), typeof( UnpackHelpers ).GetMethod( "UnpackByte" + suffix ) },
+					{ typeof( Byte? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableByte" + suffix ) },
 			
-					{ typeof( UInt16 ), typeof( UnpackHelpers ).GetMethod( "UnpackUInt16Value" ) },
-					{ typeof( UInt16? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableUInt16Value" ) },
+					{ typeof( UInt16 ), typeof( UnpackHelpers ).GetMethod( "UnpackUInt16" + suffix ) },
+					{ typeof( UInt16? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableUInt16" + suffix ) },
 			
-					{ typeof( UInt32 ), typeof( UnpackHelpers ).GetMethod( "UnpackUInt32Value" ) },
-					{ typeof( UInt32? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableUInt32Value" ) },
+					{ typeof( UInt32 ), typeof( UnpackHelpers ).GetMethod( "UnpackUInt32" + suffix ) },
+					{ typeof( UInt32? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableUInt32" + suffix ) },
 			
-					{ typeof( UInt64 ), typeof( UnpackHelpers ).GetMethod( "UnpackUInt64Value" ) },
-					{ typeof( UInt64? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableUInt64Value" ) },
+					{ typeof( UInt64 ), typeof( UnpackHelpers ).GetMethod( "UnpackUInt64" + suffix ) },
+					{ typeof( UInt64? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableUInt64" + suffix ) },
 			
-					{ typeof( Single ), typeof( UnpackHelpers ).GetMethod( "UnpackSingleValue" ) },
-					{ typeof( Single? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableSingleValue" ) },
+					{ typeof( Single ), typeof( UnpackHelpers ).GetMethod( "UnpackSingle" + suffix ) },
+					{ typeof( Single? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableSingle" + suffix ) },
 			
-					{ typeof( Double ), typeof( UnpackHelpers ).GetMethod( "UnpackDoubleValue" ) },
-					{ typeof( Double? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableDoubleValue" ) },
+					{ typeof( Double ), typeof( UnpackHelpers ).GetMethod( "UnpackDouble" + suffix ) },
+					{ typeof( Double? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableDouble" + suffix ) },
 			
-					{ typeof( Boolean ), typeof( UnpackHelpers ).GetMethod( "UnpackBooleanValue" ) },
-					{ typeof( Boolean? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableBooleanValue" ) },
-					{ typeof( string ), typeof( UnpackHelpers ).GetMethod( "UnpackStringValue" ) },
-					{ typeof( byte[] ), typeof( UnpackHelpers ).GetMethod( "UnpackBinaryValue" ) },
+					{ typeof( Boolean ), typeof( UnpackHelpers ).GetMethod( "UnpackBoolean" + suffix ) },
+					{ typeof( Boolean? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableBoolean" + suffix ) },
+					{ typeof( string ), typeof( UnpackHelpers ).GetMethod( "UnpackString" + suffix ) },
+					{ typeof( byte[] ), typeof( UnpackHelpers ).GetMethod( "UnpackBinary" + suffix ) },
 				};
 		}
 
-		public static MethodInfo GetDirectUnpackMethod( Type type )
+		public static MethodInfo GetDirectUnpackMethod( Type type, bool forAsync )
 		{
 			MethodInfo result;
-			if ( _directUnpackMethods.TryGetValue( type, out result ) )
+			if ( ( forAsync ? _asyncDirectUnpackMethods : _directUnpackMethods ).TryGetValue( type, out result ) )
 			{
 #if DEBUG
 				Contract.Assert( result != null, "Failed to initialize value for " + type );

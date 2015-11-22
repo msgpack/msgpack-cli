@@ -22,14 +22,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+#if FEATURE_TAP
+using System.Threading;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
 	internal class DynamicUnpackingContext
 	{
 		internal static readonly ConstructorInfo Constructor =
-			typeof( DynamicUnpackingContext ).GetConstructors().Single();
+			typeof( DynamicUnpackingContext ).GetConstructors().Single( c => c.GetParameters().Length == 1 );
 
+#if FEATURE_TAP
+		internal static readonly ConstructorInfo ConstructorForAsync =
+			typeof( DynamicUnpackingContext ).GetConstructors().Single( c => c.GetParameters().Length == 2 );
+
+#endif // FEATURE_TAP
 		private readonly Dictionary<string, object> _bag;
 
 		public object Get( string key )
@@ -44,9 +52,27 @@ namespace MsgPack.Serialization.AbstractSerializers
 			this._bag[ key ] = value;
 		}
 
+#if FEATURE_TAP
+
+		public CancellationToken CancellationToken
+		{
+			get; 
+			private set;
+		}
+
+#endif // FEATURE_TAP
+
 		public DynamicUnpackingContext( int capacity )
 		{
 			this._bag = new Dictionary<string, object>( capacity );
 		}
+
+#if FEATURE_TAP
+		public DynamicUnpackingContext( int capacity, CancellationToken cancellationToken )
+			:this( capacity )
+		{
+			this.CancellationToken = cancellationToken;
+		}
+#endif // FEATURE_TAP
 	}
 }

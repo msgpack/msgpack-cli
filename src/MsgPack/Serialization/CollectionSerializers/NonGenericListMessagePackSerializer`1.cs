@@ -25,6 +25,10 @@
 using System;
 using System.Collections;
 using System.Runtime.Serialization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.CollectionSerializers
 {
@@ -88,6 +92,49 @@ namespace MsgPack.Serialization.CollectionSerializers
 			this.UnpackToCore( unpacker, collection, itemsCount );
 			return collection;
 		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Deserializes object with specified <see cref="Unpacker"/> asynchronously.
+		/// </summary>
+		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains the deserialized object.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to deserialize object.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		Failed to deserialize object due to invalid stream.
+		/// </exception>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Failed to deserialize object due to invalid stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		<typeparamref name="TList"/> is not serializable even if it can be serialized.
+		/// </exception>
+		/// <seealso cref="P:Capabilities"/>
+		protected internal override Task<TList> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			return this.InternalUnpackFromAsyncCore( unpacker, cancellationToken );
+		}
+
+		internal virtual Task<TList> InternalUnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+			var collection = this.CreateInstance( itemsCount );
+			return this.InternalUnpackToAsyncCore( unpacker, collection, itemsCount, cancellationToken );
+		}
+
+#endif // FEATURE_TAP
 
 		/// <summary>
 		///		Adds the deserialized item to the collection on <typeparamref name="TList"/> specific manner

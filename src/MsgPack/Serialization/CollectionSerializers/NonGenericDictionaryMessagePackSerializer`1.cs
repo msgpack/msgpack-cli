@@ -25,6 +25,10 @@
 using System;
 using System.Collections;
 using System.Runtime.Serialization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.CollectionSerializers
 {
@@ -82,6 +86,36 @@ namespace MsgPack.Serialization.CollectionSerializers
 			}
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Serializes specified object with specified <see cref="Packer"/> asynchronously.
+		/// </summary>
+		/// <param name="packer"><see cref="Packer"/> which packs values in <paramref name="objectTree"/>. This value will not be <c>null</c>.</param>
+		/// <param name="objectTree">Object to be serialized.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to serialize object.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		<typeparamref name="TDictionary"/> is not serializable even if it can be deserialized.
+		/// </exception>
+		/// <seealso cref="P:Capabilities"/>
+		protected internal override async Task PackToAsyncCore( Packer packer, TDictionary objectTree, CancellationToken cancellationToken )
+		{
+			await packer.PackMapHeaderAsync( objectTree.Count, cancellationToken ).ConfigureAwait( false );
+			foreach ( DictionaryEntry item in objectTree )
+			{
+				await this._keySerializer.PackToAsync( packer, item.Key, cancellationToken ).ConfigureAwait( false );
+				await this._valueSerializer.PackToAsync( packer, item.Value, cancellationToken ).ConfigureAwait( false );
+			}
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Deserializes object with specified <see cref="Unpacker"/>.
 		/// </summary>
@@ -120,6 +154,49 @@ namespace MsgPack.Serialization.CollectionSerializers
 			this.UnpackToCore( unpacker, collection, itemsCount );
 			return collection;
 		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Deserializes object with specified <see cref="Unpacker"/> asynchronously.
+		/// </summary>
+		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains the deserialized object.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to deserialize object.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		Failed to deserialize object due to invalid stream.
+		/// </exception>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Failed to deserialize object due to invalid stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		<typeparamref name="TDictionary"/> is not serializable even if it can be serialized.
+		/// </exception>
+		/// <seealso cref="P:Capabilities"/>
+		protected internal override Task<TDictionary> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsMapHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			return this.InternalUnpackFromAsyncCore( unpacker, cancellationToken );
+		}
+
+		internal virtual Task<TDictionary> InternalUnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+			var collection = this.CreateInstance( itemsCount );
+			return this.UnpackToAsyncCore( unpacker, collection, itemsCount, cancellationToken );
+		}
+
+#endif // FEATURE_TAP
 
 		/// <summary>
 		///		Creates a new collection instance with specified initial capacity.
@@ -210,6 +287,89 @@ namespace MsgPack.Serialization.CollectionSerializers
 				collection.Add( key, value );
 			}
 		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Deserializes collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/> asynchronously.
+		/// </summary>
+		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
+		/// <param name="collection">Collection that the items to be stored. This value will not be <c>null</c>.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to deserialize object.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		Failed to deserialize object due to invalid stream.
+		/// </exception>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Failed to deserialize object due to invalid stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		<typeparamref name="TDictionary"/> is not mutable collection.
+		/// </exception>
+		/// <seealso cref="P:Capabilities"/>
+		protected internal sealed override Task UnpackToAsyncCore( Unpacker unpacker, TDictionary collection, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsMapHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			return this.UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+		}
+
+		private async Task<TDictionary> UnpackToAsyncCore( Unpacker unpacker, TDictionary collection, int itemsCount, CancellationToken cancellationToken )
+		{
+			for ( int i = 0; i < itemsCount; i++ )
+			{
+				if ( !unpacker.Read() )
+				{
+					SerializationExceptions.ThrowMissingKey( i, unpacker );
+				}
+
+				object key;
+				if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+				{
+					key = await this._keySerializer.UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false );
+				}
+				else
+				{
+					using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+					{
+						key = await this._keySerializer.UnpackFromAsync( subtreeUnpacker, cancellationToken ).ConfigureAwait( false );
+					}
+				}
+
+				if ( !unpacker.Read() )
+				{
+					SerializationExceptions.ThrowMissingItem( i, unpacker );
+				}
+
+				object value;
+				if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+				{
+					value = await this._valueSerializer.UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false );
+				}
+				else
+				{
+					using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+					{
+						value = await this._valueSerializer.UnpackFromAsync( subtreeUnpacker, cancellationToken ).ConfigureAwait( false );
+					}
+				}
+
+				collection.Add( key, value );
+			}
+
+			return collection;
+		}
+
+
+#endif // FEATURE_TAP
 	}
 
 #if UNITY

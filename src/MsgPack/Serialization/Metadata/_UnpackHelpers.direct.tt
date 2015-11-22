@@ -49,15 +49,22 @@ using System.Reflection;
 
 namespace MsgPack.Serialization.Metadata
 {
-	// This file was generated from _Unpacker.Read.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit _Unpacker.Read.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from _UnpackHelpers.direct.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit _UnpackHelpers.direct.tt and StreamingUnapkcerBase.ttinclude instead.
 
 	partial class _UnpackHelpers
 	{
-		private static readonly Dictionary<Type, MethodInfo> _directUnpackMethods = GetDirectUnpackMethods();
+		private static readonly Dictionary<Type, MethodInfo> _directUnpackMethods = GetDirectUnpackMethods( false );
+		private static readonly Dictionary<Type, MethodInfo> _asyncDirectUnpackMethods =
+#if FEATURE_TAP
+		 GetDirectUnpackMethods( true );
+#else
+		_directUnpackMethods;
+#endif // FEATURE_TAP
 
-		private static Dictionary<Type, MethodInfo> GetDirectUnpackMethods()
+		private static Dictionary<Type, MethodInfo> GetDirectUnpackMethods( bool forAsync )
 		{
+			var suffix = forAsync ? "ValueAsync" : "Value";
 			return
 				new Dictionary<Type, MethodInfo>( <#= _valueTypes.Length + 3 #> )
 				{
@@ -67,20 +74,20 @@ foreach( var type in _valueTypes )
 	// NOTE: Allways use nullable version for nil implication.
 #>
 			
-					{ typeof( <#= type.Name #> ), typeof( UnpackHelpers ).GetMethod( "Unpack<#= type.Name #>Value" ) },
-					{ typeof( <#= type.Name #>? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullable<#= type.Name #>Value" ) },
+					{ typeof( <#= type.Name #> ), typeof( UnpackHelpers ).GetMethod( "Unpack<#= type.Name #>" + suffix ) },
+					{ typeof( <#= type.Name #>? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullable<#= type.Name #>" + suffix ) },
 <#
 }
 #>
-					{ typeof( string ), typeof( UnpackHelpers ).GetMethod( "UnpackStringValue" ) },
-					{ typeof( byte[] ), typeof( UnpackHelpers ).GetMethod( "UnpackBinaryValue" ) },
+					{ typeof( string ), typeof( UnpackHelpers ).GetMethod( "UnpackString" + suffix ) },
+					{ typeof( byte[] ), typeof( UnpackHelpers ).GetMethod( "UnpackBinary" + suffix ) },
 				};
 		}
 
-		public static MethodInfo GetDirectUnpackMethod( Type type )
+		public static MethodInfo GetDirectUnpackMethod( Type type, bool forAsync )
 		{
 			MethodInfo result;
-			if ( _directUnpackMethods.TryGetValue( type, out result ) )
+			if ( ( forAsync ? _asyncDirectUnpackMethods : _directUnpackMethods ).TryGetValue( type, out result ) )
 			{
 #if DEBUG
 				Contract.Assert( result != null, "Failed to initialize value for " + type );

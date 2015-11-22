@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2015 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,6 +24,9 @@ using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
+#if FEATURE_TAP
+using System.Threading;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -35,23 +38,49 @@ namespace MsgPack.Serialization.AbstractSerializers
 			var underlyingType = Enum.GetUnderlyingType( typeof( TObject ) );
 			Contract.Assert( underlyingType != null, "Underlying type of " + typeof( TObject ) + " is null." );
 
-			this.BuildPackUnderlyingValueTo( context, underlyingType );
+			this.BuildPackUnderlyingValueTo( context, underlyingType, false );
 			this.BuildUnpackFromUnderlyingValue( context, underlyingType );
+
+#if FEATURE_TAP
+			if ( this.WithAsync( context ) )
+			{
+				this.BuildPackUnderlyingValueTo( context, underlyingType, true );
+			}
+#endif // FEATURE_TAP
 		}
 
-		private void BuildPackUnderlyingValueTo( TContext context, Type underlyingType )
+		private void BuildPackUnderlyingValueTo( TContext context, Type underlyingType, bool isAsync )
 		{
-			context.BeginMethodOverride( MethodName.PackUnderlyingValueTo );
+			var methodName =
+#if FEATURE_TAP
+				 isAsync ? MethodName.PackUnderlyingValueToAsync :
+#endif // FEATURE_TAP
+				 MethodName.PackUnderlyingValueTo;
 
-			context.EndMethodOverride(
-				MethodName.PackUnderlyingValueTo,
-				this.EmitInvokeVoidMethod(
-					context,
-					this.ReferArgument( context, typeof( Packer ), "packer", 1 ),
-					typeof( Packer ).GetMethod( "Pack", new[] { underlyingType } ),
-					this.EmitEnumToUnderlyingCastExpression( context, underlyingType, this.ReferArgument( context, typeof( TObject ), "enumValue", 2 ) )
-				)
-			);
+			context.BeginMethodOverride( methodName );
+
+			var invocation =
+#if FEATURE_TAP
+				isAsync
+					? this.EmitRetrunStatement(
+						context,
+						this.EmitInvokeMethodExpression(
+							context,
+							this.ReferArgument( context, typeof( Packer ), "packer", 1 ),
+							typeof( Packer ).GetMethod( "PackAsync", new[] { underlyingType, typeof( CancellationToken) } ),
+							this.EmitEnumToUnderlyingCastExpression( context, underlyingType, this.ReferArgument( context, typeof( TObject ), "enumValue", 2 ) ),
+							this.ReferArgument( context, typeof( CancellationToken ), "cancellationToken", 3 )
+						)
+					) :
+#endif // FEATURE_TAP
+					this.EmitInvokeVoidMethod(
+						context,
+						this.ReferArgument( context, typeof( Packer ), "packer", 1 ),
+						typeof( Packer ).GetMethod( "Pack", new[] { underlyingType } ),
+						this.EmitEnumToUnderlyingCastExpression( context, underlyingType, this.ReferArgument( context, typeof( TObject ), "enumValue", 2 ) )
+					);
+
+			context.EndMethodOverride( methodName, invocation);
 		}
 
 		private void BuildUnpackFromUnderlyingValue( TContext context, Type underlyingType )

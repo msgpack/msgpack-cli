@@ -138,7 +138,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// </returns>
 		public TConstruct InitialCapacity { get; protected set; }
 
-
 		/// <summary>
 		///		Gets the code construct which represents the unpacking context for unpacking operations.
 		/// </summary>
@@ -147,6 +146,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		This value is initialized in <see cref="DefineUnpackingContext"/>.
 		/// </value>
 		public TConstruct UnpackingContextInUnpackValueMethods { get; private set; }
+
+		/// <summary>
+		///		Gets the code construct which represents the unpacking context for unpacking operations.
+		/// </summary>
+		/// <value>
+		///		The code construct which represents the the unpacking context for unpacking operations.
+		///		This value is initialized in <see cref="DefineUnpackingContext"/>.
+		/// </value>
+		public TConstruct UnpackingContextInSetValueMethods { get; private set; }
 
 		/// <summary>
 		///		Gets the code construct which represents the unpacking context for CreateObjectFromContext method.
@@ -165,6 +173,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		This value will not be <c>null</c>.
 		/// </value>
 		public TConstruct IndexOfItem { get; protected set; }
+
+		/// <summary>
+		///		Gets the code construct which represents the count of unpacking items in the source array or map.
+		/// </summary>
+		/// <value>
+		///		The code construct which represents the count of unpacking items in the source array or map.
+		///		This value will not be <c>null</c>.
+		/// </value>
+		public TConstruct ItemsCount { get; protected set; }
 
 		/// <summary>
 		///		Gets the configured nil-implication for collection items.
@@ -207,8 +224,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 			MethodDefinition method;
 			if ( !this._declaredMethods.TryGetValue( name, out method ) )
 			{
-				throw new InvalidOperationException( 
-					String.Format( 
+				throw new InvalidOperationException(
+					String.Format(
 						CultureInfo.CurrentCulture,
 						"Method '{0}' is not declared yet.",
 						name
@@ -254,6 +271,36 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return field;
 		}
 
+		private readonly IDictionary<string, CachedDelegateInfo> _cachedDelegateInfos;
+
+		public FieldDefinition GetCachedPrivateMethodDelegate( MethodDefinition method, TypeDefinition delegateType )
+		{
+			return this.GetCachedDelegateCore( method, delegateType, "this", true );
+		}
+
+		public FieldDefinition GetCachedStaticMethodDelegate( MethodDefinition method, TypeDefinition delegateType )
+		{
+			return this.GetCachedDelegateCore( method, delegateType, method.DeclaringType.TypeName, false );
+		}
+
+		private FieldDefinition GetCachedDelegateCore( MethodDefinition method, TypeDefinition delegateType, string prefix, bool isThis )
+		{
+			var key = prefix + "." + method.MethodName;
+			CachedDelegateInfo delegateInfo;
+			if ( !this._cachedDelegateInfos.TryGetValue( key, out delegateInfo ) )
+			{
+				delegateInfo = new CachedDelegateInfo( isThis, method, this.DeclarePrivateField( key.Replace( '.', '_' ) + "Delegate", delegateType ) );
+				this._cachedDelegateInfos.Add( key, delegateInfo );
+			}
+
+			return delegateInfo.BackingField;
+		}
+
+		public IEnumerable<CachedDelegateInfo> GetCachedDelegateInfos()
+		{
+			return this._cachedDelegateInfos.Values;
+		}
+
 		private KeyValuePair<TypeDefinition, ConstructorDefinition> _unpackingContextDefinition;
 
 		/// <summary>
@@ -288,6 +335,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			this.TupleItemNilImplication = NilImplication.Null;
 			this._declaredMethods = new Dictionary<string, MethodDefinition>();
 			this._declaredFields = new Dictionary<string, FieldDefinition>();
+			this._cachedDelegateInfos = new Dictionary<string, CachedDelegateInfo>();
 		}
 
 		/// <summary>
@@ -300,6 +348,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			this.ResetCore( targetType, baseClass );
 			this._declaredMethods.Clear();
 			this._declaredFields.Clear();
+			this._cachedDelegateInfos.Clear();
 			this._unpackingContextDefinition = default( KeyValuePair<TypeDefinition, ConstructorDefinition> );
 			this.IsUnpackToUsed = false;
 #if DEBUG
@@ -445,9 +494,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if DEBUG
 			this._lastUnpackingContextFields = fields.ToArray();
 #endif // DEBUG
-			TConstruct parameterInUnpackValueMethods, parameterInCreateObjectFromContext;
-			this.DefineUnpackingContextCore( fields, out type, out constructor, out parameterInUnpackValueMethods, out parameterInCreateObjectFromContext );
+			TConstruct parameterInUnpackValueMethods, parameterInSetValueMethods, parameterInCreateObjectFromContext;
+			this.DefineUnpackingContextCore( fields, out type, out constructor, out parameterInUnpackValueMethods, out parameterInSetValueMethods, out parameterInCreateObjectFromContext );
 			this.UnpackingContextInUnpackValueMethods = parameterInUnpackValueMethods;
+			this.UnpackingContextInSetValueMethods = parameterInSetValueMethods;
 			this.UnpackingContextInCreateObjectFromContext = parameterInCreateObjectFromContext;
 			this._unpackingContextDefinition = new KeyValuePair<TypeDefinition, ConstructorDefinition>( type, constructor );
 		}
@@ -464,12 +514,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		The constructor of the context.
 		/// </param>
 		/// <param name="parameterInUnpackValueMethods">The <paramref name="type"/> typed parameter for unpacking operations.</param>
+		/// <param name="parameterInSetValueMethods">The <paramref name="type"/> typed parameter for unpacking operations.</param>
 		/// <param name="parameterInCreateObjectFromContext">The <paramref name="type"/> typed parameter for CreateObjectFromContext method.</param>
 		protected abstract void DefineUnpackingContextCore(
 			IList<KeyValuePair<string, TypeDefinition>> fields,
 			out TypeDefinition type,
 			out ConstructorDefinition constructor,
 			out TConstruct parameterInUnpackValueMethods,
+			out TConstruct parameterInSetValueMethods,
 			out TConstruct parameterInCreateObjectFromContext
 		);
 
@@ -480,9 +532,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 		public TypeDefinition DefineUnpackingContextWithResultObject()
 		{
 			TypeDefinition type;
-			TConstruct parameterInUnpackValueMethods, parameterInCreateObjectFromContext;
-			this.DefineUnpackingContextWithResultObjectCore( out type,  out parameterInUnpackValueMethods, out parameterInCreateObjectFromContext );
+			TConstruct parameterInUnpackValueMethods, parameterInSetValueMethods, parameterInCreateObjectFromContext;
+			this.DefineUnpackingContextWithResultObjectCore( out type, out parameterInUnpackValueMethods, out parameterInSetValueMethods, out parameterInCreateObjectFromContext );
 			this.UnpackingContextInUnpackValueMethods = parameterInUnpackValueMethods;
+			this.UnpackingContextInSetValueMethods = parameterInSetValueMethods;
 			this.UnpackingContextInCreateObjectFromContext = parameterInCreateObjectFromContext;
 			this._unpackingContextDefinition = new KeyValuePair<TypeDefinition, ConstructorDefinition>( type, null );
 			return type;
@@ -496,11 +549,23 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Note that this type will be existing property bag or generated private type.
 		/// </param>
 		/// <param name="parameterInUnpackValueMethods">The <paramref name="type"/> typed parameter for unpacking operations.</param>
+		/// <param name="parameterInSetValueMethods">The <paramref name="type"/> typed parameter for unpacking operations.</param>
 		/// <param name="parameterInCreateObjectFromContext">The <paramref name="type"/> typed parameter for CreateObjectFromContext method.</param>
 		protected abstract void DefineUnpackingContextWithResultObjectCore(
 			out TypeDefinition type,
 			out TConstruct parameterInUnpackValueMethods,
+			out TConstruct parameterInSetValueMethods,
 			out TConstruct parameterInCreateObjectFromContext
 		);
+
+		/// <summary>
+		///		Defines the unpacked item parameter in set value methods.
+		/// </summary>
+		/// <param name="itemType">Type of the value.</param>
+		/// <returns>The parameter construct.</returns>
+		public abstract TConstruct DefineUnpackedItemParameterInSetValueMethods( TypeDefinition itemType );
 	}
+
+#warning TODO: Extract all generic nested
+#warning TODO: Builder should be non-generic for working set.
 }

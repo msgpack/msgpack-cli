@@ -429,6 +429,9 @@ namespace MsgPack
 				}
 			}
 		}
+
+#if FEATURE_TAP
+
 		[Test]
 		public async Task TestSkipAsync_Empty_Null()
 		{
@@ -815,6 +818,9 @@ namespace MsgPack
 				}
 			}
 		}
+
+#endif // FEATURE_TAP
+
 	}
 
 	// TODO: NLiblet

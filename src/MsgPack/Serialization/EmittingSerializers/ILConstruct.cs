@@ -216,11 +216,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		protected static void ValidateContextTypeMatch( ILConstruct left, ILConstruct right )
 		{
-			//if ( left.ContextType == typeof( Any ) || right.ContextType == typeof( Any ) )
-			//{
-			//	return;
-			//}
-
 			if ( GetNormalizedType( left.ContextType.ResolveRuntimeType() ) != GetNormalizedType( right.ContextType.ResolveRuntimeType() ) )
 			{
 				throw new ArgumentException(
@@ -231,7 +226,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 						right.ContextType
 						),
 					"right"
-					);
+				);
 			}
 		}
 
@@ -246,6 +241,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 			if ( type == typeof( float ) )
 			{
 				return typeof( double );
+			}
+
+			if ( type.GetIsEnum() )
+			{
+				return GetNormalizedType( Enum.GetUnderlyingType( type ) );
 			}
 
 			return type;

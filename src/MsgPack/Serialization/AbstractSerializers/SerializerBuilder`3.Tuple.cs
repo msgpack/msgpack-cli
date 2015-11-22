@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,6 +27,9 @@ using System.Diagnostics.Contracts;
 #endif // CORE_CLR
 using System.Linq;
 using System.Reflection;
+#if FEATURE_TAP
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.Reflection;
 
@@ -39,13 +42,28 @@ namespace MsgPack.Serialization.AbstractSerializers
 			var itemTypes = TupleItems.GetTupleItemTypes( typeof( TObject ) );
 			targetInfo = SerializationTarget.CreateForTuple( itemTypes );
 
-			this.BuildTuplePackTo( context, itemTypes, itemSchemaList );
-			this.BuildTupleUnpackFrom( context, itemTypes, itemSchemaList );
+			this.BuildTuplePackTo( context, itemTypes, itemSchemaList, false );
+
+#if FEATURE_TAP
+			if ( this.WithAsync( context ) )
+			{
+				this.BuildTuplePackTo( context, itemTypes, itemSchemaList, true );
+			}
+#endif // FEATURE_TAP
+
+			this.BuildTupleUnpackFrom( context, itemTypes, itemSchemaList, false );
+
+#if FEATURE_TAP
+			if ( this.WithAsync( context ) )
+			{
+				this.BuildTupleUnpackFrom( context, itemTypes, itemSchemaList, true );
+			}
+#endif // FEATURE_TAP
 		}
 
 		#region -- PackTo --
 
-		private void BuildTuplePackTo( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList )
+		private void BuildTuplePackTo( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList, bool isAsync )
 		{
 			/*
 				 packer.PackArrayHeader( cardinarity );
@@ -54,24 +72,36 @@ namespace MsgPack.Serialization.AbstractSerializers
 				 _serializer6.PackTo( packer, tuple.item7 );
 				 _serializer7.PackTo( packer, tuple.Rest.Item1 );
 			*/
+			var methodName = 
+#if FEATURE_TAP
+				isAsync ? MethodName.PackToAsyncCore : 
+#endif // FEATURE_TAP
+				MethodName.PackToCore;
 
-			context.BeginMethodOverride( MethodName.PackToCore );
+			context.BeginMethodOverride( methodName );
 			context.EndMethodOverride(
-				MethodName.PackToCore,
+				methodName,
 				this.EmitSequentialStatements(
 					context,
 					typeof( void ),
-					this.BuildTuplePackToCore( context, itemTypes, itemSchemaList )
+					this.BuildTuplePackToCore( context, itemTypes, itemSchemaList, isAsync )
 				)
 			);
 		}
 
-		private IEnumerable<TConstruct> BuildTuplePackToCore( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList )
+		private IEnumerable<TConstruct> BuildTuplePackToCore( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList, bool isAsync )
 		{
 			// Note: cardinality is put as array length by PackHelper.
 			var depth = -1;
 			var tupleTypeList = TupleItems.CreateTupleTypeList( itemTypes );
 			var propertyInvocationChain = new List<PropertyInfo>( itemTypes.Count % 7 + 1 );
+			var packValueArguments =
+				new[] { context.Packer, context.PackToTarget }
+#if FEATURE_TAP
+				.Concat( isAsync ? new[] { this.ReferCancellationToken( context, 3 ) } : NoConstructs ).ToArray()
+#endif // FEATURE_TAP
+				;
+
 			for ( int i = 0; i < itemTypes.Count; i++ )
 			{
 				if ( i % 7 == 0 )
@@ -94,12 +124,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if DEBUG
 				Contract.Assert(
 					itemNProperty != null,
-					tupleTypeList[ depth ].GetFullName() + "::Item" + ( ( i % 7 ) + 1 ) + " [ " + depth + " ] @ " + i );
+					tupleTypeList[ depth ].GetFullName() + "::Item" + ( ( i % 7 ) + 1 ) + " [ " + depth + " ] @ " + i
+				);
 #endif
 				var count = i;
-				this.EmitPrivateMethod(
+				this.ExtractPrivateMethod(
 					context,
-					MethodNamePrefix.PackValue + SerializationTarget.GetTupleItemNameFromIndex( i ),
+					AdjustName( MethodNamePrefix.PackValue + SerializationTarget.GetTupleItemNameFromIndex( i ), isAsync ),
+#if FEATURE_TAP
+					isAsync ? typeof( Task ) :
+#endif // FEATURE_TAP
 					typeof( void ),
 					() => this.EmitSequentialStatements(
 						context,
@@ -110,11 +144,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 							context.Packer,
 							context.PackToTarget,
 							propertyInvocationChain,
-							itemSchemaList.Count == 0 ? null : itemSchemaList[ count ]
+							itemSchemaList.Count == 0 ? null : itemSchemaList[ count ],
+							isAsync
 						)
 					),
-					context.Packer,
-					context.PackToTarget
+					packValueArguments
 				);
 
 				propertyInvocationChain.Clear();
@@ -125,22 +159,37 @@ namespace MsgPack.Serialization.AbstractSerializers
 				{
 					context.Packer,
 					context.PackToTarget,
-					this.EmitGetActionsExpression( context, ActionType.PackToArray )
-				};
+					this.EmitGetActionsExpression( context, ActionType.PackToArray, isAsync )
+				}
+#if FEATURE_TAP
+				.Concat( isAsync ? new[] { this.ReferCancellationToken( context, 3 ) } : NoConstructs ).ToArray()
+#endif // FEATURE_TAP
+				;
 
-			yield return
+			var packToArray =
 				this.EmitInvokeMethodExpression(
 					context,
 					null,
 					new MethodDefinition(
-						MethodName.PackToArray,
+						AdjustName( MethodName.PackToArray, isAsync ),
 						new [] { TypeDefinition.Object( typeof( TObject ) ) },
 						typeof( PackHelpers ),
+#if FEATURE_TAP
+						isAsync ? typeof( Task ) :
+#endif // FEATURE_TAP
 						typeof( void ),
 						packHelperArguments.Select( a => a.ContextType ).ToArray()
 					),
 					packHelperArguments
 				);
+
+			if ( isAsync )
+			{
+				// Wrap with return to return Task
+				packToArray = this.EmitRetrunStatement( context, packToArray );
+			}
+
+			yield return packToArray;
 		}
 
 		private IEnumerable<TConstruct> EmitPackTupleItemStatements(
@@ -149,7 +198,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct currentPacker,
 			TConstruct tuple,
 			IEnumerable<PropertyInfo> propertyInvocationChain,
-			PolymorphismSchema itemsSchema
+			PolymorphismSchema itemsSchema,
+			bool isAsync
 		)
 		{
 			return
@@ -163,7 +213,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 						tuple, ( propertySource, property ) => this.EmitGetPropertyExpression( context, propertySource, property )
 					),
 					null,
-					itemsSchema
+					itemsSchema,
+					isAsync
 				);
 		}
 
@@ -171,7 +222,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		#region -- UnpackFrom --
 
-		private void BuildTupleUnpackFrom( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList )
+		private void BuildTupleUnpackFrom( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList, bool isAsync )
 		{
 			/*
 			 * 	checked
@@ -198,18 +249,23 @@ namespace MsgPack.Serialization.AbstractSerializers
 			 *			);
 			 *	}
 			 */
-			context.BeginMethodOverride( MethodName.UnpackFromCore );
+			var methodName = 
+#if FEATURE_TAP
+				isAsync ? MethodName.UnpackFromAsyncCore : 
+#endif // FEATURE_TAP
+				MethodName.UnpackFromCore;
+			context.BeginMethodOverride( methodName );
 			context.EndMethodOverride(
-				MethodName.UnpackFromCore,
+				methodName,
 				this.EmitSequentialStatements(
 					context,
 					typeof( TObject ),
-					this.BuildTupleUnpackFromCore( context, itemTypes, itemSchemaList )
+					this.BuildTupleUnpackFromCore( context, itemTypes, itemSchemaList, isAsync )
 				)
 			);
 		}
 
-		private IEnumerable<TConstruct> BuildTupleUnpackFromCore( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList )
+		private IEnumerable<TConstruct> BuildTupleUnpackFromCore( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList, bool isAsync )
 		{
 			var tupleTypeList = TupleItems.CreateTupleTypeList( itemTypes );
 			yield return
@@ -229,46 +285,71 @@ namespace MsgPack.Serialization.AbstractSerializers
 				yield return statement;
 			}
 
+			var unpackValueArguments =
+				new[] { context.Unpacker, context.UnpackingContextInUnpackValueMethods, context.IndexOfItem, context.ItemsCount }
+#if FEATURE_TAP
+				.Concat( isAsync ? new[] { this.ReferCancellationToken( context, 2 ) } : NoConstructs ).ToArray()
+#endif // FEATURE_TAP
+				;
 			for ( var i = 0; i < itemTypes.Count; i++ )
 			{
 				var propertyName = SerializationTarget.GetTupleItemNameFromIndex( i );
+				var unpackedItem = context.DefineUnpackedItemParameterInSetValueMethods( itemTypes[ i ] );
+				var setUnpackValueOfMethodName = MethodNamePrefix.SetUnpackedValueOf + propertyName;
+
 				var index = i;
-				this.EmitPrivateMethod(
+				this.ExtractPrivateMethod(
 					context,
-					MethodNamePrefix.UnpackValue + propertyName,
+					AdjustName( MethodNamePrefix.UnpackValue + propertyName, isAsync ),
+#if FEATURE_TAP
+					isAsync ? typeof( Task ) :
+#endif // FEATURE_TAP
 					typeof( void ),
-					() => this.EmitUnpackItemValueExpression(
+					() => this.EmitUnpackItemValueStatement(
 						context,
 						itemTypes[ index ],
-						context.TupleItemNilImplication,
-						context.Unpacker,
-						this.MakeInt32Literal( context, index ),
 						this.MakeStringLiteral( context, propertyName ),
-						null,
+						context.TupleItemNilImplication,
+						null, // memberInfo
 						itemSchemaList.Count == 0 ? null : itemSchemaList[ index ],
-						unpackedItem =>
-							unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
-								? this.EmitInvokeVoidMethod(
-									context,
-									context.UnpackingContextInUnpackValueMethods,
-									Metadata._DynamicUnpackingContext.Set,
-									this.MakeStringLiteral( context, propertyName ),
-									this.EmitBoxExpression( 
+						context.Unpacker,
+						context.UnpackingContextInUnpackValueMethods,
+						context.IndexOfItem,
+						context.ItemsCount,
+						context.IsDeclaredMethod( setUnpackValueOfMethodName )
+							? this.EmitGetPrivateMethodDelegateExpression( 
+								context, 
+								context.GetDeclaredMethod( setUnpackValueOfMethodName )
+							)
+							: this.ExtractPrivateMethod(
+								context,
+								setUnpackValueOfMethodName,
+								typeof( void ),
+								() => unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
+									? this.EmitInvokeVoidMethod(
 										context,
-										itemTypes[ index ],
+										context.UnpackingContextInSetValueMethods,
+										Metadata._DynamicUnpackingContext.Set,
+										this.MakeStringLiteral( context, propertyName ),
+										this.EmitBoxExpression( 
+											context,
+											itemTypes[ index ],
+											unpackedItem
+										)
+									) : this.EmitSetField(
+										context,
+										context.UnpackingContextInSetValueMethods,
+										unpackingContext.VariableType,
+										propertyName,
 										unpackedItem
-									)
-								) : this.EmitSetField(
-									context,
-									context.UnpackingContextInUnpackValueMethods,
-									unpackingContext.VariableType,
-									propertyName,
-									unpackedItem
-								)
+									),
+								context.UnpackingContextInSetValueMethods,
+								unpackedItem
+							),
+						false, // forMap, Tuple must be array
+						isAsync
 					),
-					context.Unpacker,
-					context.UnpackingContextInUnpackValueMethods,
-					context.IndexOfItem
+					unpackValueArguments
 				);
 			}
 
@@ -325,11 +406,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 						typeof( TObject ),
 						unpackingContext.Type
 					),
-					() => 
-						this.EmitRetrunStatement(
-							context,
-							currentTuple
-						),
+					() => this.EmitRetrunStatement(
+						context,
+						currentTuple
+					),
 					context.UnpackingContextInCreateObjectFromContext
 				);
 
@@ -341,8 +421,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 					unpackingContext.Variable,
 					unpackingContext.Factory,
 					this.EmitGetMemberNamesExpression( context ),
-					this.EmitGetActionsExpression( context, ActionType.UnpackFromArray )
-				};
+					this.EmitGetActionsExpression( context, ActionType.UnpackFromArray, isAsync )
+				}
+#if FEATURE_TAP
+				.Concat( isAsync ? new[] { this.ReferCancellationToken( context, 2 ) } : NoConstructs ).ToArray()
+#endif // FEATURE_TAP
+				;
 
 			yield return
 				this.EmitRetrunStatement(
@@ -351,9 +435,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						null,
 						new MethodDefinition(
-							MethodName.UnpackFromArray,
+							AdjustName( MethodName.UnpackFromArray, isAsync ),
 							new [] { unpackingContext.Type, typeof( TObject ) },
 							typeof( UnpackHelpers ),
+#if FEATURE_TAP
+							isAsync ? typeof( Task<> ).MakeGenericType( typeof( TObject ) ) :
+#endif // FEATURE_TAP
 							typeof( TObject ),
 							unpackHelperArguments.Select( a => a.ContextType ).ToArray()
 						),
@@ -379,28 +466,20 @@ namespace MsgPack.Serialization.AbstractSerializers
 			unpackingContext.Variable = this.DeclareLocal( context, unpackingContext.VariableType, "unpackingContext" );
 			unpackingContext.Statements.Add( unpackingContext.Variable );
 			unpackingContext.Statements.Add(
-				unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
-					? this.EmitStoreVariableStatement(
+				this.EmitStoreVariableStatement(
+					context,
+					unpackingContext.Variable,
+					this.EmitCreateNewObjectExpression(
 						context,
 						unpackingContext.Variable,
-						this.EmitCreateNewObjectExpression(
-							context,
-							unpackingContext.Variable,
-							unpackingContext.Constructor,
-							this.MakeInt32Literal( context, itemTypes.Count )
-						)
+						unpackingContext.Constructor,
+						unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
+							? new[] { this.MakeInt32Literal( context, itemTypes.Count ) }
+							: itemTypes.Select( t => this.MakeDefaultLiteral( context, t ) ).ToArray()
 					)
-					: this.EmitStoreVariableStatement(
-						context,
-						unpackingContext.Variable,
-						this.EmitCreateNewObjectExpression(
-							context,
-							unpackingContext.Variable,
-							unpackingContext.Constructor,
-							itemTypes.Select( t => this.MakeDefaultLiteral( context, t ) ).ToArray()
-						)
-					)
-				);
+				)
+			);
+
 			return unpackingContext;
 		}
 

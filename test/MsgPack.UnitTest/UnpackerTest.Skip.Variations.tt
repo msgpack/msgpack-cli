@@ -50,6 +50,13 @@ namespace MsgPack
 <#
 foreach( var isAsync in new [] { false, true } )
 {
+	if ( isAsync )
+	{
+#>
+
+#if FEATURE_TAP
+<#
+	}
 
 	// Constants
 	foreach( var testCase in
@@ -262,6 +269,16 @@ foreach( var isAsync in new [] { false, true } )
 		}
 <#
 	}
+
+	if ( isAsync )
+	{
+#>
+
+#endif // FEATURE_TAP
+
+<#
+	}
+
 } // foreach( var isAsync
 #>
 	}

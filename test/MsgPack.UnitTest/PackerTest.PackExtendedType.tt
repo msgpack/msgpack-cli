@@ -51,6 +51,14 @@ namespace MsgPack
 <#
 foreach( var isAsync in new [] { false, true } )
 {
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+
+<#
+	}
+
 	foreach( var testCase in
 		new []
 		{
@@ -157,7 +165,15 @@ foreach( var isAsync in new [] { false, true } )
 				Assert.Throws<ArgumentException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( default( MessagePackExtendedTypeObject ) ) );
 			}
 		}
+
 <#
+	if ( isAsync )
+	{
+#>
+#endif // FEATURE_TAP
+
+<#
+	}
 } // foreach( var isAsync
 #>
 	}

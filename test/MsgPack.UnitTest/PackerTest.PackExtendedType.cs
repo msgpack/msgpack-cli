@@ -913,6 +913,9 @@ namespace MsgPack
 				Assert.Throws<ArgumentException>( () => packer.PackExtendedTypeValue( default( MessagePackExtendedTypeObject ) ) );
 			}
 		}
+
+#if FEATURE_TAP
+
 		[Test]
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length0()
 		{
@@ -1787,5 +1790,8 @@ namespace MsgPack
 				Assert.Throws<ArgumentException>( async () => await packer.PackExtendedTypeValueAsync( default( MessagePackExtendedTypeObject ) ) );
 			}
 		}
+
+#endif // FEATURE_TAP
+
 	}
 }

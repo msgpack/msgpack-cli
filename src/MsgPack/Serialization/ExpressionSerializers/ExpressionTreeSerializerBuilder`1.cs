@@ -45,9 +45,18 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <summary>
 		///		Initializes a new instance of the <see cref="ExpressionTreeSerializerBuilder{TObject}"/> class.
 		/// </summary>
-		public ExpressionTreeSerializerBuilder()
+		public ExpressionTreeSerializerBuilder() { }
+
+#if FEATURE_TAP
+
+		protected override bool WithAsync( ExpressionTreeContext context )
 		{
+#warning TODO: true async
+			// Currently, ET serializer does not support true async.
+			return false;
 		}
+
+#endif // FEATURE_TAP
 
 		protected override ExpressionConstruct MakeNullLiteral( ExpressionTreeContext context, TypeDefinition contextType )
 		{
@@ -361,7 +370,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						&& p.GetSetMethod().GetParameters()[ 0 ].ParameterType == key.ContextType.ResolveRuntimeType()
 						&& p.GetSetMethod().GetParameters()[ 1 ].ParameterType == value.ContextType.ResolveRuntimeType()
 				);
-			return Expression.Assign( Expression.Property( instance, indexer, key  ), value );
+			return Expression.Assign( Expression.Property( instance, indexer, key ), value );
 		}
 
 		protected override ExpressionConstruct EmitSetField(
@@ -522,45 +531,60 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected override ExpressionConstruct EmitNewPrivateMethodDelegateExpression( ExpressionTreeContext context, MethodDefinition method )
 		{
-			switch ( method.MethodName )
-			{
-				case MethodName.CreateObjectFromContext:
-				case MethodName.UnpackCollectionItem:
-				case MethodName.UnpackToCore:
-				{
-					// Must be wrapper delegate to enable pass to UnpackHelper directly.
-					return
+			return context.GetMethodLambda( method.MethodName );
+		}
+
+		protected override ExpressionConstruct EmitGetPrivateMethodDelegateExpression( ExpressionTreeContext context, MethodDefinition method )
+		{
+			return this.GetDelegateFieldExpression( context, method );
+		}
+
+		protected override ExpressionConstruct EmitGetStaticDelegateExpression( ExpressionTreeContext context, MethodDefinition method )
+		{
+			// ensure delegate for static API is bookkeeped.
+			context.EnsureDelegateForStaticMethodRegistered( method );
+
+			return this.GetDelegateFieldExpression( context, method );
+		}
+
+		private ExpressionConstruct GetDelegateFieldExpression( ExpressionTreeContext context, MethodDefinition method )
+		{
+			var delegateType = SerializerBuilderHelper.GetResolvedDelegateType( method.ReturnType, method.ParameterTypes );
+
+			return
+				Expression.Convert(
+					Expression.Property(
 						Expression.Property(
 							context.This,
-							context.This.ContextType.ResolveRuntimeType()
-								.GetProperty( method.MethodName )
-						);
-				}
-				default:
-				{
-					return context.GetMethodLambda( method.MethodName );
-				}
-			}
+							"Delegates"
+						),
+						ExpressionTreeSerializerBuilderHelpers.DelegatesIndexer,
+						Expression.Constant( method.MethodName )
+					),
+					delegateType
+				);
 		}
 
-		protected override TypeDefinition GetPackOperationType( ExpressionTreeContext context )
+		protected override TypeDefinition GetPackOperationType( ExpressionTreeContext context, bool isAsync )
 		{
-			return typeof( Action<SerializationContext, Packer, TObject> );
+			return typeof( Action<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Packer, TObject> );
 		}
 
-		protected override TypeDefinition GetUnpackOperationType( ExpressionTreeContext context )
+		protected override TypeDefinition GetUnpackOperationType( ExpressionTreeContext context, bool isAsync )
 		{
 			return
 				TypeDefinition.GenericReferenceType(
-					typeof( Action<,,,> ),
+					typeof( Action<,,,,,> ),
+					typeof( ExpressionCallbackMessagePackSerializer<TObject> ),
 					typeof( SerializationContext ),
 					typeof( Unpacker ),
 					context.UnpackingContextType ?? typeof( TObject ),
+					typeof( int ),
 					typeof( int )
 				);
 		}
 
-		protected override ExpressionConstruct EmitGetActionsExpression( ExpressionTreeContext context, ActionType action )
+		protected override ExpressionConstruct EmitGetActionsExpression( ExpressionTreeContext context, ActionType action, bool isAsync )
 		{
 			switch ( action )
 			{
@@ -641,34 +665,32 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					CollectionTraitsOfThis,
 					schema,
 					hasPackOperations
-					&& ( codeGenerationContext.SerializationContext.SerializationMethod == SerializationMethod.Array  // pack operation list
-					|| targetInfo.Members.All( m => m.Member == null ) ) // tuple
-						? Expression.Lambda<Func<Action<SerializationContext, Packer, TObject>[]>>(
-							this.EmitPackOperationListInitialization( codeGenerationContext, targetInfo ).Expression
+						? Expression.Lambda<Func<Action<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Packer, TObject>[]>>(
+							this.EmitPackOperationListInitialization( codeGenerationContext, targetInfo, false ).Expression
 						).Compile()()
-						: new Action<SerializationContext, Packer, TObject>[ 0 ],
+						: new Action<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Packer, TObject>[ 0 ],
 					hasPackOperations
-					&& codeGenerationContext.SerializationContext.SerializationMethod == SerializationMethod.Map // pack operation table
-						? Expression.Lambda<Func<Dictionary<string, Action<SerializationContext, Packer, TObject>>>>(
-							this.EmitPackOperationTableInitialization( codeGenerationContext, targetInfo ).Expression
+					&& targetInfo.Members.Any( m => m.Member != null ) // not tuple
+						? Expression.Lambda<Func<Dictionary<string, Action<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Packer, TObject>>>>(
+							this.EmitPackOperationTableInitialization( codeGenerationContext, targetInfo, false ).Expression
 						).Compile()()
-						: new Dictionary<string, Action<SerializationContext, Packer, TObject>>( 0 ),
+						: new Dictionary<string, Action<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Packer, TObject>>( 0 ),
 					hasUnpackOperations // unpack operation list
-						? Expression.Lambda<Func<Action<SerializationContext, Unpacker, object, int>[]>>(
-							this.EmitUnpackOperationListInitialization( codeGenerationContext, targetInfo ).Expression
+						? Expression.Lambda<Func<Action<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Unpacker, object, int, int>[]>>(
+							this.EmitUnpackOperationListInitialization( codeGenerationContext, targetInfo, false ).Expression
 						).Compile()()
-						: new Action<SerializationContext, Unpacker, object, int>[ 0 ],
+						: new Action<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Unpacker, object, int, int>[ 0 ],
 					hasUnpackOperations // unpack operation table
-						? Expression.Lambda<Func<Dictionary<string, Action<SerializationContext, Unpacker, object, int>>>>(
-							this.EmitUnpackOperationTableInitialization( codeGenerationContext, targetInfo ).Expression
+						? Expression.Lambda<Func<Dictionary<string, Action<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Unpacker, object, int, int>>>>(
+							this.EmitUnpackOperationTableInitialization( codeGenerationContext, targetInfo, false ).Expression
 						).Compile()()
-						: new Dictionary<string, Action<SerializationContext, Unpacker, object, int>>( 0 ),
+						: new Dictionary<string, Action<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Unpacker, object, int, int>>( 0 ),
 					hasUnpackOperations // member names
 						? Expression.Lambda<Func<IList<string>>>(
 							this.EmitMemberListInitialization( codeGenerationContext, targetInfo ).Expression
 							).Compile()()
 						: Enumerable.Empty<string>().ToArray()
-				);			
+				);
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]

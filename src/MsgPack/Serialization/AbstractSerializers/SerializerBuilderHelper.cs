@@ -22,6 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+#if FEATURE_TAP
+using System.Threading;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -31,15 +34,32 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		public static readonly Type[] DictionaryConstructorParametersWithCapacity = { typeof( int ) };
 
+#if FEATURE_TAP
+		public static readonly Type[] UnpackFromAsyncParameterTypes = { typeof( Unpacker ), typeof( CancellationToken ) };
+#endif // FEATURE_TAP
+
 		public const string UnpackingContextTypeName = "UnpackingContext";
 
-		internal static Type GetDelegateType( TypeDefinition returnType, TypeDefinition[] parameterTypes )
+		internal static Type GetResolvedDelegateType( TypeDefinition returnType, TypeDefinition[] parameterTypes )
 		{
 			var typeDefinition = FindDelegateType( returnType, parameterTypes );
 			return
 				returnType.TryGetRuntimeType() == typeof( void )
-					? typeDefinition.MakeGenericType( parameterTypes.Select( t => t.ResolveRuntimeType() ).ToArray() )
+					? parameterTypes.Length == 0
+					? typeDefinition
+					: typeDefinition.MakeGenericType( parameterTypes.Select( t => t.ResolveRuntimeType() ).ToArray() )
 					: typeDefinition.MakeGenericType( parameterTypes.Select( t => t.ResolveRuntimeType() ).Concat( new[] { returnType.ResolveRuntimeType() } ).ToArray() );
+		}
+
+		internal static TypeDefinition GetDelegateTypeDefinition( TypeDefinition returnType, TypeDefinition[] parameterTypes )
+		{
+			var typeDefinition = FindDelegateType( returnType, parameterTypes );
+			return
+				returnType.TryGetRuntimeType() == typeof( void )
+					? parameterTypes.Length == 0
+					? typeDefinition
+					: TypeDefinition.GenericReferenceType( typeDefinition, parameterTypes )
+					: TypeDefinition.GenericReferenceType( typeDefinition, parameterTypes.Concat( new[] { returnType } ).ToArray() );
 		}
 
 		public static Type FindDelegateType( TypeDefinition returnType, TypeDefinition[] parameterTypes )

@@ -19786,6 +19786,8 @@ namespace MsgPack
 			}
 		}
 
+#if FEATURE_TAP
+
 		[Test]
 		public async Task TestRead_FixStr_0Async_AsString_JustLength()
 		{
@@ -40073,5 +40075,8 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65536 ).ToArray() ) );
 			}
 		}
+
+#endif // FEATURE_TAP
+
 	}
 }

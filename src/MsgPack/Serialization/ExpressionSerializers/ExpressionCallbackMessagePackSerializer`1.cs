@@ -26,6 +26,7 @@ using Contract = MsgPack.MPContract;
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
@@ -41,8 +42,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		public Func<object, T> CreateInstanceFromContext { get; private set; }
 		public IList<Action<Packer, T>> PackOperationList { get; private set; }
 		public IDictionary<string, Action<Packer, T>> PackOperationTable { get; private set; }
-		public IList<Action<Unpacker, object, int>> UnpackOperationList { get; private set; }
-		public IDictionary<string, Action<Unpacker, object, int>> UnpackOperationTable { get; private set; }
+		public IList<Action<Unpacker, object, int, int>> UnpackOperationList { get; private set; }
+		public IDictionary<string, Action<Unpacker, object, int, int>> UnpackOperationTable { get; private set; }
+		public IDictionary<string, Delegate> Delegates { get; private set; }
 		public IList<string> MemberNames { get; private set; }
 
 		/// <summary>
@@ -56,6 +58,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <param name="packOperationTable">The dictionary of <see cref="PackToCore"/> actions for map.</param>
 		/// <param name="unpackOperationList">The list of <see cref="UnpackFromCore"/> actions for array.</param>
 		/// <param name="unpackOperationTable">The dictionary of <see cref="UnpackFromCore"/> actions for map.</param>
+		/// <param name="delegates">The lamda expression to &quot;private methods&quot; with their names.</param>
 		/// <param name="createInstanceFromContext">The delegate to <c>CreateInstanceFromContext</c> method body.</param>
 		/// <param name="memberNames">The list of member names.</param>
 		public ExpressionCallbackMessagePackSerializer(
@@ -63,11 +66,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T> packToCore,
 			Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackFromCore,
 			Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackToCore,
-			IList<Action<SerializationContext, Packer, T>> packOperationList,
-			IDictionary<string, Action<SerializationContext, Packer, T>> packOperationTable,
-			IList<Action<SerializationContext, Unpacker, object, int>> unpackOperationList,
-			IDictionary<string, Action<SerializationContext, Unpacker, object, int>> unpackOperationTable,
-			Func<SerializationContext, object, T> createInstanceFromContext,
+			IList<Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T>> packOperationList,
+			IDictionary<string, Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T>> packOperationTable,
+			IList<Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, object, int, int>> unpackOperationList,
+			IDictionary<string, Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, object, int, int>> unpackOperationTable,
+			IDictionary<string, LambdaExpression> delegates,
+			Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, object, T> createInstanceFromContext,
 			IList<string> memberNames
 		)
 			: base( ownerContext )
@@ -78,6 +82,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			Contract.Assert( packOperationList != null );
 			Contract.Assert( unpackOperationList != null );
 			Contract.Assert( unpackOperationTable != null );
+			Contract.Assert( delegates != null );
 			Contract.Assert( memberNames != null );
 #endif // DEBUG
 
@@ -86,31 +91,32 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			this._unpackToCore = unpackToCore;
 			this.PackOperationList =
 				packOperationList.Select(
-					a => new Action<Packer, T>( ( packer, objectTree ) => a( this.OwnerContext, packer, objectTree ) )
+					a => new Action<Packer, T>( ( packer, objectTree ) => a( this, this.OwnerContext, packer, objectTree ) )
 				).ToArray();
 			this.PackOperationTable =
 				packOperationTable.ToDictionary(
 					kv => kv.Key,
-					kv => new Action<Packer, T>( ( packer, objectTree ) => kv.Value( this.OwnerContext, packer, objectTree ) )
+					kv => new Action<Packer, T>( ( packer, objectTree ) => kv.Value( this, this.OwnerContext, packer, objectTree ) )
 				);
 			this.UnpackOperationList =
 				unpackOperationList.Select(
 					a =>
-						new Action<Unpacker, object, int>(
-							( unpacker, unpackingContext, itemIndex ) => a( this.OwnerContext, unpacker, unpackingContext, itemIndex )
+						new Action<Unpacker, object, int, int>(
+							( unpacker, unpackingContext, itemIndex, itemsCount ) => a( this, this.OwnerContext, unpacker, unpackingContext, itemIndex, itemsCount )
 						)
 				).ToArray();
 			this.UnpackOperationTable =
 				unpackOperationTable.ToDictionary(
 					kv => kv.Key,
 					kv =>
-						new Action<Unpacker, object, int>(
-							( unpacker, unpackingContext, itemIndex ) => kv.Value( this.OwnerContext, unpacker, unpackingContext, itemIndex )
+						new Action<Unpacker, object, int, int>(
+							( unpacker, unpackingContext, itemIndex, itemsCount ) => kv.Value( this, this.OwnerContext, unpacker, unpackingContext, itemIndex, itemsCount )
 						)
 				);
+			this.Delegates = ExpressionTreeSerializerBuilderHelpers.SupplyPrivateMethodCommonArguments( this, delegates );
 			this.CreateInstanceFromContext =
 				unpackingContext =>
-					createInstanceFromContext( this.OwnerContext, unpackingContext );
+					createInstanceFromContext( this, this.OwnerContext, unpackingContext );
 			this.MemberNames = memberNames;
 		}
 

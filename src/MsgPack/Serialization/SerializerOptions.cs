@@ -162,8 +162,7 @@ namespace MsgPack.Serialization
 		internal SerializerOptions()
 		{
 #if FEATURE_TAP
-#warning TODO: true
-			this.WithAsync = false;
+			this.WithAsync = true;
 #endif // FEATURE_TAP
 #if !XAMIOS && !XAMDROID && !UNITY
 			this.GeneratorOption = SerializationMethodGeneratorOption.Fast;

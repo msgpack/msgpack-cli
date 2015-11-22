@@ -757,6 +757,8 @@ namespace MsgPack
 			}
 		}
 
+#if FEATURE_TAP
+
 		[Test]
 		public async Task TestReadAsync_ScalarSequence_AsIs()
 		{
@@ -1448,6 +1450,8 @@ namespace MsgPack
 				Assert.Throws<UnassignedMessageTypeException>( async () => await target.ReadAsync() );
 			}
 		}
+
+#endif // FEATURE_TAP
 
 	}
 }

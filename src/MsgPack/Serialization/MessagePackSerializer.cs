@@ -19,8 +19,10 @@
 #endregion -- License Terms --
 
 using System;
+#if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization
 {

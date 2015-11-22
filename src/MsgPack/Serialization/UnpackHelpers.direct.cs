@@ -26,9 +26,23 @@ using System;
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
+#if DEBUG && !UNITY
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
+using System.Diagnostics.Contracts;
+#endif // CORE_CLR
+#endif // DEBUG && !UNITY
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization
 {
+	// This file is generated from UnpackHelpers.direct.tt file with T4.
+	// Do not modify this cs file directly.
+
 	partial class UnpackHelpers
 	{
 		/// <summary>
@@ -37,7 +51,9 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack Boolean type value from underlying stream.
 		/// </exception>
@@ -47,6 +63,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Boolean UnpackBooleanValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -76,7 +98,9 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack Boolean type value from underlying stream.
 		/// </exception>
@@ -86,6 +110,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Boolean? UnpackNullableBooleanValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -109,13 +139,121 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableBoolean" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Boolean type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< Boolean> UnpackBooleanValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<Boolean> result =
+					await unpacker.ReadBooleanAsync( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Boolean ); // never reaches.
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableBoolean" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Boolean type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< Boolean?> UnpackNullableBooleanValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<Boolean?> result =
+					await unpacker.ReadNullableBooleanAsync( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Boolean? ); // never reaches.
+			}
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Invokes <see cref="Unpacker.ReadNullableByte" /> and returns its result.
 		/// </summary>
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack Byte type value from underlying stream.
 		/// </exception>
@@ -125,6 +263,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Byte UnpackByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -154,7 +298,9 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack Byte type value from underlying stream.
 		/// </exception>
@@ -164,6 +310,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Byte? UnpackNullableByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -187,13 +339,121 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableByte" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Byte type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< Byte> UnpackByteValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<Byte> result =
+					await unpacker.ReadByteAsync( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Byte ); // never reaches.
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableByte" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Byte type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< Byte?> UnpackNullableByteValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<Byte?> result =
+					await unpacker.ReadNullableByteAsync( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Byte? ); // never reaches.
+			}
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Invokes <see cref="Unpacker.ReadNullableInt16" /> and returns its result.
 		/// </summary>
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack Int16 type value from underlying stream.
 		/// </exception>
@@ -203,6 +463,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int16 UnpackInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -232,7 +498,9 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack Int16 type value from underlying stream.
 		/// </exception>
@@ -242,6 +510,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int16? UnpackNullableInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -265,13 +539,121 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableInt16" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Int16 type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< Int16> UnpackInt16ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<Int16> result =
+					await unpacker.ReadInt16Async( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Int16 ); // never reaches.
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableInt16" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Int16 type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< Int16?> UnpackNullableInt16ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<Int16?> result =
+					await unpacker.ReadNullableInt16Async( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Int16? ); // never reaches.
+			}
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Invokes <see cref="Unpacker.ReadNullableInt32" /> and returns its result.
 		/// </summary>
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack Int32 type value from underlying stream.
 		/// </exception>
@@ -281,6 +663,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int32 UnpackInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -310,7 +698,9 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack Int32 type value from underlying stream.
 		/// </exception>
@@ -320,6 +710,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int32? UnpackNullableInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -343,13 +739,121 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableInt32" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Int32 type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< Int32> UnpackInt32ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<Int32> result =
+					await unpacker.ReadInt32Async( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Int32 ); // never reaches.
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableInt32" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Int32 type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< Int32?> UnpackNullableInt32ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<Int32?> result =
+					await unpacker.ReadNullableInt32Async( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Int32? ); // never reaches.
+			}
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Invokes <see cref="Unpacker.ReadNullableInt64" /> and returns its result.
 		/// </summary>
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack Int64 type value from underlying stream.
 		/// </exception>
@@ -359,6 +863,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int64 UnpackInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -388,7 +898,9 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack Int64 type value from underlying stream.
 		/// </exception>
@@ -398,6 +910,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int64? UnpackNullableInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -421,13 +939,121 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableInt64" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Int64 type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< Int64> UnpackInt64ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<Int64> result =
+					await unpacker.ReadInt64Async( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Int64 ); // never reaches.
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableInt64" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Int64 type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< Int64?> UnpackNullableInt64ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<Int64?> result =
+					await unpacker.ReadNullableInt64Async( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Int64? ); // never reaches.
+			}
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Invokes <see cref="Unpacker.ReadNullableSByte" /> and returns its result.
 		/// </summary>
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack SByte type value from underlying stream.
 		/// </exception>
@@ -440,6 +1066,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static SByte UnpackSByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -469,7 +1101,9 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack SByte type value from underlying stream.
 		/// </exception>
@@ -482,6 +1116,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static SByte? UnpackNullableSByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -505,13 +1145,127 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableSByte" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack SByte type value from underlying stream.
+		/// </exception>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< SByte> UnpackSByteValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<SByte> result =
+					await unpacker.ReadSByteAsync( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( SByte ); // never reaches.
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableSByte" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack SByte type value from underlying stream.
+		/// </exception>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< SByte?> UnpackNullableSByteValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<SByte?> result =
+					await unpacker.ReadNullableSByteAsync( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( SByte? ); // never reaches.
+			}
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Invokes <see cref="Unpacker.ReadNullableUInt16" /> and returns its result.
 		/// </summary>
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt16 type value from underlying stream.
 		/// </exception>
@@ -524,6 +1278,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt16 UnpackUInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -553,7 +1313,9 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt16 type value from underlying stream.
 		/// </exception>
@@ -566,6 +1328,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt16? UnpackNullableUInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -589,13 +1357,127 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableUInt16" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack UInt16 type value from underlying stream.
+		/// </exception>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< UInt16> UnpackUInt16ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<UInt16> result =
+					await unpacker.ReadUInt16Async( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( UInt16 ); // never reaches.
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableUInt16" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack UInt16 type value from underlying stream.
+		/// </exception>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< UInt16?> UnpackNullableUInt16ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<UInt16?> result =
+					await unpacker.ReadNullableUInt16Async( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( UInt16? ); // never reaches.
+			}
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Invokes <see cref="Unpacker.ReadNullableUInt32" /> and returns its result.
 		/// </summary>
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt32 type value from underlying stream.
 		/// </exception>
@@ -608,6 +1490,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt32 UnpackUInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -637,7 +1525,9 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt32 type value from underlying stream.
 		/// </exception>
@@ -650,6 +1540,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt32? UnpackNullableUInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -673,13 +1569,127 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableUInt32" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack UInt32 type value from underlying stream.
+		/// </exception>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< UInt32> UnpackUInt32ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<UInt32> result =
+					await unpacker.ReadUInt32Async( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( UInt32 ); // never reaches.
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableUInt32" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack UInt32 type value from underlying stream.
+		/// </exception>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< UInt32?> UnpackNullableUInt32ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<UInt32?> result =
+					await unpacker.ReadNullableUInt32Async( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( UInt32? ); // never reaches.
+			}
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Invokes <see cref="Unpacker.ReadNullableUInt64" /> and returns its result.
 		/// </summary>
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt64 type value from underlying stream.
 		/// </exception>
@@ -692,6 +1702,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt64 UnpackUInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -721,7 +1737,9 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt64 type value from underlying stream.
 		/// </exception>
@@ -734,6 +1752,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt64? UnpackNullableUInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -757,13 +1781,127 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableUInt64" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack UInt64 type value from underlying stream.
+		/// </exception>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< UInt64> UnpackUInt64ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<UInt64> result =
+					await unpacker.ReadUInt64Async( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( UInt64 ); // never reaches.
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableUInt64" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack UInt64 type value from underlying stream.
+		/// </exception>
+#if !UNITY
+		[CLSCompliant( false )]
+#endif // !UNITY
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< UInt64?> UnpackNullableUInt64ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<UInt64?> result =
+					await unpacker.ReadNullableUInt64Async( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( UInt64? ); // never reaches.
+			}
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Invokes <see cref="Unpacker.ReadNullableSingle" /> and returns its result.
 		/// </summary>
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack Single type value from underlying stream.
 		/// </exception>
@@ -773,6 +1911,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Single UnpackSingleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -802,7 +1946,9 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack Single type value from underlying stream.
 		/// </exception>
@@ -812,6 +1958,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Single? UnpackNullableSingleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -835,13 +1987,121 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableSingle" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Single type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< Single> UnpackSingleValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<Single> result =
+					await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Single ); // never reaches.
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableSingle" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Single type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< Single?> UnpackNullableSingleValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<Single?> result =
+					await unpacker.ReadNullableSingleAsync( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Single? ); // never reaches.
+			}
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Invokes <see cref="Unpacker.ReadNullableDouble" /> and returns its result.
 		/// </summary>
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack Double type value from underlying stream.
 		/// </exception>
@@ -851,6 +2111,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Double UnpackDoubleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -880,7 +2146,9 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack Double type value from underlying stream.
 		/// </exception>
@@ -890,6 +2158,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Double? UnpackNullableDoubleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -913,6 +2187,111 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableDouble" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Double type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< Double> UnpackDoubleValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<Double> result =
+					await unpacker.ReadDoubleAsync( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Double ); // never reaches.
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableDouble" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Double type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< Double?> UnpackNullableDoubleValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<Double?> result =
+					await unpacker.ReadNullableDoubleAsync( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( Double? ); // never reaches.
+			}
+		}
+
+#endif // FEATURE_TAP
 
 		/// <summary>
 		///		Invokes <see cref="Unpacker.ReadString" /> and returns its result.
@@ -920,7 +2299,9 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack string type value from underlying stream.
 		/// </exception>
@@ -930,6 +2311,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static string UnpackStringValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -959,7 +2346,9 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be used.</param>
 		/// <param name="objectType">The type of the object which is deserializing now.</param>
 		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
+		/// <returns>
+		///		An unpacked value.
+		/// </returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack byte array type value from underlying stream.
 		/// </exception>
@@ -969,6 +2358,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static byte[] UnpackBinaryValue( Unpacker unpacker, Type objectType, String memberName )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -991,5 +2386,112 @@ namespace MsgPack.Serialization
 				return default( byte[] ); // never reaches.
 			}
 		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadString" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack string type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< string> UnpackStringValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<string> result =
+					await unpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( string ); // never reaches.
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadBinary" /> and returns its result asyncronously.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack byte array type value from underlying stream.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		public static async Task< byte[]> UnpackBinaryValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( unpacker != null );
+			Contract.Assert( objectType != null );
+			Contract.Assert( memberName != null );
+#endif // DEBUG && !UNITY
+
+			// ReSharper disable once RedundantAssignment
+			var ctx = default( UnpackerTraceContext );
+			InitializeUnpackerTrace( unpacker, ref ctx );
+
+			try
+			{
+				AsyncReadResult<byte[]> result =
+					await unpacker.ReadBinaryAsync( cancellationToken ).ConfigureAwait( false );
+				if ( !result.IsSuccess )
+				{
+					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				Trace( ctx, "ReadDirect", unpacker, memberName );
+
+				return result.Value;
+			}
+			catch ( MessageTypeException ex )
+			{
+				SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, ex );
+				return default( byte[] ); // never reaches.
+			}
+		}
+
+#endif // FEATURE_TAP
+
 	}
 }

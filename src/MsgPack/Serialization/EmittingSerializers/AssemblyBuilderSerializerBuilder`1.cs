@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -29,6 +29,11 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
+
 using MsgPack.Serialization.AbstractSerializers;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -935,7 +940,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			yield return this.EmitLoadVariableExpression( context, schema );
 		}
 
-		protected override ILConstruct EmitGetActionsExpression( AssemblyBuilderEmittingContext context, ActionType actionType )
+		protected override ILConstruct EmitGetActionsExpression( AssemblyBuilderEmittingContext context, ActionType actionType, bool isAsync )
 		{
 			Type type;
 			string name;
@@ -943,13 +948,21 @@ namespace MsgPack.Serialization.EmittingSerializers
 			{
 				case ActionType.PackToArray:
 				{
-					type = typeof( IList<Action<Packer, TObject>> );
+					type = 
+#if FEATURE_TAP
+						isAsync ? typeof( IList<Func<Packer, TObject, CancellationToken, Task>> ) :
+#endif // FEATURE_TAP
+						typeof( IList<Action<Packer, TObject>> );
 					name = FieldName.PackOperationList;
 					break;
 				}
 				case ActionType.PackToMap:
 				{
-					type = typeof( IDictionary<string, Action<Packer, TObject>> );
+					type = 
+#if FEATURE_TAP
+						isAsync ? typeof( IDictionary<string, Func<Packer, TObject, CancellationToken, Task>> ) :
+#endif // FEATURE_TAP
+						typeof( IDictionary<string, Action<Packer, TObject>> );
 					name = FieldName.PackOperationTable;
 					break;
 				}
@@ -957,12 +970,26 @@ namespace MsgPack.Serialization.EmittingSerializers
 				{
 					type =
 						typeof( IList<> ).MakeGenericType(
-							typeof( Action<,,> ).MakeGenericType(
+#if FEATURE_TAP
+							isAsync ? 
+							typeof( Func<,,,,,> ).MakeGenericType(
 								typeof( Unpacker ),
 								context.UnpackingContextType == null
 									? typeof( TObject )
 									: context.UnpackingContextType.ResolveRuntimeType(),
-									typeof( int )
+								typeof( int ),
+								typeof( int ),
+								typeof( CancellationToken ),
+								typeof( Task )
+							) :
+#endif // FEATURE_TAP
+							typeof( Action<,,,> ).MakeGenericType(
+								typeof( Unpacker ),
+								context.UnpackingContextType == null
+									? typeof( TObject )
+									: context.UnpackingContextType.ResolveRuntimeType(),
+								typeof( int ),
+								typeof( int )
 							)
 						);
 					name = FieldName.UnpackOperationList;
@@ -973,11 +1000,25 @@ namespace MsgPack.Serialization.EmittingSerializers
 					type =
 						typeof( IDictionary<,> ).MakeGenericType(
 							typeof( string ),
-							typeof( Action<,,> ).MakeGenericType( 
+#if FEATURE_TAP
+							isAsync ? 
+							typeof( Func<,,,,,> ).MakeGenericType(
+								typeof( Unpacker ),
+								context.UnpackingContextType == null
+									? typeof( TObject )
+									: context.UnpackingContextType.ResolveRuntimeType(),
+								typeof( int ),
+								typeof( int ),
+								typeof( CancellationToken ),
+								typeof( Task )
+							) :
+#endif // FEATURE_TAP
+							typeof( Action<,,,> ).MakeGenericType( 
 								typeof( Unpacker ), 
 								context.UnpackingContextType == null
 									? typeof( TObject )
 									: context.UnpackingContextType.ResolveRuntimeType(),
+								typeof( int ),
 								typeof( int )
 							)
 						);
@@ -986,7 +1027,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 				}
 				case ActionType.UnpackTo:
 				{
-					type = typeof( Action<Unpacker, TObject, int> );
+					type = 
+#if FEATURE_TAP
+						isAsync ? typeof( Func<Packer, TObject, int, CancellationToken, Task> ) :
+#endif // FEATURE_TAP
+						typeof( Action<Unpacker, TObject, int> );
 					name = FieldName.UnpackTo;
 					break;
 				}
@@ -994,6 +1039,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 				{
 					throw new ArgumentOutOfRangeException( "actionType" );
 				}
+			}
+
+			if ( isAsync )
+			{
+				name += "Async";
 			}
 
 			var field = context.DeclarePrivateField( name, type );
@@ -1079,7 +1129,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		protected override ILConstruct EmitNewPrivateMethodDelegateExpression( AssemblyBuilderEmittingContext context, MethodDefinition method )
 		{
-			var delegateType = SerializerBuilderHelper.GetDelegateType( method.ReturnType, method.ParameterTypes );
+			var delegateType = SerializerBuilderHelper.GetResolvedDelegateType( method.ReturnType, method.ParameterTypes );
 				
 			return
 				ILConstruct.Instruction(
