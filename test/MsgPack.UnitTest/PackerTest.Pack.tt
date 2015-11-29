@@ -1,23 +1,4 @@
-﻿<#
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-#>
-<#@ template debug="false" hostspecific="false" language="C#" #>
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ output extension=".cs" #>
 <#@ assembly Name="System.Core" #>
 <#@ import namespace="System" #>
@@ -66,7 +47,7 @@ var __numerics =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -86,6 +67,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -98,20 +80,24 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack
 {
-	[TestFixture]
-	public partial class PackerTest_Pack
+	// This file was generated from PackerTest.Pack.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit PackerTest.Pack.tt and StreamingUnapkcerBase.ttinclude instead.
+
+	partial class PackerTest_Pack
 	{
 <#
-foreach( var __numeric in __numerics )
+foreach( var isAsync in new [] { false, true } )
 {
+	foreach( var __numeric in __numerics )
+	{
 #>
 		[Test]
-		public void TestPack_<#= __numeric.Item1 #>_AsValue()
+		public <#= AsyncTest( "Pack", isAsync )#>_<#= __numeric.Item1 #>_AsValue()
 		{
 			using( var buffer = new MemoryStream() )
 			using( var packer = Packer.Create( buffer ) )
 			{
-				packer.Pack( <#= __numeric.Item3 #> );
+				<#= Await( "packer.Pack", isAsync ) #>( <#= __numeric.Item3 #> );
 				Assert.AreEqual(
 					<#= __numeric.Item4 #>,
 					buffer.ToArray()
@@ -120,23 +106,23 @@ foreach( var __numeric in __numerics )
 		}
 		
 <#
-}
+	} // foreach( var __numeric
 
-var __defined = new HashSet<string>();
-foreach( var __numeric in __numerics )
-{
-	if( __numeric.Item1 == "Nil" || !__defined.Add( __numeric.Item2.Name ) )
+	var __defined = new HashSet<string>();
+	foreach( var __numeric in __numerics )
 	{
-		continue;
-	}
+		if( __numeric.Item1 == "Nil" || !__defined.Add( __numeric.Item2.Name ) )
+		{
+			continue;
+		}
 #>
 		[Test]
-		public void TestPack_Nullable<#= __numeric.Item2.Name #>_NotNull_AsValue()
+		public <#= AsyncTest( "Pack", isAsync )#>_Nullable<#= __numeric.Item2.Name #>_NotNull_AsValue()
 		{
 			using( var buffer = new MemoryStream() )
 			using( var packer = Packer.Create( buffer ) )
 			{
-				packer.Pack( <#= __numeric.Item3 #> );
+				<#= Await( "packer.Pack", isAsync ) #>( <#= __numeric.Item3 #> );
 				Assert.AreEqual(
 					<#= __numeric.Item4 #>,
 					buffer.ToArray()
@@ -145,12 +131,12 @@ foreach( var __numeric in __numerics )
 		}
 
 		[Test]
-		public void TestPack_Nullable<#= __numeric.Item2.Name #>_Null_AsNil()
+		public <#= AsyncTest( "Pack", isAsync )#>_Nullable<#= __numeric.Item2.Name #>_Null_AsNil()
 		{
 			using( var buffer = new MemoryStream() )
 			using( var packer = Packer.Create( buffer ) )
 			{
-				packer.Pack( default( <#= __numeric.Item2 #>?  ) );
+				<#= Await( "packer.Pack", isAsync ) #>( default( <#= __numeric.Item2 #>?  ) );
 				Assert.AreEqual(
 					new byte[]{ 0xC0 },
 					buffer.ToArray()
@@ -159,7 +145,215 @@ foreach( var __numeric in __numerics )
 		}
 		
 <#
-}
+	} // foreach( var __numeric
+
+	// PackArrayHeader
+	foreach( var testCase in
+		new []
+		{
+			new { Type = "Int32",	ValueLabel = "Empty",	Value = "0",		Bytes = "0x90" },
+			new { Type = "Int32",	ValueLabel = "15",		Value = "15",		Bytes = "0x9F" },
+			new { Type = "Int32",	ValueLabel = "16",		Value = "0x100",	Bytes = "0xDC, 0x01, 0x00" },
+			new { Type = "Int32",	ValueLabel = "0xFFFF",	Value = "0xFFFF",	Bytes = "0xDC, 0xFF, 0xFF" },
+			new { Type = "Int32",	ValueLabel = "0x10000",	Value = "0x10000",	Bytes = "0xDD, 0x00, 0x01, 0x00, 0x00" },
+			new { Type = "IList",	ValueLabel = "Null",		Value = "default( IList<MessagePackObject> )",	Bytes = "0xC0" },
+			new { Type = "IList",	ValueLabel = "NotNull",		Value = "new MessagePackObject[] { 1, 2, 3 }",	Bytes = "0x93" },
+		}
+	)
+	{
+#>
+
+		[Test]
+		public <#= AsyncTest( "PackArrayHeader", isAsync ) #><#= testCase.Type #>_<#= testCase.ValueLabel #>()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var packer = Packer.Create( buffer ) )
+			{
+				<#= Await( "packer.PackArrayHeader", isAsync ) #>( <#= testCase.Value #> );
+				Assert.AreEqual(
+					new byte[] { <#= testCase.Bytes #> },
+					buffer.ToArray()
+				);
+			}
+		}
+<#
+	} // foreach( var testCase
+#>
+
+		[Test]
+		public <#= AsyncLambdaTest( "PackArrayHeader", isAsync ) #>Int32_MinusOne()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var packer = Packer.Create( buffer ) )
+			{
+				Assert.Throws<ArgumentOutOfRangeException>( <#= AsyncLambda( "packer.PackArrayHeader", isAsync ) #>( -1 ) );
+			}
+		}
+<#
+
+	// PackMapHeader
+	foreach( var testCase in
+		new []
+		{
+			new { Type = "Int32",	ValueLabel = "Empty",	Value = "0",		Bytes = "0x80" },
+			new { Type = "Int32",	ValueLabel = "15",		Value = "15",		Bytes = "0x8F" },
+			new { Type = "Int32",	ValueLabel = "16",		Value = "0x100",	Bytes = "0xDE, 0x01, 0x00" },
+			new { Type = "Int32",	ValueLabel = "0xFFFF",	Value = "0xFFFF",	Bytes = "0xDE, 0xFF, 0xFF" },
+			new { Type = "Int32",	ValueLabel = "0x10000",	Value = "0x10000",	Bytes = "0xDF, 0x00, 0x01, 0x00, 0x00" },
+			new { Type = "IDictionary",	ValueLabel = "Null",	Value = "default( IDictionary<MessagePackObject, MessagePackObject> )",			Bytes = "0xC0" },
+			new { Type = "IDictionary",	ValueLabel = "NotNull",	Value = "new MessagePackObjectDictionary() { { 1, 1 }, { 2, 2 }, { 3, 3 } }",	Bytes = "0x83" },
+		}
+	)
+	{
+#>
+
+		[Test]
+		public <#= AsyncTest( "PackMapHeader", isAsync ) #><#= testCase.Type #>_<#= testCase.ValueLabel #>()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var packer = Packer.Create( buffer ) )
+			{
+				<#= Await( "packer.PackMapHeader", isAsync ) #>( <#= testCase.Value #> );
+				Assert.AreEqual(
+					new byte[] { <#= testCase.Bytes #> },
+					buffer.ToArray()
+				);
+			}
+		}
+
+<#
+	} // foreach( var testCase
+#>
+
+		[Test]
+		public <#= AsyncLambdaTest( "PackMapHeader", isAsync ) #>Int32_MinusOne()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var packer = Packer.Create( buffer ) )
+			{
+				Assert.Throws<ArgumentOutOfRangeException>( <#= AsyncLambda( "packer.PackMapHeader", isAsync ) #>( -1 ) );
+			}
+		}
+<#
+
+	// PackCollection
+	foreach( var testCase in
+		new []
+		{
+			new { Type = "Array",		ValueLabel = "Null",	Value = "default( MessagePackObject[] )",	Bytes = "0xC0" },
+			new { Type = "Array",		ValueLabel = "NotNull",	Value = "new int[] { 1, 2, 3 }",			Bytes = "0x93, 1, 2, 3" },
+			new { Type = "Enumerable",	ValueLabel = "Null",	Value = "default( IEnumerable<MessagePackObject> )",	Bytes = "0xC0" },
+			new { Type = "Enumerable",	ValueLabel = "NotNull",	Value = "Enumerable.Range( 1, 3 )",						Bytes = "0x93, 1, 2, 3" },
+		}
+	)
+	{
+#>
+
+		[Test]
+		public <#= AsyncTest( "PackCollection", isAsync ) #><#= testCase.Type #>_<#= testCase.ValueLabel #>()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var packer = Packer.Create( buffer ) )
+			{
+				<#= Await( "packer.PackCollection", isAsync ) #>( <#= testCase.Value #> );
+				Assert.AreEqual(
+					new byte[] { <#= testCase.Bytes #> },
+					buffer.ToArray()
+				);
+			}
+		}
+<#
+	} // foreach( var testCase
+
+	// Numeric boundaries
+	foreach( var testCase in
+		new []
+		{
+			new { Type = "SByte",		ValueLabel = "0x7F",	Value = "0x7F",	Bytes = "0x7F" },
+			new { Type = "Int16",		ValueLabel = "0x7F",	Value = "0x7F",	Bytes = "0x7F" },
+			new { Type = "Int32",		ValueLabel = "0x7F",	Value = "0x7F",	Bytes = "0x7F" },
+			new { Type = "Int64",		ValueLabel = "0x7F",	Value = "0x7F",	Bytes = "0x7F" },
+			new { Type = "Int32",		ValueLabel = "Minus128",	Value = "-128",	Bytes = "0xD0, 0x80" },
+			new { Type = "UInt32",		ValueLabel = "0x80",			Value = "0x80",		Bytes = "0xCC, 0x80" },
+			new { Type = "UInt32",		ValueLabel = "0x100_AsUInt16",	Value = "0x100",	Bytes = "0xCD, 0x1, 0x0" },
+			new { Type = "Int64",		ValueLabel = "0x1",				Value = "0x1",		Bytes = "0x1" },
+			new { Type = "Int64",		ValueLabel = "Minus128",		Value = "-128",		Bytes = "0xD0, 0x80" },
+			new { Type = "Int64",		ValueLabel = "0x100_AsInt16",	Value = "0x100",	Bytes = "0xD1, 0x1, 0x0" },
+			new { Type = "Int64",		ValueLabel = "0x10000_AsInt32",	Value = "0x10000",	Bytes = "0xD2, 0x0, 0x1, 0x0, 0x0" },
+			new { Type = "UInt64",		ValueLabel = "0x80_AsInt8",		Value = "0x80",		Bytes = "0xCC, 0x80" },
+			new { Type = "UInt64",		ValueLabel = "0x100_AsInt16",	Value = "0x100",	Bytes = "0xCD, 0x1, 0x0" },
+			new { Type = "UInt64",		ValueLabel = "0x10000_AsInt32",	Value = "0x10000",	Bytes = "0xCE, 0x0, 0x1, 0x0, 0x0" },
+		}
+	)
+	{
+#>
+
+		[Test]
+		public <#= AsyncTest( "Pack", isAsync ) #><#= testCase.Type #>_<#= testCase.ValueLabel #>()
+		{
+			<#= testCase.Type #> value = <#= testCase.Value #>;
+			using ( var buffer = new MemoryStream() )
+			using ( var packer = Packer.Create( buffer ) )
+			{
+				<#= Await( "packer.Pack", isAsync ) #>( value );
+				Assert.AreEqual(
+					new byte[] { <#= testCase.Bytes #> },
+					buffer.ToArray()
+				);
+			}
+		}
+<#
+	} // foreach( var testCase
+} // foreach( var isAsync
 #>
 	}
 }
+<#+
+private static string AsyncTest( string method, bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0} Test{1}{2}",
+			isAsync ? "async Task" : "void",
+			method,
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string Await( string expression, bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0}{1}{2}",
+			isAsync ? "await " : String.Empty,
+			expression,
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string AsyncLambdaTest( string method, bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"void Test{0}{1}",
+			method,
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string AsyncLambda( string expressionBody, bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0}() => {1}{2}{3}",
+			isAsync ? "async " : String.Empty,
+			isAsync ? "await " : String.Empty,
+			expressionBody,
+			isAsync ? "Async" : String.Empty
+		);
+}
+#>

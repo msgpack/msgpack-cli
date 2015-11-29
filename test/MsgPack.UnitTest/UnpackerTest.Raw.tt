@@ -1,23 +1,4 @@
-﻿<#
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-#>
-<#@ template debug="false" hostspecific="false" language="C#" #>
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ output extension=".cs" #>
 <#@ assembly Name="System.Core" #>
 <#@ import namespace="System" #>
@@ -92,7 +73,7 @@ var binVariations =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -111,6 +92,7 @@ var binVariations =
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -127,46 +109,61 @@ namespace MsgPack
 	// Do not modify this file. Edit UnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude instead.
 
 	[TestFixture]
-	public partial class UnpackerTest_Raw
+	[Timeout( 1000 )]
+	public class UnpackerTest_Raw
 	{
 <#
-foreach( var testSituation in testSituations )
+foreach( var isAsync in new [] { false, true } )
 {
-	foreach( var testCase in strVariations )
+	foreach( var testSituation in testSituations )
 	{
-		PutTest( testSituation, testCase, testSituation.Item5 || testCase.Item2 == 0 );
-	}
+		foreach( var testCase in strVariations )
+		{
+			PutTest( testSituation, testCase, testSituation.Item5 || testCase.Item2 == 0, isAsync );
+		}
 
-	// can be bin stream.
-	foreach( var testCase in binVariations )
-	{
-		PutTest( testSituation, testCase, false );
+		// can be bin stream.
+		foreach( var testCase in binVariations )
+		{
+			PutTest( testSituation, testCase, false, isAsync );
+		}
 	}
 }
 #>
 	}
 }
 <#+
-private void PutTest( Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string, string> testCase, bool canConvertToString )
+private void PutTest( Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string, string> testCase, bool canConvertToString, bool isAsync )
 {
 	// FIXME: too short data, too long data
-	var readDataMethodPrefix = "TestUnpack" + testCase.Item1 + "_" +testCase.Item2 + "_As" + testSituation.Item1 + "_Read_";
-	PutTestMethod( readDataMethodPrefix + "JustLength", testSituation, testCase, 0, canConvertToString, PutTestUnpackDataBody );
-	PutTestMethod( readDataMethodPrefix + "TooShort", testSituation, testCase, -1, canConvertToString, PutTestUnpackDataBody );
-	PutTestMethod( readDataMethodPrefix + "HasExtra", testSituation, testCase, 1,  canConvertToString, PutTestUnpackDataBody );
+	var readDataMethodPrefix = "TestRead_" + testCase.Item1 + "_" + testCase.Item2 + ( isAsync ? "Async" : String.Empty ) + "_As" + testSituation.Item1 + "_";
+	PutTestMethod( readDataMethodPrefix + "JustLength", testSituation, testCase, 0, canConvertToString, PutTestUnpackDataBody, isAsync );
+	PutTestMethod( readDataMethodPrefix + "TooShort", testSituation, testCase, -1, canConvertToString, PutTestUnpackDataBody, isAsync );
+	PutTestMethod( readDataMethodPrefix + "HasExtra", testSituation, testCase, 1,  canConvertToString, PutTestUnpackDataBody, isAsync );
 
-	var readDirectMethodPrefix = "TestUnpack" + testCase.Item1 + "_" + testCase.Item2 + "_Read" + testSituation.Item1 + "_";
-	PutTestMethod( readDirectMethodPrefix + "JustLength", testSituation, testCase, 0, canConvertToString, PutTestUnpackDirectBody );
-	PutTestMethod( readDirectMethodPrefix + "TooShort", testSituation, testCase, -1, canConvertToString, PutTestUnpackDirectBody );
-	PutTestMethod( readDirectMethodPrefix + "HasExtra", testSituation, testCase, 1, canConvertToString, PutTestUnpackDirectBody );
+	var readDirectMethodPrefix = "TestRead" + testSituation.Item1 + "_" + testCase.Item1 + ( isAsync ? "Async" : String.Empty ) + "_" + testCase.Item2 + "_";
+	PutTestMethod( readDirectMethodPrefix + "JustLength", testSituation, testCase, 0, canConvertToString, PutTestUnpackDirectBody, isAsync );
+	PutTestMethod( readDirectMethodPrefix + "TooShort", testSituation, testCase, -1, canConvertToString, PutTestUnpackDirectBody, isAsync );
+	PutTestMethod( readDirectMethodPrefix + "HasExtra", testSituation, testCase, 1, canConvertToString, PutTestUnpackDirectBody , isAsync );
 }
 
-private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> testSituation, string sourceType, string expectedValue, bool canConvertToString, bool success )
+private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> testSituation, string sourceType, string expectedValue, bool canConvertToString, bool success, bool isAsync )
 {
 	if ( success )
 	{
+		if ( !isAsync )
+		{
 #>
 				Assert.IsTrue( unpacker.Read() );
+<#+
+		}
+		else
+		{
+#>
+				Assert.IsTrue( await unpacker.ReadAsync() );
+<#+
+		}
+#>
 #pragma warning disable 612,618
 				var result = unpacker.Data;
 #pragma warning restore 612,618
@@ -215,33 +212,68 @@ private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> 
 	}
 	else
 	{
+		if ( !isAsync )
+		{
 #>
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 <#+
+		}
+		else
+		{
+#>
+				Assert.Throws<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+<#+
+		}
 	}
 }
 
-private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool> testSituation, string sourceType, string expectedValue, bool canConvertToString, bool success )
+private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool> testSituation, string sourceType, string expectedValue, bool canConvertToString, bool success, bool isAsync )
 {
+	if ( success || !isAsync )
+	{
 #>
 				<#= testSituation.Item2 #> result;
 <#+
+	}
+
 	if ( success )
 	{
+		if ( !isAsync )
+		{
 #>
 				Assert.IsTrue( unpacker.Read<#= testSituation.Item1 #>( out result ) );
+<#+
+		}
+		else
+		{
+#>
+				var ret = await unpacker.Read<#= testSituation.Item1 #>Async();
+				Assert.IsTrue( ret.IsSuccess );
+				result = ret.Value;
+<#+
+		}
+#>
 				Assert.That( result, Is.EqualTo( <#= expectedValue #> ) );
 <#+
 	}
 	else
 	{
+		if ( !isAsync )
+		{
 #>
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read<#= testSituation.Item1 #>( out result ) );
 <#+
+		}
+		else
+		{
+#>
+				Assert.Throws<InvalidMessagePackStreamException>( async () => await unpacker.Read<#= testSituation.Item1 #>Async() );
+<#+
+		}
 	}
 }
 
-private void PutTestMethod( string methodName, Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string, string> testCase, int valueLengthAjustument, bool canConvertToString, Action<Tuple<string, string, string, string, bool>, string, string, bool, bool> putTestBody )
+private void PutTestMethod( string methodName, Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string, string> testCase, int valueLengthAjustument, bool canConvertToString, Action<Tuple<string, string, string, string, bool>, string, string, bool, bool, bool> putTestBody, bool isAsync )
 {
 	var adjustedValueLength = testCase.Item2 + valueLengthAjustument;
 	if ( adjustedValueLength < 0 )
@@ -254,7 +286,7 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 #>
 
 		[Test]
-		public void <#= methodName #>()
+		public <#= AsyncVoid( isAsync, valueLengthAjustument >= 0 ) #> <#= methodName #>()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -265,13 +297,13 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 <#+
-				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, valueLengthAjustument >= 0 );
+				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, valueLengthAjustument >= 0, isAsync );
 #>
 			}
 		}
 
 		[Test]
-		public void <#= methodName #>_Splitted()
+		public <#= AsyncVoid( isAsync, valueLengthAjustument >= 0 ) #> <#= methodName #>_Splitted()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -283,10 +315,15 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 			using( var unpacker = Unpacker.Create( splitted ) )
 			{
 <#+
-				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, valueLengthAjustument >= 0 );
+				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, valueLengthAjustument >= 0, isAsync );
 #>
 			}
 		}
 <#+
+}
+
+private static string AsyncVoid( bool isAsync, bool willSuccess )
+{
+	return ( isAsync && willSuccess ) ? "async Task" : "void";
 }
 #>

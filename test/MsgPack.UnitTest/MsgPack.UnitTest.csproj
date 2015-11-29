@@ -1298,12 +1298,21 @@
     </Compile>
     <Compile Include="SplittingStream.cs" />
     <Compile Include="SubtreeUnpackerTest.cs" />
+    <Compile Include="UnpackerTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackerTest.tt</DependentUpon>
+    </Compile>
     <Compile Include="UnpackerTest.Ext.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.Ext.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackerTest.cs" />
+    <Compile Include="UnpackerTest.Skip.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackerTest.Skip.tt</DependentUpon>
+    </Compile>
     <Compile Include="UnpackerTest.Raw.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1314,7 +1323,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.Scalar.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackerTest.Skip.cs" />
     <Compile Include="UnpackerTest.Skip.Variations.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1714,6 +1722,14 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="gen\ReadMe.txt" />
+    <Content Include="UnpackerTest.Skip.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackerTest.Skip.cs</LastGenOutput>
+    </Content>
+    <Content Include="UnpackerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackerTest.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

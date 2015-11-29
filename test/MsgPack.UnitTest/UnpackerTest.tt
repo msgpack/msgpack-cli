@@ -1,0 +1,879 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Windows.Forms" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#@ import namespace="System.Globalization" #> 
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	// This file was generated from UnpackerTest.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit UnpackerTest.tt and StreamingUnapkcerBase.ttinclude instead.
+
+	[TestFixture]
+	[Timeout( 500 )]
+	public class UnpackerTest
+	{
+		[Test]
+		public void TestCreate_StreamIsNull()
+		{
+			Assert.Throws<ArgumentNullException>( () => { using ( Unpacker.Create( null ) ) { } } );
+		}
+
+		[Test]
+		public void TestCreate_OwnsStreamisFalse_NotDisposeStream()
+		{
+			using ( var stream = new MemoryStream() )
+			{
+				using ( Unpacker.Create( stream, false ) ) { }
+
+				// Should not throw ObjectDisposedException.
+				stream.WriteByte( 1 );
+			}
+		}
+
+<#
+foreach( var isAsync in new [] { false, true } )
+{
+#>
+		[Test]
+		public <#= AsyncTest( "Read", isAsync ) #>_ScalarSequence_AsIs()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2, 0x3 } ) )
+			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "1st" );
+				Assert.That( rootUnpacker.LastReadData.Equals( 1 ) );
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "2nd" );
+				Assert.That( rootUnpacker.LastReadData.Equals( 2 ) );
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "3rd" );
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "Read", isAsync ) #>_Array_AsIs()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x93, 0x1, 0x2, 0x3 } ) )
+			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			{
+#pragma warning disable 612,618
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "1st" );
+				Assert.That( rootUnpacker.IsArrayHeader );
+				Assert.That( rootUnpacker.IsMapHeader, Is.False );
+				Assert.That( rootUnpacker.Data, Is.Not.Null );
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) ); // == Length
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "2nd" );
+				Assert.That( rootUnpacker.Data, Is.Not.Null );
+				Assert.That( rootUnpacker.LastReadData.Equals( 1 ) );
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "3rd" );
+				Assert.That( rootUnpacker.Data, Is.Not.Null );
+				Assert.That( rootUnpacker.LastReadData.Equals( 2 ) );
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "4th" );
+				Assert.That( rootUnpacker.Data, Is.Not.Null );
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
+#pragma warning restore 612,618
+			}
+		}
+
+
+		[Test]
+		public <#= AsyncTest( "Read", isAsync ) #>_Map_AsIs()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x83, 0x1, 0x1, 0x2, 0x2, 0x3, 0x3 } ) )
+			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			{
+#pragma warning disable 612,618
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "1st" );
+				Assert.That( rootUnpacker.IsArrayHeader, Is.False );
+				Assert.That( rootUnpacker.IsMapHeader );
+				Assert.That( rootUnpacker.Data, Is.Not.Null );
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) ); // == Length
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "2nd" );
+				Assert.That( rootUnpacker.Data, Is.Not.Null );
+				Assert.That( rootUnpacker.LastReadData.Equals( 1 ) );
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "3rd" );
+				Assert.That( rootUnpacker.Data, Is.Not.Null );
+				Assert.That( rootUnpacker.LastReadData.Equals( 1 ) );
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "4th" );
+				Assert.That( rootUnpacker.Data, Is.Not.Null );
+				Assert.That( rootUnpacker.LastReadData.Equals( 2 ) );
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "5th" );
+				Assert.That( rootUnpacker.Data, Is.Not.Null );
+				Assert.That( rootUnpacker.LastReadData.Equals( 2 ) );
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "6th" );
+				Assert.That( rootUnpacker.Data, Is.Not.Null );
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "7th" );
+				Assert.That( rootUnpacker.Data, Is.Not.Null );
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
+#pragma warning restore 612,618
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "Read", isAsync ) #>_ReadInTail_NoEffect()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2, 0x3 } ) )
+			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "1st" );
+				Assert.That( rootUnpacker.LastReadData.Equals( 1 ) );
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "2nd" );
+				Assert.That( rootUnpacker.LastReadData.Equals( 2 ) );
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "3rd" );
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), Is.False, "Tail" );
+				// Data should be last read.
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "Read", isAsync ) #>_ReadInSubtreeTail_NoEffect()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x1, 0x2, 0x3 } ) )
+			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "Top Level" );
+				Assert.That( rootUnpacker.IsArrayHeader );
+
+				using ( var subTreeReader = rootUnpacker.ReadSubtree() )
+				{
+					Assert.That( <#= Await( "subTreeReader.Read", isAsync ) #>(), "1st" );
+					Assert.That( subTreeReader.LastReadData.Equals( 1 ) );
+					Assert.That( <#= Await( "subTreeReader.Read", isAsync ) #>(), "2nd" );
+					Assert.That( subTreeReader.LastReadData.Equals( 2 ) );
+					Assert.That( <#= Await( "subTreeReader.Read", isAsync ) #>(), Is.False, "Tail" );
+					// Data should be last read.
+					Assert.That( subTreeReader.LastReadData.Equals( 2 ) );
+				}
+
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "3rd" );
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "Read", isAsync ) #>_InSubtreeMode_Fail()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
+			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "Failed to first read" );
+
+				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
+				{
+					// To be failed.
+					Assert.Throws<InvalidOperationException>( <#= AsyncLambda( "rootUnpacker.Read", isAsync ) #>() );
+				}
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_IsScalar_Fail()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
+			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "Failed to first read" );
+
+				// To be failed.
+				Assert.Throws<InvalidOperationException>( () =>
+					{
+						using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
+						{
+							Assert.Fail();
+						}
+					}
+				);
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_NestedArray_Success()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x94, 0x91, 0x1, 0x90, 0xC0, 0x92, 0x1, 0x2, 0x91, 0x1 } ) )
+			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), Is.True );
+
+				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
+				{
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+
+					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					{
+						Assert.That( <#= Await( "subSubtreeUnpacker.Read", isAsync ) #>(), Is.True );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 1 ) );
+						Assert.That( <#= Await( "subSubtreeUnpacker.Read", isAsync ) #>(), Is.False );
+					}
+
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+
+					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					{
+						Assert.That( <#= Await( "subSubtreeUnpacker.Read", isAsync ) #>(), Is.False );
+					}
+
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+					Assert.That( subTreeUnpacker.LastReadData.IsNil );
+
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+
+					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					{
+						Assert.That( <#= Await( "subSubtreeUnpacker.Read", isAsync ) #>(), Is.True );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 1 ) );
+						Assert.That( <#= Await( "subSubtreeUnpacker.Read", isAsync ) #>(), Is.True );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 2 ) );
+						Assert.That( <#= Await( "subSubtreeUnpacker.Read", isAsync ) #>(), Is.False );
+					}
+
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.False );
+				}
+
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), Is.True );
+
+				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
+				{
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 1 ) );
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.False );
+				}
+
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), Is.False );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_NestedMap_Success()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x84, 0x1, 0x81, 0x1, 0x1, 0x2, 0x80, 0x3, 0xC0, 0x4, 0x82, 0x1, 0x1, 0x2, 0x2, 0x81, 0x1, 0x1 } ) )
+			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), Is.True );
+
+				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
+				{
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 1 ) );
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+
+					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					{
+						Assert.That( <#= Await( "subSubtreeUnpacker.Read", isAsync ) #>(), Is.True );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 1 ) );
+						Assert.That( <#= Await( "subSubtreeUnpacker.Read", isAsync ) #>(), Is.True );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 1 ) );
+						Assert.That( <#= Await( "subSubtreeUnpacker.Read", isAsync ) #>(), Is.False );
+					}
+
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 2 ) );
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+
+					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					{
+						Assert.That( <#= Await( "subSubtreeUnpacker.Read", isAsync ) #>(), Is.False );
+					}
+
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 3 ) );
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+					Assert.That( subTreeUnpacker.LastReadData.IsNil );
+
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 4 ) );
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+
+					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					{
+						Assert.That( <#= Await( "subSubtreeUnpacker.Read", isAsync ) #>(), Is.True );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 1 ) );
+						Assert.That( <#= Await( "subSubtreeUnpacker.Read", isAsync ) #>(), Is.True );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 1 ) );
+						Assert.That( <#= Await( "subSubtreeUnpacker.Read", isAsync ) #>(), Is.True );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 2 ) );
+						Assert.That( <#= Await( "subSubtreeUnpacker.Read", isAsync ) #>(), Is.True );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 2 ) );
+						Assert.That( <#= Await( "subSubtreeUnpacker.Read", isAsync ) #>(), Is.False );
+					}
+
+					Assert.That(<#= Await( " subTreeUnpacker.Read", isAsync ) #>(), Is.False );
+				}
+
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), Is.True );
+
+				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
+				{
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 1 ) );
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 1 ) );
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.False );
+				}
+
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), Is.False );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_Nested_ReadGrandchildren_Success()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x92, 0x1, 0x91, 0x1, 0x2 } ) )
+			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), Is.True );
+
+				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
+				{
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 2 ) ); // Array Length
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 1 ) ); // Value in grand children
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 1 ) ); // Array Length
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 1 ) ); // Value in grand children
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.True );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 2 ) ); // Value in children
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), Is.False );
+				}
+
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), Is.False );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_InLeafBody_Fail()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
+			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "Failed to first read" );
+
+				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
+				{
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>(), "Failed to move to first body." );
+					// To be failed
+					Assert.Throws<InvalidOperationException>( () =>
+						{
+							using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
+							{
+								Assert.Fail();
+							}
+						}
+					);
+				}
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "Read", isAsync ) #>_UnderSkipping()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "target.Skip", isAsync ) #>(), Is.Null, "Precondition" );
+				Assert.Throws<InvalidOperationException>( <#= AsyncLambda( "target.Read", isAsync ) #>() );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "GetEnumerator", isAsync ) #>_UnderSkipping()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "target.Skip", isAsync ) #>(), Is.Null, "Precondition" );
+				Assert.Throws<InvalidOperationException>( () =>
+					{
+						foreach ( var item in target )
+						{
+
+						}
+					}
+				);
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_UnderSkipping()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "target.Skip", isAsync ) #>(), Is.Null, "Precondition" );
+				Assert.Throws<InvalidOperationException>( () => target.ReadSubtree() );
+			}
+		}
+
+		[Test]
+		public <#= AsyncLambdaTest( "Read", isAsync ) #>_UnderEnumerating()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				foreach ( var item in target )
+				{
+					Assert.Throws<InvalidOperationException>( <#= AsyncLambda( "target.Read", isAsync ) #>() );
+				}
+			}
+		}
+
+		[Test]
+		public <#= AsyncLambdaTest( "Skip", isAsync ) #>_UnderEnumerating()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				foreach ( var item in target )
+				{
+					Assert.Throws<InvalidOperationException>( <#= AsyncLambda( "target.Skip", isAsync ) #>() );
+				}
+			}
+		}
+
+		[Test]
+		public <#= AsyncLambdaTest( "ReadSubtree", isAsync ) #>_UnderEnumerating()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				foreach ( var item in target )
+				{
+					Assert.Throws<InvalidOperationException>( () => target.ReadSubtree() );
+				}
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_InRootHead_Success()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "target.Read", isAsync ) #>() );
+				Assert.That( target.IsArrayHeader );
+
+				using ( var subTreeUnpacker = target.ReadSubtree() )
+				{
+					Assert.That( <#= Await( "subTreeUnpacker.Read", isAsync ) #>() );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 0x1 ) );
+				}
+			}
+		}
+
+<#
+	if ( !isAsync )
+	{
+#>
+		[Test]
+		public <#= AsyncLambdaTest( "ReadSubtree", isAsync ) #>_InScalar()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0xD0, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.Throws<InvalidOperationException>( () => target.ReadSubtree() );
+			}
+		}
+<#
+	}
+#>
+
+		[Test]
+		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_InNestedScalar()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x81, 0x1, 0x91, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "target.Read", isAsync ) #>() );
+				Assert.That( target.IsMapHeader, Is.True );
+				Assert.That(<#= Await( " target.Read", isAsync ) #>() );
+				Assert.That( target.IsMapHeader, Is.False );
+				Assert.Throws<InvalidOperationException>( () => target.ReadSubtree() );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadItem", isAsync ) #>_OneScalar_AsScalar()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result = <#= Await( "target.ReadItem", isAsync ) #>();
+				Assert.That( result.HasValue );
+				Assert.That( result.Value == 1, result.Value.ToString() );
+				Assert.That( target.ReadItem(), Is.Null );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadItem", isAsync ) #>_TwoScalar_AsTwoScalar()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result1 = <#= Await( "target.ReadItem", isAsync ) #>();
+				Assert.That( result1.HasValue );
+				Assert.That( result1.Value == 1, result1.Value.ToString() );
+
+				var result2 = <#= Await( "target.ReadItem", isAsync ) #>();
+				Assert.That( result2.HasValue );
+				Assert.That( result2.Value == 2, result2.Value.ToString() );
+
+				Assert.That( <#= Await( "target.ReadItem", isAsync ) #>(), Is.Null );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadItem", isAsync ) #>_Empty_Null()
+		{
+			using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result = <#= Await( "target.ReadItem", isAsync ) #>();
+				Assert.That( result.HasValue, Is.False );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadItem", isAsync ) #>_Array_AsSingleArray()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x1, 0x2 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result = <#= Await( "target.ReadItem", isAsync ) #>();
+				Assert.That( result.HasValue );
+				var array = result.Value.AsList();
+				Assert.That( array.Count, Is.EqualTo( 2 ), result.Value.ToString() );
+				Assert.That( array[ 0 ] == 1, result.Value.ToString() );
+				Assert.That( array[ 1 ] == 2, result.Value.ToString() );
+				Assert.That( <#= Await( "target.ReadItem", isAsync ) #>(), Is.Null );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadItem", isAsync ) #>_Map_AsSingleMap()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x82, 0x1, 0x2, 0x3, 0x4 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result = <#= Await( "target.ReadItem", isAsync ) #>();
+				Assert.That( result.HasValue );
+				var map = result.Value.AsDictionary();
+				Assert.That( map.Count, Is.EqualTo( 2 ), result.Value.ToString() );
+				Assert.That( map[ 1 ] == 2, result.Value.ToString() );
+				Assert.That( map[ 3 ] == 4, result.Value.ToString() );
+				Assert.That( <#= Await( "target.ReadItem", isAsync ) #>(), Is.Null );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadItem", isAsync ) #>_ArrayFollowingScalar_AsSingleArrayAndScalar()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x1, 0x2, 0x3 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result = <#= Await( "target.ReadItem", isAsync ) #>();
+				Assert.That( result.HasValue );
+				var array = result.Value.AsList();
+				Assert.That( array.Count, Is.EqualTo( 2 ), result.Value.ToString() );
+				Assert.That( array[ 0 ] == 1, result.Value.ToString() );
+				Assert.That( array[ 1 ] == 2, result.Value.ToString() );
+
+				var scalar = <#= Await( "target.ReadItem", isAsync ) #>();
+				Assert.That( scalar.HasValue );
+				Assert.That( scalar.Value == 3, result.Value.ToString() );
+				Assert.That( <#= Await( "target.ReadItem", isAsync ) #>(), Is.Null );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadItem", isAsync ) #>_MapFollowingScalar_AsSingleMapAndScalar()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x82, 0x1, 0x2, 0x3, 0x4, 0x5 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result =<#= Await( " target.ReadItem", isAsync ) #>();
+				Assert.That( result.HasValue );
+				var map = result.Value.AsDictionary();
+				Assert.That( map.Count, Is.EqualTo( 2 ), result.Value.ToString() );
+				Assert.That( map[ 1 ] == 2, result.Value.ToString() );
+				Assert.That( map[ 3 ] == 4, result.Value.ToString() );
+
+				var scalar = <#= Await( "target.ReadItem", isAsync ) #>();
+				Assert.That( scalar.HasValue );
+				Assert.That( scalar.Value == 5, result.Value.ToString() );
+				Assert.That( <#= Await( "target.ReadItem", isAsync ) #>(), Is.Null );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadItem", isAsync ) #>_ArrayOfArray_AsSingleArray()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x92, 11, 12, 0x92, 21, 22 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result = <#= Await( "target.ReadItem", isAsync ) #>();
+				Assert.That( result.HasValue );
+				var array = result.Value.AsList();
+				Assert.That( array.Count, Is.EqualTo( 2 ), result.Value.ToString() );
+				Assert.That( array[ 0 ].IsArray, result.Value.ToString() );
+				Assert.That( array[ 0 ].AsList()[ 0 ] == 11, result.Value.ToString() );
+				Assert.That( array[ 0 ].AsList()[ 1 ] == 12, result.Value.ToString() );
+				Assert.That( array[ 1 ].IsArray, result.Value.ToString() );
+				Assert.That( array[ 1 ].AsList()[ 0 ] == 21, result.Value.ToString() );
+				Assert.That( array[ 1 ].AsList()[ 1 ] == 22, result.Value.ToString() );
+				Assert.That( <#= Await( "target.ReadItem", isAsync ) #>(), Is.Null );
+			}
+		}
+
+
+		[Test]
+		public <#= AsyncTest( "ReadItem", isAsync ) #>_MapOfMap_AsSingleMap()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x82, 1, 0x82, 11, 1, 12, 2, 2, 0x82, 21, 1, 22, 2 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result = <#= Await( "target.ReadItem", isAsync ) #>();
+				Assert.That( result.HasValue );
+				var map = result.Value.AsDictionary();
+				Assert.That( map.Count, Is.EqualTo( 2 ), result.Value.ToString() );
+				Assert.That( map[ 1 ].IsMap, result.Value.ToString() );
+				Assert.That( map[ 1 ].AsDictionary()[ 11 ] == 1, result.Value.ToString() );
+				Assert.That( map[ 1 ].AsDictionary()[ 12 ] == 2, result.Value.ToString() );
+				Assert.That( map[ 2 ].IsMap, result.Value.ToString() );
+				Assert.That( map[ 2 ].AsDictionary()[ 21 ] == 1, result.Value.ToString() );
+				Assert.That( map[ 2 ].AsDictionary()[ 22 ] == 2, result.Value.ToString() );
+				Assert.That( <#= Await( "target.ReadItem", isAsync ) #>(), Is.Null );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadString", isAsync ) #>_Clob()
+		{
+			var str = String.Concat( Enumerable.Range( 0, 0x1FFFF ).Where( i => i < 0xD800 || 0xDFFF < i ).Select( Char.ConvertFromUtf32 ) );
+			var encoded = Encoding.UTF8.GetBytes( str );
+			using ( var buffer =
+				new MemoryStream(
+					new byte[] { MessagePackCode.Raw32 }.Concat(
+						BitConverter.IsLittleEndian ? BitConverter.GetBytes( encoded.Length ).Reverse() : BitConverter.GetBytes( encoded.Length )
+					).Concat( encoded )
+					.ToArray()
+				)
+			)
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				string result;
+<#
+	if ( !isAsync )
+	{
+#>
+				Assert.That( target.ReadString( out result ) );
+<#
+	}
+	else
+	{
+#>
+				var ret = await target.ReadStringAsync();
+				Assert.That( ret.IsSuccess );
+				result = ret.Value;
+<#
+	}
+#>
+				Assert.That( result, Is.EqualTo( str ) );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "Read", isAsync ) #>_EmptyArray_RecognizeEmptyArray()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x90, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "target.Read", isAsync ) #>() );
+				Assert.That( target.IsArrayHeader );
+				Assert.That( target.LastReadData == 0, target.LastReadData.ToString() );
+				Assert.That( target.ItemsCount, Is.EqualTo( 0 ) );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadArrayLength", isAsync ) #>_EmptyArray_RecognizeEmptyArray()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x90, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				long result;
+<#
+	if ( !isAsync )
+	{
+#>
+				Assert.That( target.ReadArrayLength( out result ) );
+<#
+	}
+	else
+	{
+#>
+				var ret = await target.ReadArrayLengthAsync();
+				Assert.That( ret.IsSuccess );
+				result = ret.Value;
+<#
+	}
+#>
+				Assert.That( target.IsArrayHeader );
+				Assert.That( result, Is.EqualTo( 0 ) );
+				Assert.That( target.LastReadData == 0, target.LastReadData.ToString() );
+				Assert.That( target.ItemsCount, Is.EqualTo( 0 ) );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "Read", isAsync ) #>_EmptyMap_RecognizeEmptyMap()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x80, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( <#= Await( "target.Read", isAsync ) #>() );
+				Assert.That( target.IsMapHeader );
+				Assert.That( target.LastReadData == 0, target.LastReadData.ToString() );
+				Assert.That( target.ItemsCount, Is.EqualTo( 0 ) );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "ReadMapLength", isAsync ) #>_EmptyMap_RecognizeEmptyMap()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x80, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				long result;
+<#
+	if ( !isAsync )
+	{
+#>
+				Assert.That( target.ReadMapLength( out result ) );
+<#
+	}
+	else
+	{
+#>
+				var ret = await target.ReadMapLengthAsync();
+				Assert.That( ret.IsSuccess );
+				result = ret.Value;
+<#
+	}
+#>
+				Assert.That( target.IsMapHeader );
+				Assert.That( result, Is.EqualTo( 0 ) );
+				Assert.That( target.LastReadData == 0, target.LastReadData.ToString() );
+				Assert.That( target.ItemsCount, Is.EqualTo( 0 ) );
+			}
+		}
+
+		[Test]
+		public <#= AsyncLambdaTest( "Read", isAsync ) #>_InvalidHeader_MessageTypeException()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0xC1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.Throws<UnassignedMessageTypeException>( <#= AsyncLambda( "target.Read", isAsync ) #>() );
+			}
+		}
+
+<#
+}
+#>
+	}
+}
+<#+
+
+private static string AsyncTest( string method, bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0} Test{1}{2}",
+			isAsync ? "async Task" : "void",
+			method,
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string Await( string expression, bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0}{1}{2}",
+			isAsync ? "await " : String.Empty,
+			expression,
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string AsyncLambdaTest( string method, bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"void Test{0}{1}",
+			method,
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string AsyncLambda( string expressionBody, bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0}() => {1}{2}{3}",
+			isAsync ? "async " : String.Empty,
+			isAsync ? "await " : String.Empty,
+			expressionBody,
+			isAsync ? "Async" : String.Empty
+		);
+}
+#>

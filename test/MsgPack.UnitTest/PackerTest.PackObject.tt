@@ -66,7 +66,7 @@ var __numerics =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -83,9 +83,9 @@ var __numerics =
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -98,20 +98,24 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack
 {
-	[TestFixture]
-	public partial class PackerTest_PackObject
+	// This file was generated from PackerTest.PackObject.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit PackerTest.PackObject.tt and StreamingUnapkcerBase.ttinclude instead.
+
+	partial class PackerTest_Pack
 	{
 <#
-foreach( var __numeric in __numerics )
+foreach( var isAsync in new [] { false, true } )
 {
+	foreach( var __numeric in __numerics )
+	{
 #>
 		[Test]
-		public void TestPack_<#= __numeric.Item1 #>_AsValue()
+		public <#= AsyncTest( "PackObject", isAsync ) #>_<#= __numeric.Item1 #>_AsValue()
 		{
 			using( var buffer = new MemoryStream() )
 			using( var packer = Packer.Create( buffer ) )
 			{
-				packer.PackObject( <#= __numeric.Item3 #> );
+				<#= Await( "packer.PackObject", isAsync ) #>( <#= __numeric.Item3 #> );
 				Assert.AreEqual(
 					<#= __numeric.Item4 #>,
 					buffer.ToArray()
@@ -120,23 +124,23 @@ foreach( var __numeric in __numerics )
 		}
 		
 <#
-}
+	} // foreach( var __numeric
 
-var __defined = new HashSet<string>();
-foreach( var __numeric in __numerics )
-{
-	if( __numeric.Item1 == "Nil" || !__defined.Add( __numeric.Item2.Name ) )
+	var __defined = new HashSet<string>();
+	foreach( var __numeric in __numerics )
 	{
-		continue;
-	}
+		if( __numeric.Item1 == "Nil" || !__defined.Add( __numeric.Item2.Name ) )
+		{
+			continue;
+		}
 #>
 		[Test]
-		public void TestPack_Nullable<#= __numeric.Item2.Name #>_NotNull_AsValue()
+		public <#= AsyncTest( "PackObject", isAsync ) #>_Nullable<#= __numeric.Item2.Name #>_NotNull_AsValue()
 		{
 			using( var buffer = new MemoryStream() )
 			using( var packer = Packer.Create( buffer ) )
 			{
-				packer.PackObject( <#= __numeric.Item3 #> );
+				<#= Await( "packer.PackObject", isAsync ) #>( <#= __numeric.Item3 #> );
 				Assert.AreEqual(
 					<#= __numeric.Item4 #>,
 					buffer.ToArray()
@@ -145,12 +149,12 @@ foreach( var __numeric in __numerics )
 		}
 
 		[Test]
-		public void TestPack_Nullable<#= __numeric.Item2.Name #>_Null_AsNil()
+		public <#= AsyncTest( "PackObject", isAsync ) #>_Nullable<#= __numeric.Item2.Name #>_Null_AsNil()
 		{
 			using( var buffer = new MemoryStream() )
 			using( var packer = Packer.Create( buffer ) )
 			{
-				packer.PackObject( default( <#= __numeric.Item2 #>?  ) );
+				<#= Await( "packer.PackObject", isAsync ) #>( default( <#= __numeric.Item2 #>?  ) );
 				Assert.AreEqual(
 					new byte[]{ 0xC0 },
 					buffer.ToArray()
@@ -159,7 +163,77 @@ foreach( var __numeric in __numerics )
 		}
 		
 <#
-}
+	} // foreach( var __numeric
+#>
+
+		[Test]
+		public <#= AsyncTest( "PackObject", isAsync ) #>_StringNotNull_AsIs()
+		{
+			using( var buffer = new MemoryStream() )
+			using( var packer = Packer.Create( buffer ) )
+			{
+				<#= Await( "packer.PackObject", isAsync ) #>( "ABC" );
+				Assert.AreEqual(
+					new byte[] { 0xA3, ( byte )'A', ( byte )'B', ( byte )'C' },
+					buffer.ToArray()
+				);
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "PackObject", isAsync ) #>_ByteArrayNotNull_AsIs()
+		{
+			using( var buffer = new MemoryStream() )
+			using( var packer = Packer.Create( buffer ) )
+			{
+				<#= Await( "packer.PackObject", isAsync ) #>( new byte[] { 1, 2, 3 } );
+				Assert.AreEqual(
+					new byte[] { 0xA3, 1, 2, 3 },
+					buffer.ToArray()
+				);
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( "PackObject", isAsync ) #>_ObjectNull_AsNil()
+		{
+			using( var buffer = new MemoryStream() )
+			using( var packer = Packer.Create( buffer ) )
+			{
+				<#= Await( "packer.PackObject", isAsync ) #>( default( object ) );
+				Assert.AreEqual(
+					new byte[] { 0xC0 },
+					buffer.ToArray()
+				);
+			}
+		}
+<#
+} // foreach( var isAsync
 #>
 	}
 }
+<#+
+private static string AsyncTest( string method, bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0} Test{1}{2}",
+			isAsync ? "async Task" : "void",
+			method,
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string Await( string expression, bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0}{1}{2}",
+			isAsync ? "await " : String.Empty,
+			expression,
+			isAsync ? "Async" : String.Empty
+		);
+}
+#>
