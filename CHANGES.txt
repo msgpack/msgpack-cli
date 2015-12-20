@@ -375,3 +375,7 @@ Release 0.6.5.1 - 2015/10/25
   BUG FIXES
   * mpu.exe -l option does not work in non-Windows environment. Issue #125.
 
+Release 0.6.6 - 2015/12/20
+
+  BUG FIXES
+  * Fix [MessagePackRuntimeType] fails when the type is declared in global namespace. Issue #137.

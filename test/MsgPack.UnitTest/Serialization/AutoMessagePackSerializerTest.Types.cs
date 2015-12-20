@@ -9652,3 +9652,17 @@ namespace MsgPack.UnitTest.TestTypes
 	}
 }
 
+public class TypeInGlobalNamespace
+{
+	public string Value { get; set; }
+
+	public TypeInGlobalNamespace() { }
+}
+
+// Issue 137
+public class HasGlobalNamespaceType
+{
+	[MsgPack.Serialization.MessagePackRuntimeType]
+	public TypeInGlobalNamespace GlobalType { get; set; }
+}
+

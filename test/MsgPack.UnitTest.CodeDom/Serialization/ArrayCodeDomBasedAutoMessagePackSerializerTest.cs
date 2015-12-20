@@ -11741,6 +11741,28 @@ namespace MsgPack.Serialization
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<KnownAndRuntimeTupleItem>() );
 		}
 #endif // !NETFX_35 && !UNITY
+		// Issue 137
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestGlobalNamespace()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new HasGlobalNamespaceType { GlobalType = new TypeInGlobalNamespace { Value = "ABC" } };
+			var serializer = context.GetSerializer<HasGlobalNamespaceType>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.GlobalType, Is.Not.Null );
+				Assert.That( result.GlobalType, Is.Not.SameAs( target.GlobalType ) );
+				Assert.That( result.GlobalType.Value, Is.EqualTo( target.GlobalType.Value ) );
+			}
+		}
 
 		#endregion -- Polymorphism --
 		[Test]
