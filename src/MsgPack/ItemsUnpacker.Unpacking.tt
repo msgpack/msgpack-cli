@@ -504,7 +504,7 @@ foreach ( var isAsync in new [] { false, true } )
 			this.CheckLength( length, ReadValueResult.String );
 
 			var length32 = unchecked( ( int )length );
-			var bytes = BufferManager.GetByteBuffer();
+			var bytes = BufferManager.Get<#= isAsync ? "Async" : String.Empty #>ByteBuffer();
 #if DEBUG
 			try
 			{
@@ -519,7 +519,7 @@ foreach ( var isAsync in new [] { false, true } )
 				}
 
 				var decoder = Encoding.UTF8.GetDecoder();
-				var chars = BufferManager.GetCharBuffer();
+				var chars = BufferManager.Get<#= isAsync ? "Async" : String.Empty #>CharBuffer();
 #if DEBUG
 				try
 				{
@@ -571,12 +571,38 @@ foreach ( var isAsync in new [] { false, true } )
 				}
 				finally
 				{
+<#
+	if ( isAsync )
+	{
+#>
+					BufferManager.ReturnAsyncCharBuffer( chars );
+<#
+	}
+	else
+	{
+#>
 					BufferManager.ReleaseCharBuffer();
+<#
+	}
+#>
 				}
 			}
 			finally
 			{
-				BufferManager.ReleaseByteBuffer();
+<#
+	if ( isAsync )
+	{
+#>
+					BufferManager.ReturnAsyncByteBuffer( bytes );
+<#
+	}
+	else
+	{
+#>
+					BufferManager.ReleaseByteBuffer();
+<#
+	}
+#>
 			}
 #endif // DEBUG
 		}

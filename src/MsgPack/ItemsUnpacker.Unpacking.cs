@@ -683,7 +683,7 @@ namespace MsgPack
 			}
 			finally
 			{
-				BufferManager.ReleaseByteBuffer();
+					BufferManager.ReleaseByteBuffer();
 			}
 #endif // DEBUG
 		}
@@ -701,7 +701,7 @@ namespace MsgPack
 			this.CheckLength( length, ReadValueResult.String );
 
 			var length32 = unchecked( ( int )length );
-			var bytes = BufferManager.GetByteBuffer();
+			var bytes = BufferManager.GetAsyncByteBuffer();
 #if DEBUG
 			try
 			{
@@ -716,7 +716,7 @@ namespace MsgPack
 				}
 
 				var decoder = Encoding.UTF8.GetDecoder();
-				var chars = BufferManager.GetCharBuffer();
+				var chars = BufferManager.GetAsyncCharBuffer();
 #if DEBUG
 				try
 				{
@@ -768,12 +768,12 @@ namespace MsgPack
 				}
 				finally
 				{
-					BufferManager.ReleaseCharBuffer();
+					BufferManager.ReturnAsyncCharBuffer( chars );
 				}
 			}
 			finally
 			{
-				BufferManager.ReleaseByteBuffer();
+					BufferManager.ReturnAsyncByteBuffer( bytes );
 			}
 #endif // DEBUG
 		}

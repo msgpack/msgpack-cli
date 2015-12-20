@@ -68,6 +68,9 @@
     <Compile Include="..\MsgPack\BufferManager.cs">
       <Link>BufferManager.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\BufferPool.cs">
+      <Link>BufferPool.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\CollectionDebuggerProxy`1.cs">
       <Link>CollectionDebuggerProxy`1.cs</Link>
     </Compile>

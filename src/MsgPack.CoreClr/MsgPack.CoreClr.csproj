@@ -13,8 +13,7 @@
     <DefaultLanguage>ja-JP</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -66,6 +65,12 @@
     <Compile Include="..\MsgPack.WinRT.Portable\WinRTCompatibility.cs">
       <Link>WinRTCompatibility.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\AsyncReadResult.cs">
+      <Link>AsyncReadResult.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\AsyncReadResult`1.cs">
+      <Link>AsyncReadResult`1.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\BigEndianBinary.cs">
       <Link>BigEndianBinary.cs</Link>
     </Compile>
@@ -74,6 +79,9 @@
     </Compile>
     <Compile Include="..\MsgPack\BufferManager.cs">
       <Link>BufferManager.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\BufferPool.cs">
+      <Link>BufferPool.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\CollectionDebuggerProxy`1.cs">
       <Link>CollectionDebuggerProxy`1.cs</Link>
@@ -92,6 +100,12 @@
     </Compile>
     <Compile Include="..\MsgPack\GlobalSuppressions.cs">
       <Link>GlobalSuppressions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\IAsyncPackable.cs">
+      <Link>IAsyncPackable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\IAsyncUnpackable.cs">
+      <Link>IAsyncUnpackable.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\InvalidMessagePackStreamException.cs">
       <Link>InvalidMessagePackStreamException.cs</Link>
@@ -633,6 +647,12 @@
     <Compile Include="..\MsgPack\Serialization\FromExpression.ToMethod.cs">
       <Link>Serialization\FromExpression.ToMethod.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\IAsyncMessagePackSerializer.cs">
+      <Link>Serialization\IAsyncMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\IAsyncMessagePackSingleObjectSerializer.cs">
+      <Link>Serialization\IAsyncMessagePackSingleObjectSerializer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\ICustomizableEnumSerializer.cs">
       <Link>Serialization\ICustomizableEnumSerializer.cs</Link>
     </Compile>
@@ -653,6 +673,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ISerializerGeneratorConfiguration.cs">
       <Link>Serialization\ISerializerGeneratorConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ISupportMessagePackSerializerCapability.cs">
+      <Link>Serialization\ISupportMessagePackSerializerCapability.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\LazyDelegatingMessagePackSerializer`1.cs">
       <Link>Serialization\LazyDelegatingMessagePackSerializer`1.cs</Link>

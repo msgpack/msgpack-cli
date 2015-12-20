@@ -19,7 +19,13 @@
 #endregion -- License Terms --
 
 using System;
+#if FEATURE_TAP
+using System.Collections.Concurrent;
+#endif // FEATURE_TAP
 using System.Diagnostics;
+#if FEATURE_TAP
+using System.Linq;
+#endif // FEATURE_TAP
 
 namespace MsgPack
 {
@@ -28,9 +34,13 @@ namespace MsgPack
 	/// </summary>
 	internal static class BufferManager
 	{
+		private const int ByteBufferSize = 64 * 1024;
+		private const int CharBufferSize = 32 * 1024;
+
 #if DEBUG
 		[ThreadStatic]
 		private static bool _isByteBufferUsed;
+
 		[ThreadStatic]
 		private static bool _isCharBufferUsed;
 #endif // DEBUG
@@ -38,12 +48,15 @@ namespace MsgPack
 		[ThreadStatic]
 		private static byte[] _byteBuffer;
 
+		[ThreadStatic]
+		private static char[] _charBuffer;
+
 		public static byte[] GetByteBuffer()
 		{
 #if DEBUG
 			if ( _isByteBufferUsed )
 			{
-				throw new InvalidOperationException("ByteBuffer is already used.");
+				throw new InvalidOperationException( "ByteBuffer is already used." );
 			}
 
 			_isByteBufferUsed = true;
@@ -51,7 +64,7 @@ namespace MsgPack
 
 			if ( _byteBuffer == null )
 			{
-				_byteBuffer = new byte[ 32 * 1024 ];
+				_byteBuffer = new byte[ ByteBufferSize ];
 			}
 
 			return _byteBuffer;
@@ -64,9 +77,6 @@ namespace MsgPack
 			_isByteBufferUsed = false;
 #endif // DEBUG
 		}
-
-		[ThreadStatic]
-		private static char[] _charBuffer;
 
 		public static char[] GetCharBuffer()
 		{
@@ -81,18 +91,77 @@ namespace MsgPack
 
 			if ( _charBuffer == null )
 			{
-				_charBuffer = new char[ 32 * 1024 ];
+				_charBuffer = new char[ CharBufferSize ];
 			}
 
 			return _charBuffer;
 		}
 
-		[Conditional( "DEBUG" )]
+		[Conditional("DEBUG")]
 		public static void ReleaseCharBuffer()
 		{
 #if DEBUG
 			_isCharBufferUsed = false;
 #endif // DEBUG
 		}
+
+
+#if FEATURE_TAP
+
+		private static readonly int InitialAsyncBufferPoolSize = Environment.ProcessorCount;
+
+		private static readonly int MaxAsyncBufferPoolSize = InitialAsyncBufferPoolSize * 16;
+
+		private static readonly ConcurrentQueue<byte[]> _globalByteBufferPool =
+			new ConcurrentQueue<byte[]>( Enumerable.Repeat( new byte[ BufferPool.ByteBufferSize ], InitialAsyncBufferPoolSize ) );
+
+		private static readonly ConcurrentQueue<char[]> _globalCharBufferPool =
+			new ConcurrentQueue<char[]>( Enumerable.Repeat( new char[ BufferPool.CharBufferSize ], InitialAsyncBufferPoolSize ) );
+
+		public static byte[] GetAsyncByteBuffer()
+		{
+			byte[] buffer;
+			if ( !_globalByteBufferPool.TryDequeue( out buffer ) )
+			{
+				buffer = new byte[ ByteBufferSize ];
+			}
+
+			return buffer;
+		}
+
+		public static void ReturnAsyncByteBuffer( byte[] buffer )
+		{
+			_globalByteBufferPool.Enqueue( buffer );
+
+			if ( _globalByteBufferPool.Count > MaxAsyncBufferPoolSize )
+			{
+				byte[] dummy;
+				_globalByteBufferPool.TryDequeue( out dummy );
+			}
+		}
+
+		public static char[] GetAsyncCharBuffer()
+		{
+			char[] buffer;
+			if ( !_globalCharBufferPool.TryDequeue( out buffer ) )
+			{
+				buffer = new char[ CharBufferSize ];
+			}
+
+			return buffer;
+		}
+
+		public static void ReturnAsyncCharBuffer( char[] buffer )
+		{
+			_globalCharBufferPool.Enqueue( buffer );
+
+			if ( _globalCharBufferPool.Count > MaxAsyncBufferPoolSize )
+			{
+				char[] dummy;
+				_globalCharBufferPool.TryDequeue( out dummy );
+			}
+		}
+
+#endif // FEATURE_TAP
 	}
 }
