@@ -133,7 +133,7 @@ namespace MsgPack.Serialization
 					);
 				var result = serializer.Unpack( buffer );
 				Assert.That( result.Count, Is.EqualTo( 1 ) );
-				var singleResult = default ( KeyValuePair<FileMode, int> );
+				var singleResult = default( KeyValuePair<FileMode, int> );
 				foreach ( var kv in result )
 				{
 					singleResult = kv;
@@ -148,7 +148,7 @@ namespace MsgPack.Serialization
 		public void TestIssue124_AotForComplexValueType()
 		{
 			MessagePackSerializer.PrepareType<TestValueType>();
-			var context = 
+			var context =
 				PreGeneratedSerializerActivator.CreateContext(
 					SerializationMethod.Array,
 					PackerCompatibilityOptions.None
@@ -252,6 +252,52 @@ namespace MsgPack.Serialization
 				Assert.That( unpacker.Read() );
 				return new TestValueTypeWrapper { Value = this._serializer0.UnpackFrom( unpacker ) };
 			}
+		}
+
+		[Test]
+		public void TestIssue135()
+		{
+			var context = new SerializationContext
+			{
+				SerializationMethod = SerializationMethod.Map,
+				EnumSerializationMethod = EnumSerializationMethod.ByName,
+				CompatibilityOptions =
+				{
+					PackerCompatibilityOptions = PackerCompatibilityOptions.None
+				}
+			};
+			var serializer = context.GetSerializer<Issue135>();
+
+			var dict = new Dictionary<string, object>();
+			dict[ "A" ] = "x";
+
+			var body = new byte[] { 0x81, 0xA1, ( byte ) 'A', 0xA1, ( byte ) 'x' };
+
+			using ( var stream = new MemoryStream( body ) )
+			{
+				var result = serializer.Unpack( stream );
+				Assert.That( result.A, Is.EqualTo( "x" ) );
+				Assert.That( result.B, Is.EqualTo( 0 ) );
+			}
+		}
+	}
+
+	public class Issue135
+	{
+		private const NilImplication NI = NilImplication.Prohibit;
+
+		private readonly string _a;
+		private readonly int _b;
+
+		[MessagePackMember( 0, NilImplication = NI )]
+		public string A {get { return this._a; }}
+		[MessagePackMember( 1, NilImplication = NI )]
+		public int B { get { return this._b; } }
+
+		public Issue135( string a, int b )
+		{
+			this._a = a;
+			this._b = b;
 		}
 	}
 }

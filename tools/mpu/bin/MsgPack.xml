@@ -291,14 +291,6 @@
             </param>
             <returns><see cref="T:MsgPack.Unpacker"/> instance.</returns>
         </member>
-        <member name="M:MsgPack.Unpacker.Create(System.IO.Stream,MsgPack.PackerUnpackerStreamOptions)">
-            <summary>
-            	 Creates the new <see cref="T:MsgPack.Unpacker"/> from specified stream.
-            </summary>
-            <param name="stream">The stream to be unpacked.</param>
-            <param name="streamOptions"><see cref="T:MsgPack.PackerUnpackerStreamOptions"/> which specifies stream handling options.</param>
-            <returns><see cref="T:MsgPack.Unpacker"/> instance.</returns>
-        </member>
         <member name="M:MsgPack.Unpacker.#ctor">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.Unpacker"/> class.
@@ -314,15 +306,6 @@
             	Releases unmanaged and optionally managed resources.
             </summary>
             <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        </member>
-        <member name="M:MsgPack.Unpacker.Drain">
-            <summary>
-            	Drains remaining items in current context.
-            </summary>
-            <remarks>
-            	This method drains remaining items in context of subtree mode unpacker.
-            	This method does not any effect for other types of unpacker.
-            </remarks>
         </member>
         <member name="M:MsgPack.Unpacker.ReadSubtree">
             <summary>
@@ -467,9 +450,6 @@
             <summary>
             	Reads next nullable <see cref="T:System.Boolean"/> value from current stream.
             </summary>
-            <param name="result">
-            	The nullable <see cref="T:System.Boolean"/> value read from current stream to be stored when operation is succeeded.
-            </param>
             <returns>
             	The nullable <see cref="T:System.Boolean"/> value read from current data source successfully.
             </returns>
@@ -502,9 +482,6 @@
             <summary>
             	Reads next nullable <see cref="T:System.Byte"/> value from current stream.
             </summary>
-            <param name="result">
-            	The nullable <see cref="T:System.Byte"/> value read from current stream to be stored when operation is succeeded.
-            </param>
             <returns>
             	The nullable <see cref="T:System.Byte"/> value read from current data source successfully.
             </returns>
@@ -537,9 +514,6 @@
             <summary>
             	Reads next nullable <see cref="T:System.SByte"/> value from current stream.
             </summary>
-            <param name="result">
-            	The nullable <see cref="T:System.SByte"/> value read from current stream to be stored when operation is succeeded.
-            </param>
             <returns>
             	The nullable <see cref="T:System.SByte"/> value read from current data source successfully.
             </returns>
@@ -572,9 +546,6 @@
             <summary>
             	Reads next nullable <see cref="T:System.Int16"/> value from current stream.
             </summary>
-            <param name="result">
-            	The nullable <see cref="T:System.Int16"/> value read from current stream to be stored when operation is succeeded.
-            </param>
             <returns>
             	The nullable <see cref="T:System.Int16"/> value read from current data source successfully.
             </returns>
@@ -607,9 +578,6 @@
             <summary>
             	Reads next nullable <see cref="T:System.UInt16"/> value from current stream.
             </summary>
-            <param name="result">
-            	The nullable <see cref="T:System.UInt16"/> value read from current stream to be stored when operation is succeeded.
-            </param>
             <returns>
             	The nullable <see cref="T:System.UInt16"/> value read from current data source successfully.
             </returns>
@@ -642,9 +610,6 @@
             <summary>
             	Reads next nullable <see cref="T:System.Int32"/> value from current stream.
             </summary>
-            <param name="result">
-            	The nullable <see cref="T:System.Int32"/> value read from current stream to be stored when operation is succeeded.
-            </param>
             <returns>
             	The nullable <see cref="T:System.Int32"/> value read from current data source successfully.
             </returns>
@@ -677,9 +642,6 @@
             <summary>
             	Reads next nullable <see cref="T:System.UInt32"/> value from current stream.
             </summary>
-            <param name="result">
-            	The nullable <see cref="T:System.UInt32"/> value read from current stream to be stored when operation is succeeded.
-            </param>
             <returns>
             	The nullable <see cref="T:System.UInt32"/> value read from current data source successfully.
             </returns>
@@ -712,9 +674,6 @@
             <summary>
             	Reads next nullable <see cref="T:System.Int64"/> value from current stream.
             </summary>
-            <param name="result">
-            	The nullable <see cref="T:System.Int64"/> value read from current stream to be stored when operation is succeeded.
-            </param>
             <returns>
             	The nullable <see cref="T:System.Int64"/> value read from current data source successfully.
             </returns>
@@ -747,9 +706,6 @@
             <summary>
             	Reads next nullable <see cref="T:System.UInt64"/> value from current stream.
             </summary>
-            <param name="result">
-            	The nullable <see cref="T:System.UInt64"/> value read from current stream to be stored when operation is succeeded.
-            </param>
             <returns>
             	The nullable <see cref="T:System.UInt64"/> value read from current data source successfully.
             </returns>
@@ -782,9 +738,6 @@
             <summary>
             	Reads next nullable <see cref="T:System.Single"/> value from current stream.
             </summary>
-            <param name="result">
-            	The nullable <see cref="T:System.Single"/> value read from current stream to be stored when operation is succeeded.
-            </param>
             <returns>
             	The nullable <see cref="T:System.Single"/> value read from current data source successfully.
             </returns>
@@ -817,9 +770,6 @@
             <summary>
             	Reads next nullable <see cref="T:System.Double"/> value from current stream.
             </summary>
-            <param name="result">
-            	The nullable <see cref="T:System.Double"/> value read from current stream to be stored when operation is succeeded.
-            </param>
             <returns>
             	The nullable <see cref="T:System.Double"/> value read from current data source successfully.
             </returns>
@@ -852,9 +802,6 @@
             <summary>
             	Reads next nullable <see cref="T:MsgPack.MessagePackExtendedTypeObject"/> value from current stream.
             </summary>
-            <param name="result">
-            	The nullable <see cref="T:MsgPack.MessagePackExtendedTypeObject"/> value read from current stream to be stored when operation is succeeded.
-            </param>
             <returns>
             	The nullable <see cref="T:MsgPack.MessagePackExtendedTypeObject"/> value read from current data source successfully.
             </returns>
@@ -2833,20 +2780,6 @@
             	 NetworkStream, UnmanagedMemoryStream, or so.
             </remarks>
         </member>
-        <member name="M:MsgPack.Packer.Create(System.IO.Stream,MsgPack.PackerCompatibilityOptions,MsgPack.PackerUnpackerStreamOptions)">
-            <summary>
-            	Create standard Safe <see cref="T:MsgPack.Packer"/> instancde wrapping specified <see cref="T:System.IO.Stream"/> with specified <see cref="T:MsgPack.PackerCompatibilityOptions"/>.
-            </summary>
-            <param name="stream"><see cref="T:System.IO.Stream"/> object.</param>
-            <param name="compatibilityOptions">A <see cref="T:MsgPack.PackerCompatibilityOptions"/> which specifies compatibility options.</param>
-            <param name="streamOptions"><see cref="T:MsgPack.PackerUnpackerStreamOptions"/> which specifies stream handling options.</param>
-            <returns>Safe <see cref="T:MsgPack.Packer"/>. This will not be null.</returns>
-            <exception cref="T:System.ArgumentNullException"><paramref name="stream"/> is null.</exception>
-            <remarks>
-            	 You can specify any derived <see cref="T:System.IO.Stream"/> class like FileStream, <see cref="T:System.IO.MemoryStream"/>,
-            	 NetworkStream, UnmanagedMemoryStream, or so.
-            </remarks>
-        </member>
         <member name="M:MsgPack.Packer.Dispose">
             <summary>
             	Clean up internal resources.
@@ -2915,111 +2848,6 @@
             </summary>
             <param name="value">Maybe <see cref="T:System.Byte"/> value.</param>
             <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
-        </member>
-        <member name="M:MsgPack.Packer.Pack(System.Boolean)">
-            <summary>
-            	Packs <see cref="T:System.Boolean"/> value to current stream.
-            </summary>
-            <param name="value"><see cref="T:System.Boolean"/> value.</param>
-            <returns>This instance.</returns>
-        </member>
-        <member name="M:MsgPack.Packer.TryPackTinySignedInteger(System.Int64)">
-            <summary>
-            	Try packs <see cref="T:System.SByte"/> value to current stream as tiny fix num.
-            </summary>
-            <param name="value">Maybe tiny <see cref="T:System.SByte"/> value.</param>
-            <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
-        </member>
-        <member name="M:MsgPack.Packer.TryPackTinyUnsignedInteger(System.UInt64)">
-            <summary>
-            	Try packs <see cref="T:System.Byte"/> value to current stream as tiny fix num.
-            </summary>
-            <param name="value">Maybe tiny <see cref="T:System.Byte"/> value.</param>
-            <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
-        </member>
-        <member name="M:MsgPack.Packer.PackNull">
-            <summary>
-            	Packs a null value to current stream.
-            </summary>
-            <returns>This instance.</returns>
-            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
-        </member>
-        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.SByte})">
-            <summary>
-            	Pack nullable <see cref="T:System.SByte"/> value.
-            </summary>
-            <param name="value">Value to serialize.</param>
-            <returns>This instance.</returns>
-        </member>
-        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.Byte})">
-            <summary>
-            	Pack nullable <see cref="T:System.Byte"/> value.
-            </summary>
-            <param name="value">Value to serialize.</param>
-            <returns>This instance.</returns>
-        </member>
-        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.Int16})">
-            <summary>
-            	Pack nullable <see cref="T:System.Int16"/> value.
-            </summary>
-            <param name="value">Value to serialize.</param>
-            <returns>This instance.</returns>
-        </member>
-        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.UInt16})">
-            <summary>
-            	Pack nullable <see cref="T:System.UInt16"/> value.
-            </summary>
-            <param name="value">Value to serialize.</param>
-            <returns>This instance.</returns>
-        </member>
-        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.Int32})">
-            <summary>
-            	Pack nullable <see cref="T:System.Int32"/> value.
-            </summary>
-            <param name="value">Value to serialize.</param>
-            <returns>This instance.</returns>
-        </member>
-        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.UInt32})">
-            <summary>
-            	Pack nullable <see cref="T:System.UInt32"/> value.
-            </summary>
-            <param name="value">Value to serialize.</param>
-            <returns>This instance.</returns>
-        </member>
-        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.Int64})">
-            <summary>
-            	Pack nullable <see cref="T:System.Int64"/> value.
-            </summary>
-            <param name="value">Value to serialize.</param>
-            <returns>This instance.</returns>
-        </member>
-        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.UInt64})">
-            <summary>
-            	Pack nullable <see cref="T:System.UInt64"/> value.
-            </summary>
-            <param name="value">Value to serialize.</param>
-            <returns>This instance.</returns>
-        </member>
-        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.Single})">
-            <summary>
-            	Pack nullable <see cref="T:System.Single"/> value.
-            </summary>
-            <param name="value">Value to serialize.</param>
-            <returns>This instance.</returns>
-        </member>
-        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.Double})">
-            <summary>
-            	Pack nullable <see cref="T:System.Double"/> value.
-            </summary>
-            <param name="value">Value to serialize.</param>
-            <returns>This instance.</returns>
-        </member>
-        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.Boolean})">
-            <summary>
-            	Pack nullable <see cref="T:System.Boolean"/> value.
-            </summary>
-            <param name="value">Value to serialize.</param>
-            <returns>This instance.</returns>
         </member>
         <member name="M:MsgPack.Packer.Pack(System.Int16)">
             <summary>
@@ -3125,85 +2953,97 @@
             <param name="value"><see cref="T:System.Double"/> value.</param>
             <returns>This instance.</returns>
         </member>
+        <member name="M:MsgPack.Packer.Pack(System.Boolean)">
+            <summary>
+            	Packs <see cref="T:System.Boolean"/> value to current stream.
+            </summary>
+            <param name="value"><see cref="T:System.Boolean"/> value.</param>
+            <returns>This instance.</returns>
+        </member>
         <member name="M:MsgPack.Packer.PackArrayHeader(System.Int32)">
             <summary>
-            	Bookkeep array length or list items count to be packed on current stream.
+            	Bookkeep array length to be packed on current stream.
             </summary>
-            <param name="count">Array length or list items count.</param>
+            <param name="count">Array length.</param>
             <returns>This instance.</returns>
             <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
         </member>
         <member name="M:MsgPack.Packer.PackArrayHeaderCore(System.Int32)">
             <summary>
-            	Bookkeep array length or list items count to be packed on current stream.
+            	Bookkeep array length to be packed on current stream.
             </summary>
-            <param name="count">Array length or list items count.</param>
+            <param name="count">Array length.</param>
+            <returns>This instance.</returns>
         </member>
         <member name="M:MsgPack.Packer.PackMapHeader(System.Int32)">
             <summary>
-            	Bookkeep dictionary (map) items count to be packed on current stream.
+            	Bookkeep dictionary items count to be packed on current stream.
             </summary>
-            <param name="count">Dictionary (map) items count.</param>
+            <param name="count">Dictionary items count.</param>
             <returns>This instance.</returns>
             <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
         </member>
         <member name="M:MsgPack.Packer.PackMapHeaderCore(System.Int32)">
             <summary>
-            	Bookkeep dictionary (map) items count to be packed on current stream.
+            	Bookkeep dictionary items count to be packed on current stream.
             </summary>
-            <param name="count">Dictionary (map) items count.</param>
+            <param name="count">Dictionary items count.</param>
+            <returns>This instance.</returns>
         </member>
         <member name="M:MsgPack.Packer.PackRawHeader(System.Int32)">
             <summary>
-            	Bookkeep byte length to be packed on current stream as the bytes might represent well formed encoded string.
+            	Bookkeep byte length to be packed on current stream.
             </summary>
-            <param name="length">A length of byte array.</param>
+            <param name="length">Byte length.</param>
             <returns>This instance.</returns>
             <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
             <remarks>
-            	This method effectively acts as alias of <see cref="M:MsgPack.Packer.PackStringHeader(System.Int32)"/> for compatibility.
+            	This method acts as alias of <see cref="M:MsgPack.Packer.PackStringHeader(System.Int32)"/> for compatibility.
             </remarks>
         </member>
         <member name="M:MsgPack.Packer.PackStringHeader(System.Int32)">
             <summary>
-            	Bookkeep byte length to be packed on current stream as the bytes should represent well formed encoded string.
+            	Bookkeep byte length to be packed on current stream as the bytes may represent well formed encoded string.
             </summary>
-            <param name="length">A length of encoded byte array.</param>
+            <param name="length">Byte length.</param>
             <returns>This instance.</returns>
             <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
         </member>
         <member name="M:MsgPack.Packer.PackBinaryHeader(System.Int32)">
             <summary>
-            	Bookkeep byte length to be packed on current stream as the bytes should not represent well formed encoded string.
+            	Bookkeep byte length to be packed on current stream as the bytes do not represent well formed encoded string.
             </summary>
-            <param name="length">A length of byte array.</param>
+            <param name="length">Byte length.</param>
             <returns>This instance.</returns>
             <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
         </member>
         <member name="M:MsgPack.Packer.PackRawHeaderCore(System.Int32)">
             <summary>
-            	Bookkeep byte length to be packed on current stream as the bytes might represent well formed encoded string.
+            	Bookkeep byte length to be packed on current stream.
             </summary>
-            <param name="length">A length of byte array.</param>
+            <param name="length">Byte length.</param>
+            <returns>This instance.</returns>
             <remarks>
             	This method acts as alias of <see cref="M:MsgPack.Packer.PackStringHeaderCore(System.Int32)"/> for compatibility.
             </remarks>
         </member>
         <member name="M:MsgPack.Packer.PackStringHeaderCore(System.Int32)">
             <summary>
-            	Bookkeep byte length to be packed on current stream as the bytes should represent well formed encoded string.
+            	Bookkeep byte length to be packed on current stream as the bytes may represent well formed encoded string.
             </summary>
-            <param name="length">A length of encoded byte array.</param>
+            <param name="length">Byte length.</param>
+            <returns>This instance.</returns>
         </member>
         <member name="M:MsgPack.Packer.PackBinaryHeaderCore(System.Int32)">
             <summary>
-            	Bookkeep byte length to be packed on current stream as the bytes should not represent well formed encoded string.
+            	Bookkeep byte length to be packed on current stream as the bytes do not represent well formed encoded string.
             </summary>
-            <param name="length">A length of byte array.</param>
+            <param name="length">Byte length.</param>
+            <returns>This instance.</returns>
         </member>
         <member name="M:MsgPack.Packer.PackRaw(System.Collections.Generic.IEnumerable{System.Byte})">
             <summary>
-            	Packs specified byte sequence(it may or may not be string to current stream.
+            	Packs specified byte stream to current stream.
             </summary>
             <param name="value">Source bytes its size is not known.</param>
             <returns>This instance.</returns>
@@ -3214,7 +3054,7 @@
         </member>
         <member name="M:MsgPack.Packer.PackRaw(System.Collections.Generic.IList{System.Byte})">
             <summary>
-            	Packs specified byte collection(it may or may not be string to current stream.
+            	Packs specified byte stream to current stream.
             </summary>
             <param name="value">Source bytes its size is known.</param>
             <returns>This instance.</returns>
@@ -3225,99 +3065,14 @@
         </member>
         <member name="M:MsgPack.Packer.PackRaw(System.Byte[])">
             <summary>
-            	Packs specified byte array(it may or may not be string to current stream.
+            	Packs specified byte array to current stream.
             </summary>
-            <param name="value">A byte array.</param>
+            <param name="value">Source byte array.</param>
             <returns>This instance.</returns>
             <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
             <remarks>
             	This method use str types (previously known as raw types) for compability.
             </remarks>
-        </member>
-        <member name="M:MsgPack.Packer.PackBinary(System.Collections.Generic.IEnumerable{System.Byte})">
-            <summary>
-            	Packs specified byte sequence(it should not be string to current stream.
-            </summary>
-            <param name="value">Source bytes its size is not known.</param>
-            <returns>This instance.</returns>
-            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
-            <remarks>
-            	This method use bin types unless <see cref="P:MsgPack.Packer.CompatibilityOptions"/> contains <see cref="F:MsgPack.PackerCompatibilityOptions.PackBinaryAsRaw"/>.
-            </remarks>
-        </member>
-        <member name="M:MsgPack.Packer.PackBinary(System.Collections.Generic.IList{System.Byte})">
-            <summary>
-            	Packs specified byte collection(it should not be string to current stream.
-            </summary>
-            <param name="value">Source bytes its size is known.</param>
-            <returns>This instance.</returns>
-            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
-            <remarks>
-            	This method use bin types unless <see cref="P:MsgPack.Packer.CompatibilityOptions"/> contains <see cref="F:MsgPack.PackerCompatibilityOptions.PackBinaryAsRaw"/>.
-            </remarks>
-        </member>
-        <member name="M:MsgPack.Packer.PackBinary(System.Byte[])">
-            <summary>
-            	Packs specified byte array(it should not be string to current stream.
-            </summary>
-            <param name="value">A byte array.</param>
-            <returns>This instance.</returns>
-            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
-            <remarks>
-            	This method use bin types unless <see cref="P:MsgPack.Packer.CompatibilityOptions"/> contains <see cref="F:MsgPack.PackerCompatibilityOptions.PackBinaryAsRaw"/>.
-            </remarks>
-        </member>
-        <member name="M:MsgPack.Packer.PackString(System.Collections.Generic.IEnumerable{System.Char})">
-            <summary>
-            	Packs specified charactor sequence to current stream with UTF-8 <see cref="T:System.Text.Encoding"/>.
-            </summary>
-            <param name="value">Source chars its size is not known.</param>
-            <returns>This instance.</returns>
-            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
-        </member>
-        <member name="M:MsgPack.Packer.PackString(System.Collections.Generic.IEnumerable{System.Char},System.Text.Encoding)">
-            <summary>
-            	Packs specified charactor sequence to current stream with specified <see cref="T:System.Text.Encoding"/>.
-            </summary>
-            <param name="value">Source chars its size is not known.</param>
-            <param name="encoding"><see cref="T:System.Text.Encoding"/> to be used.</param>
-            <returns>This instance.</returns>
-            <exception cref="T:System.ArgumentNullException"><paramref name="encoding"/> is <c>null</c>.</exception>
-            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
-        </member>
-        <member name="M:MsgPack.Packer.PackStringCore(System.Collections.Generic.IEnumerable{System.Char},System.Text.Encoding)">
-            <summary>
-            	Packs specified charactor sequence to current stream with specified <see cref="T:System.Text.Encoding"/>.
-            </summary>
-            <param name="value">Source chars its size is not known.</param>
-            <param name="encoding"><see cref="T:System.Text.Encoding"/> to be used.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="encoding"/> is <c>null</c>.</exception>
-        </member>
-        <member name="M:MsgPack.Packer.PackString(System.String)">
-            <summary>
-            	Packs specified string to current stream with UTF-8 <see cref="T:System.Text.Encoding"/>.
-            </summary>
-            <param name="value">Source string.</param>
-            <returns>This instance.</returns>
-            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
-        </member>
-        <member name="M:MsgPack.Packer.PackString(System.String,System.Text.Encoding)">
-            <summary>
-            	Packs specified string to current stream with specified <see cref="T:System.Text.Encoding"/>.
-            </summary>
-            <param name="value">Source string.</param>
-            <param name="encoding"><see cref="T:System.Text.Encoding"/> to be used.</param>
-            <returns>This instance.</returns>
-            <exception cref="T:System.ArgumentNullException"><paramref name="encoding"/> is <c>null</c>.</exception>
-            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
-        </member>
-        <member name="M:MsgPack.Packer.PackStringCore(System.String,System.Text.Encoding)">
-            <summary>
-            	Packs specified string to current stream with specified <see cref="T:System.Text.Encoding"/>.
-            </summary>
-            <param name="value">Source string.</param>
-            <param name="encoding"><see cref="T:System.Text.Encoding"/> to be used.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="encoding"/> is <c>null</c>.</exception>
         </member>
         <member name="M:MsgPack.Packer.PackRawBody(System.Byte[])">
             <summary>
@@ -3341,6 +3096,87 @@
             	If you forget to write header first, then resulting stream will be corrupsed.
             </remarks>
         </member>
+        <member name="M:MsgPack.Packer.PackString(System.Collections.Generic.IEnumerable{System.Char})">
+            <summary>
+            	Packs specified char stream to current stream with UTF-8 <see cref="T:System.Text.Encoding"/>.
+            </summary>
+            <param name="value">Source chars its size is not known.</param>
+            <returns>This instance.</returns>
+            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
+        </member>
+        <member name="M:MsgPack.Packer.PackString(System.String)">
+            <summary>
+            	Packs specified string to current stream with UTF-8 <see cref="T:System.Text.Encoding"/>.
+            </summary>
+            <param name="value">Source string.</param>
+            <returns>This instance.</returns>
+            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
+        </member>
+        <member name="M:MsgPack.Packer.PackString(System.Collections.Generic.IEnumerable{System.Char},System.Text.Encoding)">
+            <summary>
+            	Packs specified char stream to current stream with specified <see cref="T:System.Text.Encoding"/>.
+            </summary>
+            <param name="value">Source chars its size is not known.</param>
+            <param name="encoding"><see cref="T:System.Text.Encoding"/> to be used.</param>
+            <returns>This instance.</returns>
+            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
+        </member>
+        <member name="M:MsgPack.Packer.PackString(System.String,System.Text.Encoding)">
+            <summary>
+            	Packs specified string to current stream with specified <see cref="T:System.Text.Encoding"/>.
+            </summary>
+            <param name="value">Source string.</param>
+            <param name="encoding"><see cref="T:System.Text.Encoding"/> to be used.</param>
+            <returns>This instance.</returns>
+            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
+        </member>
+        <member name="M:MsgPack.Packer.PackStringCore(System.Collections.Generic.IEnumerable{System.Char},System.Text.Encoding)">
+            <summary>
+            	Packs specified char stream to current stream with specified <see cref="T:System.Text.Encoding"/>.
+            </summary>
+            <param name="value">Source chars its size is not known.</param>
+            <param name="encoding"><see cref="T:System.Text.Encoding"/> to be used.</param>
+        </member>
+        <member name="M:MsgPack.Packer.PackStringCore(System.String,System.Text.Encoding)">
+            <summary>
+            	Packs specified string to current stream with specified <see cref="T:System.Text.Encoding"/>.
+            </summary>
+            <param name="value">Source string.</param>
+            <param name="encoding"><see cref="T:System.Text.Encoding"/> to be used.</param>
+        </member>
+        <member name="M:MsgPack.Packer.PackBinary(System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>
+            	Packs specified byte stream to current stream.
+            </summary>
+            <param name="value">Source bytes its size is not known.</param>
+            <returns>This instance.</returns>
+            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
+            <remarks>
+            	This method use bin types unless <see cref="P:MsgPack.Packer.CompatibilityOptions"/> contains <see cref="F:MsgPack.PackerCompatibilityOptions.PackBinaryAsRaw"/>.
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Packer.PackBinary(System.Collections.Generic.IList{System.Byte})">
+            <summary>
+            	Packs specified byte stream to current stream.
+            </summary>
+            <param name="value">Source bytes its size is known.</param>
+            <returns>This instance.</returns>
+            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
+            <remarks>
+            	This method use bin types unless <see cref="P:MsgPack.Packer.CompatibilityOptions"/> contains <see cref="F:MsgPack.PackerCompatibilityOptions.PackBinaryAsRaw"/>.
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Packer.PackBinary(System.Byte[])">
+            <summary>
+            	Packs specified byte array to current stream.
+            </summary>
+            <param name="value">Source byte array.</param>
+            <returns>This instance.</returns>
+            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
+            <remarks>
+            	This method use bin types unless <see cref="P:MsgPack.Packer.CompatibilityOptions"/> contains <see cref="F:MsgPack.PackerCompatibilityOptions.PackBinaryAsRaw"/>.
+            </remarks>
+        </member>
         <member name="M:MsgPack.Packer.PackArrayHeader``1(System.Collections.Generic.IList{``0})">
             <summary>
             	Bookkeep collection count to be packed on current stream.
@@ -3357,13 +3193,34 @@
             <returns>This instance.</returns>
             <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
         </member>
+        <member name="M:MsgPack.Packer.TryPackTinySignedInteger(System.Int64)">
+            <summary>
+            	Try packs <see cref="T:System.SByte"/> value to current stream as tiny fix num.
+            </summary>
+            <param name="value">Maybe tiny <see cref="T:System.SByte"/> value.</param>
+            <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
+        </member>
+        <member name="M:MsgPack.Packer.TryPackTinyUnsignedInteger(System.UInt64)">
+            <summary>
+            	Try packs <see cref="T:System.Byte"/> value to current stream as tiny fix num.
+            </summary>
+            <param name="value">Maybe tiny <see cref="T:System.Byte"/> value.</param>
+            <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
+        </member>
+        <member name="M:MsgPack.Packer.PackNull">
+            <summary>
+            	Packs a null value to current stream.
+            </summary>
+            <returns>This instance.</returns>
+            <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
+        </member>
         <member name="M:MsgPack.Packer.PackExtendedTypeValue(System.Byte,System.Byte[])">
             <summary>
             Packs an extended type value.
             </summary>
             <param name="typeCode">A type code of the extended type value.</param>
             <param name="body">A binary value portion of the extended type value.</param>
-            <returns>This instance.</returns>
+            <returns>This instance. </returns>
             <exception cref="T:System.ArgumentNullException"><paramref name="body"/> is <c>null</c>.</exception>
             <exception cref="T:System.InvalidOperationException"><see cref="P:MsgPack.Packer.CompatibilityOptions"/> property contains <see cref="F:MsgPack.PackerCompatibilityOptions.ProhibitExtendedTypeObjects"/>.</exception>
             <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
@@ -3377,6 +3234,83 @@
             <exception cref="T:System.ArgumentException"><see cref="P:MsgPack.MessagePackExtendedTypeObject.IsValid"/> of <paramref name="mpeto"/> is <c>false</c>.</exception>
             <exception cref="T:System.InvalidOperationException"><see cref="P:MsgPack.Packer.CompatibilityOptions"/> property contains <see cref="F:MsgPack.PackerCompatibilityOptions.ProhibitExtendedTypeObjects"/>.</exception>
             <exception cref="T:System.ObjectDisposedException">This instance has been disposed.</exception>
+        </member>
+        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.SByte})">
+            <summary>
+            	Pack nullable <see cref="T:System.SByte"/> value.
+            </summary>
+            <param name="value">Value to serialize.</param>
+            <returns>This packer instance.</returns>
+        </member>
+        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.Byte})">
+            <summary>
+            	Pack nullable <see cref="T:System.Byte"/> value.
+            </summary>
+            <param name="value">Value to serialize.</param>
+            <returns>This packer instance.</returns>
+        </member>
+        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.Int16})">
+            <summary>
+            	Pack nullable <see cref="T:System.Int16"/> value.
+            </summary>
+            <param name="value">Value to serialize.</param>
+            <returns>This packer instance.</returns>
+        </member>
+        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.UInt16})">
+            <summary>
+            	Pack nullable <see cref="T:System.UInt16"/> value.
+            </summary>
+            <param name="value">Value to serialize.</param>
+            <returns>This packer instance.</returns>
+        </member>
+        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.Int32})">
+            <summary>
+            	Pack nullable <see cref="T:System.Int32"/> value.
+            </summary>
+            <param name="value">Value to serialize.</param>
+            <returns>This packer instance.</returns>
+        </member>
+        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.UInt32})">
+            <summary>
+            	Pack nullable <see cref="T:System.UInt32"/> value.
+            </summary>
+            <param name="value">Value to serialize.</param>
+            <returns>This packer instance.</returns>
+        </member>
+        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.Int64})">
+            <summary>
+            	Pack nullable <see cref="T:System.Int64"/> value.
+            </summary>
+            <param name="value">Value to serialize.</param>
+            <returns>This packer instance.</returns>
+        </member>
+        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.UInt64})">
+            <summary>
+            	Pack nullable <see cref="T:System.UInt64"/> value.
+            </summary>
+            <param name="value">Value to serialize.</param>
+            <returns>This packer instance.</returns>
+        </member>
+        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.Single})">
+            <summary>
+            	Pack nullable <see cref="T:System.Single"/> value.
+            </summary>
+            <param name="value">Value to serialize.</param>
+            <returns>This packer instance.</returns>
+        </member>
+        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.Double})">
+            <summary>
+            	Pack nullable <see cref="T:System.Double"/> value.
+            </summary>
+            <param name="value">Value to serialize.</param>
+            <returns>This packer instance.</returns>
+        </member>
+        <member name="M:MsgPack.Packer.Pack(System.Nullable{System.Boolean})">
+            <summary>
+            	Pack nullable <see cref="T:System.Boolean"/> value.
+            </summary>
+            <param name="value">Value to serialize.</param>
+            <returns>This packer instance.</returns>
         </member>
         <member name="P:MsgPack.Packer.DefaultCompatibilityOptions">
             <summary>
@@ -3454,7 +3388,7 @@
         </member>
         <member name="M:MsgPack.PackerUnpackerExtensions.Pack``1(MsgPack.Packer,``0)">
             <summary>
-            	Packs specified value +  with the default context.
+            	Packs specified value with the default context.
             </summary>
             <typeparam name="T">The type of the value.</typeparam>
             <param name="source">The <see cref="T:MsgPack.Packer"/>.</param>
@@ -3469,7 +3403,7 @@
         </member>
         <member name="M:MsgPack.PackerUnpackerExtensions.Pack``1(MsgPack.Packer,``0,MsgPack.Serialization.SerializationContext)">
             <summary>
-            	Packs specified value +  with the specified context.
+            	Packs specified value with the specified context.
             </summary>
             <typeparam name="T">The type of the value.</typeparam>
             <param name="source">The <see cref="T:MsgPack.Packer"/>.</param>
@@ -3486,7 +3420,7 @@
         </member>
         <member name="M:MsgPack.PackerUnpackerExtensions.PackArray``1(MsgPack.Packer,System.Collections.Generic.IEnumerable{``0})">
             <summary>
-            	Packs specified collection +  with the default context.
+            	Packs specified collection with the default context.
             </summary>
             <typeparam name="T">The type of items of the collection.</typeparam>
             <param name="source">The <see cref="T:MsgPack.Packer"/>.</param>
@@ -3501,7 +3435,7 @@
         </member>
         <member name="M:MsgPack.PackerUnpackerExtensions.PackArray``1(MsgPack.Packer,System.Collections.Generic.IEnumerable{``0},MsgPack.Serialization.SerializationContext)">
             <summary>
-            	Packs specified collection +  with the specified context.
+            	Packs specified collection with the specified context.
             </summary>
             <typeparam name="T">The type of items of the collection.</typeparam>
             <param name="source">The <see cref="T:MsgPack.Packer"/>.</param>
@@ -3518,7 +3452,7 @@
         </member>
         <member name="M:MsgPack.PackerUnpackerExtensions.PackCollection``1(MsgPack.Packer,System.Collections.Generic.IEnumerable{``0})">
             <summary>
-            	Packs specified collection +  with the default context.
+            	Packs specified collection with the default context.
             </summary>
             <typeparam name="T">The type of items of the collection.</typeparam>
             <param name="source">The <see cref="T:MsgPack.Packer"/>.</param>
@@ -3533,7 +3467,7 @@
         </member>
         <member name="M:MsgPack.PackerUnpackerExtensions.PackCollection``1(MsgPack.Packer,System.Collections.Generic.IEnumerable{``0},MsgPack.Serialization.SerializationContext)">
             <summary>
-            	Packs specified collection +  with the specified context.
+            	Packs specified collection with the specified context.
             </summary>
             <typeparam name="T">The type of items of the collection.</typeparam>
             <param name="source">The <see cref="T:MsgPack.Packer"/>.</param>
@@ -3550,7 +3484,7 @@
         </member>
         <member name="M:MsgPack.PackerUnpackerExtensions.PackMap``2(MsgPack.Packer,System.Collections.Generic.IDictionary{``0,``1})">
             <summary>
-            	Packs specified dictionary +  with the default context.
+            	Packs specified dictionary with the default context.
             </summary>
             <typeparam name="TKey">The type of keys of the dictionary.</typeparam>
             <typeparam name="TValue">The type of values of the dictionary.</typeparam>
@@ -3566,7 +3500,7 @@
         </member>
         <member name="M:MsgPack.PackerUnpackerExtensions.PackMap``2(MsgPack.Packer,System.Collections.Generic.IDictionary{``0,``1},MsgPack.Serialization.SerializationContext)">
             <summary>
-            	Packs specified dictionary +  with the specified context.
+            	Packs specified dictionary with the specified context.
             </summary>
             <typeparam name="TKey">The type of keys of the dictionary.</typeparam>
             <typeparam name="TValue">The type of values of the dictionary.</typeparam>
@@ -3584,7 +3518,7 @@
         </member>
         <member name="M:MsgPack.PackerUnpackerExtensions.PackDictionary``2(MsgPack.Packer,System.Collections.Generic.IDictionary{``0,``1})">
             <summary>
-            	Packs specified dictionary +  with the default context.
+            	Packs specified dictionary with the default context.
             </summary>
             <typeparam name="TKey">The type of keys of the dictionary.</typeparam>
             <typeparam name="TValue">The type of values of the dictionary.</typeparam>
@@ -3600,7 +3534,7 @@
         </member>
         <member name="M:MsgPack.PackerUnpackerExtensions.PackDictionary``2(MsgPack.Packer,System.Collections.Generic.IDictionary{``0,``1},MsgPack.Serialization.SerializationContext)">
             <summary>
-            	Packs specified dictionary +  with the specified context.
+            	Packs specified dictionary with the specified context.
             </summary>
             <typeparam name="TKey">The type of keys of the dictionary.</typeparam>
             <typeparam name="TValue">The type of values of the dictionary.</typeparam>
@@ -3650,7 +3584,7 @@
         </member>
         <member name="M:MsgPack.PackerUnpackerExtensions.PackObject(MsgPack.Packer,System.Object)">
             <summary>
-            	Packs specified value +  with the default context.
+            	Packs specified value with the default context.
             </summary>
             <param name="source">The <see cref="T:MsgPack.Packer"/>.</param>
             <param name="value">The value to be serialized.</param>
@@ -3664,7 +3598,7 @@
         </member>
         <member name="M:MsgPack.PackerUnpackerExtensions.PackObject(MsgPack.Packer,System.Object,MsgPack.Serialization.SerializationContext)">
             <summary>
-            	Packs specified value +  with the specified context.
+            	Packs specified value with the specified context.
             </summary>
             <param name="source">The <see cref="T:MsgPack.Packer"/>.</param>
             <param name="value">The value to be serialized.</param>
@@ -3680,93 +3614,33 @@
         </member>
         <member name="M:MsgPack.PackerUnpackerExtensions.Unpack``1(MsgPack.Unpacker)">
             <summary>
-            	Unpacks specified type value +  with the default context.
+            	Unpacks specified type value with the default context.
             </summary>
-            <typeparam name="T">The type of the deserializing object.</typeparam>
+            <typeparam name="T">The type of the value.</typeparam>
             <param name="source">The <see cref="T:MsgPack.Unpacker"/>.</param>
-            <returns>The deserialized object.</returns>
+            <returns>The deserialized value.</returns>
             <exception cref="T:System.ArgumentNullException">
             	<paramref name="source"/> is <c>null</c>.
             </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Cannot deserialize object.
+            	Cannot deserialize <typeparamref name="T"/> value.
             </exception>
         </member>
         <member name="M:MsgPack.PackerUnpackerExtensions.Unpack``1(MsgPack.Unpacker,MsgPack.Serialization.SerializationContext)">
             <summary>
-            	Unpacks specified type value +  with the specified context.
+            	Unpacks specified type value with the specified context.
             </summary>
-            <typeparam name="T">The type of the deserializing object.</typeparam>
+            <typeparam name="T">The type of the value.</typeparam>
             <param name="source">The <see cref="T:MsgPack.Unpacker"/>.</param>
             <param name="context">The <see cref="T:MsgPack.Serialization.SerializationContext"/> holds shared serializers.</param>
-            <returns>The deserialized object.</returns>
+            <returns>The deserialized value.</returns>
             <exception cref="T:System.ArgumentNullException">
             	<paramref name="source"/> is <c>null</c>.
             	Or <paramref name="context"/> is <c>null</c>.
             </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Cannot deserialize object.
+            	Cannot deserialize <typeparamref name="T"/> value.
             </exception>
-        </member>
-        <member name="T:MsgPack.PackerUnpackerStreamOptions">
-            <summary>
-            	Represents options for stream on <see cref="T:MsgPack.Packer"/>/<see cref="T:MsgPack.Unpacker"/> creation.
-            </summary>
-        </member>
-        <member name="M:MsgPack.PackerUnpackerStreamOptions.#ctor">
-            <summary>
-            	Initializes a new instance of the <see cref="T:MsgPack.PackerUnpackerStreamOptions"/> class.
-            </summary>
-        </member>
-        <member name="P:MsgPack.PackerUnpackerStreamOptions.WithBuffering">
-            <summary>
-            	Gets or sets a value indicating whether stream should be wrapped with buffering stream.
-            </summary>
-            <value>
-              <c>true</c> if stream should be wrapped with buffering stream; otherwise, <c>false</c>.
-            </value>
-            <remarks>
-            	<para>
-            		This option is important to improve asynchronous operation performance because deserialization tend to be chatty,
-            		so many tiny asynchrnous operation are issued and then numerous context switching may occurred.
-            		Wrapping with buffering stream mitigate context switching because it should avoid asynchronous operation
-            		as long as it has buffered value.
-            	</para>
-            	<para>
-            		Current built-in <see cref="T:MsgPack.Unpacker"/> implementation uses <see cref="T:System.IO.BufferedStream"/> for buffering,
-            		and avoid buffering for following in-memory or stream with buffering feature:
-            		<list type="bullet">
-            			<item><see cref="T:System.IO.BufferedStream"/> itself.</item>
-            			<item><see cref="T:System.IO.MemoryStream"/>.</item>
-            			<item><see cref="T:System.IO.UnmanagedMemoryStream"/>.</item>
-            			<item><see cref="T:System.IO.FileStream"/> which has own internal buffer.</item>
-            		</list>
-            	</para>
-            	<para>
-            		Logically, it is preferred that you should wrap with <see cref="T:System.IO.BufferedStream"/> yourself for underlying stream
-            		for wrapper stream such as <seealso cref="T:System.IO.Compression.DeflateStream"/>, <see cref="T:System.Security.Cryptography.CryptoStream"/>, etc.
-            	</para>
-            </remarks>
-            <seealso cref="P:MsgPack.PackerUnpackerStreamOptions.BufferSize"/>
-        </member>
-        <member name="P:MsgPack.PackerUnpackerStreamOptions.BufferSize">
-            <summary>
-            	Gets or sets the size of the buffer of wrapping stream in bytes used when <see cref="P:MsgPack.PackerUnpackerStreamOptions.WithBuffering"/> is <c>true</c>.
-            </summary>
-            <value>
-            	The size of the buffer of wrapping stream in bytes used when <see cref="P:MsgPack.PackerUnpackerStreamOptions.WithBuffering"/> is <c>true</c>.
-            	The default is 64K.
-            	If you attempt to set 0 or negative value, then the value will be set to 1.
-            </value>
-        </member>
-        <member name="P:MsgPack.PackerUnpackerStreamOptions.OwnsStream">
-            <summary>
-            	Gets or sets a value indicating whether <see cref="T:MsgPack.Packer"/>/<see cref="T:MsgPack.Unpacker"/> will dispose underlying stream when their <c>Dispose(Boolean)</c> method are called with <c>true</c> value.
-            </summary>
-            <value>
-            	<c>true</c> if <see cref="T:MsgPack.Packer"/>/<see cref="T:MsgPack.Unpacker"/> will dispose underlying stream when their <c>Dispose(Boolean)</c> method are called with <c>true</c> value; 
-            	otherwise, <c>false</c>.
-            </value>
         </member>
         <member name="T:MsgPack.PackingOptions">
             <summary>
@@ -5052,14 +4926,6 @@
             	so the generated source code must have the accessibility when and only when they will be same assembly as MsgPack library itself.
             </remarks>
         </member>
-        <member name="P:MsgPack.Serialization.CodeDomSerializers.CodeDomContext.IsConditionalExpressionUsed">
-            <summary>
-            	Gets or sets a value indicating whether conditional expression is used, that is, helper method is required or not.
-            </summary>
-            <value>
-            <c>true</c> if conditional expression is used; otherwise, <c>false</c>.
-            </value>
-        </member>
         <member name="T:MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder">
             <summary>
             	Defines non-generic portion of <see cref="T:MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder`1"/>.
@@ -5131,35 +4997,30 @@
             	<paramref name="objectTree"/> is not compatible for this serializer.
             </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Failed to serialize object.
+            	The type of <paramref name="objectTree"/> is not serializable etc.
             </exception>
-            <exception cref="T:System.NotSupportedException">
-            	The type of <paramref name="objectTree"/> is not serializable even if it can be deserialized.
-            </exception>
-            <seealso cref="P:MsgPack.Serialization.ISupportMessagePackSerializerCapability.Capabilities"/>
         </member>
         <member name="M:MsgPack.Serialization.IMessagePackSerializer.UnpackFrom(MsgPack.Unpacker)">
             <summary>
             	Deserialize object with specified <see cref="T:MsgPack.Unpacker"/>.
             </summary>
             <param name="unpacker"><see cref="T:MsgPack.Unpacker"/> which unpacks values of resulting object tree.</param>
-            <returns>The deserialized object.</returns>
+            <returns>Deserialized object.</returns>
             <exception cref="T:System.ArgumentNullException">
             	<paramref name="unpacker"/> is <c>null</c>.
             </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Failed to deserialize object.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:MsgPack.MessageTypeException">
-            	Failed to deserialize object due to invalid stream.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:MsgPack.InvalidMessagePackStreamException">
-            	Failed to deserialize object due to invalid stream.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:System.NotSupportedException">
-            	The type of deserializing is not serializable even if it can be serialized.
+            	Deserializing type is abstract type.
             </exception>
-            <seealso cref="P:MsgPack.Serialization.ISupportMessagePackSerializerCapability.Capabilities"/>
         </member>
         <member name="M:MsgPack.Serialization.IMessagePackSerializer.UnpackTo(MsgPack.Unpacker,System.Object)">
             <summary>
@@ -5175,18 +5036,17 @@
             	<paramref name="collection"/> is not compatible for this serializer.
             </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Failed to deserialize object.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:MsgPack.MessageTypeException">
-            	Failed to deserialize object due to invalid stream.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:MsgPack.InvalidMessagePackStreamException">
-            	Failed to deserialize object due to invalid stream.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:System.NotSupportedException">
-            	The type of deserializing is not mutable collection.
+            	The type of <paramref name="collection"/> is not serializable etc.
             </exception>
-            <seealso cref="P:MsgPack.Serialization.ISupportMessagePackSerializerCapability.Capabilities"/>
         </member>
         <member name="M:MsgPack.Serialization.IMessagePackSingleObjectSerializer.PackSingleObject(System.Object)">
             <summary>
@@ -5195,35 +5055,27 @@
             <param name="objectTree">Object to be serialized.</param>
             <returns>An array of <see cref="T:System.Byte"/> which stores serialized value.</returns>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Failed to serialize object.
+            	<paramref name="objectTree"/> is not serializable etc.
             </exception>
-            <exception cref="T:System.NotSupportedException">
-            	The type of <paramref name="objectTree"/> is not serializable even if it can be deserialized.
-            </exception>
-            <seealso cref="P:MsgPack.Serialization.ISupportMessagePackSerializerCapability.Capabilities"/>
         </member>
         <member name="M:MsgPack.Serialization.IMessagePackSingleObjectSerializer.UnpackSingleObject(System.Byte[])">
             <summary>
             	Deserialize a single object from the array of <see cref="T:System.Byte"/> which contains a serialized object.
             </summary>
             <param name="buffer">An array of <see cref="T:System.Byte"/> serialized value to be stored.</param>
-            <returns>The deserialized object.</returns>
+            <returns>A bytes of serialized binary.</returns>
             <exception cref="T:System.ArgumentNullException">
             	<paramref name="buffer"/> is <c>null</c>.
             </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Failed to deserialize object.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:MsgPack.MessageTypeException">
-            	Failed to deserialize object due to invalid stream.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:MsgPack.InvalidMessagePackStreamException">
-            	Failed to deserialize object due to invalid stream.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
-            <exception cref="T:System.NotSupportedException">
-            	The type of deserializing is not serializable even if it can be serialized.
-            </exception>
-            <seealso cref="P:MsgPack.Serialization.ISupportMessagePackSerializerCapability.Capabilities"/>
             <remarks>
             	<para>
             		This method assumes that <paramref name="buffer"/> contains single serialized object dedicatedly,
@@ -5233,19 +5085,6 @@
             		This method is a counter part of <see cref="M:MsgPack.Serialization.IMessagePackSingleObjectSerializer.PackSingleObject(System.Object)"/>.
             	</para>
             </remarks>	
-        </member>
-        <member name="T:MsgPack.Serialization.ISupportMessagePackSerializerCapability">
-            <summary>
-            	Defines common interfaces to investigate serializer capability. 
-            </summary>
-        </member>
-        <member name="P:MsgPack.Serialization.ISupportMessagePackSerializerCapability.Capabilities">
-            <summary>
-            	Gets the capability flags for this instance.
-            </summary>
-            <value>
-            	The capability flags for this instance.
-            </value>
         </member>
         <member name="M:MsgPack.Serialization.MessagePackSerializer`1.#ctor">
             <summary>
@@ -5282,26 +5121,6 @@
             	This method also supports backword compatibility with 0.4.
             </remarks>
         </member>
-        <member name="M:MsgPack.Serialization.MessagePackSerializer`1.#ctor(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.SerializerCapabilities)">
-            <summary>
-            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> class.
-            </summary>
-            <param name="ownerContext">A <see cref="T:MsgPack.Serialization.SerializationContext"/> which owns this serializer.</param>
-            <param name="capabilities">A serializer calability flags represents capabilities of this instance.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="ownerContext"/> is <c>null</c>.</exception>
-        </member>
-        <member name="M:MsgPack.Serialization.MessagePackSerializer`1.#ctor(MsgPack.Serialization.SerializationContext,MsgPack.PackerCompatibilityOptions,MsgPack.Serialization.SerializerCapabilities)">
-            <summary>
-            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> class with explicitly specified compatibility option.
-            </summary>
-            <param name="ownerContext">A <see cref="T:MsgPack.Serialization.SerializationContext"/> which owns this serializer.</param>
-            <param name="packerCompatibilityOptions">The <see cref="P:MsgPack.Serialization.MessagePackSerializer`1.PackerCompatibilityOptions"/> for new packer creation.</param>
-            <param name="capabilities">A serializer calability flags represents capabilities of this instance.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="ownerContext"/> is <c>null</c>.</exception>
-            <remarks>
-            	This method also supports backword compatibility with 0.4.
-            </remarks>
-        </member>
         <member name="M:MsgPack.Serialization.MessagePackSerializer`1.Pack(System.IO.Stream,`0)">
             <summary>
             	Serializes specified object to the <see cref="T:System.IO.Stream"/>.
@@ -5312,35 +5131,21 @@
             	<paramref name="stream"/> is <c>null</c>.
             </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Failed to serialize object.
+            	<typeparamref name="T"/> is not serializable etc.
             </exception>
-            <exception cref="T:System.NotSupportedException">
-            	<typeparamref name="T"/> is not serializable even if it can be deserialized.
-            </exception>
-            <seealso cref="P:MsgPack.Serialization.MessagePackSerializer`1.Capabilities"/>
         </member>
         <member name="M:MsgPack.Serialization.MessagePackSerializer`1.Unpack(System.IO.Stream)">
             <summary>
             	Deserialize object from the <see cref="T:System.IO.Stream"/>.
             </summary>
             <param name="stream">Source <see cref="T:System.IO.Stream"/>.</param>
-            <returns>The deserialized object.</returns>
+            <returns>Deserialized object.</returns>
             <exception cref="T:System.ArgumentNullException">
             	<paramref name="stream"/> is <c>null</c>.
             </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Failed to deserialize object.
+            	<typeparamref name="T"/> is not serializable etc.
             </exception>
-            <exception cref="T:MsgPack.MessageTypeException">
-            	Failed to deserialize object due to invalid stream.
-            </exception>
-            <exception cref="T:MsgPack.InvalidMessagePackStreamException">
-            	Failed to deserialize object due to invalid stream.
-            </exception>
-            <exception cref="T:System.NotSupportedException">
-            	<typeparamref name="T"/> is not serializable even if it can be serialized.
-            </exception>
-            <seealso cref="P:MsgPack.Serialization.MessagePackSerializer`1.Capabilities"/>
         </member>
         <member name="M:MsgPack.Serialization.MessagePackSerializer`1.PackTo(MsgPack.Packer,`0)">
             <summary>
@@ -5352,12 +5157,8 @@
             	<paramref name="packer"/> is <c>null</c>.
             </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Failed to serialize object.
+            	<typeparamref name="T"/> is not serializable etc.
             </exception>
-            <exception cref="T:System.NotSupportedException">
-            	<typeparamref name="T"/> is not serializable even if it can be deserialized.
-            </exception>
-            <seealso cref="P:MsgPack.Serialization.MessagePackSerializer`1.Capabilities"/>
         </member>
         <member name="M:MsgPack.Serialization.MessagePackSerializer`1.PackToCore(MsgPack.Packer,`0)">
             <summary>
@@ -5366,35 +5167,30 @@
             <param name="packer"><see cref="T:MsgPack.Packer"/> which packs values in <paramref name="objectTree"/>. This value will not be <c>null</c>.</param>
             <param name="objectTree">Object to be serialized.</param>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Failed to serialize object.
+            	<typeparamref name="T"/> is not serializable etc.
             </exception>
-            <exception cref="T:System.NotSupportedException">
-            	<typeparamref name="T"/> is not serializable even if it can be deserialized.
-            </exception>
-            <seealso cref="P:MsgPack.Serialization.MessagePackSerializer`1.Capabilities"/>
         </member>
         <member name="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackFrom(MsgPack.Unpacker)">
             <summary>
             	Deserializes object with specified <see cref="T:MsgPack.Unpacker"/>.
             </summary>
             <param name="unpacker"><see cref="T:MsgPack.Unpacker"/> which unpacks values of resulting object tree.</param>
-            <returns>The deserialized object.</returns>
+            <returns>Deserialized object.</returns>
             <exception cref="T:System.ArgumentNullException">
             	<paramref name="unpacker"/> is <c>null</c>.
             </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Failed to deserialize object.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:MsgPack.MessageTypeException">
-            	Failed to deserialize object due to invalid stream.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:MsgPack.InvalidMessagePackStreamException">
-            	Failed to deserialize object due to invalid stream.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:System.NotSupportedException">
-            	<typeparamref name="T"/> is not serializable even if it can be serialized.
+            	<typeparamref name="T"/> is abstract type.
             </exception>
-            <seealso cref="P:MsgPack.Serialization.MessagePackSerializer`1.Capabilities"/>
         </member>
         <member name="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackNil">
             <summary>
@@ -5420,20 +5216,19 @@
             	Deserializes object with specified <see cref="T:MsgPack.Unpacker"/>.
             </summary>
             <param name="unpacker"><see cref="T:MsgPack.Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
-            <returns>The deserialized object.</returns>
+            <returns>Deserialized object.</returns>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Failed to deserialize object.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:MsgPack.MessageTypeException">
-            	Failed to deserialize object due to invalid stream.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:MsgPack.InvalidMessagePackStreamException">
-            	Failed to deserialize object due to invalid stream.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:System.NotSupportedException">
-            	<typeparamref name="T"/> is not serializable even if it can be serialized.
+            	<typeparamref name="T"/> is abstract type.
             </exception>
-            <seealso cref="P:MsgPack.Serialization.MessagePackSerializer`1.Capabilities"/>
         </member>
         <member name="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackTo(MsgPack.Unpacker,`0)">
             <summary>
@@ -5446,18 +5241,17 @@
             	Or <paramref name="collection"/> is <c>null</c>.
             </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Failed to deserialize object.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:MsgPack.MessageTypeException">
-            	Failed to deserialize object due to invalid stream.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:MsgPack.InvalidMessagePackStreamException">
-            	Failed to deserialize object due to invalid stream.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:System.NotSupportedException">
-            	<typeparamref name="T"/> is not mutable collection.
+            	<typeparamref name="T"/> is not collection.
             </exception>
-            <seealso cref="P:MsgPack.Serialization.MessagePackSerializer`1.Capabilities"/>
         </member>
         <member name="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackToCore(MsgPack.Unpacker,`0)">
             <summary>
@@ -5466,18 +5260,11 @@
             <param name="unpacker"><see cref="T:MsgPack.Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
             <param name="collection">Collection that the items to be stored. This value will not be <c>null</c>.</param>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Failed to deserialize object.
-            </exception>
-            <exception cref="T:MsgPack.MessageTypeException">
-            	Failed to deserialize object due to invalid stream.
-            </exception>
-            <exception cref="T:MsgPack.InvalidMessagePackStreamException">
-            	Failed to deserialize object due to invalid stream.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:System.NotSupportedException">
-            	<typeparamref name="T"/> is not mutable collection.
+            	<typeparamref name="T"/> is not collection.
             </exception>
-            <seealso cref="P:MsgPack.Serialization.MessagePackSerializer`1.Capabilities"/>
         </member>
         <member name="M:MsgPack.Serialization.MessagePackSerializer`1.PackSingleObject(`0)">
             <summary>
@@ -5486,35 +5273,27 @@
             <param name="objectTree">Object to be serialized.</param>
             <returns>An array of <see cref="T:System.Byte"/> which stores serialized value.</returns>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Failed to serialize object.
+            	<typeparamref name="T"/> is not serializable etc.
             </exception>
-            <exception cref="T:System.NotSupportedException">
-            	<typeparamref name="T"/> is not serializable even if it can be deserialized.
-            </exception>
-            <seealso cref="P:MsgPack.Serialization.MessagePackSerializer`1.Capabilities"/>
         </member>
         <member name="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackSingleObject(System.Byte[])">
             <summary>
             	Deserializes a single object from the array of <see cref="T:System.Byte"/> which contains a serialized object.
             </summary>
             <param name="buffer">An array of <see cref="T:System.Byte"/> serialized value to be stored.</param>
-            <returns>The deserialized object.</returns>
+            <returns>A bytes of serialized binary.</returns>
             <exception cref="T:System.ArgumentNullException">
             	<paramref name="buffer"/> is <c>null</c>.
             </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">
-            	Failed to deserialize object.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:MsgPack.MessageTypeException">
-            	Failed to deserialize object due to invalid stream.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
             <exception cref="T:MsgPack.InvalidMessagePackStreamException">
-            	Failed to deserialize object due to invalid stream.
+            	Failed to deserialize object due to invalid unpacker state, stream content, or so.
             </exception>
-            <exception cref="T:System.NotSupportedException">
-            	The type of deserializing is not serializable even if it can be serialized.
-            </exception>
-            <seealso cref="P:MsgPack.Serialization.MessagePackSerializer`1.Capabilities"/>
             <remarks>
             	<para>
             		This method assumes that <paramref name="buffer"/> contains single serialized object dedicatedly,
@@ -5539,14 +5318,6 @@
             </summary>
             <value>
             	A <see cref="T:MsgPack.Serialization.SerializationContext"/> which owns this serializer.
-            </value>
-        </member>
-        <member name="P:MsgPack.Serialization.MessagePackSerializer`1.Capabilities">
-            <summary>
-            	Gets the capability flags for this instance.
-            </summary>
-            <value>
-            	The capability flags for this instance.
             </value>
         </member>
         <member name="T:MsgPack.Serialization.CollectionSerializers.ICollectionInstanceFactory">
@@ -6490,6 +6261,12 @@
             	Determines emitter strategy.
             </summary>
         </member>
+        <member name="F:MsgPack.Serialization.EmitterFlavor.ContextBased">
+            <summary>
+            	Uses <see cref="T:MsgPack.Serialization.SerializationContext"/> in each case of the members (de)serialization.
+            	It may cause more contentions but is available in WP7.
+            </summary>
+        </member>
         <member name="F:MsgPack.Serialization.EmitterFlavor.FieldBased">
             <summary>
             	Caches serializers for the members (de)serialization.
@@ -6510,7 +6287,7 @@
         </member>
         <member name="T:MsgPack.Serialization.EmittingSerializers.ILConstruct">
             <summary>
-            	Represents code construct for <see cref="T:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderSerializerBuilder`1"/>s.
+            	Represents code construct for <see cref="T:MsgPack.Serialization.EmittingSerializers.ILEmittingSerializerBuilder`2"/>s.
             </summary>
         </member>
         <member name="M:MsgPack.Serialization.EmittingSerializers.ILConstruct.#ctor(System.Type)">
@@ -6604,12 +6381,53 @@
             	A code generation context for <see cref="T:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderSerializerBuilder`1"/>.
             </summary>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderEmittingContext.GetSerializerType(System.Type)">
+        <member name="T:MsgPack.Serialization.EmittingSerializers.ILEmittingContext">
+            <summary>
+            	Implements <see cref="T:MsgPack.Serialization.AbstractSerializers.SerializerGenerationContext`1"/> for <see cref="T:MsgPack.Serialization.EmittingSerializers.ILEmittingSerializerBuilder`2"/>.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.ILEmittingContext.GetSerializerType(System.Type)">
             <summary>
             	Gets the type of the serializer.
             </summary>
             <param name="targetType">Type of the serialization target.</param>
             <returns>Type of the serializer.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.ILEmittingContext.#ctor(MsgPack.Serialization.SerializationContext,System.Func{MsgPack.Serialization.EmittingSerializers.SerializerEmitter},System.Func{MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter})">
+            <summary>
+            Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.ILEmittingContext"/> class.
+            </summary>
+            <param name="context">The serialization context.</param>
+            <param name="emitterFactory">
+            	The factory for <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> to be used.
+            </param>
+            <param name="enumEmitterFactory">
+            	The factory for <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> to be used.
+            </param>
+        </member>
+        <member name="P:MsgPack.Serialization.EmittingSerializers.ILEmittingContext.IL">
+            <summary>
+            	Gets or sets the <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> to emit IL for current method.
+            </summary>
+            <value>
+            	The <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> to emit IL for current method.
+            </value>
+        </member>
+        <member name="P:MsgPack.Serialization.EmittingSerializers.ILEmittingContext.Emitter">
+            <summary>
+            	Gets the <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/>.
+            </summary>
+            <value>
+            	The <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/>.
+            </value>
+        </member>
+        <member name="P:MsgPack.Serialization.EmittingSerializers.ILEmittingContext.EnumEmitter">
+            <summary>
+            	Gets the <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/>.
+            </summary>
+            <value>
+            	The <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/>.
+            </value>
         </member>
         <member name="M:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderEmittingContext.#ctor(MsgPack.Serialization.SerializationContext,System.Type,System.Func{MsgPack.Serialization.EmittingSerializers.SerializerEmitter},System.Func{MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter})">
              <summary>
@@ -6624,351 +6442,100 @@
             	The factory for <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> to be used.
             </param>
         </member>
-        <member name="P:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderEmittingContext.IL">
-            <summary>
-            	Gets or sets the <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> to emit IL for current method.
-            </summary>
-            <value>
-            	The <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> to emit IL for current method.
-            </value>
-        </member>
-        <member name="P:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderEmittingContext.Emitter">
-            <summary>
-            	Gets the <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/>.
-            </summary>
-            <value>
-            	The <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/>.
-            </value>
-        </member>
-        <member name="P:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderEmittingContext.EnumEmitter">
-            <summary>
-            	Gets the <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/>.
-            </summary>
-            <value>
-            	The <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/>.
-            </value>
-        </member>
         <member name="T:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderSerializerBuilder`1">
             <summary>
             	An implementation of <see cref="T:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3"/> with <see cref="T:System.Reflection.Emit.AssemblyBuilder"/>.
             </summary>
             <typeparam name="TObject">The type of the serializing object.</typeparam>
         </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.ILEmittingSerializerBuilder`2">
+            <summary>
+            	Implements common features for IL emitter based serializer builders.
+            </summary>
+            <typeparam name="TContext">The type of the code generation context.</typeparam>
+            <typeparam name="TObject">The type of the serialization target object.</typeparam>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.ILEmittingSerializerBuilder`2.#ctor">
+            <summary>
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.ILEmittingSerializerBuilder`2"/> class.
+            </summary>
+        </member>
         <member name="M:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderSerializerBuilder`1.#ctor">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.AssemblyBuilderSerializerBuilder`1"/> class for instance creation.
             </summary>
         </member>
-        <member name="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter">
+        <member name="T:MsgPack.Serialization.EmittingSerializers.CallbackCollectionMessagePackSerializer`2">
             <summary>
-            	Genereates enum serialization methods which can be save to file.
+            	A helper <see cref="T:MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer`2"/> for <see cref="T:MsgPack.Serialization.EmittingSerializers.DynamicMethodSerializerBuilder`1"/>.
             </summary>
+            <typeparam name="TCollection">The type of the collection.</typeparam>
+            <typeparam name="TItem">The type of the item of collection.</typeparam>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter.#ctor(MsgPack.Serialization.SerializationContext,System.Reflection.Emit.ModuleBuilder,MsgPack.Serialization.AbstractSerializers.SerializerSpecification,System.Boolean)">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.CallbackCollectionMessagePackSerializer`2.#ctor(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.PolymorphismSchema,System.Func{MsgPack.Serialization.SerializationContext,System.Int32,`0})">
             <summary>
-            Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> class.
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.CallbackCollectionMessagePackSerializer`2"/> class.
             </summary>
-            <param name="context">A <see cref="T:MsgPack.Serialization.SerializationContext"/>.</param>
-            <param name="host">The host <see cref="T:System.Reflection.Emit.ModuleBuilder"/>.</param>
-            <param name="specification">The specification of the serializer.</param>
-            <param name="isDebuggable">Set to <c>true</c> when <paramref name="host"/> is debuggable.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter.CreateInstance``1(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.EnumSerializationMethod)">
-            <summary>
-            	Creates the serializer type built now and returns its new instance.
-            </summary>
-            <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
-            <param name="context">The <see cref="T:MsgPack.Serialization.SerializationContext"/> to holds serializers.</param>
-            <param name="serializationMethod">The <see cref="T:MsgPack.Serialization.EnumSerializationMethod"/> which determines serialization form of the enums.</param>
-            <returns>
-            	Newly built <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> instance.
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter.GetPackUnderyingValueToMethodILGenerator">
-            <summary>
-            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.EnumMessagePackSerializer`1.PackUnderlyingValueTo(MsgPack.Packer,`0)"/> overrides.
-            </summary>
-            <returns>
-            	The IL generator to implement <see cref="M:MsgPack.Serialization.EnumMessagePackSerializer`1.PackUnderlyingValueTo(MsgPack.Packer,`0)"/> overrides.
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter.GetUnpackFromUnderlyingValueMethodILGenerator">
-            <summary>
-            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.EnumMessagePackSerializer`1.UnpackFromUnderlyingValue(MsgPack.MessagePackObject)"/> overrides.
-            </summary>
-            <returns>
-            	The IL generator to implement <see cref="M:MsgPack.Serialization.EnumMessagePackSerializer`1.UnpackFromUnderlyingValue(MsgPack.MessagePackObject)"/> overrides.
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter.CreateConstructor``1">
-            <summary>
-            	Creates instance constructor delegates.
-            </summary>
-            <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
-            <returns>A delegate for serializer constructor.</returns>
-        </member>
-        <member name="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager">
-            <summary>
-            	Defines common features and interfaces for <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/>.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.Get">
-            <summary>
-            	Get the appropriate <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/> for the current configuration.
-            </summary>
-            <returns>
-            	The appropriate <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/> for the current configuration.
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.Get(MsgPack.Serialization.SerializationMethodGeneratorOption)">
-            <summary>
-            	Get the appropriate <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/> for specified options.
-            </summary>
-            <param name="option"><see cref="T:MsgPack.Serialization.SerializationMethodGeneratorOption"/>.</param>
-            <returns>
-            	The appropriate <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/> for specified options. 
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.Get(System.Reflection.Emit.AssemblyBuilder)">
-            <summary>
-            	Get the dumpable <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/> with specified brandnew assembly builder.
-            </summary>
-            <param name="assemblyBuilder">An assembly builder which will store all generated types.</param>
-            <returns>
-            	The appropriate <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/> to generate pre-cimplied serializers.
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEmitter(MsgPack.Serialization.AbstractSerializers.SerializerSpecification,System.Type,MsgPack.Serialization.EmitterFlavor)">
-            <summary>
-            	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
-            </summary>
-            <param name="specification">The specification of the serializer.</param>
-            <param name="baseClass">Type of the base class of the serializer.</param>
-            <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
-            <returns>New <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEnumEmitter(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.AbstractSerializers.SerializerSpecification,MsgPack.Serialization.EmitterFlavor)">
-            <summary>
-            	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
-            </summary>
-            <param name="context">The <see cref="T:MsgPack.Serialization.SerializationContext"/>.</param>
-            <param name="specification">The specification of the serializer.</param>
-            <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
-            <returns>New <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</returns>
-        </member>
-        <member name="P:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CanCollect">
-            <summary>
-            	Get the singleton instance for can-collect mode.
-            </summary>
-        </member>
-        <member name="P:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CanDump">
-            <summary>
-            	Get the singleton instance for can-dump mode.
-            </summary>
-        </member>
-        <member name="P:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.Fast">
-            <summary>
-            	Get the singleton instance for fast mode.
-            </summary>
-        </member>
-        <member name="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter">
-            <summary>
-            	Genereates serialization methods which can be save to file.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.#ctor(System.Reflection.Emit.ModuleBuilder,MsgPack.Serialization.AbstractSerializers.SerializerSpecification,System.Type,System.Boolean)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> class.
-            </summary>
-            <param name="host">The host <see cref="T:System.Reflection.Emit.ModuleBuilder"/>.</param>
-            <param name="specification">The specification of the serializer.</param>
-            <param name="baseClass">Type of the base class of the serializer.</param>
-            <param name="isDebuggable">Set to <c>true</c> when <paramref name="host"/> is debuggable.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.CreateInstance``1(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.PolymorphismSchema)">
-            <summary>
-            	Creates the serializer type built now and returns its new instance.
-            </summary>
-            <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
-            <param name="context">The <see cref="T:MsgPack.Serialization.SerializationContext"/> to holds serializers.</param>
-            <param name="schema">The <see cref="T:MsgPack.Serialization.PolymorphismSchema"/> for this instance.</param>
-            <returns>
-            	Newly built <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> instance.
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.GetPackToMethodILGenerator">
-            <summary>
-            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.PackToCore(MsgPack.Packer,`0)"/> overrides.
-            </summary>
-            <returns>
-            	The IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.PackToCore(MsgPack.Packer,`0)"/> overrides.
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.GetUnpackFromMethodILGenerator">
-            <summary>
-            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackFromCore(MsgPack.Unpacker)"/> overrides.
-            </summary>
-            <returns>
-            	The IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackFromCore(MsgPack.Unpacker)"/> overrides.
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.GetCreateInstanceMethodILGenerator(System.Reflection.MethodInfo)">
-            <summary>
-            	Gets the IL generator to implement CreateInstance(int) overrides.
-            </summary>
-            <param name="declaration">The virtual method declaration to be overriden.</param>
-            <returns>
-            	The IL generator to implement CreateInstance(int) overrides.
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.GetAddItemMethodILGenerator(System.Reflection.MethodInfo)">
-            <summary>
-            	Gets the IL generator to implement AddItem(TCollection, TItem) or AddItem(TCollection, object) overrides.
-            </summary>
-            <param name="declaration">The virtual method declaration to be overriden.</param>
-            <returns>
-            	The IL generator to implement AddItem(TCollection, TItem) or AddItem(TCollection, object) overrides.
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.GetRestoreSchemaMethodILGenerator">
-            <summary>
-            	Gets the IL generator to implement private static RestoreSchema() method.
-            </summary>
-            <returns>
-            	The IL generator to implement RestoreSchema() static method.
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.GetUnpackToMethodILGenerator">
-            <summary>
-            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackToCore(MsgPack.Unpacker,`0)"/> overrides.
-            </summary>
-            <returns>
-            	The IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackToCore(MsgPack.Unpacker,`0)"/> overrides.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.CreateConstructor``1">
-            <summary>
-            	Creates the serializer type built now and returns its constructor.
-            </summary>
-            <typeparam name="T">The type of serialization target.</typeparam>
-            <returns>
-            	Newly built <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> type constructor.
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.RegisterSerializer(System.Type,MsgPack.Serialization.EnumMemberSerializationMethod,MsgPack.Serialization.DateTimeMemberConversionMethod,MsgPack.Serialization.PolymorphismSchema,System.Func{System.Collections.Generic.IEnumerable{MsgPack.Serialization.EmittingSerializers.ILConstruct}})">
-            <summary>
-            	Regisgters <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> of target type usage to the current emitting session.
-            </summary>
-            <param name="targetType">The type of the member to be serialized/deserialized.</param>
-            <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
-            <param name="dateTimeConversionMethod">The date time conversion method of the member to be serialized/deserialized.</param>
-            <param name="polymorphismSchema">The schema for polymorphism support.</param>
-            <param name="schemaRegenerationCodeProvider">The delegate to provide constructs to emit schema regeneration codes.</param>
-            <returns>
-            	<see cref="T:System.Action`2"/> to emit serializer retrieval instructions.
-            	The 1st argument should be <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> to emit instructions.
-            	The 2nd argument should be argument index of the serializer holder, normally 0 (this pointer).
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.RegisterField(System.Reflection.FieldInfo)">
-            <summary>
-            	Regisgters <see cref="T:System.Reflection.FieldInfo"/> usage to the current emitting session.
-            </summary>
-            <param name="field">The <see cref="T:System.Reflection.FieldInfo"/> to be registered.</param>
-            <returns>
-            	<see cref="T:System.Action`2"/> to emit serializer retrieval instructions.
-            	The 1st argument should be <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> to emit instructions.
-            	The 2nd argument should be argument index of the serializer holder, normally 0 (this pointer).
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.RegisterMethod(System.Reflection.MethodBase)">
-            <summary>
-            	Regisgters <see cref="T:System.Reflection.MethodBase"/> usage to the current emitting session.
-            </summary>
-            <param name="method">The <see cref="T:System.Reflection.MethodBase"/> to be registered.</param>
-            <returns>
-            	<see cref="T:System.Action`2"/> to emit serializer retrieval instructions.
-            	The 1st argument should be <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> to emit instructions.
-            	The 2nd argument should be argument index of the serializer holder, normally 0 (this pointer).
-            	This value will not be <c>null</c>.
-            </returns>
-        </member>
-        <member name="T:MsgPack.Serialization.EnumMemberSerializationMethod">
-            <summary>
-            	Represents individual enum typed member serialization method.
-            </summary>
-        </member>
-        <member name="F:MsgPack.Serialization.EnumMemberSerializationMethod.Default">
-            <summary>
-            	Respects setting in enum type itself or system default.
-            </summary>
-        </member>
-        <member name="F:MsgPack.Serialization.EnumMemberSerializationMethod.ByName">
-            <summary>
-            	Enums are serialized with their name. It is more torelant to versioning but less efficient.
-            </summary>
-        </member>
-        <member name="F:MsgPack.Serialization.EnumMemberSerializationMethod.ByUnderlyingValue">
-            <summary>
-            	Enums are serialized with their underlying value. It is more efficient but less torelant to versioning.
-            </summary>
-        </member>
-        <member name="T:MsgPack.Serialization.EnumMessagePackSerializerHelpers">
-            <summary>
-            	<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
-            	Helper methods for enum message pack serializer.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(MsgPack.Serialization.SerializationContext,System.Type,MsgPack.Serialization.EnumMemberSerializationMethod)">
-            <summary>
-            	Determines <see cref="T:MsgPack.Serialization.EnumSerializationMethod"/> for the target.
-            </summary>
-            <param name="context">Context information.</param>
-            <param name="enumType">The target enum type.</param>
-            <param name="enumMemberSerializationMethod">The method argued by the member.</param>
-            <returns>Determined <see cref="T:MsgPack.Serialization.EnumSerializationMethod"/> for the target.</returns>
+            <param name="ownerContext">A <see cref="T:MsgPack.Serialization.SerializationContext"/> which owns this serializer.</param>
+            <param name="schema">
+            	The schema for collection itself or its items for the member this instance will be used to. 
+            	<c>null</c> will be considered as <see cref="F:MsgPack.Serialization.PolymorphismSchema.Default"/>.
+            </param>
+            <param name="createInstance">The delegate to <c>CreateInstance</c> method body. This value must not be <c>null</c>.</param>
             <exception cref="T:System.ArgumentNullException">
-            	<paramref name="context"/> is <c>null</c>.
-            	Or <paramref name="enumType"/> is <c>null</c>.
+            	<paramref name="ownerContext"/> is <c>null</c>.
             </exception>
         </member>
-        <member name="T:MsgPack.Serialization.EnumMessagePackSerializerProvider">
+        <member name="T:MsgPack.Serialization.EmittingSerializers.CallbackDictionaryMessagePackSerializer`3">
             <summary>
-            	Implements <see cref="T:MsgPack.Serialization.MessagePackSerializerProvider"/> for enums.
-            	This class accepts <see cref="T:MsgPack.Serialization.EnumSerializationMethod"/> as a provider parameter.
+            	A helper <see cref="T:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer`3"/> for <see cref="T:MsgPack.Serialization.EmittingSerializers.DynamicMethodSerializerBuilder`1"/>.
             </summary>
+            <typeparam name="TDictionary">The type of the dictionary.</typeparam>
+            <typeparam name="TKey">The type of the key of collection.</typeparam>
+            <typeparam name="TValue">The type of the value of collection.</typeparam>
         </member>
-        <member name="M:MsgPack.Serialization.EnumMessagePackSerializerProvider.#ctor(System.Type,MsgPack.Serialization.ICustomizableEnumSerializer)">
+        <member name="M:MsgPack.Serialization.EmittingSerializers.CallbackDictionaryMessagePackSerializer`3.#ctor(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.PolymorphismSchema,System.Func{MsgPack.Serialization.SerializationContext,System.Int32,`0})">
             <summary>
-            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.EnumMessagePackSerializerProvider"/> class.
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.CallbackDictionaryMessagePackSerializer`3"/> class.
             </summary>
-            <param name="enumType">A type of the enum.</param>
-            <param name="serializer">The serializer implements <see cref="T:MsgPack.Serialization.ICustomizableEnumSerializer"/>.</param>
+            <param name="ownerContext">A <see cref="T:MsgPack.Serialization.SerializationContext"/> which owns this serializer.</param>
+            <param name="schema">
+            	The schema for collection itself or its items for the member this instance will be used to. 
+            	<c>null</c> will be considered as <see cref="F:MsgPack.Serialization.PolymorphismSchema.Default"/>.
+            </param>
+            <param name="createInstance">The delegate to <c>CreateInstance</c> method body. This value must not be <c>null</c>.</param>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="ownerContext"/> is <c>null</c>.
+            </exception>
         </member>
-        <member name="M:MsgPack.Serialization.EnumMessagePackSerializerProvider.Get(MsgPack.Serialization.SerializationContext,System.Object)">
+        <member name="T:MsgPack.Serialization.EmittingSerializers.CallbackEnumerableMessagePackSerializer`2">
             <summary>
-            	Gets a serializer instance for specified parameter.
+            	A helper <see cref="T:MsgPack.Serialization.CollectionSerializers.EnumerableMessagePackSerializer`2"/> for <see cref="T:MsgPack.Serialization.EmittingSerializers.DynamicMethodSerializerBuilder`1"/>.
             </summary>
-            <param name="context">A serialization context which holds global settings.</param>
-            <param name="providerParameter">A provider specific parameter.</param>
-            <returns>	
-            A serializer object for specified parameter.
-            </returns>
+            <typeparam name="TCollection">The type of the collection.</typeparam>
+            <typeparam name="TItem">The type of the item of collection.</typeparam>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.CallbackEnumerableMessagePackSerializer`2.#ctor(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.PolymorphismSchema,System.Func{MsgPack.Serialization.SerializationContext,System.Int32,`0},System.Func{MsgPack.Serialization.SerializationContext,MsgPack.Unpacker,`0},System.Action{MsgPack.Serialization.SerializationContext,`0,`1})">
+            <summary>
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.CallbackEnumerableMessagePackSerializer`2"/> class.
+            </summary>
+            <param name="ownerContext">A <see cref="T:MsgPack.Serialization.SerializationContext"/> which owns this serializer.</param>
+            <param name="schema">
+            	The schema for collection itself or its items for the member this instance will be used to. 
+            	<c>null</c> will be considered as <see cref="F:MsgPack.Serialization.PolymorphismSchema.Default"/>.
+            </param>
+            <param name="createInstance">The delegate to <c>CreateInstance</c> method body. This value must not be <c>null</c>.</param>
+            <param name="unpackFromCore">The delegate to <c>UnpackFromCore</c> method body. This value must not be <c>null</c>.</param>
+            <param name="addItem">The delegate to <c>AddItem</c> method body. This value can be <c>null</c>.</param>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="ownerContext"/> is <c>null</c>.
+            </exception>
+        </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.CallbackEnumMessagePackSerializer`1">
+            <summary>
+            	Callback based <see cref="T:MsgPack.Serialization.EnumMessagePackSerializer`1"/> to implement context-based serialization.
+            </summary>
+            <typeparam name="TEnum">The type of target emum type.</typeparam>
         </member>
         <member name="T:MsgPack.Serialization.EnumMessagePackSerializer`1">
             <summary>
@@ -7038,6 +6605,717 @@
             	An enum value.
             </returns>
             <exception cref="T:System.Runtime.Serialization.SerializationException">The type of integral value is not compatible with underlying type of the enum.</exception>
+        </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.CallbackMessagePackSerializer`1">
+            <summary>
+            	A helper <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> for <see cref="T:MsgPack.Serialization.EmittingSerializers.DynamicMethodSerializerBuilder`1"/>.
+            </summary>
+            <typeparam name="T">The type of target type.</typeparam>
+        </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.CallbackNonGenericCollectionMessagePackSerializer`1">
+            <summary>
+            	A helper <see cref="T:MsgPack.Serialization.CollectionSerializers.NonGenericCollectionMessagePackSerializer`1"/> for <see cref="T:MsgPack.Serialization.EmittingSerializers.DynamicMethodSerializerBuilder`1"/>.
+            </summary>
+            <typeparam name="TCollection">The type of the collection.</typeparam>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.CallbackNonGenericCollectionMessagePackSerializer`1.#ctor(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.PolymorphismSchema,System.Func{MsgPack.Serialization.SerializationContext,System.Int32,`0},System.Func{MsgPack.Serialization.SerializationContext,MsgPack.Unpacker,`0},System.Action{MsgPack.Serialization.SerializationContext,`0,System.Object})">
+            <summary>
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.CallbackNonGenericCollectionMessagePackSerializer`1"/> class.
+            </summary>
+            <param name="ownerContext">A <see cref="T:MsgPack.Serialization.SerializationContext"/> which owns this serializer.</param>
+            <param name="schema">
+            	The schema for collection itself or its items for the member this instance will be used to. 
+            	<c>null</c> will be considered as <see cref="F:MsgPack.Serialization.PolymorphismSchema.Default"/>.
+            </param>
+            <param name="createInstance">The delegate to <c>CreateInstance</c> method body. This value must not be <c>null</c>.</param>
+            <param name="unpackFromCore">The delegate to <c>UnpackFromCore</c> method body. This value must not be <c>null</c>.</param>
+            <param name="addItem">The delegate to <c>AddItem</c> method body. This value can be <c>null</c>.</param>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="ownerContext"/> is <c>null</c>.
+            </exception>
+        </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.CallbackNonGenericDictionaryMessagePackSerializer`1">
+            <summary>
+            	A helper <see cref="T:MsgPack.Serialization.CollectionSerializers.DictionaryMessagePackSerializer`3"/> for <see cref="T:MsgPack.Serialization.EmittingSerializers.DynamicMethodSerializerBuilder`1"/>.
+            </summary>
+            <typeparam name="TDictionary">The type of the dictionary.</typeparam>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.CallbackNonGenericDictionaryMessagePackSerializer`1.#ctor(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.PolymorphismSchema,System.Func{MsgPack.Serialization.SerializationContext,System.Int32,`0})">
+            <summary>
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.CallbackNonGenericDictionaryMessagePackSerializer`1"/> class.
+            </summary>
+            <param name="ownerContext">A <see cref="T:MsgPack.Serialization.SerializationContext"/> which owns this serializer.</param>
+            <param name="schema">
+            	The schema for collection itself or its items for the member this instance will be used to. 
+            	<c>null</c> will be considered as <see cref="F:MsgPack.Serialization.PolymorphismSchema.Default"/>.
+            </param>
+            <param name="createInstance">The delegate to <c>CreateInstance</c> method body. This value must not be <c>null</c>.</param>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="ownerContext"/> is <c>null</c>.
+            </exception>
+        </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.CallbackNonGenericEnumerableMessagePackSerializer`1">
+            <summary>
+            	A helper <see cref="T:MsgPack.Serialization.CollectionSerializers.NonGenericEnumerableMessagePackSerializer`1"/> for <see cref="T:MsgPack.Serialization.EmittingSerializers.DynamicMethodSerializerBuilder`1"/>.
+            </summary>
+            <typeparam name="TCollection">The type of the collection.</typeparam>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.CallbackNonGenericEnumerableMessagePackSerializer`1.#ctor(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.PolymorphismSchema,System.Func{MsgPack.Serialization.SerializationContext,System.Int32,`0},System.Func{MsgPack.Serialization.SerializationContext,MsgPack.Unpacker,`0},System.Action{MsgPack.Serialization.SerializationContext,`0,System.Object})">
+            <summary>
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.CallbackNonGenericEnumerableMessagePackSerializer`1"/> class.
+            </summary>
+            <param name="ownerContext">A <see cref="T:MsgPack.Serialization.SerializationContext"/> which owns this serializer.</param>
+            <param name="schema">
+            	The schema for collection itself or its items for the member this instance will be used to. 
+            	<c>null</c> will be considered as <see cref="F:MsgPack.Serialization.PolymorphismSchema.Default"/>.
+            </param>
+            <param name="createInstance">The delegate to <c>CreateInstance</c> method body. This value must not be <c>null</c>.</param>
+            <param name="unpackFromCore">The delegate to <c>UnpackFromCore</c> method body. This value must not be <c>null</c>.</param>
+            <param name="addItem">The delegate to <c>AddItem</c> method body. This value can be <c>null</c>.</param>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="ownerContext"/> is <c>null</c>.
+            </exception>
+        </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.CallbackNonGenericListMessagePackSerializer`1">
+            <summary>
+            	A helper <see cref="T:MsgPack.Serialization.CollectionSerializers.NonGenericListMessagePackSerializer`1"/> for <see cref="T:MsgPack.Serialization.EmittingSerializers.DynamicMethodSerializerBuilder`1"/>.
+            </summary>
+            <typeparam name="TCollection">The type of the collection.</typeparam>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.CallbackNonGenericListMessagePackSerializer`1.#ctor(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.PolymorphismSchema,System.Func{MsgPack.Serialization.SerializationContext,System.Int32,`0})">
+            <summary>
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.CallbackNonGenericListMessagePackSerializer`1"/> class.
+            </summary>
+            <param name="ownerContext">A <see cref="T:MsgPack.Serialization.SerializationContext"/> which owns this serializer.</param>
+            <param name="schema">
+            	The schema for collection itself or its items for the member this instance will be used to. 
+            	<c>null</c> will be considered as <see cref="F:MsgPack.Serialization.PolymorphismSchema.Default"/>.
+            </param>
+            <param name="createInstance">The delegate to <c>CreateInstance</c> method body. This value must not be <c>null</c>.</param>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="ownerContext"/> is <c>null</c>.
+            </exception>
+        </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter">
+            <summary>
+            	Genereates enum serialization methods which can be save to file.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> class.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter.Dispose">
+            <summary>
+            	Releases all managed resources.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter.Dispose(System.Boolean)">
+            <summary>
+            	Releases unmanaged and optionally managed resources.
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter.GetPackUnderyingValueToMethodILGenerator">
+            <summary>
+            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.EnumMessagePackSerializer`1.PackUnderlyingValueTo(MsgPack.Packer,`0)"/> overrides.
+            </summary>
+            <returns>
+            	The IL generator to implement <see cref="M:MsgPack.Serialization.EnumMessagePackSerializer`1.PackUnderlyingValueTo(MsgPack.Packer,`0)"/> overrides.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter.GetUnpackFromUnderlyingValueMethodILGenerator">
+            <summary>
+            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.EnumMessagePackSerializer`1.UnpackFromUnderlyingValue(MsgPack.MessagePackObject)"/> overrides.
+            </summary>
+            <returns>
+            	The IL generator to implement <see cref="M:MsgPack.Serialization.EnumMessagePackSerializer`1.UnpackFromUnderlyingValue(MsgPack.MessagePackObject)"/> overrides.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter.CreateInstance``1(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.EnumSerializationMethod)">
+            <summary>
+            	Creates the serializer type built now and returns its new instance.
+            </summary>
+            <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
+            <param name="context">The <see cref="T:MsgPack.Serialization.SerializationContext"/> to holds serializers.</param>
+            <param name="serializationMethod">The <see cref="T:MsgPack.Serialization.EnumSerializationMethod"/> which determines serialization form of the enums.</param>
+            <returns>
+            	Newly built <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> instance.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter.CreateConstructor``1">
+            <summary>
+            	Creates instance constructor delegates.
+            </summary>
+            <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
+            <returns>A delegate for serializer constructor.</returns>
+        </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter">
+            <summary>
+            	<see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> using <see cref="T:MsgPack.Serialization.SerializationContext"/> to hold serializers for target members.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter">
+            <summary>
+            	Genereates serialization methods which can be save to file.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> class.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.Dispose">
+            <summary>
+            	Releases all managed resources.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.Dispose(System.Boolean)">
+            <summary>
+            	Releases unmanaged and optionally managed resources.
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.GetPackToMethodILGenerator">
+            <summary>
+            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.PackToCore(MsgPack.Packer,`0)"/> overrides.
+            </summary>
+            <returns>
+            	The IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.PackToCore(MsgPack.Packer,`0)"/> overrides.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.GetUnpackFromMethodILGenerator">
+            <summary>
+            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackFromCore(MsgPack.Unpacker)"/> overrides.
+            </summary>
+            <returns>
+            	The IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackFromCore(MsgPack.Unpacker)"/> overrides.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.GetUnpackToMethodILGenerator">
+            <summary>
+            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackToCore(MsgPack.Unpacker,`0)"/> overrides.
+            </summary>
+            <returns>
+            	The IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackToCore(MsgPack.Unpacker,`0)"/> overrides.
+            </returns>
+            <remarks>
+            	When this method is called, <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackToCore(MsgPack.Unpacker,`0)"/> will be overridden.
+            	This value will not be <c>null</c>.
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.GetAddItemMethodILGenerator(System.Reflection.MethodInfo)">
+            <summary>
+            	Gets the IL generator to implement AddItem(TCollection, TItem) or AddItem(TCollection, object) overrides.
+            </summary>
+            <param name="declaration">The virtual method declaration to be overriden.</param>
+            <returns>
+            	The IL generator to implement AddItem(TCollection, TItem) or AddItem(TCollection, object) overrides.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.GetCreateInstanceMethodILGenerator(System.Reflection.MethodInfo)">
+            <summary>
+            	Gets the IL generator to implement CreateInstance(int) overrides.
+            </summary>
+            <param name="declaration">The virtual method declaration to be overriden.</param>
+            <returns>
+            	The IL generator to implement CreateInstance(int) overrides.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.GetRestoreSchemaMethodILGenerator">
+            <summary>
+            	Gets the IL generator to implement private static RestoreSchema() method.
+            </summary>
+            <returns>
+            	The IL generator to implement RestoreSchema() static method.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.CreateInstance``1(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.PolymorphismSchema)">
+            <summary>
+            	Creates the serializer type built now and returns its new instance.
+            </summary>
+            <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
+            <param name="context">The <see cref="T:MsgPack.Serialization.SerializationContext"/> to holds serializers.</param>
+            <param name="schema">The <see cref="T:MsgPack.Serialization.PolymorphismSchema"/> for this instance.</param>
+            <returns>
+            	Newly built <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> instance.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.CreateConstructor``1">
+            <summary>
+            	Creates instance constructor delegates.
+            </summary>
+            <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
+            <returns>A delegate for serializer constructor.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.RegisterSerializer(System.Type,MsgPack.Serialization.EnumMemberSerializationMethod,MsgPack.Serialization.DateTimeMemberConversionMethod,MsgPack.Serialization.PolymorphismSchema,System.Func{System.Collections.Generic.IEnumerable{MsgPack.Serialization.EmittingSerializers.ILConstruct}})">
+            <summary>
+            	Regisgters <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> of target type usage to the current emitting session.
+            </summary>
+            <param name="targetType">The type of the member to be serialized/deserialized.</param>
+            <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
+            <param name="dateTimeConversionMethod">The date time conversion method of the member to be serialized/deserialized.</param>
+            <param name="polymorphismSchema">The schema for polymorphism support.</param>
+            <param name="schemaRegenerationCodeProvider">The delegate to provide constructs to emit schema regeneration codes.</param>
+            <returns>
+            	<see cref="T:System.Action`2"/> to emit serializer retrieval instructions.
+            	The 1st argument should be <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> to emit instructions.
+            	The 2nd argument should be argument index of the serializer holder, normally 0 (this pointer).
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.RegisterField(System.Reflection.FieldInfo)">
+            <summary>
+            	Regisgters <see cref="T:System.Reflection.FieldInfo"/> usage to the current emitting session.
+            </summary>
+            <param name="field">The <see cref="T:System.Reflection.FieldInfo"/> to be registered.</param>
+            <returns>
+            	<see cref="T:System.Action`2"/> to emit serializer retrieval instructions.
+            	The 1st argument should be <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> to emit instructions.
+            	The 2nd argument should be argument index of the serializer holder, normally 0 (this pointer).
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.RegisterMethod(System.Reflection.MethodBase)">
+            <summary>
+            	Regisgters <see cref="T:System.Reflection.MethodBase"/> usage to the current emitting session.
+            </summary>
+            <param name="method">The <see cref="T:System.Reflection.MethodBase"/> to be registered.</param>
+            <returns>
+            	<see cref="T:System.Action`2"/> to emit serializer retrieval instructions.
+            	The 1st argument should be <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> to emit instructions.
+            	The 2nd argument should be argument index of the serializer holder, normally 0 (this pointer).
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter.#ctor(MsgPack.Serialization.AbstractSerializers.SerializerSpecification)">
+            <summary>
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter"/> class.
+            </summary>
+            <param name="specification">The specification of the serializer.</param>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter.GetPackToMethodILGenerator">
+            <summary>
+            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.PackToCore(MsgPack.Packer,`0)"/> overrides.
+            </summary>
+            <returns>
+            	The IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.PackToCore(MsgPack.Packer,`0)"/> overrides.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter.GetUnpackFromMethodILGenerator">
+            <summary>
+            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackFromCore(MsgPack.Unpacker)"/> overrides.
+            </summary>
+            <returns>
+            	The IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackFromCore(MsgPack.Unpacker)"/> overrides.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter.GetUnpackToMethodILGenerator">
+            <summary>
+            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackToCore(MsgPack.Unpacker,`0)"/> overrides.
+            </summary>
+            <returns>
+            	The IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackToCore(MsgPack.Unpacker,`0)"/> overrides.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter.GetAddItemMethodILGenerator(System.Reflection.MethodInfo)">
+            <summary>
+            	Gets the IL generator to implement AddItem(TCollection, TItem) or AddItem(TCollection, object) overrides.
+            </summary>
+            <param name="declaration">The virtual method declaration to be overriden.</param>
+            <returns>
+            	The IL generator to implement AddItem(TCollection, TItem) or AddItem(TCollection, object) overrides.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter.GetCreateInstanceMethodILGenerator(System.Reflection.MethodInfo)">
+            <summary>
+            	Gets the IL generator to implement CreateInstance(int) overrides.
+            </summary>
+            <param name="declaration">The virtual method declaration to be overriden.</param>
+            <returns>
+            	The IL generator to implement CreateInstance(int) overrides.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter.GetRestoreSchemaMethodILGenerator">
+            <summary>
+            	Gets the IL generator to implement private static RestoreSchema() method.
+            </summary>
+            <returns>
+            	The IL generator to implement RestoreSchema() static method.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter.CreateConstructor``1">
+            <summary>
+            	Creates the serializer type built now and returns its constructor.
+            </summary>
+            <typeparam name="T">The type of serialization target.</typeparam>
+            <returns>
+            	Newly built <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> type constructor.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.ContextBasedSerializerEmitter.RegisterSerializer(System.Type,MsgPack.Serialization.EnumMemberSerializationMethod,MsgPack.Serialization.DateTimeMemberConversionMethod,MsgPack.Serialization.PolymorphismSchema,System.Func{System.Collections.Generic.IEnumerable{MsgPack.Serialization.EmittingSerializers.ILConstruct}})">
+            <summary>
+            	Regisgters <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> of target type usage to the current emitting session.
+            </summary>
+            <param name="targetType">The type of the member to be serialized/deserialized.</param>
+            <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
+            <param name="dateTimeConversionMethod">The date time conversion method of the member to be serialized/deserialized.</param>
+            <param name="polymorphismSchema">The schema for polymorphism support.</param>
+            <param name="schemaRegenerationCodeProvider">The delegate to provide constructs to emit schema regeneration codes.</param>
+            <returns>
+            	<see cref="T:System.Action`2"/> to emit serializer retrieval instructions.
+            	The 1st argument should be <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> to emit instructions.
+            	The 2nd argument should be argument index of the serializer holder, normally 0 (this pointer).
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.DefaultSerializationMethodGeneratorManager">
+            <summary>
+            	Manages serializer generators.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager">
+            <summary>
+            	Defines common features and interfaces for <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/>.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.Get">
+            <summary>
+            	Get the appropriate <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/> for the current configuration.
+            </summary>
+            <returns>
+            	The appropriate <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/> for the current configuration.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.Get(MsgPack.Serialization.SerializationMethodGeneratorOption)">
+            <summary>
+            	Get the appropriate <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/> for specified options.
+            </summary>
+            <param name="option"><see cref="T:MsgPack.Serialization.SerializationMethodGeneratorOption"/>.</param>
+            <returns>
+            	The appropriate <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/> for specified options. 
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.Get(System.Reflection.Emit.AssemblyBuilder)">
+            <summary>
+            	Get the dumpable <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/> with specified brandnew assembly builder.
+            </summary>
+            <param name="assemblyBuilder">An assembly builder which will store all generated types.</param>
+            <returns>
+            	The appropriate <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/> to generate pre-cimplied serializers.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEmitter(MsgPack.Serialization.AbstractSerializers.SerializerSpecification,System.Type,MsgPack.Serialization.EmitterFlavor)">
+            <summary>
+            	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
+            </summary>
+            <param name="specification">The specification of the serializer.</param>
+            <param name="baseClass">Type of the base class of the serializer.</param>
+            <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
+            <returns>New <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEmitterCore(MsgPack.Serialization.AbstractSerializers.SerializerSpecification,System.Type,MsgPack.Serialization.EmitterFlavor)">
+            <summary>
+            	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
+            </summary>
+            <param name="specification">The specification of the serializer.</param>
+            <param name="baseClass">Type of the base class of the serializer.</param>
+            <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
+            <returns>New <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEnumEmitter(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.AbstractSerializers.SerializerSpecification,MsgPack.Serialization.EmitterFlavor)">
+            <summary>
+            	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
+            </summary>
+            <param name="context">The <see cref="T:MsgPack.Serialization.SerializationContext"/>.</param>
+            <param name="specification">The specification of the serializer.</param>
+            <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
+            <returns>New <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager.CreateEnumEmitterCore(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.AbstractSerializers.SerializerSpecification,MsgPack.Serialization.EmitterFlavor)">
+            <summary>
+            	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
+            </summary>
+            <param name="context">The <see cref="T:MsgPack.Serialization.SerializationContext"/>.</param>
+            <param name="specification">The specification of the serializer.</param>
+            <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
+            <returns>New <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.DefaultSerializationMethodGeneratorManager.Create(System.Reflection.Emit.AssemblyBuilder)">
+            <summary>
+            	Create a new dumpable <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/> with specified brandnew assembly builder.
+            </summary>
+            <param name="assemblyBuilder">An assembly builder which will store all generated types.</param>
+            <returns>
+            	The appropriate <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializationMethodGeneratorManager"/> to generate pre-cimplied serializers.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.DefaultSerializationMethodGeneratorManager.CreateEmitterCore(MsgPack.Serialization.AbstractSerializers.SerializerSpecification,System.Type,MsgPack.Serialization.EmitterFlavor)">
+            <summary>
+            	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
+            </summary>
+            <param name="specification">The specification of the serializer.</param>
+            <param name="baseClass">Type of the base class of the serializer.</param>
+            <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
+            <returns>
+            	New <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.DefaultSerializationMethodGeneratorManager.CreateEnumEmitterCore(MsgPack.Serialization.SerializationContext,MsgPack.Serialization.AbstractSerializers.SerializerSpecification,MsgPack.Serialization.EmitterFlavor)">
+            <summary>
+            	Creates new <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
+            </summary>
+            <param name="context">The <see cref="T:MsgPack.Serialization.SerializationContext"/>.</param>
+            <param name="specification">The specification of the serializer.</param>
+            <param name="emitterFlavor"><see cref="T:MsgPack.Serialization.EmitterFlavor"/>.</param>
+            <returns>
+            	New <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> which corresponds to the specified <see cref="T:MsgPack.Serialization.EmitterFlavor"/>.
+            </returns>
+        </member>
+        <member name="P:MsgPack.Serialization.EmittingSerializers.DefaultSerializationMethodGeneratorManager.CanCollect">
+            <summary>
+            	Get the singleton instance for can-collect mode.
+            </summary>
+        </member>
+        <member name="P:MsgPack.Serialization.EmittingSerializers.DefaultSerializationMethodGeneratorManager.CanDump">
+            <summary>
+            	Get the singleton instance for can-dump mode.
+            </summary>
+        </member>
+        <member name="P:MsgPack.Serialization.EmittingSerializers.DefaultSerializationMethodGeneratorManager.Fast">
+            <summary>
+            	Get the singleton instance for fast mode.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.DynamicMethodEmittingContext">
+            <summary>
+            	Implements <see cref="T:MsgPack.Serialization.AbstractSerializers.SerializerGenerationContext`1"/> for <see cref="T:MsgPack.Serialization.EmittingSerializers.DynamicMethodSerializerBuilder`1"/>.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.DynamicMethodEmittingContext.#ctor(MsgPack.Serialization.SerializationContext,System.Type,System.Func{MsgPack.Serialization.EmittingSerializers.SerializerEmitter},System.Func{MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter})">
+            <summary>
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.DynamicMethodEmittingContext"/> class.
+            </summary>
+            <param name="context">The serialization context.</param>
+            <param name="targetType">Type of the serialization target.</param>
+            <param name="emitterFactory">
+            	The factory for <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> to be used.
+            </param>
+            <param name="enumEmitterFactory">
+            	The factory for <see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> to be used.
+            </param>
+        </member>
+        <member name="P:MsgPack.Serialization.EmittingSerializers.DynamicMethodEmittingContext.Context">
+            <summary>
+            	Gets the code construct which represents 'context' parameter of generated methods.
+            </summary>
+            <value>
+            	The code construct which represents 'context' parameter of generated methods.
+            	Its type is <see cref="T:MsgPack.Serialization.SerializationContext"/>, and it holds dependent serializers.
+            	This value will not be <c>null</c>.
+            </value>
+        </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.DynamicMethodSerializerBuilder`1">
+            <summary>
+            	An implementation of <see cref="T:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3"/> using dynamic methods.
+            </summary>
+            <typeparam name="TObject">The type of the serializing object.</typeparam>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.DynamicMethodSerializerBuilder`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.DynamicMethodSerializerBuilder`1"/> class.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.FieldBasedEnumSerializerEmitter">
+            <summary>
+            	<see cref="T:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter"/> using instance fields to hold serializers for target members.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedEnumSerializerEmitter.#ctor(MsgPack.Serialization.SerializationContext,System.Reflection.Emit.ModuleBuilder,MsgPack.Serialization.AbstractSerializers.SerializerSpecification,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter"/> class.
+            </summary>
+            <param name="context">A <see cref="T:MsgPack.Serialization.SerializationContext"/>.</param>
+            <param name="host">The host <see cref="T:System.Reflection.Emit.ModuleBuilder"/>.</param>
+            <param name="specification">The specification of the serializer.</param>
+            <param name="isDebuggable">Set to <c>true</c> when <paramref name="host"/> is debuggable.</param>
+        </member>
+        <member name="T:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter">
+            <summary>
+            	<see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> using instance fields to hold serializers for target members.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter.#ctor(System.Reflection.Emit.ModuleBuilder,MsgPack.Serialization.AbstractSerializers.SerializerSpecification,System.Type,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter"/> class.
+            </summary>
+            <param name="host">The host <see cref="T:System.Reflection.Emit.ModuleBuilder"/>.</param>
+            <param name="specification">The specification of the serializer.</param>
+            <param name="baseClass">Type of the base class of the serializer.</param>
+            <param name="isDebuggable">Set to <c>true</c> when <paramref name="host"/> is debuggable.</param>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter.GetPackToMethodILGenerator">
+            <summary>
+            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.PackToCore(MsgPack.Packer,`0)"/> overrides.
+            </summary>
+            <returns>
+            	The IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.PackToCore(MsgPack.Packer,`0)"/> overrides.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter.GetUnpackFromMethodILGenerator">
+            <summary>
+            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackFromCore(MsgPack.Unpacker)"/> overrides.
+            </summary>
+            <returns>
+            	The IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackFromCore(MsgPack.Unpacker)"/> overrides.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter.GetCreateInstanceMethodILGenerator(System.Reflection.MethodInfo)">
+            <summary>
+            	Gets the IL generator to implement CreateInstance(int) overrides.
+            </summary>
+            <param name="declaration">The virtual method declaration to be overriden.</param>
+            <returns>
+            	The IL generator to implement CreateInstance(int) overrides.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter.GetAddItemMethodILGenerator(System.Reflection.MethodInfo)">
+            <summary>
+            	Gets the IL generator to implement AddItem(TCollection, TItem) or AddItem(TCollection, object) overrides.
+            </summary>
+            <param name="declaration">The virtual method declaration to be overriden.</param>
+            <returns>
+            	The IL generator to implement AddItem(TCollection, TItem) or AddItem(TCollection, object) overrides.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter.GetRestoreSchemaMethodILGenerator">
+            <summary>
+            	Gets the IL generator to implement private static RestoreSchema() method.
+            </summary>
+            <returns>
+            	The IL generator to implement RestoreSchema() static method.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter.GetUnpackToMethodILGenerator">
+            <summary>
+            	Gets the IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackToCore(MsgPack.Unpacker,`0)"/> overrides.
+            </summary>
+            <returns>
+            	The IL generator to implement <see cref="M:MsgPack.Serialization.MessagePackSerializer`1.UnpackToCore(MsgPack.Unpacker,`0)"/> overrides.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter.CreateConstructor``1">
+            <summary>
+            	Creates the serializer type built now and returns its constructor.
+            </summary>
+            <typeparam name="T">The type of serialization target.</typeparam>
+            <returns>
+            	Newly built <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> type constructor.
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.FieldBasedSerializerEmitter.RegisterSerializer(System.Type,MsgPack.Serialization.EnumMemberSerializationMethod,MsgPack.Serialization.DateTimeMemberConversionMethod,MsgPack.Serialization.PolymorphismSchema,System.Func{System.Collections.Generic.IEnumerable{MsgPack.Serialization.EmittingSerializers.ILConstruct}})">
+            <summary>
+            	Regisgters <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> of target type usage to the current emitting session.
+            </summary>
+            <param name="targetType">The type of the member to be serialized/deserialized.</param>
+            <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
+            <param name="dateTimeConversionMethod">The date time conversion method of the member to be serialized/deserialized.</param>
+            <param name="polymorphismSchema">The schema for polymorphism support.</param>
+            <param name="schemaRegenerationCodeProvider">The delegate to provide constructs to emit schema regeneration codes.</param>
+            <returns>
+            	<see cref="T:System.Action`2"/> to emit serializer retrieval instructions.
+            	The 1st argument should be <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> to emit instructions.
+            	The 2nd argument should be argument index of the serializer holder, normally 0 (this pointer).
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="T:MsgPack.Serialization.EnumMemberSerializationMethod">
+            <summary>
+            	Represents individual enum typed member serialization method.
+            </summary>
+        </member>
+        <member name="F:MsgPack.Serialization.EnumMemberSerializationMethod.Default">
+            <summary>
+            	Respects setting in enum type itself or system default.
+            </summary>
+        </member>
+        <member name="F:MsgPack.Serialization.EnumMemberSerializationMethod.ByName">
+            <summary>
+            	Enums are serialized with their name. It is more torelant to versioning but less efficient.
+            </summary>
+        </member>
+        <member name="F:MsgPack.Serialization.EnumMemberSerializationMethod.ByUnderlyingValue">
+            <summary>
+            	Enums are serialized with their underlying value. It is more efficient but less torelant to versioning.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.EnumMessagePackSerializerHelpers">
+            <summary>
+            	<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+            	Helper methods for enum message pack serializer.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(MsgPack.Serialization.SerializationContext,System.Type,MsgPack.Serialization.EnumMemberSerializationMethod)">
+            <summary>
+            	Determines <see cref="T:MsgPack.Serialization.EnumSerializationMethod"/> for the target.
+            </summary>
+            <param name="context">Context information.</param>
+            <param name="enumType">The target enum type.</param>
+            <param name="enumMemberSerializationMethod">The method argued by the member.</param>
+            <returns>Determined <see cref="T:MsgPack.Serialization.EnumSerializationMethod"/> for the target.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="context"/> is <c>null</c>.
+            	Or <paramref name="enumType"/> is <c>null</c>.
+            </exception>
+        </member>
+        <member name="T:MsgPack.Serialization.EnumMessagePackSerializerProvider">
+            <summary>
+            	Implements <see cref="T:MsgPack.Serialization.MessagePackSerializerProvider"/> for enums.
+            	This class accepts <see cref="T:MsgPack.Serialization.EnumSerializationMethod"/> as a provider parameter.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.EnumMessagePackSerializerProvider.#ctor(System.Type,MsgPack.Serialization.ICustomizableEnumSerializer)">
+            <summary>
+            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.EnumMessagePackSerializerProvider"/> class.
+            </summary>
+            <param name="enumType">A type of the enum.</param>
+            <param name="serializer">The serializer implements <see cref="T:MsgPack.Serialization.ICustomizableEnumSerializer"/>.</param>
+        </member>
+        <member name="M:MsgPack.Serialization.EnumMessagePackSerializerProvider.Get(MsgPack.Serialization.SerializationContext,System.Object)">
+            <summary>
+            	Gets a serializer instance for specified parameter.
+            </summary>
+            <param name="context">A serialization context which holds global settings.</param>
+            <param name="providerParameter">A provider specific parameter.</param>
+            <returns>	
+            A serializer object for specified parameter.
+            </returns>
         </member>
         <member name="T:MsgPack.Serialization.EnumSerializationMethod">
             <summary>
@@ -9255,7 +9533,6 @@
             	<see cref="T:MsgPack.Serialization.IMessagePackSingleObjectSerializer"/>.
             	If there is exiting one, returns it.
             	Else the new instance will be created.
-            	If the platform supports async/await programming model, return type is <c>IAsyncMessagePackSingleObjectSerializer</c>.
             </returns>
             <exception cref="T:System.ArgumentNullException">
             	<paramref name="targetType"/> is <c>null</c>.
@@ -9275,7 +9552,6 @@
             	<see cref="T:MsgPack.Serialization.IMessagePackSingleObjectSerializer"/>.
             	If there is exiting one, returns it.
             	Else the new instance will be created.
-            	If the platform supports async/await programming model, return type is <c>IAsyncMessagePackSingleObjectSerializer</c>.
             </returns>
             <exception cref="T:System.ArgumentNullException">
             	<paramref name="targetType"/> is <c>null</c>.
@@ -9730,34 +10006,6 @@
             <value>
             <c>true</c> if creates Nullable of T serializers for value type serializers; otherwise, <c>false</c>.
             </value>
-        </member>
-        <member name="T:MsgPack.Serialization.SerializerCapabilities">
-            <summary>
-            	Represents serializer capabilities.
-            </summary>
-        </member>
-        <member name="F:MsgPack.Serialization.SerializerCapabilities.Unknown">
-            <summary>
-            	None.
-            </summary>
-        </member>
-        <member name="F:MsgPack.Serialization.SerializerCapabilities.PackTo">
-            <summary>
-            	Caller can call <c>Pack</c> and <c>PackTo</c> method safely.
-            	If this flag is not set, the serializer may be deserialize only serializer.
-            </summary>
-        </member>
-        <member name="F:MsgPack.Serialization.SerializerCapabilities.UnpackFrom">
-            <summary>
-            	Caller can call <c>Unpack</c> and <c>UnpackFrom</c> method safely.
-            	If this flag is not set, the serializer may be serialize only serializer.
-            </summary>
-        </member>
-        <member name="F:MsgPack.Serialization.SerializerCapabilities.UnpackTo">
-            <summary>
-            	Caller can call <c>UnpackTo</c> method safely.
-            	If this flag is not set, the serializer should not be for mutable collection type.
-            </summary>
         </member>
         <member name="T:MsgPack.Serialization.SerializerCodeGenerationConfiguration">
             <summary>
