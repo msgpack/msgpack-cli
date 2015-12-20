@@ -133,7 +133,7 @@ namespace MsgPack.Serialization
 					);
 				var result = serializer.Unpack( buffer );
 				Assert.That( result.Count, Is.EqualTo( 1 ) );
-				var singleResult = default ( KeyValuePair<FileMode, int> );
+				var singleResult = default( KeyValuePair<FileMode, int> );
 				foreach ( var kv in result )
 				{
 					singleResult = kv;
@@ -148,7 +148,7 @@ namespace MsgPack.Serialization
 		public void TestIssue124_AotForComplexValueType()
 		{
 			MessagePackSerializer.PrepareType<TestValueType>();
-			var context = 
+			var context =
 				PreGeneratedSerializerActivator.CreateContext(
 					SerializationMethod.Array,
 					PackerCompatibilityOptions.None

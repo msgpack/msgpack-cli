@@ -23,13 +23,6 @@
 #endif
 
 using System;
-#if !UNITY
-#if XAMIOS || XAMDROID || CORE_CLR
-using Contract = MsgPack.MPContract;
-#else
-using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID || CORE_CLR
-#endif // !UNITY
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -58,10 +51,6 @@ namespace MsgPack.Serialization.Polymorphic
 				new AssemblyName( type.GetAssembly().FullName );
 #endif // !SILVERLIGHT
 
-#if DEBUG && !UNITY
-			Contract.Assert( type.Namespace != null, "type.Namespace != null" );
-#endif // DEBUG && !UNITY
-
 			packer.PackArrayHeader( 2 );
 			packer.PackArrayHeader( 6 );
 
@@ -69,7 +58,7 @@ namespace MsgPack.Serialization.Polymorphic
 
 			// Omit namespace prefix when it equals to declaring assembly simple name.
 			var compressedTypeName =
-				type.Namespace.StartsWith( assemblyName.Name, StringComparison.Ordinal )
+				( type.Namespace != null && type.Namespace.StartsWith( assemblyName.Name, StringComparison.Ordinal ) )
 					? Elipsis + type.FullName.Substring( assemblyName.Name.Length + 1 )
 					: type.FullName;
 			var version = new byte[ 16 ];
