@@ -30,6 +30,7 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Defines non-generic message pack serializer interface.
 	/// </summary>
+	[Obsolete( "Use MessagePackSerializer abstract class instead." )]
 	public interface IMessagePackSerializer
 	{
 		/// <summary>

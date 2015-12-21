@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,694 +18,327 @@
 //
 #endregion -- License Terms --
 
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
-
 using System;
-using System.IO;
-using System.Globalization;
-using System.Runtime.Serialization;
-
-using MsgPack.Serialization.ReflectionSerializers;
-#if !SILVERLIGHT && !NETFX_35 && !UNITY
-using System.Collections.Concurrent;
-#else // !SILVERLIGHT && !NETFX_35 && !UNITY
-using System.Collections.Generic;
-#endif // !SILVERLIGHT && !NETFX_35 && !UNITY
-#if !UNITY
-#if XAMIOS || XAMDROID || CORE_CLR
-using Contract = MsgPack.MPContract;
-#else
-using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID || CORE_CLR
-#endif // !UNITY
-#if NETFX_CORE || WINDOWS_PHONE
-using System.Linq.Expressions;
-#endif
-#if !XAMIOS && !XAMDROID && !UNITY
-using MsgPack.Serialization.AbstractSerializers;
-#if !NETFX_CORE && !WINDOWS_PHONE && !SILVERLIGHT
-#if !CORE_CLR
-using MsgPack.Serialization.CodeDomSerializers;
-#endif // !CORE_CLR
-using MsgPack.Serialization.EmittingSerializers;
-#endif // NETFX_CORE && !WINDOWS_PHONE && !SILVERLIGHT
-#endif // !!XAMIOS && !XAMDROID && !UNITY
-#if !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
-using MsgPack.Serialization.ExpressionSerializers;
-#endif // !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MsgPack.Serialization
 {
 	/// <summary>
-	///		Defines entry points for <see cref="MessagePackSerializer{T}"/> usage.
+	///		Defines non-generic interface of serializers and provides entry points for <see cref="MessagePackSerializer{T}"/> usage.
 	/// </summary>
-	public static class MessagePackSerializer
+	/// <remarks>
+	///		You cannot derived from this class directly, use <see cref="MessagePackSerializer{T}"/> instead.
+	///		This class is intended to guarantee backward compatibilities of non generic API.
+	/// </remarks>
+#pragma warning disable 0618
+	public abstract partial class MessagePackSerializer : IMessagePackSingleObjectSerializer
+#pragma warning restore 0618
 	{
-		/// <summary>
-		///		Creates new <see cref="MessagePackSerializer{T}"/> instance with <see cref="SerializationContext.Default"/>.
-		/// </summary>
-		/// <typeparam name="T">Target type.</typeparam>
-		/// <returns>
-		///		New <see cref="MessagePackSerializer{T}"/> instance to serialize/deserialize the object tree which the top is <typeparamref name="T"/>.
-		/// </returns>
-		[Obsolete( "Use Get<T>() instead." )]
-		public static MessagePackSerializer<T> Create<T>()
-		{
-#if !UNITY
-			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
-#endif // !UNITY
+		private readonly SerializationContext _ownerContext;
 
-			return Create<T>( SerializationContext.Default );
+		/// <summary>
+		///		Gets a <see cref="SerializationContext"/> which owns this serializer.
+		/// </summary>
+		/// <value>
+		///		A <see cref="SerializationContext"/> which owns this serializer.
+		/// </value>
+		protected internal SerializationContext OwnerContext
+		{
+			get { return this._ownerContext; }
+		}
+
+		private readonly PackerCompatibilityOptions? _packerCompatibilityOptionsForCompatibility;
+
+		/// <summary>
+		///		Gets the packer compatibility options for this instance.
+		/// </summary>
+		/// <value>
+		///		The packer compatibility options for this instance
+		/// </value>
+		protected internal PackerCompatibilityOptions PackerCompatibilityOptions
+		{
+			get { return this._packerCompatibilityOptionsForCompatibility.GetValueOrDefault( this.OwnerContext.CompatibilityOptions.PackerCompatibilityOptions ); }
+		}
+
+		private readonly SerializerCapabilities _capabilities;
+
+		/// <summary>
+		///		Gets the capability flags for this instance.
+		/// </summary>
+		/// <value>
+		///		The capability flags for this instance.
+		/// </value>
+		public SerializerCapabilities Capabilities
+		{
+			get { return this._capabilities; }
 		}
 
 		/// <summary>
-		///		Creates new <see cref="MessagePackSerializer{T}"/> instance with specified <see cref="SerializationContext"/>.
+		///		Initializes a new instance of the <see cref="MessagePackSerializer"/> class.
 		/// </summary>
-		/// <typeparam name="T">Target type.</typeparam>
-		/// <param name="context">
-		///		<see cref="SerializationContext"/> to store known/created serializers.
-		/// </param>
-		/// <returns>
-		///		New <see cref="MessagePackSerializer{T}"/> instance to serialize/deserialize the object tree which the top is <typeparamref name="T"/>.
-		/// </returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="context"/> is <c>null</c>.
-		/// </exception>
-		[Obsolete( "Use Get<T>(SerializationContext) instead." )]
-		public static MessagePackSerializer<T> Create<T>( SerializationContext context )
+		/// <param name="ownerContext">A <see cref="SerializationContext"/> which owns this serializer.</param>
+		/// <param name="packerCompatibilityOptions">The <see cref="PackerCompatibilityOptions"/> for new packer creation.</param>
+		/// <param name="capabilities">The capability flags for this instance.</param>
+		internal MessagePackSerializer( SerializationContext ownerContext, PackerCompatibilityOptions? packerCompatibilityOptions, SerializerCapabilities capabilities )
 		{
-			if ( context == null )
+			if ( ownerContext == null )
 			{
-				throw new ArgumentNullException( "context" );
+				ThrowArgumentNullException( "ownerContext" );
 			}
 
-			// Old Create behavior was effectively Get() because the Builder internally register genreated serializer and returned existent one if it had been already registered. 
-			// It was just aweful resource consumption.
-			return Get<T>( context, null );
+			this._ownerContext = ownerContext;
+			this._packerCompatibilityOptionsForCompatibility = packerCompatibilityOptions;
+			this._capabilities = capabilities;
 		}
 
 		/// <summary>
-		///		Gets existing or new <see cref="MessagePackSerializer{T}"/> instance with default context (<see cref="SerializationContext.Default"/>).
+		///		Serialize specified object with specified <see cref="Packer" />.
 		/// </summary>
-		/// <typeparam name="T">Target type.</typeparam>
+		/// <param name="packer"><see cref="Packer" /> which packs values in <paramref name="objectTree" />.</param>
+		/// <param name="objectTree">Object to be serialized.</param>
+		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities" />
+		public void PackTo( Packer packer, object objectTree )
+		{
+			this.InternalPackTo( packer, objectTree );
+		}
+
+		internal abstract void InternalPackTo( Packer packer, object objectTree );
+
+		/// <summary>
+		///		Deserialize object with specified <see cref="Unpacker" />.
+		/// </summary>
+		/// <param name="unpacker"><see cref="Unpacker" /> which unpacks values of resulting object tree.</param>
 		/// <returns>
-		///		<see cref="MessagePackSerializer{T}"/>.
-		///		If there is exiting one, returns it.
-		///		Else the new instance will be created.
+		///		The deserialized object.
+		/// </returns>
+		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities" />
+		public object UnpackFrom( Unpacker unpacker )
+		{
+			return this.InternalUnpackFrom( unpacker );
+		}
+
+		internal abstract object InternalUnpackFrom( Unpacker unpacker );
+
+		/// <summary>
+		///		Deserialize collection items with specified <see cref="Unpacker" /> and stores them to <paramref name="collection" />.
+		/// </summary>
+		/// <param name="unpacker"><see cref="Unpacker" /> which unpacks values of resulting object tree.</param>
+		/// <param name="collection">Collection that the items to be stored.</param>
+		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities" />
+		public void UnpackTo( Unpacker unpacker, object collection )
+		{
+			this.InternalUnpackTo( unpacker, collection );
+		}
+
+		internal abstract void InternalUnpackTo( Unpacker unpacker, object collection );
+
+		/// <summary>
+		///		Serialize specified object to the array of <see cref="Byte" />.
+		/// </summary>
+		/// <param name="objectTree">Object to be serialized.</param>
+		/// <returns>
+		///		An array of <see cref="Byte" /> which stores serialized value.
+		/// </returns>
+		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities" />
+		public byte[] PackSingleObject( object objectTree )
+		{
+			return this.InternalPackSingleObject( objectTree );
+		}
+
+		internal abstract byte[] InternalPackSingleObject( object objectTree );
+
+		/// <summary>
+		///		Deserialize a single object from the array of <see cref="Byte" /> which contains a serialized object.
+		/// </summary>
+		/// <param name="buffer">An array of <see cref="Byte" /> serialized value to be stored.</param>
+		/// <returns>
+		///		The deserialized object.
 		/// </returns>
 		/// <remarks>
-		///		This method simply invokes <see cref="Get{T}(SerializationContext)"/> with <see cref="SerializationContext.Default"/> for the <c>context</c>.
+		/// <para>
+		///		This method assumes that <paramref name="buffer" /> contains single serialized object dedicatedly,
+		///		so this method does not return any information related to actual consumed bytes.
+		/// </para>
+		/// <para>
+		///		This method is a counter part of <see cref="PackSingleObject" />.
+		/// </para>
 		/// </remarks>
-		public static MessagePackSerializer<T> Get<T>()
+		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities" />
+		public object UnpackSingleObject( byte[] buffer )
 		{
-			return Get<T>( SerializationContext.Default );
+			return this.InternalUnpackSingleObject( buffer );
 		}
 
+		internal abstract object InternalUnpackSingleObject( byte[] buffer );
+
+#if FEATURE_TAP
 		/// <summary>
-		///		Gets existing or new <see cref="MessagePackSerializer{T}"/> instance with default context (<see cref="SerializationContext.Default"/>).
+		///		Serialize specified object with specified <see cref="Packer"/> asynchronously.
 		/// </summary>
-		/// <typeparam name="T">Target type.</typeparam>
-		/// <param name="providerParameter">A provider specific parameter. See remarks section for details.</param>
+		/// <param name="packer"><see cref="Packer"/> which packs values in <paramref name="objectTree"/>.</param>
+		/// <param name="objectTree">Object to be serialized.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>
-		///		<see cref="MessagePackSerializer{T}"/>.
-		///		If there is exiting one, returns it.
-		///		Else the new instance will be created.
-		/// </returns>
-		/// <remarks>
-		///		This method simply invokes <see cref="Get{T}(SerializationContext,Object)"/> with <see cref="SerializationContext.Default"/> for the <c>context</c>.
-		/// </remarks>
-		public static MessagePackSerializer<T> Get<T>( object providerParameter )
-		{
-			return Get<T>( SerializationContext.Default, providerParameter );
-		}
-
-		/// <summary>
-		///		Gets existing or new <see cref="MessagePackSerializer{T}"/> instance with specified <see cref="SerializationContext"/>.
-		/// </summary>
-		/// <typeparam name="T">Target type.</typeparam>
-		/// <param name="context">
-		///		<see cref="SerializationContext"/> to store known/created serializers.
-		/// </param>
-		/// <returns>
-		///		<see cref="MessagePackSerializer{T}"/>.
-		///		If there is exiting one, returns it.
-		///		Else the new instance will be created.
-		/// </returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="context"/> is <c>null</c>.
-		/// </exception>
-		/// <remarks>
-		///		This method simply invokes <see cref="Get{T}(SerializationContext,Object)"/> with <c>null</c> for the <c>providerParameter</c>.
-		/// </remarks>
-		public static MessagePackSerializer<T> Get<T>( SerializationContext context )
-		{
-			return Get<T>( context, null );
-		}
-
-		/// <summary>
-		///		Gets existing or new <see cref="MessagePackSerializer{T}"/> instance with specified <see cref="SerializationContext"/>.
-		/// </summary>
-		/// <typeparam name="T">Target type.</typeparam>
-		/// <param name="context">
-		///		<see cref="SerializationContext"/> to store known/created serializers.
-		/// </param>
-		/// <param name="providerParameter">A provider specific parameter. See remarks section for details.</param>
-		/// <returns>
-		///		<see cref="MessagePackSerializer{T}"/>.
-		///		If there is exiting one, returns it.
-		///		Else the new instance will be created.
-		/// </returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="context"/> is <c>null</c>.
-		/// </exception>
-		/// <remarks>
-		///		<para>
-		///			This method simply invokes <see cref="SerializationContext.GetSerializer{T}(Object)"/>, so see the method description for details.
-		///		</para>
-		///		<para>
-		///			Currently, only following provider parameters are supported.
-		///			<list type="table">
-		///				<listheader>
-		///					<term>Target type</term>
-		///					<description>Provider parameter</description>
-		///				</listheader>
-		///				<item>
-		///					<term><see cref="EnumMessagePackSerializer{TEnum}"/> or its descendants.</term>
-		///					<description><see cref="EnumSerializationMethod"/>. The returning instance corresponds to this value for serialization.</description>
-		///				</item>
-		///			</list>
-		///			<note><c>null</c> is valid value for <paramref name="providerParameter"/> and it indeicates default behavior of parameter.</note>
-		///		</para>
-		/// </remarks>
-		public static MessagePackSerializer<T> Get<T>( SerializationContext context, object providerParameter )
-		{
-			if ( context == null )
-			{
-				throw new ArgumentNullException( "context" );
-			}
-
-			return context.GetSerializer<T>( providerParameter );
-		}
-
-		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context, PolymorphismSchema schema )
-		{
-
-#if !XAMIOS && !XAMDROID && !UNITY
-			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
-#endif // !XAMIOS && !XAMDROID && !UNITY
-
-#if DEBUG && !UNITY && !XAMDROID && !XAMIOS
-			SerializerDebugging.TraceEvent(
-				"SerializationContext::CreateInternal<{0}>(@{1}, {2})",
-				typeof( T ),
-				context.GetHashCode(),
-				schema == null ? "null" : schema.DebugString
-			);
-
-#endif // DEBUG && !UNITY && !XAMDROID && !XAMIOS
-			Type concreteType = null;
-
-			if ( typeof( T ).GetIsAbstract() || typeof( T ).GetIsInterface() )
-			{
-				// Abstract collection types will be handled correctly.
-				if ( typeof( T ).GetCollectionTraits().CollectionType != CollectionKind.NotCollection )
-				{
-					concreteType = context.DefaultCollectionTypes.GetConcreteType( typeof( T ) );
-				}
-
-				if ( concreteType == null )
-				{
-					// return null for polymoirphic provider.
-					return null;
-				}
-
-				ValidateType( concreteType );
-			}
-			else
-			{
-				ValidateType( typeof( T ) );
-			}
-
-#if !XAMIOS && !XAMDROID && !UNITY
-			ISerializerBuilder<T> builder;
-#endif // !XAMIOS && !XAMDROID && !UNITY
-#if NETFX_CORE || WINDOWS_PHONE || SILVERLIGHT
-			builder = new ExpressionTreeSerializerBuilder<T>();
-#else
-#if !XAMIOS && !XAMDROID && !UNITY
-			switch ( context.EmitterFlavor )
-			{
-				case EmitterFlavor.ReflectionBased:
-				{
-#endif // !XAMIOS && !XAMDROID && !UNITY
-					return
-						DefaultSerializers.GenericSerializer.TryCreateAbstractCollectionSerializer( context, typeof( T ), concreteType, schema ) as MessagePackSerializer<T>
-						?? CreateReflectionInternal<T>( context, concreteType ?? typeof( T ), schema );
-#if !XAMIOS && !XAMDROID && !UNITY
-				}
-#if !WINDOWS_PHONE && !NETFX_35
-				case EmitterFlavor.ExpressionBased:
-				{
-					builder = new ExpressionTreeSerializerBuilder<T>();
-					break;
-				}
-#endif // if !WINDOWS_PHONE && !NETFX_35
-				case EmitterFlavor.FieldBased:
-				{
-					builder = new AssemblyBuilderSerializerBuilder<T>();
-					break;
-				}
-				default:
-				{
-#if !NETFX_35
-#if !CORE_CLR
-					if ( !SerializerDebugging.OnTheFlyCodeDomEnabled )
-#endif // !CORE_CLR
-					{
-						throw new NotSupportedException(
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"Flavor '{0:G}'({0:D}) is not supported for serializer instance creation.",
-								context.EmitterFlavor
-							)
-						);
-					}
-#endif // if !NETFX_35
-#if !CORE_CLR
-					builder = new CodeDomSerializerBuilder<T>();
-					break;
-#endif // !CORE_CLR
-				}
-			}
-#endif // !XAMIOS && !XAMDROID && !UNITY
-#endif // NETFX_CORE else
-#if !XAMIOS && !XAMDROID && !UNITY
-			return builder.BuildSerializerInstance( context, concreteType, schema == null ? null : schema.FilterSelf() );
-#endif // !XAMIOS && !XAMDROID && !UNITY
-		}
-
-#if !XAMIOS && !XAMDROID && !UNITY
-#if !SILVERLIGHT && !NETFX_35
-		private static readonly ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _creatorCache = new ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
-#else
-		private static readonly object _syncRoot = new object();
-		private static readonly Dictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _creatorCache = new Dictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
-#endif // !SILVERLIGHT && !NETFX_35
-#endif // !XAMIOS && !XAMDROID && !UNITY
-
-		/// <summary>
-		///		Creates new <see cref="IMessagePackSerializer"/> instance with <see cref="SerializationContext.Default"/>.
-		/// </summary>
-		/// <param name="targetType">Target type.</param>
-		/// <returns>
-		///		New <see cref="IMessagePackSingleObjectSerializer"/> instance to serialize/deserialize the object tree which the top is <paramref name="targetType"/>.
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
 		/// </returns>
 		/// <exception cref="ArgumentNullException">
-		///		<paramref name="targetType"/> is <c>null</c>.
+		///		<paramref name="packer"/> is <c>null</c>.
 		/// </exception>
-		/// <remarks>
-		///		To avoid boxing and strongly typed API is prefered, use <see cref="Create{T}()"/> instead when possible.
-		/// </remarks>
-		[Obsolete( "Use Get(Type) instead." )]
-		public static IMessagePackSingleObjectSerializer Create( Type targetType )
+		/// <exception cref="ArgumentException">
+		///		<paramref name="objectTree"/> is not compatible for this serializer.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to serialize object due to invalid unpacker state, stream content, or so.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		The type of <paramref name="objectTree"/> is not serializable even if it can be deserialized.
+		/// </exception>
+		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		public Task PackToAsync( Packer packer, object objectTree, CancellationToken cancellationToken )
 		{
-			return Create( targetType, SerializationContext.Default );
+			return this.InternalPackToAsync( packer, objectTree, cancellationToken );
 		}
 
+		internal abstract Task InternalPackToAsync( Packer packer, object objectTree, CancellationToken cancellationToken );
+
 		/// <summary>
-		///		Creates new <see cref="IMessagePackSerializer"/> instance with specified <see cref="SerializationContext"/>.
+		///		Deserialize object with specified <see cref="Unpacker"/> asynchronously.
 		/// </summary>
-		/// <param name="targetType">Target type.</param>
-		/// <param name="context">
-		///		<see cref="SerializationContext"/> to store known/created serializers.
-		/// </param>
+		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>
-		///		New <see cref="IMessagePackSingleObjectSerializer"/> instance to serialize/deserialize the object tree which the top is <paramref name="targetType"/>.
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains the deserialized object.
 		/// </returns>
 		/// <exception cref="ArgumentNullException">
-		///		<paramref name="targetType"/> is <c>null</c>.
-		///		Or, <paramref name="context"/> is <c>null</c>.
+		///		<paramref name="unpacker"/> is <c>null</c>.
 		/// </exception>
-		/// <remarks>
-		///		To avoid boxing and strongly typed API is prefered, use <see cref="Create{T}(SerializationContext)"/> instead when possible.
-		/// </remarks>
-		[Obsolete( "Use Get(Type,SerializationContext) instead." )]
-		public static IMessagePackSingleObjectSerializer Create( Type targetType, SerializationContext context )
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to deserialize object.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		Failed to deserialize object due to invalid stream.
+		/// </exception>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Failed to deserialize object due to invalid stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		The type of deserializing is not serializable even if it can be serialized.
+		/// </exception>
+		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		public Task<object> UnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken )
 		{
-			if ( targetType == null )
-			{
-				throw new ArgumentNullException( "targetType" );
-			}
-
-			if ( context == null )
-			{
-				throw new ArgumentNullException( "context" );
-			}
-
-#if !UNITY
-			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
-#endif // !UNITY
-
-#if XAMIOS || XAMDROID || UNITY
-			return CreateInternal( context, targetType, null );
-#else
-			// MPS.Create should always return new instance, and creator delegate should be cached for performance.
-#if NETFX_CORE || CORE_CLR
-			var factory =
-				_creatorCache.GetOrAdd(
-					targetType,
-					type =>
-						// Utilize covariance of delegate.
-						Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type ).CreateDelegate(
-							typeof( Func<SerializationContext, IMessagePackSingleObjectSerializer> )
-						) as Func<SerializationContext, IMessagePackSingleObjectSerializer>
-				);
-#elif SILVERLIGHT || NETFX_35
-			Func<SerializationContext, IMessagePackSingleObjectSerializer> factory;
-
-			lock ( _syncRoot )
-			{
-				_creatorCache.TryGetValue( targetType, out factory );
-			}
-
-			if ( factory == null )
-			{
-				// Utilize covariance of delegate.
-				factory =
-					Delegate.CreateDelegate(
-						typeof( Func<SerializationContext, IMessagePackSingleObjectSerializer> ),
-						Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( targetType )
-						) as Func<SerializationContext, IMessagePackSingleObjectSerializer>;
-
-				Contract.Assert( factory != null );
-
-				lock ( _syncRoot )
-				{
-					_creatorCache[ targetType ] = factory;
-				}
-			}
-#else
-			var factory =
-				_creatorCache.GetOrAdd(
-					targetType,
-					type =>
-						// Utilize covariance of delegate.
-						Delegate.CreateDelegate(
-							typeof( Func<SerializationContext, IMessagePackSingleObjectSerializer> ),
-							Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type )
-						) as Func<SerializationContext, IMessagePackSingleObjectSerializer>
-				);
-#endif // NETFX_CORE
-			return factory( context );
-#endif // XAMIOS || XAMDROID || UNITY else
+			return this.InternalUnpackFromAsync( unpacker, cancellationToken );
 		}
 
+		internal abstract Task<object> InternalUnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken );
+
 		/// <summary>
-		///		Gets existing or new <see cref="IMessagePackSerializer"/> instance with default context (<see cref="SerializationContext.Default"/>).
+		///		Deserialize collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/> asynchronously.
 		/// </summary>
-		/// <param name="targetType">Target type.</param>
+		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree.</param>
+		/// <param name="collection">Collection that the items to be stored.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>
-		///		<see cref="IMessagePackSingleObjectSerializer"/>.
-		///		If there is exiting one, returns it.
-		///		Else the new instance will be created.
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
 		/// </returns>
 		/// <exception cref="ArgumentNullException">
-		///		<paramref name="targetType"/> is <c>null</c>.
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or <paramref name="collection"/> is <c>null</c>.
 		/// </exception>
-		/// <remarks>
-		///		<para>
-		///			This method simply invokes <see cref="SerializationContext.GetSerializer(Type)"/>, so see the method description for details.
-		///		</para>
-		///		<para>
-		///		Although <see cref="Get{T}()"/> is preferred,
-		///		this method can be used from non-generic type or methods.
-		///		</para>
-		/// </remarks>
-		public static IMessagePackSingleObjectSerializer Get(
-			Type targetType )
+		/// <exception cref="ArgumentException">
+		///		<paramref name="collection"/> is not compatible for this serializer.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to deserialize object.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		Failed to deserialize object due to invalid stream.
+		/// </exception>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Failed to deserialize object due to invalid stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		The type of deserializing is not mutable collection.
+		/// </exception>
+		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		public Task UnpackToAsync( Unpacker unpacker, object collection, CancellationToken cancellationToken )
 		{
-			return Get( targetType, SerializationContext.Default, null );
+			return this.InternalUnpackToAsync( unpacker, collection, cancellationToken );
 		}
 
+		internal abstract Task InternalUnpackToAsync( Unpacker unpacker, object collection, CancellationToken cancellationToken );
+
 		/// <summary>
-		///		Gets existing or new <see cref="IMessagePackSerializer"/> instance with default context (<see cref="SerializationContext.Default"/>).
+		///		Serialize specified object to the array of <see cref="Byte"/>.
 		/// </summary>
-		/// <param name="targetType">Target type.</param>
-		/// <param name="providerParameter">A provider specific parameter. See remarks section for details.</param>
+		/// <param name="objectTree">Object to be serialized.</param>
+		/// <returns>An array of <see cref="Byte"/> which stores serialized value.</returns>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>
-		///		<see cref="IMessagePackSingleObjectSerializer"/>.
-		///		If there is exiting one, returns it.
-		///		Else the new instance will be created.
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains an array of <see cref="Byte"/> which stores serialized value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to serialize <paramref name="objectTree"/>.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		The type of <paramref name="objectTree"/> is not serializable even if it can be deserialized.
+		/// </exception>
+		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		public Task<byte[]> PackSingleObjectAsync( object objectTree, CancellationToken cancellationToken )
+		{
+			return this.InternalPackSingleObjectAsync( objectTree, cancellationToken );
+		}
+
+		internal abstract Task<byte[]> InternalPackSingleObjectAsync( object objectTree, CancellationToken cancellationToken );
+
+		/// <summary>
+		///		Deserialize a single object from the array of <see cref="Byte"/> which contains a serialized object.
+		/// </summary>
+		/// <param name="buffer">An array of <see cref="Byte"/> serialized value to be stored.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains the deserialized object.
 		/// </returns>
 		/// <exception cref="ArgumentNullException">
-		///		<paramref name="targetType"/> is <c>null</c>.
+		///		<paramref name="buffer"/> is <c>null</c>.
 		/// </exception>
-		/// <remarks>
-		///		<para>
-		///			This method simply invokes <see cref="SerializationContext.GetSerializer(Type,Object)"/>, so see the method description for details.
-		///		</para>
-		///		<para>
-		///		Although <see cref="Get{T}(Object)"/> is preferred,
-		///		this method can be used from non-generic type or methods.
-		///		</para>
-		/// </remarks>
-		public static IMessagePackSingleObjectSerializer Get(
-			Type targetType,
-			object providerParameter )
-		{
-			return Get( targetType, SerializationContext.Default, providerParameter );
-		}
-
-		/// <summary>
-		///		Gets existing or new <see cref="IMessagePackSerializer"/> instance with specified <see cref="SerializationContext"/>.
-		/// </summary>
-		/// <param name="targetType">Target type.</param>
-		/// <param name="context">
-		///		<see cref="SerializationContext"/> to store known/created serializers.
-		/// </param>
-		/// <returns>
-		///		<see cref="IMessagePackSingleObjectSerializer"/>.
-		///		If there is exiting one, returns it.
-		///		Else the new instance will be created.
-		/// </returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="targetType"/> is <c>null</c>.
-		///		Or, <paramref name="context"/> is <c>null</c>.
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to deserialize object.
 		/// </exception>
-		/// <remarks>
-		///		<para>
-		///			This method simply invokes <see cref="SerializationContext.GetSerializer(Type)"/>, so see the method description for details.
-		///		</para>
-		///		<para>
-		///		Although <see cref="Get{T}(SerializationContext)"/> is preferred,
-		///		this method can be used from non-generic type or methods.
-		///		</para>
-		/// </remarks>
-		public static IMessagePackSingleObjectSerializer Get(
-			Type targetType,
-			SerializationContext context )
-		{
-			return Get( targetType, context, null );
-		}
-
-		/// <summary>
-		///		Gets existing or new <see cref="IMessagePackSerializer"/> instance with specified <see cref="SerializationContext"/>.
-		/// </summary>
-		/// <param name="targetType">Target type.</param>
-		/// <param name="context">
-		///		<see cref="SerializationContext"/> to store known/created serializers.
-		/// </param>
-		/// <param name="providerParameter">A provider specific parameter. See remarks section for details.</param>
-		/// <returns>
-		///		<see cref="IMessagePackSingleObjectSerializer"/>.
-		///		If there is exiting one, returns it.
-		///		Else the new instance will be created.
-		/// </returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="targetType"/> is <c>null</c>.
-		///		Or, <paramref name="context"/> is <c>null</c>.
+		/// <exception cref="MessageTypeException">
+		///		Failed to deserialize object due to invalid stream.
 		/// </exception>
-		/// <remarks>
-		///		<para>
-		///			This method simply invokes <see cref="SerializationContext.GetSerializer(Type,Object)"/>, so see the method description for details.
-		///		</para>
-		///		<para>
-		///		Although <see cref="Get{T}(SerializationContext,Object)"/> is preferred,
-		///		this method can be used from non-generic type or methods.
-		///		</para>
-		/// </remarks>
-		public static IMessagePackSingleObjectSerializer Get(
-			Type targetType, SerializationContext context, object providerParameter )
-		{
-			if ( targetType == null )
-			{
-				throw new ArgumentNullException( "targetType" );
-			}
-
-			if ( context == null )
-			{
-				throw new ArgumentNullException( "context" );
-			}
-
-			return context.GetSerializer( targetType, providerParameter );
-		}
-
-#if XAMIOS || XAMDROID || UNITY
-		private static readonly System.Reflection.MethodInfo CreateInternal_2 = 
-			typeof( MessagePackSerializer ).GetMethod( 
-				"CreateInternal", 
-				System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic,
-				null,
-				new []{ typeof( SerializationContext ), typeof( PolymorphismSchema ) },
-				null
-			);
-
-		internal static IMessagePackSingleObjectSerializer CreateInternal( SerializationContext context, Type targetType, PolymorphismSchema schema )
-		{
-#if UNITY_ANDROID || UNITY
-			return
-				(
-					Delegate.CreateDelegate( 
-						typeof( Func<SerializationContext, PolymorphismSchema, object> ),
-						CreateInternal_2.MakeGenericMethod( targetType )
-					)
-				as Func<SerializationContext, PolymorphismSchema, object> )( context, schema ) as IMessagePackSingleObjectSerializer;
-#else
-			return 
-				( CreateInternal_2.MakeGenericMethod( targetType ).CreateDelegate( typeof( Func<SerializationContext, PolymorphismSchema, object> ) ) 
-				as Func<SerializationContext, PolymorphismSchema, object> )( context, schema ) as IMessagePackSingleObjectSerializer;
-#endif
-		}
-#endif // XAMIOS || XAMDROID || UNITY
-
-		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context, Type concreteType, PolymorphismSchema schema )
-		{
-			if ( concreteType.GetIsAbstract() || concreteType.GetIsInterface() )
-			{
-				// return null for polymoirphic provider.
-				return null;
-			}
-
-			var serializer = context.Serializers.Get<T>( context );
-
-			if ( serializer != null )
-			{
-				// For MessagePack.Create compatibility. 
-				// Required for built-in types.
-				return serializer;
-			}
-
-			ValidateType( typeof( T ) );
-			var traits = typeof( T ).GetCollectionTraits();
-			switch ( traits.CollectionType )
-			{
-				case CollectionKind.Array:
-				case CollectionKind.Map:
-				{
-					return 
-#if !UNITY
-						ReflectionSerializerHelper.CreateCollectionSerializer<T>( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ) );
-#else
-						Wrap<T>( 
-							context,
-							ReflectionSerializerHelper.CreateCollectionSerializer<T>( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ) )
-						);
-#endif // !UNITY
-				}
-				default:
-				{
-					if ( typeof( T ).GetIsEnum() )
-					{
-						return ReflectionSerializerHelper.CreateReflectionEnumMessagePackSerializer<T>( context );
-					}
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
-					if ( TupleItems.IsTuple( typeof( T ) ) )
-					{
-						return
-							new ReflectionTupleMessagePackSerializer<T>(
-								context,
-								( schema ?? PolymorphismSchema.Default ).ChildSchemaList
-							);
-					}
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
-
-					return new ReflectionObjectMessagePackSerializer<T>( context );
-				}
-			}
-		}
-
-		private static void ValidateType( Type type )
-		{
-			if ( !type.GetIsVisible() )
-			{
-				throw new SerializationException(
-					String.Format( CultureInfo.CurrentCulture, "Non-public type '{0}' cannot be serialized.", type ) );
-			}
-		}
-
-#if UNITY
-		internal static MessagePackSerializer<T> Wrap<T>( SerializationContext context, IMessagePackSingleObjectSerializer nonGeneric )
-		{
-			return
-				nonGeneric == null
-				? null
-				: ( nonGeneric as TypedMessagePackSerializerWrapper<T> )
-				?? ( 
-					nonGeneric is ICustomizableEnumSerializer
-					? new EnumTypedMessagePackSerializerWrapper<T>( context, nonGeneric )
-					: new TypedMessagePackSerializerWrapper<T>( context, nonGeneric )
-				);
-		}
-#endif // UNITY
-
-		// For stable behavior, use singleton concrete deserializer and private context.
-		private static readonly MessagePackSerializer<MessagePackObject> _singleTonMpoDeserializer =
-			new DefaultSerializers.MsgPack_MessagePackObjectMessagePackSerializer( new SerializationContext() );
-
-		/// <summary>
-		///		Directly deserialize specified MessagePack <see cref="Stream"/> as <see cref="MessagePackObject"/> tree.
-		/// </summary>
-		/// <param name="stream">The stream which contains deserializing data.</param>
-		/// <returns>A <see cref="MessagePackObject"/> which is root of the deserialized MessagePack object tree.</returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="stream"/> is <c>null</c>.
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Failed to deserialize object due to invalid stream.
 		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		The type of deserializing is not serializable even if it can be serialized.
+		/// </exception>
+		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
 		/// <remarks>
-		///		This method is convinient wrapper for <see cref="MessagePackSerializer.Get{T}(SerializationContext)"/> for <see cref="MessagePackObject"/>.
-		///		<note>
-		///			You cannot override this method behavior because this method uses private <see cref="SerializationContext"/> instead of default context which is able to be accessed via <see cref="SerializationContext.Default"/>.
-		///		</note>
-		/// </remarks>
-		public static MessagePackObject UnpackMessagePackObject( Stream stream )
+		///		<para>
+		///			This method assumes that <paramref name="buffer"/> contains single serialized object dedicatedly,
+		///			so this method does not return any information related to actual consumed bytes.
+		///		</para>
+		///		<para>
+		///			This method is a counter part of <see cref="PackSingleObjectAsync"/>.
+		///		</para>
+		/// </remarks>	
+		public Task<object> UnpackSingleObjectAsync( byte[] buffer, CancellationToken cancellationToken )
 		{
-			return _singleTonMpoDeserializer.Unpack( stream );
+			return this.InternalUnpackSingleObjectAsync( buffer, cancellationToken );
 		}
 
-		/// <summary>
-		///		Try to prepare specified type for some AOT(Ahead-Of-Time) compilation environment.
-		/// </summary>
-		/// <typeparam name="T">The type to be prepared. Normally, this should be value type.</typeparam>
-		/// <remarks>
-		///		<para>
-		///			Currently, this method only works in Unity3D build.
-		///			This method does not any work for other environments(and should be removed on JIT/AOT), but exists to simplify the application compilation.
-		///			It is recommended to use this method on start up code to reduce probability of some AOT errors.
-		///		</para>
-		///		<para>
-		///			Please note that this method do not ensure for full linkage for AOT.
-		///			Manifest or attribute based linker options (e.g. for .NET Native or Xamarin.iOS) are still required.
-		///		</para>
-		/// </remarks>
-		public static void PrepareType<T>()
+		internal abstract Task<object> InternalUnpackSingleObjectAsync( byte[] buffer, CancellationToken cancellationToken );
+#endif // FEATURE_TAP
+
+		/* protected and */internal static void ThrowArgumentNullException( string parameterName )
 		{
-#if UNITY
-			// Ensure GetSerializer<T>( object ) is AOT-ed.
-			SerializationContext.Default.GetSerializer<T>( null );
-			// Ensure Dictionary<T, ?> is work.
-			AotHelper.PrepareEqualityComparer<T>();
-#endif // UNITY
+			throw new ArgumentNullException( parameterName );
 		}
 	}
 }

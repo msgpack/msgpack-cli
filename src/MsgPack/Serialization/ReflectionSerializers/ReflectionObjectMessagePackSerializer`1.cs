@@ -47,7 +47,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		private readonly MemberInfo[] _memberInfos;
 		private readonly DataMemberContract[] _contracts;
 		private readonly Dictionary<string, int> _memberIndexes;
-		private readonly IMessagePackSerializer[] _serializers;
+		private readonly MessagePackSerializer[] _serializers;
 		private readonly ParameterInfo[] _constructorParameters;
 		private readonly Dictionary<int, int> _constructorArgumentIndexes;
 

@@ -39,8 +39,8 @@ namespace MsgPack.Serialization.CollectionSerializers
 	public abstract class NonGenericDictionaryMessagePackSerializer<TDictionary> : MessagePackSerializer<TDictionary>, ICollectionInstanceFactory
 		where TDictionary : IDictionary
 	{
-		private readonly IMessagePackSingleObjectSerializer _keySerializer;
-		private readonly IMessagePackSingleObjectSerializer _valueSerializer;
+		private readonly MessagePackSerializer _keySerializer;
+		private readonly MessagePackSerializer _valueSerializer;
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="NonGenericDictionaryMessagePackSerializer{TDictionary}"/> class.
@@ -215,8 +215,8 @@ namespace MsgPack.Serialization.CollectionSerializers
 #if UNITY
 	internal abstract class UnityNonGenericDictionaryMessagePackSerializer : NonGenericMessagePackSerializer, ICollectionInstanceFactory
 	{
-		private readonly IMessagePackSingleObjectSerializer _keySerializer;
-		private readonly IMessagePackSingleObjectSerializer _valueSerializer;
+		private readonly MessagePackSerializer _keySerializer;
+		private readonly MessagePackSerializer _valueSerializer;
 
 		protected UnityNonGenericDictionaryMessagePackSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema schema )
 			: base( ownerContext, targetType )

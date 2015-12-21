@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // !UNITY
 	{
 		private readonly ICollectionInstanceFactory _concreteCollectionInstanceFactory;
-		private readonly IMessagePackSingleObjectSerializer _concreteSerializer;
+		private readonly MessagePackSerializer _concreteSerializer;
 
 		public AbstractNonGenericCollectionMessagePackSerializer(
 			SerializationContext ownerContext,

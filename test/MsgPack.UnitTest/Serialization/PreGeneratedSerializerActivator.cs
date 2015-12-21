@@ -63,7 +63,7 @@ namespace MsgPack.Serialization
 					new LazyMessagePackSerializerProvider(
 						knownType,
 						serializerType != null
-							? new Func<SerializationContext, PolymorphismSchema, IMessagePackSerializer>( SerializerActivator.Create( knownType, serializerType, knownType ).Activate )
+							? new Func<SerializationContext, PolymorphismSchema, MessagePackSerializer>( SerializerActivator.Create( knownType, serializerType, knownType ).Activate )
 							: ( ( c, s ) =>
 							{
 								throw new Exception(
@@ -112,17 +112,17 @@ namespace MsgPack.Serialization
 			}
 
 #if !XAMIOS && !UNITY_IPHONE
-			context.IsRuntimeGenerationDisabled = true;
+			context.SerializerOptions.IsRuntimeGenerationDisabled = true;
 #endif
 			return context;
 		}
 
 		private sealed class LazyMessagePackSerializerProvider : MessagePackSerializerProvider
 		{
-			private readonly Func<SerializationContext, PolymorphismSchema, IMessagePackSerializer> _activator;
+			private readonly Func<SerializationContext, PolymorphismSchema, MessagePackSerializer> _activator;
 			private readonly Type _targetType;
 
-			public LazyMessagePackSerializerProvider( Type targetType, Func<SerializationContext, PolymorphismSchema, IMessagePackSerializer> activator )
+			public LazyMessagePackSerializerProvider( Type targetType, Func<SerializationContext, PolymorphismSchema, MessagePackSerializer> activator )
 			{
 				this._targetType = targetType;
 				this._activator = activator;
@@ -143,7 +143,7 @@ namespace MsgPack.Serialization
 
 		private interface ISerializerActivator
 		{
-			IMessagePackSerializer Activate( SerializationContext context, PolymorphismSchema schema );
+			MessagePackSerializer Activate( SerializationContext context, PolymorphismSchema schema );
 		}
 
 		private class SerializerActivator
@@ -195,7 +195,7 @@ namespace MsgPack.Serialization
 				this._constructor3 = serializerType.GetConstructor( SerializerConstructorParameterTypes3 );
 			}
 
-			public IMessagePackSerializer Activate( SerializationContext context, PolymorphismSchema schema )
+			public MessagePackSerializer Activate( SerializationContext context, PolymorphismSchema schema )
 			{
 				if ( this._constructor1 == null && this._constructor3 == null )
 				{
@@ -213,16 +213,16 @@ namespace MsgPack.Serialization
 					serializer = ( MessagePackSerializer<T> )this._constructor3.InvokePreservingExceptionType( context, this._serializationTargetType, null );
 				}
 
-				return new PolymorphicSerializerProvider<T>( serializer ).Get( context, schema ?? PolymorphismSchema.Default ) as IMessagePackSerializer;
+				return new PolymorphicSerializerProvider<T>( serializer ).Get( context, schema ?? PolymorphismSchema.Default ) as MessagePackSerializer;
 #else
 				IMessagePackSingleObjectSerializer serializer;
 				if ( this._constructor1 != null )
 				{
-					serializer = this._constructor1.InvokePreservingExceptionType( context ) as IMessagePackSingleObjectSerializer;
+					serializer = this._constructor1.InvokePreservingExceptionType( context ) as MessagePackSerializer;
 				}
 				else
 				{
-					serializer = this._constructor3.InvokePreservingExceptionType( context, this._serializationTargetType, null ) as IMessagePackSingleObjectSerializer;
+					serializer = this._constructor3.InvokePreservingExceptionType( context, this._serializationTargetType, null ) as MessagePackSerializer;
 				}
 
 				return 
@@ -230,7 +230,7 @@ namespace MsgPack.Serialization
 						typeof( PolymorphicSerializerProvider<> ).MakeGenericType( this._targetType ),
 						context,
 						serializer
-					).Get( context, schema ?? PolymorphismSchema.Default ) as IMessagePackSerializer;
+					).Get( context, schema ?? PolymorphismSchema.Default ) as MessagePackSerializer;
 #endif // !UNITY
 			}
 		}

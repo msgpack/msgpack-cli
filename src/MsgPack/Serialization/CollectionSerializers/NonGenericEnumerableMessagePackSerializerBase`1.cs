@@ -39,9 +39,9 @@ namespace MsgPack.Serialization.CollectionSerializers
 	public abstract class NonGenericEnumerableMessagePackSerializerBase<TCollection> : MessagePackSerializer<TCollection>, ICollectionInstanceFactory
 		where TCollection : IEnumerable
 	{
-		private readonly IMessagePackSingleObjectSerializer _itemSerializer;
+		private readonly MessagePackSerializer _itemSerializer;
 
-		internal IMessagePackSingleObjectSerializer ItemSerializer { get { return this._itemSerializer; } }
+		internal MessagePackSerializer ItemSerializer { get { return this._itemSerializer; } }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="NonGenericEnumerableMessagePackSerializerBase{TCollection}"/> class.
@@ -161,9 +161,9 @@ namespace MsgPack.Serialization.CollectionSerializers
 #if UNITY
 	internal abstract class UnityNonGenericEnumerableMessagePackSerializerBase : NonGenericMessagePackSerializer, ICollectionInstanceFactory
 	{
-		private readonly IMessagePackSingleObjectSerializer _itemSerializer;
+		private readonly MessagePackSerializer _itemSerializer;
 
-		internal IMessagePackSingleObjectSerializer ItemSerializer { get { return this._itemSerializer; } }
+		internal MessagePackSerializer ItemSerializer { get { return this._itemSerializer; } }
 
 		protected UnityNonGenericEnumerableMessagePackSerializerBase( SerializationContext ownerContext, Type targetType, PolymorphismSchema schema )
 			: base( ownerContext, targetType )

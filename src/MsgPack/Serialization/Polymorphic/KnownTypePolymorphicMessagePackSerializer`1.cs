@@ -89,7 +89,7 @@ namespace MsgPack.Serialization.Polymorphic
 			return result;
 		}
 
-		private IMessagePackSerializer GetActualTypeSerializer( Type actualType )
+		private MessagePackSerializer GetActualTypeSerializer( Type actualType )
 		{
 			var result = this.OwnerContext.GetSerializer( actualType, this._schema );
 			if ( result == null )

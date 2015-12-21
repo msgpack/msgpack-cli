@@ -38,8 +38,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MessagePackSerializer<TItem> _itemSerializer;
 		private readonly MessagePackSerializer<int[]> _int32ArraySerializer;
 #else
-		private readonly IMessagePackSingleObjectSerializer _itemSerializer;
-		private readonly IMessagePackSingleObjectSerializer _int32ArraySerializer;
+		private readonly MessagePackSerializer _itemSerializer;
+		private readonly MessagePackSerializer _int32ArraySerializer;
 		private readonly Type _itemType;
 #endif // !UNITY
 

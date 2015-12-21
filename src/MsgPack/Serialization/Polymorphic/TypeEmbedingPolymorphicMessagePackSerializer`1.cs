@@ -20,7 +20,6 @@
 
 using System;
 using System.Globalization;
-using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.Polymorphic
 {
@@ -43,7 +42,7 @@ namespace MsgPack.Serialization.Polymorphic
 			this._schema = schema.FilterSelf();
 		}
 
-		private IMessagePackSerializer GetActualTypeSerializer( Type actualType )
+		private MessagePackSerializer GetActualTypeSerializer( Type actualType )
 		{
 			var result = this.OwnerContext.GetSerializer( actualType, this._schema );
 			if ( result == null )

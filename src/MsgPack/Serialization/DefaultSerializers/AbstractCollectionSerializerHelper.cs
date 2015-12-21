@@ -37,7 +37,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			Type targetType,
 			Type exampleType,
 			out ICollectionInstanceFactory factory,
-			out IMessagePackSingleObjectSerializer serializer
+			out MessagePackSerializer serializer
 		)
 		{
 			if ( abstractType == targetType )

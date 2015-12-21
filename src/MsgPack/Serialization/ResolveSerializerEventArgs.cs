@@ -67,7 +67,7 @@ namespace MsgPack.Serialization
 		/// </value>
 		public PolymorphismSchema PolymorphismSchema { get; private set; }
 
-		private IMessagePackSerializer _foundSerializer;
+		private MessagePackSerializer _foundSerializer;
 
 		/// <summary>
 		///		Gets the found serializer the event subscriber specified.

@@ -38,7 +38,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if !UNITY
 		private readonly MessagePackSerializer<T> _itemSerializer;
 #else
-		private readonly IMessagePackSingleObjectSerializer _itemSerializer;
+		private readonly MessagePackSerializer _itemSerializer;
 		private readonly Type _itemType;
 #endif // !UNITY
 

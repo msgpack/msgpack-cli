@@ -48,13 +48,7 @@ namespace MsgPack.Serialization
 	/// </remarks>
 	/// <seealso cref="Unpacker"/>
 	/// <seealso cref="Unpacking"/>
-	public abstract class MessagePackSerializer<T> : 
-#if FEATURE_TAP
-		IAsyncMessagePackSingleObjectSerializer
-#else
-#warning TODO: NEW
-		IMessagePackSingleObjectSerializer, ISupportMessagePackSerializerCapability
-#endif // FEATURE_TAP
+	public abstract class MessagePackSerializer<T> : MessagePackSerializer
 	{
 		// ReSharper disable once StaticFieldInGenericType
 		private static readonly bool _isNullable = JudgeNullable();
@@ -64,44 +58,6 @@ namespace MsgPack.Serialization
 		internal static readonly MethodInfo UnpackToCoreMethod =
 			FromExpression.ToMethod( ( MessagePackSerializer<T> @this, Unpacker unpacker, T collection ) => @this.UnpackToCore( unpacker, collection ) );
 #endif // !XAMIOS && !XAMDROID && !UNITY
-
-		private readonly PackerCompatibilityOptions? _packerCompatibilityOptionsForCompatibility;
-
-		/// <summary>
-		///		Gets the packer compatibility options for this instance.
-		/// </summary>
-		/// <value>
-		///		The packer compatibility options for this instance
-		/// </value>
-		protected internal PackerCompatibilityOptions PackerCompatibilityOptions
-		{
-			get { return this._packerCompatibilityOptionsForCompatibility.GetValueOrDefault( this.OwnerContext.CompatibilityOptions.PackerCompatibilityOptions ); }
-		}
-
-		private readonly SerializationContext _ownerContext;
-
-		/// <summary>
-		///		Gets a <see cref="SerializationContext"/> which owns this serializer.
-		/// </summary>
-		/// <value>
-		///		A <see cref="SerializationContext"/> which owns this serializer.
-		/// </value>
-		protected internal SerializationContext OwnerContext
-		{
-			get{ return this._ownerContext; }
-		}
-
-#warning TODO: NEW
-		/// <summary>
-		///		Gets the capability flags for this instance.
-		/// </summary>
-		/// <value>
-		///		The capability flags for this instance.
-		/// </value>
-		public SerializerCapabilities Capabilities
-		{
-			get; private set;
-		}
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with <see cref="T:PackerCompatibilityOptions.Classic"/>.
@@ -129,7 +85,7 @@ namespace MsgPack.Serialization
 		/// <param name="ownerContext">A <see cref="SerializationContext"/> which owns this serializer.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="ownerContext"/> is <c>null</c>.</exception>
 		protected MessagePackSerializer( SerializationContext ownerContext )
-			: this( ownerContext, null, InferCapatibity() ) { }
+			: base( ownerContext, null, InferCapatibity() ) { }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with explicitly specified compatibility option.
@@ -141,7 +97,7 @@ namespace MsgPack.Serialization
 		///		This method also supports backword compatibility with 0.4.
 		/// </remarks>
 		protected MessagePackSerializer( SerializationContext ownerContext, PackerCompatibilityOptions packerCompatibilityOptions )
-			: this( ownerContext, new PackerCompatibilityOptions?( packerCompatibilityOptions ), InferCapatibity() ) { }
+			: base( ownerContext, packerCompatibilityOptions, InferCapatibity() ) { }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class.
@@ -150,7 +106,7 @@ namespace MsgPack.Serialization
 		/// <param name="capabilities">A serializer calability flags represents capabilities of this instance.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="ownerContext"/> is <c>null</c>.</exception>
 		protected MessagePackSerializer( SerializationContext ownerContext, SerializerCapabilities capabilities )
-			: this( ownerContext, null, capabilities ) { }
+			: base( ownerContext, null, capabilities ) { }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with explicitly specified compatibility option.
@@ -163,19 +119,7 @@ namespace MsgPack.Serialization
 		///		This method also supports backword compatibility with 0.4.
 		/// </remarks>
 		protected MessagePackSerializer( SerializationContext ownerContext, PackerCompatibilityOptions packerCompatibilityOptions, SerializerCapabilities capabilities )
-			: this( ownerContext, new PackerCompatibilityOptions?( packerCompatibilityOptions ), capabilities ) { }
-
-		private MessagePackSerializer( SerializationContext ownerContext, PackerCompatibilityOptions? packerCompatibilityOptions, SerializerCapabilities capabilities )
-		{
-			if ( ownerContext == null )
-			{
-				ThrowArgumentNullException( "ownerContext" );
-			}
-
-			this._packerCompatibilityOptionsForCompatibility = packerCompatibilityOptions;
-			this._ownerContext = ownerContext;
-			this.Capabilities = capabilities;
-		}
+			: base( ownerContext, packerCompatibilityOptions, capabilities ) { }
 
 		private static bool JudgeNullable()
 		{
@@ -226,7 +170,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public void Pack( Stream stream, T objectTree )
 		{
 			// Packer does not have finalizer, so just avoiding packer disposing prevents stream closing.
@@ -252,7 +196,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public Task PackAsync( Stream stream, T objectTree )
 		{
 			return this.PackAsync( stream, objectTree, CancellationToken.None );
@@ -276,7 +220,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public Task PackAsync( Stream stream, T objectTree, CancellationToken cancellationToken )
 		{
 			return this.PackToAsync( Packer.Create( stream, this.PackerCompatibilityOptions, PackerUnpackerStreamOptions.SingletonForAsync ), objectTree, cancellationToken );
@@ -304,7 +248,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be serialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public T Unpack( Stream stream )
 		{
 			// Unpacker does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
@@ -342,7 +286,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be serialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public Task<T> UnpackAsync( Stream stream )
 		{
 			return this.UnpackAsync( stream, CancellationToken.None );
@@ -372,7 +316,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be serialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public async Task<T> UnpackAsync( Stream stream, CancellationToken cancellationToken )
 		{
 			var unpacker = Unpacker.Create( stream );
@@ -399,7 +343,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public void PackTo( Packer packer, T objectTree )
 		{
 			if ( packer == null )
@@ -429,7 +373,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		protected internal abstract void PackToCore( Packer packer, T objectTree );
 
 #if FEATURE_TAP
@@ -451,7 +395,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public Task PackToAsync( Packer packer, T objectTree )
 		{
 			return this.PackToAsync( packer, objectTree, CancellationToken.None );
@@ -475,7 +419,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public async Task PackToAsync( Packer packer, T objectTree, CancellationToken cancellationToken )
 		{
 			if ( packer == null )
@@ -509,7 +453,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		protected internal virtual Task PackToAsyncCore( Packer packer, T objectTree, CancellationToken cancellationToken )
 		{
 			return Task.Run( () => this.PackToCore( packer, objectTree ), cancellationToken );
@@ -537,8 +481,8 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be serialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
-		public T UnpackFrom( Unpacker unpacker )
+		/// <seealso cref="P:Capabilities"/>
+		public new T UnpackFrom( Unpacker unpacker )
 		{
 			if ( unpacker == null )
 			{
@@ -599,7 +543,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be serialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		protected internal abstract T UnpackFromCore( Unpacker unpacker );
 
 #if FEATURE_TAP
@@ -627,7 +571,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be serialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public Task<T> UnpackFromAsync( Unpacker unpacker )
 		{
 			return this.UnpackFromAsync( unpacker, CancellationToken.None );
@@ -657,8 +601,8 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be serialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
-		public async Task<T> UnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		/// <seealso cref="P:Capabilities"/>
+		public new async Task<T> UnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			if ( unpacker == null )
 			{
@@ -695,7 +639,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be serialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		protected internal virtual Task<T> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			return Task.Run( () => this.UnpackFrom( unpacker ), cancellationToken );
@@ -724,7 +668,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not mutable collection.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public void UnpackTo( Unpacker unpacker, T collection )
 		{
 			if ( unpacker == null )
@@ -764,7 +708,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not mutable collection.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		protected internal virtual void UnpackToCore( Unpacker unpacker, T collection )
 		{
 			throw SerializationExceptions.NewUnpackToIsNotSupported( typeof( T ), null );
@@ -796,7 +740,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not mutable collection.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public Task UnpackToAsync( Unpacker unpacker, T collection )
 		{
 			return this.UnpackToAsync( unpacker, collection, CancellationToken.None );
@@ -827,7 +771,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not mutable collection.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public async Task UnpackToAsync( Unpacker unpacker, T collection, CancellationToken cancellationToken )
 		{
 			if ( unpacker == null )
@@ -871,7 +815,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not mutable collection.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		protected internal virtual Task UnpackToAsyncCore( Unpacker unpacker, T collection, CancellationToken cancellationToken )
 		{
 			return Task.Run( () => this.UnpackToCore( unpacker, collection ), cancellationToken );
@@ -890,7 +834,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public byte[] PackSingleObject( T objectTree )
 		{
 			using ( var buffer = new MemoryStream() )
@@ -916,7 +860,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public Task<byte[]> PackSingleObjectAsync( T objectTree )
 		{
 			return this.PackSingleObjectAsync( objectTree, CancellationToken.None );
@@ -937,7 +881,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		public async Task<byte[]> PackSingleObjectAsync( T objectTree, CancellationToken cancellationToken )
 		{
 			using ( var buffer = new MemoryStream() )
@@ -969,7 +913,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		The type of deserializing is not serializable even if it can be serialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		/// <remarks>
 		///		<para>
 		///			This method assumes that <paramref name="buffer"/> contains single serialized object dedicatedly,
@@ -979,7 +923,7 @@ namespace MsgPack.Serialization
 		///			This method is a counter part of <see cref="PackSingleObject"/>.
 		///		</para>
 		/// </remarks>
-		public T UnpackSingleObject( byte[] buffer )
+		public new T UnpackSingleObject( byte[] buffer )
 		{
 			if ( buffer == null )
 			{
@@ -1018,7 +962,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		The type of deserializing is not serializable even if it can be serialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		/// <remarks>
 		///		<para>
 		///			This method assumes that <paramref name="buffer"/> contains single serialized object dedicatedly,
@@ -1057,7 +1001,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		The type of deserializing is not serializable even if it can be serialized.
 		/// </exception>
-		/// <seealso cref="Capabilities"/>
+		/// <seealso cref="P:Capabilities"/>
 		/// <remarks>
 		///		<para>
 		///			This method assumes that <paramref name="buffer"/> contains single serialized object dedicatedly,
@@ -1067,7 +1011,7 @@ namespace MsgPack.Serialization
 		///			This method is a counter part of <see cref="PackSingleObject"/>.
 		///		</para>
 		/// </remarks>
-		public async Task<T> UnpackSingleObjectAsync( byte[] buffer, CancellationToken cancellationToken )
+		public new async Task<T> UnpackSingleObjectAsync( byte[] buffer, CancellationToken cancellationToken )
 		{
 			if ( buffer == null )
 			{
@@ -1083,7 +1027,7 @@ namespace MsgPack.Serialization
 
 #endif // FEATURE_TAP
 
-		void IMessagePackSerializer.PackTo( Packer packer, object objectTree )
+		internal sealed override void InternalPackTo( Packer packer, object objectTree )
 		{
 			if ( packer == null )
 			{
@@ -1115,12 +1059,12 @@ namespace MsgPack.Serialization
 			this.PackToCore( packer, ( T )objectTree );
 		}
 
-		object IMessagePackSerializer.UnpackFrom( Unpacker unpacker )
+		internal sealed override object InternalUnpackFrom( Unpacker unpacker )
 		{
 			return this.UnpackFrom( unpacker );
 		}
 
-		void IMessagePackSerializer.UnpackTo( Unpacker unpacker, object collection )
+		internal sealed override void InternalUnpackTo( Unpacker unpacker, object collection )
 		{
 			if ( unpacker == null )
 			{
@@ -1141,7 +1085,7 @@ namespace MsgPack.Serialization
 			this.UnpackTo( unpacker, ( T )collection );
 		}
 
-		byte[] IMessagePackSingleObjectSerializer.PackSingleObject( object objectTree )
+		internal sealed override byte[] InternalPackSingleObject( object objectTree )
 		{
 			var isT = objectTree is T;
 			if ( ( typeof( T ).GetIsValueType() && !isT )
@@ -1153,14 +1097,14 @@ namespace MsgPack.Serialization
 			return this.PackSingleObject( ( T )objectTree );
 		}
 
-		object IMessagePackSingleObjectSerializer.UnpackSingleObject( byte[] buffer )
+		internal sealed override object InternalUnpackSingleObject( byte[] buffer )
 		{
 			return this.UnpackSingleObject( buffer );
 		}
 
 #if FEATURE_TAP
 
-		async Task IAsyncMessagePackSerializer.PackToAsync( Packer packer, object objectTree, CancellationToken cancellationToken )
+		internal sealed override async Task InternalPackToAsync( Packer packer, object objectTree, CancellationToken cancellationToken )
 		{
 			if ( packer == null )
 			{
@@ -1192,12 +1136,12 @@ namespace MsgPack.Serialization
 			await this.PackToAsyncCore( packer, ( T )objectTree, cancellationToken ).ConfigureAwait( false );
 		}
 
-		async Task<object> IAsyncMessagePackSerializer.UnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		internal sealed override async Task<object> InternalUnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			return await this.UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false );
 		}
 
-		async Task IAsyncMessagePackSerializer.UnpackToAsync( Unpacker unpacker, object collection, CancellationToken cancellationToken )
+		internal sealed override async Task InternalUnpackToAsync( Unpacker unpacker, object collection, CancellationToken cancellationToken )
 		{
 			if ( unpacker == null )
 			{
@@ -1218,7 +1162,7 @@ namespace MsgPack.Serialization
 			await this.UnpackToAsync( unpacker, ( T )collection, cancellationToken ).ConfigureAwait( false );
 		}
 
-		async Task<byte[]> IAsyncMessagePackSingleObjectSerializer.PackSingleObjectAsync( object objectTree, CancellationToken cancellationToken )
+		internal sealed override async Task<byte[]> InternalPackSingleObjectAsync( object objectTree, CancellationToken cancellationToken )
 		{
 			var isT = objectTree is T;
 			if ( ( typeof( T ).GetIsValueType() && !isT )
@@ -1230,16 +1174,11 @@ namespace MsgPack.Serialization
 			return await this.PackSingleObjectAsync( ( T )objectTree, cancellationToken ).ConfigureAwait( false );
 		}
 
-		async Task<object> IAsyncMessagePackSingleObjectSerializer.UnpackSingleObjectAsync( byte[] buffer, CancellationToken cancellationToken )
+		internal sealed override async Task<object> InternalUnpackSingleObjectAsync( byte[] buffer, CancellationToken cancellationToken )
 		{
 			return await this.UnpackSingleObjectAsync( buffer, cancellationToken ).ConfigureAwait( false );
 		}
 #endif // FEATURE_TAP
-
-		private static void ThrowArgumentNullException( string parameterName )
-		{
-			throw new ArgumentNullException( parameterName );
-		}
 
 		private static void ThrowArgumentException( string message, string parameterName )
 		{

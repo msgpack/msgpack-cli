@@ -31,7 +31,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		private readonly ICollectionInstanceFactory _concreteCollectionInstanceFactory;
 		private readonly IPolymorphicDeserializer _polymorphicDeserializer;
-		private readonly IMessagePackSingleObjectSerializer _concreteDeserializer;
+		private readonly MessagePackSerializer _concreteDeserializer;
 
 		public AbstractReadOnlyCollectionMessagePackSerializer(
 			SerializationContext ownerContext,
@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		)
 			: base( ownerContext, schema )
 		{
-			IMessagePackSingleObjectSerializer serializer;
+			MessagePackSerializer serializer;
 			AbstractCollectionSerializerHelper.GetConcreteSerializer(
 				ownerContext,
 				schema,

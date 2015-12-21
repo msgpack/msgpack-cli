@@ -162,9 +162,9 @@ namespace MsgPack.Serialization.CollectionSerializers
 #if UNITY
 	internal abstract class UnityEnumerableMessagePackSerializerBase : NonGenericMessagePackSerializer, ICollectionInstanceFactory
 	{
-		private readonly IMessagePackSingleObjectSerializer _itemSerializer;
+		private readonly MessagePackSerializer _itemSerializer;
 
-		internal IMessagePackSingleObjectSerializer ItemSerializer { get { return this._itemSerializer; } }
+		internal MessagePackSerializer ItemSerializer { get { return this._itemSerializer; } }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by base .ctor" )]
 		protected UnityEnumerableMessagePackSerializerBase( SerializationContext ownerContext, Type targetType, Type itemType, PolymorphismSchema schema )

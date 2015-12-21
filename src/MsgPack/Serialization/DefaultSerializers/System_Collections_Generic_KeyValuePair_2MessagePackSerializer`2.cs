@@ -76,8 +76,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 	// ReSharper disable once InconsistentNaming
 	internal sealed class System_Collections_Generic_KeyValuePair_2MessagePackSerializer : NonGenericMessagePackSerializer
 	{
-		private readonly IMessagePackSingleObjectSerializer _keySerializer;
-		private readonly IMessagePackSingleObjectSerializer _valueSerializer;
+		private readonly MessagePackSerializer _keySerializer;
+		private readonly MessagePackSerializer _valueSerializer;
 		private readonly MethodInfo _getKey;
 		private readonly MethodInfo _getValue;
 

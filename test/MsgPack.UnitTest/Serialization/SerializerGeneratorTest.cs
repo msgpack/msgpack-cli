@@ -1476,7 +1476,7 @@ namespace MsgPack.Serialization
 			public void DoTest( string testAssemblyFile, int packerCompatiblityOptions, byte[] bytesValue, byte[] expectedPackedValue, int expectedSerializerTypeCounts, TestType testType )
 			{
 				var assembly = Assembly.LoadFrom( testAssemblyFile );
-				var types = assembly.GetTypes().Where( t => typeof( IMessagePackSerializer ).IsAssignableFrom( t ) ).ToList();
+				var types = assembly.GetTypes().Where( t => typeof( MessagePackSerializer ).IsAssignableFrom( t ) ).ToList();
 				Assert.That( types.Count, Is.EqualTo( expectedSerializerTypeCounts ), String.Join( ", ", types.Select( t => t.ToString() ).ToArray() ) );
 
 				var context = new SerializationContext( ( PackerCompatibilityOptions )packerCompatiblityOptions );
@@ -1515,7 +1515,7 @@ namespace MsgPack.Serialization
 			public void DoTest( string testAssemblyFile, int packerCompatiblityOptions, int enumSerializationMethod, TestEnumType enumValue, byte[] expectedPackedValue, int expectedSerializerTypeCounts )
 			{
 				var assembly = Assembly.LoadFrom( testAssemblyFile );
-				var types = assembly.GetTypes().Where( t => typeof( IMessagePackSerializer ).IsAssignableFrom( t ) ).ToList();
+				var types = assembly.GetTypes().Where( t => typeof( MessagePackSerializer ).IsAssignableFrom( t ) ).ToList();
 				Assert.That( types.Count, Is.EqualTo( expectedSerializerTypeCounts ), String.Join( ", ", types.Select( t => t.ToString() ).ToArray() ) );
 
 				var context = new SerializationContext( ( PackerCompatibilityOptions )packerCompatiblityOptions );

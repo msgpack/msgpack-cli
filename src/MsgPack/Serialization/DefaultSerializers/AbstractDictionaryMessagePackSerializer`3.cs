@@ -61,7 +61,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			: base( ownerContext, abstractType, keyType, valueType, traits, schema )
 #endif // !UNITY
 		{
-			IMessagePackSingleObjectSerializer serializer;
+			MessagePackSerializer serializer;
 			AbstractCollectionSerializerHelper.GetConcreteSerializer( 
 				ownerContext,
 				schema,

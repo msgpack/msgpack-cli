@@ -32,8 +32,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 	/// </summary>
 	internal class DateTimeMessagePackSerializerProvider : MessagePackSerializerProvider
 	{
-		private readonly IMessagePackSingleObjectSerializer _unixEpoc;
-		private readonly IMessagePackSingleObjectSerializer _native;
+		private readonly MessagePackSerializer _unixEpoc;
+		private readonly MessagePackSerializer _native;
 
 		public DateTimeMessagePackSerializerProvider( SerializationContext context, bool isNullable )
 		{

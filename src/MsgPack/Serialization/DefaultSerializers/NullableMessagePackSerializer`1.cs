@@ -74,7 +74,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #else
 	internal class NullableMessagePackSerializer : NonGenericMessagePackSerializer
 	{
-		private readonly IMessagePackSingleObjectSerializer _valueSerializer;
+		private readonly MessagePackSerializer _valueSerializer;
 
 		public NullableMessagePackSerializer( SerializationContext ownerContext, Type nullableType, Type underlyingType )
 			: base( ownerContext, nullableType )
@@ -82,7 +82,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._valueSerializer = ownerContext.GetSerializer( underlyingType );
 		}
 
-		public NullableMessagePackSerializer( SerializationContext ownerContext, Type nullableType, IMessagePackSingleObjectSerializer valueSerializer )
+		public NullableMessagePackSerializer( SerializationContext ownerContext, Type nullableType, MessagePackSerializer valueSerializer )
 			: base( ownerContext, nullableType )
 		{
 			this._valueSerializer = valueSerializer;

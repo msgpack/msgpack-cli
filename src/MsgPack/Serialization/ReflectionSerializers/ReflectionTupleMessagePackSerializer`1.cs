@@ -46,7 +46,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		private readonly IList<Type> _tupleTypes;
 		private readonly IList<ConstructorInfo> _tupleConstructors;
 		private readonly IList<Func<T, Object>> _getters;
-		private readonly IList<IMessagePackSingleObjectSerializer> _itemSerializers;
+		private readonly IList<MessagePackSerializer> _itemSerializers;
 
 		public ReflectionTupleMessagePackSerializer( SerializationContext ownerContext, IList<PolymorphismSchema> itemSchemas )
 			: base( ownerContext )

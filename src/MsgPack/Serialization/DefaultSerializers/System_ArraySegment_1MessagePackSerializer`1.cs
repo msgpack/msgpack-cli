@@ -100,9 +100,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal class System_ArraySegment_1MessagePackSerializer : NonGenericMessagePackSerializer
 	{
 		private readonly Type _elementType;
-		private readonly IMessagePackSingleObjectSerializer _itemSerializer;
-		private readonly Action<Packer, object, IMessagePackSingleObjectSerializer> _packing;
-		private readonly Func<Unpacker, Type, IMessagePackSingleObjectSerializer, object> _unpacking;
+		private readonly MessagePackSerializer _itemSerializer;
+		private readonly Action<Packer, object, MessagePackSerializer> _packing;
+		private readonly Func<Unpacker, Type, MessagePackSerializer, object> _unpacking;
 		
 		public System_ArraySegment_1MessagePackSerializer( SerializationContext ownerContext, Type targetType )
 			: base( ownerContext, targetType )
@@ -114,7 +114,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._unpacking = InitializeUnpacking( elementType );
 		}
 
-		private static Action<Packer, object, IMessagePackSingleObjectSerializer> InitializePacking( Type elementType )
+		private static Action<Packer, object, MessagePackSerializer> InitializePacking( Type elementType )
 		{
 			if ( elementType == typeof( byte ) )
 			{
@@ -130,7 +130,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-		private static Func<Unpacker, Type, IMessagePackSingleObjectSerializer, object> InitializeUnpacking( Type elementType )
+		private static Func<Unpacker, Type, MessagePackSerializer, object> InitializeUnpacking( Type elementType )
 		{
 			if ( elementType == typeof( byte ) )
 			{

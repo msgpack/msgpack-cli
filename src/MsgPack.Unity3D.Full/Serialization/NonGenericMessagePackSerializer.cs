@@ -24,7 +24,7 @@ using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization
 {
-	internal abstract class NonGenericMessagePackSerializer : IMessagePackSingleObjectSerializer
+	internal abstract class NonGenericMessagePackSerializer : MessagePackSerializer
 	{
 		private readonly Type _targetType;
 
@@ -34,32 +34,6 @@ namespace MsgPack.Serialization
 		}
 
 		private readonly bool _isNullable;
-
-		private readonly PackerCompatibilityOptions? _packerCompatibilityOptionsForCompatibility;
-
-		/// <summary>
-		///		Gets the packer compatibility options for this instance.
-		/// </summary>
-		/// <value>
-		///		The packer compatibility options for this instance
-		/// </value>
-		protected internal PackerCompatibilityOptions PackerCompatibilityOptions
-		{
-			get { return this._packerCompatibilityOptionsForCompatibility.GetValueOrDefault( this.OwnerContext.CompatibilityOptions.PackerCompatibilityOptions ); }
-		}
-
-		private readonly SerializationContext _ownerContext;
-
-		/// <summary>
-		///		Gets a <see cref="SerializationContext"/> which owns this serializer.
-		/// </summary>
-		/// <value>
-		///		A <see cref="SerializationContext"/> which owns this serializer.
-		/// </value>
-		protected internal SerializationContext OwnerContext
-		{
-			get{ return this._ownerContext; }
-		}
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="NonGenericMessagePackSerializer"/> class with explicitly specified compatibility option.
@@ -84,14 +58,9 @@ namespace MsgPack.Serialization
 			: this( ownerContext, targetType, new PackerCompatibilityOptions?( packerCompatibilityOptions ) ) { }
 
 		private NonGenericMessagePackSerializer( SerializationContext ownerContext, Type targetType, PackerCompatibilityOptions? packerCompatibilityOptions )
+#warning TODO: capabilities from derived class
+			: base( ownerContext, packerCompatibilityOptions, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo )
 		{
-			if ( ownerContext == null )
-			{
-				throw new ArgumentNullException( "ownerContext" );
-			}
-
-			this._packerCompatibilityOptionsForCompatibility = packerCompatibilityOptions;
-			this._ownerContext = ownerContext;
 			this._targetType = targetType;
 			this._isNullable = JudgeNullable( targetType );
 		}
@@ -156,18 +125,7 @@ namespace MsgPack.Serialization
 			return this.UnpackFrom( unpacker );
 		}
 
-		/// <summary>
-		///		Serializes specified object with specified <see cref="Packer"/>.
-		/// </summary>
-		/// <param name="packer"><see cref="Packer"/> which packs values in <paramref name="objectTree"/>.</param>
-		/// <param name="objectTree">Object to be serialized.</param>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="packer"/> is <c>null</c>.
-		/// </exception>
-		/// <exception cref="SerializationException">
-		///		The type of <paramref name="objectTree" /> is not serializable etc.
-		/// </exception>
-		public void PackTo( Packer packer, object objectTree )
+		internal override void InternalPackTo( Packer packer, object objectTree )
 		{
 			// TODO: Hot-Path-Optimization
 			if ( packer == null )
@@ -195,24 +153,7 @@ namespace MsgPack.Serialization
 		/// </exception>
 		protected internal abstract void PackToCore( Packer packer, object objectTree );
 
-		/// <summary>
-		///		Deserializes object with specified <see cref="Unpacker"/>.
-		/// </summary>
-		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree.</param>
-		/// <returns>Deserialized object.</returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="unpacker"/> is <c>null</c>.
-		/// </exception>
-		/// <exception cref="SerializationException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
-		/// </exception>
-		/// <exception cref="MessageTypeException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
-		/// </exception>
-		/// <exception cref="InvalidMessagePackStreamException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
-		/// </exception>
-		public object UnpackFrom( Unpacker unpacker )
+		internal override object InternalUnpackFrom( Unpacker unpacker )
 		{
 			// TODO: Hot-Path-Optimization
 			if ( unpacker == null )
@@ -252,28 +193,7 @@ namespace MsgPack.Serialization
 		/// </exception>
 		protected internal abstract object UnpackFromCore( Unpacker unpacker );
 
-		/// <summary>
-		///		Deserializes collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/>.
-		/// </summary>
-		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree.</param>
-		/// <param name="collection">Collection that the items to be stored.</param>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="unpacker"/> is <c>null</c>.
-		///		Or <paramref name="collection"/> is <c>null</c>.
-		/// </exception>
-		/// <exception cref="SerializationException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
-		/// </exception>
-		/// <exception cref="MessageTypeException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
-		/// </exception>
-		/// <exception cref="InvalidMessagePackStreamException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
-		/// </exception>
-		/// <exception cref="NotSupportedException">
-		///		The type of <paramref name="collection" /> is not a collection.
-		/// </exception>
-		public void UnpackTo( Unpacker unpacker, object collection )
+		internal override void InternalUnpackTo( Unpacker unpacker, object collection )
 		{
 			// TODO: Hot-Path-Optimization
 			if ( unpacker == null )
@@ -311,15 +231,7 @@ namespace MsgPack.Serialization
 			throw SerializationExceptions.NewUnpackToIsNotSupported( this._targetType, null );
 		}
 
-		/// <summary>
-		///		Serializes specified object to the array of <see cref="Byte"/>.
-		/// </summary>
-		/// <param name="objectTree">Object to be serialized.</param>
-		/// <returns>An array of <see cref="Byte"/> which stores serialized value.</returns>
-		/// <exception cref="SerializationException">
-		///		The type of <paramref name="objectTree" /> is not serializable etc.
-		/// </exception>
-		public byte[] PackSingleObject( object objectTree )
+		internal override byte[] InternalPackSingleObject( object objectTree )
 		{
 			using ( var buffer = new MemoryStream() )
 			{
@@ -328,33 +240,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		/// <summary>
-		///		Deserializes a single object from the array of <see cref="Byte"/> which contains a serialized object.
-		/// </summary>
-		/// <param name="buffer">An array of <see cref="Byte"/> serialized value to be stored.</param>
-		/// <returns>A bytes of serialized binary.</returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="buffer"/> is <c>null</c>.
-		/// </exception>
-		/// <exception cref="SerializationException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
-		/// </exception>
-		/// <exception cref="MessageTypeException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
-		/// </exception>
-		/// <exception cref="InvalidMessagePackStreamException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
-		/// </exception>
-		/// <remarks>
-		///		<para>
-		///			This method assumes that <paramref name="buffer"/> contains single serialized object dedicatedly,
-		///			so this method does not return any information related to actual consumed bytes.
-		///		</para>
-		///		<para>
-		///			This method is a counter part of <see cref="PackSingleObject"/>.
-		///		</para>
-		/// </remarks>
-		public object UnpackSingleObject( byte[] buffer )
+		internal override object InternalUnpackSingleObject( byte[] buffer )
 		{
 			if ( buffer == null )
 			{

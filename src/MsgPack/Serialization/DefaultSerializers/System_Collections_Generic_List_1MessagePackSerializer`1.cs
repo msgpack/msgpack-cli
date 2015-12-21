@@ -113,7 +113,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal class System_Collections_Generic_List_1MessagePackSerializer : NonGenericMessagePackSerializer, ICollectionInstanceFactory
 	{
 		private static readonly Type[] ConstructorWithCapacityParameterTypes = { typeof( int ) };
-		private readonly IMessagePackSingleObjectSerializer _itemSerializer;
+		private readonly MessagePackSerializer _itemSerializer;
 		private readonly ConstructorInfo _constructor;
 		private readonly MethodInfo _add;
 

@@ -49,12 +49,6 @@ using System.Threading;
 using MsgPack.Serialization.DefaultSerializers;
 using MsgPack.Serialization.Polymorphic;
 
-#if FEATURE_TAP
-using ISerializer = MsgPack.Serialization.IAsyncMessagePackSingleObjectSerializer;
-#else
-using ISerializer = MsgPack.Serialization.IMessagePackSingleObjectSerializer;
-#endif // FEATURE_TAP
-
 namespace MsgPack.Serialization
 {
 	/// <summary>
@@ -886,7 +880,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="targetType">Type of the serialization target.</param>
 		/// <returns>
-		///		<see cref="IMessagePackSingleObjectSerializer"/>.
+		///		<see cref="MessagePackSerializer"/>.
 		///		If there is exiting one, returns it.
 		///		Else the new instance will be created.
 		///		If the platform supports async/await programming model, return type is <c>IAsyncMessagePackSingleObjectSerializer</c>.
@@ -898,7 +892,7 @@ namespace MsgPack.Serialization
 		///		Although <see cref="GetSerializer{T}()"/> is preferred,
 		///		this method can be used from non-generic type or methods.
 		/// </remarks>
-		public ISerializer GetSerializer( Type targetType )
+		public MessagePackSerializer GetSerializer( Type targetType )
 		{
 			return this.GetSerializer( targetType, null );
 		}
@@ -909,7 +903,7 @@ namespace MsgPack.Serialization
 		/// <param name="targetType">Type of the serialization target.</param>
 		/// <param name="providerParameter">A provider specific parameter. See remarks section of <see cref="GetSerializer{T}(Object)"/> for details.</param>
 		/// <returns>
-		///		<see cref="IMessagePackSingleObjectSerializer"/>.
+		///		<see cref="MessagePackSerializer"/>.
 		///		If there is exiting one, returns it.
 		///		Else the new instance will be created.
 		///		If the platform supports async/await programming model, return type is <c>IAsyncMessagePackSingleObjectSerializer</c>.
@@ -921,7 +915,7 @@ namespace MsgPack.Serialization
 		///		Although <see cref="GetSerializer{T}(Object)"/> is preferred,
 		///		this method can be used from non-generic type or methods.
 		/// </remarks>
-		public ISerializer GetSerializer( Type targetType, object providerParameter )
+		public MessagePackSerializer GetSerializer( Type targetType, object providerParameter )
 		{
 			if ( targetType == null )
 			{
@@ -929,7 +923,7 @@ namespace MsgPack.Serialization
 			}
 
 #if !UNITY
-			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
+			Contract.Ensures( Contract.Result<MessagePackSerializer>() != null );
 #endif // !UNITY
 
 			return SerializerGetter.Instance.Get( this, targetType, providerParameter );
@@ -940,19 +934,19 @@ namespace MsgPack.Serialization
 			public static readonly SerializerGetter Instance = new SerializerGetter();
 
 #if !SILVERLIGHT && !NETFX_35 && !UNITY
-			private readonly ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, ISerializer>> _cache =
-				new ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, ISerializer>>();
+			private readonly ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, MessagePackSerializer>> _cache =
+				new ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, MessagePackSerializer>>();
 #elif UNITY
 			private readonly Dictionary<RuntimeTypeHandle, MethodInfo> _cache =
 				new Dictionary<RuntimeTypeHandle, MethodInfo>();
 #else
-			private readonly Dictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>> _cache =
-				new Dictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>>();
+			private readonly Dictionary<RuntimeTypeHandle, Func<SerializationContext, object, MessagePackSerializer>> _cache =
+				new Dictionary<RuntimeTypeHandle, Func<SerializationContext, object, MessagePackSerializer>>();
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
 
 			private SerializerGetter() { }
 
-			public ISerializer Get( SerializationContext context, Type targetType, object providerParameter )
+			public MessagePackSerializer Get( SerializationContext context, Type targetType, object providerParameter )
 			{
 #if UNITY
 				MethodInfo method;
@@ -962,9 +956,9 @@ namespace MsgPack.Serialization
 					this._cache[ targetType.TypeHandle ] = method;
 				}
 
-				return ( ISerializer )method.InvokePreservingExceptionType( context, providerParameter );
+				return ( MessagePackSerializer )method.InvokePreservingExceptionType( context, providerParameter );
 #else
-				Func<SerializationContext, object, ISerializer> func;
+				Func<SerializationContext, object, MessagePackSerializer> func;
 #if SILVERLIGHT || NETFX_35 || UNITY
 				lock ( this._cache )
 				{
@@ -974,14 +968,14 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE && !CORE_CLR
 					func =
 						Delegate.CreateDelegate(
-							typeof( Func<SerializationContext, object, ISerializer> ),
+							typeof( Func<SerializationContext, object, MessagePackSerializer> ),
 							typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" )
-						) as Func<SerializationContext, object, ISerializer>;
+						) as Func<SerializationContext, object, MessagePackSerializer>;
 #else
 					func =
 						typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" ).CreateDelegate(
-							typeof( Func<SerializationContext, object, IMessagePackSingleObjectSerializer> )
-						) as Func<SerializationContext, object, IMessagePackSingleObjectSerializer>;
+							typeof( Func<SerializationContext, object, MessagePackSerializer> )
+						) as Func<SerializationContext, object, MessagePackSerializer>;
 #endif // !NETFX_CORE
 #if DEBUG && !UNITY
 					Contract.Assert( func != null, "func != null" );
@@ -1017,7 +1011,7 @@ namespace MsgPack.Serialization
 
 			// ReSharper disable UnusedMember.Local
 			// This method is invoked via Reflection on SerializerGetter.Get().
-			public static IMessagePackSingleObjectSerializer Get( SerializationContext context, object providerParameter )
+			public static MessagePackSerializer Get( SerializationContext context, object providerParameter )
 			{
 				return _func( context, providerParameter );
 			}

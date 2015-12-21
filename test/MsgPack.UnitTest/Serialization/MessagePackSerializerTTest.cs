@@ -18,6 +18,8 @@
 //
 #endregion -- License Terms --
 
+#pragma warning disable 0618
+
 using System;
 using System.Collections.Generic;
 using System.IO;

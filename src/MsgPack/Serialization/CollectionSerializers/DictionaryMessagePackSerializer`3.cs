@@ -102,8 +102,8 @@ namespace MsgPack.Serialization.CollectionSerializers
 	internal abstract class UnityDictionaryMessagePackSerializer : NonGenericMessagePackSerializer,
 		ICollectionInstanceFactory
 	{
-		private readonly IMessagePackSingleObjectSerializer _keySerializer;
-		private readonly IMessagePackSingleObjectSerializer _valueSerializer;
+		private readonly MessagePackSerializer _keySerializer;
+		private readonly MessagePackSerializer _valueSerializer;
 		private readonly MethodInfo _add;
 		private readonly MethodInfo _getCount;
 		private readonly MethodInfo _getKey;

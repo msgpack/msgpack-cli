@@ -622,12 +622,6 @@
     <Compile Include="..\MsgPack\Serialization\FromExpression.ToMethod.cs">
       <Link>Serialization\FromExpression.ToMethod.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\IAsyncMessagePackSerializer.cs">
-      <Link>Serialization\IAsyncMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\IAsyncMessagePackSingleObjectSerializer.cs">
-      <Link>Serialization\IAsyncMessagePackSingleObjectSerializer.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\ICustomizableEnumSerializer.cs">
       <Link>Serialization\ICustomizableEnumSerializer.cs</Link>
     </Compile>
@@ -675,6 +669,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializer.cs">
       <Link>Serialization\MessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackSerializer.Factories.cs">
+      <Link>Serialization\MessagePackSerializer.Factories.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializerExtensions.cs">
       <Link>Serialization\MessagePackSerializerExtensions.cs</Link>

@@ -37,10 +37,10 @@ namespace MsgPack.Serialization
 	/// <typeparam name="T">The type to be serialized.</typeparam>
 	internal class TypedMessagePackSerializerWrapper<T> : MessagePackSerializer<T>, ICollectionInstanceFactory
 	{
-		private readonly IMessagePackSingleObjectSerializer _underlyingSerializer;
+		private readonly MessagePackSerializer _underlyingSerializer;
 		private readonly ICollectionInstanceFactory _underlyingFactory;
 
-		public TypedMessagePackSerializerWrapper( SerializationContext context, IMessagePackSingleObjectSerializer underlying )
+		public TypedMessagePackSerializerWrapper( SerializationContext context, MessagePackSerializer underlying )
 			: base( context )
 		{
 			this._underlyingSerializer = underlying;

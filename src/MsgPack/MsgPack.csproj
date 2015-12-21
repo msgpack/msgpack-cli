@@ -268,8 +268,6 @@
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilderHelpers.cs" />
-    <Compile Include="Serialization\IAsyncMessagePackSerializer.cs" />
-    <Compile Include="Serialization\IAsyncMessagePackSingleObjectSerializer.cs" />
     <Compile Include="Serialization\INilImplicationHandlerOnUnpackedParameter.cs" />
     <Compile Include="Serialization\INilImplicationHandlerParameter.cs" />
     <Compile Include="Serialization\ISupportMessagePackSerializerCapability.cs" />
@@ -284,6 +282,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MessagePackKnownTypeAttributes.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\MessagePackSerializer.cs" />
     <Compile Include="Serialization\Metadata\_DateTimeMessagePackSerializerHelpers.cs" />
     <Compile Include="Serialization\Metadata\_Delegate.cs" />
     <Compile Include="Serialization\Metadata\_DynamicUnpackingContext.cs" />
@@ -486,7 +485,7 @@
     <Compile Include="Serialization\Polymorphic\TypeInfoEncoder.cs" />
     <Compile Include="Serialization\ExtTypeCodeMapping.cs" />
     <Compile Include="Serialization\TypeKeyRepository.cs" />
-    <Compile Include="Serialization\MessagePackSerializer.cs" />
+    <Compile Include="Serialization\MessagePackSerializer.Factories.cs" />
     <Compile Include="Serialization\UnpackHelpers.cs" />
     <Compile Include="Serialization\UnpackHelpers.direct.cs">
       <AutoGen>True</AutoGen>
