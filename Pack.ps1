@@ -34,7 +34,7 @@ if ( ![IO.Directory]::Exists( ".\MsgPack-CLI" ) )
 }
 else
 {
-	Remove-Item .\MsgPack-CLI\* -Recurse
+	Remove-Item .\MsgPack-CLI\* -Recurse -Force
 }
 
 if ( ![IO.Directory]::Exists( ".\MsgPack-CLI\mpu" ) )
@@ -81,6 +81,6 @@ if ( [IO.File]::Exists( ".\MsgPack.Cli.latest.zip" ) )
 	Remove-Item .\MsgPack.Cli.latest.zip
 }
 [IO.Compression.ZipFile]::CreateFromDirectory( ".\MsgPack-CLI", ".\MsgPack.Cli.latest.zip" )
-Remove-Item .\MsgPack-CLI -Recurse
+Remove-Item .\MsgPack-CLI -Recurse -Force
 
 Write-Host "Package creation finished. Ensure AssemblyInfo.cs is updated and .\SetFileVersions.ps1 was executed."

@@ -381,6 +381,11 @@ Release 0.6.6 - 2015/12/20
   BUG FIXES
   * Fix [MessagePackRuntimeType] fails when the type is declared in global namespace. Issue #137.
 
+Release 0.6.7 - 2015/12/23
+
+  BUG FIXES
+  * Fix Unpacker.ReadXxx returns 0 when try to read integral value from floating point stream or vice versa. Issue #139.
+
 Release 0.7.0-alpha1 - 2015/11/22
 
   NEW FEATURES

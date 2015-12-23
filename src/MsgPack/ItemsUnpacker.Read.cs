@@ -154,11 +154,21 @@ namespace MsgPack
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = checked( ( Byte )integral );
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Byte )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Byte )real64 );
 					return true;
 				}
 				default:
@@ -214,11 +224,21 @@ namespace MsgPack
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = checked( ( Byte )integral );
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Byte )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Byte )real64 );
 					return true;
 				}
 				default:
@@ -268,11 +288,21 @@ namespace MsgPack
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = checked( ( SByte )integral );
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( SByte )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( SByte )real64 );
 					return true;
 				}
 				default:
@@ -328,11 +358,21 @@ namespace MsgPack
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = checked( ( SByte )integral );
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( SByte )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( SByte )real64 );
 					return true;
 				}
 				default:
@@ -382,11 +422,21 @@ namespace MsgPack
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = checked( ( Int16 )integral );
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Int16 )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Int16 )real64 );
 					return true;
 				}
 				default:
@@ -442,11 +492,21 @@ namespace MsgPack
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = checked( ( Int16 )integral );
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Int16 )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Int16 )real64 );
 					return true;
 				}
 				default:
@@ -496,11 +556,21 @@ namespace MsgPack
 				case ReadValueResult.Byte:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = checked( ( UInt16 )integral );
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( UInt16 )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( UInt16 )real64 );
 					return true;
 				}
 				default:
@@ -556,11 +626,21 @@ namespace MsgPack
 				case ReadValueResult.Byte:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = checked( ( UInt16 )integral );
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( UInt16 )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( UInt16 )real64 );
 					return true;
 				}
 				default:
@@ -610,11 +690,21 @@ namespace MsgPack
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = checked( ( Int32 )integral );
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Int32 )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Int32 )real64 );
 					return true;
 				}
 				default:
@@ -670,11 +760,21 @@ namespace MsgPack
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = checked( ( Int32 )integral );
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Int32 )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Int32 )real64 );
 					return true;
 				}
 				default:
@@ -724,11 +824,21 @@ namespace MsgPack
 				case ReadValueResult.Byte:
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt64:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = checked( ( UInt32 )integral );
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( UInt32 )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( UInt32 )real64 );
 					return true;
 				}
 				default:
@@ -784,11 +894,21 @@ namespace MsgPack
 				case ReadValueResult.Byte:
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt64:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = checked( ( UInt32 )integral );
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( UInt32 )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( UInt32 )real64 );
 					return true;
 				}
 				default:
@@ -838,11 +958,21 @@ namespace MsgPack
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = integral;
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Int64 )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Int64 )real64 );
 					return true;
 				}
 				default:
@@ -898,11 +1028,21 @@ namespace MsgPack
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = integral;
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Int64 )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( Int64 )real64 );
 					return true;
 				}
 				default:
@@ -952,11 +1092,21 @@ namespace MsgPack
 				case ReadValueResult.Byte:
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = checked( ( UInt64 )integral );
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( UInt64 )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( UInt64 )real64 );
 					return true;
 				}
 				default:
@@ -1012,11 +1162,21 @@ namespace MsgPack
 				case ReadValueResult.Byte:
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
-				case ReadValueResult.Single:
-				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
 					result = checked( ( UInt64 )integral );
+					return true;
+				}
+				case ReadValueResult.Single:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( UInt64 )real32 );
+					return true;
+				}
+				case ReadValueResult.Double:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = checked( ( UInt64 )real64 );
 					return true;
 				}
 				default:
@@ -1067,10 +1227,15 @@ namespace MsgPack
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = integral;
+					return true;
+				}
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = real32;
+					result = checked( ( Single )real64 );
 					return true;
 				}
 				default:
@@ -1127,10 +1292,15 @@ namespace MsgPack
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = integral;
+					return true;
+				}
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = real32;
+					result = checked( ( Single )real64 );
 					return true;
 				}
 				default:
@@ -1181,10 +1351,15 @@ namespace MsgPack
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = integral;
+					return true;
+				}
 				case ReadValueResult.Single:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = real64;
+					result = real32;
 					return true;
 				}
 				default:
@@ -1241,10 +1416,15 @@ namespace MsgPack
 				case ReadValueResult.UInt16:
 				case ReadValueResult.UInt32:
 				case ReadValueResult.UInt64:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = integral;
+					return true;
+				}
 				case ReadValueResult.Single:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = real64;
+					result = real32;
 					return true;
 				}
 				default:
