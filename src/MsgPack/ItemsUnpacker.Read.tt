@@ -223,7 +223,7 @@ case ReadValueResult.<#= thisEntry.Code #>:
 		this.OnReturnScalar();
 		this.PopIndent();
 #>
-	<#= resultVariable #>  = <#= CastIfNecessary( type, false, valueVariable.Get( type ) ) #>;
+	<#= resultVariable #>  = <#= CastIfNecessary( GetSourceType( type ), type, false, valueVariable.Get( type ) ) #>;
 	return true;
 }
 <#+
@@ -231,6 +231,10 @@ case ReadValueResult.<#= thisEntry.Code #>:
 
 	foreach( var entry in TypeCodeMappings.Where( e => CanConvertTo( type, e.Size ) && e.CodeType != type ) )
 	{
+		if ( entry.CodeType == typeof( float ) || entry.CodeType == typeof( double ) )
+		{
+			continue;
+		}
 #>
 case ReadValueResult.<#= entry.Code #>:
 <#+
@@ -242,10 +246,41 @@ case ReadValueResult.<#= entry.Code #>:
 		this.OnReturnScalar();
 		this.PopIndent();
 #>
-	<#= resultVariable #> = <#= CastIfNecessary( type, true, valueVariable.Get( type ) ) #>;
+	<#= resultVariable #> = <#= CastIfNecessary( typeof( long ), type, true, valueVariable.Integral ) #>;
 	return true;
 }
 <#+
+	if( type != typeof( float ) )
+	{
+#>
+case ReadValueResult.Single:
+{
+<#+
+		this.PushIndent( 1 );
+		this.OnReturnScalar();
+		this.PopIndent();
+#>
+	<#= resultVariable #> = <#= CastIfNecessary( typeof( float ), type, true, valueVariable.Real32 ) #>;
+	return true;
+}
+<#+
+	}
+
+	if( type != typeof( double ) )
+	{
+#>
+case ReadValueResult.Double:
+{
+<#+
+		this.PushIndent( 1 );
+		this.OnReturnScalar();
+		this.PopIndent();
+#>
+	<#= resultVariable #> = <#= CastIfNecessary( typeof( double ), type, true, valueVariable.Real64 ) #>;
+	return true;
+}
+<#+
+	}
 } // WriteReadScalarCore()
 
 private void WriteReadLength( string code, bool isNullable )
@@ -324,7 +359,7 @@ case ReadValueResult.<#= entry.Code #>:
 		this.OnReturnScalar();
 		this.PopIndent();
 #>
-	<#= resultVariable #> = <#= CastIfNecessary( entry.CodeType, false, valueVariable.Get( entry.CodeType ) ) #>;
+	<#= resultVariable #> = <#= CastIfNecessary( GetSourceType( entry.CodeType ), entry.CodeType, false, valueVariable.Get( entry.CodeType ) ) #>;
 	this.InternalData = <#= resultVariable #>;
 	return true;
 }
@@ -336,7 +371,7 @@ case ReadValueResult.<#= entry.Code #>:
 #>
 case ReadValueResult.<#= collection #>Length:
 {
-	<#= resultVariable #> = <#= CastIfNecessary( typeof( uint ), false, "this.Read"+ collection + "LengthCore( " + valueVariable.Integral + " )" ) #>;
+	<#= resultVariable #> = <#= CastIfNecessary( typeof( long ), typeof( uint ), false, "this.Read"+ collection + "LengthCore( " + valueVariable.Integral + " )" ) #>;
 	return true;
 }
 <#+
@@ -413,16 +448,39 @@ private bool CanConvertTo( Type destination, int size )
 	}
 } // CanConvertTo( Type destination, String source )
 
-private static string CastIfNecessary( Type target, bool shouldCheckOverflow, string expression )
+private static string CastIfNecessary( Type sourceType, Type targetType, bool shouldCheckOverflow, string sourceExpression )
 {
-	if( target == typeof( long ) || target == typeof( float ) || target == typeof( double ) )
+	if ( sourceType == targetType )
 	{
-		return expression;
+		return sourceExpression;
 	}
-	else
+
+	if( sourceType == typeof( float ) )
 	{
-		return String.Format( CultureInfo.InvariantCulture, "{0}( ( {1} ){2} )", ( shouldCheckOverflow ? "checked" : "unchecked" ), target.Name, expression );
+		if( targetType == typeof( double ) )
+		{
+			return sourceExpression;
+		}
 	}
+	else if( sourceType != typeof( double ) )
+	{
+		if( targetType == typeof( long ) || targetType == typeof( float ) || targetType == typeof( double ) )
+		{
+			return sourceExpression;
+		}
+	}
+
+	return String.Format( CultureInfo.InvariantCulture, "{0}( ( {1} ){2} )", ( shouldCheckOverflow ? "checked" : "unchecked" ), targetType.Name, sourceExpression );
+} // CastIfNecessary( Type sourceType, Type targetType, bool shouldCheckOverflow, string sourceExpression )
+
+private static Type GetSourceType( Type targetType )
+{
+	return 
+		targetType == typeof( float )
+		? typeof( float )
+		: targetType == typeof( double )
+		? typeof( double )
+		: typeof( long );
 }
 
 private class DecodedVariable
