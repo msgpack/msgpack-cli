@@ -69,6 +69,11 @@ namespace MsgPack.Serialization.CollectionSerializers
 			}
 
 			packer.PackArrayHeader( asICollection.Count );
+
+			foreach ( var item in asICollection )
+			{
+				this.ItemSerializer.PackTo( packer, item );
+			}
 		}
 	}
 
@@ -94,6 +99,11 @@ namespace MsgPack.Serialization.CollectionSerializers
 			}
 
 			packer.PackArrayHeader( count );
+
+			foreach ( var item in asCollection )
+			{
+				this.ItemSerializer.PackTo( packer, item );
+			}
 		}
 	}
 #endif // UNITY
