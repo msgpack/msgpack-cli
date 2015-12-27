@@ -30,19 +30,8 @@
     <Exclude Path="TupleItems.cs" />
   </Project>
 
-  <Project Name="MsgPack.Net40" Base="MsgPack">
+  <Project Name="MsgPack.Net45" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude Path="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
-    <Exclude Path="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyCollectionMessagePackSerializer`2.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyDictionaryMessagePackSerializer`3.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />
-    <Exclude Path="Serialization\EmittingSerializers\CallbackReadOnlyCollectionMessagePackSerializer`2.cs" />
-    <Exclude Path="Serialization\EmittingSerializers\CallbackReadOnlyDictionaryMessagePackSerializer`3.cs" />
-    <Exclude Path="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyCollectionMessagePackSerializer`2.cs" />
-    <Exclude Path="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
   </Project>

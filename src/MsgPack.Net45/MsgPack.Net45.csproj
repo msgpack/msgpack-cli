@@ -1,35 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D45D4CBE-AFE7-4E2A-945D-47AED564C39D}</ProjectGuid>
+    <ProjectGuid>{9C7B55A6-AF7F-4D26-AB5B-297B7FF25B6D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MsgPack</RootNamespace>
     <AssemblyName>MsgPack</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_40</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FEATURE_TAP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\MsgPack.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\net40-client\</OutputPath>
-    <DefineConstants>TRACE;NETFX_40</DefineConstants>
+    <OutputPath>..\..\bin\net452\</OutputPath>
+    <DefineConstants>TRACE;FEATURE_TAP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\bin\net40-client\MsgPack.xml</DocumentationFile>
+    <DocumentationFile>..\..\bin\net452\MsgPack.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -316,6 +316,12 @@
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\NonGenericListMessagePackSerializer`1.cs">
       <Link>Serialization\CollectionSerializers\NonGenericListMessagePackSerializer`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs">
+      <Link>Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs">
+      <Link>Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionTraits.cs">
       <Link>Serialization\CollectionTraits.cs</Link>
     </Compile>
@@ -361,6 +367,12 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\AbstractNonGenericListMessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\AbstractNonGenericListMessagePackSerializer`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\AbstractReadOnlyCollectionMessagePackSerializer`2.cs">
+      <Link>Serialization\DefaultSerializers\AbstractReadOnlyCollectionMessagePackSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\AbstractReadOnlyDictionaryMessagePackSerializer`3.cs">
+      <Link>Serialization\DefaultSerializers\AbstractReadOnlyDictionaryMessagePackSerializer`3.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ArraySegmentMessageSerializer.cs">
       <Link>Serialization\DefaultSerializers\ArraySegmentMessageSerializer.cs</Link>
     </Compile>
@@ -390,6 +402,15 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\GenericSerializer.cs">
       <Link>Serialization\DefaultSerializers\GenericSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs">
+      <Link>Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs">
+      <Link>Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs">
+      <Link>Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\InternalDateTimeExtensions.cs">
       <Link>Serialization\DefaultSerializers\InternalDateTimeExtensions.cs</Link>
@@ -597,6 +618,12 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackNonGenericListMessagePackSerializer`1.cs">
       <Link>Serialization\ExpressionSerializers\ExpressionCallbackNonGenericListMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyCollectionMessagePackSerializer`2.cs">
+      <Link>Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyCollectionMessagePackSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyDictionaryMessagePackSerializer`3.cs">
+      <Link>Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyDictionaryMessagePackSerializer`3.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionConstruct.cs">
       <Link>Serialization\ExpressionSerializers\ExpressionConstruct.cs</Link>
