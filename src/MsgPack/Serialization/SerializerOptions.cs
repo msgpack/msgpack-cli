@@ -86,10 +86,10 @@ namespace MsgPack.Serialization
 				switch ( value )
 				{
 					case SerializationMethodGeneratorOption.Fast:
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !CORE_CLR
 					case SerializationMethodGeneratorOption.CanCollect:
 					case SerializationMethodGeneratorOption.CanDump:
-#endif
+#endif // !SILVERLIGHT && !CORE_CLR
 					{
 						break;
 					}

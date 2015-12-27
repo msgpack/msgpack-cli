@@ -330,6 +330,9 @@ namespace MsgPack
 
 		public static InterfaceMapping GetInterfaceMap( this Type source, Type interfaceType )
 		{
+#if CORE_CLR
+#warning CoreCLR does not implement InterfaceMap yet. See https://github.com/dotnet/corefx/issues/5381
+#endif // CORE_CLR
 			return source.GetTypeInfo().GetRuntimeInterfaceMap( interfaceType );
 		}
 

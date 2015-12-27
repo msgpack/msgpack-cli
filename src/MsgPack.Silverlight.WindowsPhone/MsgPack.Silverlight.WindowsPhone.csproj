@@ -118,9 +118,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\CommonAssemblyInfo.Pack.cs">
-      <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\AsyncReadResult.cs">
       <Link>AsyncReadResult.cs</Link>
     </Compile>

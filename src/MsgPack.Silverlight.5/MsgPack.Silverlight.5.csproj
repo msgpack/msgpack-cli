@@ -76,9 +76,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\CommonAssemblyInfo.Pack.cs">
-      <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.Net35\Volatile.cs">
       <Link>Volatile.cs</Link>
     </Compile>

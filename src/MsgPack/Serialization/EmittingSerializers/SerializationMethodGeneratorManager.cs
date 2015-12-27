@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -48,7 +48,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///	</returns>
 		public static SerializationMethodGeneratorManager Get()
 		{
+#if !SILVERLIGHT && !CORE_CLR
 			return Get( SerializerDebugging.DumpEnabled ? SerializationMethodGeneratorOption.CanDump : SerializationMethodGeneratorOption.Fast );
+#else
+			return Get( SerializationMethodGeneratorOption.Fast );
+#endif // !SILVERLIGHT && !CORE_CLR
 		}
 
 		/// <summary>
@@ -63,6 +67,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			switch ( option )
 			{
+#if !SILVERLIGHT && !CORE_CLR
 				case SerializationMethodGeneratorOption.CanDump:
 				{
 					return CanDump;
@@ -71,6 +76,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				{
 					return CanCollect;
 				}
+#endif // !SILVERLIGHT && !CORE_CLR
 				default:
 				{
 					return Fast;
@@ -83,6 +89,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private static readonly object[] _debuggableAttributeCtorArguments = { true, true };
 
 		private static int _assemblySequence = -1;
+
+#if !SILVERLIGHT && !CORE_CLR
 
 		private static SerializationMethodGeneratorManager _canCollect = new SerializationMethodGeneratorManager( false, true, null );
 
@@ -104,6 +112,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			get { return _canDump; }
 		}
 
+#endif // !SILVERLIGHT && !CORE_CLR
+
 		private static SerializationMethodGeneratorManager _fast = new SerializationMethodGeneratorManager( false, false, null );
 
 		/// <summary>
@@ -116,10 +126,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		internal static void Refresh()
 		{
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !CORE_CLR
 			_canCollect = new SerializationMethodGeneratorManager( false, true, null );
 			_canDump = new SerializationMethodGeneratorManager( true, false, null );
-#endif
+#endif // !SILVERLIGHT && !CORE_CLR
 			_fast = new SerializationMethodGeneratorManager( false, false, null );
 		}
 

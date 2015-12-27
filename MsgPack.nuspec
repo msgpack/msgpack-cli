@@ -3,7 +3,7 @@
   <metadata>
     <id>MsgPack.Cli</id>
     <title>MessagePack for CLI</title>
-    <version>0.7.0-alpha1</version>
+    <version>0.7.0-alpha2</version>
     <authors>FUJIWARA, Yusuke</authors>
     <owners>FUJIWARA, Yusuke</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -15,35 +15,6 @@ This package provides MessagePack serialization/deserialization APIs. This pacak
     <releaseNotes>This release add .NET Core support.</releaseNotes>
     <copyright>Copyright 2010-2015 FUJIWARA, Yusuke, all rights reserved.</copyright>
     <tags>MsgPack MessagePack Serialization Formatter Binary Serializer Fast Xamarin Unity3D</tags>
-    <dependencies>
-      <group targetFramework="dotnet">
-        <dependency id="System.Collections.Specialized" version="4.0.0" />
-        <dependency id="System.Data.Common" version="4.0.0" />
-        <dependency id="System.Reflection.Emit" version="4.0.0" />
-        <dependency id="System.Reflection.Emit.ILGeneration" version="4.0.0" />
-        <dependency id="System.Collections" version="4.0.10" />
-        <dependency id="System.Collections.Concurrent" version="4.0.10" />
-        <dependency id="System.Diagnostics.Debug" version="4.0.10" />
-        <dependency id="System.Globalization" version="4.0.10" />
-        <dependency id="System.IO" version="4.0.10" />
-        <dependency id="System.Linq" version="4.0.0" />
-        <dependency id="System.Linq.Expressions" version="4.0.10" />
-        <dependency id="System.ObjectModel" version="4.0.10" />
-        <dependency id="System.Reflection" version="4.0.10" />
-        <dependency id="System.Reflection.Extensions" version="4.0.0" />
-        <dependency id="System.Reflection.Primitives" version="4.0.0" />
-        <dependency id="System.Resources.ResourceManager" version="4.0.0" />
-        <dependency id="System.Runtime" version="4.0.20" />
-        <dependency id="System.Runtime.Extensions" version="4.0.10" />
-        <dependency id="System.Runtime.InteropServices" version="4.0.20" />
-        <dependency id="System.Runtime.Numerics" version="4.0.0" />
-        <dependency id="System.Runtime.Serialization.Primitives" version="4.0.10" />
-        <dependency id="System.Text.Encoding" version="4.0.10" />
-        <dependency id="System.Text.Encoding.Extensions" version="4.0.10" />
-        <dependency id="System.Threading" version="4.0.10" />
-        <dependency id="System.Threading.Tasks" version="4.0.10" />
-      </group>
-    </dependencies>
   </metadata>
   <files>
     <file src="bin\**\*.dll" target="lib" exclude="**\System.*;**\Microsoft.*;**\Mono.*" />

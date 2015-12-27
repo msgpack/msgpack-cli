@@ -105,9 +105,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\CommonAssemblyInfo.Pack.cs">
-      <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
-    </Compile>
     <Compile Include="AsyncReadResult.cs" />
     <Compile Include="AsyncReadResult`1.cs" />
     <Compile Include="BigEndianBinary.cs" />

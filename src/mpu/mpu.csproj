@@ -43,9 +43,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\CommonAssemblyInfo.Pack.cs">
-      <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
-    </Compile>
     <Compile Include="AssetFileImporter.cs" />
     <Compile Include="ColorizedTextWriter.cs" />
     <Compile Include="Mono.Options\Options.cs" />
