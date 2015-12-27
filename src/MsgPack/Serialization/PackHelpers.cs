@@ -28,11 +28,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 #endif //!UNITY || MSGPACK_UNITY_FULL
 #if !UNITY
-#if XAMIOS || XAMDROID || CORE_CLR
+#if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID || CORE_CLR
+#endif // CORE_CLR
 #endif // !UNITY
 
 namespace MsgPack.Serialization

@@ -67,7 +67,6 @@
 
   <Project Name="MsgPack.Xamarin.iOS" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Preserve Path="MPContract.cs" />
     <Exclude Path="Serialization\AbstractSerializers\*" />
     <Exclude Path="Serialization\CodeDomSerializers\*" />
     <Exclude Path="Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs" />
@@ -105,6 +104,8 @@
     <Preserve Path="Serialization\EnumTypedMessagePackSerializerWrapper`1.cs" />
     <Preserve Path="CorLibOnlyHelper*.tt" />
     <Preserve Path="CorLibOnlyHelper*.cs" />
+    <Preserve Path="MPContract.cs" />
+    <Preserve Path="Volatile.cs" />
     <Exclude Path="Serialization\CollectionSerializers\CollectionSerializerBase`2.cs" />
     <Exclude Path="Serialization\CollectionSerializers\DictionarySerializerBase`3.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
@@ -194,6 +195,7 @@
     <Preserve Path="SilverlightExtensions.cs" />
     <Include Path="TupleItems.cs" />
     <Exclude Path="Validation.cs" />
+    <Preserve Path="Volatile.cs" />
   </Project>
 
   <Project Name="MsgPack.Silverlight.WindowsPhone" Base="MsgPack.WinRT.Portable">

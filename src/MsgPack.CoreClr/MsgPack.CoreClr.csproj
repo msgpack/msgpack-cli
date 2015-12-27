@@ -66,9 +66,6 @@
     <Compile Include="..\MsgPack.WinRT.Portable\WinRTCompatibility.cs">
       <Link>WinRTCompatibility.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.Xamarin.iOS\MPContract.cs">
-      <Link>MPContract.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\BigEndianBinary.cs">
       <Link>BigEndianBinary.cs</Link>
     </Compile>
@@ -993,6 +990,7 @@
     <Compile Include="..\MsgPack\Validation.cs">
       <Link>Validation.cs</Link>
     </Compile>
+    <Compile Include="MPContract.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

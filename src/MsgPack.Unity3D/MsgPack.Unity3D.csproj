@@ -55,6 +55,9 @@
     <Compile Include="..\CommonAssemblyInfo.Pack.cs">
       <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.CoreClr\MPContract.cs">
+      <Link>MPContract.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.Net35\Volatile.cs">
       <Link>Volatile.cs</Link>
     </Compile>
@@ -75,9 +78,6 @@
     </Compile>
     <Compile Include="..\MsgPack.Unity3D.Full\Serialization\TypedMessagePackSerializerWrapper`1.cs">
       <Link>Serialization\TypedMessagePackSerializerWrapper`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.Xamarin.iOS\MPContract.cs">
-      <Link>MPContract.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\BigEndianBinary.cs">
       <Link>BigEndianBinary.cs</Link>
