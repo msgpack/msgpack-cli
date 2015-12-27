@@ -433,11 +433,11 @@ namespace MsgPack.Serialization
 				var context =
 					new SerializationContext
 					{
-						EmitterFlavor = this.EmitterFlavor,
 						GeneratorOption = SerializationMethodGeneratorOption.CanDump,
 						EnumSerializationMethod = configuration.EnumSerializationMethod,
 						SerializationMethod = configuration.SerializationMethod
 					};
+				context.SerializerOptions.EmitterFlavor = this.EmitterFlavor;
 
 				IEnumerable<Type> realTargetTypes;
 				if ( configuration.IsRecursive )
@@ -486,7 +486,7 @@ namespace MsgPack.Serialization
 						foreach (
 							var dependentType in
 								SerializationTarget.Prepare( context, type )
-								.Members.SelectMany( m => ExtractElementTypes( context, configuration, m.Member.GetMemberValueType() ) ) 
+								.Members.SelectMany( m => ExtractElementTypes( context, configuration, m.Member.GetMemberValueType() ) )
 						)
 						{
 							yield return dependentType;

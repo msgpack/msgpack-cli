@@ -18,7 +18,12 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
+using System.Threading;
 
 namespace MsgPack.Serialization
 {
@@ -27,6 +32,11 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed class SerializationCompatibilityOptions
 	{
+#if NETFX_35 || UNITY || SILVERLIGHT
+		private volatile bool _oneBoundDataMemberOrder;
+#else
+		private bool _oneBoundDataMemberOrder;
+#endif // NETFX_35 || UNITY || SILVERLIGHT
 		/// <summary>
 		///		Gets or sets a value indicating whether <c>System.Runtime.Serialization.DataMemberAttribute.Order</c> should be started with 1 instead of 0.
 		/// </summary>
@@ -39,11 +49,25 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public bool OneBoundDataMemberOrder
 		{
-			get;
-			set;
+			get
+			{
+#if NETFX_35 || UNITY || SILVERLIGHT
+				return this._oneBoundDataMemberOrder;
+#else
+				return Volatile.Read( ref this._oneBoundDataMemberOrder );
+#endif // NETFX_35 || UNITY || SILVERLIGHT
+			}
+			set
+			{
+#if NETFX_35 || UNITY || SILVERLIGHT
+				this._oneBoundDataMemberOrder = value;
+#else
+				Volatile.Write( ref this._oneBoundDataMemberOrder, value );
+#endif // NETFX_35 || UNITY || SILVERLIGHT
+			}
 		}
 
-		private PackerCompatibilityOptions _packerCompatibilityOptions;
+		private int _packerCompatibilityOptions;
 
 		/// <summary>
 		///		Gets or sets the <see cref="PackerCompatibilityOptions"/>.
@@ -60,13 +84,15 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public PackerCompatibilityOptions PackerCompatibilityOptions
 		{
-			get { return this._packerCompatibilityOptions; }
-			set { this._packerCompatibilityOptions = value; }
+			get { return ( PackerCompatibilityOptions )Volatile.Read( ref this._packerCompatibilityOptions ); }
+			set { Volatile.Write( ref this._packerCompatibilityOptions, ( int )value ); }
 		}
+
+		// TODO: CheckNilImplicationInConstructorDeserialization
 
 		internal SerializationCompatibilityOptions()
 		{
-			this._packerCompatibilityOptions = PackerCompatibilityOptions.Classic;
+			this.PackerCompatibilityOptions = PackerCompatibilityOptions.Classic;
 		}
 	}
 }

@@ -104,9 +104,12 @@ namespace MsgPack.Serialization
 	{
 #>
 #if !UNITY
-			return new SerializationContext { SerializationMethod = SerializationMethod.<#= serializationMethod #>, EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #> };
+			var context = new SerializationContext { SerializationMethod = SerializationMethod.<#= serializationMethod #> };
+			context.SerializerOptions.EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #>;
+			return context;
 #else
-			var context = new SerializationContext { SerializationMethod = SerializationMethod.<#= serializationMethod #>, EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #> };
+			var context = new SerializationContext { SerializationMethod = SerializationMethod.<#= serializationMethod #> };
+			context.SerializerOptions.EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #>;
 			AotWorkarounds.SetWorkaround( context );
 			return context;
 
@@ -136,7 +139,9 @@ namespace MsgPack.Serialization
 	if ( !forIos )
 	{
 #>
-			return new SerializationContext( compatibilityOptions ) { SerializationMethod = SerializationMethod.<#= serializationMethod #>, EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #> };
+			var context = new SerializationContext( compatibilityOptions ) { SerializationMethod = SerializationMethod.<#= serializationMethod #> };
+			context.SerializerOptions.EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #>;
+			return context;
 <#+
 	}
 	else

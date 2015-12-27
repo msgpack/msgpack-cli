@@ -44,7 +44,9 @@ namespace MsgPack.Serialization
 	{
 		private SerializationContext CreateSerializationContext()
 		{
-			return new SerializationContext { EmitterFlavor = EmitterFlavor.ExpressionBased };
+			var context = new SerializationContext();
+			context.SerializerOptions.EmitterFlavor = EmitterFlavor.ExpressionBased;
+			return context;
 		}
 
 		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )

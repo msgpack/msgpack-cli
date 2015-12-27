@@ -44,7 +44,7 @@ namespace MsgPack.Serialization
 			var context = PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
 #endif
 #if !XAMIOS && !UNITY_IPHONE
-			context.EmitterFlavor = flavor;
+			context.SerializerOptions.EmitterFlavor = flavor;
 			return MessagePackSerializer.CreateInternal<T>( context, PolymorphismSchema.Default );
 #else
 			return context.GetSerializer<T>();

@@ -52,9 +52,13 @@ namespace MsgPack.Serialization
 #if XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE
 			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions ).GetSerializer<T>();
 #elif !NETFX_CORE && !SILVERLIGHT
-			return new SerializationContext { EmitterFlavor = EmitterFlavor.FieldBased }.GetSerializer<T>();
+			var context = new SerializationContext();
+			context.SerializerOptions.EmitterFlavor = EmitterFlavor.FieldBased;
+			return context.GetSerializer<T>();
 #else
-			return new SerializationContext { EmitterFlavor = EmitterFlavor.ExpressionBased }.GetSerializer<T>();
+			var context = new SerializationContext();
+			context.SerializerOptions.EmitterFlavor = EmitterFlavor.ExpressionBased;
+			return context.GetSerializer<T>();
 #endif
 		}
 

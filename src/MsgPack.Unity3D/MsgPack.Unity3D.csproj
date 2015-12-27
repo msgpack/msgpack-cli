@@ -55,6 +55,9 @@
     <Compile Include="..\CommonAssemblyInfo.Pack.cs">
       <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.Net35\Volatile.cs">
+      <Link>Volatile.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.Unity3D.Full\CorLibOnlyHelper.cs">
       <Link>CorLibOnlyHelper.cs</Link>
     </Compile>
@@ -606,6 +609,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerDebugging.cs">
       <Link>Serialization\SerializerDebugging.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializerOptions.cs">
+      <Link>Serialization\SerializerOptions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerRegistrationOptions.cs">
       <Link>Serialization\SerializerRegistrationOptions.cs</Link>

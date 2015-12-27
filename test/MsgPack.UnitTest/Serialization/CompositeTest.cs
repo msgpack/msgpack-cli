@@ -140,18 +140,21 @@ namespace MsgPack.Serialization
 				};
 			root.Files = new FileItem[ 0 ];
 
-			var serializer = 
-				generator.BuildSerializerInstance(
+			var context =
 					new SerializationContext
 					{
-						EmitterFlavor = emittingFlavor, 
 						SerializationMethod = serializationMethod, 
 #if SILVERLIGHT
 						GeneratorOption = SerializationMethodGeneratorOption.Fast
 #else
 						GeneratorOption = SerializationMethodGeneratorOption.CanDump
 #endif
-					}, 
+					};
+			context.SerializerOptions.EmitterFlavor = emittingFlavor;
+
+			var serializer = 
+				generator.BuildSerializerInstance(
+					context, 
 					typeof( DirectoryItem ),
 					PolymorphismSchema.Default
 				);

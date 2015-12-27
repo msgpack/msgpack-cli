@@ -857,6 +857,9 @@
     <Compile Include="..\MsgPack\Serialization\SerializerGenerator.cs">
       <Link>Serialization\SerializerGenerator.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializerOptions.cs">
+      <Link>Serialization\SerializerOptions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerRegistrationOptions.cs">
       <Link>Serialization\SerializerRegistrationOptions.cs</Link>
     </Compile>
@@ -957,6 +960,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Tuple`n.tt</DependentUpon>
     </Compile>
+    <Compile Include="Volatile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\MsgPack.snk">

@@ -24,6 +24,7 @@
     <Preserve Path="Delegates.tt" />
     <Preserve Path="Delegates.cs" />
     <Preserve Path="NetFxCompatibilities.cs" />
+    <Preserve Path="Volatile.cs" />
     <Preserve Path="Tuple`n.tt" />
     <Preserve Path="Tuple`n.cs" />
     <Exclude Path="TupleItems.cs" />

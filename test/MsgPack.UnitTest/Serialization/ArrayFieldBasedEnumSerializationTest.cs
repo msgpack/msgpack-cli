@@ -46,7 +46,9 @@ namespace MsgPack.Serialization
 	{
 		private SerializationContext GetSerializationContext()
 		{
-			return new SerializationContext { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.FieldBased };
+			var context = new SerializationContext { SerializationMethod = SerializationMethod.Array };
+			context.SerializerOptions.EmitterFlavor = EmitterFlavor.FieldBased;
+			return context;
 		}
 		private bool CanDump
 		{

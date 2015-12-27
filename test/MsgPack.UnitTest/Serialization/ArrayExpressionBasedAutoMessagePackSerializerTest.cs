@@ -69,7 +69,9 @@ namespace MsgPack.Serialization
 		private static SerializationContext GetSerializationContext()
 		{
 #if !UNITY
-			return new SerializationContext { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ExpressionBased };
+			var context = new SerializationContext { SerializationMethod = SerializationMethod.Array };
+			context.SerializerOptions.EmitterFlavor = EmitterFlavor.ExpressionBased;
+			return context;
 #else
 			var context = new SerializationContext { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ExpressionBased };
 			AotWorkarounds.SetWorkaround( context );
@@ -80,7 +82,9 @@ namespace MsgPack.Serialization
 
 		private static SerializationContext  NewSerializationContext( PackerCompatibilityOptions compatibilityOptions )
 		{
-			return new SerializationContext( compatibilityOptions ) { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ExpressionBased };
+			var context = new SerializationContext( compatibilityOptions ) { SerializationMethod = SerializationMethod.Array };
+			context.SerializerOptions.EmitterFlavor = EmitterFlavor.ExpressionBased;
+			return context;
 		}
 
 		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
