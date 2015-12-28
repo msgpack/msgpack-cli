@@ -13,7 +13,7 @@
     <description>MessagePack is fast, compact, and interoperable binary serialization format.
 This package provides MessagePack serialization/deserialization APIs. This pacakge also supports Mono, Xamarin and Unity3D.</description>
     <releaseNotes>This release add .NET Core support.</releaseNotes>
-    <copyright>Copyright 2010-2015 FUJIWARA, Yusuke, all rights reserved.</copyright>
+    <copyright>Copyright 2010-2016 FUJIWARA, Yusuke, all rights reserved.</copyright>
     <tags>MsgPack MessagePack Serialization Formatter Binary Serializer Fast Xamarin Unity3D</tags>
   </metadata>
   <files>
