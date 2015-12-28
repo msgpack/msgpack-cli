@@ -34,15 +34,14 @@ namespace MsgPack.Serialization
 	internal static partial class PreGeneratedSerializerActivator
 	{
 		private static readonly IList<Type> _knownTypes = InitializeKnownTypes();
-		private static readonly Dictionary<Type, MessagePackSerializerProvider> _arrayBasedSerializers = InitializeSerializers( "ArrayBased", _knownTypes );
-		private static readonly Dictionary<Type, MessagePackSerializerProvider> _mapBasedSerializers = InitializeSerializers( "MapBased", _knownTypes );
+		private static readonly Dictionary<Type, MessagePackSerializerProvider> _serializers = InitializeSerializers( _knownTypes );
 
 		public static IEnumerable<Type> KnownTypes
 		{
 			get { return _knownTypes; }
 		}
 
-		private static Dictionary<Type, MessagePackSerializerProvider> InitializeSerializers( string serializationMethodFlavor, IList<Type> knownTypes )
+		private static Dictionary<Type, MessagePackSerializerProvider> InitializeSerializers( IList<Type> knownTypes )
 		{
 			var result = new Dictionary<Type, MessagePackSerializerProvider>( knownTypes.Count );
 			foreach ( var knownType in knownTypes )
@@ -54,7 +53,7 @@ namespace MsgPack.Serialization
 				}
 
 				var serializerTypeName =
-					"MsgPack.Serialization.GeneratedSerializers." + serializationMethodFlavor + "." + IdentifierUtility.EscapeTypeName( knownType ) + "Serializer";
+					"MsgPack.Serialization.GeneratedSerializers." + IdentifierUtility.EscapeTypeName( knownType ) + "Serializer";
 				var serializerType = typeof( PreGeneratedSerializerActivator ).GetAssembly().GetType( serializerTypeName );
 
 				Type type = knownType;
@@ -101,12 +100,7 @@ namespace MsgPack.Serialization
 		{
 			var context = new SerializationContext( compatibilityOptions ) { SerializationMethod = method };
 
-			var serializers =
-				method == SerializationMethod.Array
-				? _arrayBasedSerializers
-				: _mapBasedSerializers;
-
-			foreach ( var entry in serializers )
+			foreach ( var entry in _serializers )
 			{
 				context.Serializers.Register( entry.Key, entry.Value, null, null, SerializerRegistrationOptions.None );
 			}

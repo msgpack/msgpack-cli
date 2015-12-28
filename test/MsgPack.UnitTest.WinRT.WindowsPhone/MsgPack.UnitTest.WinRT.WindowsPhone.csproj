@@ -447,9 +447,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\MsgPack.UnitTest\gen\ReadMe.txt">
-      <Link>gen\ReadMe.txt</Link>
-    </Content>
     <Content Include="Assets\Logo.scale-240.png" />
     <Content Include="Assets\SmallLogo.scale-240.png" />
     <Content Include="Assets\SplashScreen.scale-240.png" />

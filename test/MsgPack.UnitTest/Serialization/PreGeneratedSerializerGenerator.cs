@@ -36,19 +36,12 @@ namespace MsgPack.Serialization
 			SerializerGenerator.GenerateCode(
 				new SerializerCodeGenerationConfiguration
 				{
-					Namespace = "MsgPack.Serialization.GeneratedSerializers.ArrayBased",
-					SerializationMethod = SerializationMethod.Array,
-					//OutputDirectory = "\\temp-gen",
-					IsInternalToMsgPackLibrary = true // because of InternalsVisibleTo
-				},
-				PreGeneratedSerializerActivator.KnownTypes
-			);
-			SerializerGenerator.GenerateCode(
-				new SerializerCodeGenerationConfiguration
-				{
-					Namespace = "MsgPack.Serialization.GeneratedSerializers.MapBased",
-					SerializationMethod = SerializationMethod.Map,
-					//OutputDirectory = "\\temp-gen",
+					Namespace = "MsgPack.Serialization.GeneratedSerializers",
+#if NETFX_35
+					OutputDirectory = "\\temp-gen35",
+#else
+					OutputDirectory = "\\temp-gen",
+#endif
 					IsInternalToMsgPackLibrary = true // because of InternalsVisibleTo
 				},
 				PreGeneratedSerializerActivator.KnownTypes

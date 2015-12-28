@@ -1458,6 +1458,7 @@ namespace MsgPack.Serialization
 						{
 							typeof( MessagePackObject ).Assembly.Location,
 							typeof( CodeDomProvider ).Assembly.Location,
+							typeof( Enumerable ).Assembly.Location,
 							Assembly.GetExecutingAssembly().Location
 						}
 					),
