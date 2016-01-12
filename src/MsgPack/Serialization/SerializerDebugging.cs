@@ -39,6 +39,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace MsgPack.Serialization
@@ -284,7 +285,7 @@ namespace MsgPack.Serialization
 		private static int _wasDeleted;
 		private const string HistoryFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" , Justification = "For unit testing")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void DeletePastTemporaries()
 		{
 			if ( Interlocked.CompareExchange( ref _wasDeleted, 1, 0 ) != 0 )
@@ -313,7 +314,7 @@ namespace MsgPack.Serialization
 			catch ( IOException ) { }
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" , Justification = "For unit testing")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		private static string GetHistoryFilePath()
 		{
 			return Path.Combine( Path.GetTempPath(), HistoryFile );
@@ -379,7 +380,7 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Takes dump of instructions.
 		/// </summary>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" , Justification = "For unit testing")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void Dump()
 		{
 #if !NETFX_35
@@ -413,5 +414,25 @@ namespace MsgPack.Serialization
 			ResetDependentAssemblies();
 		}
 #endif // !XAMIOS && !XAMDROID && !UNITY
+
+#if DEBUG && FEATURE_TAP
+
+		private static bool _isNaiveAsyncAllowed;
+
+		internal static bool IsNaiveAsyncAllowed
+		{
+			get { return Volatile.Read( ref _isNaiveAsyncAllowed ); }
+			set { Volatile.Write( ref _isNaiveAsyncAllowed, value ); }
+		}
+
+		internal static void EnsureNaiveAsyncAllowed( object source, [CallerMemberName]string method = null )
+		{
+			if ( !Volatile.Read( ref _isNaiveAsyncAllowed ) )
+			{
+				throw new NotImplementedException( "This method is not implemented as generated method. " + source + "." + method );
+			}
+		}
+
+#endif // DEBUG && FEATURE_TAP
 	}
 }

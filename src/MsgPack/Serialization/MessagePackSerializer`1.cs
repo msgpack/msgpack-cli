@@ -456,6 +456,9 @@ namespace MsgPack.Serialization
 		/// <seealso cref="P:Capabilities"/>
 		protected internal virtual Task PackToAsyncCore( Packer packer, T objectTree, CancellationToken cancellationToken )
 		{
+#if DEBUG
+			SerializerDebugging.EnsureNaiveAsyncAllowed( this );
+#endif // DEBUG
 			return Task.Run( () => this.PackToCore( packer, objectTree ), cancellationToken );
 		}
 
@@ -642,6 +645,9 @@ namespace MsgPack.Serialization
 		/// <seealso cref="P:Capabilities"/>
 		protected internal virtual Task<T> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
+#if DEBUG
+			SerializerDebugging.EnsureNaiveAsyncAllowed( this );
+#endif // DEBUG
 			return Task.Run( () => this.UnpackFrom( unpacker ), cancellationToken );
 		}
 
@@ -818,6 +824,10 @@ namespace MsgPack.Serialization
 		/// <seealso cref="P:Capabilities"/>
 		protected internal virtual Task UnpackToAsyncCore( Unpacker unpacker, T collection, CancellationToken cancellationToken )
 		{
+#if DEBUG
+			SerializerDebugging.EnsureNaiveAsyncAllowed( this );
+#endif // DEBUG
+
 			return Task.Run( () => this.UnpackToCore( unpacker, collection ), cancellationToken );
 		}
 
