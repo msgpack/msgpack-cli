@@ -14,7 +14,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -215,6 +215,7 @@ case ReadValueResult.Boolean:
 	var thisEntry = TypeCodeMappings.SingleOrDefault( e => e.CodeType == type );
 	if( thisEntry != null )
 	{
+		// For same type
 #>
 case ReadValueResult.<#= thisEntry.Code #>:
 {
@@ -223,7 +224,7 @@ case ReadValueResult.<#= thisEntry.Code #>:
 		this.OnReturnScalar();
 		this.PopIndent();
 #>
-	<#= resultVariable #>  = <#= CastIfNecessary( GetSourceType( type ), type, false, valueVariable.Get( type ) ) #>;
+	<#= resultVariable #>  = <#= CastIfNecessary( GetSourceType( type ), type, false, valueVariable.Get( type ), false ) #>;
 	return true;
 }
 <#+
@@ -231,8 +232,9 @@ case ReadValueResult.<#= thisEntry.Code #>:
 
 	foreach( var entry in TypeCodeMappings.Where( e => CanConvertTo( type, e.Size ) && e.CodeType != type ) )
 	{
-		if ( entry.CodeType == typeof( float ) || entry.CodeType == typeof( double ) )
+		if ( entry.CodeType == typeof( ulong ) || entry.CodeType == typeof( float ) || entry.CodeType == typeof( double ) )
 		{
+			// UInt64 and Reals should be treated as spetially.
 			continue;
 		}
 #>
@@ -246,10 +248,27 @@ case ReadValueResult.<#= entry.Code #>:
 		this.OnReturnScalar();
 		this.PopIndent();
 #>
-	<#= resultVariable #> = <#= CastIfNecessary( typeof( long ), type, true, valueVariable.Integral ) #>;
+	<#= resultVariable #> = <#= CastIfNecessary( typeof( long ), type, true, valueVariable.Integral, false ) #>;
 	return true;
 }
 <#+
+
+	if( type != typeof( ulong ) )
+	{
+#>
+case ReadValueResult.UInt64:
+{
+<#+
+		this.PushIndent( 1 );
+		this.OnReturnScalar();
+		this.PopIndent();
+#>
+	<#= resultVariable #> = <#= CastIfNecessary( typeof( ulong ), type, true, valueVariable.Integral, true ) #>;
+	return true;
+}
+<#+
+	}
+
 	if( type != typeof( float ) )
 	{
 #>
@@ -260,7 +279,7 @@ case ReadValueResult.Single:
 		this.OnReturnScalar();
 		this.PopIndent();
 #>
-	<#= resultVariable #> = <#= CastIfNecessary( typeof( float ), type, true, valueVariable.Real32 ) #>;
+	<#= resultVariable #> = <#= CastIfNecessary( typeof( float ), type, true, valueVariable.Real32, false ) #>;
 	return true;
 }
 <#+
@@ -276,7 +295,7 @@ case ReadValueResult.Double:
 		this.OnReturnScalar();
 		this.PopIndent();
 #>
-	<#= resultVariable #> = <#= CastIfNecessary( typeof( double ), type, true, valueVariable.Real64 ) #>;
+	<#= resultVariable #> = <#= CastIfNecessary( typeof( double ), type, true, valueVariable.Real64, false ) #>;
 	return true;
 }
 <#+
@@ -359,7 +378,7 @@ case ReadValueResult.<#= entry.Code #>:
 		this.OnReturnScalar();
 		this.PopIndent();
 #>
-	<#= resultVariable #> = <#= CastIfNecessary( GetSourceType( entry.CodeType ), entry.CodeType, false, valueVariable.Get( entry.CodeType ) ) #>;
+	<#= resultVariable #> = <#= CastIfNecessary( GetSourceType( entry.CodeType ), entry.CodeType, false, valueVariable.Get( entry.CodeType ), false ) #>;
 	this.InternalData = <#= resultVariable #>;
 	return true;
 }
@@ -448,11 +467,14 @@ private bool CanConvertTo( Type destination, int size )
 	}
 } // CanConvertTo( Type destination, String source )
 
-private static string CastIfNecessary( Type sourceType, Type targetType, bool shouldCheckOverflow, string sourceExpression )
+private static string CastIfNecessary( Type sourceType, Type targetType, bool shouldCheckOverflow, string sourceExpression, bool shouldInsertUInt64Cast )
 {
 	if ( sourceType == targetType )
 	{
-		return sourceExpression;
+		return 
+			shouldInsertUInt64Cast
+			? String.Format( CultureInfo.InvariantCulture, "unchecked( ( UInt64 ){0} )", sourceExpression )
+			: sourceExpression;
 	}
 
 	if( sourceType == typeof( float ) )
@@ -464,13 +486,24 @@ private static string CastIfNecessary( Type sourceType, Type targetType, bool sh
 	}
 	else if( sourceType != typeof( double ) )
 	{
-		if( targetType == typeof( long ) || targetType == typeof( float ) || targetType == typeof( double ) )
+		if( targetType == typeof( long ) )
 		{
-			return sourceExpression;
+			return 
+				shouldInsertUInt64Cast
+				? String.Format( CultureInfo.InvariantCulture, "checked( ( Int64 )( UInt64 ){0} )", sourceExpression )
+				: sourceExpression;
+		}
+
+		if ( targetType == typeof( float ) || targetType == typeof( double ) )
+		{
+			return 
+				shouldInsertUInt64Cast
+				? String.Format( CultureInfo.InvariantCulture, "unchecked( ( UInt64 ){0} )", sourceExpression )
+				: sourceExpression;
 		}
 	}
 
-	return String.Format( CultureInfo.InvariantCulture, "{0}( ( {1} ){2} )", ( shouldCheckOverflow ? "checked" : "unchecked" ), targetType.Name, sourceExpression );
+	return String.Format( CultureInfo.InvariantCulture, "{0}( ( {1} ){2}{3} )", ( shouldCheckOverflow ? "checked" : "unchecked" ), targetType.Name, ( shouldInsertUInt64Cast ? "( UInt64 )" : String.Empty ), sourceExpression );
 } // CastIfNecessary( Type sourceType, Type targetType, bool shouldCheckOverflow, string sourceExpression )
 
 private static Type GetSourceType( Type targetType )
