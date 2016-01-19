@@ -1329,6 +1329,11 @@
       <DependentUpon>UnpackerTest.Ext.tt</DependentUpon>
     </Compile>
     <Compile Include="UnpackerTest.cs" />
+    <Compile Include="UnpackerTest.Object.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackerTest.Object.tt</DependentUpon>
+    </Compile>
     <Compile Include="UnpackerTest.Raw.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1759,6 +1764,10 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="gen\ReadMe.txt" />
+    <Content Include="UnpackerTest.Object.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackerTest.Object.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

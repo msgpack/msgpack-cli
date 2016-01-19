@@ -25,6 +25,7 @@
 #endif
 
 using System;
+using System.Collections.Generic;
 
 namespace MsgPack
 {
@@ -1579,10 +1580,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 		#endif // !UNITY
 		
-			return this.ReadSubtreeObject( out result );
+			return this.ReadSubtreeObject( /* isDeep */true, out result );
 		}
 		
-		internal bool ReadSubtreeObject( out MessagePackObject result )
+		internal bool ReadSubtreeObject( bool isDeep, out MessagePackObject result )
 		{
 			byte header;
 			long integral;
@@ -1682,14 +1683,62 @@ namespace MsgPack
 				}
 				case ReadValueResult.ArrayLength:
 				{
-					result = unchecked( ( UInt32 )this.ReadArrayLengthCore( integral ) );
+					var length = unchecked( ( UInt32 )this.ReadArrayLengthCore( integral ) );
+					if ( !isDeep )
+					{
+						result = length;
+						return true;
+					}
+				
+					this.CheckLength( length, ReadValueResult.ArrayLength );
+					var collection = new List<MessagePackObject>( unchecked( ( int ) length ) );
+					for( var i = 0; i < length; i++ )
+					{
+						MessagePackObject item;
+						if( !this.ReadSubtreeObject( /* isDeep */true, out item ) )
+						{
+							result = default( MessagePackObject );
+							return false;
+						}
+				
+						collection.Add( item );
+					}
+					result = new MessagePackObject( collection, /* isImmutable */true );
 					return true;
 				}
 				case ReadValueResult.MapLength:
 				{
-					result = unchecked( ( UInt32 )this.ReadMapLengthCore( integral ) );
+					var length = unchecked( ( UInt32 )this.ReadMapLengthCore( integral ) );
+					if ( !isDeep )
+					{
+						result = length;
+						return true;
+					}
+				
+					this.CheckLength( length, ReadValueResult.MapLength );
+					var collection = new MessagePackObjectDictionary( unchecked( ( int ) length ) );
+					for( var i = 0; i < length; i++ )
+					{
+						MessagePackObject key;
+						if( !this.ReadSubtreeObject( /* isDeep */true, out key ) )
+						{
+							result = default( MessagePackObject );
+							return false;
+						}
+				
+						MessagePackObject value;
+						if( !this.ReadSubtreeObject( /* isDeep */true, out value ) )
+						{
+							result = default( MessagePackObject );
+							return false;
+						}
+				
+						collection.Add( key, value );
+					}
+					result = new MessagePackObject( collection, /* isImmutable */true );
 					return true;
 				}
+				
 				case ReadValueResult.String:
 				{
 					result = new MessagePackObject( new MessagePackString( this.ReadBinaryCore( integral ), false ) );

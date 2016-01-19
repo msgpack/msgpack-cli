@@ -35,6 +35,7 @@
 #endif
 
 using System;
+using System.Collections.Generic;
 
 namespace MsgPack
 {
@@ -115,8 +116,10 @@ private static readonly TypeCodeMapping[] TypeCodeMappings =
 
 private void WriteReadBody( string typeName, string fullTypeName, bool isForSubtree, Action bodyWriter )
 {
+	var firstParameter = ( isForSubtree && typeName == "Object" ) ? "bool isDeep, " : String.Empty;
+	var firstArgument = ( !isForSubtree && typeName == "Object" ) ? "/* isDeep */true, " : String.Empty;
 #>
-<#= isForSubtree ? "internal" : "public override" #> bool Read<#= isForSubtree ? "Subtree" : String.Empty #><#= typeName #>( out <#= fullTypeName #> result )
+<#= isForSubtree ? "internal" : "public override" #> bool Read<#= isForSubtree ? "Subtree" : String.Empty #><#= typeName #>( <#= firstParameter #>out <#= fullTypeName #> result )
 {
 <#+
 	if( !isForSubtree )
@@ -126,7 +129,7 @@ private void WriteReadBody( string typeName, string fullTypeName, bool isForSubt
 	this.EnsureNotInSubtreeMode();
 #endif // !UNITY
 
-	return this.ReadSubtree<#= typeName #>( out result );
+	return this.ReadSubtree<#= typeName #>( <#= firstArgument #>out result );
 <#+
 	}
 	else
@@ -385,16 +388,69 @@ case ReadValueResult.<#= entry.Code #>:
 <#+
 	} // foreach -- scalar
 
-	foreach( var collection in new [] { "Array", "Map" } )
-	{
+// Array/Map
 #>
-case ReadValueResult.<#= collection #>Length:
+case ReadValueResult.ArrayLength:
 {
-	<#= resultVariable #> = <#= CastIfNecessary( typeof( long ), typeof( uint ), false, "this.Read"+ collection + "LengthCore( " + valueVariable.Integral + " )" ) #>;
+	var length = <#= CastIfNecessary( typeof( long ), typeof( uint ), false, "this.ReadArrayLengthCore( " + valueVariable.Integral + " )", false ) #>;
+	if ( !isDeep )
+	{
+		<#= resultVariable #> = length;
+		return true;
+	}
+
+	this.CheckLength( length, ReadValueResult.ArrayLength );
+	var collection = new List<MessagePackObject>( unchecked( ( int ) length ) );
+	for( var i = 0; i < length; i++ )
+	{
+		MessagePackObject item;
+		if( !this.ReadSubtreeObject( /* isDeep */true, out item ) )
+		{
+			<#= resultVariable #> = default( MessagePackObject );
+			return false;
+		}
+
+		collection.Add( item );
+	}
+	<#= resultVariable #> = new MessagePackObject( collection, /* isImmutable */true );
 	return true;
 }
+case ReadValueResult.MapLength:
+{
+	var length = <#= CastIfNecessary( typeof( long ), typeof( uint ), false, "this.ReadMapLengthCore( " + valueVariable.Integral + " )", false ) #>;
+	if ( !isDeep )
+	{
+		<#= resultVariable #> = length;
+		return true;
+	}
+
+	this.CheckLength( length, ReadValueResult.MapLength );
+	var collection = new MessagePackObjectDictionary( unchecked( ( int ) length ) );
+	for( var i = 0; i < length; i++ )
+	{
+		MessagePackObject key;
+		if( !this.ReadSubtreeObject( /* isDeep */true, out key ) )
+		{
+			<#= resultVariable #> = default( MessagePackObject );
+			return false;
+		}
+
+		MessagePackObject value;
+		if( !this.ReadSubtreeObject( /* isDeep */true, out value ) )
+		{
+			<#= resultVariable #> = default( MessagePackObject );
+			return false;
+		}
+
+		collection.Add( key, value );
+	}
+	<#= resultVariable #> = new MessagePackObject( collection, /* isImmutable */true );
+	return true;
+}
+
 <#+
-	} // foreach -- collection
+// Array/Map
+
 #>
 case ReadValueResult.String:
 {

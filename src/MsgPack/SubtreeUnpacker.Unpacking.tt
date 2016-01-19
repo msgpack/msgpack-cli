@@ -12,7 +12,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -122,14 +122,14 @@ this.PopIndent();
 		{
 <#
 this.PushIndent( 3 );
-this.WriteRead( "Object", "MessagePackObject" );
+this.WriteRead( "Object", "MessagePackObject", "/* isDeep */true, " );
 this.PopIndent();
 #>
 		}
 	}
 }
 <#+
-private void WriteRead( string typeName, string fullTypeName )
+private void WriteRead( string typeName, string fullTypeName, string isDeep = "" )
 {
 #>
 this.DiscardCompletedStacks();
@@ -140,7 +140,7 @@ if ( this._itemsCount.Count == 0 )
 	return false;
 }
 
-if ( !this._root.ReadSubtree<#= typeName #>( out result ) )
+if ( !this._root.ReadSubtree<#= typeName #>( <#= isDeep #>out result ) )
 {
 	return false;
 }

@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -252,6 +253,31 @@ namespace MsgPack.Serialization
 				Assert.That( unpacker.Read() );
 				return new TestValueTypeWrapper { Value = this._serializer0.UnpackFrom( unpacker ) };
 			}
+		}
+
+		[Test]
+		public void Issue143()
+		{
+			var array =
+				new object[]
+				{
+					"111",
+					32432,
+					new int[] { 9, 8 },
+					909
+				};
+			var serializer = MessagePackSerializer.Get<object>();
+			var packedBinary = serializer.PackSingleObject( array );
+			var unpacked = serializer.UnpackSingleObject( packedBinary );
+			var unpackedList = ( ( MessagePackObject )unpacked ).AsList();
+			Assert.That( unpackedList.Count, Is.EqualTo( 4 ) );
+			Assert.That( unpackedList[ 0 ] == "111" );
+			Assert.That( unpackedList[ 1 ] == 32432 );
+			Assert.That( unpackedList[ 2 ].IsList );
+			Assert.That( unpackedList[ 2 ].AsList().Count, Is.EqualTo( 2 ) );
+			Assert.That( unpackedList[ 2 ].AsList()[ 0 ] == 9 );
+			Assert.That( unpackedList[ 2 ].AsList()[ 1 ] == 8 );
+			Assert.That( unpackedList[ 3 ] == 909 );
 		}
 	}
 }
