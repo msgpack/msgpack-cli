@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -253,5 +254,63 @@ namespace MsgPack.Serialization
 				return new TestValueTypeWrapper { Value = this._serializer0.UnpackFrom( unpacker ) };
 			}
 		}
+
+		[Test]
+		public void Issue143()
+		{
+			var array =
+				new object[]
+				{
+					"111",
+					32432,
+					new int[] { 9, 8 },
+					909
+				};
+			var serializer = MessagePackSerializer.Get<object>( new SerializationContext() );
+			var packedBinary = serializer.PackSingleObject( array );
+			var unpacked = serializer.UnpackSingleObject( packedBinary );
+			var unpackedList = ( ( MessagePackObject )unpacked ).AsList();
+			Assert.That( unpackedList.Count, Is.EqualTo( 4 ) );
+			Assert.That( unpackedList[ 0 ] == "111" );
+			Assert.That( unpackedList[ 1 ] == 32432 );
+			Assert.That( unpackedList[ 2 ].IsList );
+			Assert.That( unpackedList[ 2 ].AsList().Count, Is.EqualTo( 2 ) );
+			Assert.That( unpackedList[ 2 ].AsList()[ 0 ] == 9 );
+			Assert.That( unpackedList[ 2 ].AsList()[ 1 ] == 8 );
+			Assert.That( unpackedList[ 3 ] == 909 );
+		}
+
+#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY
+		[Test]
+		public void Issue145()
+		{
+			var results =
+				SerializerGenerator.GenerateSerializerSourceCodes(
+					new SerializerCodeGenerationConfiguration
+					{
+						EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue,
+						IsRecursive = true,
+						OutputDirectory = Path.GetTempPath(),
+						WithNullableSerializers = false,
+						PreferReflectionBasedSerializer = true,
+						SerializationMethod = SerializationMethod.Array
+					},
+					typeof( Issue145Class )
+				).ToArray();
+			foreach ( var result in results )
+			{
+				File.Delete( result.FilePath );
+			}
+		}
+
+		[DataContract]
+		public class Issue145Class
+		{
+			[DataMember( Order = 0 )]
+			public int MyProperty1 { get; set; }
+			[DataMember( Order = 2 )]
+			public int MyProperty2 { get; set; }
+		}
+#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY
 	}
 }

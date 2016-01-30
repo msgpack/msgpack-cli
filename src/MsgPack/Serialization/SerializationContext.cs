@@ -113,6 +113,8 @@ namespace MsgPack.Serialization
 		private readonly ConcurrentDictionary<Type, object> _typeLock;
 #endif // SILVERLIGHT || NETFX_35 || UNITY
 
+		private readonly object _generationLock;
+
 		/// <summary>
 		///		Gets the current <see cref="SerializerRepository"/>.
 		/// </summary>
@@ -541,6 +543,7 @@ namespace MsgPack.Serialization
 #else
 			this._typeLock = new ConcurrentDictionary<Type, object>();
 #endif // SILVERLIGHT || NETFX_35 || UNITY
+			this._generationLock = new object();
 			this._defaultCollectionTypes = new DefaultConcreteTypeRepository();
 #if !XAMIOS &&!UNITY
 			this._generatorOption = SerializationMethodGeneratorOption.Fast;
@@ -615,58 +618,39 @@ namespace MsgPack.Serialization
 				return serializer;
 			}
 
-			object aquiredLock = null;
 			bool lockTaken = false;
-			try
+			lock ( this._generationLock )
 			{
-				try { }
-				finally
+				// Re-get to check because other thread might create the serializer when I wait the lock.
+				serializer = this._serializers.Get<T>( this, providerParameter );
+
+				if ( serializer != null )
 				{
-					var newLock = new object();
-#if SILVERLIGHT || NETFX_35 || UNITY
-					Monitor.Enter( newLock );
-					try
-					{
-						lock ( this._typeLock )
-						{
-							lockTaken = !this._typeLock.TryGetValue( typeof( T ), out aquiredLock );
-							if ( lockTaken )
-							{
-								aquiredLock = newLock;
-								this._typeLock.Add( typeof( T ), newLock );
-							}
-						}
-#else
-					bool newLockTaken = false;
-					try
-					{
-						Monitor.Enter( newLock, ref newLockTaken );
-						aquiredLock = this._typeLock.GetOrAdd( typeof( T ), _ => newLock );
-						lockTaken = newLock == aquiredLock;
-#endif // if  SILVERLIGHT || NETFX_35 || UNITY
-					}
+					return serializer;
+				}
+
+				try
+				{
+					try {}
 					finally
 					{
 #if SILVERLIGHT || NETFX_35 || UNITY
-						if ( !lockTaken )
-#else
-						if ( !lockTaken && newLockTaken )
-#endif // if SILVERLIGHT || NETFX_35 || UNITY
+						lock ( this._typeLock )
 						{
-							// Release the lock which failed to become 'primary' lock.
-							Monitor.Exit( newLock );
+							var typeLock = new object();
+							object aquiredLock;
+							lockTaken = !this._typeLock.TryGetValue( typeof( T ), out aquiredLock );
+							if ( lockTaken )
+							{
+								this._typeLock.Add( typeof( T ), typeLock );
+							}
 						}
+#else
+						var typeLock = new object();
+						var aquiredTypeLock = this._typeLock.GetOrAdd( typeof( T ), _ => typeLock );
+						lockTaken = typeLock == aquiredTypeLock;
+#endif // if  SILVERLIGHT || NETFX_35 || UNITY
 					}
-				}
-
-				if ( Monitor.TryEnter( aquiredLock ) )
-				{
-					// Decrement monitor counter.
-					Monitor.Exit( aquiredLock );
-
-#if DEBUG && !NETFX_40 && !NETFX_35 && !SILVERLIGHT && !UNITY
-					Contract.Assert( Monitor.IsEntered( aquiredLock ), "Monitor.IsEntered(aquiredLock)" );
-#endif // DEBUG && !NETFX_40 && !NETFX_35 !SILVERLIGHT && && !UNITY
 
 					if ( lockTaken )
 					{
@@ -697,9 +681,6 @@ namespace MsgPack.Serialization
 					else
 					{
 						// This thread owns existing lock -- thus, constructing self-composite type.
-
-						// Prevent release owned lock.
-						aquiredLock = null;
 						return new LazyDelegatingMessagePackSerializer<T>( this, providerParameter );
 					}
 
@@ -746,7 +727,7 @@ namespace MsgPack.Serialization
 						provider,
 						nullableType,
 						nullableSerializerProvider,
-						SerializerRegistrationOptions.WithNullable 
+						SerializerRegistrationOptions.WithNullable
 					);
 #else
 					this._serializers.Register(
@@ -757,40 +738,25 @@ namespace MsgPack.Serialization
 						SerializerRegistrationOptions.None
 					);
 #endif // !UNITY
-				}
-				else
-				{
-					// Wait creation by other thread.
-					// Acquire as 'waiting' lock.
-					Monitor.Enter( aquiredLock );
-				}
 
-				// Re-get to avoid duplicated registration and handle provider parameter or get the one created by prececing thread.
-				// If T is null and schema is not provided or default schema is provided, then exception will be thrown here from the new provider.
-				return this._serializers.Get<T>( this, providerParameter );
-			}
-			finally
-			{
-				if ( lockTaken )
+					// Re-get to avoid duplicated registration and handle provider parameter or get the one created by prececing thread.
+					// If T is null and schema is not provided or default schema is provided, then exception will be thrown here from the new provider.
+					return this._serializers.Get<T>( this, providerParameter );
+				}
+				finally
 				{
+					if ( lockTaken )
+					{
 #if SILVERLIGHT || NETFX_35 || UNITY
 					lock ( this._typeLock )
 					{
 						this._typeLock.Remove( typeof( T ) );
 					}
 #else
-					object dummy;
-					this._typeLock.TryRemove( typeof( T ), out dummy );
+						object dummy;
+						this._typeLock.TryRemove( typeof( T ), out dummy );
 #endif // if SILVERLIGHT || NETFX_35 || UNITY
-				}
-
-				if ( aquiredLock != null )
-				{
-					// Release primary lock or waiting lock.
-					Monitor.Exit( aquiredLock );
-#if DEBUG && !NETFX_40 && !NETFX_35 && !SILVERLIGHT && !UNITY
-					Contract.Assert( !Monitor.IsEntered( aquiredLock ), "!Monitor.IsEntered(aquiredLock)" );
-#endif // DEBUG && !NETFX_40 && !NETFX_35 && !SILVERLIGHT && !UNITY
+					}
 				}
 			}
 		}
@@ -1000,7 +966,7 @@ namespace MsgPack.Serialization
 
 			// ReSharper disable UnusedMember.Local
 			// This method is invoked via Reflection on SerializerGetter.Get().
-			public static ISerializer Get( SerializationContext context, object providerParameter )
+			public static IMessagePackSingleObjectSerializer Get( SerializationContext context, object providerParameter )
 			{
 				return _func( context, providerParameter );
 			}
