@@ -486,7 +486,7 @@ namespace MsgPack.Serialization
 						foreach (
 							var dependentType in
 								SerializationTarget.Prepare( context, type )
-								.Members.SelectMany( m => ExtractElementTypes( context, configuration, m.Member.GetMemberValueType() ) ) 
+								.Members.Where( m => m.Member != null ).SelectMany( m => ExtractElementTypes( context, configuration, m.Member.GetMemberValueType() ) ) 
 						)
 						{
 							yield return dependentType;
