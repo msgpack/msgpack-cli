@@ -61,7 +61,7 @@ private void GenerateCore( string serializationMethod, string emitterFlavor, boo
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -89,6 +89,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 <#+
 	if ( !forIos )
@@ -149,6 +153,15 @@ namespace MsgPack.Serialization
 		[SetUp]
 		public void SetUp()
 		{
+<#+
+		if ( emitterFlavor == "ExpressionBased" )
+		{
+#>
+#warning TODO: true async
+			SerializerDebugging.IsNaiveAsyncAllowed = true;
+<#+
+		}
+#>
 			SerializerDebugging.DeletePastTemporaries();
 			//SerializerDebugging.TraceEnabled = true;
 			//SerializerDebugging.DumpEnabled = true;
@@ -193,16 +206,8 @@ namespace MsgPack.Serialization
 <#+
 	} // if !forIos
 #>
-		private void TestEnumForByName<T>( SerializationContext context, T value, string property )
+		private static void TestEnumForByNameCore<T>( Stream stream, T value, T deserialized, string property )
 		{
-			var serializer = context.GetSerializer<T>();
-
-			using ( var stream = new MemoryStream() )
-			{
-				serializer.Pack( stream, value );
-				stream.Position = 0;
-				var deserialized = serializer.Unpack( stream );
-
 				if ( property == null )
 				{
 					Assert.That( deserialized, Is.EqualTo( value ) );
@@ -253,27 +258,9 @@ namespace MsgPack.Serialization
 	}
 #>
 				}
-			}
 		}
 
-		private void TestEnumForByName( SerializationContext context, Type builtType, params string[] builtMembers )
-		{
-			var serializer = context.GetSerializer( builtType );
-			var value = Enum.Parse( builtType, String.Join( ",", builtMembers ) );
-
-			using ( var stream = new MemoryStream() )
-			{
-				serializer.PackTo( Packer.Create( stream, false ), value );
-				stream.Position = 0;
-				var deserialized = serializer.Unpack( stream );
-
-				Assert.That( deserialized, Is.EqualTo( value ) );
-				stream.Position = 0;
-				Assert.That( Unpacking.UnpackString( stream ), Is.EqualTo( value.ToString() ) );
-			}
-		}
-
-		private void TestEnumForByUnderlyingValue<T>( SerializationContext context, T value, string property )
+		private static void TestEnumForByName<T>( SerializationContext context, T value, string property )
 		{
 			var serializer = context.GetSerializer<T>();
 
@@ -282,6 +269,29 @@ namespace MsgPack.Serialization
 				serializer.Pack( stream, value );
 				stream.Position = 0;
 				var deserialized = serializer.Unpack( stream );
+				TestEnumForByNameCore( stream, value, deserialized, property );
+			}
+		}
+
+#if FEATURE_TAP
+
+		private static async Task TestEnumForByNameAsync<T>( SerializationContext context, T value, string property )
+		{
+			var serializer = context.GetSerializer<T>();
+
+			using ( var stream = new MemoryStream() )
+			{
+				await serializer.PackAsync( stream, value, CancellationToken.None ).ConfigureAwait( false );
+				stream.Position = 0;
+				var deserialized = await serializer.UnpackAsync( stream, CancellationToken.None ).ConfigureAwait( false );
+				TestEnumForByNameCore( stream, value, deserialized, property );
+			}
+		}
+
+#endif // FEATURE_TAP
+
+		private static void TestEnumForByUnderlyingValueCore<T>( Stream stream, T value, T deserialized, string property )
+		{
 
 				if ( property == null )
 				{
@@ -337,29 +347,38 @@ namespace MsgPack.Serialization
 	}
 #>
 				}
-			}
 		}
 
-		private void TestEnumForByUnderlyingValue( SerializationContext context, Type builtType, params string[] builtMembers )
+		private static void TestEnumForByUnderlyingValue<T>( SerializationContext context, T value, string property )
 		{
-			var serializer = context.GetSerializer( builtType );
-			var value = ( IFormattable )Enum.Parse( builtType, String.Join( ",", builtMembers ) );
+			var serializer = context.GetSerializer<T>();
 
 			using ( var stream = new MemoryStream() )
 			{
-				serializer.PackTo( Packer.Create( stream, false ), value );
+				serializer.Pack( stream, value );
 				stream.Position = 0;
 				var deserialized = serializer.Unpack( stream );
-
-				Assert.That( deserialized, Is.EqualTo( value ) );
-				stream.Position = 0;
-				var result = Unpacking.UnpackObject( stream );
-				Assert.That( 
-					result.ToString().Equals( value.ToString( "D", null ) ),
-					result + " == " + value.ToString( "D", null ) 
-				);
+				TestEnumForByUnderlyingValueCore( stream, value, deserialized, property );
 			}
 		}
+
+#if FEATURE_TAP
+
+		private static async Task TestEnumForByUnderlyingValueAsync<T>( SerializationContext context, T value, string property )
+		{
+			var serializer = context.GetSerializer<T>();
+
+			using ( var stream = new MemoryStream() )
+			{
+				await serializer.PackAsync( stream, value, CancellationToken.None ).ConfigureAwait( false );
+				stream.Position = 0;
+				var deserialized = await serializer.UnpackAsync( stream, CancellationToken.None ).ConfigureAwait( false );
+				TestEnumForByUnderlyingValueCore( stream, value, deserialized, property );
+			}
+		}
+
+
+#endif // FEATURE_TAP
 
 <#+
 	foreach ( var testCase in testCases )
@@ -400,6 +419,47 @@ namespace MsgPack.Serialization
 #>
 		}
 <#+
+
+		if ( testCase.Item1 == null && testCase.Item3 == null )
+		{
+			// Most normal case, so let's test async.
+#>
+
+#if FEATURE_TAP
+
+		[Test]
+		public async Task TestAsyncSerializationMethod_ContextIs<#= testCase.Item1 ?? "Default" #>_TypeIs<#= testCase.Item2 ?? "None" #>_MemberIs<#= testCase.Item3 ?? "None" #>()
+		{
+			var context = this.GetSerializationContext();
+<#+
+		if ( testCase.Item1 != null )
+		{
+#>
+			context.EnumSerializationMethod = EnumSerializationMethod.<#= testCase.Item1 #>;
+			try
+			{
+<#+
+		}
+#>
+			await <#= testCase.Item1 != null ? "\t" : "" #>TestEnumFor<#= testCase.Item4 #>Async( context, <#= testCase.Item3 != null ? "new EnumMemberObject()" : "Enum" + ( testCase.Item2 ?? "Default" ) + ".Foo" #>, <#= testCase.Item3 == null ? "null" : "\"" + ( testCase.Item2 ?? "Default" ) + ( testCase.Item3 ?? "NoAttribute" ) + "Property\""  #> );
+<#+
+		if ( testCase.Item1 != null )
+		{
+#>
+			}
+			finally
+			{
+				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			}
+<#+
+		}
+#>
+		}
+
+#endif // FEATURE_TAP
+
+<#+
+		}
 	}
 
 	foreach ( var underlyingType in underlyingTypes )
@@ -407,6 +467,7 @@ namespace MsgPack.Serialization
 		CreateEnumTest( underlyingType.Item2, false, true );
 	}
 #>
+
 	}
 }
 <#+
