@@ -472,9 +472,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static void VerifyKeyUniqueness( IList<SerializingMember> result )
+		private static void VerifyKeyUniqueness(List<SerializingMember> result )
 		{
-			var duplicated = new Dictionary<string, List<MemberInfo>>();
+            var duplicated = new Dictionary<string, List<SerializingMember>>();
 			var existents = new Dictionary<string, SerializingMember>();
 			foreach ( var member in result )
 			{
@@ -489,37 +489,41 @@ namespace MsgPack.Serialization
 				}
 				catch ( ArgumentException )
 				{
-					List<MemberInfo> list;
+                    List<SerializingMember> list;
 					if ( duplicated.TryGetValue( member.Contract.Name, out list ) )
 					{
-						list.Add( member.Member );
+						list.Add( member );
 					}
 					else
 					{
-						duplicated.Add( member.Contract.Name, new List<MemberInfo> { existents[ member.Contract.Name ].Member, member.Member } );
+                        duplicated.Add(member.Contract.Name, new List<SerializingMember> { existents[member.Contract.Name], member });
 					}
 				}
 			}
 
 			if ( duplicated.Count > 0 )
 			{
-				throw new InvalidOperationException(
-					String.Format(
-						CultureInfo.CurrentCulture,
-						"Some member keys specified with custom attributes are duplicated. Details: {{{0}}}",
-						String.Join(
-							",",
-							duplicated.Select(
-								kv => String.Format(
-									CultureInfo.CurrentCulture,
-									"\"{0}\":[{1}]",
-									kv.Key,
-									String.Join( ",", kv.Value.Select( m => String.Format( CultureInfo.InvariantCulture, "{0}.{1}({2})", m.DeclaringType, m.Name, ( m is FieldInfo ) ? "Field" : "Property" ) ).ToArray() )
-								)
-							).ToArray()
-						)
-					)
-				);
+			    foreach (KeyValuePair<string, List<SerializingMember>> kvp in duplicated)
+			    {
+			        foreach (var memberInfo in kvp.Value)
+			        {
+			            if (memberInfo.Member.DeclaringType != typeof (object))
+			            {
+			                foreach (var derived in kvp.Value)
+			                {
+			                    if (memberInfo.Member == derived.Member)
+			                    {
+			                        continue;
+			                    }
+
+			                    if (memberInfo.Member.DeclaringType.IsSubclassOf(derived.Member.DeclaringType))
+			                    {
+                                    result.Remove(derived);
+			                    }
+			                }
+			            }
+			        }
+			    }
 			}
 		}
 
