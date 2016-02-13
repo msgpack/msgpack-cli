@@ -37,6 +37,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting;
 using System.Runtime.Serialization;
 
 using MsgPack.Serialization.DefaultSerializers;
@@ -503,8 +504,11 @@ namespace MsgPack.Serialization
 
 			if ( duplicated.Count > 0 )
 			{
+                //strip out any properties that have the new keyword or are overriding a virtual
+			    var removeKeys = new List<string>();
 			    foreach (KeyValuePair<string, List<SerializingMember>> kvp in duplicated)
 			    {
+                    int removed = 0;
 			        foreach (var memberInfo in kvp.Value)
 			        {
 			            if (memberInfo.Member.DeclaringType != typeof (object))
@@ -519,11 +523,41 @@ namespace MsgPack.Serialization
 			                    if (memberInfo.Member.DeclaringType.IsSubclassOf(derived.Member.DeclaringType))
 			                    {
                                     result.Remove(derived);
+			                        removed++;
 			                    }
 			                }
 			            }
 			        }
+			        if (kvp.Value.Count - removed == 1)
+			        {
+			            removeKeys.Add(kvp.Key);
+			        }
 			    }
+			    foreach (var key in removeKeys)
+			    {
+			        duplicated.Remove(key);
+			    }
+
+                if (duplicated.Count > 0)
+                { 
+                    throw new InvalidOperationException(
+                        String.Format(
+                            CultureInfo.CurrentCulture,
+                            "Some member keys specified with custom attributes are duplicated. Details: {{{0}}}",
+                            String.Join(
+                                ",",
+                                duplicated.Select(
+                                    kv => String.Format(
+                                        CultureInfo.CurrentCulture,
+                                        "\"{0}\":[{1}]",
+                                        kv.Key,
+                                        String.Join(",", kv.Value.Select(m => String.Format(CultureInfo.InvariantCulture, "{0}.{1}({2})", m.Member.DeclaringType, m.Member.Name, (m is FieldInfo) ? "Field" : "Property")).ToArray())
+                                    )
+                                ).ToArray()
+                            )
+                        )
+                    );
+                }
 			}
 		}
 
