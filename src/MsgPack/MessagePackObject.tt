@@ -24,8 +24,8 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.IO" #>
 <#
-var __typeName = "MessagePackObject";
-var __types = 
+var typeName = "MessagePackObject";
+var types = 
 	new Dictionary<object, byte>
 	{
 		{ typeof( bool ), 1 },
@@ -43,7 +43,7 @@ var __types =
 		{ typeof( byte[] ), 0x10 | 4 },
 		{ "MessagePackExtendedTypeObject", 0x20 | 1 },
 	};
-Func<object, bool> __IsNotCLSCompliant =
+Func<object, bool> IsNotCLSCompliant =
 	input => 		
 	{
 		var type = ( input as Type ) ?? typeof( object );
@@ -58,7 +58,7 @@ Func<object, bool> __IsNotCLSCompliant =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -80,28 +80,28 @@ Func<object, bool> __IsNotCLSCompliant =
 
 using System;
 #if !UNITY
-#if XAMIOS || XAMDROID || CORE_CLR
+#if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID || CORE_CLR
+#endif // CORE_CLR
 #endif // !UNITY
 using System.Runtime.InteropServices;
 
 namespace MsgPack
 {
-	// This file generated from <#= __typeName #>.tt T4Template.
-	// Do not modify this file. Edit <#= __typeName #>.tt instead.
+	// This file generated from <#= typeName #>.tt T4Template.
+	// Do not modify this file. Edit <#= typeName #>.tt instead.
 
 	/// <summary>
 	///		Represents deserialized object of MsgPack.
 	/// </summary>
 	[StructLayout( LayoutKind.Auto )]
-	public partial struct <#= __typeName #> : IEquatable<<#= __typeName #>>, IPackable
+	public partial struct <#= typeName #> : IEquatable<<#= typeName #>>
 	{
 		#region -- Constructors --
 <#
-foreach(var t in __types.Keys )
+foreach(var t in types.Keys )
 {
 #>
 <#
@@ -113,10 +113,10 @@ foreach(var t in __types.Keys )
 		/// </summary>
 		/// <param name="value">A bytes array to be wrapped.</param>
 		/// <remarks>
-		///		This constructor invokes <see cref="<#= __typeName #>(Byte[],Boolean)" /> with <c>false</c>, that means if you pass tha bytes array which is valid utf-8, resulting object can be <see cref="String" />,
+		///		This constructor invokes <see cref="<#= typeName #>(Byte[],Boolean)" /> with <c>false</c>, that means if you pass tha bytes array which is valid utf-8, resulting object can be <see cref="String" />,
 		///		and its <see cref="UnderlyingType" /> should be <see cref="String" />.
 		/// </remarks>
-		public <#= __typeName #>( <#= GetTypeName( t ) #> value )
+		public <#= typeName #>( <#= GetTypeName( t ) #> value )
 			: this( value, false ) { }
 
 		/// <summary>
@@ -131,18 +131,18 @@ foreach(var t in __types.Keys )
 		///		then the resulting object can be <see cref="String" />,
 		///		and its <see cref="UnderlyingType" /> should be <see cref="String" />.
 		/// </remarks>
-		public <#= __typeName #>( <#= GetTypeName( t ) #> value, bool isBinary )
+		public <#= typeName #>( <#= GetTypeName( t ) #> value, bool isBinary )
 <#
 	}
 	else
 	{
 #>
 		/// <summary>
-		///		Initializes a new instance of the <see cref="<#= __typeName #>"/> type which wraps <see cref="<#= GetTypeName( t ) #>"/> instance.
+		///		Initializes a new instance of the <see cref="<#= typeName #>"/> type which wraps <see cref="<#= GetTypeName( t ) #>"/> instance.
 		/// </summary>
-		/// <param name="value">A <see cref="<#= __typeName #>"/> value to be wrapped.</param>
+		/// <param name="value">A <see cref="<#= typeName #>"/> value to be wrapped.</param>
 <#
-		if( __IsNotCLSCompliant( t ) )
+		if( IsNotCLSCompliant( t ) )
 		{
 #>
 #if !UNITY
@@ -151,7 +151,7 @@ foreach(var t in __types.Keys )
 <#
 		}
 #>
-		public <#= __typeName #>( <#= GetTypeName( t ) #> value )
+		public <#= typeName #>( <#= GetTypeName( t ) #> value )
 <#
 	}
 #>
@@ -174,7 +174,7 @@ foreach(var t in __types.Keys )
 	}
 	else
 	{
-		this.GenerateConstructor( __typeName, "this", t );
+		this.GenerateConstructor( typeName, "this", t );
 	}
 #>
 		}
@@ -186,7 +186,7 @@ foreach(var t in __types.Keys )
 
 		#region -- Primitive Type Conversion Methods --
 <#
-foreach(var t in __types.Keys )
+foreach(var t in types.Keys )
 {
 #>
 
@@ -195,7 +195,7 @@ foreach(var t in __types.Keys )
 		/// </summary>
 		/// <returns><#= t.ToString() == typeof( byte[] ).ToString() ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance corresponds to this instance.</returns>
 <#
-if( __IsNotCLSCompliant( t ) )
+if( IsNotCLSCompliant( t ) )
 {
 #>
 #if !UNITY
@@ -219,17 +219,17 @@ if( __IsNotCLSCompliant( t ) )
 		#region -- Conversion Operator Overloads --
 
 <#
-foreach(var t in __types.Keys )
+foreach(var t in types.Keys )
 {
 #>
 
 		/// <summary>
-		///		Convert <#= t.ToString() == typeof( byte[] ).ToString() ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #>instance to <see cref="<#= __typeName #>"/> instance.
+		///		Convert <#= t.ToString() == typeof( byte[] ).ToString() ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #>instance to <see cref="<#= typeName #>"/> instance.
 		/// </summary>
 		/// <param name="value"><#= t.ToString() == typeof( byte[] ).ToString() ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.</param>
-		/// <returns><see cref="<#=  __typeName #>"/> instance corresponds to <paramref name="value"/>.</returns>
+		/// <returns><see cref="<#=  typeName #>"/> instance corresponds to <paramref name="value"/>.</returns>
 <#
-if( __IsNotCLSCompliant( t ) )
+if( IsNotCLSCompliant( t ) )
 {
 #>
 #if !UNITY
@@ -238,11 +238,11 @@ if( __IsNotCLSCompliant( t ) )
 <#
 }
 #>
-		public static implicit operator <#= __typeName #>( <#= GetTypeName( t ) #> value )
+		public static implicit operator <#= typeName #>( <#= GetTypeName( t ) #> value )
 		{
-			<#= __typeName #> result;
+			<#= typeName #> result;
 <#
-	this.GenerateConstructor( __typeName, "result", t );
+	this.GenerateConstructor( typeName, "result", t );
 #>
 			return result;
 		}
@@ -251,17 +251,17 @@ if( __IsNotCLSCompliant( t ) )
 #>
 
 <#
-foreach(var t in __types.Keys )
+foreach(var t in types.Keys )
 {
 #>
 
 		/// <summary>
 		///		Convert this instance to <#= t.ToString() == typeof( byte[] ).ToString() ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.
 		/// </summary>
-		/// <param name="value"><see cref="<#= __typeName #>"/> instance.</param>
+		/// <param name="value"><see cref="<#= typeName #>"/> instance.</param>
 		/// <returns><#= t.ToString() == typeof( byte[] ).ToString() ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance corresponds to <paramref name="value"/>.</returns>
 <#
-	if( __IsNotCLSCompliant( t ) )
+	if( IsNotCLSCompliant( t ) )
 	{
 #>
 #if !UNITY
@@ -270,7 +270,7 @@ foreach(var t in __types.Keys )
 <#
 	}
 #>
-		public static explicit operator <#= GetTypeName( t ) #>( <#= __typeName #> value )
+		public static explicit operator <#= GetTypeName( t ) #>( <#= typeName #> value )
 		{
 <#
 	this.GenerateAsT( "value", t, true );
