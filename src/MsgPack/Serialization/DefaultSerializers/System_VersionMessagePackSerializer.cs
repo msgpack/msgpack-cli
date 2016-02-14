@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -42,6 +42,40 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override Version UnpackFromCore( Unpacker unpacker )
 		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( Version ), 4 );
+			}
+
+			long length = unpacker.LastReadData.AsInt64();
+			if ( length != 4 )
+			{
+				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( Version ), 4 );
+			}
+
+			int major, minor, build, revision;
+			if ( !unpacker.ReadInt32( out major ) )
+			{
+				SerializationExceptions.ThrowMissingItem( 0, unpacker );
+			}
+
+			if ( !unpacker.ReadInt32( out minor ) )
+			{
+				SerializationExceptions.ThrowMissingItem( 1, unpacker );
+			}
+
+			if ( !unpacker.ReadInt32( out build ) )
+			{
+				SerializationExceptions.ThrowMissingItem( 2, unpacker );
+			}
+
+			if ( !unpacker.ReadInt32( out revision ) )
+			{
+				SerializationExceptions.ThrowMissingItem( 3, unpacker );
+			}
+
+			return new Version( major, minor, build, revision );
+		}
 			long length = unpacker.LastReadData.AsInt64();
 			int[] array = new int[ 4 ];
 			for ( int i = 0; i < length && i < 4; i++ )

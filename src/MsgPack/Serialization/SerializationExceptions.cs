@@ -895,5 +895,31 @@ namespace MsgPack.Serialization
 		{
 			throw new SerializationException( message, innerException );
 		}
+
+		internal static void ThrowInvalidArrayItemsCount( Unpacker unpacker, Type targetType, int requiredCount )
+		{
+			throw
+				unpacker.IsCollectionHeader
+					? new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Cannot deserialize type '{0}' because stream is not {1} elements array. Current type is {2} and its element count is {3}.",
+							targetType,
+							requiredCount,
+							unpacker.IsArrayHeader ? "array" : "map",
+							unpacker.LastReadData.AsInt64()
+						)
+					)
+					: new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Cannot deserialize type '{0}' because stream is not {1} elements array. Current type is {2}.",
+							targetType,
+							requiredCount,
+							unpacker.LastReadData.UnderlyingType
+						)
+					);
+
+		}
 	}
 }
