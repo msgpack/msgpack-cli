@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MsgPack</RootNamespace>
     <AssemblyName>MsgPack</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -224,6 +224,11 @@
     <Compile Include="Serialization\DefaultSerializers\AbstractDictionaryMessagePackSerializer`3.cs" />
     <Compile Include="Serialization\DefaultSerializers\AbstractReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\DefaultSerializers\AbstractReadOnlyDictionaryMessagePackSerializer`3.cs" />
+    <Compile Include="Serialization\DefaultSerializers\ArraySerializer.Primitives.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArraySerializer.Primitives.tt</DependentUpon>
+    </Compile>
     <Compile Include="Serialization\DefaultSerializers\DateTimeMessagePackSerializerProvider.cs" />
     <Compile Include="Serialization\DefaultSerializers\DateTimeOffsetMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\DateTimeOffsetMessagePackSerializerProvider.cs" />
@@ -234,8 +239,14 @@
     </Compile>
     <Compile Include="Serialization\DefaultSerializers\NativeDateTimeMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\SimdTypeSerializers.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SimdTypeSerializers.tt</DependentUpon>
+    </Compile>
     <Compile Include="Serialization\DefaultSerializers\System_DBNullMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Globalization_CultureInfoMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\UnixEpocDateTimeMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
     <Compile Include="Serialization\EmittingSerializers\ILMethodConctext.cs" />
@@ -315,11 +326,6 @@
     <Compile Include="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
     <Compile Include="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
     <Compile Include="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />
-    <Compile Include="Serialization\DefaultSerializers\ArraySerializer.Primitives.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ArraySerializer.Primitives.tt</DependentUpon>
-    </Compile>
     <Compile Include="Serialization\DefaultSerializers\MsgPack_MessagePackObjectDictionaryMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_List_1MessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs" />
@@ -533,8 +539,8 @@
       <LastGenOutput>DefaultSerializers.cs</LastGenOutput>
     </None>
     <None Include="Serialization\DefaultSerializers\ArraySerializer.Primitives.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArraySerializer.Primitives.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
     </None>
     <None Include="Serialization\FromExpression.ToMethod.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -606,6 +612,10 @@
     <Content Include="Packer.Packing.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Packer.Packing.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\DefaultSerializers\SimdTypeSerializers.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SimdTypeSerializers.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

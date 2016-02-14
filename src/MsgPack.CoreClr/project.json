@@ -11,7 +11,11 @@
     "System.Reflection.Emit": "4.0.0",
     "System.Reflection.Emit.ILGeneration": "4.0.0",
     "System.Runtime.Serialization.Primitives": "4.0.0"
+    "System.Numerics.Vectors": "4.1.0",
+    "System.Security.Cryptography.Primitives": "4.0.0-beta-23409",
   },
+    "../MsgPack/Serialization/DefaultSerializers/SimdTypeSerializers.cs",
+    "../MsgPack/Serialization/DefaultSerializers/System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs",
   "frameworks": {
     "dotnet": {
       "imports": "portable-net452"

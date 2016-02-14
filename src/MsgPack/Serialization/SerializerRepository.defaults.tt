@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -32,9 +32,9 @@
 <#@ import namespace="System.Reflection" #>
 <#@ import namespace="System.Text" #>
 <#
-var __typeName = "SerializerRepository";
+var typeName = "SerializerRepository";
 // Copied from DefaultSerializers.tt
-var __excludes =
+var excludes =
 	new HashSet<Type>()
 	{
 		// Special(manual) handlings on builtin marshaler:
@@ -122,19 +122,10 @@ var __excludes =
 		typeof( System.Threading.SpinWait ),
 		typeof( System.Threading.Tasks.ParallelLoopResult ),
 		// .NET 4.6 Types -- comment out when you face T4Template problems
-		typeof( System.Security.Cryptography.HashAlgorithmName ),
 		typeof( System.Diagnostics.Tracing.EventSourceOptions ),
 		typeof( System.Threading.AsyncLocalValueChangedArgs<> ),
-		// SIMD types -- should be supported soon
-		typeof( System.Numerics.Matrix3x2 ),
-		typeof( System.Numerics.Matrix4x4 ),
-		typeof( System.Numerics.Plane ),
-		typeof( System.Numerics.Quaternion ),
-		typeof( System.Numerics.Vector2 ),
-		typeof( System.Numerics.Vector3 ),
-		typeof( System.Numerics.Vector4 ),
 	};
-var __winRTExcludes =
+var winRTExcludes =
 	new HashSet<string>()
 	{
 		"System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken",
@@ -150,7 +141,7 @@ var __winRTExcludes =
 		"System.Reflection.Emit.ExceptionHandler",
 		"System.Net.Sockets.UdpReceiveResult",
 	};
-var __structTypes = 
+var structTypes = 
 	typeof( object ).Assembly.GetTypes()
 	.Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
 	.Concat(
@@ -159,10 +150,10 @@ var __structTypes =
 		typeof( Enumerable ).Assembly.GetTypes().Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
 	).Concat(
 		typeof( BigInteger ).Assembly.GetTypes().Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
-	).Except( __excludes )
-	.Where( t => !__winRTExcludes.Contains( t.FullName ) )
+	).Except( excludes )
+	.Where( t => !winRTExcludes.Contains( t.FullName ) )
 	.ToArray();
-var __classTypes =
+var classTypes =
 	new[]
 	{
 		typeof( ArraySegment<> ),
@@ -178,18 +169,30 @@ var __classTypes =
 		typeof( Version ),		
 		typeof( NameValueCollection ),		
 	};
-var __tuples =
+var tuples =
 	typeof( Tuple<> ).Assembly
 	.GetTypes()
 	.Where( type => type.IsGenericType && type.Namespace == typeof( Tuple<> ).Namespace && type.Name == "Tuple" )
 	.ToArray();
-var __notInNet35s =
+var notInNet45s =
+	new HashSet<Type>()
+	{
+		typeof( System.Numerics.Vector2 ),
+		typeof( System.Numerics.Vector3 ),
+		typeof( System.Numerics.Vector4 ),
+		typeof( System.Numerics.Matrix3x2 ),
+		typeof( System.Numerics.Matrix4x4 ),
+		typeof( System.Numerics.Plane ),
+		typeof( System.Numerics.Quaternion ),
+		typeof( System.Security.Cryptography.HashAlgorithmName ),
+	};
+var notInNet35s =
 	new HashSet<Type>()
 	{
 		typeof( System.Numerics.BigInteger ),
 		typeof( System.Numerics.Complex ),
 	};
-var __notInSLs =
+var notInSLs =
 	new HashSet<Type>()
 	{
 		typeof( System.Collections.Stack ),
@@ -198,18 +201,18 @@ var __notInSLs =
 		typeof( System.Collections.Specialized.NameValueCollection ),
 		typeof( System.Runtime.InteropServices.ComTypes.FILETIME ),
 	};
-var __inWinRTs =
+var inWinRTs =
 	new HashSet<Type>()
 	{
 		typeof( System.Runtime.InteropServices.ComTypes.FILETIME ),
 	};
-var __notInWPs =
+var notInWPs =
 	new HashSet<Type>()
 	{
 		typeof( System.Numerics.BigInteger ),
 		typeof( System.Numerics.Complex ),
 	};
-var __notInUnities =
+var notInUnities =
 	new HashSet<Type>
 	{
 		typeof( ArraySegment<> ),
@@ -220,7 +223,7 @@ var __notInUnities =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -257,13 +260,13 @@ using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization
 {
-	// This file generated from <#= __typeName #>.tt T4Template.
-	// Do not modify this file. Edit <#= __typeName #>.tt instead.
+	// This file generated from <#= typeName #>.tt T4Template.
+	// Do not modify this file. Edit <#= typeName #>.tt instead.
 
 	// ReSharper disable RedundantNameQualifier
-	partial class <#= __typeName #> 
+	partial class <#= typeName #> 
 	{
-		internal const int DefaultTableCapacity = <#= __structTypes.Length + __classTypes.Length + __tuples.Length + 17 #>;
+		internal const int DefaultTableCapacity = <#= structTypes.Length + classTypes.Length + 17 #>;
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This API is naturally coupled with many types" )]
 		internal static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable( SerializationContext ownerContext )
@@ -301,23 +304,23 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( DBNull ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_DBNullMessagePackSerializer( ownerContext ) );
 #endif // !NETFX_CORE
 <#
-foreach( Type __type in __structTypes )
+foreach( Type type in structTypes )
 {
-	if( __type.IsEnum )
+	if( type.IsEnum )
 	{
 		continue;
 	}
 	
-	if( __notInWPs.Contains( __type ) )
+	if( notInWPs.Contains( type ) )
 	{
 #>
 #if !WINDOWS_PHONE
 <#
 	}
 
-	if( __notInSLs.Contains( __type ) )
+	if( notInSLs.Contains( type ) )
 	{
-		if(__inWinRTs.Contains( __type ) )
+		if(inWinRTs.Contains( type ) )
 		{
 #>
 #if !SILVERLIGHT
@@ -331,40 +334,54 @@ foreach( Type __type in __structTypes )
 		}
 	}
 
-	if( __notInNet35s.Contains( __type ) )
+	if( notInNet45s.Contains( type ) )
+	{
+#>
+#if !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT && !NETFX_CORE && !XAMIOS && !XAMDROID
+<#
+	}
+
+	if( notInNet35s.Contains( type ) )
 	{
 #>
 #if !NETFX_35 && !UNITY
 <#
 	}
 
-	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	if ( type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
 #if !UNITY || MSGPACK_UNITY_FULL
 <#
 	}
 #>
-			dictionary.Add( typeof( <#= __type.FullName #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer( ownerContext ) );
+			dictionary.Add( typeof( <#= type.FullName #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer( ownerContext ) );
 <#
 
-	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	if ( type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
 #endif // !UNITY || MSGPACK_UNITY_FULL
 <#
 	}
 
-	if( __notInNet35s.Contains( __type ) )
+	if( notInNet35s.Contains( type ) )
 	{
 #>
 #endif // !NETFX_35 && !UNITY
 <#
 	}
 
-	if( __notInSLs.Contains( __type ) )
+	if( notInNet45s.Contains( type ) )
 	{
-		if(__inWinRTs.Contains( __type ) )
+#>
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT && !NETFX_CORE && !XAMIOS && !XAMDROID
+<#
+	}
+
+	if( notInSLs.Contains( type ) )
+	{
+		if(inWinRTs.Contains( type ) )
 		{
 #>
 #endif // !SILVERLIGHT
@@ -378,7 +395,7 @@ foreach( Type __type in __structTypes )
 		}
 	}
 
-	if( __notInWPs.Contains( __type ) )
+	if( notInWPs.Contains( type ) )
 	{
 #>
 #endif // !WINDOWS_PHONE
@@ -386,18 +403,18 @@ foreach( Type __type in __structTypes )
 	}
 }
 
-foreach( Type __type in __classTypes )
+foreach( Type type in classTypes )
 {
-	if( __notInWPs.Contains( __type ) )
+	if( notInWPs.Contains( type ) )
 	{
 #>
 #if !WINDOWS_PHONE
 <#
 	}
 
-	if( __notInSLs.Contains( __type ) )
+	if( notInSLs.Contains( type ) )
 	{
-		if(__inWinRTs.Contains( __type ) )
+		if(inWinRTs.Contains( type ) )
 		{
 #>
 #if !SILVERLIGHT
@@ -411,64 +428,78 @@ foreach( Type __type in __classTypes )
 		}
 	}
 
-	if( __notInNet35s.Contains( __type ) )
+	if( notInNet45s.Contains( type ) )
+	{
+#>
+#if !NETFX_40 && !NETFX_45
+<#
+	}
+
+	if( notInNet35s.Contains( type ) )
 	{
 #>
 #if !NETFX_35 && !UNITY
 <#
 	}
 
-	if( __notInUnities.Contains( __type) )
+	if( notInUnities.Contains( type) )
 	{
 #>
 #if !UNITY
 <#
 	}
 
-	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	if ( type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
 #if !UNITY || MSGPACK_UNITY_FULL
 <#
 	}
 	
-	if( __type.IsGenericTypeDefinition )
+	if( type.IsGenericTypeDefinition )
 	{
 #>
-			dictionary.Add( typeof( <#= ToCSharpTypeToken( __type ) #> ).TypeHandle, typeof( <#= __type.FullName.Replace( '`', '_' ).Replace( Type.Delimiter, '_' ) #>MessagePackSerializer<#= GetCSharpTypeArguments( __type ) #> ) );
+			dictionary.Add( typeof( <#= ToCSharpTypeToken( type ) #> ).TypeHandle, typeof( <#= type.FullName.Replace( '`', '_' ).Replace( Type.Delimiter, '_' ) #>MessagePackSerializer<#= GetCSharpTypeArguments( type ) #> ) );
 <#
 	}
 	else
 	{
 #>
-			dictionary.Add( typeof( <#= ToCSharpTypeToken( __type ) #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer( ownerContext ) );
+			dictionary.Add( typeof( <#= ToCSharpTypeToken( type ) #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer( ownerContext ) );
 <#
 	}
 	
-	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	if ( type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
 #endif // !UNITY || MSGPACK_UNITY_FULL
 <#
 	}
 
-	if( __notInUnities.Contains( __type) )
+	if( notInUnities.Contains( type) )
 	{
 #>
 #endif // !UNITY
 <#
 	}
 
-	if( __notInNet35s.Contains( __type ) )
+	if( notInNet35s.Contains( type ) )
 	{
 #>
 #endif // !NETFX_35 && !UNITY
 <#
 	}
 
-	if( __notInSLs.Contains( __type ) )
+	if( notInNet45s.Contains( type ) )
 	{
-		if(__inWinRTs.Contains( __type ) )
+#>
+#endif // !NETFX_40 && !NETFX_45
+<#
+	}
+
+	if( notInSLs.Contains( type ) )
+	{
+		if(inWinRTs.Contains( type ) )
 		{
 #>
 #endif // !SILVERLIGHT
@@ -482,19 +513,12 @@ foreach( Type __type in __classTypes )
 		}
 	}
 
-	if( __notInWPs.Contains( __type ) )
+	if( notInWPs.Contains( type ) )
 	{
 #>
 #endif // !WINDOWS_PHONE
 <#
 	}
-}
-	
-foreach( Type __tuple in __tuples )
-{
-#>
-			dictionary.Add( typeof( <#= ToCSharpTypeToken( __tuple ) #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __tuple.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer( ownerContext ) );
-<#
 }
 #>
 			return dictionary;
