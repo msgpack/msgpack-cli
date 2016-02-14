@@ -2,7 +2,7 @@
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -31,6 +31,10 @@ using System.Diagnostics.Contracts;
 #endif
 #endif // !UNITY
 using System.Runtime.Serialization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -58,5 +62,23 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			return DBNull.Value;
 		}
+
+#if FEATURE_TAP
+
+		protected internal override Task PackToAsyncCore( Packer packer, DBNull objectTree, CancellationToken cancellationToken )
+		{
+			return packer.PackNullAsync( cancellationToken );
+		}
+
+		protected internal override Task<DBNull> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( !unpacker.LastReadData.IsNil );
+#endif // DEBUG && !UNITY
+			throw new SerializationException( "DBNull value should be nil." );
+		}
+
+#endif // FEATURE_TAP
+
 	}
 }

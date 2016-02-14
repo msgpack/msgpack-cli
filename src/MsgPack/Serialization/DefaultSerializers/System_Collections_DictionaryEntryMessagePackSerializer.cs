@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,6 +20,10 @@
 
 using System;
 using System.Collections;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -121,5 +125,84 @@ namespace MsgPack.Serialization.DefaultSerializers
 				return new DictionaryEntry( key, value );
 			}
 		}
+
+#if FEATURE_TAP
+
+		protected internal override async Task PackToAsyncCore( Packer packer, DictionaryEntry objectTree, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( 2, cancellationToken ).ConfigureAwait( false );
+			await EnsureMessagePackObject( objectTree.Key ).PackToMessageAsync( packer, null, cancellationToken ).ConfigureAwait( false );
+			await EnsureMessagePackObject( objectTree.Value ).PackToMessageAsync( packer, null, cancellationToken ).ConfigureAwait( false );
+		}
+
+		protected internal override async Task<DictionaryEntry> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( unpacker.IsArrayHeader )
+			{
+				var key = await unpacker.ReadObjectAsync( cancellationToken ).ConfigureAwait( false );
+				if ( !key.IsSuccess )
+				{
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+				}
+
+				var value = await unpacker.ReadObjectAsync( cancellationToken ).ConfigureAwait( false );
+				if ( !value.IsSuccess )
+				{
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+				}
+
+				return new DictionaryEntry( key.Value, value.Value );
+			}
+			else
+			{
+				// Previous DictionaryEntry serializer accidentally pack it as map...
+				AsyncReadResult<MessagePackObject> key = default( AsyncReadResult<MessagePackObject> );
+				AsyncReadResult<MessagePackObject> value = default( AsyncReadResult<MessagePackObject> );
+
+				for ( var propertyName = await unpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false );
+					( !key.IsSuccess || !value.IsSuccess ) && propertyName.IsSuccess;
+					propertyName = await unpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false ) )
+				{
+					switch ( propertyName.Value )
+					{
+						case "Key":
+						{
+							key = await unpacker.ReadObjectAsync( cancellationToken ).ConfigureAwait( false );
+							if ( !key.IsSuccess )
+							{
+								SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+							}
+
+							break;
+						}
+						case "Value":
+						{
+							value = await unpacker.ReadObjectAsync( cancellationToken ).ConfigureAwait( false );
+							if ( !value.IsSuccess )
+							{
+								SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+							}
+
+							break;
+						}
+					}
+				}
+
+				if ( !key.IsSuccess )
+				{
+					SerializationExceptions.ThrowMissingProperty( "Key" );
+				}
+
+				if ( !value.IsSuccess )
+				{
+					SerializationExceptions.ThrowMissingProperty( "Value" );
+				}
+
+				return new DictionaryEntry( key.Value, value.Value );
+			}
+		}
+
+#endif // FEATURE_TAP
+
 	}
 }

@@ -85,6 +85,24 @@ namespace MsgPack.Serialization.Polymorphic
 
 #if FEATURE_TAP
 
+		protected internal override async Task PackToAsyncCore( Packer packer, T objectTree, CancellationToken cancellationToken )
+		{
+			await TypeInfoEncoder.EncodeAsync( packer, objectTree.GetType(), cancellationToken ).ConfigureAwait( false );
+			await this.GetActualTypeSerializer( objectTree.GetType() ).PackToAsync( packer, objectTree, cancellationToken ).ConfigureAwait( false );
+		}
+
+		protected internal override Task<T> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			return
+				TypeInfoEncoder.DecodeAsync<T>(
+					unpacker,
+					// ReSharper disable once ConvertClosureToMethodGroup
+					( u, c ) => TypeInfoEncoder.DecodeRuntimeTypeInfoAsync( u, c ), // Lamda capture is more efficient.
+					( t, u, c ) => this.GetActualTypeSerializer( t ).UnpackFromAsync( u, c ),
+					cancellationToken
+				);
+		}
+
 		async Task<object> IPolymorphicDeserializer.PolymorphicUnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			return await this.UnpackFromAsyncCore( unpacker, cancellationToken ).ConfigureAwait( false );

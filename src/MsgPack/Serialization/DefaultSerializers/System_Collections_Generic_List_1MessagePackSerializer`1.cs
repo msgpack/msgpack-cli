@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2015 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -30,6 +30,10 @@ using System.Collections.Generic;
 #if UNITY
 using System.Reflection;
 #endif // UNITY
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.CollectionSerializers;
 
@@ -89,6 +93,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 				}
+
 				if ( unpacker.IsCollectionHeader )
 				{
 					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
@@ -107,6 +112,60 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			return new List<T>( initialCapacity );
 		}
+
+#if FEATURE_TAP
+
+		protected internal override Task PackToAsyncCore( Packer packer, List<T> objectTree, CancellationToken cancellationToken )
+		{
+			return PackerUnpackerExtensions.PackCollectionAsyncCore( packer, objectTree, this._itemSerializer, cancellationToken );
+		}
+
+		protected internal override async Task<List<T>> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			var count = UnpackHelpers.GetItemsCount( unpacker );
+			var collection = new List<T>( count );
+			await this.UnpackToAsyncCore( unpacker, collection, count, cancellationToken ).ConfigureAwait( false );
+			return collection;
+		}
+
+		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, List<T> collection, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			return this.UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+		}
+
+		private async Task UnpackToAsyncCore( Unpacker unpacker, List<T> collection, int count, CancellationToken cancellationToken )
+		{
+			for ( int i = 0; i < count; i++ )
+			{
+				if ( !await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+				{
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+				}
+
+				if ( unpacker.IsCollectionHeader )
+				{
+					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
+					{
+						collection.Add( await this._itemSerializer.UnpackFromAsyncCore( subTreeUnpacker, cancellationToken ).ConfigureAwait( false ) );
+					}
+				}
+				else
+				{
+					collection.Add( await this._itemSerializer.UnpackFromAsyncCore( unpacker, cancellationToken ).ConfigureAwait( false ) );
+				}
+			}
+		}
+#endif // FEATURE_TAP
 	}
 #else
 	// ReSharper disable once InconsistentNaming

@@ -31,6 +31,10 @@ using System.Diagnostics.Contracts;
 #endif // CORE_CLR
 #endif // !UNITY
 using System.Runtime.Serialization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -97,5 +101,45 @@ namespace MsgPack.Serialization.DefaultSerializers
 				return MessagePackConvert.ToDateTimeOffset( unpacker.LastReadData.AsInt64() );
 			}
 		}
+
+#if FEATURE_TAP
+
+		protected internal override async Task PackToAsyncCore( Packer packer, DateTimeOffset objectTree, CancellationToken cancellationToken )
+		{
+			if ( this._conversion == DateTimeConversionMethod.Native )
+			{
+				await packer.PackArrayHeaderAsync( 2, cancellationToken ).ConfigureAwait( false );
+				await packer.PackAsync( objectTree.DateTime.ToBinary(), cancellationToken ).ConfigureAwait( false );
+				unchecked
+				{
+					await packer.PackAsync( ( short )( objectTree.Offset.Hours * 60 + objectTree.Offset.Minutes ), cancellationToken ).ConfigureAwait( false );
+				}
+			}
+			else
+			{
+#if DEBUG && !UNITY
+				Contract.Assert( this._conversion == DateTimeConversionMethod.UnixEpoc );
+#endif // DEBUG && !UNITY
+				await packer.PackAsync( MessagePackConvert.FromDateTimeOffset( objectTree ), cancellationToken ).ConfigureAwait( false );
+			}
+		}
+
+		protected internal override Task<DateTimeOffset> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			var tcs = new TaskCompletionSource<DateTimeOffset>();
+			try
+			{
+				tcs.SetResult( this.UnpackFromCore( unpacker ) );
+			}
+			catch ( Exception ex )
+			{
+				tcs.SetException( ex );
+			} 
+			
+			return tcs.Task;
+		}
+
+#endif // FEATURE_TAP
+
 	}
 }

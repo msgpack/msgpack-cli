@@ -214,6 +214,10 @@ var notInWPs =
 using System;
 using System.Globalization;
 using System.Runtime.Serialization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -393,6 +397,106 @@ foreach( var ctor in ctors )
 	}
 #>
 		}
+
+#if FEATURE_TAP
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		protected internal override async Task PackToAsyncCore( Packer packer, <#= type.FullName #> value, CancellationToken cancellationToken )
+		{
+<#
+	if ( asyncWorkArounds.ContainsKey( type ) )
+	{
+#>
+			await <#= asyncWorkArounds[ type ] #>
+<#
+	}
+	else if ( type.IsPrimitive )
+	{
+#>
+			await packer.PackAsync( value, cancellationToken ).ConfigureAwait( false );
+<#
+	}
+	else if ( ctors.Length != 1 )
+	{
+#>
+#error <#= type.FullName #> has <#= ctors.Length #> parameter constructors
+			/*
+<#
+foreach( var ctor in ctors )
+{
+#>
+			 * <#= ctor #>
+<#
+}
+#>
+			 */
+<#
+	}
+	else if ( IsMessagePackPrimitive( ctors[ 0 ].GetParameters()[ 0 ].ParameterType ) )
+	{
+#>
+			await packer.PackAsync( value.<#= Pascalize( ctors[ 0 ].GetParameters()[ 0 ].Name ) #>, cancellationToken ).ConfigureAwait( false );
+<#
+	}
+	else
+	{
+#>
+#error ParameterType '<#= ctors[ 0 ].GetParameters()[ 0 ].ParameterType #>' is not primitive.
+<#
+	}
+#>
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		protected internal override Task<#= "<" + type.FullName + ">" #> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+<#
+	if ( workArounds.ContainsKey( type ) 
+		|| type.IsPrimitive
+		|| ( ctors.Length == 1 && IsMessagePackPrimitive( ctors[ 0 ].GetParameters()[ 0 ].ParameterType ) )
+	)
+	{
+#>
+			var tcs = new TaskCompletionSource<#= "<" + type.FullName + ">" #>();
+			try
+			{
+				tcs.SetResult( this.UnpackFromCore( unpacker ) );
+			}
+			catch( Exception ex )
+			{
+				tcs.SetException( ex );
+			}
+
+			return tcs.Task;
+<#
+	}
+	else if ( ctors.Length != 1 )
+	{
+#>
+#error <#= type.FullName #> has <#= ctors.Length #> parameter constructors
+			/*
+<#
+foreach( var ctor in ctors )
+{
+#>
+			 * <#= ctor #>
+<#
+}
+#>
+			 */
+<#
+	}
+	else
+	{
+#>
+#error ParameterType '<#= ctors[ 0 ].GetParameters()[ 0 ].ParameterType #>' is not primitive.
+<#
+	}
+#>
+		}
+
+#endif // FEATURE_TAP
+
 	}
 <#
 	if ( notInWPs.Contains( type ) )

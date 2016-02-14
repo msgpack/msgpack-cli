@@ -19,6 +19,10 @@
 #endregion -- License Terms --
 
 using System;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -76,19 +80,59 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			return new Version( major, minor, build, revision );
 		}
-			long length = unpacker.LastReadData.AsInt64();
-			int[] array = new int[ 4 ];
-			for ( int i = 0; i < length && i < 4; i++ )
-			{
-				if ( !unpacker.Read() )
-				{
-					SerializationExceptions.ThrowMissingItem( i, unpacker );
-				}
 
-				array[ i ] = unpacker.LastReadData.AsInt32();
+#if FEATURE_TAP
+
+		protected internal override async Task PackToAsyncCore( Packer packer, Version objectTree, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( 4, cancellationToken ).ConfigureAwait( false );
+			await packer.PackAsync( objectTree.Major, cancellationToken ).ConfigureAwait( false );
+			await packer.PackAsync( objectTree.Minor, cancellationToken ).ConfigureAwait( false );
+			await packer.PackAsync( objectTree.Build, cancellationToken ).ConfigureAwait( false );
+			await packer.PackAsync( objectTree.Revision, cancellationToken ).ConfigureAwait( false );
+		}
+
+		protected internal override async Task<Version> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( Version ), 4 );
 			}
 
-			return new Version( array[ 0 ], array[ 1 ], array[ 2 ], array[ 3 ] );
+			long length = unpacker.LastReadData.AsInt64();
+			if ( length != 4 )
+			{
+				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( Version ), 4 );
+			}
+
+			var major = await unpacker.ReadInt32Async( cancellationToken ).ConfigureAwait( false );
+			if ( !major.IsSuccess )
+			{
+				SerializationExceptions.ThrowMissingItem( 0, unpacker );
+			}
+
+			var minor = await unpacker.ReadInt32Async( cancellationToken ).ConfigureAwait( false );
+			if ( !minor.IsSuccess )
+			{
+				SerializationExceptions.ThrowMissingItem( 1, unpacker );
+			}
+
+			var build = await unpacker.ReadInt32Async( cancellationToken ).ConfigureAwait( false );
+			if ( !build.IsSuccess )
+			{
+				SerializationExceptions.ThrowMissingItem( 2, unpacker );
+			}
+
+			var revision = await unpacker.ReadInt32Async( cancellationToken ).ConfigureAwait( false );
+			if ( !revision.IsSuccess )
+			{
+				SerializationExceptions.ThrowMissingItem( 3, unpacker );
+			}
+
+			return new Version( major.Value, minor.Value, build.Value, revision.Value );
 		}
+
+#endif // FEATURE_TAP
+
 	}
 }

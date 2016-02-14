@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,6 +20,10 @@
 
 using System;
 using System.Collections;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.CollectionSerializers;
 
@@ -76,5 +80,46 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			return new Queue( initialCapacity );
 		}
+
+#if FEATURE_TAP
+
+		protected internal override async Task PackToAsyncCore( Packer packer, Queue objectTree, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( objectTree.Count, cancellationToken ).ConfigureAwait( false );
+			foreach ( var item in objectTree )
+			{
+				await packer.PackObjectAsync( item, cancellationToken ).ConfigureAwait( false );
+			}
+		}
+
+		protected internal override async Task<Queue> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			var queue = new Queue( UnpackHelpers.GetItemsCount( unpacker ) );
+			await this.UnpackToAsyncCore( unpacker, queue, cancellationToken ).ConfigureAwait( false );
+
+			return queue;
+		}
+
+		protected internal override async Task UnpackToAsyncCore( Unpacker unpacker, Queue collection, CancellationToken cancellationToken )
+		{
+			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+			for ( int i = 0; i < itemsCount; i++ )
+			{
+				if ( !await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+				{
+					SerializationExceptions.ThrowMissingItem( i, unpacker );
+				}
+
+				collection.Enqueue( unpacker.LastReadData );
+			}
+		}
+
+#endif // FEATURE_TAP
+
 	}
 }

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2015 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,6 +24,10 @@
 
 using System;
 using System.Globalization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.ReflectionSerializers
 {
@@ -69,6 +73,15 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			packer.Pack( UInt64.Parse( ( ( IFormattable ) enumValue ).ToString( "D", CultureInfo.InvariantCulture ), CultureInfo.InvariantCulture ) );
 		}
+
+#if FEATURE_TAP
+
+		protected internal override Task PackUnderlyingValueToAsync( Packer packer, T enumValue, CancellationToken cancellationToken )
+		{
+			return packer.PackAsync( UInt64.Parse( ( ( IFormattable )enumValue ).ToString( "D", CultureInfo.InvariantCulture ), CultureInfo.InvariantCulture ), cancellationToken );
+		}
+
+#endif // FEATURE_TAP
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 #if !UNITY

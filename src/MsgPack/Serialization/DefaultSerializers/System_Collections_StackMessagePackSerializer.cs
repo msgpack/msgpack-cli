@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,6 +20,10 @@
 
 using System;
 using System.Collections;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.CollectionSerializers;
 
@@ -93,5 +97,63 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			return new Stack( initialCapacity );
 		}
+
+#if FEATURE_TAP
+
+		protected internal override async Task PackToAsyncCore( Packer packer, Stack objectTree, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( objectTree.Count, cancellationToken ).ConfigureAwait( false );
+			foreach ( var item in objectTree )
+			{
+				await packer.PackObjectAsync( item, cancellationToken ).ConfigureAwait( false );
+			}
+		}
+
+		protected internal override async Task<Stack> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			return new Stack( await UnpackItemsInReverseOrderAsync( unpacker, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken ).ConfigureAwait( false ) );
+		}
+
+		protected internal override async Task UnpackToAsyncCore( Unpacker unpacker, Stack collection, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			foreach ( var item in await UnpackItemsInReverseOrderAsync( unpacker, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken ).ConfigureAwait( false ) )
+			{
+				collection.Push( item );
+			}
+		}
+
+		private static async Task<ICollection> UnpackItemsInReverseOrderAsync( Unpacker unpacker, int count, CancellationToken cancellationToken )
+		{
+			var buffer = new object[ count ];
+
+			using ( var subTreeUnpacker = unpacker.ReadSubtree() )
+			{
+				// Reverse Order
+				for ( var i = buffer.Length - 1; i >= 0; i-- )
+				{
+					if ( !await subTreeUnpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+					{
+						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+					}
+
+					buffer[ i ] = subTreeUnpacker.LastReadData;
+				}
+			}
+
+			return buffer;
+		}
+
+#endif // FEATURE_TAP
+
 	}
 }

@@ -109,21 +109,25 @@ namespace MsgPack.Serialization.Polymorphic
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes", Justification = "Avoided via ownsStream: false" )]
 		protected internal override void PackToCore( Packer packer, T objectTree )
 		{
+			TypeInfoEncoder.Encode( packer, this.GetTypeCode( objectTree ) );
+			this.GetActualTypeSerializer( objectTree.GetType() ).PackTo( packer, objectTree );
+		}
+
+		private string GetTypeCode( T objectTree )
+		{
 			string typeCode;
 			if ( !this._typeCodeMap.TryGetValue( objectTree.GetType().TypeHandle, out typeCode ) )
 			{
-				SerializationExceptions.ThrowSerializationException( 
-					String.Format( 
-						CultureInfo.CurrentCulture, 
+				SerializationExceptions.ThrowSerializationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
 						"Type '{0}' in assembly '{1}' is not defined as known types.",
-						objectTree.GetType().GetFullName(), 
+						objectTree.GetType().GetFullName(),
 						objectTree.GetType().GetAssembly()
-					) 
+					)
 				);
 			}
-
-			TypeInfoEncoder.Encode( packer, this._typeCodeMap[ objectTree.GetType().TypeHandle ] );
-			this.GetActualTypeSerializer( objectTree.GetType() ).PackTo( packer, objectTree );
+			return typeCode;
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
@@ -132,22 +136,24 @@ namespace MsgPack.Serialization.Polymorphic
 			return
 				TypeInfoEncoder.Decode(
 					unpacker,
-					u =>
-					{
-						var typeCode = u.LastReadData.AsString();
-
-						RuntimeTypeHandle typeHandle;
-						if ( !this._typeHandleMap.TryGetValue( typeCode, out typeHandle ) )
-						{
-							SerializationExceptions.ThrowSerializationException(
-								String.Format( CultureInfo.CurrentCulture, "Unknown type {0}.", StringEscape.ForDisplay( typeCode ) )
-							);
-						}
-
-						return Type.GetTypeFromHandle( typeHandle );
-					},
+					// Currently, lamda is more efficient than method group.
+					// ReSharper disable once ConvertClosureToMethodGroup
+					c => this.GetTypeFromCode( c ),
 					( t, u ) => ( T ) this.GetActualTypeSerializer( t ).UnpackFrom( u )
 				);
+		}
+
+		private Type GetTypeFromCode( string typeCode )
+		{
+			RuntimeTypeHandle typeHandle;
+			if ( !this._typeHandleMap.TryGetValue( typeCode, out typeHandle ) )
+			{
+				SerializationExceptions.ThrowSerializationException(
+					String.Format( CultureInfo.CurrentCulture, "Unknown type {0}.", StringEscape.ForDisplay( typeCode ) )
+				);
+			}
+
+			return Type.GetTypeFromHandle( typeHandle );
 		}
 
 		object IPolymorphicDeserializer.PolymorphicUnpackFrom( Unpacker unpacker )
@@ -156,7 +162,26 @@ namespace MsgPack.Serialization.Polymorphic
 		}
 
 #if FEATURE_TAP
-		
+
+		protected internal override async Task PackToAsyncCore( Packer packer, T objectTree, CancellationToken cancellationToken )
+		{
+			await TypeInfoEncoder.EncodeAsync( packer, this.GetTypeCode( objectTree ), cancellationToken ).ConfigureAwait( false );
+			await this.GetActualTypeSerializer( objectTree.GetType() ).PackToAsync( packer, objectTree, cancellationToken ).ConfigureAwait( false );
+		}
+
+		protected internal override Task<T> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			return
+				TypeInfoEncoder.DecodeAsync<T>(
+					unpacker,
+					// Currently, lamda is more efficient than method group.
+					// ReSharper disable once ConvertClosureToMethodGroup
+					c => this.GetTypeFromCode( c ),
+					( t, u, c ) => this.GetActualTypeSerializer( t ).UnpackFromAsync( u, c ),
+					cancellationToken
+				);
+		}
+
 		async Task<object> IPolymorphicDeserializer.PolymorphicUnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			return await this.UnpackFromAsyncCore( unpacker, cancellationToken ).ConfigureAwait( false );
