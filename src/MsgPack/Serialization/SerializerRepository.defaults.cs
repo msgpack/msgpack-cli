@@ -45,7 +45,7 @@ namespace MsgPack.Serialization
 	// ReSharper disable RedundantNameQualifier
 	partial class SerializerRepository 
 	{
-		internal const int DefaultTableCapacity = 460;
+		internal const int DefaultTableCapacity = 56;
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This API is naturally coupled with many types" )]
 		internal static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable( SerializationContext ownerContext )
