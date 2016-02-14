@@ -242,7 +242,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		{
 			if ( !unpacker.IsMapHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
 			return this.InternalUnpackFromCore( unpacker );
@@ -267,7 +267,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		{
 			if ( !unpacker.IsMapHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
 			this.UnpackToCore( unpacker, collection as IDictionary, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -279,7 +279,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 			{
 				if ( !unpacker.Read() )
 				{
-					throw SerializationExceptions.NewMissingItem( i );
+					SerializationExceptions.ThrowMissingItem( i, unpacker );
 				}
 
 				object key;
@@ -297,7 +297,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 
 				if ( !unpacker.Read() )
 				{
-					throw SerializationExceptions.NewMissingItem( i );
+					SerializationExceptions.ThrowMissingItem( i, ( key ?? String.Empty ).ToString(), unpacker );
 				}
 
 				object value;

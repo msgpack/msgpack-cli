@@ -34,7 +34,9 @@ using System.Diagnostics.Contracts;
 #endif // CORE_CLR
 #endif // !UNITY
 using System.Globalization;
+#if !UNITY
 using System.Reflection;
+#endif // !UNITY
 using System.Runtime.Serialization;
 
 using MsgPack.Serialization.CollectionSerializers;
@@ -365,6 +367,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="name">The name of the property.</param>
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+		[Obsolete]
 		public static Exception NewMissingProperty( string name )
 		{
 #if !UNITY
@@ -377,7 +380,9 @@ namespace MsgPack.Serialization
 
 		internal static void ThrowMissingProperty( string name )
 		{
+#pragma warning disable 612
 			throw NewMissingProperty( name );
+#pragma warning restore 612
 		}
 
 		/// <summary>
@@ -385,6 +390,7 @@ namespace MsgPack.Serialization
 		///		Returns new exception to notify that unpacking stream ends on unexpectedly position.
 		/// </summary>
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+		[Obsolete]
 		public static Exception NewUnexpectedEndOfStream()
 		{
 #if !UNITY

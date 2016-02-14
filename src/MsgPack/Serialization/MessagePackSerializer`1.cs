@@ -189,7 +189,7 @@ namespace MsgPack.Serialization
 			var unpacker = Unpacker.Create( stream );
 			if ( !unpacker.Read() )
 			{
-				ThrowUnexpectedEndOfStreamException();
+				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
 
 			return this.UnpackFrom( unpacker );
@@ -516,11 +516,6 @@ namespace MsgPack.Serialization
 		private static void ThrowArgumentException( string message, string parameterName )
 		{
 			throw new ArgumentException( message, parameterName );
-		}
-
-		private static void ThrowUnexpectedEndOfStreamException()
-		{
-			throw SerializationExceptions.NewUnexpectedEndOfStream();
 		}
 
 		private static void ThrowNewValueTypeCannotBeNullException()

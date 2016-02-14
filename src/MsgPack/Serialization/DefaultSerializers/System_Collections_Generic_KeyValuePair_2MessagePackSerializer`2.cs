@@ -104,7 +104,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			if ( !unpacker.Read() )
 			{
-				throw SerializationExceptions.NewUnexpectedEndOfStream();
+				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
 
 			var key =
@@ -112,7 +112,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			if ( !unpacker.Read() )
 			{
-				throw SerializationExceptions.NewUnexpectedEndOfStream();
+				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
 
 			var value = unpacker.LastReadData.IsNil ? null : this._valueSerializer.UnpackFrom( unpacker );
