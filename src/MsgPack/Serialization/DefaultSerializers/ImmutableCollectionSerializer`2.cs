@@ -32,7 +32,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal class ImmutableCollectionSerializer<T, TItem> : MessagePackSerializer<T>
 		where T : IEnumerable<TItem>
 	{
-		protected static readonly Func<TItem[], T> factory = FindFactory();
+		protected static readonly Func<TItem[], T> Factory = FindFactory();
 
 		private static Func<TItem[], T> FindFactory()
 		{
@@ -135,7 +135,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				}
 			}
 
-			return factory( buffer );
+			return Factory( buffer );
 		}
 
 		protected internal override void UnpackToCore( Unpacker unpacker, T collection )

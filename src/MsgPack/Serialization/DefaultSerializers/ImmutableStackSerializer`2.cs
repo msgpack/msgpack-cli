@@ -58,7 +58,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				}
 			}
 
-			return factory( buffer );
+			return Factory( buffer );
 		}
 	}
 }
