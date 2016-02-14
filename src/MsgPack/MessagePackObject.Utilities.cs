@@ -39,6 +39,10 @@ using System.Reflection;
 #endif
 using System.Runtime.Serialization;
 using System.Text;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack
 {
@@ -46,6 +50,9 @@ namespace MsgPack
 	[Serializable]
 #endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	partial struct MessagePackObject : IPackable
+#if FEATURE_TAP
+		, IAsyncPackable
+#endif // FEATURE_TAP
 	{
 #region -- Type Code Constants --
 
@@ -1179,6 +1186,150 @@ namespace MsgPack
 				}
 			}
 		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Pack this instance itself using specified <see cref="Packer" /> asynchronously.
+		/// </summary>
+		/// <param name="packer"><see cref="Packer" />.</param>
+		/// <param name="options">Packing options. This value can be null.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+		/// <returns>
+		///		A <see cref="Task" /> that represents the asynchronous operation.
+		/// </returns>
+		/// <exception cref="System.ArgumentNullException">packer</exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to pack this object.
+		///		or
+		///		Failed to pack this object.
+		/// </exception>
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			if ( packer == null )
+			{
+				throw new ArgumentNullException( "packer" );
+			}
+
+#if !UNITY
+			Contract.EndContractBlock();
+#endif // !UNITY
+
+
+			if ( this._handleOrTypeCode == null )
+			{
+				await packer.PackNullAsync( cancellationToken ).ConfigureAwait( false );
+				return;
+			}
+
+			var typeCode = this._handleOrTypeCode as ValueTypeCode;
+			if ( typeCode == null )
+			{
+				MessagePackString asString;
+				IList<MessagePackObject> asList;
+				IDictionary<MessagePackObject, MessagePackObject> asDictionary;
+				byte[] asExtendedTypeObjectBody;
+				if ( ( asString = this._handleOrTypeCode as MessagePackString ) != null )
+				{
+					await packer.PackRawAsync( asString.GetBytes(), cancellationToken ).ConfigureAwait( false );
+				}
+				else if ( ( asList = this._handleOrTypeCode as IList<MessagePackObject> ) != null )
+				{
+					await packer.PackArrayHeaderAsync( asList.Count, cancellationToken ).ConfigureAwait( false );
+					foreach ( var item in asList )
+					{
+						await item.PackToMessageAsync( packer, options, cancellationToken ).ConfigureAwait( false );
+					}
+				}
+				else if ( ( asDictionary = this._handleOrTypeCode as IDictionary<MessagePackObject, MessagePackObject> ) != null )
+				{
+					await packer.PackMapHeaderAsync( asDictionary.Count, cancellationToken ).ConfigureAwait( false );
+					foreach ( var item in asDictionary )
+					{
+						await item.Key.PackToMessageAsync( packer, options, cancellationToken ).ConfigureAwait( false );
+						await item.Value.PackToMessageAsync( packer, options, cancellationToken ).ConfigureAwait( false );
+					}
+				}
+				// ReSharper disable once ConditionIsAlwaysTrueOrFalse
+				// ReSharper disable HeuristicUnreachableCode
+				else if ( ( asExtendedTypeObjectBody = this._handleOrTypeCode as byte[] ) != null )
+				{
+					await packer.PackExtendedTypeValueAsync( unchecked( ( byte )this._value ), asExtendedTypeObjectBody, cancellationToken ).ConfigureAwait( false );
+				}
+				// ReSharper restore HeuristicUnreachableCode
+				else
+				{
+					throw new SerializationException( "Failed to pack this object." );
+				}
+
+				return;
+			}
+
+			switch ( typeCode.TypeCode )
+			{
+				case MessagePackValueTypeCode.Single:
+				{
+					await packer.PackAsync( ( float )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.Double:
+				{
+					await packer.PackAsync( ( double )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.Int8:
+				{
+					await packer.PackAsync( ( sbyte )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.Int16:
+				{
+					await packer.PackAsync( ( short )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.Int32:
+				{
+					await packer.PackAsync( ( int )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.Int64:
+				{
+					await packer.PackAsync( ( long )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.UInt8:
+				{
+					await packer.PackAsync( ( byte )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.UInt16:
+				{
+					await packer.PackAsync( ( ushort )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.UInt32:
+				{
+					await packer.PackAsync( ( uint )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.UInt64:
+				{
+					await packer.PackAsync( this._value, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.Boolean:
+				{
+					await packer.PackAsync( this._value != 0, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				default:
+				{
+					throw new SerializationException( "Failed to pack this object." );
+				}
+			}
+		}
+
+#endif // FEATURE_TAP
 
 #region -- Primitive Type Conversion Methods --
 
