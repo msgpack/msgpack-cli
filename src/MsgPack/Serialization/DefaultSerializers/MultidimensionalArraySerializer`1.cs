@@ -25,7 +25,6 @@
 using System;
 using System.Globalization;
 using System.IO;
-using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {

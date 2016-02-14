@@ -51,7 +51,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if DEBUG && !UNITY
 			Contract.Assert( !unpacker.LastReadData.IsNil );
 #endif // DEBUG && !UNITY
-			throw new SerializationException("DBNull value should be nil.");
+			throw new SerializationException( "DBNull value should be nil." );
 		}
 
 		protected internal override DBNull UnpackNil()

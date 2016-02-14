@@ -29,9 +29,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Collections_QueueMessagePackSerializer : MessagePackSerializer<Queue>, ICollectionInstanceFactory
 	{
 		public System_Collections_QueueMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext )
-		{
-		}
+			: base( ownerContext ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
