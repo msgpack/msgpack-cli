@@ -98,12 +98,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			for ( var k = 0; k < keyCount; k++ )
 			{
-				if ( !unpacker.Read() )
+				string key;
+				if ( !unpacker.ReadString( out key ) )
 				{
 					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 				}
-
-				var key = unpacker.LastReadData.DeserializeAsString();
 
 				if ( !unpacker.Read() )
 				{
@@ -120,12 +119,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					for ( var v = 0; v < itemsCount; v++ )
 					{
-						if ( !valuesUnpacker.Read() )
+						string value;
+
+						if ( !valuesUnpacker.ReadString( out value ) )
 						{
 							SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 						}
 
-						collection.Add( key, valuesUnpacker.LastReadData.DeserializeAsString() );
+						collection.Add( key, value );
 					}
 				}
 			}

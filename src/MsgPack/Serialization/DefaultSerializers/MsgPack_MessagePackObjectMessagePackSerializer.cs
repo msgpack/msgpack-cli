@@ -30,7 +30,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal override void PackToCore( Packer packer, MessagePackObject value )
 		{
-			value.PackToMessage( packer, new PackingOptions() );
+			value.PackToMessage( packer, null );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
