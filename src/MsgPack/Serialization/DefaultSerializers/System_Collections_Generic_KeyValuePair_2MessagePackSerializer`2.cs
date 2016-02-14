@@ -60,14 +60,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
 
-			var key = unpacker.LastReadData.IsNil ? default( TKey ) : this._keySerializer.UnpackFrom( unpacker );
+			var key = unpacker.LastReadData.IsNil ? default( TKey ) : this._keySerializer.UnpackFromCore( unpacker );
 
 			if ( !unpacker.Read() )
 			{
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
 
-			var value = unpacker.LastReadData.IsNil ? default( TValue ) : this._valueSerializer.UnpackFrom( unpacker );
+			var value = unpacker.LastReadData.IsNil ? default( TValue ) : this._valueSerializer.UnpackFromCore( unpacker );
 
 			return new KeyValuePair<TKey, TValue>( key, value );
 		}
