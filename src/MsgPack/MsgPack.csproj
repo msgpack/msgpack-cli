@@ -198,10 +198,9 @@
     <Compile Include="Serialization\AbstractSerializers\TypeDefinition.cs" />
     <Compile Include="Serialization\AbstractSerializers\MethodDefinition.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilderHelper.cs" />
-    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Collection.cs" />
-    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Nullable.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`2.Collection.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`2.Nullable.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerSpecification.cs" />
-    <Compile Include="Serialization\CodeDomSerializers\CodeDomSerializerBuilder.cs" />
     <Compile Include="Serialization\CollectionDetailedKind.cs" />
     <Compile Include="Serialization\CollectionSerializers\CollectionMessagePackSerializerBase`2.cs" />
     <Compile Include="Serialization\CollectionSerializers\CollectionSerializerHelpers.cs" />
@@ -320,13 +319,13 @@
     <Compile Include="Serialization\ResolveSerializerEventArgs.cs" />
     <Compile Include="Serialization\SerializationContext.ExtTypeCodes.cs" />
     <Compile Include="Serialization\SerializationTarget.cs" />
-    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs">
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`2.Enum.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\AbstractSerializers\SerializerFieldKey.cs" />
     <Compile Include="Serialization\CodeDomSerializers\CodeDomConstruct.cs" />
     <Compile Include="Serialization\CodeDomSerializers\CodeDomContext.cs" />
-    <Compile Include="Serialization\CodeDomSerializers\CodeDomSerializerBuilder`1.cs" />
+    <Compile Include="Serialization\CodeDomSerializers\CodeDomSerializerBuilder.cs" />
     <Compile Include="Serialization\CodeDomSerializers\ExpressionCodeDomConstruct.cs" />
     <Compile Include="Serialization\CodeDomSerializers\ParameterCodeDomConstruct.cs" />
     <Compile Include="Serialization\CodeDomSerializers\StatementCodeDomConstruct.cs" />
@@ -372,16 +371,16 @@
     <Compile Include="Serialization\EmittingSerializers\ConditionalILConstruct.cs" />
     <Compile Include="Serialization\EmittingSerializers\ContextfulILConstruct.cs" />
     <Compile Include="Serialization\EmittingSerializers\ILConstruct.cs" />
-    <Compile Include="Serialization\EmittingSerializers\AssemblyBuilderSerializerBuilder`1.cs" />
+    <Compile Include="Serialization\EmittingSerializers\AssemblyBuilderSerializerBuilder.cs" />
     <Compile Include="Serialization\DefaultSerializers\ArraySerializer`1.cs" />
-    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.CommonConstructs.cs" />
-    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`2.CommonConstructs.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`2.cs" />
     <Compile Include="Serialization\DefaultConcreteTypeRepository.cs" />
     <Compile Include="Serialization\DefaultSerializers\MessagePackObjectExtensions.cs" />
     <Compile Include="Serialization\DefaultSerializers\MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerGenerationContext.cs" />
-    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs" />
-    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`2.Object.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`2.Tuple.cs" />
     <Compile Include="Serialization\EmittingSerializers\InvocationILConsruct.cs" />
     <Compile Include="Serialization\EmittingSerializers\LoadFieldILConstruct.cs" />
     <Compile Include="Serialization\DefaultSerializers\DefaultSerializers.cs">
@@ -402,7 +401,7 @@
     <Compile Include="Serialization\ExpressionSerializers\ExpressionConstruct.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionDumper.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionTreeContext.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilder`1.cs" />
+    <Compile Include="Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilder.cs" />
     <Compile Include="Serialization\IMessagePackSerializer.cs" />
     <Compile Include="Serialization\IMessagePackSingleObjectSerializer.cs" />
     <Compile Include="Serialization\Metadata\_CultureInfo.cs" />

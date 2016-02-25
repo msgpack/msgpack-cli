@@ -2,7 +2,7 @@
 <ProjectSync>
   <Project Name="MsgPack.Net35" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude Path="Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs" />
+    <Exclude Path="Serialization\AbstractSerializers\SerializerBuilder`2.Tuple.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />

@@ -86,19 +86,19 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestArrayFieldBased()
 		{
-			TestCore( EmitterFlavor.FieldBased, SerializationMethod.Array, new AssemblyBuilderSerializerBuilder<DirectoryItem>() );
+			TestCore( EmitterFlavor.FieldBased, SerializationMethod.Array, new AssemblyBuilderSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits() ) );
 		}
 
 		[Test]
 		public void TestMapFieldBased()
 		{
-			TestCore( EmitterFlavor.FieldBased, SerializationMethod.Map, new AssemblyBuilderSerializerBuilder<DirectoryItem>( ) );
+			TestCore( EmitterFlavor.FieldBased, SerializationMethod.Map, new AssemblyBuilderSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits() ) );
 		}
 		
 		[Test]
 		public void TestArrayCodeDomBased()
 		{
-			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Array, new CodeDomSerializerBuilder<DirectoryItem>() );
+			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Array, new CodeDomSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits() ) );
 		}
 #endif // !NETFX_CORE && !WINDOWS_PHONE
 
@@ -106,25 +106,25 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestArrayExpressionBased()
 		{
-			TestCore( EmitterFlavor.ExpressionBased, SerializationMethod.Array, new ExpressionTreeSerializerBuilder<DirectoryItem>() );
+			TestCore( EmitterFlavor.ExpressionBased, SerializationMethod.Array, new ExpressionTreeSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits() ) );
 		}
 
 		[Test]
 		public void TestMapExpressionBased()
 		{
-			TestCore( EmitterFlavor.ExpressionBased, SerializationMethod.Map, new ExpressionTreeSerializerBuilder<DirectoryItem>() );
+			TestCore( EmitterFlavor.ExpressionBased, SerializationMethod.Map, new ExpressionTreeSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits() ) );
 		}
 
 #if !NETFX_CORE && !WINDOWS_PHONE
 		[Test]
 		public void TestMapCodeDomBased()
 		{
-			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Map, new CodeDomSerializerBuilder<DirectoryItem>() );
+			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Map, new CodeDomSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits() ) );
 		}
 #endif // !NETFX_CORE && !WINDOWS_PHONE
 #endif // !NETFX_35
 
-		private static void TestCore( EmitterFlavor emittingFlavor, SerializationMethod serializationMethod, ISerializerBuilder<DirectoryItem> generator )
+		private static void TestCore( EmitterFlavor emittingFlavor, SerializationMethod serializationMethod, ISerializerBuilder generator )
 		{
 			var root = new DirectoryItem() { Name = "/" };
 			root.Directories =
@@ -152,9 +152,9 @@ namespace MsgPack.Serialization
 					};
 			context.SerializerOptions.EmitterFlavor = emittingFlavor;
 
-			var serializer = 
-				generator.BuildSerializerInstance(
-					context, 
+			var serializer =
+				( MessagePackSerializer<DirectoryItem> ) generator.BuildSerializerInstance(
+					context,
 					typeof( DirectoryItem ),
 					PolymorphismSchema.Default
 				);

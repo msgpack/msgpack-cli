@@ -219,11 +219,12 @@ namespace MsgPack.Serialization
 
 #endif // DEBUG && !UNITY && !XAMDROID && !XAMIOS
 			Type concreteType = null;
+			CollectionTraits collectionTraits = typeof( T ).GetCollectionTraits();
 
 			if ( typeof( T ).GetIsAbstract() || typeof( T ).GetIsInterface() )
 			{
 				// Abstract collection types will be handled correctly.
-				if ( typeof( T ).GetCollectionTraits().CollectionType != CollectionKind.NotCollection )
+				if ( collectionTraits.CollectionType != CollectionKind.NotCollection )
 				{
 					concreteType = context.DefaultCollectionTypes.GetConcreteType( typeof( T ) );
 				}
@@ -242,10 +243,10 @@ namespace MsgPack.Serialization
 			}
 
 #if !XAMIOS && !XAMDROID && !UNITY
-			ISerializerBuilder<T> builder;
+			ISerializerBuilder builder;
 #endif // !XAMIOS && !XAMDROID && !UNITY
 #if NETFX_CORE || WINDOWS_PHONE || SILVERLIGHT
-			builder = new ExpressionTreeSerializerBuilder<T>();
+			builder = new ExpressionTreeSerializerBuilder( typeof( T ), collectionTraits );
 #else
 #if !XAMIOS && !XAMDROID && !UNITY
 			switch ( context.SerializerOptions.EmitterFlavor )
@@ -261,13 +262,13 @@ namespace MsgPack.Serialization
 #if !WINDOWS_PHONE && !NETFX_35
 				case EmitterFlavor.ExpressionBased:
 				{
-					builder = new ExpressionTreeSerializerBuilder<T>();
+					builder = new ExpressionTreeSerializerBuilder( typeof( T ), collectionTraits );
 					break;
 				}
 #endif // if !WINDOWS_PHONE && !NETFX_35
 				case EmitterFlavor.FieldBased:
 				{
-					builder = new AssemblyBuilderSerializerBuilder<T>();
+					builder = new AssemblyBuilderSerializerBuilder( typeof( T ), collectionTraits );
 					break;
 				}
 				default:
@@ -287,7 +288,7 @@ namespace MsgPack.Serialization
 					}
 #endif // if !NETFX_35
 #if !CORE_CLR
-					builder = new CodeDomSerializerBuilder<T>();
+					builder = new CodeDomSerializerBuilder( typeof( T ), collectionTraits );
 					break;
 #endif // !CORE_CLR
 				}
@@ -295,7 +296,7 @@ namespace MsgPack.Serialization
 #endif // !XAMIOS && !XAMDROID && !UNITY
 #endif // NETFX_CORE else
 #if !XAMIOS && !XAMDROID && !UNITY
-			return builder.BuildSerializerInstance( context, concreteType, schema == null ? null : schema.FilterSelf() );
+			return ( MessagePackSerializer<T> ) builder.BuildSerializerInstance( context, concreteType, schema == null ? null : schema.FilterSelf() );
 #endif // !XAMIOS && !XAMDROID && !UNITY
 		}
 
@@ -685,6 +686,7 @@ namespace MsgPack.Serialization
 		///			Manifest or attribute based linker options (e.g. for .NET Native or Xamarin.iOS) are still required.
 		///		</para>
 		/// </remarks>
+		// ReSharper disable once UnusedTypeParameter
 		public static void PrepareType<T>()
 		{
 #if UNITY

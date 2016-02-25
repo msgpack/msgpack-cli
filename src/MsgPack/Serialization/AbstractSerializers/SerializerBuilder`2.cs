@@ -34,47 +34,54 @@ namespace MsgPack.Serialization.AbstractSerializers
 	/// </summary>
 	/// <typeparam name="TContext">The type of the context which holds global information for generating serializer.</typeparam>
 	/// <typeparam name="TConstruct">The type of the construct which abstracts code constructs.</typeparam>
-	/// <typeparam name="TObject">The type of the object which will be target of the generating serializer.</typeparam>
-	internal abstract partial class SerializerBuilder<TContext, TConstruct, TObject> :
+	internal abstract partial class SerializerBuilder<TContext, TConstruct> :
 #if !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
 		ISerializerCodeGenerator,
 #endif
-		ISerializerBuilder<TObject>
+		ISerializerBuilder
 		where TContext : SerializerGenerationContext<TConstruct>
 		where TConstruct : class, ICodeConstruct
 	{
-		private readonly SerializerBuilderNilImplicationHandler _nilImplicationHandler =
-			new SerializerBuilderNilImplicationHandler();
+		private readonly SerializerBuilderNilImplicationHandler _nilImplicationHandler;
 
-		// ReSharper disable once StaticMemberInGenericType
 		/// <summary>
-		///		The <see cref="CollectionTraits"/> cache of <typeparamref name="TObject"/>.
+		///		Gets the type of the serialization target.
 		/// </summary>
-		protected static readonly CollectionTraits CollectionTraitsOfThis;
+		/// <value>
+		///		The type of the serialization target.
+		/// </value>
+		protected internal Type TargetType { get; private set; }
 
-		// ReSharper disable once StaticMemberInGenericType
 		/// <summary>
-		///		A base class of the generating serializer.
+		///		Gets the <see cref="T:CollectionTraits"/> cache of <see cref="TargetType"/>.
 		/// </summary>
-		protected static readonly Type BaseClass;
+		/// <value>
+		///		The <see cref="T:CollectionTraits"/> cache of <see cref="TargetType"/>.
+		/// </value>
+		protected CollectionTraits CollectionTraits { get; private set; }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "BaseClass and CollectionTraitsOfThis should be initialized at once" )]
-		static SerializerBuilder()
+		/// <summary>
+		///		Gets the base class of the generating serializer.
+		/// </summary>
+		/// <value>
+		///		The base class of the generating serializer.
+		/// </value>
+		protected Type BaseClass { get; private set; }
+
+		private static Type DetermineBaseClass( Type targetType, CollectionTraits traits )
 		{
-			var traits = typeof( TObject ).GetCollectionTraits();
-			CollectionTraitsOfThis = traits;
+
 #if DEBUG && !UNITY
 			Contract.Assert(
 				traits.DetailedCollectionType != CollectionDetailedKind.Unserializable,
-				typeof( TObject ) + "(" + traits.DetailedCollectionType + ") != CollectionDetailedKind.Unserializable" 
+				targetType + "(" + traits.DetailedCollectionType + ") != CollectionDetailedKind.Unserializable" 
 			);
 #endif // DEBUG
 			switch ( traits.DetailedCollectionType )
 			{
 				case CollectionDetailedKind.GenericEnumerable:
 				{
-					BaseClass = typeof( EnumerableMessagePackSerializer<,> ).MakeGenericType( typeof( TObject ), traits.ElementType );
-					break;
+					return typeof( EnumerableMessagePackSerializer<,> ).MakeGenericType( targetType, traits.ElementType );
 				}
 				case CollectionDetailedKind.GenericCollection:
 #if !NETFX_35 && !UNITY
@@ -82,60 +89,52 @@ namespace MsgPack.Serialization.AbstractSerializers
 #endif // !NETFX_35 && !UNITY
 				case CollectionDetailedKind.GenericList:
 				{
-					BaseClass = typeof( CollectionMessagePackSerializer<,> ).MakeGenericType( typeof( TObject ), traits.ElementType );
-					break;
+					return typeof( CollectionMessagePackSerializer<,> ).MakeGenericType( targetType, traits.ElementType );
 				}
 #if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericReadOnlyCollection:
 				case CollectionDetailedKind.GenericReadOnlyList:
 				{
-					BaseClass = typeof( ReadOnlyCollectionMessagePackSerializer<,> ).MakeGenericType( typeof( TObject ), traits.ElementType );
-					break;
+					return typeof( ReadOnlyCollectionMessagePackSerializer<,> ).MakeGenericType( targetType, traits.ElementType );
 				}
 #endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericDictionary:
 				{
 					var keyValuePairGenericArguments = traits.ElementType.GetGenericArguments();
-					BaseClass =
+					return
 						typeof( DictionaryMessagePackSerializer<,,> ).MakeGenericType(
-							typeof( TObject ),
+							targetType,
 							keyValuePairGenericArguments[ 0 ],
 							keyValuePairGenericArguments[ 1 ]
 						);
-					break;
 				}
 #if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericReadOnlyDictionary:
 				{
 					var keyValuePairGenericArguments = traits.ElementType.GetGenericArguments();
-					BaseClass =
+					return
 						typeof( ReadOnlyDictionaryMessagePackSerializer<,,> ).MakeGenericType(
-							typeof( TObject ),
+							targetType,
 							keyValuePairGenericArguments[ 0 ],
 							keyValuePairGenericArguments[ 1 ]
 						);
-					break;
 				}
 #endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.NonGenericEnumerable:
 				{
-					BaseClass = typeof( NonGenericEnumerableMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
-					break;
+					return typeof( NonGenericEnumerableMessagePackSerializer<> ).MakeGenericType( targetType );
 				}
 				case CollectionDetailedKind.NonGenericCollection:
 				{
-					BaseClass = typeof( NonGenericCollectionMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
-					break;
+					return typeof( NonGenericCollectionMessagePackSerializer<> ).MakeGenericType( targetType );
 				}
 				case CollectionDetailedKind.NonGenericList:
 				{
-					BaseClass = typeof( NonGenericListMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
-					break;
+					return typeof( NonGenericListMessagePackSerializer<> ).MakeGenericType( targetType );
 				}
 				case CollectionDetailedKind.NonGenericDictionary:
 				{
-					BaseClass = typeof( NonGenericDictionaryMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
-					break;
+					return typeof( NonGenericDictionaryMessagePackSerializer<> ).MakeGenericType( targetType );
 				}
 				case CollectionDetailedKind.Array:
 				{
@@ -150,43 +149,55 @@ namespace MsgPack.Serialization.AbstractSerializers
 						"Unknown type:" + traits.DetailedCollectionType 
 					);
 #endif // DEBUG && !UNITY
-					BaseClass =
-						typeof( TObject ).GetIsEnum()
-							? typeof( EnumMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) )
-							: typeof( MessagePackSerializer<TObject> );
-					break;
+					return
+						targetType.GetIsEnum()
+							? typeof( EnumMessagePackSerializer<> ).MakeGenericType( targetType )
+							: typeof( MessagePackSerializer<> ).MakeGenericType( targetType );
 				}
 			}
-		} 
+		}
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="SerializerBuilder{TContext, TConstruct, TObject}"/> class.
+		///		Initializes a new instance of the <see cref="SerializerBuilder{TContext, TConstruct}"/> class.
 		/// </summary>
-		protected SerializerBuilder() { }
+		/// <param name="targetType">The type of serialization target.</param>
+		/// <param name="collectionTraits">The collection traits of the serialization target.</param>
+		protected SerializerBuilder( Type targetType, CollectionTraits collectionTraits )
+		{
+#if DEBUG
+			Contract.Assert( targetType != null, "targetType != null" );
+			Contract.Assert( collectionTraits != null, "collectionTraits != null" );
+#endif // DEBUG
+
+			this.TargetType = targetType;
+			this.CollectionTraits = collectionTraits;
+			this.BaseClass = DetermineBaseClass( targetType, collectionTraits );
+			this._nilImplicationHandler = new SerializerBuilderNilImplicationHandler( targetType );
+		}
 
 		/// <summary>
 		///		Builds the serializer and returns its new instance.
 		/// </summary>
 		/// <param name="context">The context information.</param>
-		/// <param name="concreteType">The substitution type if <typeparamref name="TObject"/> is abstract type. <c>null</c> when <typeparamref name="TObject"/> is not abstract type.</param>
+		/// <param name="concreteType">The substitution type if <see cref="TargetType"/> is abstract type. <c>null</c> when <see cref="TargetType"/> is not abstract type.</param>
 		/// <param name="schema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value may be <c>null</c>.</param>
 		/// <returns>
 		///		Newly created serializer object.
 		///		This value will not be <c>null</c>.
 		/// </returns>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		public MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context, Type concreteType, PolymorphismSchema schema )
+		public MessagePackSerializer BuildSerializerInstance( SerializationContext context, Type concreteType, PolymorphismSchema schema )
 		{
 #if DEBUG && !UNITY
 			Contract.Assert(
-				CollectionTraitsOfThis.DetailedCollectionType != CollectionDetailedKind.Array,
-				typeof( TObject ) + "(" + CollectionTraitsOfThis.DetailedCollectionType + ") != CollectionDetailedKind.Array"
+				this.CollectionTraits.DetailedCollectionType != CollectionDetailedKind.Array,
+				this.TargetType + "(" + this.CollectionTraits.DetailedCollectionType + ") != CollectionDetailedKind.Array"
 			);
 #endif // DEBUG
 
-			Func<SerializationContext, MessagePackSerializer<TObject>> constructor;
+			Func<SerializationContext, MessagePackSerializer> constructor;
 			var codeGenerationContext = this.CreateCodeGenerationContextForSerializerCreation( context );
-			if ( typeof( TObject ).GetIsEnum() )
+			if ( this.TargetType.GetIsEnum() )
 			{
 				this.BuildEnumSerializer( codeGenerationContext );
 				constructor = this.CreateEnumSerializerConstructor( codeGenerationContext );
@@ -207,7 +218,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				return serializer;
 			}
 
-			throw SerializationExceptions.NewTypeCannotSerialize( typeof( TObject ) );
+			throw SerializationExceptions.NewTypeCannotSerialize( this.TargetType );
 		}
 
 		/// <summary>
@@ -224,7 +235,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Builds the serializer and returns its new instance.
 		/// </summary>
 		/// <param name="context">The context information. This value will not be <c>null</c>.</param>
-		/// <param name="concreteType">The substitution type if <typeparamref name="TObject"/> is abstract type. <c>null</c> when <typeparamref name="TObject"/> is not abstract type.</param>
+		/// <param name="concreteType">The substitution type if <see cref="TargetType"/> is abstract type. <c>null</c> when <see cref="TargetType"/> is not abstract type.</param>
 		/// <param name="schema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value may be <c>null</c>.</param>
 		/// <param name="targetInfo">The parsed serialization target information.</param>
 		/// <returns>
@@ -234,11 +245,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected void BuildSerializer( TContext context, Type concreteType, PolymorphismSchema schema, out SerializationTarget targetInfo )
 		{
 #if DEBUG
-			Contract.Assert( !typeof( TObject ).IsArray );
-			Contract.Assert( !typeof( TObject ).GetIsEnum() );
+			Contract.Assert( !this.TargetType.IsArray );
+			Contract.Assert( !this.TargetType.GetIsEnum() );
 #endif
 
-			switch ( CollectionTraitsOfThis.CollectionType )
+			switch ( this.CollectionTraits.CollectionType )
 			{
 				case CollectionKind.Array:
 				case CollectionKind.Map:
@@ -249,14 +260,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 				case CollectionKind.NotCollection:
 				{
-					var nullableUnderlyingType = Nullable.GetUnderlyingType( typeof( TObject ) );
+					var nullableUnderlyingType = Nullable.GetUnderlyingType( this.TargetType );
 					if ( nullableUnderlyingType != null )
 					{
 						targetInfo = null;
 						this.BuildNullableSerializer( context, nullableUnderlyingType );
 					}
 #if !NETFX_35
-					else if ( TupleItems.IsTuple( typeof( TObject ) ) )
+					else if ( TupleItems.IsTuple( this.TargetType ) )
 					{
 						this.BuildTupleSerializer( context, ( schema ?? PolymorphismSchema.Default ).ChildSchemaList, out targetInfo );
 					}
@@ -272,7 +283,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 				default:
 				{
-					throw new NotSupportedException( "Unknown traits :" + CollectionTraitsOfThis );
+					throw new NotSupportedException( "Unknown traits :" + this.CollectionTraits );
 				}
 			}
 		}
@@ -287,7 +298,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		<see cref="Func{T, TResult}"/> which refers newly created constructor.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		protected abstract Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor(
+		protected abstract Func<SerializationContext, MessagePackSerializer> CreateSerializerConstructor(
 			TContext codeGenerationContext,
 			SerializationTarget targetInfo,
 			PolymorphismSchema schema
@@ -301,7 +312,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		<see cref="Func{T, TResult}"/> which refers newly created constructor.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		protected abstract Func<SerializationContext, MessagePackSerializer<TObject>> CreateEnumSerializerConstructor(
+		protected abstract Func<SerializationContext, MessagePackSerializer> CreateEnumSerializerConstructor(
 			TContext codeGenerationContext
 		);
 
@@ -313,7 +324,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="context">
 		///		The <see cref="ISerializerCodeGenerationContext"/> which holds configuration and stores generated code constructs.
 		/// </param>
-		/// <param name="concreteType">The substitution type if <typeparamref name="TObject"/> is abstract type. <c>null</c> when <typeparamref name="TObject"/> is not abstract type.</param>
+		/// <param name="concreteType">The substitution type if <see cref="TargetType"/> is abstract type. <c>null</c> when <see cref="TargetType"/> is not abstract type.</param>
 		/// <param name="itemSchema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value must not be <c>null</c>.</param>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="context"/> is <c>null</c>.
@@ -338,7 +349,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		The <see cref="ISerializerCodeGenerationContext"/> which holds configuration and stores generated code constructs.
 		///		This value will not be <c>null</c>.
 		/// </param>
-		/// <param name="concreteType">The substitution type if <typeparamref name="TObject"/> is abstract type. <c>null</c> when <typeparamref name="TObject"/> is not abstract type.</param>
+		/// <param name="concreteType">The substitution type if <see cref="TargetType"/> is abstract type. <c>null</c> when <see cref="TargetType"/> is not abstract type.</param>
 		/// <param name="itemSchema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value must not be <c>null</c>.</param>
 		/// <exception cref="NotSupportedException">
 		///		This class does not support code generation.
@@ -351,6 +362,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 		internal class SerializerBuilderNilImplicationHandler :
 			NilImplicationHandler<TConstruct, TConstruct, SerializerBuilderOnPackingParameter, SerializerBuilderOnUnpacedParameter>
 		{
+			private readonly Type _targetType;
+
+			public SerializerBuilderNilImplicationHandler( Type targetType )
+			{
+				this._targetType = targetType;
+			}
+
 			protected override TConstruct OnPackingMessagePackObject(
 				SerializerBuilderOnPackingParameter parameter 
 			)
@@ -434,14 +452,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 						SerializationExceptions.ThrowValueTypeCannotBeNull3Method,
 						parameter.MemberName,
 						parameter.Builder.EmitTypeOfExpression( parameter.Context, parameter.ItemType ),
-						parameter.Builder.EmitTypeOfExpression( parameter.Context, typeof( TObject ) )
+						parameter.Builder.EmitTypeOfExpression( parameter.Context, this._targetType )
 					);
 			}
 		}
 
 		internal struct SerializerBuilderOnPackingParameter : INilImplicationHandlerParameter
 		{
-			public readonly SerializerBuilder<TContext, TConstruct, TObject> Builder;
+			public readonly SerializerBuilder<TContext, TConstruct> Builder;
 
 			public readonly TContext Context;
 
@@ -457,7 +475,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			public readonly string MemberName;
 
 			public SerializerBuilderOnPackingParameter(
-				SerializerBuilder<TContext, TConstruct, TObject> builder,
+				SerializerBuilder<TContext, TConstruct> builder,
 				TContext context,
 				TConstruct item,
 				Type itemType,
@@ -474,7 +492,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		internal struct SerializerBuilderOnUnpacedParameter : INilImplicationHandlerOnUnpackedParameter<TConstruct>
 		{
-			public readonly SerializerBuilder<TContext, TConstruct, TObject> Builder;
+			public readonly SerializerBuilder<TContext, TConstruct> Builder;
 
 			public readonly TContext Context;
 
@@ -495,7 +513,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 
 			public SerializerBuilderOnUnpacedParameter(
-				SerializerBuilder<TContext, TConstruct, TObject> builder,
+				SerializerBuilder<TContext, TConstruct> builder,
 				TContext context,
 				Type itemType,
 				TConstruct memberName,

@@ -29,7 +29,7 @@ using MsgPack.Serialization.Reflection;
 namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
-	///		Represents code construct for <see cref="AssemblyBuilderSerializerBuilder{TObject}"/>s.
+	///		Represents code construct for <see cref="AssemblyBuilderSerializerBuilder"/>s.
 	/// </summary>
 	internal abstract class ILConstruct : ICodeConstruct
 	{

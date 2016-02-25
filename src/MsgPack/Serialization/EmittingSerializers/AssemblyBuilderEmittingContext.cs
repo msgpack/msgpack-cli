@@ -32,7 +32,7 @@ using MsgPack.Serialization.Reflection;
 namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
-	///		A code generation context for <see cref="AssemblyBuilderSerializerBuilder{TObject}"/>.
+	///		A code generation context for <see cref="AssemblyBuilderSerializerBuilder"/>.
 	/// </summary>
 	internal class AssemblyBuilderEmittingContext : SerializerGenerationContext<ILConstruct>
 	{

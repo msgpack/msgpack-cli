@@ -41,7 +41,7 @@ using System.Threading.Tasks;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
-	partial class SerializerBuilder<TContext, TConstruct, TObject>
+	partial class SerializerBuilder<TContext, TConstruct>
 	{
 		private static readonly TConstruct[] NoConstructs = new TConstruct[ 0 ];
 
@@ -1679,13 +1679,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// </summary>
 		/// <param name="instanceType">The target elementType.</param>
 		/// <returns>A default constructor of the <paramref name="instanceType"/>.</returns>
-		private static ConstructorInfo GetDefaultConstructor( Type instanceType )
+		private ConstructorInfo GetDefaultConstructor( Type instanceType )
 		{
 #if DEBUG
 			Contract.Assert( !instanceType.GetIsValueType() );
 #endif
 
-			var ctor = typeof( TObject ).GetConstructor( ReflectionAbstractions.EmptyTypes );
+			var ctor = this.TargetType.GetConstructor( ReflectionAbstractions.EmptyTypes );
 			if ( ctor == null )
 			{
 				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructor( instanceType );
@@ -1760,7 +1760,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		private TConstruct EmitGetEqualityComparer( TContext context )
 		{
 			Type comparisonType;
-			switch ( CollectionTraitsOfThis.DetailedCollectionType )
+			switch ( this.CollectionTraits.DetailedCollectionType )
 			{
 				case CollectionDetailedKind.Array:
 				case CollectionDetailedKind.GenericCollection:
@@ -1774,7 +1774,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 #endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 #endif // !NETFX_35 && !UNITY
 				{
-					comparisonType = CollectionTraitsOfThis.ElementType;
+					comparisonType = this.CollectionTraits.ElementType;
 					break;
 				}
 				case CollectionDetailedKind.GenericDictionary:
@@ -1782,7 +1782,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				case CollectionDetailedKind.GenericReadOnlyDictionary:
 #endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				{
-					comparisonType = CollectionTraitsOfThis.ElementType.GetGenericArguments()[ 0 ];
+					comparisonType = this.CollectionTraits.ElementType.GetGenericArguments()[ 0 ];
 					break;
 				}
 				default:

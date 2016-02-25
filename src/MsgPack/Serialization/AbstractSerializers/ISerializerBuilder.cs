@@ -26,19 +26,18 @@ namespace MsgPack.Serialization.AbstractSerializers
 	/// <summary>
 	///		Defines a common interface for serializer builder.
 	/// </summary>
-	/// <typeparam name="TObject">The type of the serializing object.</typeparam>
-	internal interface ISerializerBuilder<TObject>
+	internal interface ISerializerBuilder
 	{
 		/// <summary>
 		///		Builds the serializer and returns its new instance.
 		/// </summary>
 		/// <param name="context">The context information.</param>
-		/// <param name="concreteType">The substitution type if <typeparamref name="TObject"/> is abstract type. <c>null</c> when <typeparamref name="TObject"/> is not abstract type.</param>
+		/// <param name="concreteType">The substitution type if the target type is abstract type. <c>null</c> when the target type is not abstract type.</param>
 		/// <param name="schema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value may be <c>null</c>.</param>
 		/// <returns>
 		///		Newly created serializer object.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context, Type concreteType, PolymorphismSchema schema );
+		MessagePackSerializer BuildSerializerInstance( SerializationContext context, Type concreteType, PolymorphismSchema schema );
 	}
 }

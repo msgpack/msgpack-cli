@@ -26,7 +26,7 @@ using MsgPack.Serialization.CollectionSerializers;
 namespace MsgPack.Serialization.ExpressionSerializers
 {
 	/// <summary>
-	///		A helper <see cref="CollectionMessagePackSerializer{TCollection, TItem}"/> for <see cref="ExpressionTreeSerializerBuilder{TObject}"/>.
+	///		A helper <see cref="CollectionMessagePackSerializer{TCollection, TItem}"/> for <see cref="ExpressionTreeSerializerBuilder"/>.
 	/// </summary>
 	/// <typeparam name="TCollection">The type of the collection.</typeparam>
 	/// <typeparam name="TItem">The type of the item of collection.</typeparam>

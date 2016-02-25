@@ -31,7 +31,7 @@ using MsgPack.Serialization.AbstractSerializers;
 namespace MsgPack.Serialization.ExpressionSerializers
 {
 	/// <summary>
-	///		Represents a code construct for <see cref="ExpressionTreeSerializerBuilder{TObject}"/>.
+	///		Represents a code construct for <see cref="ExpressionTreeSerializerBuilder"/>.
 	/// </summary>
 	internal sealed class ExpressionConstruct : ICodeConstruct
 	{

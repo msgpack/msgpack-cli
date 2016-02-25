@@ -30,13 +30,17 @@ using System.Threading;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
-	partial class SerializerBuilder<TContext, TConstruct, TObject>
+	partial class SerializerBuilder<TContext, TConstruct>
 	{
 		protected void BuildEnumSerializer( TContext context )
 		{
-			Contract.Assert( typeof( TObject ).GetIsEnum() );
-			var underlyingType = Enum.GetUnderlyingType( typeof( TObject ) );
-			Contract.Assert( underlyingType != null, "Underlying type of " + typeof( TObject ) + " is null." );
+#if DEBUG
+			Contract.Assert( this.TargetType.GetIsEnum() );
+#endif // DEBUG
+			var underlyingType = Enum.GetUnderlyingType( this.TargetType );
+#if DEBUG
+			Contract.Assert( underlyingType != null, "Underlying type of " + this.TargetType + " is null." );
+#endif // DEBUG
 
 			this.BuildPackUnderlyingValueTo( context, underlyingType, false );
 			this.BuildUnpackFromUnderlyingValue( context, underlyingType );
@@ -68,7 +72,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							context,
 							this.ReferArgument( context, typeof( Packer ), "packer", 1 ),
 							typeof( Packer ).GetMethod( "PackAsync", new[] { underlyingType, typeof( CancellationToken) } ),
-							this.EmitEnumToUnderlyingCastExpression( context, underlyingType, this.ReferArgument( context, typeof( TObject ), "enumValue", 2 ) ),
+							this.EmitEnumToUnderlyingCastExpression( context, underlyingType, this.ReferArgument( context, this.TargetType, "enumValue", 2 ) ),
 							this.ReferArgument( context, typeof( CancellationToken ), "cancellationToken", 3 )
 						)
 					) :
@@ -77,7 +81,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						this.ReferArgument( context, typeof( Packer ), "packer", 1 ),
 						typeof( Packer ).GetMethod( "Pack", new[] { underlyingType } ),
-						this.EmitEnumToUnderlyingCastExpression( context, underlyingType, this.ReferArgument( context, typeof( TObject ), "enumValue", 2 ) )
+						this.EmitEnumToUnderlyingCastExpression( context, underlyingType, this.ReferArgument( context, this.TargetType, "enumValue", 2 ) )
 					);
 
 			context.EndMethodOverride( methodName, invocation);
@@ -93,7 +97,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context,
 					this.EmitEnumFromUnderlyingCastExpression(
 						context,
-						typeof( TObject ),
+						this.TargetType,
 						this.EmitInvokeMethodExpression(
 							context,
 							this.ReferArgument( context, typeof( MessagePackObject ), "messagePackObject", 1 ),

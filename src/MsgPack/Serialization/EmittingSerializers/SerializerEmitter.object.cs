@@ -284,24 +284,22 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <summary>
 		///		Creates the serializer type built now and returns its new instance.
 		/// </summary>
-		/// <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
 		/// <param name="context">The <see cref="SerializationContext"/> to holds serializers.</param>
 		/// <param name="builder">The builder which implements actions initialization emit.</param>
 		/// <param name="targetInfo">The information of the target.</param>
 		/// <param name="schema">The <see cref="PolymorphismSchema"/> for this instance.</param>
 		/// <returns>
-		///		Newly built <see cref="MessagePackSerializer{T}"/> instance.
+		///		Newly built <see cref="MessagePackSerializer"/> instance.
 		///		This value will not be <c>null</c>.
 		///	</returns>
-		public MessagePackSerializer<T> CreateObjectInstance<T>( AssemblyBuilderEmittingContext context, AssemblyBuilderSerializerBuilder<T> builder, SerializationTarget targetInfo, PolymorphismSchema schema )
+		public MessagePackSerializer CreateObjectInstance( AssemblyBuilderEmittingContext context, AssemblyBuilderSerializerBuilder builder, SerializationTarget targetInfo, PolymorphismSchema schema )
 		{
-			return this.CreateObjectConstructor( context, builder, targetInfo )( context.SerializationContext, schema );
+			return this.CreateObjectConstructor(  context, builder, targetInfo )( context.SerializationContext, schema );
 		}
 
 		/// <summary>
 		///		Creates the serializer type built now and returns its constructor.
 		/// </summary>
-		/// <typeparam name="T">The type of serialization target.</typeparam>
 		/// <param name="context">The context.</param>
 		/// <param name="builder">The builder which implements actions initialization emit.</param>
 		/// <param name="targetInfo">The information of the target</param>
@@ -310,10 +308,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		This value will not be <c>null</c>.
 		///	</returns>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Reflection objects" )]
-		public Func<SerializationContext, PolymorphismSchema, MessagePackSerializer<T>> CreateObjectConstructor<T>( AssemblyBuilderEmittingContext context, AssemblyBuilderSerializerBuilder<T> builder, SerializationTarget targetInfo )
+		public Func<SerializationContext, PolymorphismSchema, MessagePackSerializer> CreateObjectConstructor( AssemblyBuilderEmittingContext context, AssemblyBuilderSerializerBuilder builder, SerializationTarget targetInfo )
 		{
-			var hasPackActions = targetInfo != null && !typeof( IPackable ).IsAssignableFrom( typeof( T ) );
-			var hasUnackActions = targetInfo != null && !typeof( IUnpackable ).IsAssignableFrom( typeof( T ) );
+			var hasPackActions = targetInfo != null && !typeof( IPackable ).IsAssignableFrom( builder.TargetType );
+			var hasUnackActions = targetInfo != null && !typeof( IUnpackable ).IsAssignableFrom( builder.TargetType );
 			var hasUnpackActionTables = hasUnackActions && targetInfo.Members.Any( m => m.Member != null ); // Except tuples
 			// ReSharper disable RedundantDelegateCreation
 			Func<bool, Func<ILConstruct>> packActionsInitialization =
@@ -388,7 +386,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Contract.Assert( ctor != null, "ctor != null" );
 #endif
 			return
-				Expression.Lambda<Func<SerializationContext, PolymorphismSchema, MessagePackSerializer<T>>>(
+				Expression.Lambda<Func<SerializationContext, PolymorphismSchema, MessagePackSerializer>>(
 					Expression.New(
 						ctor,
 						contextParameter

@@ -29,7 +29,7 @@ using MsgPack.Serialization.AbstractSerializers;
 namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
-	///		An <see cref="ISerializerCodeGenerationContext"/> for <see cref="AssemblyBuilderSerializerBuilder{TObject}"/>.
+	///		An <see cref="ISerializerCodeGenerationContext"/> for <see cref="AssemblyBuilderSerializerBuilder"/>.
 	/// </summary>
 	internal class AssemblyBuilderCodeGenerationContext : ISerializerCodeGenerationContext
 	{

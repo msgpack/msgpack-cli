@@ -36,7 +36,7 @@ using System.Threading.Tasks;
 namespace MsgPack.Serialization.AbstractSerializers
 {
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Well patterned" )]
-	partial class SerializerBuilder<TContext, TConstruct, TObject>
+	partial class SerializerBuilder<TContext, TConstruct>
 	{
 		private void BuildCollectionSerializer(
 			TContext context,
@@ -45,19 +45,19 @@ namespace MsgPack.Serialization.AbstractSerializers
 		)
 		{
 #if DEBUG && !UNITY
-			Contract.Assert( CollectionTraitsOfThis.DetailedCollectionType != CollectionDetailedKind.Array );
+			Contract.Assert( this.CollectionTraits.DetailedCollectionType != CollectionDetailedKind.Array );
 #endif // DEBUG
 			bool isUnpackFromRequired;
 			bool isAddItemRequired;
-			DetermineSerializationStrategy( out isUnpackFromRequired, out isAddItemRequired );
+			this.DetermineSerializationStrategy( out isUnpackFromRequired, out isAddItemRequired );
 
 			if ( isAddItemRequired )
 			{
 				// For IEnumerable implements and IReadOnlyXXX implements
-				if ( CollectionTraitsOfThis.AddMethod != null )
+				if ( this.CollectionTraits.AddMethod != null )
 				{
 					// For standard path.
-					this.BuildCollectionAddItem( context, CollectionTraitsOfThis );
+					this.BuildCollectionAddItem( context, this.CollectionTraits );
 				}
 				else
 				{
@@ -82,9 +82,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 			this.BuildRestoreSchema( context, schema );
 		}
 
-		private static void DetermineSerializationStrategy( out bool isUnpackFromRequired, out bool isAddItemRequired )
+		private void DetermineSerializationStrategy( out bool isUnpackFromRequired, out bool isAddItemRequired )
 		{
-			switch ( CollectionTraitsOfThis.DetailedCollectionType )
+			switch ( this.CollectionTraits.DetailedCollectionType )
 			{
 				case CollectionDetailedKind.NonGenericEnumerable:
 				case CollectionDetailedKind.NonGenericCollection:
@@ -145,7 +145,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private void BuildCollectionAddItem( TContext context, CollectionTraits traits )
 		{
-			var addItem = BaseClass.GetRuntimeMethod( MethodName.AddItem );
+			var addItem = this.BaseClass.GetRuntimeMethod( MethodName.AddItem );
 			context.BeginMethodOverride( MethodName.AddItem );
 			context.EndMethodOverride(
 				MethodName.AddItem,
@@ -184,13 +184,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			context.BeginMethodOverride( methodName );
 
-			var instanceType = concreteType ?? typeof( TObject );
+			var instanceType = concreteType ?? this.TargetType;
 
 			context.EndMethodOverride(
 				methodName,
 				this.EmitSequentialStatements(
 					context,
-					typeof( TObject ),
+					this.TargetType,
 					this.EmitCollectionUnpackFromStatements( context, instanceType, schema, isAsync )
 				)
 			);
@@ -200,7 +200,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			// Header check
 			yield return
-				CollectionTraitsOfThis.CollectionType == CollectionKind.Array
+				this.CollectionTraits.CollectionType == CollectionKind.Array
 					? this.EmitCheckIsArrayHeaderExpression( context, context.Unpacker )
 					: this.EmitCheckIsMapHeaderExpression( context, context.Unpacker );
 
@@ -223,14 +223,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 					itemsCount
 				);
 			var collection =
-				instanceType == typeof( TObject )
+				instanceType == this.TargetType
 					? createInstance
 					: this.EmitUnboxAnyExpression( context, instanceType, createInstance );
 
 			// Get delegates to UnpackHelpers
 			TConstruct iterative;
 			TConstruct bulk;
-			if ( CollectionTraitsOfThis.CollectionType == CollectionKind.Array && CollectionTraitsOfThis.AddMethod == null )
+			if ( this.CollectionTraits.CollectionType == CollectionKind.Array && this.CollectionTraits.AddMethod == null )
 			{
 				// Try to use concrete collection's Add.
 				var traitsOfTheCollection = instanceType.GetCollectionTraits();
@@ -239,15 +239,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.MakeNullLiteral(
 						context,
 #if FEATURE_TAP
-						isAsync ? TypeDefinition.GenericReferenceType( typeof( Func<,,,,> ), typeof( Unpacker ), typeof( TObject ), typeof( int ), typeof( CancellationToken ), typeof( Task ) ) :
+						isAsync ? TypeDefinition.GenericReferenceType( typeof( Func<,,,,> ), typeof( Unpacker ), this.TargetType, typeof( int ), typeof( CancellationToken ), typeof( Task ) ) :
 #endif // FEATURE_TAP
-						TypeDefinition.GenericReferenceType( typeof( Action<,,> ), typeof( Unpacker ), typeof( TObject ), typeof( int ) )
+						TypeDefinition.GenericReferenceType( typeof( Action<,,> ), typeof( Unpacker ), this.TargetType, typeof( int ) )
 					);
 
 				var indexOfItemParameter = context.IndexOfItem;
 				var itemsCountParameter = context.ItemsCount;
 				var appendToTargetParameter = context.CollectionToBeAdded;
-				var unpackedItemParameter = context.DefineUnpackedItemParameterInSetValueMethods( CollectionTraitsOfThis.ElementType );
+				var unpackedItemParameter = context.DefineUnpackedItemParameterInSetValueMethods( this.CollectionTraits.ElementType );
 				var unpackItemValueArguments = 
 					new[] { context.Unpacker, context.UnpackToTarget, indexOfItemParameter, itemsCountParameter }
 #if FEATURE_TAP
@@ -303,9 +303,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.MakeNullLiteral(
 						context,
 #if FEATURE_TAP
-						isAsync ? TypeDefinition.GenericReferenceType( typeof( Func<,,,,,> ), typeof( Unpacker ), typeof( TObject ), typeof( int ), typeof( int ), typeof( CancellationToken ), typeof( Task ) ) :
+						isAsync ? TypeDefinition.GenericReferenceType( typeof( Func<,,,,,> ), typeof( Unpacker ), this.TargetType, typeof( int ), typeof( int ), typeof( CancellationToken ), typeof( Task ) ) :
 #endif // FEATURE_TAP
-						TypeDefinition.GenericReferenceType( typeof( Action<,,,> ), typeof( Unpacker ), typeof( TObject ), typeof( int ), typeof( int ) )
+						TypeDefinition.GenericReferenceType( typeof( Action<,,,> ), typeof( Unpacker ), this.TargetType, typeof( int ), typeof( int ) )
 					);
 			}
 
@@ -324,9 +324,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						null,
 #if FEATURE_TAP
-						isAsync ? Metadata._UnpackHelpers.UnpackCollectionAsync_1Method.MakeGenericMethod( typeof( TObject ) ) :
+						isAsync ? Metadata._UnpackHelpers.UnpackCollectionAsync_1Method.MakeGenericMethod( this.TargetType ) :
 #endif // FEATURE_TAP
-						Metadata._UnpackHelpers.UnpackCollection_1Method.MakeGenericMethod( typeof( TObject ) ),
+						Metadata._UnpackHelpers.UnpackCollection_1Method.MakeGenericMethod( this.TargetType ),
 						arguments
 					)
 				);
@@ -351,11 +351,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			context.BeginMethodOverride( MethodName.CreateInstance );
 
-			var instanceType = concreteType ?? typeof( TObject );
+			var instanceType = concreteType ?? this.TargetType;
 			var collection =
 				this.DeclareLocal(
 					context,
-					typeof( TObject ),
+					this.TargetType,
 					"collection"
 				);
 			var ctor = UnpackHelpers.GetCollectionConstructor( instanceType );
@@ -364,7 +364,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				MethodName.CreateInstance,
 				this.EmitSequentialStatements(
 					context,
-					typeof( TObject ),
+					this.TargetType,
 					collection,
 					this.EmitStoreVariableStatement(
 						context,
@@ -417,7 +417,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected internal TConstruct EmitUnpackToInitialization( TContext context )
 		{
 			// This method should be called at most once, so caching follosing array should be wasting.
-			var parameterTypes = new[] { typeof( Unpacker ), typeof( TObject ), typeof( int ) };
+			var parameterTypes = new[] { typeof( Unpacker ), this.TargetType, typeof( int ) };
 			return
 				this.EmitSetField(
 					context,
@@ -425,7 +425,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context.GetDeclaredField( FieldName.UnpackTo ),
 					this.EmitNewPrivateMethodDelegateExpression(
 						context,
-						BaseClass.GetRuntimeMethod( MethodName.UnpackToCore, parameterTypes )
+						this.BaseClass.GetRuntimeMethod( MethodName.UnpackToCore, parameterTypes )
 					)
 				);
 		}

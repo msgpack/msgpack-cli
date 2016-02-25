@@ -36,7 +36,7 @@ using MsgPack.Serialization.AbstractSerializers;
 namespace MsgPack.Serialization.ExpressionSerializers
 {
 	/// <summary>
-	///		Non generic part of <see cref="ExpressionTreeSerializerBuilder{TObject}"/>.
+	///		Non generic part of <see cref="ExpressionTreeSerializerBuilder"/>.
 	/// </summary>
 	internal static class ExpressionTreeSerializerBuilderHelpers
 	{

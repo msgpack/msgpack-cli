@@ -35,11 +35,11 @@ using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
-	partial class SerializerBuilder<TContext, TConstruct, TObject>
+	partial class SerializerBuilder<TContext, TConstruct>
 	{
 		private void BuildTupleSerializer( TContext context, IList<PolymorphismSchema> itemSchemaList, out SerializationTarget targetInfo )
 		{
-			var itemTypes = TupleItems.GetTupleItemTypes( typeof( TObject ) );
+			var itemTypes = TupleItems.GetTupleItemTypes( this.TargetType );
 			targetInfo = SerializationTarget.CreateForTuple( itemTypes );
 
 			this.BuildTuplePackTo( context, itemTypes, itemSchemaList, false );
@@ -172,7 +172,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					null,
 					new MethodDefinition(
 						AdjustName( MethodName.PackToArray, isAsync ),
-						new [] { TypeDefinition.Object( typeof( TObject ) ) },
+						new [] { TypeDefinition.Object( this.TargetType ) },
 						typeof( PackHelpers ),
 #if FEATURE_TAP
 						isAsync ? typeof( Task ) :
@@ -259,7 +259,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				methodName,
 				this.EmitSequentialStatements(
 					context,
-					typeof( TObject ),
+					this.TargetType,
 					this.BuildTupleUnpackFromCore( context, itemTypes, itemSchemaList, isAsync )
 				)
 			);
@@ -403,7 +403,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						MethodName.CreateObjectFromContext,
 						null,
 						null,
-						typeof( TObject ),
+						this.TargetType,
 						unpackingContext.Type
 					),
 					() => this.EmitRetrunStatement(
@@ -436,12 +436,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 						null,
 						new MethodDefinition(
 							AdjustName( MethodName.UnpackFromArray, isAsync ),
-							new [] { unpackingContext.Type, typeof( TObject ) },
+							new [] { unpackingContext.Type, this.TargetType },
 							typeof( UnpackHelpers ),
 #if FEATURE_TAP
-							isAsync ? typeof( Task<> ).MakeGenericType( typeof( TObject ) ) :
+							isAsync ? typeof( Task<> ).MakeGenericType( this.TargetType ) :
 #endif // FEATURE_TAP
-							typeof( TObject ),
+							this.TargetType,
 							unpackHelperArguments.Select( a => a.ContextType ).ToArray()
 						),
 						unpackHelperArguments

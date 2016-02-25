@@ -298,26 +298,26 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilderHelper.cs">
       <Link>Serialization\AbstractSerializers\SerializerBuilderHelper.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Collection.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Collection.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`2.Collection.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`2.Collection.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.CommonConstructs.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.CommonConstructs.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`2.CommonConstructs.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`2.CommonConstructs.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`2.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`2.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`2.Enum.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`2.Enum.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Nullable.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Nullable.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`2.Nullable.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`2.Nullable.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`2.Object.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`2.Object.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`2.Tuple.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`2.Tuple.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerGenerationContext.cs">
       <Link>Serialization\AbstractSerializers\SerializerGenerationContext.cs</Link>
@@ -610,11 +610,11 @@
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionTreeContext.cs">
       <Link>Serialization\ExpressionSerializers\ExpressionTreeContext.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilder.cs">
+      <Link>Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilderHelpers.cs">
       <Link>Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilderHelpers.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilder`1.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilder`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ExtTypeCodeMapping.cs">
       <Link>Serialization\ExtTypeCodeMapping.cs</Link>

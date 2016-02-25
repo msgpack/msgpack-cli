@@ -31,7 +31,7 @@ using System.Linq.Expressions;
 namespace MsgPack.Serialization.ExpressionSerializers
 {
 	/// <summary>
-	///		A helper <see cref="MessagePackSerializer{T}"/> for <see cref="ExpressionTreeSerializerBuilder{TObject}"/>.
+	///		A helper <see cref="MessagePackSerializer{T}"/> for <see cref="ExpressionTreeSerializerBuilder"/>.
 	/// </summary>
 	/// <typeparam name="T">The type of the serialization target.</typeparam>
 	internal class ExpressionCallbackMessagePackSerializer<T> : MessagePackSerializer<T>

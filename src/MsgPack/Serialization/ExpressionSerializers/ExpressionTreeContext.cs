@@ -37,7 +37,7 @@ using MsgPack.Serialization.AbstractSerializers;
 namespace MsgPack.Serialization.ExpressionSerializers
 {
 	/// <summary>
-	///		Implements <see cref="SerializerGenerationContext{TConstruct}"/> for <see cref="ExpressionTreeSerializerBuilder{TObject}"/>.
+	///		Implements <see cref="SerializerGenerationContext{TConstruct}"/> for <see cref="ExpressionTreeSerializerBuilder"/>.
 	/// </summary>
 	internal sealed class ExpressionTreeContext : SerializerGenerationContext<ExpressionConstruct>
 	{

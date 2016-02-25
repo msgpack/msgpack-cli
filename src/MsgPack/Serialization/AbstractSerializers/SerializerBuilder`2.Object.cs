@@ -36,14 +36,14 @@ using System.Threading.Tasks;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
-	partial class SerializerBuilder<TContext, TConstruct, TObject>
+	partial class SerializerBuilder<TContext, TConstruct>
 	{
 		private void BuildObjectSerializer( TContext context, out SerializationTarget targetInfo )
 		{
-			SerializationTarget.VerifyType( typeof( TObject ) );
-			targetInfo = SerializationTarget.Prepare( context.SerializationContext, typeof( TObject ) );
+			SerializationTarget.VerifyType( this.TargetType );
+			targetInfo = SerializationTarget.Prepare( context.SerializationContext, this.TargetType );
 
-			if ( typeof( IPackable ).IsAssignableFrom( typeof( TObject ) ) )
+			if ( typeof( IPackable ).IsAssignableFrom( this.TargetType ) )
 			{
 				this.BuildIPackablePackTo( context );
 			}
@@ -56,7 +56,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			if ( this.WithAsync( context ) )
 			{
-				if ( typeof( IAsyncPackable ).IsAssignableFrom( typeof( TObject ) ) )
+				if ( typeof( IAsyncPackable ).IsAssignableFrom( this.TargetType ) )
 				{
 					this.BuildIAsyncPackablePackTo( context );
 				}
@@ -68,7 +68,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 #endif // FEATURE_TAP
 
-			if ( typeof( IUnpackable ).IsAssignableFrom( typeof( TObject ) ) )
+			if ( typeof( IUnpackable ).IsAssignableFrom( this.TargetType ) )
 			{
 				this.BuildIUnpackableUnpackFrom( context );
 			}
@@ -81,7 +81,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			if ( this.WithAsync( context ) )
 			{
-				if ( typeof( IAsyncUnpackable ).IsAssignableFrom( typeof( TObject ) ) )
+				if ( typeof( IAsyncUnpackable ).IsAssignableFrom( this.TargetType ) )
 				{
 					this.BuildIAsyncUnpackableUnpackFrom( context );
 				}
@@ -126,7 +126,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private TConstruct BuildIPackablePackToCore( TContext context, Type @interface )
 		{
-			var packTo = typeof( TObject ).GetInterfaceMap( @interface ).TargetMethods.Single();
+			var packTo = this.TargetType.GetInterfaceMap( @interface ).TargetMethods.Single();
 
 			if ( packTo.ReturnType == typeof( void ) )
 			{
@@ -280,7 +280,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					null,
 					new MethodDefinition(
 						AdjustName( "PackTo" + method, isAsync ),
-						new[] { TypeDefinition.Object( typeof( TObject ) ), },
+						new[] { TypeDefinition.Object( this.TargetType ), },
 						typeof( PackHelpers ),
 #if FEATURE_TAP
 						isAsync ? typeof( Task ) :
@@ -372,11 +372,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		protected virtual TypeDefinition GetPackOperationType( TContext context, bool isAsync )
 		{
-			return 
+			return
 #if FEATURE_TAP
-				isAsync ? typeof( Func<Packer, TObject, CancellationToken, Task> ) :
+				isAsync
+					? typeof( Func<,,,> ).MakeGenericType( typeof( Packer ), this.TargetType, typeof( CancellationToken ), typeof( Task ) ) :
 #endif // FEATURE_TAP
-				typeof( Action<Packer, TObject> );
+					typeof( Action<,> ).MakeGenericType( typeof( Packer ), this.TargetType );
 		}
 
 		private IEnumerable<TConstruct> EmitPackActionCollectionCore( TContext context, SerializationTarget targetInfo, TypeDefinition actionType, TConstruct actionCollection, SerializationMethod method, bool isAsync )
@@ -493,7 +494,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			context.EndMethodOverride( MethodName.UnpackFromCore,
 				this.EmitSequentialStatements(
 					context,
-					typeof( TObject ),
+					this.TargetType,
 					this.BuildIUnpackableUnpackFromCore( context, typeof( IUnpackable ) )
 				)
 			);
@@ -513,7 +514,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				MethodName.UnpackFromAsyncCore,
 				this.EmitSequentialStatements(
 					context,
-					typeof( TObject ),
+					this.TargetType,
 					this.BuildIUnpackableUnpackFromCore( context, typeof( IAsyncUnpackable ) )
 				)
 			);
@@ -530,13 +531,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 			var result =
 				this.DeclareLocal(
 					context,
-					typeof( TObject ),
+					this.TargetType,
 					"result"
 				);
 
 			yield return result;
 
-			if ( !typeof( TObject ).GetIsValueType() )
+			if ( !this.TargetType.GetIsValueType() )
 			{
 				yield return
 					this.EmitStoreVariableStatement(
@@ -545,12 +546,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.EmitCreateNewObjectExpression(
 							context,
 							null, // reference contextType.
-							GetDefaultConstructor( typeof( TObject ) )
+							this.GetDefaultConstructor( this.TargetType )
 						)
 					);
 			}
 
-			var unpackFrom = typeof( TObject ).GetInterfaceMap( @interface ).TargetMethods.Single();
+			var unpackFrom = this.TargetType.GetInterfaceMap( @interface ).TargetMethods.Single();
 
 			if ( unpackFrom.ReturnType == typeof( void ) )
 			{
@@ -605,7 +606,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				methodName,
 				this.EmitSequentialStatements(
 					context,
-					typeof( TObject ),
+					this.TargetType,
 					this.EmitObjectUnpackFromCore( context, targetInfo, isAsync )
 				)
 			);
@@ -695,7 +696,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 									) : unpackedItem
 								);
 					}
-					else if ( targetInfo.IsConstructorDeserialization || typeof( TObject ).GetIsValueType() )
+					else if ( targetInfo.IsConstructorDeserialization || this.TargetType.GetIsValueType() )
 					{
 						var name = fieldNames[ constructorParameterIndex ];
 						storeValueStatementEmitter =
@@ -785,9 +786,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 						null,
 						new MethodDefinition(
 							AdjustName( MethodNamePrefix.UnpackFrom + method, isAsync ),
-							new[] { unpackingContext.Type, typeof( TObject ) },
+							new[] { unpackingContext.Type, this.TargetType },
 							typeof( UnpackHelpers ),
-							typeof( TObject ),
+							this.TargetType,
 							unpackHelperArguments.Select( a => a.ContextType ).ToArray()
 						),
 						unpackHelperArguments
@@ -829,7 +830,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				unpackingContext.Factory =
 					this.EmitNewPrivateMethodDelegateExpressionWithCreation(
 						context,
-						GetCreateObjectFromContextMethod( unpackingContext ),
+						this.GetCreateObjectFromContextMethod( unpackingContext ),
 						() => this.EmitInvokeDeserializationConstructorStatement(
 							context,
 							targetInfo.DeserializationConstructor,
@@ -841,7 +842,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 				return unpackingContext;
 			}
-			else if ( typeof( TObject ).GetIsValueType() )
+			else if ( this.TargetType.GetIsValueType() )
 			{
 				var contextFields =
 					targetInfo.Members.Where( m => m.MemberName != null )
@@ -864,10 +865,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 				unpackingContext.Factory =
 					this.EmitNewPrivateMethodDelegateExpressionWithCreation(
 						context,
-						GetCreateObjectFromContextMethod( unpackingContext ),
+						this.GetCreateObjectFromContextMethod( unpackingContext ),
 						() => this.EmitSequentialStatements(
 							context,
-							typeof( TObject ),
+							this.TargetType,
 							this.EmitCreateObjectFromContextCore( context, targetInfo, unpackingContext, contextFields )
 						),
 						context.UnpackingContextInCreateObjectFromContext
@@ -882,11 +883,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 				var unpackingContext =
 					UnpackingContextInfo.Create(
 						parameterType,
-						GetDefaultConstructor( typeof( TObject ) ),
+						this.GetDefaultConstructor( this.TargetType ),
 						new HashSet<string>()
 					);
 
-				var result = this.DeclareLocal( context, typeof( TObject ), "result" );
+				var result = this.DeclareLocal( context, this.TargetType, "result" );
 				unpackingContext.Variable = result;
 
 				unpackingContext.Statements.Add( result );
@@ -908,7 +909,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						null,
 						unpackingContext.Type.TryGetRuntimeType() == typeof( object )
-						? Metadata._UnpackHelpers.Unbox_1Method.MakeGenericMethod( typeof( TObject ) )
+						? Metadata._UnpackHelpers.Unbox_1Method.MakeGenericMethod( this.TargetType )
 						: Metadata._UnpackHelpers.GetIdentity_1Method.MakeGenericMethod( unpackingContext.VariableType.ResolveRuntimeType() )
 					);
 
@@ -996,9 +997,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 		)
 		{
 #if DEBUG
-			Contract.Assert( typeof( TObject ).GetIsValueType() );
+			Contract.Assert( this.TargetType.GetIsValueType() );
 #endif // DEBUG
-			var result = this.DeclareLocal( context, typeof( TObject ), "result" );
+			var result = this.DeclareLocal( context, this.TargetType, "result" );
 			yield return result;
 
 			var members = targetInfo.Members.Where( m => m.Member != null ).ToDictionary( m => m.Member.Name, m => m.Member );
@@ -1046,14 +1047,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 		}
 
-		private static MethodDefinition GetCreateObjectFromContextMethod( UnpackingContextInfo unpackingContext )
+		private MethodDefinition GetCreateObjectFromContextMethod( UnpackingContextInfo unpackingContext )
 		{
 			return
 				new MethodDefinition(
 					MethodName.CreateObjectFromContext,
 					null,
 					null,
-					typeof( TObject ),
+					this.TargetType,
 					unpackingContext.Type
 				);
 		}
@@ -1108,7 +1109,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				? TypeDefinition.GenericReferenceType(
 					typeof( Func<,,,,,> ),
 					typeof( Unpacker ),
-					context.UnpackingContextType ?? typeof( TObject ),
+					context.UnpackingContextType ?? this.TargetType,
 					typeof( int ),
 					typeof( int ),
 					typeof( CancellationToken ),
@@ -1118,7 +1119,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				TypeDefinition.GenericReferenceType(
 					typeof( Action<,,,> ),
 					typeof( Unpacker ),
-					context.UnpackingContextType ?? typeof( TObject ),
+					context.UnpackingContextType ?? this.TargetType,
 					typeof( int ),
 					typeof( int )
 				);

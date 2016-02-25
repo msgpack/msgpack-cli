@@ -557,11 +557,7 @@ namespace MsgPack.Serialization
 
 			protected override Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory()
 			{
-				return
-					type =>
-					ReflectionExtensions.CreateInstancePreservingExceptionType<ISerializerCodeGenerator>(
-						typeof( AssemblyBuilderSerializerBuilder<> ).MakeGenericType( type )
-					);
+				return type => new AssemblyBuilderSerializerBuilder( type, type.GetCollectionTraits() );
 			}
 		}
 
@@ -581,11 +577,7 @@ namespace MsgPack.Serialization
 
 			protected override Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory()
 			{
-				return
-					type =>
-						ReflectionExtensions.CreateInstancePreservingExceptionType<ISerializerCodeGenerator>(
-							typeof( CodeDomSerializerBuilder<> ).MakeGenericType( type )
-						);
+				return type => new CodeDomSerializerBuilder( type, type.GetCollectionTraits() );
 			}
 		}
 	}

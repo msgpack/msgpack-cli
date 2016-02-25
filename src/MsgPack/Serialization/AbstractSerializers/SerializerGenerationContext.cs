@@ -565,7 +565,4 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <returns>The parameter construct.</returns>
 		public abstract TConstruct DefineUnpackedItemParameterInSetValueMethods( TypeDefinition itemType );
 	}
-
-#warning TODO: Extract all generic nested
-#warning TODO: Builder should be non-generic for working set.
 }

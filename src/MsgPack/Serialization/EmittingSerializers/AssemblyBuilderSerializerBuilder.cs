@@ -39,15 +39,17 @@ using MsgPack.Serialization.AbstractSerializers;
 namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
-	///		An implementation of <see cref="SerializerBuilder{AssemblyBuilderEmittingContext,TConstruct,TObject}"/> with <see cref="AssemblyBuilder"/>.
+	///		An implementation of <see cref="SerializerBuilder{AssemblyBuilderEmittingContext,TConstruct}"/> with <see cref="AssemblyBuilder"/>.
 	/// </summary>
-	/// <typeparam name="TObject">The type of the serializing object.</typeparam>
-	internal sealed class AssemblyBuilderSerializerBuilder<TObject> : SerializerBuilder<AssemblyBuilderEmittingContext, ILConstruct, TObject>
+	internal sealed class AssemblyBuilderSerializerBuilder : SerializerBuilder<AssemblyBuilderEmittingContext, ILConstruct>
 	{
 		/// <summary>
-		///		Initializes a new instance of the <see cref="AssemblyBuilderSerializerBuilder{TObject}"/> class for instance creation.
+		///		Initializes a new instance of the <see cref="AssemblyBuilderSerializerBuilder"/> class for instance creation.
 		/// </summary>
-		public AssemblyBuilderSerializerBuilder() { }
+		/// <param name="targetType">The type of serialization target.</param>
+		/// <param name="collectionTraits">The collection traits of the serialization target.</param>
+		public AssemblyBuilderSerializerBuilder( Type targetType, CollectionTraits collectionTraits )
+			: base( targetType, collectionTraits ) { }
 
 		protected override ILConstruct EmitSequentialStatements( AssemblyBuilderEmittingContext context, TypeDefinition contextType, IEnumerable<ILConstruct> statements )
 		{
@@ -265,7 +267,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		protected override ILConstruct EmitThisReferenceExpression( AssemblyBuilderEmittingContext context )
 		{
-			return ILConstruct.Literal( context.GetSerializerType( typeof( TObject ) ), "(this)", il => il.EmitLdarg_0() );
+			return ILConstruct.Literal( context.GetSerializerType( this.TargetType ), "(this)", il => il.EmitLdarg_0() );
 		}
 
 		protected override ILConstruct EmitBoxExpression( AssemblyBuilderEmittingContext context, TypeDefinition valueType, ILConstruct value )
@@ -885,7 +887,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return enumValue;
 		}
 
-		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( 
+		protected override Func<SerializationContext, MessagePackSerializer> CreateSerializerConstructor( 
 			AssemblyBuilderEmittingContext codeGenerationContext,
 			SerializationTarget targetInfo,
 			PolymorphismSchema schema 
@@ -894,12 +896,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return context => codeGenerationContext.Emitter.CreateObjectInstance( codeGenerationContext, this, targetInfo, schema );
 		}
 
-		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateEnumSerializerConstructor( AssemblyBuilderEmittingContext codeGenerationContext )
+		protected override Func<SerializationContext, MessagePackSerializer> CreateEnumSerializerConstructor( AssemblyBuilderEmittingContext codeGenerationContext )
 		{
 			return context =>
-				codeGenerationContext.Emitter.CreateEnumInstance<TObject>(
+				codeGenerationContext.Emitter.CreateEnumInstance(
 					context,
-					EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod( context, typeof( TObject ), EnumMemberSerializationMethod.Default )
+					this.TargetType,
+					EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod( context, this.TargetType, EnumMemberSerializationMethod.Default )
 				);
 		}
 
@@ -950,9 +953,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 				{
 					type = 
 #if FEATURE_TAP
-						isAsync ? typeof( IList<Func<Packer, TObject, CancellationToken, Task>> ) :
+						isAsync ? typeof( IList<> ).MakeGenericType( typeof( Func<,,,> ).MakeGenericType( typeof( Packer ), this.TargetType, typeof( CancellationToken ), typeof( Task ) ) ) :
 #endif // FEATURE_TAP
-						typeof( IList<Action<Packer, TObject>> );
+						typeof( IList<> ).MakeGenericType( typeof( Action<,> ).MakeGenericType( typeof( Packer ), this.TargetType ) );
 					name = FieldName.PackOperationList;
 					break;
 				}
@@ -960,9 +963,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 				{
 					type = 
 #if FEATURE_TAP
-						isAsync ? typeof( IDictionary<string, Func<Packer, TObject, CancellationToken, Task>> ) :
+						isAsync ? typeof( IDictionary<,> ).MakeGenericType( typeof( string ), typeof( Func<,,,> ).MakeGenericType( typeof( Packer ), this.TargetType, typeof( CancellationToken ), typeof( Task ) ) ) :
 #endif // FEATURE_TAP
-						typeof( IDictionary<string, Action<Packer, TObject>> );
+						typeof( IDictionary<,> ).MakeGenericType( typeof( string ), typeof( Action<,> ).MakeGenericType( typeof( Packer ), this.TargetType ) );
 					name = FieldName.PackOperationTable;
 					break;
 				}
@@ -975,7 +978,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 							typeof( Func<,,,,,> ).MakeGenericType(
 								typeof( Unpacker ),
 								context.UnpackingContextType == null
-									? typeof( TObject )
+									? this.TargetType
 									: context.UnpackingContextType.ResolveRuntimeType(),
 								typeof( int ),
 								typeof( int ),
@@ -986,7 +989,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 							typeof( Action<,,,> ).MakeGenericType(
 								typeof( Unpacker ),
 								context.UnpackingContextType == null
-									? typeof( TObject )
+									? this.TargetType
 									: context.UnpackingContextType.ResolveRuntimeType(),
 								typeof( int ),
 								typeof( int )
@@ -1005,7 +1008,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 							typeof( Func<,,,,,> ).MakeGenericType(
 								typeof( Unpacker ),
 								context.UnpackingContextType == null
-									? typeof( TObject )
+									? this.TargetType
 									: context.UnpackingContextType.ResolveRuntimeType(),
 								typeof( int ),
 								typeof( int ),
@@ -1016,7 +1019,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 							typeof( Action<,,,> ).MakeGenericType( 
 								typeof( Unpacker ), 
 								context.UnpackingContextType == null
-									? typeof( TObject )
+									? this.TargetType
 									: context.UnpackingContextType.ResolveRuntimeType(),
 								typeof( int ),
 								typeof( int )
@@ -1029,9 +1032,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 				{
 					type = 
 #if FEATURE_TAP
-						isAsync ? typeof( Func<Packer, TObject, int, CancellationToken, Task> ) :
+						isAsync ? typeof( Func<,,,,> ).MakeGenericType( typeof( Packer ), this.TargetType, typeof( int ), typeof( CancellationToken ), typeof( Task ) ) :
 #endif // FEATURE_TAP
-						typeof( Action<Unpacker, TObject, int> );
+						typeof( Action<,,> ).MakeGenericType( typeof( Unpacker ), this.TargetType, typeof( int ) );
 					name = FieldName.UnpackTo;
 					break;
 				}
@@ -1069,15 +1072,15 @@ namespace MsgPack.Serialization.EmittingSerializers
 			string serializerTypeName, serializerTypeNamespace;
 			DefaultSerializerNameResolver.ResolveTypeName(
 				true,
-				typeof( TObject ),
+				this.TargetType,
 				this.GetType().Namespace,
 				out serializerTypeName,
 				out serializerTypeNamespace 
 			);
 			var spec =
 				new SerializerSpecification(
-					typeof( TObject ),
-					CollectionTraitsOfThis,
+					this.TargetType,
+					this.CollectionTraits,
 					serializerTypeName,
 					serializerTypeNamespace
 				);
@@ -1085,10 +1088,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return
 				new AssemblyBuilderEmittingContext(
 					context,
-					typeof( TObject ),
-					typeof( TObject ).GetIsEnum()
+					this.TargetType,
+					this.TargetType.GetIsEnum()
 						? new Func<SerializerEmitter>( () => SerializationMethodGeneratorManager.Get().CreateEnumEmitter( context, spec ) ) 
-						: () => SerializationMethodGeneratorManager.Get().CreateObjectEmitter( spec, BaseClass )
+						: () => SerializationMethodGeneratorManager.Get().CreateObjectEmitter( spec, this.BaseClass )
 				);
 		}
 
@@ -1106,12 +1109,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			var emittingContext =
 				asAssemblyBuilderCodeGenerationContext.CreateEmittingContext(
-					typeof( TObject ),
-					CollectionTraitsOfThis,
-					BaseClass
+					this.TargetType,
+					this.CollectionTraits,
+					this.BaseClass
 				);
 
-			if ( !typeof( TObject ).GetIsEnum() )
+			if ( !this.TargetType.GetIsEnum() )
 			{
 				SerializationTarget targetInfo;
 				this.BuildSerializer( emittingContext, concreteType, itemSchema, out targetInfo );
@@ -1122,7 +1125,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			{
 				this.BuildEnumSerializer( emittingContext );
 				// Finish type creation, and discard returned ctor.
-				emittingContext.Emitter.CreateEnumConstructor<TObject>();
+				emittingContext.Emitter.CreateEnumConstructor( this.TargetType );
 			}
 		}
 #endif // !SILVERLIGHT && !CORE_CLR

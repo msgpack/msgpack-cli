@@ -37,15 +37,21 @@ using MsgPack.Serialization.Reflection;
 namespace MsgPack.Serialization.ExpressionSerializers
 {
 	/// <summary>
-	///		An implementation of <see cref="SerializerBuilder{TContext,TConstruct,TObject}"/> using expression tree.
+	///		An implementation of <see cref="SerializerBuilder{TContext,TConstruct}"/> using expression tree.
 	/// </summary>
-	/// <typeparam name="TObject">The type of the serializing object.</typeparam>
-	internal sealed class ExpressionTreeSerializerBuilder<TObject> : SerializerBuilder<ExpressionTreeContext, ExpressionConstruct, TObject>
+	internal sealed class ExpressionTreeSerializerBuilder : SerializerBuilder<ExpressionTreeContext, ExpressionConstruct>
 	{
+		// ReSharper disable once InconsistentNaming
+		private static readonly MethodInfo CreateSerializerConstructorCore_1Method =
+			typeof( ExpressionTreeSerializerBuilder ).GetRuntimeMethod( "CreateSerializerConstructorCore" );
+
 		/// <summary>
-		///		Initializes a new instance of the <see cref="ExpressionTreeSerializerBuilder{TObject}"/> class.
+		///		Initializes a new instance of the <see cref="ExpressionTreeSerializerBuilder"/> class.
 		/// </summary>
-		public ExpressionTreeSerializerBuilder() { }
+		/// <param name="targetType">The type of serialization target.</param>
+		/// <param name="collectionTraits">The collection traits of the serialization target.</param>
+		public ExpressionTreeSerializerBuilder( Type targetType, CollectionTraits collectionTraits )
+			: base( targetType, collectionTraits ) { }
 
 #if FEATURE_TAP
 
@@ -567,7 +573,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected override TypeDefinition GetPackOperationType( ExpressionTreeContext context, bool isAsync )
 		{
-			return typeof( Action<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Packer, TObject> );
+			return typeof( Action<,,,> ).MakeGenericType( typeof( ExpressionCallbackMessagePackSerializer<> ).MakeGenericType( this.TargetType ), typeof( SerializationContext ), typeof( Packer ), this.TargetType );
 		}
 
 		protected override TypeDefinition GetUnpackOperationType( ExpressionTreeContext context, bool isAsync )
@@ -575,10 +581,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return
 				TypeDefinition.GenericReferenceType(
 					typeof( Action<,,,,,> ),
-					typeof( ExpressionCallbackMessagePackSerializer<TObject> ),
+					typeof( ExpressionCallbackMessagePackSerializer<> ).MakeGenericType( this.TargetType ),
 					typeof( SerializationContext ),
 					typeof( Unpacker ),
-					context.UnpackingContextType ?? typeof( TObject ),
+					context.UnpackingContextType ?? this.TargetType,
 					typeof( int ),
 					typeof( int )
 				);
@@ -651,18 +657,31 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor(
+		protected override Func<SerializationContext, MessagePackSerializer> CreateSerializerConstructor(
+			ExpressionTreeContext codeGenerationContext, SerializationTarget targetInfo, PolymorphismSchema schema
+		)
+		{
+			codeGenerationContext.Finish();
+			var factory =
+				( Func<ExpressionTreeContext, SerializationTarget, PolymorphismSchema, Func<SerializationContext, MessagePackSerializer>> )
+					CreateSerializerConstructorCore_1Method.MakeGenericMethod( this.TargetType )
+						.CreateDelegate( typeof( Func<ExpressionTreeContext, SerializationTarget, PolymorphismSchema, Func<SerializationContext, MessagePackSerializer>> ), this );
+			return factory( codeGenerationContext, targetInfo, schema );
+
+		}
+
+		// ReSharper disable once UnusedMember.Local
+		private Func<SerializationContext, MessagePackSerializer> CreateSerializerConstructorCore<TObject>(
 			ExpressionTreeContext codeGenerationContext, SerializationTarget targetInfo, PolymorphismSchema schema
 		)
 		{
 			var hasPackOperations = targetInfo != null && !typeof( IPackable ).IsAssignableFrom( typeof( TObject ) );
 			var hasUnpackOperations = targetInfo != null && !typeof( IUnpackable ).IsAssignableFrom( typeof( TObject ) );
 
-			codeGenerationContext.Finish();
 			return
 				ExpressionTreeSerializerBuilderHelpers.CreateFactory(
 					codeGenerationContext,
-					CollectionTraitsOfThis,
+					this.CollectionTraits,
 					schema,
 					hasPackOperations
 						? Expression.Lambda<Func<Action<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Packer, TObject>[]>>(
@@ -694,23 +713,23 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateEnumSerializerConstructor( ExpressionTreeContext codeGenerationContext )
+		protected override Func<SerializationContext, MessagePackSerializer> CreateEnumSerializerConstructor( ExpressionTreeContext codeGenerationContext )
 		{
 			codeGenerationContext.Finish();
 			// Get at this point to prevent unexpected context change.
 			var packUnderyingValueTo = codeGenerationContext.GetDelegate( MethodName.PackUnderlyingValueTo );
 			var unpackFromUnderlyingValue = codeGenerationContext.GetDelegate( MethodName.UnpackFromUnderlyingValue );
 
-			var targetType = typeof( ExpressionCallbackEnumMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
+			var targetType = typeof( ExpressionCallbackEnumMessagePackSerializer<> ).MakeGenericType( this.TargetType );
 
 			return
 				context =>
-					ReflectionExtensions.CreateInstancePreservingExceptionType<MessagePackSerializer<TObject>>(
+					ReflectionExtensions.CreateInstancePreservingExceptionType<MessagePackSerializer>(
 						targetType,
 						context,
 						EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(
 							context,
-							typeof( TObject ),
+							this.TargetType,
 							EnumMemberSerializationMethod.Default
 						),
 						packUnderyingValueTo,
@@ -720,7 +739,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected override ExpressionTreeContext CreateCodeGenerationContextForSerializerCreation( SerializationContext context )
 		{
-			return new ExpressionTreeContext( context, typeof( TObject ), BaseClass );
+			return new ExpressionTreeContext( context, this.TargetType, this.BaseClass );
 		}
 	}
 }

@@ -23,7 +23,8 @@ using System.Linq;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
-	partial class SerializerBuilder<TContext, TConstruct, TObject>
+	// ReSharper disable once UnusedTypeParameter
+	partial class SerializerBuilder<TContext, TConstruct>
 	{
 		private void BuildNullableSerializer( TContext context, Type underlyingType )
 		{
@@ -57,7 +58,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context,
 					context.Packer,
 					underlyingType,
-					this.EmitGetProperty( context, context.PackToTarget, typeof( TObject ).GetProperty( "Value" ), false ),
+					this.EmitGetProperty( context, context.PackToTarget, this.TargetType.GetProperty( "Value" ), false ),
 					null,
 					null,
 					isAsync
@@ -79,7 +80,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			MethodName.UnpackFromCore;
 			context.BeginMethodOverride( methodName );
 
-			var result = this.DeclareLocal( context, typeof( TObject ), "result" );
+			var result = this.DeclareLocal( context, this.TargetType, "result" );
 
 			var methodBody =
 				this.EmitInvokeMethodExpression(
@@ -110,7 +111,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitCreateNewObjectExpression(
 						context,
 						result,
-						typeof( TObject ).GetConstructors().Single( c => c.GetParameters().Length == 1 ),
+						this.TargetType.GetConstructors().Single( c => c.GetParameters().Length == 1 ),
 						methodBody
 					)
 				)
