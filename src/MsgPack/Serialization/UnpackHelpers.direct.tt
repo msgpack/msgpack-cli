@@ -167,7 +167,7 @@ foreach ( Type type in
 #>
 				AsyncReadResult<#= "<" + type.Name + ">" #> result =
 					await unpacker.Read<#= type.Name #>Async( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 <#
 		}
 #>
@@ -275,7 +275,7 @@ foreach ( Type type in
 #>
 				AsyncReadResult<#= "<" + type.Name + "?>" #> result =
 					await unpacker.ReadNullable<#= type.Name #>Async( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 <#
 		}
 #>
@@ -394,7 +394,7 @@ foreach ( var isAsync in new [] { false, true } )
 #>
 				AsyncReadResult<string> result =
 					await unpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 <#
 		}
 #>
@@ -492,7 +492,7 @@ foreach ( var isAsync in new [] { false, true } )
 #>
 				AsyncReadResult<byte[]> result =
 					await unpacker.ReadBinaryAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 <#
 		}
 #>

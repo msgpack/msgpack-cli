@@ -149,7 +149,7 @@ foreach( var type in types )
 		var variable = Camelize( type.Fields[ i ] );
 #>
 			var <#= variable #> = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !<#= variable #>.IsSuccess )
+			if ( !<#= variable #>.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( <#= i #>, unpacker );
 			}

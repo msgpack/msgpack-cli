@@ -113,7 +113,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				for ( int i = 0; i < result.Length; i++ )
 				{
 					var item = await unpacker.ReadObjectAsync( cancellationToken ).ConfigureAwait( false );
-					if ( !item.IsSuccess )
+					if ( !item.Success )
 					{
 						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
@@ -130,13 +130,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 				for ( int i = 0; i < itemsCount; i++ )
 				{
 					var key =  await unpacker.ReadObjectAsync( cancellationToken ).ConfigureAwait( false );
-					if ( !key.IsSuccess )
+					if ( !key.Success )
 					{
 						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
 
 					var value = await unpacker.ReadObjectAsync( cancellationToken ).ConfigureAwait( false );
-					if ( !value.IsSuccess )
+					if ( !value.Success )
 					{
 						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}

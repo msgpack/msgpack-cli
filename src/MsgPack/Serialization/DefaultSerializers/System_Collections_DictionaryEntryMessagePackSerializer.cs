@@ -140,13 +140,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 			if ( unpacker.IsArrayHeader )
 			{
 				var key = await unpacker.ReadObjectAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !key.IsSuccess )
+				if ( !key.Success )
 				{
 					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 				}
 
 				var value = await unpacker.ReadObjectAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !value.IsSuccess )
+				if ( !value.Success )
 				{
 					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 				}
@@ -160,7 +160,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				AsyncReadResult<MessagePackObject> value = default( AsyncReadResult<MessagePackObject> );
 
 				for ( var propertyName = await unpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false );
-					( !key.IsSuccess || !value.IsSuccess ) && propertyName.IsSuccess;
+					( !key.Success || !value.Success ) && propertyName.Success;
 					propertyName = await unpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false ) )
 				{
 					switch ( propertyName.Value )
@@ -168,7 +168,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 						case "Key":
 						{
 							key = await unpacker.ReadObjectAsync( cancellationToken ).ConfigureAwait( false );
-							if ( !key.IsSuccess )
+							if ( !key.Success )
 							{
 								SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 							}
@@ -178,7 +178,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 						case "Value":
 						{
 							value = await unpacker.ReadObjectAsync( cancellationToken ).ConfigureAwait( false );
-							if ( !value.IsSuccess )
+							if ( !value.Success )
 							{
 								SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 							}
@@ -188,12 +188,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 					}
 				}
 
-				if ( !key.IsSuccess )
+				if ( !key.Success )
 				{
 					SerializationExceptions.ThrowMissingProperty( "Key" );
 				}
 
-				if ( !value.IsSuccess )
+				if ( !value.Success )
 				{
 					SerializationExceptions.ThrowMissingProperty( "Value" );
 				}

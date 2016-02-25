@@ -190,7 +190,7 @@ namespace MsgPack.Serialization.Polymorphic
 			using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 			{
 				var typeCode = await subTreeUnpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !typeCode.IsSuccess )
+				if ( !typeCode.Success )
 				{
 					SerializationExceptions.ThrowUnexpectedEndOfStream( subTreeUnpacker );
 				}
@@ -414,7 +414,7 @@ namespace MsgPack.Serialization.Polymorphic
 			using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 			{
 				var encodeType = await subTreeUnpacker.ReadByteAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !encodeType.IsSuccess )
+				if ( !encodeType.Success )
 				{
 					ThrowFailedToDecodeEncodingType();
 				}
@@ -425,31 +425,31 @@ namespace MsgPack.Serialization.Polymorphic
 				}
 
 				var compressedTypeName = await subTreeUnpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !compressedTypeName.IsSuccess )
+				if ( !compressedTypeName.Success )
 				{
 					ThrowFailedToDecodeCompressedTypeName();
 				}
 
 				var assemblySimpleName = await subTreeUnpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !assemblySimpleName.IsSuccess )
+				if ( !assemblySimpleName.Success )
 				{
 					ThrowFailedToDecodeAssemblySimpleName();
 				}
 
 				var version = await subTreeUnpacker.ReadBinaryAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !version.IsSuccess )
+				if ( !version.Success )
 				{
 					ThrowFailedToDecodeAssemblyVersion();
 				}
 
 				var culture = await subTreeUnpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !culture.IsSuccess )
+				if ( !culture.Success )
 				{
 					ThrowFailedToDecodeAssemblyCulture();
 				}
 
 				var publicKeyToken = await subTreeUnpacker.ReadBinaryAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !publicKeyToken.IsSuccess )
+				if ( !publicKeyToken.Success )
 				{
 					ThrowFailedToDecodeAssemblyKeyToken();
 				}

@@ -265,7 +265,7 @@ private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool
 		{
 #>
 				var ret = await unpacker.Read<#= testSituation.Item1 #>Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 <#+
 		}

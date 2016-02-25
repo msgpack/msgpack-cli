@@ -505,7 +505,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				for ( int i = 0; i < itemsCount; i++ )
 				{
 					var name = await unpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false );
-					if ( !name.IsSuccess )
+					if ( !name.Success )
 					{
 						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}

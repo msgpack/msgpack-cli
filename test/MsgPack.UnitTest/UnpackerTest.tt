@@ -724,7 +724,7 @@ foreach( var isAsync in new [] { false, true } )
 	{
 #>
 				var ret = await target.ReadStringAsync();
-				Assert.That( ret.IsSuccess );
+				Assert.That( ret.Success );
 				result = ret.Value;
 <#
 	}
@@ -764,7 +764,7 @@ foreach( var isAsync in new [] { false, true } )
 	{
 #>
 				var ret = await target.ReadArrayLengthAsync();
-				Assert.That( ret.IsSuccess );
+				Assert.That( ret.Success );
 				result = ret.Value;
 <#
 	}
@@ -807,7 +807,7 @@ foreach( var isAsync in new [] { false, true } )
 	{
 #>
 				var ret = await target.ReadMapLengthAsync();
-				Assert.That( ret.IsSuccess );
+				Assert.That( ret.Success );
 				result = ret.Value;
 <#
 	}

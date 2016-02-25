@@ -34,7 +34,7 @@ namespace MsgPack
 	/// <typeparam name="T">The type of read value.</typeparam>
 	public struct AsyncReadResult<T> : IEquatable<AsyncReadResult<T>>
 	{
-		private readonly bool _isSuccess;
+		private readonly bool _success;
 
 		/// <summary>
 		///		Gets a value indicating whether the asynchronous reading was succeeded.
@@ -42,7 +42,7 @@ namespace MsgPack
 		/// <value>
 		///   <c>true</c> if the asynchronous reading was succeeded; otherwise, <c>false</c>, that is the operation was failed because of stream end.
 		/// </value>
-		public bool IsSuccess { get { return this._isSuccess; } }
+		public bool Success { get { return this._success; } }
 
 		private readonly T _value;
 
@@ -50,14 +50,14 @@ namespace MsgPack
 		///		Gets the read value.
 		/// </summary>
 		/// <value>
-		///		The read value when <see cref="IsSuccess"/> is <c>true</c>; otherwise, default value of <typeparamref name="T"/>.
+		///		The read value when <see cref="Success"/> is <c>true</c>; otherwise, default value of <typeparamref name="T"/>.
 		/// </value>
 		public T Value { get { return this._value; } }
 
-		internal AsyncReadResult( T value, bool isSuccess )
+		internal AsyncReadResult( T value, bool success )
 		{
 			this._value = value;
-			this._isSuccess = isSuccess;
+			this._success = success;
 		}
 
 		/// <summary>
@@ -86,7 +86,7 @@ namespace MsgPack
 		/// </returns>
 		public bool Equals( AsyncReadResult<T> other )
 		{
-			return this._isSuccess == other._isSuccess && EqualityComparer<T>.Default.Equals( this._value, other._value );
+			return this._success == other._success && EqualityComparer<T>.Default.Equals( this._value, other._value );
 		}
 
 		/// <summary>
@@ -97,7 +97,7 @@ namespace MsgPack
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return this._isSuccess.GetHashCode() ^ ( this._value == null ? 0 : this._value.GetHashCode() );
+			return this._success.GetHashCode() ^ ( this._value == null ? 0 : this._value.GetHashCode() );
 		}
 
 		/// <summary>
@@ -108,7 +108,7 @@ namespace MsgPack
 		/// </returns>
 		public override string ToString()
 		{
-			return this._isSuccess ? ( this._value == null ? String.Empty : this._value.ToString() ) : String.Empty;
+			return this._success ? ( this._value == null ? String.Empty : this._value.ToString() ) : String.Empty;
 		}
 
 		/// <summary>

@@ -4004,7 +4004,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -9223372036854775808 ) );
 			}
@@ -4019,7 +4019,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -9223372036854775808 ) );
 			}
@@ -4033,7 +4033,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -9223372036854775808 ) );
 			}
@@ -4048,7 +4048,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -9223372036854775808 ) );
 			}
@@ -4093,7 +4093,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -2147483649 ) );
 			}
@@ -4108,7 +4108,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -2147483649 ) );
 			}
@@ -4122,7 +4122,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -2147483649 ) );
 			}
@@ -4137,7 +4137,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -2147483649 ) );
 			}
@@ -4182,7 +4182,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -2147483648 ) );
 			}
@@ -4197,7 +4197,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -2147483648 ) );
 			}
@@ -4211,7 +4211,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -2147483648 ) );
 			}
@@ -4226,7 +4226,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -2147483648 ) );
 			}
@@ -4271,7 +4271,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -32769 ) );
 			}
@@ -4286,7 +4286,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -32769 ) );
 			}
@@ -4300,7 +4300,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -32769 ) );
 			}
@@ -4315,7 +4315,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -32769 ) );
 			}
@@ -4360,7 +4360,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -32768 ) );
 			}
@@ -4375,7 +4375,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -32768 ) );
 			}
@@ -4389,7 +4389,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -32768 ) );
 			}
@@ -4404,7 +4404,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -32768 ) );
 			}
@@ -4449,7 +4449,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -129 ) );
 			}
@@ -4464,7 +4464,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -129 ) );
 			}
@@ -4478,7 +4478,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -129 ) );
 			}
@@ -4493,7 +4493,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -129 ) );
 			}
@@ -4538,7 +4538,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -128 ) );
 			}
@@ -4553,7 +4553,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -128 ) );
 			}
@@ -4567,7 +4567,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -128 ) );
 			}
@@ -4582,7 +4582,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -128 ) );
 			}
@@ -4627,7 +4627,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -33 ) );
 			}
@@ -4642,7 +4642,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -33 ) );
 			}
@@ -4656,7 +4656,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -33 ) );
 			}
@@ -4671,7 +4671,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -33 ) );
 			}
@@ -4716,7 +4716,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -32 ) );
 			}
@@ -4731,7 +4731,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -32 ) );
 			}
@@ -4745,7 +4745,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -32 ) );
 			}
@@ -4760,7 +4760,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -32 ) );
 			}
@@ -4805,7 +4805,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -1 ) );
 			}
@@ -4820,7 +4820,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				var ret = await unpacker.ReadInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( -1 ) );
 			}
@@ -4834,7 +4834,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -1 ) );
 			}
@@ -4849,7 +4849,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( -1 ) );
 			}
@@ -4894,7 +4894,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 0 ) );
 			}
@@ -4909,7 +4909,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 0 ) );
 			}
@@ -4923,7 +4923,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 0 ) );
 			}
@@ -4938,7 +4938,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 0 ) );
 			}
@@ -4983,7 +4983,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 1 ) );
 			}
@@ -4998,7 +4998,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 1 ) );
 			}
@@ -5012,7 +5012,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 1 ) );
 			}
@@ -5027,7 +5027,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 1 ) );
 			}
@@ -5072,7 +5072,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 127 ) );
 			}
@@ -5087,7 +5087,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 127 ) );
 			}
@@ -5101,7 +5101,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 127 ) );
 			}
@@ -5116,7 +5116,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 127 ) );
 			}
@@ -5161,7 +5161,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 128 ) );
 			}
@@ -5176,7 +5176,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 128 ) );
 			}
@@ -5190,7 +5190,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 128 ) );
 			}
@@ -5205,7 +5205,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 128 ) );
 			}
@@ -5250,7 +5250,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 255 ) );
 			}
@@ -5265,7 +5265,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 255 ) );
 			}
@@ -5279,7 +5279,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 255 ) );
 			}
@@ -5294,7 +5294,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 255 ) );
 			}
@@ -5339,7 +5339,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 256 ) );
 			}
@@ -5354,7 +5354,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 256 ) );
 			}
@@ -5368,7 +5368,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 256 ) );
 			}
@@ -5383,7 +5383,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 256 ) );
 			}
@@ -5428,7 +5428,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 65535 ) );
 			}
@@ -5443,7 +5443,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 65535 ) );
 			}
@@ -5457,7 +5457,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 65535 ) );
 			}
@@ -5472,7 +5472,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 65535 ) );
 			}
@@ -5517,7 +5517,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 65536 ) );
 			}
@@ -5532,7 +5532,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 65536 ) );
 			}
@@ -5546,7 +5546,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 65536 ) );
 			}
@@ -5561,7 +5561,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 65536 ) );
 			}
@@ -5606,7 +5606,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 4294967295 ) );
 			}
@@ -5621,7 +5621,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 4294967295 ) );
 			}
@@ -5635,7 +5635,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 4294967295 ) );
 			}
@@ -5650,7 +5650,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 4294967295 ) );
 			}
@@ -5695,7 +5695,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 4294967296 ) );
 			}
@@ -5710,7 +5710,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 4294967296 ) );
 			}
@@ -5724,7 +5724,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 4294967296 ) );
 			}
@@ -5739,7 +5739,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 4294967296 ) );
 			}
@@ -5784,7 +5784,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 18446744073709551615 ) );
 			}
@@ -5799,7 +5799,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				var ret = await unpacker.ReadUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( 18446744073709551615 ) );
 			}
@@ -5813,7 +5813,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 18446744073709551615 ) );
 			}
@@ -5828,7 +5828,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( 18446744073709551615 ) );
 			}
@@ -5873,7 +5873,7 @@ namespace MsgPack
 			{
 				Boolean result;
 				var ret = await unpacker.ReadBooleanAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( true ) );
 			}
@@ -5888,7 +5888,7 @@ namespace MsgPack
 			{
 				Boolean result;
 				var ret = await unpacker.ReadBooleanAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( true ) );
 			}
@@ -5902,7 +5902,7 @@ namespace MsgPack
 			{
 				Boolean? result;
 				var ret = await unpacker.ReadNullableBooleanAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( true ) );
 			}
@@ -5917,7 +5917,7 @@ namespace MsgPack
 			{
 				Boolean? result;
 				var ret = await unpacker.ReadNullableBooleanAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( true ) );
 			}
@@ -5962,7 +5962,7 @@ namespace MsgPack
 			{
 				Boolean result;
 				var ret = await unpacker.ReadBooleanAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( false ) );
 			}
@@ -5977,7 +5977,7 @@ namespace MsgPack
 			{
 				Boolean result;
 				var ret = await unpacker.ReadBooleanAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( false ) );
 			}
@@ -5991,7 +5991,7 @@ namespace MsgPack
 			{
 				Boolean? result;
 				var ret = await unpacker.ReadNullableBooleanAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( false ) );
 			}
@@ -6006,7 +6006,7 @@ namespace MsgPack
 			{
 				Boolean? result;
 				var ret = await unpacker.ReadNullableBooleanAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.Value, Is.EqualTo( false ) );
 			}
@@ -6051,7 +6051,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.MinValue.Equals( result ) );
 			}
@@ -6066,7 +6066,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.MinValue.Equals( result ) );
 			}
@@ -6080,7 +6080,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.MinValue.Equals( result.Value ) );
 			}
@@ -6095,7 +6095,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.MinValue.Equals( result.Value ) );
 			}
@@ -6140,7 +6140,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.MaxValue.Equals( result ) );
 			}
@@ -6155,7 +6155,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.MaxValue.Equals( result ) );
 			}
@@ -6169,7 +6169,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.MaxValue.Equals( result.Value ) );
 			}
@@ -6184,7 +6184,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.MaxValue.Equals( result.Value ) );
 			}
@@ -6229,7 +6229,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.Epsilon.Equals( result ) );
 			}
@@ -6244,7 +6244,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.Epsilon.Equals( result ) );
 			}
@@ -6258,7 +6258,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.Epsilon.Equals( result.Value ) );
 			}
@@ -6273,7 +6273,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.Epsilon.Equals( result.Value ) );
 			}
@@ -6318,7 +6318,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( 0.0f ).Equals( result ) );
 			}
@@ -6333,7 +6333,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( 0.0f ).Equals( result ) );
 			}
@@ -6347,7 +6347,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( 0.0f ).Equals( result.Value ) );
 			}
@@ -6362,7 +6362,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( 0.0f ).Equals( result.Value ) );
 			}
@@ -6407,7 +6407,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( -0.0f ).Equals( result ) );
 			}
@@ -6422,7 +6422,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( -0.0f ).Equals( result ) );
 			}
@@ -6436,7 +6436,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( -0.0f ).Equals( result.Value ) );
 			}
@@ -6451,7 +6451,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( -0.0f ).Equals( result.Value ) );
 			}
@@ -6496,7 +6496,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result ) );
 			}
@@ -6511,7 +6511,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result ) );
 			}
@@ -6525,7 +6525,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result.Value ) );
 			}
@@ -6540,7 +6540,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result.Value ) );
 			}
@@ -6585,7 +6585,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result ) );
 			}
@@ -6600,7 +6600,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result ) );
 			}
@@ -6614,7 +6614,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result.Value ) );
 			}
@@ -6629,7 +6629,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result.Value ) );
 			}
@@ -6674,7 +6674,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result ) );
 			}
@@ -6689,7 +6689,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result ) );
 			}
@@ -6703,7 +6703,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result.Value ) );
 			}
@@ -6718,7 +6718,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result.Value ) );
 			}
@@ -6763,7 +6763,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result ) );
 			}
@@ -6778,7 +6778,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result ) );
 			}
@@ -6792,7 +6792,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result.Value ) );
 			}
@@ -6807,7 +6807,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNaN( result.Value ) );
 			}
@@ -6852,7 +6852,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNegativeInfinity( result ) );
 			}
@@ -6867,7 +6867,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNegativeInfinity( result ) );
 			}
@@ -6881,7 +6881,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNegativeInfinity( result.Value ) );
 			}
@@ -6896,7 +6896,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsNegativeInfinity( result.Value ) );
 			}
@@ -6941,7 +6941,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsPositiveInfinity( result ) );
 			}
@@ -6956,7 +6956,7 @@ namespace MsgPack
 			{
 				Single result;
 				var ret = await unpacker.ReadSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsPositiveInfinity( result ) );
 			}
@@ -6970,7 +6970,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsPositiveInfinity( result.Value ) );
 			}
@@ -6985,7 +6985,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Single.IsPositiveInfinity( result.Value ) );
 			}
@@ -7030,7 +7030,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.MinValue.Equals( result ) );
 			}
@@ -7045,7 +7045,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.MinValue.Equals( result ) );
 			}
@@ -7059,7 +7059,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.MinValue.Equals( result.Value ) );
 			}
@@ -7074,7 +7074,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.MinValue.Equals( result.Value ) );
 			}
@@ -7119,7 +7119,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.MaxValue.Equals( result ) );
 			}
@@ -7134,7 +7134,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.MaxValue.Equals( result ) );
 			}
@@ -7148,7 +7148,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.MaxValue.Equals( result.Value ) );
 			}
@@ -7163,7 +7163,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.MaxValue.Equals( result.Value ) );
 			}
@@ -7208,7 +7208,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.Epsilon.Equals( result ) );
 			}
@@ -7223,7 +7223,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.Epsilon.Equals( result ) );
 			}
@@ -7237,7 +7237,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.Epsilon.Equals( result.Value ) );
 			}
@@ -7252,7 +7252,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.Epsilon.Equals( result.Value ) );
 			}
@@ -7297,7 +7297,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( 0.0 ).Equals( result ) );
 			}
@@ -7312,7 +7312,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( 0.0 ).Equals( result ) );
 			}
@@ -7326,7 +7326,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( 0.0 ).Equals( result.Value ) );
 			}
@@ -7341,7 +7341,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( 0.0 ).Equals( result.Value ) );
 			}
@@ -7386,7 +7386,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( -0.0 ).Equals( result ) );
 			}
@@ -7401,7 +7401,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( -0.0 ).Equals( result ) );
 			}
@@ -7415,7 +7415,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( -0.0 ).Equals( result.Value ) );
 			}
@@ -7430,7 +7430,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( ( -0.0 ).Equals( result.Value ) );
 			}
@@ -7475,7 +7475,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result ) );
 			}
@@ -7490,7 +7490,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result ) );
 			}
@@ -7504,7 +7504,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result.Value ) );
 			}
@@ -7519,7 +7519,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result.Value ) );
 			}
@@ -7564,7 +7564,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result ) );
 			}
@@ -7579,7 +7579,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result ) );
 			}
@@ -7593,7 +7593,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result.Value ) );
 			}
@@ -7608,7 +7608,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result.Value ) );
 			}
@@ -7653,7 +7653,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result ) );
 			}
@@ -7668,7 +7668,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result ) );
 			}
@@ -7682,7 +7682,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result.Value ) );
 			}
@@ -7697,7 +7697,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result.Value ) );
 			}
@@ -7742,7 +7742,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result ) );
 			}
@@ -7757,7 +7757,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result ) );
 			}
@@ -7771,7 +7771,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result.Value ) );
 			}
@@ -7786,7 +7786,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNaN( result.Value ) );
 			}
@@ -7831,7 +7831,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNegativeInfinity( result ) );
 			}
@@ -7846,7 +7846,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNegativeInfinity( result ) );
 			}
@@ -7860,7 +7860,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNegativeInfinity( result.Value ) );
 			}
@@ -7875,7 +7875,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsNegativeInfinity( result.Value ) );
 			}
@@ -7920,7 +7920,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsPositiveInfinity( result ) );
 			}
@@ -7935,7 +7935,7 @@ namespace MsgPack
 			{
 				Double result;
 				var ret = await unpacker.ReadDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsPositiveInfinity( result ) );
 			}
@@ -7949,7 +7949,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsPositiveInfinity( result.Value ) );
 			}
@@ -7964,7 +7964,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( Double.IsPositiveInfinity( result.Value ) );
 			}
@@ -7978,7 +7978,7 @@ namespace MsgPack
 			{
 				Boolean? result;
 				var ret = await unpacker.ReadNullableBooleanAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -7993,7 +7993,7 @@ namespace MsgPack
 			{
 				Boolean? result;
 				var ret = await unpacker.ReadNullableBooleanAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8007,7 +8007,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8022,7 +8022,7 @@ namespace MsgPack
 			{
 				Single? result;
 				var ret = await unpacker.ReadNullableSingleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8036,7 +8036,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8051,7 +8051,7 @@ namespace MsgPack
 			{
 				Double? result;
 				var ret = await unpacker.ReadNullableDoubleAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8065,7 +8065,7 @@ namespace MsgPack
 			{
 				SByte? result;
 				var ret = await unpacker.ReadNullableSByteAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8080,7 +8080,7 @@ namespace MsgPack
 			{
 				SByte? result;
 				var ret = await unpacker.ReadNullableSByteAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8094,7 +8094,7 @@ namespace MsgPack
 			{
 				Int16? result;
 				var ret = await unpacker.ReadNullableInt16Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8109,7 +8109,7 @@ namespace MsgPack
 			{
 				Int16? result;
 				var ret = await unpacker.ReadNullableInt16Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8123,7 +8123,7 @@ namespace MsgPack
 			{
 				Int32? result;
 				var ret = await unpacker.ReadNullableInt32Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8138,7 +8138,7 @@ namespace MsgPack
 			{
 				Int32? result;
 				var ret = await unpacker.ReadNullableInt32Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8152,7 +8152,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8167,7 +8167,7 @@ namespace MsgPack
 			{
 				Int64? result;
 				var ret = await unpacker.ReadNullableInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8181,7 +8181,7 @@ namespace MsgPack
 			{
 				Byte? result;
 				var ret = await unpacker.ReadNullableByteAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8196,7 +8196,7 @@ namespace MsgPack
 			{
 				Byte? result;
 				var ret = await unpacker.ReadNullableByteAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8210,7 +8210,7 @@ namespace MsgPack
 			{
 				UInt16? result;
 				var ret = await unpacker.ReadNullableUInt16Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8225,7 +8225,7 @@ namespace MsgPack
 			{
 				UInt16? result;
 				var ret = await unpacker.ReadNullableUInt16Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8239,7 +8239,7 @@ namespace MsgPack
 			{
 				UInt32? result;
 				var ret = await unpacker.ReadNullableUInt32Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8254,7 +8254,7 @@ namespace MsgPack
 			{
 				UInt32? result;
 				var ret = await unpacker.ReadNullableUInt32Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8268,7 +8268,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}
@@ -8283,7 +8283,7 @@ namespace MsgPack
 			{
 				UInt64? result;
 				var ret = await unpacker.ReadNullableUInt64Async();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.Null );
 			}

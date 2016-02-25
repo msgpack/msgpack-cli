@@ -170,7 +170,7 @@ internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadSByteAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -282,7 +282,7 @@ internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadInt16Async( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -394,7 +394,7 @@ internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadInt32Async( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -506,7 +506,7 @@ internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadInt64Async( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -618,7 +618,7 @@ internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadByteAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -730,7 +730,7 @@ internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadUInt16Async( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -842,7 +842,7 @@ internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadUInt32Async( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -954,7 +954,7 @@ internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadUInt64Async( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -1066,7 +1066,7 @@ internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -1178,7 +1178,7 @@ internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadDoubleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -1290,7 +1290,7 @@ internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadBooleanAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -1402,7 +1402,7 @@ internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadNullableSByteAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -1514,7 +1514,7 @@ internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadNullableInt16Async( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -1626,7 +1626,7 @@ internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadNullableInt32Async( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -1738,7 +1738,7 @@ internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadNullableInt64Async( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -1850,7 +1850,7 @@ internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadNullableByteAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -1962,7 +1962,7 @@ internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadNullableUInt16Async( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -2074,7 +2074,7 @@ internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadNullableUInt32Async( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -2186,7 +2186,7 @@ internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadNullableUInt64Async( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -2298,7 +2298,7 @@ internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Sing
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadNullableSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -2410,7 +2410,7 @@ internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Doub
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadNullableDoubleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -2522,7 +2522,7 @@ internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boo
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadNullableBooleanAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -2634,7 +2634,7 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -2746,7 +2746,7 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadBinaryAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}
@@ -2858,7 +2858,7 @@ internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<M
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.ReadObjectAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}

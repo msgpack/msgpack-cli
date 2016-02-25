@@ -105,13 +105,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			var x = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !x.IsSuccess )
+			if ( !x.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 0, unpacker );
 			}
 
 			var y = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !y.IsSuccess )
+			if ( !y.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 1, unpacker );
 			}
@@ -197,19 +197,19 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			var x = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !x.IsSuccess )
+			if ( !x.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 0, unpacker );
 			}
 
 			var y = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !y.IsSuccess )
+			if ( !y.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 1, unpacker );
 			}
 
 			var z = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !z.IsSuccess )
+			if ( !z.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 2, unpacker );
 			}
@@ -303,25 +303,25 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			var x = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !x.IsSuccess )
+			if ( !x.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 0, unpacker );
 			}
 
 			var y = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !y.IsSuccess )
+			if ( !y.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 1, unpacker );
 			}
 
 			var z = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !z.IsSuccess )
+			if ( !z.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 2, unpacker );
 			}
 
 			var w = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !w.IsSuccess )
+			if ( !w.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 3, unpacker );
 			}
@@ -415,25 +415,25 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			var normal_X = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !normal_X.IsSuccess )
+			if ( !normal_X.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 0, unpacker );
 			}
 
 			var normal_Y = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !normal_Y.IsSuccess )
+			if ( !normal_Y.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 1, unpacker );
 			}
 
 			var normal_Z = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !normal_Z.IsSuccess )
+			if ( !normal_Z.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 2, unpacker );
 			}
 
 			var d = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !d.IsSuccess )
+			if ( !d.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 3, unpacker );
 			}
@@ -527,25 +527,25 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			var x = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !x.IsSuccess )
+			if ( !x.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 0, unpacker );
 			}
 
 			var y = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !y.IsSuccess )
+			if ( !y.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 1, unpacker );
 			}
 
 			var z = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !z.IsSuccess )
+			if ( !z.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 2, unpacker );
 			}
 
 			var w = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !w.IsSuccess )
+			if ( !w.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 3, unpacker );
 			}
@@ -655,37 +655,37 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			var m11 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m11.IsSuccess )
+			if ( !m11.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 0, unpacker );
 			}
 
 			var m12 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m12.IsSuccess )
+			if ( !m12.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 1, unpacker );
 			}
 
 			var m21 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m21.IsSuccess )
+			if ( !m21.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 2, unpacker );
 			}
 
 			var m22 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m22.IsSuccess )
+			if ( !m22.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 3, unpacker );
 			}
 
 			var m31 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m31.IsSuccess )
+			if ( !m31.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 4, unpacker );
 			}
 
 			var m32 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m32.IsSuccess )
+			if ( !m32.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 5, unpacker );
 			}
@@ -875,97 +875,97 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			var m11 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m11.IsSuccess )
+			if ( !m11.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 0, unpacker );
 			}
 
 			var m12 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m12.IsSuccess )
+			if ( !m12.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 1, unpacker );
 			}
 
 			var m13 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m13.IsSuccess )
+			if ( !m13.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 2, unpacker );
 			}
 
 			var m14 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m14.IsSuccess )
+			if ( !m14.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 3, unpacker );
 			}
 
 			var m21 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m21.IsSuccess )
+			if ( !m21.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 4, unpacker );
 			}
 
 			var m22 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m22.IsSuccess )
+			if ( !m22.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 5, unpacker );
 			}
 
 			var m23 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m23.IsSuccess )
+			if ( !m23.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 6, unpacker );
 			}
 
 			var m24 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m24.IsSuccess )
+			if ( !m24.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 7, unpacker );
 			}
 
 			var m31 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m31.IsSuccess )
+			if ( !m31.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 8, unpacker );
 			}
 
 			var m32 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m32.IsSuccess )
+			if ( !m32.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 9, unpacker );
 			}
 
 			var m33 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m33.IsSuccess )
+			if ( !m33.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 10, unpacker );
 			}
 
 			var m34 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m34.IsSuccess )
+			if ( !m34.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 11, unpacker );
 			}
 
 			var m41 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m41.IsSuccess )
+			if ( !m41.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 12, unpacker );
 			}
 
 			var m42 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m42.IsSuccess )
+			if ( !m42.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 13, unpacker );
 			}
 
 			var m43 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m43.IsSuccess )
+			if ( !m43.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 14, unpacker );
 			}
 
 			var m44 = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !m44.IsSuccess )
+			if ( !m44.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 15, unpacker );
 			}

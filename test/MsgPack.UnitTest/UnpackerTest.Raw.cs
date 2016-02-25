@@ -19911,7 +19911,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -19931,7 +19931,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -19950,7 +19950,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -19970,7 +19970,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -20130,7 +20130,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -20150,7 +20150,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -20200,7 +20200,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -20220,7 +20220,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -20380,7 +20380,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -20400,7 +20400,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -20450,7 +20450,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -20470,7 +20470,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -20599,7 +20599,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -20619,7 +20619,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -20638,7 +20638,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -20658,7 +20658,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -20818,7 +20818,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -20838,7 +20838,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -20888,7 +20888,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -20908,7 +20908,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -21068,7 +21068,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -21088,7 +21088,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -21138,7 +21138,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -21158,7 +21158,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -21318,7 +21318,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -21338,7 +21338,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -21388,7 +21388,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -21408,7 +21408,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -21568,7 +21568,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -21588,7 +21588,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -21638,7 +21638,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -21658,7 +21658,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -21787,7 +21787,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -21807,7 +21807,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -21826,7 +21826,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -21846,7 +21846,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -22006,7 +22006,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -22026,7 +22026,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -22076,7 +22076,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -22096,7 +22096,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -22256,7 +22256,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -22276,7 +22276,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -22326,7 +22326,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -22346,7 +22346,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -22506,7 +22506,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -22526,7 +22526,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -22576,7 +22576,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -22596,7 +22596,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -22756,7 +22756,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -22776,7 +22776,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -22826,7 +22826,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -22846,7 +22846,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -23006,7 +23006,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -23026,7 +23026,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -23076,7 +23076,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -23096,7 +23096,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -23256,7 +23256,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -23276,7 +23276,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -23326,7 +23326,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -23346,7 +23346,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -23475,7 +23475,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -23495,7 +23495,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -23514,7 +23514,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -23534,7 +23534,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -23694,7 +23694,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -23714,7 +23714,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -23764,7 +23764,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -23784,7 +23784,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -23944,7 +23944,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -23964,7 +23964,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -24014,7 +24014,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -24034,7 +24034,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -24194,7 +24194,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -24214,7 +24214,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -24264,7 +24264,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -24284,7 +24284,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -24444,7 +24444,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -24464,7 +24464,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -24514,7 +24514,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -24534,7 +24534,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -24694,7 +24694,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -24714,7 +24714,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -24764,7 +24764,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -24784,7 +24784,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -24944,7 +24944,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -24964,7 +24964,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -25014,7 +25014,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -25034,7 +25034,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -25194,7 +25194,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65536 ) ) );
 			}
@@ -25214,7 +25214,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65536 ) ) );
 			}
@@ -25264,7 +25264,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65536 ) ) );
 			}
@@ -25284,7 +25284,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65536 ) ) );
 			}
@@ -25405,7 +25405,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -25425,7 +25425,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -25444,7 +25444,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -25464,7 +25464,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -25616,7 +25616,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -25636,7 +25636,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -25686,7 +25686,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -25706,7 +25706,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -25858,7 +25858,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -25878,7 +25878,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -25928,7 +25928,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -25948,7 +25948,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -26100,7 +26100,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -26120,7 +26120,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -26170,7 +26170,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -26190,7 +26190,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -26342,7 +26342,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -26362,7 +26362,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -26412,7 +26412,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -26432,7 +26432,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -26553,7 +26553,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -26573,7 +26573,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -26592,7 +26592,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -26612,7 +26612,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -26764,7 +26764,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -26784,7 +26784,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -26834,7 +26834,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -26854,7 +26854,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -27006,7 +27006,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -27026,7 +27026,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -27076,7 +27076,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -27096,7 +27096,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -27248,7 +27248,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -27268,7 +27268,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -27318,7 +27318,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -27338,7 +27338,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -27490,7 +27490,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -27510,7 +27510,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -27560,7 +27560,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -27580,7 +27580,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -27732,7 +27732,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -27752,7 +27752,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -27802,7 +27802,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -27822,7 +27822,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -27974,7 +27974,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -27994,7 +27994,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -28044,7 +28044,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -28064,7 +28064,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -28185,7 +28185,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -28205,7 +28205,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -28224,7 +28224,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -28244,7 +28244,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -28396,7 +28396,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -28416,7 +28416,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -28466,7 +28466,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -28486,7 +28486,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -28638,7 +28638,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -28658,7 +28658,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -28708,7 +28708,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -28728,7 +28728,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -28880,7 +28880,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -28900,7 +28900,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -28950,7 +28950,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -28970,7 +28970,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -29122,7 +29122,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -29142,7 +29142,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -29192,7 +29192,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -29212,7 +29212,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -29364,7 +29364,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -29384,7 +29384,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -29434,7 +29434,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -29454,7 +29454,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -29606,7 +29606,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -29626,7 +29626,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -29676,7 +29676,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -29696,7 +29696,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -29848,7 +29848,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65536 ) ) );
 			}
@@ -29868,7 +29868,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65536 ) ) );
 			}
@@ -29918,7 +29918,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65536 ) ) );
 			}
@@ -29938,7 +29938,7 @@ namespace MsgPack
 			{
 				String result;
 				var ret = await unpacker.ReadStringAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( new String( 'A', 65536 ) ) );
 			}
@@ -30059,7 +30059,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -30079,7 +30079,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -30098,7 +30098,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -30118,7 +30118,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -30270,7 +30270,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -30290,7 +30290,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -30340,7 +30340,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -30360,7 +30360,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -30512,7 +30512,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -30532,7 +30532,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -30582,7 +30582,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -30602,7 +30602,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -30723,7 +30723,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -30743,7 +30743,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -30762,7 +30762,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -30782,7 +30782,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -30934,7 +30934,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -30954,7 +30954,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -31004,7 +31004,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -31024,7 +31024,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -31176,7 +31176,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -31196,7 +31196,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -31246,7 +31246,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -31266,7 +31266,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -31418,7 +31418,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -31438,7 +31438,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -31488,7 +31488,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -31508,7 +31508,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -31660,7 +31660,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -31680,7 +31680,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -31730,7 +31730,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -31750,7 +31750,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -31871,7 +31871,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -31891,7 +31891,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -31910,7 +31910,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -31930,7 +31930,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -32082,7 +32082,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -32102,7 +32102,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -32152,7 +32152,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -32172,7 +32172,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -32324,7 +32324,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -32344,7 +32344,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -32394,7 +32394,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -32414,7 +32414,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -32566,7 +32566,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -32586,7 +32586,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -32636,7 +32636,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -32656,7 +32656,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -32808,7 +32808,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -32828,7 +32828,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -32878,7 +32878,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -32898,7 +32898,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -33050,7 +33050,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -33070,7 +33070,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -33120,7 +33120,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -33140,7 +33140,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -33292,7 +33292,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -33312,7 +33312,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -33362,7 +33362,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -33382,7 +33382,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -33503,7 +33503,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -33523,7 +33523,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -33542,7 +33542,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -33562,7 +33562,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -33714,7 +33714,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -33734,7 +33734,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -33784,7 +33784,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -33804,7 +33804,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -33956,7 +33956,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -33976,7 +33976,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -34026,7 +34026,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -34046,7 +34046,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -34198,7 +34198,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -34218,7 +34218,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -34268,7 +34268,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -34288,7 +34288,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -34440,7 +34440,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -34460,7 +34460,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -34510,7 +34510,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -34530,7 +34530,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -34682,7 +34682,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -34702,7 +34702,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -34752,7 +34752,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -34772,7 +34772,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -34924,7 +34924,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -34944,7 +34944,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -34994,7 +34994,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -35014,7 +35014,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -35166,7 +35166,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65536 ).ToArray() ) );
 			}
@@ -35186,7 +35186,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65536 ).ToArray() ) );
 			}
@@ -35236,7 +35236,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65536 ).ToArray() ) );
 			}
@@ -35256,7 +35256,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65536 ).ToArray() ) );
 			}
@@ -35385,7 +35385,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -35405,7 +35405,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -35424,7 +35424,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -35444,7 +35444,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -35604,7 +35604,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -35624,7 +35624,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -35674,7 +35674,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -35694,7 +35694,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -35854,7 +35854,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -35874,7 +35874,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -35924,7 +35924,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -35944,7 +35944,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -36104,7 +36104,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -36124,7 +36124,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -36174,7 +36174,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -36194,7 +36194,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -36354,7 +36354,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -36374,7 +36374,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -36424,7 +36424,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -36444,7 +36444,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -36573,7 +36573,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -36593,7 +36593,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -36612,7 +36612,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -36632,7 +36632,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -36792,7 +36792,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -36812,7 +36812,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -36862,7 +36862,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -36882,7 +36882,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -37042,7 +37042,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -37062,7 +37062,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -37112,7 +37112,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -37132,7 +37132,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -37292,7 +37292,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -37312,7 +37312,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -37362,7 +37362,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -37382,7 +37382,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -37542,7 +37542,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -37562,7 +37562,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -37612,7 +37612,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -37632,7 +37632,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -37792,7 +37792,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -37812,7 +37812,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -37862,7 +37862,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -37882,7 +37882,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -38042,7 +38042,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -38062,7 +38062,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -38112,7 +38112,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -38132,7 +38132,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -38261,7 +38261,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -38281,7 +38281,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -38300,7 +38300,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -38320,7 +38320,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -38480,7 +38480,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -38500,7 +38500,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -38550,7 +38550,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -38570,7 +38570,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -38730,7 +38730,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -38750,7 +38750,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -38800,7 +38800,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -38820,7 +38820,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -38980,7 +38980,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -39000,7 +39000,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -39050,7 +39050,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -39070,7 +39070,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -39230,7 +39230,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -39250,7 +39250,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -39300,7 +39300,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -39320,7 +39320,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -39480,7 +39480,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -39500,7 +39500,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -39550,7 +39550,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -39570,7 +39570,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -39730,7 +39730,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -39750,7 +39750,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -39800,7 +39800,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -39820,7 +39820,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -39980,7 +39980,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65536 ).ToArray() ) );
 			}
@@ -40000,7 +40000,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65536 ).ToArray() ) );
 			}
@@ -40050,7 +40050,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65536 ).ToArray() ) );
 			}
@@ -40070,7 +40070,7 @@ namespace MsgPack
 			{
 				Byte[] result;
 				var ret = await unpacker.ReadBinaryAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( Enumerable.Repeat( 0xFF, 65536 ).ToArray() ) );
 			}

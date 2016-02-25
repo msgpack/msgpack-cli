@@ -176,7 +176,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<Boolean> result =
 					await unpacker.ReadBooleanAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -227,7 +227,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<Boolean?> result =
 					await unpacker.ReadNullableBooleanAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -376,7 +376,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<Byte> result =
 					await unpacker.ReadByteAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -427,7 +427,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<Byte?> result =
 					await unpacker.ReadNullableByteAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -576,7 +576,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<Int16> result =
 					await unpacker.ReadInt16Async( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -627,7 +627,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<Int16?> result =
 					await unpacker.ReadNullableInt16Async( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -776,7 +776,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<Int32> result =
 					await unpacker.ReadInt32Async( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -827,7 +827,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<Int32?> result =
 					await unpacker.ReadNullableInt32Async( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -976,7 +976,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<Int64> result =
 					await unpacker.ReadInt64Async( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -1027,7 +1027,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<Int64?> result =
 					await unpacker.ReadNullableInt64Async( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -1185,7 +1185,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<SByte> result =
 					await unpacker.ReadSByteAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -1239,7 +1239,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<SByte?> result =
 					await unpacker.ReadNullableSByteAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -1397,7 +1397,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<UInt16> result =
 					await unpacker.ReadUInt16Async( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -1451,7 +1451,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<UInt16?> result =
 					await unpacker.ReadNullableUInt16Async( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -1609,7 +1609,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<UInt32> result =
 					await unpacker.ReadUInt32Async( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -1663,7 +1663,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<UInt32?> result =
 					await unpacker.ReadNullableUInt32Async( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -1821,7 +1821,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<UInt64> result =
 					await unpacker.ReadUInt64Async( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -1875,7 +1875,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<UInt64?> result =
 					await unpacker.ReadNullableUInt64Async( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -2024,7 +2024,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<Single> result =
 					await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -2075,7 +2075,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<Single?> result =
 					await unpacker.ReadNullableSingleAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -2224,7 +2224,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<Double> result =
 					await unpacker.ReadDoubleAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -2275,7 +2275,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<Double?> result =
 					await unpacker.ReadNullableDoubleAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -2424,7 +2424,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<string> result =
 					await unpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}
@@ -2475,7 +2475,7 @@ namespace MsgPack.Serialization
 			{
 				AsyncReadResult<byte[]> result =
 					await unpacker.ReadBinaryAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !result.IsSuccess )
+				if ( !result.Success )
 				{
 					SerializationExceptions.ThrowFailedToDeserializeMember( objectType, memberName, null );
 				}

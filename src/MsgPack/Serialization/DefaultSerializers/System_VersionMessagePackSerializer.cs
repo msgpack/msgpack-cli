@@ -106,25 +106,25 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			var major = await unpacker.ReadInt32Async( cancellationToken ).ConfigureAwait( false );
-			if ( !major.IsSuccess )
+			if ( !major.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 0, unpacker );
 			}
 
 			var minor = await unpacker.ReadInt32Async( cancellationToken ).ConfigureAwait( false );
-			if ( !minor.IsSuccess )
+			if ( !minor.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 1, unpacker );
 			}
 
 			var build = await unpacker.ReadInt32Async( cancellationToken ).ConfigureAwait( false );
-			if ( !build.IsSuccess )
+			if ( !build.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 2, unpacker );
 			}
 
 			var revision = await unpacker.ReadInt32Async( cancellationToken ).ConfigureAwait( false );
-			if ( !revision.IsSuccess )
+			if ( !revision.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 3, unpacker );
 			}

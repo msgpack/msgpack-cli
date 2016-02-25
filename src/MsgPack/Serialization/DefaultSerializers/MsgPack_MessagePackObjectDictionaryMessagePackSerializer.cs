@@ -152,7 +152,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				if ( unpacker.IsCollectionHeader )
 				{
 					var value = await unpacker.UnpackSubtreeDataAsyncCore( cancellationToken ).ConfigureAwait( false );
-					if ( !value.IsSuccess )
+					if ( !value.Success )
 					{
 						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}

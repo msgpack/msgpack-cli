@@ -161,7 +161,7 @@ namespace MsgPack
 		protected override async Task<bool> ReadAsyncCore( CancellationToken cancellationToken )
 		{
 			var result = await this.ReadSubtreeObjectAsync( cancellationToken).ConfigureAwait( false );
-			if ( result.IsSuccess )
+			if ( result.Success )
 			{
 				this.InternalData = result.Value;
 				return true;

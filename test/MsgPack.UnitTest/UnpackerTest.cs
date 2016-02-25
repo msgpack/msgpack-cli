@@ -1375,7 +1375,7 @@ namespace MsgPack
 			{
 				string result;
 				var ret = await target.ReadStringAsync();
-				Assert.That( ret.IsSuccess );
+				Assert.That( ret.Success );
 				result = ret.Value;
 				Assert.That( result, Is.EqualTo( str ) );
 			}
@@ -1402,7 +1402,7 @@ namespace MsgPack
 			{
 				long result;
 				var ret = await target.ReadArrayLengthAsync();
-				Assert.That( ret.IsSuccess );
+				Assert.That( ret.Success );
 				result = ret.Value;
 				Assert.That( target.IsArrayHeader );
 				Assert.That( result, Is.EqualTo( 0 ) );
@@ -1432,7 +1432,7 @@ namespace MsgPack
 			{
 				long result;
 				var ret = await target.ReadMapLengthAsync();
-				Assert.That( ret.IsSuccess );
+				Assert.That( ret.Success );
 				result = ret.Value;
 				Assert.That( target.IsMapHeader );
 				Assert.That( result, Is.EqualTo( 0 ) );

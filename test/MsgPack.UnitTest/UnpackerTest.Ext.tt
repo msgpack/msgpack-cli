@@ -196,7 +196,7 @@ private void PutTestUnpackDirectBody( string typeCodeVariable, int actualValueLe
 		{
 #>
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 <#+
 		}

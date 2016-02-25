@@ -5441,7 +5441,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -5464,7 +5464,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -5519,7 +5519,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -5542,7 +5542,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -5695,7 +5695,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -5718,7 +5718,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -5773,7 +5773,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -5796,7 +5796,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -5949,7 +5949,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -5972,7 +5972,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6027,7 +6027,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6050,7 +6050,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6203,7 +6203,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6226,7 +6226,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6281,7 +6281,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6304,7 +6304,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6457,7 +6457,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6480,7 +6480,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6535,7 +6535,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6558,7 +6558,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6678,7 +6678,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6701,7 +6701,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6723,7 +6723,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6746,7 +6746,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6899,7 +6899,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6922,7 +6922,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -6977,7 +6977,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7000,7 +7000,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7153,7 +7153,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7176,7 +7176,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7231,7 +7231,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7254,7 +7254,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7407,7 +7407,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7430,7 +7430,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7485,7 +7485,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7508,7 +7508,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7628,7 +7628,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7651,7 +7651,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7673,7 +7673,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7696,7 +7696,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7849,7 +7849,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7872,7 +7872,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7927,7 +7927,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -7950,7 +7950,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8103,7 +8103,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8126,7 +8126,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8181,7 +8181,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8204,7 +8204,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8357,7 +8357,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8380,7 +8380,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8435,7 +8435,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8458,7 +8458,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8611,7 +8611,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8634,7 +8634,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8689,7 +8689,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8712,7 +8712,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8865,7 +8865,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8888,7 +8888,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8943,7 +8943,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -8966,7 +8966,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9086,7 +9086,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9109,7 +9109,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9131,7 +9131,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9154,7 +9154,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9307,7 +9307,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9330,7 +9330,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9385,7 +9385,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9408,7 +9408,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9561,7 +9561,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9584,7 +9584,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9639,7 +9639,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9662,7 +9662,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9815,7 +9815,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9838,7 +9838,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9893,7 +9893,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -9916,7 +9916,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -10069,7 +10069,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -10092,7 +10092,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -10147,7 +10147,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -10170,7 +10170,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -10323,7 +10323,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -10346,7 +10346,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -10401,7 +10401,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -10424,7 +10424,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -10577,7 +10577,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -10600,7 +10600,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -10655,7 +10655,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );
@@ -10678,7 +10678,7 @@ namespace MsgPack
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 				Assert.That( result.TypeCode, Is.EqualTo( typeCode ) );
 				Assert.That( result.Body, Is.Not.Null );

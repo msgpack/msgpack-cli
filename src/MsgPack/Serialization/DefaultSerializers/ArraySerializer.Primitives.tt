@@ -301,7 +301,7 @@ internal sealed class <#= simpleName #>ArraySerializer : MessagePackSerializer<#
 		for ( int i = 0; i < count; i++ )
 		{
 			var item = await unpacker.Read<#= simpleName == "MessagePackObject" ? "Object" : simpleName #>Async( cancellationToken ).ConfigureAwait( false );
-			if ( !item.IsSuccess )
+			if ( !item.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( i, unpacker );
 			}

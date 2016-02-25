@@ -186,7 +186,7 @@ foreach( var isAsync in new [] { false, true } )
 			{
 #>
 				var ret = <#= ReadAwait( isNullable, __testCase.Item4 ) #>;
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 <#
 			}
@@ -214,7 +214,7 @@ foreach( var isAsync in new [] { false, true } )
 			{
 #>
 				var ret = <#= ReadAwait( isNullable, __testCase.Item4 ) #>;
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 <#
 			}
@@ -283,7 +283,7 @@ foreach( var isAsync in new [] { false, true } )
 			{
 #>
 				var ret = <#= ReadAwait( isNullable, __testCase.Item4 ) #>;
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 <#
 			}
@@ -311,7 +311,7 @@ foreach( var isAsync in new [] { false, true } )
 			{
 #>
 				var ret = <#= ReadAwait( isNullable, __testCase.Item4 ) #>;
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 <#
 			}
@@ -380,7 +380,7 @@ foreach( var isAsync in new [] { false, true } )
 			{
 #>
 				var ret = <#= ReadAwait( isNullable, __testCase.Item3 ) #>;
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 <#
 			}
@@ -408,7 +408,7 @@ foreach( var isAsync in new [] { false, true } )
 			{
 #>
 				var ret = <#= ReadAwait( isNullable, __testCase.Item3 ) #>;
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 <#
 			}
@@ -449,7 +449,7 @@ foreach( var isAsync in new [] { false, true } )
 			{
 #>
 				var ret = <#= ReadAwait( true, __scalarType ) #>;
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 <#
 			}
@@ -477,7 +477,7 @@ foreach( var isAsync in new [] { false, true } )
 			{
 #>
 				var ret = <#= ReadAwait( true, __scalarType ) #>;
-				Assert.IsTrue( ret.IsSuccess );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 <#
 			}

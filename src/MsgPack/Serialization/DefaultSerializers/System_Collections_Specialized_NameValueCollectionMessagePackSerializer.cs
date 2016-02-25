@@ -205,7 +205,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			for ( var k = 0; k < keyCount; k++ )
 			{
 				var key = await unpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false );
-				if ( !key.IsSuccess )
+				if ( !key.Success )
 				{
 					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 				}
@@ -226,7 +226,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					for ( var v = 0; v < itemsCount; v++ )
 					{
 						var value = await valuesUnpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false );
-						if ( !value.IsSuccess )
+						if ( !value.Success )
 						{
 							SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 						}

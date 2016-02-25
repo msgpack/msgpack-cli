@@ -76,13 +76,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 		protected internal override async Task<Complex> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			var real = await unpacker.ReadDoubleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !real.IsSuccess )
+			if ( !real.Success )
 			{
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
 
 			var imaginary = await unpacker.ReadDoubleAsync( cancellationToken ).ConfigureAwait( false );
-			if ( !imaginary.IsSuccess )
+			if ( !imaginary.Success )
 			{
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}

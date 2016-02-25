@@ -900,7 +900,7 @@ namespace MsgPack
 		public async Task<MessagePackObject?> UnpackSubtreeAsync( CancellationToken cancellationToken )
 		{
 			var result = await this.UnpackSubtreeDataAsyncCore( cancellationToken ).ConfigureAwait( false );
-			if ( result.IsSuccess )
+			if ( result.Success )
 			{
 				this.LastReadData = result.Value;
 				return result.Value;
@@ -938,7 +938,7 @@ namespace MsgPack
 		public async Task<MessagePackObject> UnpackSubtreeDataAsync( CancellationToken cancellationToken )
 		{
 			var result = await this.UnpackSubtreeDataAsyncCore( cancellationToken ).ConfigureAwait( false );
-			if ( result.IsSuccess )
+			if ( result.Success )
 			{
 				this.LastReadData = result.Value;
 				return result.Value;
