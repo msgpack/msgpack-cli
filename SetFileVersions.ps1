@@ -1,8 +1,8 @@
-﻿$assemblyInfoVersionRegex = New-Object Text.RegularExpressions.Regex("^\s*\[\s*assembly\s*:\s*AssemblyInformationalVersion\(\s*`"(?<Version>[0-9\.]+)`"\s*\)\s*\]\s*$", ( [Text.RegularExpressions.RegexOptions]::Compiled -bor [Text.RegularExpressions.RegexOptions]::ExplicitCapture -bor [Text.RegularExpressions.RegexOptions]::CultureInvariant -bor [Text.RegularExpressions.RegexOptions]::MultiLine ) );
-$versionMatch = $assemblyInfoVersionRegex.Match([IO.File]::ReadAllText( ".\src\CommonAssemblyInfo.Pack.cs" ));
+﻿$assemblyInfoVersionRegex = New-Object Text.RegularExpressions.Regex("^\s*\[\s*assembly\s*:\s*AssemblyInformationalVersion\(\s*`"(?<Version>[0-9\.]+)(-.+)?`"\s*\)\s*\]\s*$", ( [Text.RegularExpressions.RegexOptions]::Compiled -bor [Text.RegularExpressions.RegexOptions]::ExplicitCapture -bor [Text.RegularExpressions.RegexOptions]::CultureInvariant -bor [Text.RegularExpressions.RegexOptions]::MultiLine ) );
+$versionMatch = $assemblyInfoVersionRegex.Match([IO.File]::ReadAllText( ".\src\CommonAssemblyInfo.cs" ));
 if ( !$versionMatch.Success )
 {
-	Write-Error "Cannot extract AssemblyInformationalVersion from CommonAssemblyInfo.Pack.cs."
+	Write-Error "Cannot extract AssemblyInformationalVersion from CommonAssemblyInfo.cs."
 	return
 }
 
@@ -19,7 +19,7 @@ $newVersionString = "[assembly: AssemblyFileVersion( `"{0}`" )]`r`n"  -f $newVer
 
 $assemblyFileVersionRegex = New-Object Text.RegularExpressions.Regex( "\[\s*assembly\s*:\s*AssemblyFileVersion\([^)]+\)\s*\]\r\n", ( [Text.RegularExpressions.RegexOptions]::Compiled -bor [Text.RegularExpressions.RegexOptions]::ExplicitCapture -bor [Text.RegularExpressions.RegexOptions]::CultureInvariant -bor [Text.RegularExpressions.RegexOptions]::MultiLine ) );
 
-foreach( $assemblyInfo in ( ls "src" -Recurse AssemblyInfo.cs ) )
+foreach( $assemblyInfo in ( ls "src" -Recurse AssemblyInfo*.cs ) )
 {
 	[IO.File]::WriteAllText( 
 		$assemblyInfo.FullName,
