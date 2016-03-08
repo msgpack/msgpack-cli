@@ -611,81 +611,61 @@ namespace MsgPack
 			this.CheckLength( length, ReadValueResult.String );
 
 			var length32 = unchecked( ( int )length );
-			var bytes = BufferManager.GetByteBuffer();
-#if DEBUG
-			try
+			var bytes = BufferManager.NewByteBuffer( length32 );
+
+			if ( length32 <= bytes.Length )
 			{
-#endif // DEBUG
-
-				if ( length32 <= bytes.Length )
-				{
-					this.ReadStrict( bytes, length32 );
-					var result = Encoding.UTF8.GetString( bytes, 0, length32 );
-					this.InternalCollectionType = CollectionType.None;
-					return result;
-				}
-
-				var decoder = Encoding.UTF8.GetDecoder();
-				var chars = BufferManager.GetCharBuffer();
-#if DEBUG
-				try
-				{
-#endif // DEBUG
-					var stringBuffer = new StringBuilder( Math.Min( length32, Int32.MaxValue ) );
-					var remaining = length32;
-					do
-					{
-						var reading = Math.Min( remaining, bytes.Length );
-						this._lastOffset = this._offset;
-						var bytesRead = this._source.Read( bytes, 0, reading );
-						this._offset += bytesRead;
-						if ( bytesRead == 0 )
-						{
-							this.ThrowEofException( reading );
-						}
-
-						remaining -= bytesRead;
-
-						var isCompleted = false;
-						var bytesOffset = 0;
-
-						while ( !isCompleted )
-						{
-							int bytesUsed;
-							int charsUsed;
-							decoder.Convert(
-								bytes,
-								bytesOffset,
-								bytesRead - bytesOffset,
-								chars,
-								0,
-								chars.Length,
-								( bytesRead == 0 ),
-								// flush when last read.
-								out bytesUsed,
-								out charsUsed,
-								out isCompleted
-							);
-
-							stringBuffer.Append( chars, 0, charsUsed );
-							bytesOffset += bytesUsed;
-						}
-					} while ( remaining > 0 );
-
-					this.InternalCollectionType = CollectionType.None;
-					return stringBuffer.ToString();
-#if DEBUG
-				}
-				finally
-				{
-					BufferManager.ReleaseCharBuffer();
-				}
+				this.ReadStrict( bytes, length32 );
+				var result = Encoding.UTF8.GetString( bytes, 0, length32 );
+				this.InternalCollectionType = CollectionType.None;
+				return result;
 			}
-			finally
+
+			var decoder = Encoding.UTF8.GetDecoder();
+			var chars = BufferManager.NewCharBuffer( bytes.Length );
+			var stringBuffer = new StringBuilder( length32 );
+			var remaining = length32;
+			do
 			{
-					BufferManager.ReleaseByteBuffer();
-			}
-#endif // DEBUG
+				var reading = Math.Min( remaining, bytes.Length );
+				this._lastOffset = this._offset;
+				var bytesRead = this._source.Read( bytes, 0, reading );
+				this._offset += bytesRead;
+				if ( bytesRead == 0 )
+				{
+					this.ThrowEofException( reading );
+				}
+
+				remaining -= bytesRead;
+
+				var isCompleted = false;
+				var bytesOffset = 0;
+
+				while ( !isCompleted )
+				{
+					int bytesUsed;
+					int charsUsed;
+					decoder.Convert(
+						bytes,
+						bytesOffset,
+						bytesRead - bytesOffset,
+						chars,
+						0,
+						chars.Length,
+						( bytesRead == 0 ),
+						// flush when last read.
+						out bytesUsed,
+						out charsUsed,
+						out isCompleted
+					);
+
+					stringBuffer.Append( chars, 0, charsUsed );
+					bytesOffset += bytesUsed;
+				}
+			} while ( remaining > 0 );
+
+			this.InternalCollectionType = CollectionType.None;
+			return stringBuffer.ToString();
 		}
 
 #if FEATURE_TAP
@@ -701,81 +681,61 @@ namespace MsgPack
 			this.CheckLength( length, ReadValueResult.String );
 
 			var length32 = unchecked( ( int )length );
-			var bytes = BufferManager.GetAsyncByteBuffer();
-#if DEBUG
-			try
+			var bytes = BufferManager.NewByteBuffer( length32 );
+
+			if ( length32 <= bytes.Length )
 			{
-#endif // DEBUG
-
-				if ( length32 <= bytes.Length )
-				{
-					await this.ReadStrictAsync( bytes, length32, cancellationToken ).ConfigureAwait( false );
-					var result = Encoding.UTF8.GetString( bytes, 0, length32 );
-					this.InternalCollectionType = CollectionType.None;
-					return result;
-				}
-
-				var decoder = Encoding.UTF8.GetDecoder();
-				var chars = BufferManager.GetAsyncCharBuffer();
-#if DEBUG
-				try
-				{
-#endif // DEBUG
-					var stringBuffer = new StringBuilder( Math.Min( length32, Int32.MaxValue ) );
-					var remaining = length32;
-					do
-					{
-						var reading = Math.Min( remaining, bytes.Length );
-						this._lastOffset = this._offset;
-						var bytesRead = await this._source.ReadAsync( bytes, 0, reading, cancellationToken ).ConfigureAwait( false );
-						this._offset += bytesRead;
-						if ( bytesRead == 0 )
-						{
-							this.ThrowEofException( reading );
-						}
-
-						remaining -= bytesRead;
-
-						var isCompleted = false;
-						var bytesOffset = 0;
-
-						while ( !isCompleted )
-						{
-							int bytesUsed;
-							int charsUsed;
-							decoder.Convert(
-								bytes,
-								bytesOffset,
-								bytesRead - bytesOffset,
-								chars,
-								0,
-								chars.Length,
-								( bytesRead == 0 ),
-								// flush when last read.
-								out bytesUsed,
-								out charsUsed,
-								out isCompleted
-							);
-
-							stringBuffer.Append( chars, 0, charsUsed );
-							bytesOffset += bytesUsed;
-						}
-					} while ( remaining > 0 );
-
-					this.InternalCollectionType = CollectionType.None;
-					return stringBuffer.ToString();
-#if DEBUG
-				}
-				finally
-				{
-					BufferManager.ReturnAsyncCharBuffer( chars );
-				}
+				await this.ReadStrictAsync( bytes, length32, cancellationToken ).ConfigureAwait( false );
+				var result = Encoding.UTF8.GetString( bytes, 0, length32 );
+				this.InternalCollectionType = CollectionType.None;
+				return result;
 			}
-			finally
+
+			var decoder = Encoding.UTF8.GetDecoder();
+			var chars = BufferManager.NewCharBuffer( bytes.Length );
+			var stringBuffer = new StringBuilder( length32 );
+			var remaining = length32;
+			do
 			{
-					BufferManager.ReturnAsyncByteBuffer( bytes );
-			}
-#endif // DEBUG
+				var reading = Math.Min( remaining, bytes.Length );
+				this._lastOffset = this._offset;
+				var bytesRead = await this._source.ReadAsync( bytes, 0, reading, cancellationToken ).ConfigureAwait( false );
+				this._offset += bytesRead;
+				if ( bytesRead == 0 )
+				{
+					this.ThrowEofException( reading );
+				}
+
+				remaining -= bytesRead;
+
+				var isCompleted = false;
+				var bytesOffset = 0;
+
+				while ( !isCompleted )
+				{
+					int bytesUsed;
+					int charsUsed;
+					decoder.Convert(
+						bytes,
+						bytesOffset,
+						bytesRead - bytesOffset,
+						chars,
+						0,
+						chars.Length,
+						( bytesRead == 0 ),
+						// flush when last read.
+						out bytesUsed,
+						out charsUsed,
+						out isCompleted
+					);
+
+					stringBuffer.Append( chars, 0, charsUsed );
+					bytesOffset += bytesUsed;
+				}
+			} while ( remaining > 0 );
+
+			this.InternalCollectionType = CollectionType.None;
+			return stringBuffer.ToString();
 		}
 
 #endif // FEATURE_TAP

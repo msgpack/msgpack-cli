@@ -229,14 +229,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( size, Int32.MaxValue ) ) );
 						while( size > bytesRead )
 						{
 							var remaining = ( size - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -246,13 +242,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -306,14 +295,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 1, Int32.MaxValue ) ) );
 						while( 1 > bytesRead )
 						{
 							var remaining = ( 1 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -323,13 +308,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -360,14 +338,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 2, Int32.MaxValue ) ) );
 						while( 2 > bytesRead )
 						{
 							var remaining = ( 2 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -377,13 +351,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -415,14 +382,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 4, Int32.MaxValue ) ) );
 						while( 4 > bytesRead )
 						{
 							var remaining = ( 4 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -432,13 +395,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -470,14 +426,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 8, Int32.MaxValue ) ) );
 						while( 8 > bytesRead )
 						{
 							var remaining = ( 8 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -487,13 +439,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -517,14 +462,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -534,13 +475,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -583,14 +517,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -600,13 +530,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -649,14 +572,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -666,13 +585,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -940,14 +852,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 1, Int32.MaxValue ) ) );
 						while( 1 > bytesRead )
 						{
 							var remaining = ( 1 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -957,13 +865,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -1003,14 +904,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 2, Int32.MaxValue ) ) );
 						while( 2 > bytesRead )
 						{
 							var remaining = ( 2 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -1020,13 +917,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -1066,14 +956,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 4, Int32.MaxValue ) ) );
 						while( 4 > bytesRead )
 						{
 							var remaining = ( 4 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -1083,13 +969,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -1129,14 +1008,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 8, Int32.MaxValue ) ) );
 						while( 8 > bytesRead )
 						{
 							var remaining = ( 8 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -1146,13 +1021,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -1192,14 +1060,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 16, Int32.MaxValue ) ) );
 						while( 16 > bytesRead )
 						{
 							var remaining = ( 16 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -1209,13 +1073,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -1267,14 +1124,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -1284,13 +1137,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -1342,14 +1188,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -1359,13 +1201,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -1417,14 +1252,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
@@ -1434,13 +1265,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -1667,14 +1491,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( size, Int32.MaxValue ) ) );
 						while( size > bytesRead )
 						{
 							var remaining = ( size - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -1684,13 +1504,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -1744,14 +1557,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 1, Int32.MaxValue ) ) );
 						while( 1 > bytesRead )
 						{
 							var remaining = ( 1 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -1761,13 +1570,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -1798,14 +1600,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 2, Int32.MaxValue ) ) );
 						while( 2 > bytesRead )
 						{
 							var remaining = ( 2 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -1815,13 +1613,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -1853,14 +1644,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 4, Int32.MaxValue ) ) );
 						while( 4 > bytesRead )
 						{
 							var remaining = ( 4 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -1870,13 +1657,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -1908,14 +1688,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 8, Int32.MaxValue ) ) );
 						while( 8 > bytesRead )
 						{
 							var remaining = ( 8 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -1925,13 +1701,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -1955,14 +1724,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -1972,13 +1737,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -2021,14 +1779,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -2038,13 +1792,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -2087,14 +1834,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -2104,13 +1847,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -2378,14 +2114,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 1, Int32.MaxValue ) ) );
 						while( 1 > bytesRead )
 						{
 							var remaining = ( 1 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -2395,13 +2127,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -2441,14 +2166,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 2, Int32.MaxValue ) ) );
 						while( 2 > bytesRead )
 						{
 							var remaining = ( 2 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -2458,13 +2179,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -2504,14 +2218,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 4, Int32.MaxValue ) ) );
 						while( 4 > bytesRead )
 						{
 							var remaining = ( 4 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -2521,13 +2231,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -2567,14 +2270,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 8, Int32.MaxValue ) ) );
 						while( 8 > bytesRead )
 						{
 							var remaining = ( 8 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -2584,13 +2283,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -2630,14 +2322,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 16, Int32.MaxValue ) ) );
 						while( 16 > bytesRead )
 						{
 							var remaining = ( 16 - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -2647,13 +2335,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -2705,14 +2386,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -2722,13 +2399,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -2780,14 +2450,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -2797,13 +2463,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue
@@ -2855,14 +2514,10 @@ namespace MsgPack
 						#region DrainValue
 						
 						long bytesRead = 0;
+						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
 						while( length > bytesRead )
 						{
 							var remaining = ( length - bytesRead );
-							var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-						#if DEBUG
-							try
-							{
-						#endif // DEBUG
 							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 							this._lastOffset = this._offset;
 							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
@@ -2872,13 +2527,6 @@ namespace MsgPack
 							{
 								return null;
 							}
-						#if DEBUG
-							}
-							finally
-							{
-								BufferManager.ReleaseByteBuffer();
-							}
-						#endif // DEBUG
 						}
 						
 						#endregion DrainValue

@@ -531,14 +531,10 @@ private void WriteDrainValue( string sizeVariable, bool isAsync )
 #region DrainValue
 
 long bytesRead = 0;
+var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( <#= sizeVariable #>, Int32.MaxValue ) ) );
 while( <#= sizeVariable #> > bytesRead )
 {
 	var remaining = ( <#= sizeVariable #> - bytesRead );
-	var dummyBufferForSkipping = BufferManager.GetByteBuffer();
-#if DEBUG
-	try
-	{
-#endif // DEBUG
 	var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
 	this._lastOffset = this._offset;
 	var lastRead = <#= Await( isAsync, "this._source.Read" + AsyncSuffix( isAsync ) + "( dummyBufferForSkipping, 0, reading" +  LastArgument( isAsync ) + " )" ) #>;
@@ -548,13 +544,6 @@ while( <#= sizeVariable #> > bytesRead )
 	{
 		return null;
 	}
-#if DEBUG
-	}
-	finally
-	{
-		BufferManager.ReleaseByteBuffer();
-	}
-#endif // DEBUG
 }
 
 #endregion DrainValue
