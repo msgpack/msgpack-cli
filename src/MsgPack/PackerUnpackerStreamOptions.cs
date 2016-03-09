@@ -31,6 +31,9 @@ namespace MsgPack
 		internal static readonly PackerUnpackerStreamOptions SingletonOwnsStream =
 			new PackerUnpackerStreamOptions { OwnsStream = true };
 
+		internal static readonly PackerUnpackerStreamOptions SingletonForAsync =
+			new PackerUnpackerStreamOptions { OwnsStream = true, WithBuffering = true };
+
 		internal static readonly PackerUnpackerStreamOptions None = new PackerUnpackerStreamOptions();
 
 		/// <summary>
@@ -103,9 +106,9 @@ namespace MsgPack
 
 #if !SILVERLIGHT
 			if ( ( stream is BufferedStream ) || ( stream is MemoryStream )
-#if !NETFX_CORE
+#if !NETFX_CORE && !CORE_CLR
 				|| ( stream is UnmanagedMemoryStream ) || ( stream is FileStream ) 
-#endif // !NETFX_CORE
+#endif // !NETFX_CORE && !CORE_CLR
 			)
 			{
 				// They have in-memory based synchronous read/write optimization.

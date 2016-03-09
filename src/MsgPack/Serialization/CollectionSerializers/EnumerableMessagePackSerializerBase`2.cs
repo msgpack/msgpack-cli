@@ -25,6 +25,10 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.CollectionSerializers
 {
@@ -143,6 +147,88 @@ namespace MsgPack.Serialization.CollectionSerializers
 			}
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Deserializes collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/> asynchronously.
+		/// </summary>
+		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
+		/// <param name="collection">Collection that the items to be stored. This value will not be <c>null</c>.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to deserialize object.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		Failed to deserialize object due to invalid stream.
+		/// </exception>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Failed to deserialize object due to invalid stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		<typeparamref name="TCollection"/> is not mutable collection.
+		/// </exception>
+		/// <seealso cref="P:Capabilities"/>
+		protected internal sealed override Task UnpackToAsyncCore( Unpacker unpacker, TCollection collection, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			return this.UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+		}
+
+		/// <summary>
+		///		Deserializes collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/> asynchronously.
+		/// </summary>
+		/// <param name="unpacker">The <see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
+		/// <param name="collection">The collection that the items to be stored. This value will not be <c>null</c>.</param>
+		/// <param name="itemsCount">The count of items of the collection in the msgpack stream.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		/// </returns>
+		/// <exception cref="SerializationException">
+		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		/// </exception>
+		protected internal Task UnpackToAsyncCore( Unpacker unpacker, TCollection collection, int itemsCount, CancellationToken cancellationToken )
+		{
+			return this.InternalUnpackToAsyncCore( unpacker, collection, itemsCount, cancellationToken );
+		}
+
+		internal async Task<TCollection> InternalUnpackToAsyncCore( Unpacker unpacker, TCollection collection, int itemsCount, CancellationToken cancellationToken )
+		{
+			for ( var i = 0; i < itemsCount; i++ )
+			{
+				if ( !unpacker.Read() )
+				{
+					SerializationExceptions.ThrowMissingItem( i, unpacker );
+				}
+
+				TItem item;
+				if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+				{
+					item = await this._itemSerializer.UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false );
+				}
+				else
+				{
+					using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+					{
+						item = await this._itemSerializer.UnpackFromAsync( subtreeUnpacker, cancellationToken ).ConfigureAwait( false );
+					}
+				}
+
+				this.AddItem( collection, item );
+			}
+
+			return collection;
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		When implemented by derive class, 
 		///		adds the deserialized item to the collection on <typeparamref name="TCollection"/> specific manner
@@ -162,9 +248,9 @@ namespace MsgPack.Serialization.CollectionSerializers
 #if UNITY
 	internal abstract class UnityEnumerableMessagePackSerializerBase : NonGenericMessagePackSerializer, ICollectionInstanceFactory
 	{
-		private readonly IMessagePackSingleObjectSerializer _itemSerializer;
+		private readonly MessagePackSerializer _itemSerializer;
 
-		internal IMessagePackSingleObjectSerializer ItemSerializer { get { return this._itemSerializer; } }
+		internal MessagePackSerializer ItemSerializer { get { return this._itemSerializer; } }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by base .ctor" )]
 		protected UnityEnumerableMessagePackSerializerBase( SerializationContext ownerContext, Type targetType, Type itemType, PolymorphismSchema schema )
@@ -186,7 +272,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
 			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -198,7 +284,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 			{
 				if ( !unpacker.Read() )
 				{
-					throw SerializationExceptions.NewMissingItem( i );
+					SerializationExceptions.ThrowMissingItem( i, unpacker );
 				}
 
 				object item;

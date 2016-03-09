@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,12 +24,16 @@
 
 using System;
 #if DEBUG && !UNITY
-#if XAMIOS || XAMDROID || CORE_CLR
+#if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID || CORE_CLR
+#endif // CORE_CLR
 #endif // DEBUG && !UNITY
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -70,11 +74,34 @@ namespace MsgPack.Serialization.DefaultSerializers
 			// nil was handled in UnpackFrom() method.
 			return this._valueSerializer.UnpackFromCore( unpacker );
 		}
+
+#if FEATURE_TAP
+
+		protected internal override Task PackToAsyncCore( Packer packer, T? objectTree, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( objectTree != null, "objectTree != null" );
+#endif // DEBUG && !UNITY
+			// null was handled in PackTo() method.
+			return this._valueSerializer.PackToAsyncCore( packer, objectTree.Value, cancellationToken );
+		}
+
+		protected internal override async Task<T?> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			Contract.Assert( !unpacker.LastReadData.IsNil, "!unpacker.LastReadData.IsNil" );
+#endif // DEBUG && !UNITY
+			// nil was handled in UnpackFrom() method.
+			return await this._valueSerializer.UnpackFromAsyncCore( unpacker, cancellationToken ).ConfigureAwait( false );
+		}
+
+#endif // FEATURE_TAP
+
 	}
 #else
 	internal class NullableMessagePackSerializer : NonGenericMessagePackSerializer
 	{
-		private readonly IMessagePackSingleObjectSerializer _valueSerializer;
+		private readonly MessagePackSerializer _valueSerializer;
 
 		public NullableMessagePackSerializer( SerializationContext ownerContext, Type nullableType, Type underlyingType )
 			: base( ownerContext, nullableType )
@@ -82,7 +109,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._valueSerializer = ownerContext.GetSerializer( underlyingType );
 		}
 
-		public NullableMessagePackSerializer( SerializationContext ownerContext, Type nullableType, IMessagePackSingleObjectSerializer valueSerializer )
+		public NullableMessagePackSerializer( SerializationContext ownerContext, Type nullableType, MessagePackSerializer valueSerializer )
 			: base( ownerContext, nullableType )
 		{
 			this._valueSerializer = valueSerializer;

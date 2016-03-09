@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,6 +19,10 @@
 #endregion -- License Terms --
 
 using System;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -30,7 +34,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal override void PackToCore( Packer packer, MessagePackObject value )
 		{
-			value.PackToMessage( packer, new PackingOptions() );
+			value.PackToMessage( packer, null );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
@@ -45,5 +49,26 @@ namespace MsgPack.Serialization.DefaultSerializers
 				return unpacker.LastReadData;
 			}
 		}
+
+#if FEATURE_TAP
+
+		protected internal override Task PackToAsyncCore( Packer packer, MessagePackObject objectTree, CancellationToken cancellationToken )
+		{
+			return objectTree.PackToMessageAsync( packer, null, cancellationToken );
+		}
+
+		protected internal override async Task<MessagePackObject> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( unpacker.IsArrayHeader || unpacker.IsMapHeader )
+			{
+				return await unpacker.UnpackSubtreeDataAsync( cancellationToken ).ConfigureAwait( false );
+			}
+			else
+			{
+				return unpacker.LastReadData;
+			}
+		}
+#endif // FEATURE_TAP
+
 	}
 }

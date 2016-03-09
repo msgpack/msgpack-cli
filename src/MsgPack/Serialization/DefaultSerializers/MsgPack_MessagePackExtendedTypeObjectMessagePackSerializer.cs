@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,6 +19,10 @@
 #endregion -- License Terms --
 
 using System;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -39,5 +43,29 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			return unpacker.LastReadData.AsMessagePackExtendedTypeObject();
 		}
+
+#if FEATURE_TAP
+
+		protected internal override Task PackToAsyncCore( Packer packer, MessagePackExtendedTypeObject objectTree, CancellationToken cancellationToken )
+		{
+			return packer.PackExtendedTypeValueAsync( objectTree, cancellationToken );
+		}
+
+		protected internal override Task<MessagePackExtendedTypeObject> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			var tcs = new TaskCompletionSource<MessagePackExtendedTypeObject>();
+			try
+			{
+				tcs.SetResult( this.UnpackFromCore( unpacker ) );
+			}
+			catch ( Exception ex )
+			{
+				tcs.SetException( ex );
+			}
+
+			return tcs.Task;
+		}
+#endif // FEATURE_TAP
+
 	}
 }

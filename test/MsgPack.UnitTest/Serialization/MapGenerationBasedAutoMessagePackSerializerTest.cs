@@ -6,7 +6,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -42,6 +42,9 @@ using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
 using System.Text;
+#if FEATURE_TAP
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 #if !NETFX_CORE && !WINDOWS_PHONE && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
@@ -591,6 +594,27 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if FEATURE_TAP
+		[Test]
+		public async Task TestNullableAsync()
+		{
+			var serializer = this.CreateTarget<int?>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				await serializer.PackAsync( stream, 1 );
+				Assert.That( stream.Length, Is.EqualTo( 1 ) );
+				stream.Position = 0;
+				Assert.That( await serializer.UnpackAsync( stream ), Is.EqualTo( 1 ) );
+
+				stream.Position = 0;
+				await serializer.PackAsync( stream, null );
+				Assert.That( stream.Length, Is.EqualTo( 1 ) );
+				stream.Position = 0;
+				Assert.That( await serializer.UnpackAsync( stream ), Is.EqualTo( null ) );
+			}
+		}
+#endif // FEATURE_TAP
+
 		[Test]
 		public void TestValueType_Success()
 		{
@@ -619,6 +643,36 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if FEATURE_TAP
+		[Test]
+		public async Task TestValueTypeAsync_Success()
+		{
+			var serializer = this.CreateTarget<TestValueType>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = 
+					new TestValueType()
+					{ 
+						StringField = "ABC", 
+						Int32ArrayField = new int[] { 1, 2, 3 }, 
+						DictionaryField = 
+#if !UNITY
+							new Dictionary<int, int>() 
+#else
+							new Dictionary<int, int>( AotHelper.GetEqualityComparer<int>() ) 
+#endif // !UNITY
+							{ { 1, 1 } } 
+					};
+				await serializer.PackAsync( stream, value );
+				stream.Position = 0;
+				var result = await serializer.UnpackAsync( stream );
+				Assert.That( result.StringField, Is.EqualTo( value.StringField ) );
+				Assert.That( result.Int32ArrayField, Is.EqualTo( value.Int32ArrayField ) );
+				Assert.That( result.DictionaryField, Is.EqualTo( value.DictionaryField ) );
+			}
+		}
+#endif // FEATURE_TAP
+
 		// Issue81
 		[Test]
 		public void TestMultiDimensionalArray()
@@ -628,7 +682,6 @@ namespace MsgPack.Serialization
 			array[ 0, 1 ] = 1;
 			array[ 1, 0 ] = 10;
 			array[ 1, 1 ] = 11;
-
 
 			var serializer = this.CreateTarget<int[,]>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
@@ -648,6 +701,37 @@ namespace MsgPack.Serialization
 				Assert.That( result[ 1, 1 ], Is.EqualTo( 11 ) );
 			}
 		}
+
+#if FEATURE_TAP
+		// Issue81
+		[Test]
+		public async Task TestMultiDimensionalArrayAsync()
+		{
+			var array = new int [ 2, 2 ];
+			array[ 0, 0 ] = 0;
+			array[ 0, 1 ] = 1;
+			array[ 1, 0 ] = 10;
+			array[ 1, 1 ] = 11;
+
+			var serializer = this.CreateTarget<int[,]>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				await serializer.PackAsync( stream, array );
+				stream.Position = 0;
+
+				var result = await serializer.UnpackAsync( stream );
+				Assert.That( result, Is.TypeOf<int[,]>() );
+				Assert.That( result.Rank, Is.EqualTo( 2 ) );
+				Assert.That( result.Length, Is.EqualTo( 4 ) );
+				Assert.That( result.GetLength( 0 ), Is.EqualTo( 2 ) );
+				Assert.That( result.GetLength( 1 ), Is.EqualTo( 2 ) );
+				Assert.That( result[ 0, 0 ], Is.EqualTo( 0 ) );
+				Assert.That( result[ 0, 1 ], Is.EqualTo( 1 ) );
+				Assert.That( result[ 1, 0 ], Is.EqualTo( 10 ) );
+				Assert.That( result[ 1, 1 ], Is.EqualTo( 11 ) );
+			}
+		}
+#endif // FEATURE_TAP
 
 		[Test]
 		public void TestMultiDimensionalArrayComprex()
@@ -1092,6 +1176,24 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if FEATURE_TAP
+
+		private async Task TestCoreWithVerifyAsync<T>( T value, SerializationContext context )
+			where T : IVerifiable
+		{
+			var target = this.CreateTarget<T>( context );
+			using ( var buffer = new MemoryStream() )
+			{
+				await target.PackAsync( buffer, value );
+				buffer.Position = 0;
+				T unpacked = await target.UnpackAsync( buffer );
+				buffer.Position = 0;
+				unpacked.Verify( buffer );
+			}
+		}
+
+#endif // FEATURE_TAP
+
 		[Test]
 		public void TestIssue25_Plain()
 		{
@@ -1109,6 +1211,26 @@ namespace MsgPack.Serialization
 				Assert.That( resultNumbers[ 1 ], Is.EqualTo( 2 ) );
 			}
 		}
+
+#if FEATURE_TAP
+		[Test]
+		public async Task TestIssue25_PlainAsync()
+		{
+			var hasEnumerable = new HasEnumerable { Numbers = new[] { 1, 2 } };
+			var target = CreateTarget<HasEnumerable>( GetSerializationContext() );
+
+			using ( var buffer = new MemoryStream() )
+			{
+				await target.PackAsync( buffer, hasEnumerable );
+				buffer.Position = 0;
+				var result = await target.UnpackAsync( buffer );
+				var resultNumbers = result.Numbers.ToArray();
+				Assert.That( resultNumbers.Length, Is.EqualTo( 2 ) );
+				Assert.That( resultNumbers[ 0 ], Is.EqualTo( 1 ) );
+				Assert.That( resultNumbers[ 1 ], Is.EqualTo( 2 ) );
+			}
+		}
+#endif // FEATURE_TAP
 
 		[Test]
 		public void TestIssue25_SelfComposite()
@@ -10569,6 +10691,31 @@ namespace MsgPack.Serialization
 				Assert.That( result.GlobalType.Value, Is.EqualTo( target.GlobalType.Value ) );
 			}
 		}
+
+#if FEATURE_TAP
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public async Task TestGlobalNamespaceAsync()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new HasGlobalNamespaceType { GlobalType = new TypeInGlobalNamespace { Value = "ABC" } };
+			var serializer = context.GetSerializer<HasGlobalNamespaceType>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				await serializer.PackAsync( buffer, target );
+				buffer.Position = 0;
+				var result = await serializer.UnpackAsync( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.GlobalType, Is.Not.Null );
+				Assert.That( result.GlobalType, Is.Not.SameAs( target.GlobalType ) );
+				Assert.That( result.GlobalType.Value, Is.EqualTo( target.GlobalType.Value ) );
+			}
+		}
+
+#endif // FEATURE_TAP
 
 		#endregion -- Polymorphism --
 		[Test]

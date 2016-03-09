@@ -19,7 +19,15 @@
 #endregion -- License Terms --
 
 using System;
+#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+using System.Diagnostics;
+#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 using System.IO;
+
+#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+using MsgPack.Serialization.EmittingSerializers;
+#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -36,6 +44,52 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public partial class VersioningTest
 	{
+#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+		[SetUp]
+		public void SetUp()
+		{
+			SerializerDebugging.DeletePastTemporaries();
+			//SerializerDebugging.TraceEnabled = true;
+			//SerializerDebugging.DumpEnabled = true;
+			if ( SerializerDebugging.TraceEnabled )
+			{
+				Tracer.Emit.Listeners.Clear();
+				Tracer.Emit.Switch.Level = SourceLevels.All;
+				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
+			}
+
+			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
+			SerializerDebugging.AddRuntimeAssembly( typeof( AddOnlyCollection<> ).Assembly.Location );
+			if ( typeof( AddOnlyCollection<> ).Assembly != this.GetType().Assembly )
+			{
+				SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
+			}
+		}
+
+		[TearDown]
+		public void TearDown()
+		{
+			if ( SerializerDebugging.DumpEnabled )
+			{
+				try
+				{
+					SerializerDebugging.Dump();
+				}
+				catch ( NotSupportedException ex )
+				{
+					Console.Error.WriteLine( ex );
+				}
+				finally
+				{
+					SerializationMethodGeneratorManager.Refresh();
+				}
+			}
+
+			SerializerDebugging.Reset();
+			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
+		}
+#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+
 		private static MessagePackSerializer<T> CreateSerializer<T>( EmitterFlavor flavor )
 		{
 #if NETFX_35 || NETFX_CORE || SILVERLIGHT
@@ -44,7 +98,7 @@ namespace MsgPack.Serialization
 			var context = PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
 #endif
 #if !XAMIOS && !UNITY_IPHONE
-			context.EmitterFlavor = flavor;
+			context.SerializerOptions.EmitterFlavor = flavor;
 			return MessagePackSerializer.CreateInternal<T>( context, PolymorphismSchema.Default );
 #else
 			return context.GetSerializer<T>();

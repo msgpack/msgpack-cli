@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,8 +23,7 @@ using System.Reflection;
 [assembly: AssemblyTitle( "MessagePack for CLI Serializer Generator for Unity" )]
 [assembly: AssemblyDescription( "Command line utility to generate serializer code for Unity assets." )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2014" )]
 
-[assembly: AssemblyFileVersion( "0.7.2151.1010" )]
+[assembly: AssemblyFileVersion( "0.7.2250.831" )]
 
 

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2015 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,14 +25,18 @@
 using System;
 using System.Collections.Generic;
 #if !UNITY
-#if XAMIOS || XAMDROID || CORE_CLR
+#if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID || CORE_CLR
+#endif // CORE_CLR
 #endif // !UNITY
 using System.Linq;
 using System.Reflection;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.Reflection;
 
@@ -46,7 +50,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		private readonly IList<Type> _tupleTypes;
 		private readonly IList<ConstructorInfo> _tupleConstructors;
 		private readonly IList<Func<T, Object>> _getters;
-		private readonly IList<IMessagePackSingleObjectSerializer> _itemSerializers;
+		private readonly IList<MessagePackSerializer> _itemSerializers;
 
 		public ReflectionTupleMessagePackSerializer( SerializationContext ownerContext, IList<PolymorphismSchema> itemSchemas )
 			: base( ownerContext )
@@ -117,6 +121,20 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 		}
 
+#if FEATURE_TAP
+
+		protected internal override async Task PackToAsyncCore( Packer packer, T objectTree, CancellationToken cancellationToken )
+		{
+			// Put cardinality as array length.
+			await packer.PackArrayHeaderAsync( this._itemSerializers.Count, cancellationToken ).ConfigureAwait( false );
+			for ( int i = 0; i < this._itemSerializers.Count; i++ )
+			{
+				await this._itemSerializers[ i ].PackToAsync( packer, this._getters[ i ]( objectTree ), cancellationToken ).ConfigureAwait( false );
+			}
+		}
+
+#endif // FEATURE_TAP
+
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
@@ -146,6 +164,39 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 			return this.CreateTuple( unpackedItems );
 		}
+
+#if FEATURE_TAP
+
+		protected internal override async Task<T> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+
+			if ( itemsCount != this._itemSerializers.Count )
+			{
+				SerializationExceptions.ThrowTupleCardinarityIsNotMatch( this._itemSerializers.Count, itemsCount, unpacker );
+			}
+
+			var unpackedItems = new List<object>( this._itemSerializers.Count );
+
+			for ( var i = 0; i < this._itemSerializers.Count; i++ )
+			{
+				if ( !await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+				{
+					SerializationExceptions.ThrowMissingItem( i, unpacker );
+				}
+
+				unpackedItems.Add( await this._itemSerializers[ i ].UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false ) );
+			}
+
+			return this.CreateTuple( unpackedItems );
+		}
+#endif // FEATURE_TAP
+
 
 		private T CreateTuple( IList<object> unpackedItems )
 		{

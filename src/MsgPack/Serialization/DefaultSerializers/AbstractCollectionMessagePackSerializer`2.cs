@@ -26,6 +26,10 @@ using System;
 #if !UNITY
 using System.Collections.Generic;
 #endif // !UNITY
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.CollectionSerializers;
 using MsgPack.Serialization.Polymorphic;
@@ -59,7 +63,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			: base( ownerContext, abstractType, traits, schema )
 #endif // !UNITY
 		{
-			IMessagePackSingleObjectSerializer serializer;
+			MessagePackSerializer serializer;
 			AbstractCollectionSerializerHelper.GetConcreteSerializer(
 				ownerContext,
 				schema,
@@ -97,6 +101,29 @@ namespace MsgPack.Serialization.DefaultSerializers
 				return base.InternalUnpackFromCore( unpacker );
 			}
 		}
+
+#if FEATURE_TAP
+
+		internal override Task<TCollection> InternalUnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( this._polymorphicDeserializer != null )
+			{
+				return
+					this._polymorphicDeserializer.PolymorphicUnpackFromAsync( unpacker, cancellationToken )
+						.ContinueWith(
+							t => ( TCollection ) t.Result,
+							cancellationToken,
+							TaskContinuationOptions.ExecuteSynchronously,
+							TaskScheduler.Current
+						);
+			}
+			else
+			{
+				return base.InternalUnpackFromAsyncCore( unpacker, cancellationToken );
+			}
+		}
+
+#endif // FEATURE_TAP
 
 
 #if !UNITY

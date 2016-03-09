@@ -74,7 +74,9 @@ namespace MsgPack.Serialization
 	if ( !forIos )
 	{
 #>
-			return new SerializationContext { EmitterFlavor = EmitterFlavor.<#= emitterFlavor #> };
+			var context = new SerializationContext();
+			context.SerializerOptions.EmitterFlavor = EmitterFlavor.<#= emitterFlavor #>;
+			return context;
 <#+
 	}
 	else

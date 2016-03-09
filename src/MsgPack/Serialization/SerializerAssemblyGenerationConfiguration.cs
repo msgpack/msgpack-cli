@@ -56,6 +56,7 @@ namespace MsgPack.Serialization
 		/// A value of <see cref="SerializationMethod" />.
 		/// </value>
 		/// <exception cref="ArgumentOutOfRangeException">Specified value is not valid  <see cref="SerializationMethod"/>.</exception>
+		[Obsolete( "Generated assembly now recognizes SerializationContext.SerializationMethod on demand. This property does not affect anything." )]
 		public SerializationMethod SerializationMethod
 		{
 			get { return this._serializationMethod; }

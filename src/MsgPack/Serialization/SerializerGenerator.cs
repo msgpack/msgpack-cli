@@ -433,11 +433,11 @@ namespace MsgPack.Serialization
 				var context =
 					new SerializationContext
 					{
-						EmitterFlavor = this.EmitterFlavor,
 						GeneratorOption = SerializationMethodGeneratorOption.CanDump,
 						EnumSerializationMethod = configuration.EnumSerializationMethod,
 						SerializationMethod = configuration.SerializationMethod
 					};
+				context.SerializerOptions.EmitterFlavor = this.EmitterFlavor;
 
 				IEnumerable<Type> realTargetTypes;
 				if ( configuration.IsRecursive )
@@ -557,11 +557,7 @@ namespace MsgPack.Serialization
 
 			protected override Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory()
 			{
-				return
-					type =>
-					ReflectionExtensions.CreateInstancePreservingExceptionType<ISerializerCodeGenerator>(
-						typeof( AssemblyBuilderSerializerBuilder<> ).MakeGenericType( type )
-					);
+				return type => new AssemblyBuilderSerializerBuilder( type, type.GetCollectionTraits() );
 			}
 		}
 
@@ -581,11 +577,7 @@ namespace MsgPack.Serialization
 
 			protected override Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory()
 			{
-				return
-					type =>
-						ReflectionExtensions.CreateInstancePreservingExceptionType<ISerializerCodeGenerator>(
-							typeof( CodeDomSerializerBuilder<> ).MakeGenericType( type )
-						);
+				return type => new CodeDomSerializerBuilder( type, type.GetCollectionTraits() );
 			}
 		}
 	}

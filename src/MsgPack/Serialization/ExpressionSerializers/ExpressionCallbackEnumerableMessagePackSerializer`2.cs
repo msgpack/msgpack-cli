@@ -27,11 +27,12 @@ using System.Diagnostics.Contracts;
 #endif // CORE_CLR
 
 using MsgPack.Serialization.CollectionSerializers;
+using System.Linq.Expressions;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
 	/// <summary>
-	///		A helper <see cref="EnumerableMessagePackSerializer{TCollection, TItem}"/> for <see cref="ExpressionTreeSerializerBuilder{TObject}"/>.
+	///		A helper <see cref="EnumerableMessagePackSerializer{TCollection, TItem}"/> for <see cref="ExpressionTreeSerializerBuilder"/>.
 	/// </summary>
 	/// <typeparam name="TCollection">The type of the collection.</typeparam>
 	/// <typeparam name="TItem">The type of the item of collection.</typeparam>
@@ -47,7 +48,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		public Action<Unpacker, TCollection, int> UnpackToAction { get; private set; }
 
-		public Action<Unpacker, TCollection, int> UnpackCollectionItem { get; private set; }
+		public IDictionary<string, Delegate> Delegates { get; private set; }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="ExpressionCallbackEnumerableMessagePackSerializer{TCollection, TItem}"/> class.
@@ -61,7 +62,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <param name="unpackFromCore">The delegate to <c>UnpackFromCore</c> method body. This value must not be <c>null</c>.</param>
 		/// <param name="addItem">The delegate to <c>AddItem</c> method body. This value can be <c>null</c>.</param>
 		/// <param name="unpackTo">The delegate to <c>UnpackToCore</c> method body.</param>
-		/// <param name="unpackCollectionItem">The delegate to <c>UnpackCollectionItem</c> method body.</param>
+		/// <param name="delegates">The lamda expression to &quot;private methods&quot; with their names.</param>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="ownerContext"/> is <c>null</c>.
 		/// </exception>
@@ -72,10 +73,15 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			Func<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, SerializationContext, Unpacker, TCollection> unpackFromCore,
 			Action<ExpressionCallbackEnumerableMessagePackSerializer<TCollection, TItem>, SerializationContext, TCollection, TItem> addItem,
 			Delegate unpackTo,
-			Action<SerializationContext,Unpacker, TCollection, int> unpackCollectionItem
+			IDictionary<string, LambdaExpression> delegates
 		)
 			: base( ownerContext, schema )
 		{
+#if DEBUG
+			Contract.Assert( createInstance != null );
+			Contract.Assert( unpackFromCore != null );
+			Contract.Assert( delegates != null );
+#endif // DEBUG
 			this._createInstance = createInstance;
 			this._unpackFromCore = unpackFromCore;
 			this._addItem = addItem;
@@ -90,8 +96,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				this.UnpackToAction = ( unpacker, collection, itemsCount ) => noContextUnpackTo( this, unpacker, collection, itemsCount );
 			}
 
-			this.UnpackCollectionItem =
-				( unpacker, collection, indexOfItem ) => unpackCollectionItem( this.OwnerContext, unpacker, collection, indexOfItem );
+			this.Delegates = ExpressionTreeSerializerBuilderHelpers.SupplyPrivateMethodCommonArguments( this, delegates );
 		}
 
 		protected override TCollection CreateInstance( int initialCapacity )

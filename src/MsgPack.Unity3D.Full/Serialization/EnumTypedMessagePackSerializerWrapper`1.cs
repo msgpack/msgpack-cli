@@ -21,14 +21,14 @@
 namespace MsgPack.Serialization
 {
 	/// <summary>
-	///		Wraps non-generic <see cref="IMessagePackSingleObjectSerializer"/> which implements <see cref="ICustomizableEnumSerializer"/> to avoid AOT issue.
+	///		Wraps non-generic <see cref="MessagePackSerializer"/> which implements <see cref="ICustomizableEnumSerializer"/> to avoid AOT issue.
 	/// </summary>
 	/// <typeparam name="T">The type to be serialized.</typeparam>
 	internal sealed class EnumTypedMessagePackSerializerWrapper<T> : TypedMessagePackSerializerWrapper<T>, ICustomizableEnumSerializer
 	{
 		private readonly ICustomizableEnumSerializer _underlyingEnumSerializer;
 
-		public EnumTypedMessagePackSerializerWrapper( SerializationContext context, IMessagePackSingleObjectSerializer underlying )
+		public EnumTypedMessagePackSerializerWrapper( SerializationContext context, MessagePackSerializer underlying )
 			: base( context, underlying )
 		{
 			this._underlyingEnumSerializer = underlying as ICustomizableEnumSerializer;
@@ -39,7 +39,7 @@ namespace MsgPack.Serialization
 			return 
 				new EnumTypedMessagePackSerializerWrapper<T>(
 					this.OwnerContext,
-					this._underlyingEnumSerializer.GetCopyAs( method ) as IMessagePackSingleObjectSerializer
+					this._underlyingEnumSerializer.GetCopyAs( method ) as MessagePackSerializer
 				);
 		}
 	}

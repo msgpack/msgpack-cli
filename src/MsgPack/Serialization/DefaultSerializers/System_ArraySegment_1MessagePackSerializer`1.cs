@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,6 +23,10 @@
 #endif
 
 using System;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -77,6 +81,57 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+#if FEATURE_TAP
+
+		private static readonly Func<Packer, ArraySegment<T>, MessagePackSerializer<T>, CancellationToken, Task> _asyncPacking = InitializeAsyncPacking();
+		private static readonly Func<Unpacker, MessagePackSerializer<T>, CancellationToken, Task<ArraySegment<T>>> _asyncUnpacking = InitializeAsyncUnpacking();
+
+		private static Func<Packer, ArraySegment<T>, MessagePackSerializer<T>, CancellationToken, Task> InitializeAsyncPacking()
+		{
+			if ( typeof( T ) == typeof( byte ) )
+			{
+				return
+					new Func<Packer, ArraySegment<byte>, MessagePackSerializer<byte>, CancellationToken, Task>(
+						ArraySegmentMessageSerializer.PackByteArraySegmentToAsync
+					) as Func<Packer, ArraySegment<T>, MessagePackSerializer<T>, CancellationToken, Task>;
+			}
+			else if ( typeof( T ) == typeof( char ) )
+			{
+				return
+					new Func<Packer, ArraySegment<char>, MessagePackSerializer<char>, CancellationToken, Task>(
+						ArraySegmentMessageSerializer.PackCharArraySegmentToAsync
+					) as Func<Packer, ArraySegment<T>, MessagePackSerializer<T>, CancellationToken, Task>;
+			}
+			else
+			{
+				return ArraySegmentMessageSerializer.PackGenericArraySegmentToAsync;
+			}
+		}
+
+		private static Func<Unpacker, MessagePackSerializer<T>, CancellationToken, Task<ArraySegment<T>>> InitializeAsyncUnpacking()
+		{
+			if ( typeof( T ) == typeof( byte ) )
+			{
+				return
+					new Func<Unpacker, MessagePackSerializer<byte>, CancellationToken, Task<ArraySegment<byte>>>(
+							ArraySegmentMessageSerializer.UnpackByteArraySegmentFromAsync
+						) as Func<Unpacker, MessagePackSerializer<T>, CancellationToken, Task<ArraySegment<T>>>;
+			}
+			else if ( typeof( T ) == typeof( char ) )
+			{
+				return
+					new Func<Unpacker, MessagePackSerializer<char>, CancellationToken, Task<ArraySegment<char>>>(
+							ArraySegmentMessageSerializer.UnpackCharArraySegmentFromAsync
+						) as Func<Unpacker, MessagePackSerializer<T>, CancellationToken, Task<ArraySegment<T>>>;
+			}
+			else
+			{
+				return ArraySegmentMessageSerializer.UnpackGenericArraySegmentFromAsync;
+			}
+		}
+
+#endif // FEATURE_TAP
+
 		private readonly MessagePackSerializer<T> _itemSerializer;
 
 		public System_ArraySegment_1MessagePackSerializer( SerializationContext ownerContext )
@@ -94,15 +149,29 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			return _unpacking( unpacker, this._itemSerializer );
 		}
+
+#if FEATURE_TAP
+
+		protected internal override Task PackToAsyncCore( Packer packer, ArraySegment<T> objectTree, CancellationToken cancellationToken )
+		{
+			return _asyncPacking( packer, objectTree, this._itemSerializer, cancellationToken );
+		}
+
+		protected internal override Task<ArraySegment<T>> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			return _asyncUnpacking( unpacker, this._itemSerializer, cancellationToken );
+		}
+
+#endif // FEATURE_TAP
 	}
 #else
 	// ReSharper disable once InconsistentNaming
 	internal class System_ArraySegment_1MessagePackSerializer : NonGenericMessagePackSerializer
 	{
 		private readonly Type _elementType;
-		private readonly IMessagePackSingleObjectSerializer _itemSerializer;
-		private readonly Action<Packer, object, IMessagePackSingleObjectSerializer> _packing;
-		private readonly Func<Unpacker, Type, IMessagePackSingleObjectSerializer, object> _unpacking;
+		private readonly MessagePackSerializer _itemSerializer;
+		private readonly Action<Packer, object, MessagePackSerializer> _packing;
+		private readonly Func<Unpacker, Type, MessagePackSerializer, object> _unpacking;
 		
 		public System_ArraySegment_1MessagePackSerializer( SerializationContext ownerContext, Type targetType )
 			: base( ownerContext, targetType )
@@ -114,7 +183,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._unpacking = InitializeUnpacking( elementType );
 		}
 
-		private static Action<Packer, object, IMessagePackSingleObjectSerializer> InitializePacking( Type elementType )
+		private static Action<Packer, object, MessagePackSerializer> InitializePacking( Type elementType )
 		{
 			if ( elementType == typeof( byte ) )
 			{
@@ -130,7 +199,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-		private static Func<Unpacker, Type, IMessagePackSingleObjectSerializer, object> InitializeUnpacking( Type elementType )
+		private static Func<Unpacker, Type, MessagePackSerializer, object> InitializeUnpacking( Type elementType )
 		{
 			if ( elementType == typeof( byte ) )
 			{

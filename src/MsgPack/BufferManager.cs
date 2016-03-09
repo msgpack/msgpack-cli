@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-using System.Diagnostics;
 
 namespace MsgPack
 {
@@ -28,71 +27,17 @@ namespace MsgPack
 	/// </summary>
 	internal static class BufferManager
 	{
-#if DEBUG
-		[ThreadStatic]
-		private static bool _isByteBufferUsed;
-		[ThreadStatic]
-		private static bool _isCharBufferUsed;
-#endif // DEBUG
+		private const int MaxByteBufferSize = 64 * 1024;
+		private const int MaxCharBufferSize = 32 * 1024;
 
-		[ThreadStatic]
-		private static byte[] _byteBuffer;
-
-		public static byte[] GetByteBuffer()
+		public static byte[] NewByteBuffer( int size )
 		{
-#if DEBUG
-			if ( _isByteBufferUsed )
-			{
-				throw new InvalidOperationException("ByteBuffer is already used.");
-			}
-
-			_isByteBufferUsed = true;
-#endif // DEBUG
-
-			if ( _byteBuffer == null )
-			{
-				_byteBuffer = new byte[ 32 * 1024 ];
-			}
-
-			return _byteBuffer;
+			return new byte[ Math.Min( size, MaxByteBufferSize ) ];
 		}
 
-		[Conditional( "DEBUG" )]
-		public static void ReleaseByteBuffer()
+		public static char[] NewCharBuffer( int size )
 		{
-#if DEBUG
-			_isByteBufferUsed = false;
-#endif // DEBUG
-		}
-
-		[ThreadStatic]
-		private static char[] _charBuffer;
-
-		public static char[] GetCharBuffer()
-		{
-#if DEBUG
-			if ( _isCharBufferUsed )
-			{
-				throw new InvalidOperationException( "ByteBuffer is already used." );
-			}
-
-			_isCharBufferUsed = true;
-#endif // DEBUG
-
-			if ( _charBuffer == null )
-			{
-				_charBuffer = new char[ 32 * 1024 ];
-			}
-
-			return _charBuffer;
-		}
-
-		[Conditional( "DEBUG" )]
-		public static void ReleaseCharBuffer()
-		{
-#if DEBUG
-			_isCharBufferUsed = false;
-#endif // DEBUG
+			return new char[ Math.Min( size, MaxCharBufferSize ) ];
 		}
 	}
 }

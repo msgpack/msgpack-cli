@@ -30,5 +30,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		// UnpackFromArray / UnpackFromMap
 		public const string UnpackFrom = "UnpackFrom";
+
+		public const string SetUnpackedValueOf = "SetUnpackedValueOf";
 	}
 }

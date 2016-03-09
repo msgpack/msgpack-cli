@@ -28,10 +28,18 @@ namespace MsgPack.Serialization.AbstractSerializers
 		public const string PackToCore = "PackToCore";
 		public const string UnpackFromCore = "UnpackFromCore";
 		public const string UnpackToCore = "UnpackToCore"; // also collection serializer abstract.
+#if FEATURE_TAP
+		public const string PackToAsyncCore = "PackToAsyncCore";
+		public const string UnpackFromAsyncCore = "UnpackFromAsyncCore";
+		public const string UnpackToAsyncCore = "UnpackToAsyncCore";
+#endif // FEATURE_TAP
 
 		// Enum Serializer abstract methods
 		public const string PackUnderlyingValueTo = "PackUnderlyingValueTo";
 		public const string UnpackFromUnderlyingValue = "UnpackFromUnderlyingValue";
+#if FEATURE_TAP
+		public const string PackUnderlyingValueToAsync = "PackUnderlyingValueToAsync";
+#endif // FEATURE_TAP
 
 		// Collection Serializer abstract methods
 		public const string CreateInstance = "CreateInstance";
@@ -50,6 +58,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		// private methods for collection
 		public const string UnpackCollectionItem = "UnpackCollectionItem";
+
+		public const string AppendUnpackedItem = "AppendUnpackedItem";
 
 		// For tuple (prefix + Array)
 		public const string PackToArray = "PackToArray";

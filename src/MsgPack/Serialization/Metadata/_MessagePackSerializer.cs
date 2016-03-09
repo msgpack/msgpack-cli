@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,8 +23,12 @@ using System.Reflection;
 
 namespace MsgPack.Serialization.Metadata
 {
+	// ReSharper disable once InconsistentNaming
 	internal static class _MessagePackSerializer
 	{
+		// ReSharper disable InconsistentNaming
 		public static readonly MethodInfo Create1_Method = typeof( MessagePackSerializer ).GetMethod( "Create", new[] { typeof( SerializationContext ) } );
+		// ReSharper restore InconsistentNaming
+		public static readonly PropertyInfo OwnerContext = FromExpression.ToProperty( ( MessagePackSerializer serializer ) => serializer.OwnerContext );
 	}
 }

@@ -51,7 +51,8 @@ namespace MsgPack.Serialization
 	{
 		private MessagePackSerializer<T> CreateTarget<T>()
 		{
-			var context = new SerializationContext { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.CodeDomBased };
+			var context = new SerializationContext { SerializationMethod = SerializationMethod.Map };
+			context.SerializerOptions.EmitterFlavor = EmitterFlavor.CodeDomBased;
 			return context.GetSerializer<T>( PolymorphismSchema.Default );
 		}
 		

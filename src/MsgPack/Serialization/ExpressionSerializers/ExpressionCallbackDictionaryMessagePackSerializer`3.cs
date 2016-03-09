@@ -26,7 +26,7 @@ using MsgPack.Serialization.CollectionSerializers;
 namespace MsgPack.Serialization.ExpressionSerializers
 {
 	/// <summary>
-	///		A helper <see cref="DictionaryMessagePackSerializer{TDictionary, TKey, TValue}"/> for <see cref="ExpressionTreeSerializerBuilder{TObject}"/>.
+	///		A helper <see cref="DictionaryMessagePackSerializer{TDictionary, TKey, TValue}"/> for <see cref="ExpressionTreeSerializerBuilder"/>.
 	/// </summary>
 	/// <typeparam name="TDictionary">The type of the dictionary.</typeparam>
 	/// <typeparam name="TKey">The type of the key of collection.</typeparam>

@@ -22,6 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+#if FEATURE_TAP
+using System.Threading;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.Reflection;
@@ -29,7 +32,7 @@ using MsgPack.Serialization.Reflection;
 namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
-	///		A code generation context for <see cref="AssemblyBuilderSerializerBuilder{TObject}"/>.
+	///		A code generation context for <see cref="AssemblyBuilderSerializerBuilder"/>.
 	/// </summary>
 	internal class AssemblyBuilderEmittingContext : SerializerGenerationContext<ILConstruct>
 	{
@@ -102,6 +105,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this.PackToTarget = ILConstruct.Argument( 2, targetType, "objectTree" );
 			this.Unpacker = ILConstruct.Argument( 1, typeof( Unpacker ), "unpacker" );
 			this.IndexOfItem = ILConstruct.Argument( 3, typeof( int ), "indexOfItem" );
+			this.ItemsCount = ILConstruct.Argument( 4, typeof( int ), "itemsCount" );
 			this.UnpackToTarget = ILConstruct.Argument( 2, targetType, "collection" );
 			var traits = targetType.GetCollectionTraits();
 			if ( traits.ElementType != null )
@@ -183,6 +187,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			out TypeDefinition type,
 			out ConstructorDefinition constructor,
 			out ILConstruct parameterInUnpackValueMethods,
+			out ILConstruct parameterInSetValueMethods,
 			out ILConstruct parameterInCreateObjectFromContext
 		)
 		{
@@ -200,19 +205,30 @@ namespace MsgPack.Serialization.EmittingSerializers
 					runtimeConstructor,
 					fields.Select( kv => TypeDefinition.Object( kv.Value.ResolveRuntimeType() ) )
 				);
-			parameterInUnpackValueMethods = ILConstruct.Argument( 2, type, "unpackingContext" );
-			parameterInCreateObjectFromContext = ILConstruct.Argument( 1, type, "unpackingContext" );
+			DefineUnpackValueMethodArguments( type, out parameterInUnpackValueMethods, out parameterInSetValueMethods, out parameterInCreateObjectFromContext );
 		}
 
 		protected override void DefineUnpackingContextWithResultObjectCore(
 			out TypeDefinition type,
 			out ILConstruct parameterInUnpackValueMethods,
+			out ILConstruct parameterInSetValueMethods,
 			out ILConstruct parameterInCreateObjectFromContext
 		)
 		{
 			type = this._targetType;
+			DefineUnpackValueMethodArguments( type, out parameterInUnpackValueMethods, out parameterInSetValueMethods, out parameterInCreateObjectFromContext );
+		}
+
+		private static void DefineUnpackValueMethodArguments( TypeDefinition type, out ILConstruct parameterInUnpackValueMethods, out ILConstruct parameterInSetValueMethods, out ILConstruct parameterInCreateObjectFromContext )
+		{
 			parameterInUnpackValueMethods = ILConstruct.Argument( 2, type, "unpackingContext" );
+			parameterInSetValueMethods = ILConstruct.Argument( 1, type, "unpackingContext" );
 			parameterInCreateObjectFromContext = ILConstruct.Argument( 1, type, "unpackingContext" );
+		}
+
+		public override ILConstruct DefineUnpackedItemParameterInSetValueMethods( TypeDefinition itemType )
+		{
+			return ILConstruct.Argument( 2, itemType, "unpackedValue" );
 		}
 	}
 }

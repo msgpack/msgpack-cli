@@ -25,6 +25,7 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Defines non-generic message pack serializer interface for byte array which contains a single object.
 	/// </summary>
+	[Obsolete( "Use MessagePackSerializer abstract class instead." )]
 	public interface IMessagePackSingleObjectSerializer : IMessagePackSerializer
 	{
 
@@ -34,8 +35,12 @@ namespace MsgPack.Serialization
 		/// <param name="objectTree">Object to be serialized.</param>
 		/// <returns>An array of <see cref="Byte"/> which stores serialized value.</returns>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
-		///		<paramref name="objectTree"/> is not serializable etc.
+		///		Failed to serialize object.
 		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		The type of <paramref name="objectTree"/> is not serializable even if it can be deserialized.
+		/// </exception>
+		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "'objectTree' does not mean System.Object." )]
 		byte[] PackSingleObject( object objectTree );
 
@@ -43,19 +48,23 @@ namespace MsgPack.Serialization
 		///		Deserialize a single object from the array of <see cref="Byte"/> which contains a serialized object.
 		/// </summary>
 		/// <param name="buffer">An array of <see cref="Byte"/> serialized value to be stored.</param>
-		/// <returns>A bytes of serialized binary.</returns>
+		/// <returns>The deserialized object.</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="buffer"/> is <c>null</c>.
 		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		///		Failed to deserialize object.
 		/// </exception>
 		/// <exception cref="MessageTypeException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		///		Failed to deserialize object due to invalid stream.
 		/// </exception>
 		/// <exception cref="InvalidMessagePackStreamException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		///		Failed to deserialize object due to invalid stream.
 		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		The type of deserializing is not serializable even if it can be serialized.
+		/// </exception>
+		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
 		/// <remarks>
 		///		<para>
 		///			This method assumes that <paramref name="buffer"/> contains single serialized object dedicatedly,

@@ -24,14 +24,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 #if !UNITY
-#if XAMIOS || XAMDROID || CORE_CLR
+#if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID || CORE_CLR
+#endif // CORE_CLR
 #endif // !UNITY
 using System.Globalization;
 using System.Linq;
@@ -40,13 +39,20 @@ using System.Reflection;
 #endif
 using System.Runtime.Serialization;
 using System.Text;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack
 {
 #if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
 	[Serializable]
 #endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
-	partial struct MessagePackObject
+	partial struct MessagePackObject : IPackable
+#if FEATURE_TAP
+		, IAsyncPackable
+#endif // FEATURE_TAP
 	{
 #region -- Type Code Constants --
 
@@ -67,7 +73,7 @@ namespace MsgPack
 		/// <summary>
 		///		Instance represents nil. This is equal to default value.
 		/// </summary>
-		public static readonly MessagePackObject Nil = new MessagePackObject();
+		public static readonly MessagePackObject Nil = default ( MessagePackObject );
 
 #region -- Type Code Fields & Properties --
 
@@ -318,7 +324,10 @@ namespace MsgPack
 			}
 
 			{
+				// ReSharper disable HeuristicUnreachableCode
+				// ReSharper disable once ExpressionIsAlwaysNull
 				var asExtendedTypeObjectBody = this._handleOrTypeCode as byte[];
+				// ReSharper disable once ConditionIsAlwaysTrueOrFalse
 				if ( asExtendedTypeObjectBody != null )
 				{
 					var otherAsExtendedTypeObjectBody = other._handleOrTypeCode as byte[];
@@ -333,6 +342,7 @@ namespace MsgPack
 							   MessagePackExtendedTypeObject.Unpack( ( byte )other._value, otherAsExtendedTypeObjectBody );
 					}
 				}
+				// ReSharper restore HeuristicUnreachableCode
 			}
 
 #if DEBUG && !UNITY
@@ -383,12 +393,14 @@ namespace MsgPack
 				}
 				else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Single )
 				{
+					// ReSharper disable once CompareOfFloatsByEqualityOperator
 					return ( double ) this == ( float ) other;
 				}
 				else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Double )
 				{
+					// ReSharper disable once CompareOfFloatsByEqualityOperator
 					// Cannot compare _value because there might be not normalized.
-					return ( double ) this == ( double ) other;
+					return ( double )this == ( double )other;
 				}
 			}
 			else if ( valueTypeCode.TypeCode == MessagePackValueTypeCode.Single )
@@ -399,12 +411,14 @@ namespace MsgPack
 				}
 				else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Single )
 				{
+					// ReSharper disable once CompareOfFloatsByEqualityOperator
 					// Cannot compare _value because there might be not normalized.
 					return ( float ) this == ( float ) other;
 				}
 				else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Double )
 				{
-					return ( float ) this == ( double ) other;
+					// ReSharper disable once CompareOfFloatsByEqualityOperator
+					return ( float )this == ( double )other;
 				}
 			}
 
@@ -452,14 +466,16 @@ namespace MsgPack
 		private static bool IntegerSingleEquals( MessagePackObject integer, MessagePackObject real )
 		{
 #if DEBUG && !UNITY
-			Contract.Assert( integer._handleOrTypeCode as ValueTypeCode != null, "integer._handleOrTypeCode as ValueTypeCode != null" );
+			Contract.Assert( integer._handleOrTypeCode is ValueTypeCode, "integer._handleOrTypeCode is ValueTypeCode" );
 #endif // DEBUG && !UNITY
 			if ( ( integer._handleOrTypeCode as ValueTypeCode ).IsSigned )
 			{
+				// ReSharper disable once CompareOfFloatsByEqualityOperator
 				return unchecked( ( long )integer._value ) == ( float )real;
 			}
 			else
 			{
+				// ReSharper disable once CompareOfFloatsByEqualityOperator
 				return integer._value == ( float )real;
 			}
 		}
@@ -467,14 +483,16 @@ namespace MsgPack
 		private static bool IntegerDoubleEquals( MessagePackObject integer, MessagePackObject real )
 		{
 #if DEBUG && !UNITY
-			Contract.Assert( integer._handleOrTypeCode as ValueTypeCode != null, "integer._handleOrTypeCode as ValueTypeCode != null" );
+			Contract.Assert( integer._handleOrTypeCode is ValueTypeCode, "integer._handleOrTypeCode is ValueTypeCode" );
 #endif // DEBUG && !UNITY
 			if ( ( integer._handleOrTypeCode as ValueTypeCode ).IsSigned )
 			{
+				// ReSharper disable once CompareOfFloatsByEqualityOperator
 				return unchecked( ( long )integer._value ) == ( double )real;
 			}
 			else
 			{
+				// ReSharper disable once CompareOfFloatsByEqualityOperator
 				return integer._value == ( double )real;
 			}
 		}
@@ -523,7 +541,10 @@ namespace MsgPack
 			}
 
 			{
+				// ReSharper disable HeuristicUnreachableCode
+				// ReSharper disable once ExpressionIsAlwaysNull
 				var asExtendedTypeObjectBody = this._handleOrTypeCode as byte[];
+				// ReSharper disable once ConditionIsAlwaysTrueOrFalse
 				if ( asExtendedTypeObjectBody != null )
 				{
 					unchecked
@@ -531,12 +552,14 @@ namespace MsgPack
 						return MessagePackExtendedTypeObject.Unpack( ( byte )this._value, asExtendedTypeObjectBody ).GetHashCode();
 					}
 				}
+				// ReSharper restore HeuristicUnreachableCode
 			}
 
 			{
 #if !UNITY
 				Contract.Assert( false, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
 #endif // !UNITY
+				// ReSharper disable once HeuristicUnreachableCode
 				return 0;
 			}
 			// ReSharper restore NonReadonlyFieldInGetHashCode
@@ -557,7 +580,7 @@ namespace MsgPack
 		public override string ToString()
 		{
 			var buffer = new StringBuilder();
-			ToString( buffer, false );
+			this.ToString( buffer, false );
 			return buffer.ToString();
 		}
 
@@ -690,12 +713,16 @@ namespace MsgPack
 			}
 
 			{
+				// ReSharper disable HeuristicUnreachableCode
+				// ReSharper disable once ExpressionIsAlwaysNull
 				var asExtendedTypeObjectBody = this._handleOrTypeCode as byte[];
+				// ReSharper disable once ConditionIsAlwaysTrueOrFalse
 				if ( asExtendedTypeObjectBody != null )
 				{
 					MessagePackExtendedTypeObject.Unpack( ( byte )this._value, asExtendedTypeObjectBody ).ToString( buffer, isJson );
 					return;
 				}
+				// ReSharper restore HeuristicUnreachableCode
 			}
 
 			// may be string
@@ -847,7 +874,7 @@ namespace MsgPack
 		/// <param name="type">Target type.</param>
 		/// <returns>If the underlying value of this instance is <paramref name="type"/> then true, otherwise false.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="type"/> is null.</exception>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Switch" )]
+		[SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Switch" )]
 		public bool? IsTypeOf( Type type )
 		{
 			if ( type == null )
@@ -1081,10 +1108,13 @@ namespace MsgPack
 						item.Value.PackToMessage( packer, options );
 					}
 				}
-				else if( ( asExtendedTypeObjectBody = this._handleOrTypeCode as byte[] ) != null )
+				// ReSharper disable once ConditionIsAlwaysTrueOrFalse
+				// ReSharper disable HeuristicUnreachableCode
+				else if ( ( asExtendedTypeObjectBody = this._handleOrTypeCode as byte[] ) != null )
 				{
-					packer.PackExtendedTypeValue( unchecked( ( byte ) this._value ), asExtendedTypeObjectBody );
+					packer.PackExtendedTypeValue( unchecked( ( byte )this._value ), asExtendedTypeObjectBody );
 				}
+				// ReSharper restore HeuristicUnreachableCode
 				else
 				{
 					throw new SerializationException( "Failed to pack this object." );
@@ -1156,6 +1186,150 @@ namespace MsgPack
 				}
 			}
 		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Pack this instance itself using specified <see cref="Packer" /> asynchronously.
+		/// </summary>
+		/// <param name="packer"><see cref="Packer" />.</param>
+		/// <param name="options">Packing options. This value can be null.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+		/// <returns>
+		///		A <see cref="Task" /> that represents the asynchronous operation.
+		/// </returns>
+		/// <exception cref="System.ArgumentNullException">packer</exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to pack this object.
+		///		or
+		///		Failed to pack this object.
+		/// </exception>
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			if ( packer == null )
+			{
+				throw new ArgumentNullException( "packer" );
+			}
+
+#if !UNITY
+			Contract.EndContractBlock();
+#endif // !UNITY
+
+
+			if ( this._handleOrTypeCode == null )
+			{
+				await packer.PackNullAsync( cancellationToken ).ConfigureAwait( false );
+				return;
+			}
+
+			var typeCode = this._handleOrTypeCode as ValueTypeCode;
+			if ( typeCode == null )
+			{
+				MessagePackString asString;
+				IList<MessagePackObject> asList;
+				IDictionary<MessagePackObject, MessagePackObject> asDictionary;
+				byte[] asExtendedTypeObjectBody;
+				if ( ( asString = this._handleOrTypeCode as MessagePackString ) != null )
+				{
+					await packer.PackRawAsync( asString.GetBytes(), cancellationToken ).ConfigureAwait( false );
+				}
+				else if ( ( asList = this._handleOrTypeCode as IList<MessagePackObject> ) != null )
+				{
+					await packer.PackArrayHeaderAsync( asList.Count, cancellationToken ).ConfigureAwait( false );
+					foreach ( var item in asList )
+					{
+						await item.PackToMessageAsync( packer, options, cancellationToken ).ConfigureAwait( false );
+					}
+				}
+				else if ( ( asDictionary = this._handleOrTypeCode as IDictionary<MessagePackObject, MessagePackObject> ) != null )
+				{
+					await packer.PackMapHeaderAsync( asDictionary.Count, cancellationToken ).ConfigureAwait( false );
+					foreach ( var item in asDictionary )
+					{
+						await item.Key.PackToMessageAsync( packer, options, cancellationToken ).ConfigureAwait( false );
+						await item.Value.PackToMessageAsync( packer, options, cancellationToken ).ConfigureAwait( false );
+					}
+				}
+				// ReSharper disable once ConditionIsAlwaysTrueOrFalse
+				// ReSharper disable HeuristicUnreachableCode
+				else if ( ( asExtendedTypeObjectBody = this._handleOrTypeCode as byte[] ) != null )
+				{
+					await packer.PackExtendedTypeValueAsync( unchecked( ( byte )this._value ), asExtendedTypeObjectBody, cancellationToken ).ConfigureAwait( false );
+				}
+				// ReSharper restore HeuristicUnreachableCode
+				else
+				{
+					throw new SerializationException( "Failed to pack this object." );
+				}
+
+				return;
+			}
+
+			switch ( typeCode.TypeCode )
+			{
+				case MessagePackValueTypeCode.Single:
+				{
+					await packer.PackAsync( ( float )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.Double:
+				{
+					await packer.PackAsync( ( double )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.Int8:
+				{
+					await packer.PackAsync( ( sbyte )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.Int16:
+				{
+					await packer.PackAsync( ( short )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.Int32:
+				{
+					await packer.PackAsync( ( int )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.Int64:
+				{
+					await packer.PackAsync( ( long )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.UInt8:
+				{
+					await packer.PackAsync( ( byte )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.UInt16:
+				{
+					await packer.PackAsync( ( ushort )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.UInt32:
+				{
+					await packer.PackAsync( ( uint )this, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.UInt64:
+				{
+					await packer.PackAsync( this._value, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				case MessagePackValueTypeCode.Boolean:
+				{
+					await packer.PackAsync( this._value != 0, cancellationToken ).ConfigureAwait( false );
+					return;
+				}
+				default:
+				{
+					throw new SerializationException( "Failed to pack this object." );
+				}
+			}
+		}
+
+#endif // FEATURE_TAP
 
 #region -- Primitive Type Conversion Methods --
 
@@ -1540,15 +1714,20 @@ namespace MsgPack
 					return asDictionary;
 				}
 
+				// ReSharper disable HeuristicUnreachableCode
+				// ReSharper disable once ExpressionIsAlwaysNull
 				var asExtendedTypeObject = this._handleOrTypeCode as byte[];
+				// ReSharper disable once ConditionIsAlwaysTrueOrFalse
 				if ( asExtendedTypeObject != null )
 				{
 					return MessagePackExtendedTypeObject.Unpack( unchecked( ( byte ) this._value ), asExtendedTypeObject );
 				}
+				// ReSharper restore HeuristicUnreachableCode
 
 #if !UNITY
 				Contract.Assert( false, "Unknwon type:" + this._handleOrTypeCode );
 #endif // !UNITY
+				// ReSharper disable once HeuristicUnreachableCode
 				return null;
 			}
 			else

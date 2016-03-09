@@ -1,0 +1,733 @@
+﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file="..\Core.ttinclude" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+#if !UNITY
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
+using System.Diagnostics.Contracts;
+#endif // CORE_CLR
+#endif // !UNITY
+using System.Linq;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
+
+using MsgPack.Serialization;
+
+namespace MsgPack
+{
+	// This file was generated from PackerUnpackerExtensions.tt T4Template.
+	// Do not modify this file. Edit PackerUnpackerExtensions.tt instead.
+
+	/// <summary>
+	///		Defines extension method to pack or unpack various objects.
+	/// </summary>
+	public static class PackerUnpackerExtensions
+	{
+		#region -- Pack<T> --
+
+<#
+foreach ( var isAsync in new [] { false, true } )
+{
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+
+<#
+	}
+
+	PackerApi( "Pack", "Pack", "T", "value", "value", isAsync, new Dictionary<string, string> { { "T", "The type of the value." } } );
+#>
+
+		private static <#= AsyncReturn( isAsync ) #> Pack<#= Async( isAsync ) #>Core<T>( Packer source, T value, SerializationContext context<#= LastParameter( isAsync ) #> )
+		{
+			// ReSharper disable once CompareNonConstrainedGenericWithNull
+			if ( value == null )
+			{
+				<#= Await( isAsync, "source.PackNull" + Async( isAsync ) + "(" + Argument( isAsync ) + ")" ) #>;
+				return;
+			}
+
+<#
+			if ( isAsync )
+			{
+#>
+			var asAsyncPackable = value as IAsyncPackable;
+			if ( asAsyncPackable != null )
+			{
+				await asAsyncPackable.PackToMessageAsync( source, new PackingOptions(), cancellationToken ).ConfigureAwait( false );
+				return;
+			}
+
+			var asPackable = value as IPackable;
+			if ( asPackable != null )
+			{
+				await Task.Run( () => asPackable.PackToMessage( source, new PackingOptions() ), cancellationToken ).ConfigureAwait( false );
+				return;
+			}
+<#
+			}
+			else
+			{
+#>
+			// For 0.6.5 compatibility
+			var asPackable = value as IPackable;
+			if ( asPackable != null )
+			{
+				asPackable.PackToMessage( source, new PackingOptions() );
+				return;
+			}
+<#			
+			}
+#>
+
+			<#= Await( isAsync, "context.GetSerializer<T>().PackTo" + Async( isAsync ) + "( source, value" + LastArgument( isAsync ) + " )" ) #>;
+		}
+
+<#
+			if ( isAsync )
+			{
+#>
+
+#endif // FEATURE_TAP
+<#
+			}
+#>
+
+<#
+		} // sync | async
+#>
+		#endregion -- Pack<T> --
+
+		#region -- PackArray<T>/PackCollection<T> --
+
+<#
+foreach ( var isAsync in new [] { false, true } )
+{
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+
+<#
+	}
+
+	foreach ( var label in new [] { "Array", "Collection" } )
+	{
+		PackerApi( "Pack" + label, "PackCollection", "IEnumerable<T>", "collection", "collection", isAsync, new Dictionary<string, string> { { "T", "The type of items of the collection." } } );
+	}
+#>
+
+		private static <#= ReturnVoid( isAsync ) #> PackCollection<#= Async( isAsync ) #>Core<T>( Packer source, IEnumerable<T> collection, SerializationContext context<#= LastParameter( isAsync ) #> )
+		{
+			<#= Return( isAsync ) #>PackCollection<#= Async( isAsync ) #>Core( source, collection, context.GetSerializer<T>()<#= LastArgument( isAsync ) #> );
+		}
+
+		internal static <#= AsyncReturn( isAsync ) #> PackCollection<#= Async( isAsync ) #>Core<T>( Packer source, IEnumerable<T> collection, MessagePackSerializer<T> itemSerializer<#= LastParameter( isAsync ) #> )
+		{
+			// ReSharper disable once CompareNonConstrainedGenericWithNull
+			if ( collection == null )
+			{
+				<#= Await( isAsync, "source.PackNull" + Async( isAsync ) + "(" + Argument( isAsync ) + ")" ) #>;
+				return;
+			}
+<#
+	if ( isAsync )
+	{
+#>
+
+			// ReSharper disable once SuspiciousTypeConversion.Global
+			var asAsyncPackable = collection as IAsyncPackable;
+			if ( asAsyncPackable != null )
+			{
+				await asAsyncPackable.PackToMessageAsync( source, new PackingOptions()<#= LastArgument( isAsync ) #> ).ConfigureAwait( false );
+				return;
+			}
+<#
+	}
+#>
+
+			// ReSharper disable once SuspiciousTypeConversion.Global
+			var asPackable = collection as IPackable;
+			if ( asPackable != null )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+				await Task.Run( () => asPackable.PackToMessage( source, new PackingOptions() ), cancellationToken ).ConfigureAwait( false );
+<#
+	}
+	else
+	{
+#>
+				asPackable.PackToMessage( source, new PackingOptions() );
+<#
+	}
+#>
+				return;
+			}
+
+			int count;
+			ICollection<T> asCollectionT;
+			ICollection asCollection;
+			if ( ( asCollectionT = collection as ICollection<T> ) != null )
+			{
+				count = asCollectionT.Count;
+			}
+			else if ( ( asCollection = collection as ICollection ) != null )
+			{
+				count = asCollection.Count;
+			}
+			else
+			{
+				var asArray = collection.ToArray();
+				count = asArray.Length;
+				collection = asArray;
+			}
+
+			<#= Await( isAsync, "source.PackArrayHeader" + Async( isAsync ) + "( count" + LastArgument( isAsync ) + " )" ) #>;
+			foreach ( var item in collection )
+			{
+				<#= Await( isAsync, "itemSerializer.PackTo" + Async( isAsync ) + "( source, item" + LastArgument( isAsync ) + " )" ) #>;
+			}
+		}
+
+<#
+			if ( isAsync )
+			{
+#>
+
+#endif // FEATURE_TAP
+<#
+			}
+#>
+
+<#
+		} // sync | async
+#>
+		#endregion -- PackArray<T>/PackCollection<T> --
+
+		#region -- PackMap<T>/PackDictionary<T> --
+
+<#
+foreach ( var isAsync in new [] { false, true } )
+{
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+
+<#
+	}
+
+	foreach ( var label in new [] { "Map", "Dictionary" } )
+	{
+		PackerApi( "Pack" + label, "PackDictionary", "IDictionary<TKey, TValue>", "dictionary", "dictionary", isAsync,
+			new Dictionary<string, string> { { "TKey", "The type of keys of the dictionary." }, { "TValue", "The type of values of the dictionary." } } );
+	}
+#>
+
+		private static <#= ReturnVoid( isAsync ) #> PackDictionary<#= Async( isAsync ) #>Core<TKey, TValue>( 
+			Packer source, IDictionary<TKey, TValue> dictionary, 
+			SerializationContext context<#= LastParameter( isAsync ) #>
+		)
+		{
+			<#= Return( isAsync ) #>PackDictionary<#= Async( isAsync ) #>Core( source, dictionary, context.GetSerializer<TKey>(), context.GetSerializer<TValue>()<#= LastArgument( isAsync ) #> );
+		}
+
+		internal static <#= AsyncReturn( isAsync ) #> PackDictionary<#= Async( isAsync ) #>Core<TKey, TValue>( 
+			Packer source, IDictionary<TKey, TValue> dictionary, 
+			MessagePackSerializer<TKey> keySerializer, MessagePackSerializer<TValue> valueSerializer<#= LastParameter( isAsync ) #>
+		)
+		{
+			// ReSharper disable once CompareNonConstrainedGenericWithNull
+			if ( dictionary == null )
+			{
+				<#= Await( isAsync, "source.PackNull" + Async( isAsync ) + "(" + Argument( isAsync ) + ")" ) #>;
+				return;
+			}
+<#
+	if ( isAsync )
+	{
+#>
+
+			// ReSharper disable once SuspiciousTypeConversion.Global
+			var asAsyncPackable = dictionary as IAsyncPackable;
+			if ( asAsyncPackable != null )
+			{
+				await asAsyncPackable.PackToMessageAsync( source, new PackingOptions()<#= LastArgument( isAsync ) #> ).ConfigureAwait( false );
+				return;
+			}
+<#
+	}
+#>
+
+			// ReSharper disable once SuspiciousTypeConversion.Global
+			var asPackable = dictionary as IPackable;
+			if ( asPackable != null )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+				await Task.Run( () => asPackable.PackToMessage( source, new PackingOptions() ), cancellationToken ).ConfigureAwait( false );
+<#
+	}
+	else
+	{
+#>
+				asPackable.PackToMessage( source, new PackingOptions() );
+<#
+	}
+#>
+				return;
+			}
+
+			<#= Await( isAsync, "source.PackMapHeader" + Async( isAsync ) + "( dictionary.Count" + LastArgument( isAsync ) + " )" ) #>;
+			foreach ( var item in dictionary )
+			{
+				<#= Await( isAsync, "keySerializer.PackTo" + Async( isAsync ) + "( source, item.Key" + LastArgument( isAsync ) + " )" ) #>;
+				<#= Await( isAsync, "valueSerializer.PackTo" + Async( isAsync ) + "( source, item.Value" + LastArgument( isAsync ) + " )" ) #>;
+			}
+		}
+
+<#
+			if ( isAsync )
+			{
+#>
+
+#endif // FEATURE_TAP
+<#
+			}
+#>
+
+<#
+		} // sync | async
+#>
+		#endregion -- PackMap<T>/PackDictionary<T> --
+
+		#region -- Pack<T> of IEnumerable --
+
+		/// <summary>
+		///		Packs specified collection with the default context.
+		/// </summary>
+		/// <typeparam name="T">The type of the value.</typeparam>
+		/// <param name="source">The <see cref="Packer"/>.</param>
+		/// <param name="items">The collection to be serialized.</param>
+		/// <returns><paramref name="source"/>.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Cannot serialize the item of <paramref name="items"/>.
+		/// </exception>
+		[Obsolete( "Use PackArray<T>, PackCollection<T>, PackMap<TKey, TValue>, or PackDictionary<TKey, TValue> instead." )]
+		public static Packer Pack<T>( this Packer source, IEnumerable<T> items )
+		{
+			if ( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+#if !UNITY
+			Contract.EndContractBlock();
+#endif // !UNITY
+
+
+			PackCore( source, items, SerializationContext.Default );
+			return source;
+		}
+
+		/// <summary>
+		///		Packs specified value with the specified context.
+		/// </summary>
+		/// <typeparam name="T">The type of the value.</typeparam>
+		/// <param name="source">The <see cref="Packer"/>.</param>
+		/// <param name="items">The collection to be serialized.</param>
+		/// <param name="context">The <see cref="SerializationContext"/> holds shared serializers.</param>
+		/// <returns><paramref name="source"/>.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		///		Or <paramref name="context"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Cannot serialize the item of <paramref name="items"/>.
+		/// </exception>
+		[Obsolete( "Use PackArray<T>, PackCollection<T>, PackMap<TKey, TValue>, or PackDictionary<TKey, TValue> instead." )]
+		public static Packer Pack<T>( this Packer source, IEnumerable<T> items, SerializationContext context )
+		{
+			if ( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+#if !UNITY
+			Contract.EndContractBlock();
+#endif // !UNITY
+
+			PackCollectionCore( source, items, context );
+			return source;
+		}
+
+		#endregion -- Pack<T> of IEnumerable --
+
+		#region -- PackObject --
+<#
+foreach ( var isAsync in new [] { false, true } )
+{
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+
+<#
+	}
+
+	PackerApi( "PackObject", "PackObject", "object", "value", "value", isAsync, new Dictionary<string, string>( 0 ) );
+#>
+
+		private static <#= AsyncReturn( isAsync ) #> PackObject<#= Async( isAsync ) #>Core( Packer source, object value, SerializationContext context<#= LastParameter( isAsync ) #> )
+		{
+			if ( value == null )
+			{
+				<#= Await( isAsync, "source.PackNull" + Async( isAsync ) + "(" + Argument( isAsync ) + ")" ) #>;
+				return;
+			}
+
+			<#= Await( isAsync, "context.GetSerializer( value.GetType() ).PackTo" + Async( isAsync ) + "( source, value" + LastArgument( isAsync ) + " )" ) #>;
+		}
+
+<#
+			if ( isAsync )
+			{
+#>
+
+#endif // FEATURE_TAP
+<#
+			}
+#>
+
+<#
+		} // sync | async
+#>
+		#endregion -- PackObject --
+
+		#region -- Unpack<T> --
+
+<#
+foreach ( var isAsync in new [] { false, true } )
+{
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+
+<#
+	}
+
+	UnpackerApi( "Unpack", "Unpack", null, null, null, isAsync, new Dictionary<string, string> { { "T", "The type of the deserializing object." } } );
+#>
+
+		private static <#= AsyncReturnValue( "T", isAsync ) #> Unpack<#= Async( isAsync ) #>Core<T>( Unpacker source, SerializationContext context<#= LastParameter( isAsync ) #> )
+		{
+			return <#= Await( isAsync, "context.GetSerializer<T>().UnpackFrom" + Async( isAsync ) + "( source" + LastArgument( isAsync ) + " )" ) #>;
+		}
+
+<#
+			if ( isAsync )
+			{
+#>
+
+#endif // FEATURE_TAP
+<#
+			}
+#>
+
+<#
+		} // sync | async
+#>
+		#endregion -- Unpack<T> --
+	}
+}
+<#+
+private void PackerApi( string methodName, string coreMethodPrefix, string valueType, string valueName, string valueLabel, bool isAsync, IDictionary<string, string> typeParameterDefinitions )
+{
+	PublicApi(
+		methodName, coreMethodPrefix, valueType, valueName, valueLabel, isAsync, typeParameterDefinitions,
+		"Packs specified " + valueLabel,
+		"Packer",
+		isAsync ? "Task" : "Packer",
+		"<paramref name=\"source\"/>.",
+		"A <see cref=\"Task\"/> that represents the asynchronous operation."
+	);
+}
+
+private void UnpackerApi( string methodName, string coreMethodPrefix, string valueType, string valueName, string valueLabel, bool isAsync, IDictionary<string, string> typeParameterDefinitions )
+{
+	PublicApi(
+		methodName, coreMethodPrefix, valueType, valueName, valueLabel, isAsync, typeParameterDefinitions,
+		"Unpacks specified type value",
+		"Unpacker",
+		isAsync ? "Task<T>" : "T",
+		"The deserialized object.",
+		"A <see cref=\"Task\"/> that represents the asynchronous operation. The value of the <c>TResult</c> parameter contains a deserialized object."
+	);
+}
+
+private void PublicApi( 
+	string methodName, string coreMethodPrefix, string valueType, string valueName, string valueLabel, bool isAsync, IDictionary<string, string> typeParameterDefinitions,
+	string summaryPrefix, string sourceType, string returnType, string syncReturnValueDescription, string asyncReturnValueDescription
+)
+{
+	var coreMethodName = coreMethodPrefix + "Core";
+	var asyncCoreMethodName = coreMethodPrefix + "AsyncCore"; 
+	var valueParameter =
+		( valueType != null && valueName != null && valueLabel != null )
+		? ", " + valueType + " " + valueName
+		: String.Empty;
+	var valueArgument =
+		!String.IsNullOrEmpty( valueParameter )
+		? valueName + ", "
+		: String.Empty;
+	var typeParams = typeParameterDefinitions.Any() ? ( "<" + String.Join( ", ", typeParameterDefinitions.Keys ) + ">" ) : String.Empty;
+
+	foreach ( var withContext in new [] { false, true } )
+	{
+		foreach ( var withCancel in ( isAsync ? new [] { false, true } : new [] { false } ) )
+		{
+#>
+		/// <summary>
+		///		<#= summaryPrefix + SummarySuffix( withContext, isAsync ) #>.
+		/// </summary>
+<#+
+			foreach ( var typeParam in typeParameterDefinitions )
+			{
+#>
+		/// <typeparam name="<#= typeParam.Key #>"><#= typeParam.Value #></typeparam>
+<#+
+			}
+#>
+		/// <param name="source">The <see cref="<#= sourceType #>"/>.</param>
+<#+
+			if ( !String.IsNullOrEmpty( valueParameter ) )
+			{
+#>
+		/// <param name="<#= valueName #>">The <#= valueLabel #> to be serialized.</param>
+<#+
+			}
+
+			if ( withContext )
+			{
+#>
+		/// <param name="context">The <see cref="SerializationContext"/> holds shared serializers.</param>
+<#+
+			}
+
+			if ( !isAsync )
+			{
+#>
+		/// <returns><#= syncReturnValueDescription #></returns>
+<#+
+			}
+			else
+			{
+				if ( withCancel )
+				{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#+
+				}
+#>
+		/// <returns><#= asyncReturnValueDescription #></returns>
+<#+
+			}
+#>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+<#+
+			if ( withContext )
+			{
+#>
+		///		Or <paramref name="context"/> is <c>null</c>.
+<#+
+			}
+#>
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+<#+
+			if ( !String.IsNullOrEmpty( valueParameter ) )
+			{
+#>
+		///		Cannot serialize <paramref name="<#= valueName #>"/>.
+<#+
+			}
+			else
+			{
+#>
+		///		Cannot deserialize object.
+<#+
+			}
+#>
+		/// </exception>
+		public static <#= returnType #> <#= methodName #><#= Async( isAsync ) #><#= typeParams #>( this <#= sourceType #> source<#= valueParameter #><#= ContextParameter( withContext )#><#= LastParameter( withCancel ) #> )
+		{
+			if ( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+<#+
+			if ( withContext )
+			{
+#>
+
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+<#+
+			}
+#>
+
+#if !UNITY
+			Contract.EndContractBlock();
+#endif // !UNITY
+<#+
+			if ( isAsync )
+			{
+#>
+			return <#= asyncCoreMethodName #><#= !String.IsNullOrEmpty( valueParameter ) ? String.Empty : typeParams #>( source, <#= valueArgument #><#= ContextArgument( withContext )#>, <#= CancellationTokenArgument( withCancel ) #> );
+<#+
+			}
+			else
+			{
+				if ( !String.IsNullOrEmpty( valueParameter ) )
+				{
+#>
+			<#= coreMethodName #>( source, <#= valueArgument #><#= ContextArgument( withContext )#> );
+			return source;
+<#+
+				}
+				else
+				{
+#>
+			return <#= coreMethodName #><#= typeParams #>( source, <#= valueArgument #><#= ContextArgument( withContext )#> );
+<#+
+				}
+			}
+#>
+		}
+
+<#+
+		} // w/ | w/o cancel
+	} // w/ | w/o context
+}
+
+private static string Async( bool isAsync )
+{
+	return isAsync ? "Async" : String.Empty;
+}
+
+private static string Await( bool isAsync, string expression )
+{
+	return ( isAsync ? "await ": String.Empty ) + expression + ( isAsync ? ".ConfigureAwait( false )" : String.Empty );
+}
+
+private static string SummarySuffix( bool withContext, bool isAsync )
+{ 
+	return ( withContext ? " with the specified context" : " with the default context" ) + ( isAsync ? " asynchronously" : String.Empty );
+}
+
+private static string ReturnVoid( bool isAsync )
+{
+	return isAsync ? "Task" : "void";
+}
+
+private static string AsyncReturn( bool isAsync )
+{
+	return isAsync ? "async Task" : "void";
+}
+
+private static string Return( bool isAsync )
+{
+	return isAsync ? "return " : String.Empty;
+}
+
+private static string AsyncReturnValue( string type,  bool isAsync )
+{
+	return isAsync ? ( "async Task<" + type + ">" ) : type;
+}
+
+private static string LastParameter( bool withCancel )
+{
+	return withCancel ? ", CancellationToken cancellationToken " : String.Empty;
+}
+
+private static string Argument( bool isAsync )
+{
+	return isAsync ? " cancellationToken " : String.Empty;
+}
+
+private static string LastArgument( bool isAsync )
+{
+	return isAsync ? ", cancellationToken" : String.Empty;
+}
+
+private static string CancellationTokenArgument( bool withCancel )
+{
+	return withCancel ? "cancellationToken" : "CancellationToken.None";
+}
+
+private static string ContextParameter( bool withContet )
+{
+	return withContet ? ", SerializationContext context" : String.Empty;
+}
+
+private static string ContextArgument( bool withContet )
+{
+	return withContet ? "context" : "SerializationContext.Default";
+}
+
+#>

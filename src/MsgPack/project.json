@@ -1,0 +1,48 @@
+﻿{
+  "compilationOptions": {
+    "keyFile": "../MsgPack.snk"
+  },
+  "configurations": {
+    "Debug": {
+      "compilationOptions": {
+        "define": [ "DEBUG", "TRACE", "CORE_CLR", "FEATURE_TAP" ]
+      }
+    },
+    "Release": {
+      "compilationOptions": {
+        "define": [ "TRACE", "CORE_CLR", "FEATURE_TAP" ],
+        "optimize": true
+      }
+    }
+  },
+  "compile": [
+    "**/*.cs",
+    "../CommonAssemblyInfo.cs",
+    "../MsgPack.WinRT.Portable/Serialization/Reflection/ReflectionHelpers.cs",
+    "../MsgPack.WinRT.Portable/WinRTCompatibility.cs"
+  ],
+  "compileExclude": [
+    "Properties/AssemblyInfo.cs",
+    "Serialization/CodeDomSerializers/*.*",
+    "Serialization/EmittingSerializers/AssemblyBuilderCodeGenerationContext.cs",
+    "Serialization/SerializerGenerator.cs",
+    "Serialization/Tracer.cs"
+  ],
+  "dependencies": {
+    "NETStandard.Library": "1.0.0-rc2-23811"
+  },
+  "frameworks": {
+    "dnxcore50": {
+      "dependencies": {
+        "System.Collections.Specialized": "4.0.1-rc2-23811",
+        "System.Data.Common": "4.0.1-rc2-23811",
+        "System.Diagnostics.Contracts": "4.0.1-rc2-23811",
+        "System.Linq.Expressions": "4.0.11-rc2-23811",
+        "System.Numerics.Vectors": "4.1.1-rc2-23811",
+        "System.Reflection.Emit": "4.0.1-rc2-23811",
+        "System.Runtime.Serialization.Primitives": "4.1.0-rc2-23811",
+        "System.Security.Cryptography.Primitives": "4.0.0-rc2-23811"
+      }
+    }
+  }
+}

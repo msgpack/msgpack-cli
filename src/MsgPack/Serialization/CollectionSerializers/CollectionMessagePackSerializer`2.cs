@@ -123,7 +123,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
 			return this.InternalUnpackFromCore( unpacker );

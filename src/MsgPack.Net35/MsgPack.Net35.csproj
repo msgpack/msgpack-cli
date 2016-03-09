@@ -59,8 +59,11 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\CommonAssemblyInfo.Pack.cs">
-      <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
+    <Compile Include="..\MsgPack\AsyncReadResult.cs">
+      <Link>AsyncReadResult.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\AsyncReadResult`1.cs">
+      <Link>AsyncReadResult`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\BigEndianBinary.cs">
       <Link>BigEndianBinary.cs</Link>
@@ -70,6 +73,9 @@
     </Compile>
     <Compile Include="..\MsgPack\BufferManager.cs">
       <Link>BufferManager.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\BufferPool.cs">
+      <Link>BufferPool.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\CollectionDebuggerProxy`1.cs">
       <Link>CollectionDebuggerProxy`1.cs</Link>
@@ -88,6 +94,12 @@
     </Compile>
     <Compile Include="..\MsgPack\GlobalSuppressions.cs">
       <Link>GlobalSuppressions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\IAsyncPackable.cs">
+      <Link>IAsyncPackable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\IAsyncUnpackable.cs">
+      <Link>IAsyncUnpackable.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\InvalidMessagePackStreamException.cs">
       <Link>InvalidMessagePackStreamException.cs</Link>
@@ -188,6 +200,9 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\ActionType.cs">
       <Link>Serialization\AbstractSerializers\ActionType.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\CachedDelegateInfo.cs">
+      <Link>Serialization\AbstractSerializers\CachedDelegateInfo.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\ConstructorDefinition.cs">
       <Link>Serialization\AbstractSerializers\ConstructorDefinition.cs</Link>
     </Compile>
@@ -227,23 +242,23 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilderHelper.cs">
       <Link>Serialization\AbstractSerializers\SerializerBuilderHelper.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Collection.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Collection.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`2.Collection.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`2.Collection.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.CommonConstructs.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.CommonConstructs.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`2.CommonConstructs.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`2.CommonConstructs.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`2.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`2.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`2.Enum.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`2.Enum.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Nullable.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Nullable.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`2.Nullable.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`2.Nullable.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`2.Object.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`2.Object.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerFieldKey.cs">
       <Link>Serialization\AbstractSerializers\SerializerFieldKey.cs</Link>
@@ -265,9 +280,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CodeDomSerializers\CodeDomSerializerBuilder.cs">
       <Link>Serialization\CodeDomSerializers\CodeDomSerializerBuilder.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\CodeDomSerializers\CodeDomSerializerBuilder`1.cs">
-      <Link>Serialization\CodeDomSerializers\CodeDomSerializerBuilder`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CodeDomSerializers\ExpressionCodeDomConstruct.cs">
       <Link>Serialization\CodeDomSerializers\ExpressionCodeDomConstruct.cs</Link>
@@ -506,8 +518,8 @@
     <Compile Include="..\MsgPack\Serialization\EmittingSerializers\AssemblyBuilderEmittingContext.cs">
       <Link>Serialization\EmittingSerializers\AssemblyBuilderEmittingContext.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\AssemblyBuilderSerializerBuilder`1.cs">
-      <Link>Serialization\EmittingSerializers\AssemblyBuilderSerializerBuilder`1.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\AssemblyBuilderSerializerBuilder.cs">
+      <Link>Serialization\EmittingSerializers\AssemblyBuilderSerializerBuilder.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\EmittingSerializers\BinaryOperatorILConstruct.cs">
       <Link>Serialization\EmittingSerializers\BinaryOperatorILConstruct.cs</Link>
@@ -608,6 +620,9 @@
     <Compile Include="..\MsgPack\Serialization\ISerializerGeneratorConfiguration.cs">
       <Link>Serialization\ISerializerGeneratorConfiguration.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\ISupportMessagePackSerializerCapability.cs">
+      <Link>Serialization\ISupportMessagePackSerializerCapability.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\LazyDelegatingMessagePackSerializer`1.cs">
       <Link>Serialization\LazyDelegatingMessagePackSerializer`1.cs</Link>
     </Compile>
@@ -637,6 +652,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializer.cs">
       <Link>Serialization\MessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackSerializer.Factories.cs">
+      <Link>Serialization\MessagePackSerializer.Factories.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializerExtensions.cs">
       <Link>Serialization\MessagePackSerializerExtensions.cs</Link>
@@ -845,6 +863,9 @@
     <Compile Include="..\MsgPack\Serialization\SerializerAssemblyGenerationConfiguration.cs">
       <Link>Serialization\SerializerAssemblyGenerationConfiguration.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializerCapabilities.cs">
+      <Link>Serialization\SerializerCapabilities.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerCodeGenerationConfiguration.cs">
       <Link>Serialization\SerializerCodeGenerationConfiguration.cs</Link>
     </Compile>
@@ -856,6 +877,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerGenerator.cs">
       <Link>Serialization\SerializerGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializerOptions.cs">
+      <Link>Serialization\SerializerOptions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerRegistrationOptions.cs">
       <Link>Serialization\SerializerRegistrationOptions.cs</Link>
@@ -883,6 +907,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\UnpackHelpers.direct.cs">
       <Link>Serialization\UnpackHelpers.direct.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\UnpackHelpers.facade.cs">
+      <Link>Serialization\UnpackHelpers.facade.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\SetOperation.cs">
       <Link>SetOperation.cs</Link>
@@ -957,6 +984,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Tuple`n.tt</DependentUpon>
     </Compile>
+    <Compile Include="Volatile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\MsgPack.snk">

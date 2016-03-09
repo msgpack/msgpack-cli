@@ -41,7 +41,7 @@ namespace MsgPack.Serialization.Polymorphic
 			this._defaultSerializer = defaultSerializer;
 		}
 #else
-		public PolymorphicSerializerProvider( SerializationContext context, IMessagePackSingleObjectSerializer defaultSerializer )
+		public PolymorphicSerializerProvider( SerializationContext context, MessagePackSerializer defaultSerializer )
 		{
 			this._defaultSerializer = MessagePackSerializer.Wrap<T>( context, defaultSerializer );
 		}

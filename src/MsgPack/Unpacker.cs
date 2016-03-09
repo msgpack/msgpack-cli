@@ -18,11 +18,20 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
+
 
 namespace MsgPack
 {
@@ -186,6 +195,7 @@ namespace MsgPack
 			get { return null; }
 		}
 #endif		
+
 		/// <summary>
 		///		Gets the previous position before last operation for debugging.
 		/// </summary>
@@ -265,7 +275,7 @@ namespace MsgPack
 
 		#endregion -- Ctor / Dispose --
 
-		#region -- Draing --
+		#region -- Draining --
 
 		/// <summary>
 		///		Drains remaining items in current context.
@@ -278,6 +288,47 @@ namespace MsgPack
 		{
 			// nop
 		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Drains remaining items in current context.
+		/// </summary>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains 
+		///		an unpacked array or map when current position is array or map header.
+		///		Or <see cref="LastReadData"/> when current position is not array nor map header.
+		/// </returns>
+		/// <remarks>
+		///		This method drains remaining items in context of subtree mode unpacker.
+		///		This method does not any effect for other types of unpacker.
+		/// </remarks>
+		public Task DrainAsync()
+		{
+			return this.DrainAsync( CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Drains remaining items in current context.
+		/// </summary>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains 
+		///		an unpacked array or map when current position is array or map header.
+		///		Or <see cref="LastReadData"/> when current position is not array nor map header.
+		/// </returns>
+		/// <remarks>
+		///		This method drains remaining items in context of subtree mode unpacker.
+		///		This method does not any effect for other types of unpacker.
+		/// </remarks>
+		public virtual Task DrainAsync( CancellationToken cancellationToken )
+		{
+			return Task.FromResult( default( object ) );
+		}
+
+#endif // FEATURE_TAP
 
 		#endregion -- Draining --
 
@@ -403,6 +454,84 @@ namespace MsgPack
 		/// </returns>
 		protected abstract bool ReadCore();
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Reads next Message Pack entry asynchronously.
+		/// </summary>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains whether
+		///		the position is sucessfully move to next entry or not(which means this object reached the tail of the Message Pack stream).
+		/// </returns>
+		/// <exception cref="InvalidOperationException">
+		///		This instance is in 'subtree' mode.
+		/// </exception>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		The underying stream unexpectedly ended.
+		/// </exception>
+		public Task<bool> ReadAsync()
+		{
+			return this.ReadAsync( CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Reads next Message Pack entry asynchronously.
+		/// </summary>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains whether
+		///		the position is sucessfully move to next entry or not(which means this object reached the tail of the Message Pack stream).
+		/// </returns>
+		/// <exception cref="InvalidOperationException">
+		///		This instance is in 'subtree' mode.
+		/// </exception>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		The underying stream unexpectedly ended.
+		/// </exception>
+		public async Task<bool> ReadAsync( CancellationToken cancellationToken )
+		{
+			this.EnsureNotInSubtreeMode();
+
+			bool result = await this.ReadAsyncCore( cancellationToken ).ConfigureAwait( false );
+			if ( result && !this.IsCollectionHeader )
+			{
+				this.SetStable();
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		///		Reads next Message Pack entry asynchronously.
+		/// </summary>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains whether
+		///		the position is sucessfully move to next entry or not(which means this object reached the tail of the Message Pack stream).
+		/// </returns>
+		protected Task<bool> ReadAsyncCore()
+		{
+			return this.ReadAsyncCore( CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Reads next Message Pack entry asynchronously.
+		/// </summary>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains whether
+		///		the position is sucessfully move to next entry or not(which means this object reached the tail of the Message Pack stream).
+		/// </returns>
+		protected virtual Task<bool> ReadAsyncCore( CancellationToken cancellationToken )
+		{
+			return Task.Run( () => this.ReadCore(), cancellationToken );
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		Gets <see cref="IEnumerator&lt;T&gt;"/> to enumerate <see cref="MessagePackObject"/> from source stream.
 		/// </summary>
@@ -445,7 +574,7 @@ namespace MsgPack
 		{
 			this.VerifyIsNotDisposed();
 
-			if( this._mode == UnpackerMode.Enumerating )
+			if ( this._mode == UnpackerMode.Enumerating )
 			{
 				this.ThrowInvalidModeException();
 			}
@@ -464,7 +593,6 @@ namespace MsgPack
 			{
 				this.SetStable();
 			}
-
 		}
 
 		/// <summary>
@@ -475,6 +603,69 @@ namespace MsgPack
 		///		If the subtree is not completed, then <c>null</c>.
 		/// </returns>
 		protected abstract long? SkipCore();
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Skips the subtree where the root is the current entry, and returns skipped byte length asynchronously.
+		/// </summary>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains 
+		///		a kipped byte length.
+		///		Or, if the subtree is not completed, then <c>null</c>.
+		/// </returns>
+		public Task<long?> SkipAsync()
+		{
+			return this.SkipAsync( CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Skips the subtree where the root is the current entry, and returns skipped byte length asynchronously.
+		/// </summary>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains 
+		///		a kipped byte length.
+		///		Or, if the subtree is not completed, then <c>null</c>.
+		/// </returns>
+		public async Task<long?> SkipAsync( CancellationToken cancellationToken )
+		{
+			this.BeginSkip();
+
+			var result = await this.SkipAsyncCore( cancellationToken ).ConfigureAwait( false );
+			this.EndSkip( result );
+
+			return result;
+		}
+
+		/// <summary>
+		///		Skips the subtree where the root is the current entry, and returns skipped byte length asynchronously.
+		/// </summary>
+		/// <returns>
+		///		Skipped byte length.
+		///		If the subtree is not completed, then <c>null</c>.
+		/// </returns>
+		protected Task<long?> SkipAsyncCore()
+		{
+			return this.SkipAsyncCore( CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Skips the subtree where the root is the current entry, and returns skipped byte length asynchronously.
+		/// </summary>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		Skipped byte length.
+		///		If the subtree is not completed, then <c>null</c>.
+		/// </returns>
+		protected virtual Task<long?> SkipAsyncCore( CancellationToken cancellationToken )
+		{
+			return Task.Run( () => this.SkipCore(), cancellationToken );
+		}
+
+#endif // FEATURE_TAP
 
 		#endregion -- Streaming API --
 
@@ -515,6 +706,82 @@ namespace MsgPack
 
 			return this.UnpackSubtreeData();
 		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Gets a current item or collection as single <see cref="MessagePackObject"/> from the stream asynchronously.
+		/// </summary>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains 
+		///		a read item or collection from the stream.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">The stream unexpectedly ends.</exception>
+		public Task<MessagePackObject?> ReadItemAsync()
+		{
+			return this.ReadItemAsync( CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Gets a current item or collection as single <see cref="MessagePackObject"/> from the stream asynchronously.
+		/// </summary>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains 
+		///		a read item or collection from the stream.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">The stream unexpectedly ends.</exception>
+		public async Task<MessagePackObject?> ReadItemAsync( CancellationToken cancellationToken )
+		{
+			if ( !( await this.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
+			{
+				return null;
+			}
+
+			await this.UnpackSubtreeAsync( cancellationToken ).ConfigureAwait( false );
+
+#pragma warning disable 612,618
+			return this.Data;
+#pragma warning restore 612,618
+		}
+
+		/// <summary>
+		///		Gets a current item or collection as single <see cref="MessagePackObject"/> from the stream asynchronously.
+		/// </summary>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains 
+		///		a read item or collection from the stream.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">The stream unexpectedly ends.</exception>
+		public Task<MessagePackObject> ReadItemDataAsync()
+		{
+			return this.ReadItemDataAsync( CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Gets a current item or collection as single <see cref="MessagePackObject"/> from the stream asynchronously.
+		/// </summary>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains 
+		///		a read item or collection from the stream.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">The stream unexpectedly ends.</exception>
+		public async Task<MessagePackObject> ReadItemDataAsync( CancellationToken cancellationToken )
+		{
+			if ( !( await this.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
+			{
+				this.ThrowEofException();
+			}
+
+			return await this.UnpackSubtreeDataAsync( cancellationToken ).ConfigureAwait( false );
+		}
+
+#endif // FEATURE_TAP
 
 		internal virtual void ThrowEofException()
 		{
@@ -603,6 +870,124 @@ namespace MsgPack
 				return false;
 			}
 		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Unpacks current subtree and returns subtree root as array or map asynchronously.
+		/// </summary>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains 
+		///		an unpacked array or map when current position is array or map header.
+		///		Or <c>null</c> when current position is not array nor map header.
+		/// </returns>
+		public Task<MessagePackObject?> UnpackSubtreeAsync()
+		{
+			return this.UnpackSubtreeAsync( CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Unpacks current subtree and returns subtree root as array or map asynchronously.
+		/// </summary>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains 
+		///		an unpacked array or map when current position is array or map header.
+		///		Or <c>null</c> when current position is not array nor map header.
+		/// </returns>
+		public async Task<MessagePackObject?> UnpackSubtreeAsync( CancellationToken cancellationToken )
+		{
+			var result = await this.UnpackSubtreeDataAsyncCore( cancellationToken ).ConfigureAwait( false );
+			if ( result.Success )
+			{
+				this.LastReadData = result.Value;
+				return result.Value;
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		/// <summary>
+		///		Unpacks current subtree and returns subtree root as array or map asynchronously.
+		/// </summary>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains 
+		///		an unpacked array or map when current position is array or map header.
+		///		Or <see cref="LastReadData"/> when current position is not array nor map header.
+		/// </returns>
+		public Task<MessagePackObject> UnpackSubtreeDataAsync()
+		{
+			return this.UnpackSubtreeDataAsync( CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Unpacks current subtree and returns subtree root as array or map asynchronously.
+		/// </summary>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains 
+		///		an unpacked array or map when current position is array or map header.
+		///		Or <see cref="LastReadData"/> when current position is not array nor map header.
+		/// </returns>
+		public async Task<MessagePackObject> UnpackSubtreeDataAsync( CancellationToken cancellationToken )
+		{
+			var result = await this.UnpackSubtreeDataAsyncCore( cancellationToken ).ConfigureAwait( false );
+			if ( result.Success )
+			{
+				this.LastReadData = result.Value;
+				return result.Value;
+			}
+			else
+			{
+				return this.LastReadData;
+			}
+		}
+
+		internal async Task<AsyncReadResult<MessagePackObject>> UnpackSubtreeDataAsyncCore( CancellationToken cancellationToken )
+		{
+			if ( this.IsArrayHeader )
+			{
+				var array = new MessagePackObject[ checked( ( int )this.LastReadData.AsUInt32() ) ];
+				using ( var subTreeReader = this.ReadSubtree() )
+				{
+					for ( int i = 0; i < array.Length; i++ )
+					{
+						array[ i ] = await subTreeReader.ReadItemDataAsync( cancellationToken ).ConfigureAwait( false );
+					}
+				}
+
+				return AsyncReadResult.Success( new MessagePackObject( array, true ) );
+			}
+			else if ( this.IsMapHeader )
+			{
+				var capacity = checked( ( int )this.LastReadData.AsUInt32() );
+				var map = new MessagePackObjectDictionary( capacity );
+				using ( var subTreeReader = this.ReadSubtree() )
+				{
+					for ( int i = 0; i < capacity; i++ )
+					{
+						var key = await subTreeReader.ReadItemDataAsync( cancellationToken ).ConfigureAwait( false );
+						var value = await subTreeReader.ReadItemDataAsync( cancellationToken ).ConfigureAwait( false );
+
+						map.Add( key, value );
+					}
+				}
+
+				return AsyncReadResult.Success( new MessagePackObject( map, true ) );
+			}
+			else
+			{
+				return AsyncReadResult.Fail<MessagePackObject>();
+			}
+		}
+
+#endif // FEATURE_TAP
 
 		private enum UnpackerMode
 		{

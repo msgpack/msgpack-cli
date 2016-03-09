@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2015 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,6 +25,10 @@
 using System;
 using System.Globalization;
 using System.Runtime.Serialization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization
 {
@@ -85,6 +89,46 @@ namespace MsgPack.Serialization
 		/// <param name="packer">The packer.</param>
 		/// <param name="enumValue">The enum value to be packed.</param>
 		protected internal abstract void PackUnderlyingValueTo( Packer packer, TEnum enumValue );
+
+#if FEATURE_TAP
+
+		/// <summary>
+		/// Serializes specified object with specified <see cref="Packer" /> asynchronously.
+		/// </summary>
+		/// <param name="packer"><see cref="Packer" /> which packs values in <paramref name="objectTree" />. This value will not be <c>null</c>.</param>
+		/// <param name="objectTree">Object to be serialized.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+		/// <returns>
+		/// A <see cref="Task" /> that represents the asynchronous operation.
+		/// </returns>
+		/// <seealso cref="P:Capabilities" />
+		protected internal sealed override Task PackToAsyncCore( Packer packer, TEnum objectTree, CancellationToken cancellationToken )
+		{
+			if ( this._serializationMethod == EnumSerializationMethod.ByUnderlyingValue )
+			{
+				return this.PackUnderlyingValueToAsync( packer, objectTree, cancellationToken );
+			}
+			else
+			{
+				return packer.PackStringAsync( objectTree.ToString(), cancellationToken );
+			}
+		}
+
+		/// <summary>
+		///		Packs enum value as its underlying value asynchronously.
+		/// </summary>
+		/// <param name="packer">The packer.</param>
+		/// <param name="enumValue">The enum value to be packed.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		protected internal virtual Task PackUnderlyingValueToAsync( Packer packer, TEnum enumValue, CancellationToken cancellationToken )
+		{
+#if DEBUG
+			SerializerDebugging.EnsureNaiveAsyncAllowed( this );
+#endif // DEBUG
+			return Task.Run( () => this.PackUnderlyingValueTo( packer, enumValue ), cancellationToken );
+		}
+
+#endif // FEATURE_TAP
 
 		/// <summary>
 		///		Deserializes object with specified <see cref="Unpacker"/>.
@@ -167,6 +211,27 @@ namespace MsgPack.Serialization
 		/// </returns>
 		/// <exception cref="SerializationException">The type of integral value is not compatible with underlying type of the enum.</exception>
 		protected internal abstract TEnum UnpackFromUnderlyingValue( MessagePackObject messagePackObject );
+
+#if FEATURE_TAP
+
+		/// <summary>
+		/// Deserializes object with specified <see cref="Unpacker" /> asynchronously.
+		/// </summary>
+		/// <param name="unpacker"><see cref="Unpacker" /> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+		/// <returns>
+		/// A <see cref="Task" /> that represents the asynchronous operation.
+		/// The value of the <c>TResult</c> parameter contains the deserialized object.
+		/// </returns>
+		/// <seealso cref="P:Capabilities" />
+		protected internal sealed override Task<TEnum> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			var result = new TaskCompletionSource<TEnum>();
+			result.SetResult( this.UnpackFromCore( unpacker ) );
+			return result.Task;
+		}
+
+#endif // FEATURE_TAP
 
 		ICustomizableEnumSerializer ICustomizableEnumSerializer.GetCopyAs( EnumSerializationMethod method )
 		{

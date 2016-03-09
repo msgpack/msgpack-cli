@@ -1,0 +1,192 @@
+﻿<#@ template  debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+<#
+var types =
+	new []
+	{
+		new { Name = "Vector2",		Fields = new [] { "X", "Y" } },
+		new { Name = "Vector3",		Fields = new [] { "X", "Y", "Z" } },
+		new { Name = "Vector4",		Fields = new [] { "X", "Y", "Z", "W" } },
+		new { Name = "Plane",		Fields = new [] { "Normal.X", "Normal.Y", "Normal.Z", "D" } },
+		new { Name = "Quaternion",	Fields = new [] { "X", "Y", "Z", "W" } },
+		new { Name = "Matrix3x2",	Fields = GetIndexes( 3, 2 ).Select( i => "M" + i.ToString( "D", CultureInfo.InvariantCulture ) ).ToArray() },
+		new { Name = "Matrix4x4",	Fields = GetIndexes( 4, 4 ).Select( i => "M" + i.ToString( "D", CultureInfo.InvariantCulture ) ).ToArray() },
+	};
+
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2016 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
+using System;
+using System.Numerics;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
+
+namespace MsgPack.Serialization.DefaultSerializers
+{
+	// This file generated from DefaultSerializers.tt T4Template.
+	// Do not modify this file. Edit DefaultMarshalers.tt instead.
+
+	// ReSharper disable InconsistentNaming
+	// ReSharper disable RedundantNameQualifier
+	// ReSharper disable RedundantCast
+
+<#
+foreach( var type in types )
+{
+	var typeArgument = "<" + type.Name + ">";
+#>
+	internal sealed class System_Numerics_<#= type.Name #>MessagePackSerializer : MessagePackSerializer<#= typeArgument #>
+	{
+		public System_Numerics_<#= type.Name #>MessagePackSerializer( SerializationContext ownerContext ) 
+			: base( ownerContext ) { }
+
+		protected internal override void PackToCore( Packer packer, <#= type.Name #> objectTree )
+		{
+			packer.PackArrayHeader( <#= type.Fields.Length #> );
+<#
+	foreach( var field in type.Fields )
+	{
+#>
+			packer.Pack( objectTree.<#= field #> );
+<#
+	}
+#>
+		}
+
+		protected internal override <#= type.Name #> UnpackFromCore( Unpacker unpacker )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( <#= type.Name #> ), <#= type.Fields.Length #> );
+			}
+
+			var length = unpacker.LastReadData.AsInt64();
+
+			if ( length != <#= type.Fields.Length #> )
+			{
+				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( <#= type.Name #> ), <#= type.Fields.Length #> );
+			}
+
+<#
+	for( var i = 0; i < type.Fields.Length; i++ )
+	{
+		var variable = Camelize( type.Fields[ i ] );
+#>
+			float <#= variable #>;
+			if ( !unpacker.ReadSingle( out <#= variable #> ) )
+			{
+				SerializationExceptions.ThrowMissingItem( <#= i #>, unpacker );
+			}
+
+<#
+	}
+#>
+
+			return new <#= type.Name #>( <#= String.Join( ", ", type.Fields.Select( Camelize ) ) #> );
+		}
+
+#if FEATURE_TAP
+
+		protected internal override async Task PackToAsyncCore( Packer packer, <#= type.Name #> objectTree, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( <#= type.Fields.Length #>, cancellationToken ).ConfigureAwait( false );
+<#
+	foreach( var field in type.Fields )
+	{
+#>
+			await packer.PackAsync( objectTree.<#= field #>, cancellationToken ).ConfigureAwait( false );
+<#
+	}
+#>
+		}
+
+		protected internal override async Task<#= typeArgument #> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( <#= type.Name #> ), <#= type.Fields.Length #> );
+			}
+
+			var length = unpacker.LastReadData.AsInt64();
+
+			if ( length != <#= type.Fields.Length #> )
+			{
+				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( <#= type.Name #> ), <#= type.Fields.Length #> );
+			}
+
+<#
+	for( var i = 0; i < type.Fields.Length; i++ )
+	{
+		var variable = Camelize( type.Fields[ i ] );
+#>
+			var <#= variable #> = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
+			if ( !<#= variable #>.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( <#= i #>, unpacker );
+			}
+
+<#
+	}
+#>
+
+			return new <#= type.Name #>( <#= String.Join( ", ", type.Fields.Select( Camelize ).Select( v => v + ".Value" ) ) #> );
+		}
+
+#endif // FEATURE_TAP
+
+	}
+<#
+}
+#>
+
+	// ReSharper restore RedundantCast
+	// ReSharper restore RedundantNameQualifier
+	// ReSharper restore InconsistentNaming
+}
+<#+
+private static IEnumerable<int> GetIndexes( int rows, int columns )
+{
+	for( var row = 1; row <= rows; row++ )
+	{
+		for( var column = 1; column <= columns; column++ )
+		{
+			yield return row * 10 + column;
+		}
+	}
+}
+
+private static string Camelize( string mayBePascalized )
+{
+	// This logic does not support surrogates, empty, and single char method.
+	return Char.ToLowerInvariant( mayBePascalized[ 0 ] ) + mayBePascalized.Substring( 1 ).Replace( '.', '_' );
+}
+#>

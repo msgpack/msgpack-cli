@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2015 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,14 +26,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 #if !UNITY
-#if XAMIOS || XAMDROID || CORE_CLR
+#if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID || CORE_CLR
+#endif // CORE_CLR
 #endif // !UNITY
 using System.Linq;
 using System.Reflection;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.ReflectionSerializers
 {
@@ -47,7 +51,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		private readonly MemberInfo[] _memberInfos;
 		private readonly DataMemberContract[] _contracts;
 		private readonly Dictionary<string, int> _memberIndexes;
-		private readonly IMessagePackSerializer[] _serializers;
+		private readonly MessagePackSerializer[] _serializers;
 		private readonly ParameterInfo[] _constructorParameters;
 		private readonly Dictionary<int, int> _constructorArgumentIndexes;
 
@@ -131,7 +135,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				ReflectionNilImplicationHandler.Instance.OnPacking(
 					new ReflectionSerializerNilImplicationHandlerParameter(
 						this._memberInfos[ index ].GetMemberValueType(),
-						this._contracts[ index ].Name ),
+						this._contracts[ index ].Name
+					),
 					this._contracts[ index ].NilImplication
 				);
 			if ( nilImplication != null )
@@ -141,6 +146,72 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 			this._serializers[ index ].PackTo( packer, value );
 		}
+
+#if FEATURE_TAP
+
+		protected internal override async Task PackToAsyncCore( Packer packer, T objectTree, CancellationToken cancellationToken )
+		{
+			var asAsyncPackable = objectTree as IAsyncPackable;
+			if ( asAsyncPackable != null )
+			{
+				await asAsyncPackable.PackToMessageAsync( packer, null, cancellationToken ).ConfigureAwait( false );
+				return;
+			}
+
+			var asPackable = objectTree as IPackable;
+			if ( asPackable != null )
+			{
+				await Task.Run( () => asPackable.PackToMessage( packer, null ), cancellationToken ).ConfigureAwait( false );
+				return;
+			}
+
+			if ( this.OwnerContext.SerializationMethod != SerializationMethod.Map )
+			{
+				await packer.PackArrayHeaderAsync( this._serializers.Length, cancellationToken ).ConfigureAwait( false );
+				for ( int i = 0; i < this._serializers.Length; i++ )
+				{
+					await this.PackMemberValueAsync( packer, objectTree, i, cancellationToken ).ConfigureAwait( false );
+				}
+			}
+			else
+			{
+				await packer.PackMapHeaderAsync( this._serializers.Length, cancellationToken ).ConfigureAwait( false );
+				for ( int i = 0; i < this._serializers.Length; i++ )
+				{
+					await packer.PackStringAsync( this._contracts[ i ].Name, cancellationToken ).ConfigureAwait( false );
+					await this.PackMemberValueAsync( packer, objectTree, i, cancellationToken ).ConfigureAwait( false );
+				}
+			}
+		}
+
+		private async Task PackMemberValueAsync( Packer packer, T objectTree, int index, CancellationToken cancellationToken )
+		{
+			if ( this._getters[ index ] == null )
+			{
+				// missing member should be treated as nil.
+				await packer.PackNullAsync( cancellationToken ).ConfigureAwait( false );
+				return;
+			}
+
+			var value = this._getters[ index ]( objectTree );
+
+			var nilImplication =
+				ReflectionNilImplicationHandler.Instance.OnPacking(
+					new ReflectionSerializerNilImplicationHandlerParameter(
+						this._memberInfos[ index ].GetMemberValueType(),
+						this._contracts[ index ].Name
+					),
+					this._contracts[ index ].NilImplication
+				);
+			if ( nilImplication != null )
+			{
+				nilImplication( value );
+			}
+
+			await this._serializers[ index ].PackToAsync( packer, value, cancellationToken ).ConfigureAwait( false );
+		}
+
+#endif // FEATURE_TAP
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override T UnpackFromCore( Unpacker unpacker )
@@ -171,7 +242,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 				for ( int i = 0; i < itemsCount; i++ )
 				{
-					result = this.UnpackMemberValue( result, unpacker, itemsCount, ref unpacked, i, i );
+					result = this.UnpackMemberValue( result, unpacker, itemsCount, unpacked, i, i );
+					unpacked++;
 				}
 			}
 			else
@@ -210,7 +282,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						continue;
 					}
 
-					result = this.UnpackMemberValue( result, unpacker, itemsCount, ref unpacked, index, i );
+					result = this.UnpackMemberValue( result, unpacker, itemsCount, unpacked, index, i );
+					unpacked++;
 				}
 			}
 
@@ -224,7 +297,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 		}
 
-		private object UnpackMemberValue( object objectGraph, Unpacker unpacker, int itemsCount, ref int unpacked, int index, int unpackerOffset )
+		private object UnpackMemberValue( object objectGraph, Unpacker unpacker, int itemsCount, int unpacked, int index, int unpackerOffset )
 		{
 			object nullable = null;
 
@@ -297,10 +370,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				}
 			}
 
-			unpacked++;
-
 			return objectGraph;
-		}
+		} // UnpackMemberValue
 
 		private object UnpackSingleValue( Unpacker unpacker, int index )
 		{
@@ -380,6 +451,257 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					}
 				}
 			}
+		} // UnpackAndAddCollectionItem
+
+
+#if FEATURE_TAP
+
+		protected internal override async Task<T> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			object result =
+				this._constructorParameters == null
+					? ReflectionExtensions.CreateInstancePreservingExceptionType( typeof( T ) )
+					: this._constructorParameters.Select( p =>
+						p.GetHasDefaultValue()
+						? p.DefaultValue
+						: p.ParameterType.GetIsValueType()
+						? ReflectionExtensions.CreateInstancePreservingExceptionType( p.ParameterType )
+						: null
+					).ToArray();
+
+			var unpacked = 0;
+
+			var asAsyncUnpackable = result as IAsyncUnpackable;
+			if ( asAsyncUnpackable != null )
+			{
+				await asAsyncUnpackable.UnpackFromMessageAsync( unpacker, cancellationToken ).ConfigureAwait( false );
+				return ( T )result;
+			}
+
+			var asUnpackable = result as IUnpackable;
+			if ( asUnpackable != null )
+			{
+				await Task.Run( () => asUnpackable.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+				return ( T )result;
+			}
+
+			if ( unpacker.IsArrayHeader )
+			{
+				var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+
+				for ( int i = 0; i < itemsCount; i++ )
+				{
+					result = await this.UnpackMemberValueAsync( result, unpacker, itemsCount, unpacked, i, i, cancellationToken ).ConfigureAwait( false );
+					unpacked++;
+				}
+			}
+			else
+			{
+#if DEBUG && !UNITY
+				Contract.Assert( unpacker.IsMapHeader, "unpacker.IsMapHeader" );
+#endif // DEBUG && !UNITY
+				var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+
+				for ( int i = 0; i < itemsCount; i++ )
+				{
+					var name = await unpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false );
+					if ( !name.Success )
+					{
+						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+					}
+
+					if ( name.Value == null )
+					{
+						// missing member, drain the value and discard it.
+						if ( !unpacker.Read() && i < itemsCount - 1 )
+						{
+							SerializationExceptions.ThrowMissingKey( i + 1, unpacker );
+						}
+						continue;
+					}
+
+					int index;
+					if ( !this._memberIndexes.TryGetValue( name.Value, out index ) )
+					{
+						// key does not exist in the object, skip the associated value
+						if ( unpacker.Skip() == null )
+						{
+							SerializationExceptions.ThrowMissingItem( i, unpacker );
+						}
+						continue;
+					}
+
+					result = await this.UnpackMemberValueAsync( result, unpacker, itemsCount, unpacked, index, i, cancellationToken ).ConfigureAwait( false );
+					unpacked++;
+				}
+			}
+
+			if ( this._constructorParameters == null )
+			{
+				return ( T )result;
+			}
+			else
+			{
+				return ReflectionExtensions.CreateInstancePreservingExceptionType<T>( typeof( T ), result as object[] );
+			}
 		}
+
+		private async Task<object> UnpackMemberValueAsync( object objectGraph, Unpacker unpacker, int itemsCount, int unpacked, int index, int unpackerOffset, CancellationToken cancellationToken )
+		{
+			object nullable = null;
+
+			var setter = index < this._setters.Length ? this._setters[ index ] : null;
+			if ( unpacked < itemsCount )
+			{
+				if ( !unpacker.Read() )
+				{
+					SerializationExceptions.ThrowMissingItem( unpackerOffset, unpacker );
+				}
+
+				if ( !unpacker.LastReadData.IsNil )
+				{
+					if ( setter != null || this._constructorParameters != null )
+					{
+						nullable = await this.UnpackSingleValueAsync( unpacker, index, cancellationToken ).ConfigureAwait( false );
+					}
+					else if ( this._getters[ index ] != null ) // null getter supposes undeclared member (should be treated as nil)
+					{
+						await this.UnpackAndAddCollectionItemAsync( objectGraph, unpacker, index, cancellationToken ).ConfigureAwait( false );
+					}
+				}
+			}
+
+			if ( this._constructorParameters != null )
+			{
+#if DEBUG && !UNITY
+				Contract.Assert( objectGraph is object[], "objectGraph is object[]" );
+#endif // !UNITY
+
+				int argumentIndex;
+				if ( this._constructorArgumentIndexes.TryGetValue( index, out argumentIndex ) )
+				{
+					if ( nullable == null )
+					{
+						ReflectionNilImplicationHandler.Instance.OnUnpacked(
+							new ReflectionSerializerNilImplicationHandlerOnUnpackedParameter(
+								this._memberInfos[ index ].GetMemberValueType(),
+								// ReSharper disable once PossibleNullReferenceException
+								value => ( objectGraph as object[] )[ argumentIndex ] = nullable,
+								this._contracts[ index ].Name,
+								this._memberInfos[ index ].DeclaringType
+							),
+							this._contracts[ index ].NilImplication
+						)( null );
+					}
+					else
+					{
+						( objectGraph as object[] )[ argumentIndex ] = nullable;
+					}
+				}
+			}
+			else if ( setter != null )
+			{
+				if ( nullable == null )
+				{
+					ReflectionNilImplicationHandler.Instance.OnUnpacked(
+						new ReflectionSerializerNilImplicationHandlerOnUnpackedParameter(
+							this._memberInfos[ index ].GetMemberValueType(),
+							value => setter( objectGraph, nullable ),
+							this._contracts[ index ].Name,
+							this._memberInfos[ index ].DeclaringType
+						),
+						this._contracts[ index ].NilImplication
+					)( null );
+				}
+				else
+				{
+					setter( objectGraph, nullable );
+				}
+			}
+
+			return objectGraph;
+		} // UnpackMemberValueAsync
+
+		private Task<object> UnpackSingleValueAsync( Unpacker unpacker, int index, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+			{
+				return this._serializers[ index ].UnpackFromAsync( unpacker, cancellationToken );
+			}
+			else
+			{
+				using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+				{
+					return this._serializers[ index ].UnpackFromAsync( subtreeUnpacker, cancellationToken );
+				}
+			}
+		}
+
+		private async Task UnpackAndAddCollectionItemAsync( object objectGraph, Unpacker unpacker, int index, CancellationToken cancellationToken )
+		{
+			var destination = this._getters[ index ]( objectGraph );
+			if ( destination == null )
+			{
+				throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._contracts[ index ].Name );
+			}
+
+			var traits = destination.GetType().GetCollectionTraits();
+			if ( traits.AddMethod == null )
+			{
+				throw SerializationExceptions.NewUnpackToIsNotSupported( destination.GetType(), null );
+			}
+
+			var source = await this._serializers[ index ].UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false ) as IEnumerable;
+			if ( source != null )
+			{
+				switch ( traits.DetailedCollectionType )
+				{
+					case CollectionDetailedKind.GenericDictionary:
+					{
+						// item should be KeyValuePair<TKey, TValue>
+						var arguments = new object[ 2 ];
+						var key = default( PropertyInfo );
+						var value = default( PropertyInfo );
+						foreach ( var item in source )
+						{
+							if ( key == null )
+							{
+								key = item.GetType().GetProperty( "Key" );
+								value = item.GetType().GetProperty( "Value" );
+							}
+
+							arguments[ 0 ] = key.GetValue( item, null );
+							arguments[ 1 ] = value.GetValue( item, null );
+							traits.AddMethod.InvokePreservingExceptionType( destination, arguments );
+						}
+						break;
+					}
+					case CollectionDetailedKind.NonGenericDictionary:
+					{
+						// item should be DictionaryEntry
+						var arguments = new object[ 2 ];
+						foreach ( var item in source )
+						{
+							arguments[ 0 ] = ReflectionSerializerHelper.DictionaryEntryKeyProperty.GetValue( item, null );
+							arguments[ 1 ] = ReflectionSerializerHelper.DictionaryEntryValueProperty.GetValue( item, null );
+							traits.AddMethod.InvokePreservingExceptionType( destination, arguments );
+						}
+						break;
+					}
+					default:
+					{
+						var arguments = new object[ 1 ];
+						foreach ( var item in source )
+						{
+							arguments[ 0 ] = item;
+							traits.AddMethod.InvokePreservingExceptionType( destination, arguments );
+						}
+						break;
+					}
+				}
+			}
+		} // UnpackAndAddCollectionItemAsync
+
+#endif // FEATURE_TAP
 	}
 }

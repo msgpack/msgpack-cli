@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,7 +26,13 @@ using System;
 #if !UNITY
 using System.Collections.Generic;
 #endif // !UNITY
+#if UNITY
 using System.Reflection;
+#endif // UNITY
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -60,24 +66,55 @@ namespace MsgPack.Serialization.DefaultSerializers
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
 
-			var key = unpacker.LastReadData.IsNil ? default( TKey ) : this._keySerializer.UnpackFrom( unpacker );
+			var key = unpacker.LastReadData.IsNil ? default( TKey ) : this._keySerializer.UnpackFromCore( unpacker );
 
 			if ( !unpacker.Read() )
 			{
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
 
-			var value = unpacker.LastReadData.IsNil ? default( TValue ) : this._valueSerializer.UnpackFrom( unpacker );
+			var value = unpacker.LastReadData.IsNil ? default( TValue ) : this._valueSerializer.UnpackFromCore( unpacker );
 
 			return new KeyValuePair<TKey, TValue>( key, value );
 		}
+
+#if FEATURE_TAP
+
+		protected internal override async Task PackToAsyncCore( Packer packer, KeyValuePair<TKey, TValue> objectTree, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( 2, cancellationToken ).ConfigureAwait( false );
+			await this._keySerializer.PackToAsync( packer, objectTree.Key, cancellationToken ).ConfigureAwait( false );
+			await this._valueSerializer.PackToAsync( packer, objectTree.Value, cancellationToken ).ConfigureAwait( false );
+		}
+
+		protected internal override async Task<KeyValuePair<TKey, TValue>> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+			{
+				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+			}
+
+			var key = unpacker.LastReadData.IsNil ? default( TKey ) : await this._keySerializer.UnpackFromAsyncCore( unpacker, cancellationToken ).ConfigureAwait( false );
+
+			if ( !await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+			{
+				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+			}
+
+			var value = unpacker.LastReadData.IsNil ? default( TValue ) : await this._valueSerializer.UnpackFromAsyncCore( unpacker, cancellationToken ).ConfigureAwait( false );
+
+			return new KeyValuePair<TKey, TValue>( key, value );
+		}
+
+#endif // FEATURE_TAP
+
 	}
 #else
 	// ReSharper disable once InconsistentNaming
 	internal sealed class System_Collections_Generic_KeyValuePair_2MessagePackSerializer : NonGenericMessagePackSerializer
 	{
-		private readonly IMessagePackSingleObjectSerializer _keySerializer;
-		private readonly IMessagePackSingleObjectSerializer _valueSerializer;
+		private readonly MessagePackSerializer _keySerializer;
+		private readonly MessagePackSerializer _valueSerializer;
 		private readonly MethodInfo _getKey;
 		private readonly MethodInfo _getValue;
 
@@ -104,7 +141,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			if ( !unpacker.Read() )
 			{
-				throw SerializationExceptions.NewUnexpectedEndOfStream();
+				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
 
 			var key =
@@ -112,7 +149,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			if ( !unpacker.Read() )
 			{
-				throw SerializationExceptions.NewUnexpectedEndOfStream();
+				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
 
 			var value = unpacker.LastReadData.IsNil ? null : this._valueSerializer.UnpackFrom( unpacker );

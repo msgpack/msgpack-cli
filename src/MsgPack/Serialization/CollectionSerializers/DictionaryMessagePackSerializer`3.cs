@@ -102,8 +102,8 @@ namespace MsgPack.Serialization.CollectionSerializers
 	internal abstract class UnityDictionaryMessagePackSerializer : NonGenericMessagePackSerializer,
 		ICollectionInstanceFactory
 	{
-		private readonly IMessagePackSingleObjectSerializer _keySerializer;
-		private readonly IMessagePackSingleObjectSerializer _valueSerializer;
+		private readonly MessagePackSerializer _keySerializer;
+		private readonly MessagePackSerializer _valueSerializer;
 		private readonly MethodInfo _add;
 		private readonly MethodInfo _getCount;
 		private readonly MethodInfo _getKey;
@@ -143,7 +143,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		{
 			if ( !unpacker.IsMapHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
 			return this.InternalUnpackFromCore( unpacker );
@@ -168,7 +168,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		{
 			if ( !unpacker.IsMapHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
 			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
@@ -180,7 +180,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 			{
 				if ( !unpacker.Read() )
 				{
-					throw SerializationExceptions.NewMissingItem( i );
+					SerializationExceptions.ThrowMissingItem( i, unpacker );
 				}
 
 				object key;
@@ -198,7 +198,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 
 				if ( !unpacker.Read() )
 				{
-					throw SerializationExceptions.NewMissingItem( i );
+					SerializationExceptions.ThrowMissingItem( i, ( key ?? String.Empty ).ToString(), unpacker );
 				}
 
 

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,6 +26,10 @@ using System;
 #if UNITY
 using System.Collections;
 #endif // UNITY
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -38,7 +42,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if !UNITY
 		private readonly MessagePackSerializer<T> _itemSerializer;
 #else
-		private readonly IMessagePackSingleObjectSerializer _itemSerializer;
+		private readonly MessagePackSerializer _itemSerializer;
 		private readonly Type _itemType;
 #endif // !UNITY
 
@@ -156,5 +160,69 @@ namespace MsgPack.Serialization.DefaultSerializers
 				collection[ i ] = item;
 			}
 		}
+
+#if FEATURE_TAP
+
+		protected internal override async Task PackToAsyncCore( Packer packer, T[] objectTree, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+			foreach ( var item in objectTree )
+			{
+				await this._itemSerializer.PackToAsync( packer, item, cancellationToken ).ConfigureAwait( false );
+			}
+		}
+
+		protected internal override async Task<T[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			var count = UnpackHelpers.GetItemsCount( unpacker );
+			var result = new T[ count ];
+			await this.UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+			return result;
+		}
+
+		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, T[] collection, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			return this.UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+		}
+
+		private async Task UnpackToAsyncCore( Unpacker unpacker, T[] collection, int count, CancellationToken cancellationToken )
+		{
+			for ( int i = 0; i < count; i++ )
+			{
+				if ( !await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+				{
+					SerializationExceptions.ThrowMissingItem( i, unpacker );
+				}
+
+				T item;
+				if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+				{
+					item = await this._itemSerializer.UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false );
+				}
+				else
+				{
+					using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+					{
+						item = await this._itemSerializer.UnpackFromAsync( subtreeUnpacker, cancellationToken ).ConfigureAwait( false );
+					}
+				}
+
+				collection[ i ] = item;
+			}
+		}
+
+#endif // FEATURE_TAP
+
+
 	}
 }

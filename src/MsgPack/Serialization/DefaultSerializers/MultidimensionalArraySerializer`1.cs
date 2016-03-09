@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,7 +25,10 @@
 using System;
 using System.Globalization;
 using System.IO;
-using System.Runtime.Serialization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -39,8 +42,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MessagePackSerializer<TItem> _itemSerializer;
 		private readonly MessagePackSerializer<int[]> _int32ArraySerializer;
 #else
-		private readonly IMessagePackSingleObjectSerializer _itemSerializer;
-		private readonly IMessagePackSingleObjectSerializer _int32ArraySerializer;
+		private readonly MessagePackSerializer _itemSerializer;
+		private readonly MessagePackSerializer _int32ArraySerializer;
 		private readonly Type _itemType;
 #endif // !UNITY
 
@@ -310,6 +313,200 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // !UNITY
 			}
 		}
+
+#if FEATURE_TAP
+
+		protected internal override Task PackToAsyncCore( Packer packer, TArray objectTree, CancellationToken cancellationToken )
+		{
+			return this.PackArrayAsyncCore( packer, ( Array )( object )objectTree, cancellationToken );
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes", Justification = "Avoided via ownsStream: false" )]
+		private async Task PackArrayAsyncCore( Packer packer, Array array, CancellationToken cancellationToken )
+		{
+#if !NETFX_CORE && !CORE_CLR
+			var longLength = array.LongLength;
+			if ( longLength > Int32.MaxValue )
+			{
+				throw new NotSupportedException( "Array length over 32bit is not supported." );
+			}
+
+			var totalLength = unchecked( ( int )longLength );
+#else
+			var totalLength = array.Length;
+#endif // !NETFX_CORE && !CORE_CLR
+			int[] lowerBounds, lengths;
+			GetArrayMetadata( array, out lengths, out lowerBounds );
+
+			await packer.PackArrayHeaderAsync( 2, cancellationToken ).ConfigureAwait( false );
+
+			using ( var buffer = new MemoryStream() )
+			using ( var bodyPacker = Packer.Create( buffer, false ) )
+			{
+				await bodyPacker.PackArrayHeaderAsync( 2, cancellationToken ).ConfigureAwait( false );
+				await this._int32ArraySerializer.PackToAsync( bodyPacker, lengths, cancellationToken ).ConfigureAwait( false );
+				await this._int32ArraySerializer.PackToAsync( bodyPacker, lowerBounds, cancellationToken ).ConfigureAwait( false );
+				await packer.PackExtendedTypeValueAsync( this.OwnerContext.ExtTypeCodeMapping[ KnownExtTypeName.MultidimensionalArray ], buffer.ToArray(), cancellationToken ).ConfigureAwait( false );
+			}
+
+			await packer.PackArrayHeaderAsync( totalLength, cancellationToken ).ConfigureAwait( false );
+			ForEach(
+				array,
+				totalLength,
+				lowerBounds,
+				lengths,
+				// ReSharper disable once AccessToDisposedClosure
+				async indices => await this._itemSerializer.PackToAsync( packer, ( TItem )array.GetValue( indices ), cancellationToken ).ConfigureAwait( false )
+			);
+		}
+
+		protected internal override async Task<TArray> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			if ( UnpackHelpers.GetItemsCount( unpacker ) != 2 )
+			{
+				SerializationExceptions.ThrowSerializationException( "Multidimensional array must be encoded as 2 element array." );
+			}
+
+			using ( var wholeUnpacker = unpacker.ReadSubtree() )
+			{
+				if ( !await wholeUnpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+				{
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+				}
+
+				MessagePackExtendedTypeObject metadata;
+				try
+				{
+					metadata = wholeUnpacker.LastReadData.AsMessagePackExtendedTypeObject();
+				}
+				catch ( InvalidOperationException ex )
+				{
+					SerializationExceptions.ThrowSerializationException( "Multidimensional array must be encoded as ext type.", ex );
+					metadata = default( MessagePackExtendedTypeObject ); // never reaches
+				}
+
+				if ( metadata.TypeCode != this.OwnerContext.ExtTypeCodeMapping[ KnownExtTypeName.MultidimensionalArray ] )
+				{
+					SerializationExceptions.ThrowSerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Multidimensional array must be encoded as ext type 0x{0:X2}.",
+							this.OwnerContext.ExtTypeCodeMapping[ KnownExtTypeName.MultidimensionalArray ]
+							)
+						);
+				}
+
+				Tuple<int[], int[]> lengthsAndLowerBounds;
+
+				using ( var arrayMetadata = new MemoryStream( metadata.Body ) )
+				using ( var metadataUnpacker = Unpacker.Create( arrayMetadata, false ) )
+				{
+					if ( !metadataUnpacker.Read() )
+					{
+						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+					}
+
+					if ( !metadataUnpacker.IsArrayHeader )
+					{
+						SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+					}
+
+					if ( UnpackHelpers.GetItemsCount( metadataUnpacker ) != 2 )
+					{
+						SerializationExceptions.ThrowSerializationException( "Multidimensional metadata array must be encoded as 2 element array." );
+					}
+
+					lengthsAndLowerBounds = await this.ReadArrayMetadataAsync( metadataUnpacker, cancellationToken ).ConfigureAwait( false );
+				}
+
+				if ( !await wholeUnpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+				{
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+				}
+
+				if ( !wholeUnpacker.IsArrayHeader )
+				{
+					SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+				}
+
+				using ( var arrayUnpacker = wholeUnpacker.ReadSubtree() )
+				{
+					var result =
+						Array.CreateInstance( typeof( TItem ), lengthsAndLowerBounds.Item1, lengthsAndLowerBounds.Item2 );
+
+					var totalLength = UnpackHelpers.GetItemsCount( arrayUnpacker );
+					if ( totalLength > 0 )
+					{
+						ForEach(
+							result,
+							totalLength,
+							lengthsAndLowerBounds.Item2,
+							lengthsAndLowerBounds.Item1,
+							async indices =>
+							{
+								// ReSharper disable AccessToDisposedClosure
+								if ( !await arrayUnpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+								{
+									SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+								}
+
+								result.SetValue(
+									await this._itemSerializer.UnpackFromAsync( arrayUnpacker, cancellationToken ).ConfigureAwait( false ),
+									indices
+								);
+								// ReSharper restore AccessToDisposedClosure
+							}
+						);
+					}
+
+					return ( TArray )( object )result;
+				}
+			}
+		}
+
+		private async Task<Tuple<int[],int[]>> ReadArrayMetadataAsync( Unpacker metadataUnpacker, CancellationToken cancellationToken )
+		{
+			if ( !await metadataUnpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+			{
+				SerializationExceptions.ThrowUnexpectedEndOfStream( metadataUnpacker );
+			}
+
+			if ( !metadataUnpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( metadataUnpacker );
+			}
+
+			int[] lengths, lowerBounds;
+
+			using ( var lengthsUnpacker = metadataUnpacker.ReadSubtree() )
+			{
+				lengths = await this._int32ArraySerializer.UnpackFromAsync( lengthsUnpacker, cancellationToken ).ConfigureAwait( false );
+			}
+
+			if ( !await metadataUnpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+			{
+				SerializationExceptions.ThrowUnexpectedEndOfStream( metadataUnpacker );
+			}
+
+			if ( !metadataUnpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( metadataUnpacker );
+			}
+
+			using ( var lowerBoundsUnpacker = metadataUnpacker.ReadSubtree() )
+			{
+				lowerBounds = await this._int32ArraySerializer.UnpackFromAsync( lowerBoundsUnpacker, cancellationToken ).ConfigureAwait( false );
+			}
+
+			return Tuple.Create( lengths, lowerBounds );
+		}
+
+#endif // FEATURE_TAP
 
 		private static void ForEach( Array array, int totalLength, int[] lowerBounds, int[] lengths, Action<int[]> action )
 		{

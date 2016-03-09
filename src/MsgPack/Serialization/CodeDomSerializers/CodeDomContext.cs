@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -30,6 +30,10 @@ using System.Linq;
 using System.Reflection;
 using System.Security;
 using System.Text;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.AbstractSerializers;
 
@@ -139,12 +143,16 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		// For the field identified by its name.
 		protected override FieldDefinition DeclarePrivateFieldCore( string name, TypeDefinition type )
 		{
-			this._buildingType.Members.Add(
-				new CodeMemberField( CodeDomSerializerBuilder.ToCodeTypeReference( type ), name )
-				{
-					Attributes = MemberAttributes.Private
-				}
-			);
+			var field = this._buildingType.Members.OfType<CodeMemberField>().SingleOrDefault( f => f.Name == name );
+			if ( field == null )
+			{
+				this._buildingType.Members.Add(
+					new CodeMemberField( CodeDomSerializerBuilder.ToCodeTypeReference( type ), name )
+					{
+						Attributes = MemberAttributes.Private
+					}
+				);
+			}
 
 			return new FieldDefinition( null, name, type );
 		}
@@ -257,6 +265,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			this.PackToTarget = CodeDomConstruct.Parameter( targetType, "objectTree" );
 			this.Unpacker = CodeDomConstruct.Parameter( typeof( Unpacker ), "unpacker" );
 			this.IndexOfItem = CodeDomConstruct.Parameter( typeof( int ), "indexOfItem" );
+			this.ItemsCount = CodeDomConstruct.Parameter( typeof( int ), "itemsCount" );
 			this.UnpackToTarget = CodeDomConstruct.Parameter( targetType, "collection" );
 			var traits = targetType.GetCollectionTraits();
 			if ( traits.ElementType != null )
@@ -406,6 +415,55 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
 					break;
 				}
+#if FEATURE_TAP
+				case MethodName.PackToAsyncCore:
+				{
+					codeMethod.ReturnType = new CodeTypeReference( typeof( Task ) );
+					codeMethod.Parameters.Add( this.Packer.AsParameter() );
+					codeMethod.Parameters.Add( this.PackToTarget.AsParameter() );
+					codeMethod.Parameters.Add( CreateCancellationTokenParameter() );
+					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+					codeMethod.Attributes = ( this.IsInternalToMsgPackLibrary ? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
+					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
+
+					break;
+				}
+				case MethodName.UnpackFromAsyncCore:
+				{
+					codeMethod.ReturnType = new CodeTypeReference( typeof( Task<> ).MakeGenericType( this._targetType ) );
+					codeMethod.Parameters.Add( this.Unpacker.AsParameter() );
+					codeMethod.Parameters.Add( CreateCancellationTokenParameter() );
+					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+					codeMethod.Attributes = ( this.IsInternalToMsgPackLibrary ? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
+					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
+
+					break;
+				}
+				case MethodName.UnpackToAsyncCore:
+				{
+					codeMethod.ReturnType = new CodeTypeReference( typeof( Task ) );
+					codeMethod.Parameters.Add( this.Unpacker.AsParameter() );
+					codeMethod.Parameters.Add( this.UnpackToTarget.AsParameter() );
+					codeMethod.Parameters.Add( CreateCancellationTokenParameter() );
+					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+					codeMethod.Attributes = ( this.IsInternalToMsgPackLibrary ? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
+					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
+
+					break;
+				}
+				case MethodName.PackUnderlyingValueToAsync:
+				{
+					codeMethod.ReturnType = new CodeTypeReference( typeof( Task ) );
+					codeMethod.Parameters.Add( this.Packer.AsParameter() );
+					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( this._targetType, "enumValue" ) );
+					codeMethod.Parameters.Add( CreateCancellationTokenParameter() );
+					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+					codeMethod.Attributes = ( this.IsInternalToMsgPackLibrary ? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
+					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
+
+					break;
+				}
+#endif // FEATURE_TAP
 				default:
 				{
 					throw new ArgumentOutOfRangeException( "name", name );
@@ -424,6 +482,15 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					context.Parameters.Select( kv => kv.Value ).ToArray()
 				);
 		}
+
+#if FEATURE_TAP
+
+		private static CodeParameterDeclarationExpression CreateCancellationTokenParameter()
+		{
+			return new CodeParameterDeclarationExpression( typeof( CancellationToken ), "cancellationToken" );
+		}
+
+#endif // FEATURE_TAP
 
 		protected override MethodDefinition EndPrivateMethodCore( string name, CodeDomConstruct body )
 		{
@@ -479,6 +546,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			out TypeDefinition type,
 			out ConstructorDefinition constructor,
 			out CodeDomConstruct parameterInUnpackValueMethods,
+			out CodeDomConstruct parameterInSetValueMethods,
 			out CodeDomConstruct parameterInCreateObjectFromContext
 		)
 		{
@@ -515,19 +583,30 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			this._buildingType.Members.Add( codeType );
 			type = TypeDefinition.Object( codeType.Name );
 			constructor = new ConstructorDefinition( type, fields.Select( kv => kv.Value ).ToArray() );
-			parameterInUnpackValueMethods = CodeDomConstruct.Parameter( type, "unpackingContext" );
-			parameterInCreateObjectFromContext = CodeDomConstruct.Parameter( type, "unpackingContext" );
+			DefineUnpackValueMethodArguments( type, out parameterInUnpackValueMethods, out parameterInSetValueMethods, out parameterInCreateObjectFromContext );
 		}
 
 		protected override void DefineUnpackingContextWithResultObjectCore(
 			out TypeDefinition type,
 			out CodeDomConstruct parameterInUnpackValueMethods,
+			out CodeDomConstruct parameterInSetValueMethods,
 			out CodeDomConstruct parameterInCreateObjectFromContext
 		)
 		{
 			type = TypeDefinition.Object( this._targetType );
+			DefineUnpackValueMethodArguments( type, out parameterInUnpackValueMethods, out parameterInSetValueMethods, out parameterInCreateObjectFromContext );
+		}
+
+		private static void DefineUnpackValueMethodArguments( TypeDefinition type, out CodeDomConstruct parameterInUnpackValueMethods, out CodeDomConstruct parameterInSetValueMethods, out CodeDomConstruct parameterInCreateObjectFromContext )
+		{
 			parameterInUnpackValueMethods = CodeDomConstruct.Parameter( type, "unpackingContext" );
+			parameterInSetValueMethods = CodeDomConstruct.Parameter( type, "unpackingContext" );
 			parameterInCreateObjectFromContext = CodeDomConstruct.Parameter( type, "unpackingContext" );
+		}
+
+		public override CodeDomConstruct DefineUnpackedItemParameterInSetValueMethods( TypeDefinition itemType )
+		{
+			return CodeDomConstruct.Parameter( itemType, "unpackedValue" );
 		}
 
 		/// <summary>

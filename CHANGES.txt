@@ -409,3 +409,16 @@ Release 0.7.0-alpha1 - 2015/11/22
 
   BUG FIXES
   * Fix Unpacker.Skip failes when the stream is fragmented such as raw NetworkStream.
+
+Release 0.7.0-alpha2
+
+  BREAKING CHANGES
+  * Generated serializer now always check SerializationContext.SerializationMethod when they serialize objects. Changing SerializationContext.SerializationMethod in use causes unexpected behavior even it is extremely rare to do it.
+  * Generated serializers code has different structure, it might break your custom toolset which depends generated code structure.
+
+  IMPROVEMENTS
+  * Generated serializer now always check SerializationContext.SerializationMethod when they serialize objects. No longer need to re-generate serializer codes/assemblies to switch serialization method between array and map.
+  * Generated code now more structured which improves debuggability, it also remove some redundant expressions.
+
+  NEW FEATURES
+  * Async support. Issue #49.

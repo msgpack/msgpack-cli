@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,6 +20,10 @@
 
 using System;
 using System.Collections.Generic;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.CollectionSerializers;
 
@@ -94,5 +98,58 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			return new Queue<TItem>( initialCapacity );
 		}
+
+#if FEATURE_TAP
+
+		protected internal override async Task PackToAsyncCore( Packer packer, Queue<TItem> objectTree, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( objectTree.Count, cancellationToken ).ConfigureAwait( false );
+			foreach ( var item in objectTree )
+			{
+				await this._itemSerializer.PackToAsync( packer, item, cancellationToken ).ConfigureAwait( false );
+			}
+		}
+
+		protected internal override async Task<Queue<TItem>> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			var queue = new Queue<TItem>( UnpackHelpers.GetItemsCount( unpacker ) );
+			await this.UnpackToAsyncCore( unpacker, queue, cancellationToken ).ConfigureAwait( false );
+
+			return queue;
+		}
+
+		protected internal override async Task UnpackToAsyncCore( Unpacker unpacker, Queue<TItem> collection, CancellationToken cancellationToken )
+		{
+			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+			for ( int i = 0; i < itemsCount; i++ )
+			{
+				if ( !await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+				{
+					SerializationExceptions.ThrowMissingItem( i, unpacker );
+				}
+
+				TItem item;
+				if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+				{
+					item = await this._itemSerializer.UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false );
+				}
+				else
+				{
+					using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
+					{
+						item = await this._itemSerializer.UnpackFromAsync( subtreeUnpacker, cancellationToken ).ConfigureAwait( false );
+					}
+				}
+
+				collection.Enqueue( item );
+			}
+		}
+
+#endif // FEATURE_TAP
 	}
 }

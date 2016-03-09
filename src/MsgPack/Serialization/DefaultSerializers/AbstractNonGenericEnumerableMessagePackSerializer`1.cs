@@ -26,6 +26,10 @@ using System;
 #if !UNITY
 using System.Collections;
 #endif // !UNITY
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.CollectionSerializers;
 using MsgPack.Serialization.Polymorphic;
@@ -40,7 +44,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // !UNITY
 	{
 		private readonly ICollectionInstanceFactory _concreteCollectionInstanceFactory;
-		private readonly IMessagePackSingleObjectSerializer _concreteSerializer;
+		private readonly MessagePackSerializer _concreteSerializer;
 
 		public AbstractNonGenericEnumerableMessagePackSerializer(
 			SerializationContext ownerContext,
@@ -99,6 +103,28 @@ namespace MsgPack.Serialization.DefaultSerializers
 					this._concreteSerializer.UnpackFrom( unpacker );
 			}
 		}
+
+#if FEATURE_TAP
+
+		protected internal override async Task<TCollection> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			var polymorPhicSerializer = this._concreteSerializer as IPolymorphicDeserializer;
+			if ( polymorPhicSerializer != null )
+			{
+				// This boxing is OK because TCollection should be reference type because TCollection is abstract class or interface.
+				return
+					( TCollection )
+						( await polymorPhicSerializer.PolymorphicUnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false ) );
+			}
+			else
+			{
+				return
+					( TCollection )
+						( await this._concreteSerializer.UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false ) );
+			}
+		}
+
+#endif // FEATURE_TAP
 
 #if !UNITY
 		protected override TCollection CreateInstance( int initialCapacity )

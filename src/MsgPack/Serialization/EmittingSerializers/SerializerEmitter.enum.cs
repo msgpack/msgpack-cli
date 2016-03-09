@@ -19,7 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-using System.Linq;
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
@@ -61,24 +60,24 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <summary>
 		///		Creates the serializer type built now and returns its new instance.
 		/// </summary>
-		/// <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
 		/// <param name="context">The <see cref="SerializationContext"/> to holds serializers.</param>
+		/// <param name="targetType">Target type to be serialized/deserialized.</param>
 		/// <param name="serializationMethod">The <see cref="EnumSerializationMethod"/> which determines serialization form of the enums.</param>
 		/// <returns>
 		///		Newly built <see cref="MessagePackSerializer{T}"/> instance.
 		///		This value will not be <c>null</c>.
 		///	</returns>
-		public MessagePackSerializer<T> CreateEnumInstance<T>( SerializationContext context, EnumSerializationMethod serializationMethod )
+		public MessagePackSerializer CreateEnumInstance( SerializationContext context, Type targetType, EnumSerializationMethod serializationMethod )
 		{
-			return this.CreateEnumConstructor<T>()( context, serializationMethod );
+			return this.CreateEnumConstructor( targetType )( context, serializationMethod );
 		}
 
 		/// <summary>
 		///		Creates instance constructor delegates.
 		/// </summary>
-		/// <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
+		/// <param name="targetType">Target type to be serialized/deserialized.</param>
 		/// <returns>A delegate for serializer constructor.</returns>
-		public Func<SerializationContext, EnumSerializationMethod, MessagePackSerializer<T>> CreateEnumConstructor<T>()
+		public Func<SerializationContext, EnumSerializationMethod, MessagePackSerializer> CreateEnumConstructor( Type targetType )
 		{
 			var methodConstructor =
 				this.CreateConstructor(
@@ -103,7 +102,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Contract.Assert( ctor != null, "ctor != null" );
 #endif
 			return
-				Expression.Lambda<Func<SerializationContext, EnumSerializationMethod, MessagePackSerializer<T>>>(
+				Expression.Lambda<Func<SerializationContext, EnumSerializationMethod, MessagePackSerializer>>(
 					Expression.New(
 						ctor,
 						contextParameter,

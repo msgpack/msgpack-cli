@@ -2,7 +2,7 @@
 <ProjectSync>
   <Project Name="MsgPack.Net35" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude Path="Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs" />
+    <Exclude Path="Serialization\AbstractSerializers\SerializerBuilder`2.Tuple.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
@@ -12,7 +12,9 @@
     <Exclude Path="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
     <Exclude Path="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
     <Exclude Path="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Exclude Path="Serialization\EmittingSerializers\CallbackReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Exclude Path="Serialization\EmittingSerializers\CallbackReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Exclude Path="Serialization\ExpressionSerializers\*" />
@@ -24,54 +26,31 @@
     <Preserve Path="Delegates.tt" />
     <Preserve Path="Delegates.cs" />
     <Preserve Path="NetFxCompatibilities.cs" />
+    <Preserve Path="Volatile.cs" />
     <Preserve Path="Tuple`n.tt" />
     <Preserve Path="Tuple`n.cs" />
     <Exclude Path="TupleItems.cs" />
   </Project>
 
-  <Project Name="MsgPack.Net40" Base="MsgPack">
+  <Project Name="MsgPack.Net45" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude Path="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
-    <Exclude Path="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyCollectionMessagePackSerializer`2.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyDictionaryMessagePackSerializer`3.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />
-    <Exclude Path="Serialization\EmittingSerializers\CallbackReadOnlyCollectionMessagePackSerializer`2.cs" />
-    <Exclude Path="Serialization\EmittingSerializers\CallbackReadOnlyDictionaryMessagePackSerializer`3.cs" />
-    <Exclude Path="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyCollectionMessagePackSerializer`2.cs" />
-    <Exclude Path="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyDictionaryMessagePackSerializer`3.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
   </Project>
 
-  <Project Name="MsgPack.CoreClr" Base="MsgPack">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
-    <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
-    <Exclude Path="Serialization\CodeDomSerializers\*.cs" />
-    <Exclude Path="Serialization\EmittingSerializers\AssemblyBuilderCodeGenerationContext.cs" />
-    <Exclude Path="Serialization\Reflection\ReflectionHelpers.cs" />
-    <Exclude Path="Serialization\SerializerCodeGenerationConfiguration.cs" />
-    <Exclude Path="Serialization\SerializerCodeGenerationResult.cs" />
-    <Exclude Path="Serialization\SerializerGeneration.cs" />
-    <Exclude Path="Serialization\Tracer.cs" />
-    <Exclude File="*.tt" />
-    <Exclude File="*.ttinclude" />
-    <Preserve Path="BufferedStream.cs" />
-    <Preserve Path="MPContract.cs" />
-    <Preserve Path="WinRTCompatibility.cs" />
-  </Project>
+  <!-- No MsgPack.CoreClr - project.json should be maintained manually... -->
 
   <Project Name="MsgPack.Xamarin.iOS" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Preserve Path="MPContract.cs" />
     <Exclude Path="Serialization\AbstractSerializers\*" />
     <Exclude Path="Serialization\CodeDomSerializers\*" />
     <Exclude Path="Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs" />
     <Exclude Path="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
     <Exclude Path="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Exclude Path="Serialization\EmittingSerializers\*" />
     <Exclude Path="Serialization\ExpressionSerializers\*" />
     <Exclude Path="Serialization\Metadata\*" />
@@ -104,12 +83,16 @@
     <Preserve Path="Serialization\EnumTypedMessagePackSerializerWrapper`1.cs" />
     <Preserve Path="CorLibOnlyHelper*.tt" />
     <Preserve Path="CorLibOnlyHelper*.cs" />
+    <Preserve Path="MPContract.cs" />
+    <Preserve Path="Volatile.cs" />
     <Exclude Path="Serialization\CollectionSerializers\CollectionSerializerBase`2.cs" />
     <Exclude Path="Serialization\CollectionSerializers\DictionarySerializerBase`3.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyDictionaryMessagePackSerializer`3.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Exclude Path="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
     <Exclude Path="UnsafeNativeMethods.cs" />
     <Exclude Path="Validation.cs" />
@@ -140,6 +123,8 @@
     <Exclude Path="Serialization\DefaultSerializers\System_Collections_QueueMessagePackSerializer.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_Collections_StackMessagePackSerializer.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_DBNullMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Exclude Path="Serialization\Metadata\_IDisposable.cs" />
     <Exclude Path="Serialization\EmittingSerializers\*" />
     <Preserve Path="Serialization\Reflection\ReflectionHelpers.cs" />
@@ -174,6 +159,8 @@
     <Exclude Path="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
     <Exclude Path="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
     <Exclude Path="Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Exclude Path="Serialization\EmittingSerializers\*" />
     <Exclude Path="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Exclude Path="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyDictionaryMessagePackSerializer`3.cs" />
@@ -193,6 +180,7 @@
     <Preserve Path="SilverlightExtensions.cs" />
     <Include Path="TupleItems.cs" />
     <Exclude Path="Validation.cs" />
+    <Preserve Path="Volatile.cs" />
   </Project>
 
   <Project Name="MsgPack.Silverlight.WindowsPhone" Base="MsgPack.WinRT.Portable">

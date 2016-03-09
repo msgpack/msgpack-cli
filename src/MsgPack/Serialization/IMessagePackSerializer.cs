@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Diagnostics.CodeAnalysis;
 
@@ -26,6 +30,7 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Defines non-generic message pack serializer interface.
 	/// </summary>
+	[Obsolete( "Use MessagePackSerializer abstract class instead." )]
 	public interface IMessagePackSerializer
 	{
 		/// <summary>
@@ -40,8 +45,12 @@ namespace MsgPack.Serialization
 		///		<paramref name="objectTree"/> is not compatible for this serializer.
 		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
-		///		The type of <paramref name="objectTree"/> is not serializable etc.
+		///		Failed to serialize object.
 		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		The type of <paramref name="objectTree"/> is not serializable even if it can be deserialized.
+		/// </exception>
+		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
 		[SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "'objectTree' does not mean System.Object." )]
 		void PackTo( Packer packer, object objectTree );
 
@@ -49,22 +58,23 @@ namespace MsgPack.Serialization
 		///		Deserialize object with specified <see cref="Unpacker"/>.
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree.</param>
-		/// <returns>Deserialized object.</returns>
+		/// <returns>The deserialized object.</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="unpacker"/> is <c>null</c>.
 		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		///		Failed to deserialize object.
 		/// </exception>
 		/// <exception cref="MessageTypeException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		///		Failed to deserialize object due to invalid stream.
 		/// </exception>
 		/// <exception cref="InvalidMessagePackStreamException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		///		Failed to deserialize object due to invalid stream.
 		/// </exception>
 		/// <exception cref="NotSupportedException">
-		///		Deserializing type is abstract type.
+		///		The type of deserializing is not serializable even if it can be serialized.
 		/// </exception>
+		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
 		object UnpackFrom( Unpacker unpacker );
 
 		/// <summary>
@@ -80,17 +90,18 @@ namespace MsgPack.Serialization
 		///		<paramref name="collection"/> is not compatible for this serializer.
 		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		///		Failed to deserialize object.
 		/// </exception>
 		/// <exception cref="MessageTypeException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		///		Failed to deserialize object due to invalid stream.
 		/// </exception>
 		/// <exception cref="InvalidMessagePackStreamException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		///		Failed to deserialize object due to invalid stream.
 		/// </exception>
 		/// <exception cref="NotSupportedException">
-		///		The type of <paramref name="collection"/> is not serializable etc.
+		///		The type of deserializing is not mutable collection.
 		/// </exception>
+		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
 		void UnpackTo( Unpacker unpacker, object collection );
 	}
 }

@@ -26,11 +26,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 #if !UNITY
-#if XAMIOS || XAMDROID || CORE_CLR
+#if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID || CORE_CLR
+#endif // CORE_CLR
 #endif // !UNITY
 using System.Linq;
 using System.Reflection;
@@ -231,7 +231,7 @@ namespace MsgPack
 #if NETFX_CORE || CORE_CLR
 		public static MethodInfo GetMethod( this Type source, string name )
 		{
-			return source.GetRuntimeMethods().SingleOrDefault( m => m.Name == name );
+			return source.GetRuntimeMethods().SingleOrDefault( m => m.Name == name && m.DeclaringType == source );
 		}
 
 		public static MethodInfo GetMethod( this Type source, string name, Type[] parameters )
@@ -330,6 +330,9 @@ namespace MsgPack
 
 		public static InterfaceMapping GetInterfaceMap( this Type source, Type interfaceType )
 		{
+#if CORE_CLR
+#warning CoreCLR does not implement InterfaceMap yet. See https://github.com/dotnet/corefx/issues/5381
+#endif // CORE_CLR
 			return source.GetTypeInfo().GetRuntimeInterfaceMap( interfaceType );
 		}
 

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,6 +20,10 @@
 
 using System;
 using System.Collections.Generic;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.CollectionSerializers;
 
@@ -84,5 +88,55 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			return new List<MessagePackObject>( initialCapacity );
 		}
+
+#if FEATURE_TAP
+
+		protected internal override async Task PackToAsyncCore( Packer packer, List<MessagePackObject> objectTree, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( objectTree.Count, cancellationToken ).ConfigureAwait( false );
+			foreach ( var item in objectTree )
+			{
+				await item.PackToMessageAsync( packer, null, cancellationToken ).ConfigureAwait( false );
+			}
+		}
+
+		protected internal override async Task<List<MessagePackObject>> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			var count = UnpackHelpers.GetItemsCount( unpacker );
+			var collection = new List<MessagePackObject>( count );
+			await UnpackToAsyncCore( unpacker, collection, count, cancellationToken ).ConfigureAwait( false );
+			return collection;
+		}
+
+		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, List<MessagePackObject> collection, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+		}
+
+		private static async Task UnpackToAsyncCore( Unpacker unpacker, List<MessagePackObject> collection, int count, CancellationToken cancellationToken )
+		{
+			for ( var i = 0; i < count; i++ )
+			{
+				if ( !await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+				{
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+				}
+
+				collection.Add( unpacker.LastReadData );
+			}
+		}
+
+#endif // FEATURE_TAP
+
 	}
 }

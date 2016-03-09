@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;XAMIOS</DefineConstants>
+    <DefineConstants>DEBUG;XAMIOS;FEATURE_TAP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -29,7 +29,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <DefineConstants>XAMIOS</DefineConstants>
+    <DefineConstants>XAMIOS;FEATURE_TAP</DefineConstants>
     <DocumentationFile>..\..\bin\MonoTouch10\MsgPack.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
@@ -47,8 +47,11 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\CommonAssemblyInfo.Pack.cs">
-      <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
+    <Compile Include="..\MsgPack\AsyncReadResult.cs">
+      <Link>AsyncReadResult.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\AsyncReadResult`1.cs">
+      <Link>AsyncReadResult`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\BigEndianBinary.cs">
       <Link>BigEndianBinary.cs</Link>
@@ -58,6 +61,9 @@
     </Compile>
     <Compile Include="..\MsgPack\BufferManager.cs">
       <Link>BufferManager.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\BufferPool.cs">
+      <Link>BufferPool.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\CollectionDebuggerProxy`1.cs">
       <Link>CollectionDebuggerProxy`1.cs</Link>
@@ -76,6 +82,12 @@
     </Compile>
     <Compile Include="..\MsgPack\GlobalSuppressions.cs">
       <Link>GlobalSuppressions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\IAsyncPackable.cs">
+      <Link>IAsyncPackable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\IAsyncUnpackable.cs">
+      <Link>IAsyncUnpackable.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\InvalidMessagePackStreamException.cs">
       <Link>InvalidMessagePackStreamException.cs</Link>
@@ -440,6 +452,9 @@
     <Compile Include="..\MsgPack\Serialization\ISerializerGeneratorConfiguration.cs">
       <Link>Serialization\ISerializerGeneratorConfiguration.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\ISupportMessagePackSerializerCapability.cs">
+      <Link>Serialization\ISupportMessagePackSerializerCapability.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\LazyDelegatingMessagePackSerializer`1.cs">
       <Link>Serialization\LazyDelegatingMessagePackSerializer`1.cs</Link>
     </Compile>
@@ -469,6 +484,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializer.cs">
       <Link>Serialization\MessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackSerializer.Factories.cs">
+      <Link>Serialization\MessagePackSerializer.Factories.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializerExtensions.cs">
       <Link>Serialization\MessagePackSerializerExtensions.cs</Link>
@@ -605,8 +623,14 @@
     <Compile Include="..\MsgPack\Serialization\SerializerAssemblyGenerationConfiguration.cs">
       <Link>Serialization\SerializerAssemblyGenerationConfiguration.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializerCapabilities.cs">
+      <Link>Serialization\SerializerCapabilities.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerDebugging.cs">
       <Link>Serialization\SerializerDebugging.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializerOptions.cs">
+      <Link>Serialization\SerializerOptions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerRegistrationOptions.cs">
       <Link>Serialization\SerializerRegistrationOptions.cs</Link>
@@ -631,6 +655,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\UnpackHelpers.direct.cs">
       <Link>Serialization\UnpackHelpers.direct.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\UnpackHelpers.facade.cs">
+      <Link>Serialization\UnpackHelpers.facade.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\SetOperation.cs">
       <Link>SetOperation.cs</Link>
@@ -695,7 +722,6 @@
     <Compile Include="..\MsgPack\Validation.cs">
       <Link>Validation.cs</Link>
     </Compile>
-    <Compile Include="MPContract.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

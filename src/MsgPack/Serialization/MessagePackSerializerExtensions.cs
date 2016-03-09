@@ -31,7 +31,7 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Serializes specified object to the <see cref="Stream"/> with default <see cref="PackerCompatibilityOptions"/>.
 		/// </summary>
-		/// <param name="source"><see cref="IMessagePackSerializer"/> object.</param>
+		/// <param name="source"><see cref="MessagePackSerializer"/> object.</param>
 		/// <param name="stream">Destination <see cref="Stream"/>.</param>
 		/// <param name="objectTree">Object to be serialized.</param>
 		/// <exception cref="ArgumentNullException">
@@ -42,7 +42,7 @@ namespace MsgPack.Serialization
 		///		Failed to serialize <paramref name="objectTree"/>.
 		/// </exception>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "'objectTree' does not mean System.Object." )]
-		public static void Pack( this IMessagePackSerializer source, Stream stream, object objectTree )
+		public static void Pack( this MessagePackSerializer source, Stream stream, object objectTree )
 		{
 			Pack(source, stream, objectTree, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions  );
 		}
@@ -50,7 +50,7 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Serializes specified object to the <see cref="Stream"/>.
 		/// </summary>
-		/// <param name="source"><see cref="IMessagePackSerializer"/> object.</param>
+		/// <param name="source"><see cref="MessagePackSerializer"/> object.</param>
 		/// <param name="stream">Destination <see cref="Stream"/>.</param>
 		/// <param name="objectTree">Object to be serialized.</param>
 		/// <param name="packerCompatibilityOptions">A <see cref="PackerCompatibilityOptions"/> which specifies compatibility options.</param>
@@ -62,7 +62,7 @@ namespace MsgPack.Serialization
 		///		Failed to serialize <paramref name="objectTree"/>.
 		/// </exception>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "'objectTree' does not mean System.Object." )]
-		public static void Pack( this IMessagePackSerializer source, Stream stream, object objectTree, PackerCompatibilityOptions packerCompatibilityOptions )
+		public static void Pack( this MessagePackSerializer source, Stream stream, object objectTree, PackerCompatibilityOptions packerCompatibilityOptions )
 		{
 			if ( source == null )
 			{
@@ -81,7 +81,7 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Deserialize object from the <see cref="Stream"/>.
 		/// </summary>
-		/// <param name="source"><see cref="IMessagePackSerializer"/> object.</param>
+		/// <param name="source"><see cref="MessagePackSerializer"/> object.</param>
 		/// <param name="stream">Source <see cref="Stream"/>.</param>
 		/// <returns>Deserialized object.</returns>
 		/// <exception cref="ArgumentNullException">
@@ -91,7 +91,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialize from <paramref name="stream"/>.
 		/// </exception>
-		public static object Unpack( this IMessagePackSerializer source, Stream stream )
+		public static object Unpack( this MessagePackSerializer source, Stream stream )
 		{
 			if ( source == null )
 			{

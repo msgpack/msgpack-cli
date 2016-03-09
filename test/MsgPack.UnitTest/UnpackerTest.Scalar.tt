@@ -1,23 +1,4 @@
-﻿<#
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-#>
-<#@ template debug="false" hostspecific="false" language="C#" #>
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ output extension=".cs" #>
 <#@ assembly Name="System.Core" #>
 <#@ assembly Name="System.Numerics" #>
@@ -116,6 +97,7 @@ var __reals =
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -131,22 +113,33 @@ namespace MsgPack
 	// This file was generated from UnpackerTest.Scalar.tt T4Template.
 	// Do not modify this file. Edit UnpackerTest.Scalar.tt instead.
 
+	#warning TODO: Read int and unpack as real and vice versa.
 	[TestFixture]
-	public partial class UnpackerTest_Scalar
+	[Timeout( 500 )]
+	public class UnpackerTest_Scalar
 	{
-		// FIXME: Direct reading and direct/MPO mixing cases.
 <#
-foreach( var __testCase in __integers )
+foreach( var isAsync in new [] { false, true } )
 {
+	if ( isAsync )
+	{
+#>
+
+#if FEATURE_TAP
+<#
+	}
+
+	foreach( var __testCase in __integers )
+	{
 #>
 
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read()
+		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsTrue( unpacker.Read() );
+				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
 #pragma warning disable 612,618
 				var result = unpacker.Data;
 #pragma warning restore 612,618
@@ -156,13 +149,13 @@ foreach( var __testCase in __integers )
 		}
 
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read_Splitted()
+		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Splitted()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				Assert.IsTrue( unpacker.Read() );
+				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
 #pragma warning disable 612,618
 				var result = unpacker.Data;
 #pragma warning restore 612,618
@@ -171,54 +164,79 @@ foreach( var __testCase in __integers )
 			}
 		}
 <#
-	foreach( var __variation in
-		new []
+		foreach( var isNullable in new [] { false, true } )
 		{
-			new { IsNullable = false },
-			new { IsNullable = true },
-		}
-	)
-	{
 #>
 
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>()
+		public <#= AsyncTest( isAsync, isNullable, __testCase.Item4 ) #>_<#= __testCase.Item1 #>()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				<#= __testCase.Item4.Name #><#= __variation.IsNullable ? "?" : String.Empty #> result;
-				Assert.IsTrue( unpacker.Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>( out result ) );
-				Assert.That( result<#= __variation.IsNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2 #> ) );
+				<#= __testCase.Item4.Name #><#= isNullable ? "?" : String.Empty #> result;
+<#
+			if( !isAsync )
+			{
+#>
+				Assert.IsTrue( <#= Read( isNullable, __testCase.Item4 ) #> );
+<#
+			}
+			else
+			{
+#>
+				var ret = <#= ReadAwait( isNullable, __testCase.Item4 ) #>;
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#
+			}
+#>
+				Assert.That( result<#= isNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2 #> ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>_Splitted()
+		public <#= AsyncTest( isAsync, isNullable, __testCase.Item4 ) #>_<#= __testCase.Item1 #>_Splitted()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				<#= __testCase.Item4.Name #><#= __variation.IsNullable ? "?" : String.Empty #> result;
-				Assert.IsTrue( unpacker.Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>( out result ) );
-				Assert.That( result<#= __variation.IsNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2 #> ) );
+				<#= __testCase.Item4.Name #><#= isNullable ? "?" : String.Empty #> result;
+<#
+			if( !isAsync )
+			{
+#>
+				Assert.IsTrue( <#= Read( isNullable, __testCase.Item4 ) #> );
+<#
+			}
+			else
+			{
+#>
+				var ret = <#= ReadAwait( isNullable, __testCase.Item4 ) #>;
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#
+			}
+#>
+				Assert.That( result<#= isNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2 #> ) );
 			}
 		}
 <#
-	}
-}
-foreach( var __testCase in __booleans )
-{
+		} // foreach( var isNullable
+	} // foreach( var __testCase
+
+	foreach( var __testCase in __booleans )
+	{
 #>
 
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read()
+		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsTrue( unpacker.Read() );
+				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
 #pragma warning disable 612,618
 				var result = unpacker.Data;
 #pragma warning restore 612,618
@@ -228,13 +246,13 @@ foreach( var __testCase in __booleans )
 		}
 
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read_Splitted()
+		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Splitted()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				Assert.IsTrue( unpacker.Read() );
+				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
 #pragma warning disable 612,618
 				var result = unpacker.Data;
 #pragma warning restore 612,618
@@ -243,55 +261,79 @@ foreach( var __testCase in __booleans )
 			}
 		}
 <#
-	foreach( var __variation in
-		new []
+		foreach( var isNullable in new [] { false, true } )
 		{
-			new { IsNullable = false },
-			new { IsNullable = true },
-		}
-	)
-	{
 #>
 
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>()
+		public <#= AsyncTest( isAsync, isNullable, __testCase.Item4 ) #>_<#= __testCase.Item1 #>()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				<#= __testCase.Item4.Name #><#= __variation.IsNullable ? "?" : String.Empty #> result;
-				Assert.IsTrue( unpacker.Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>( out result ) );
-				Assert.That( result<#= __variation.IsNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
+				<#= __testCase.Item4.Name #><#= isNullable ? "?" : String.Empty #> result;
+<#
+			if( !isAsync )
+			{
+#>
+				Assert.IsTrue( <#= Read( isNullable, __testCase.Item4 ) #> );
+<#
+			}
+			else
+			{
+#>
+				var ret = <#= ReadAwait( isNullable, __testCase.Item4 ) #>;
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#
+			}
+#>
+				Assert.That( result<#= isNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>_Splitted()
+		public <#= AsyncTest( isAsync, isNullable, __testCase.Item4 ) #>_<#= __testCase.Item1 #>_Splitted()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				<#= __testCase.Item4.Name #><#= __variation.IsNullable ? "?" : String.Empty #> result;
-				Assert.IsTrue( unpacker.Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>( out result ) );
-				Assert.That( result<#= __variation.IsNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
+				<#= __testCase.Item4.Name #><#= isNullable ? "?" : String.Empty #> result;
+<#
+			if( !isAsync )
+			{
+#>
+				Assert.IsTrue( <#= Read( isNullable, __testCase.Item4 ) #> );
+<#
+			}
+			else
+			{
+#>
+				var ret = <#= ReadAwait( isNullable, __testCase.Item4 ) #>;
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#
+			}
+#>
+				Assert.That( result<#= isNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
 			}
 		}
 <#
-	}
-}
+		} // foreach( var isNUllable
+	} // foreach( var __testCase
 
-foreach( var __testCase in __reals )
-{
+	foreach( var __testCase in __reals )
+	{
 #>
 
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read()
+		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsTrue( unpacker.Read() );
+				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
 #pragma warning disable 612,618
 				var result = unpacker.Data;
 #pragma warning restore 612,618
@@ -301,13 +343,13 @@ foreach( var __testCase in __reals )
 		}
 
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read_Splitted()
+		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Splitted()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				Assert.IsTrue( unpacker.Read() );
+				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
 #pragma warning disable 612,618
 				var result = unpacker.Data;
 #pragma warning restore 612,618
@@ -316,81 +358,145 @@ foreach( var __testCase in __reals )
 			}
 		}
 <#
-	foreach( var __variation in
+		foreach( var isNullable in new [] { false, true } )
+		{
+#>
+
+		[Test]
+		public <#= AsyncTest( isAsync, isNullable, __testCase.Item3 ) #>_<#= __testCase.Item1 #>()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				<#= __testCase.Item3.Name #><#= isNullable ? "?" : String.Empty #> result;
+<#
+			if( !isAsync )
+			{
+#>
+				Assert.IsTrue( <#= Read( isNullable, __testCase.Item3 ) #> );
+<#
+			}
+			else
+			{
+#>
+				var ret = <#= ReadAwait( isNullable, __testCase.Item3 ) #>;
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#
+			}
+#>
+				Assert.That( <#= __testCase.Item4 #> result<#= isNullable ? ".Value" : String.Empty #> ) );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( isAsync, isNullable, __testCase.Item3 ) #>_<#= __testCase.Item1 #>_Splitted()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
+			{
+				<#= __testCase.Item3.Name #><#= isNullable ? "?" : String.Empty #> result;
+<#
+			if( !isAsync )
+			{
+#>
+				Assert.IsTrue( <#= Read( isNullable, __testCase.Item3 ) #> );
+<#
+			}
+			else
+			{
+#>
+				var ret = <#= ReadAwait( isNullable, __testCase.Item3 ) #>;
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#
+			}
+#>
+				Assert.That( <#= __testCase.Item4 #> result<#= isNullable ? ".Value" : String.Empty #> ) );
+			}
+		}
+<#
+		} // foreach( var isNullable
+	} // foreach( var __testCase
+
+	foreach ( var __scalarType in 
 		new []
 		{
-			new { IsNullable = false },
-			new { IsNullable = true },
+			typeof( bool ), typeof( float ), typeof ( double ),
+			typeof( sbyte ), typeof( short ), typeof ( int ), typeof ( long ),
+			typeof( byte ), typeof( ushort ), typeof ( uint ), typeof ( ulong ),
 		}
 	)
 	{
 #>
 
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item3.Name #>()
+		public <#= AsyncTest( isAsync, true, __scalarType ) #>()
 		{
-			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				<#= __testCase.Item3.Name #><#= __variation.IsNullable ? "?" : String.Empty #> result;
-				Assert.IsTrue( unpacker.Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item3.Name #>( out result ) );
-				Assert.That( <#= __testCase.Item4 #> result<#= __variation.IsNullable ? ".Value" : String.Empty #> ) );
+				<#= __scalarType.Name #>? result;
+<#
+			if( !isAsync )
+			{
+#>
+				Assert.IsTrue( <#= Read( true, __scalarType ) #> );
+<#
+			}
+			else
+			{
+#>
+				var ret = <#= ReadAwait( true, __scalarType ) #>;
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#
+			}
+#>
+				Assert.That( result, Is.Null );
 			}
 		}
 
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item3.Name #>_Splitted()
+		public <#= AsyncTest( isAsync, true, __scalarType ) #>_Splitted()
 		{
-			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				<#= __testCase.Item3.Name #><#= __variation.IsNullable ? "?" : String.Empty #> result;
-				Assert.IsTrue( unpacker.Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item3.Name #>( out result ) );
-				Assert.That( <#= __testCase.Item4 #> result<#= __variation.IsNullable ? ".Value" : String.Empty #> ) );
+				<#= __scalarType.Name #>? result;
+<#
+			if( !isAsync )
+			{
+#>
+				Assert.IsTrue( <#= Read( true, __scalarType ) #> );
+<#
+			}
+			else
+			{
+#>
+				var ret = <#= ReadAwait( true, __scalarType ) #>;
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#
+			}
+#>
+				Assert.That( result, Is.Null );
 			}
 		}
 <#
-	}
-}
+	} // foreach( var __scalarType
 
-foreach ( var __scalarType in 
-	new []
+	if ( isAsync )
 	{
-		typeof( bool ), typeof( float ), typeof ( double ),
-		typeof( sbyte ), typeof( short ), typeof ( int ), typeof ( long ),
-		typeof( byte ), typeof( ushort ), typeof ( uint ), typeof ( ulong ),
-	}
-)
-{
 #>
 
-		[Test]
-		public void TestUnpackNil_ReadNullable<#= __scalarType.Name #>()
-		{
-			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
-			using( var unpacker = Unpacker.Create( buffer ) )
-			{
-				<#= __scalarType.Name #>? result;
-				Assert.IsTrue( unpacker.ReadNullable<#= __scalarType.Name #>( out result ) );
-				Assert.That( result, Is.Null );
-			}
-		}
+#endif // FEATURE_TAP
 
-		[Test]
-		public void TestUnpackNil_ReadNullable<#= __scalarType.Name #>_Splitted()
-		{
-			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
-			using( var splitted = new SplittingStream( buffer ) )
-			using( var unpacker = Unpacker.Create( splitted ) )
-			{
-				<#= __scalarType.Name #>? result;
-				Assert.IsTrue( unpacker.ReadNullable<#= __scalarType.Name #>( out result ) );
-				Assert.That( result, Is.Null );
-			}
-		}
 <#
-}
+	}
+} // foreach( var isAsync
 #>
 
 <#
@@ -689,3 +795,85 @@ foreach( var integerType in integerTypes )
 #>
 	}
 }
+<#+
+private static string AsyncTest( bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0} TestRead{1}",
+			isAsync ? "async Task" : "void",
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string AsyncTest( bool isAsync, bool isNullable, Type type )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0} TestRead{1}{2}{3}",
+			isAsync ? "async Task" : "void",
+			isNullable ? "Nullable" : String.Empty,
+			type.Name,
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string ReadAwait( bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0}unpacker.Read{1}()",
+			isAsync ? "await " : String.Empty,
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string Read( bool isNullable, Type type )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"unpacker.Read{0}{1}( out result )",
+			isNullable ? "Nullable" : String.Empty,
+			type.Name
+		);
+}
+
+private static string ReadAwait( bool isNullable, Type type )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"await unpacker.Read{0}{1}Async()",
+			isNullable ? "Nullable" : String.Empty,
+			type.Name
+		);
+}
+
+private static string AsyncLambdaTest( string method, bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"void Test{0}{1}",
+			method,
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string AsyncLambda( string expressionBody, bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0}() => {1}{2}{3}",
+			isAsync ? "async " : String.Empty,
+			isAsync ? "await " : String.Empty,
+			expressionBody,
+			isAsync ? "Async" : String.Empty
+		);
+}
+#>

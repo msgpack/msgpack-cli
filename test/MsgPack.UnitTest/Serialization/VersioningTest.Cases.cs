@@ -91,6 +91,32 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE
 
 		[Test]
+		public void TestExtraField_NotExtensible_Array_CodeDomBased_Classic_Fail()
+		{
+			TestExtraFieldCore( SerializationMethod.Array, EmitterFlavor.CodeDomBased, PackerCompatibilityOptions.Classic );
+		}
+
+		[Test]
+		public void TestExtraField_NotExtensible_Array_CodeDomBased_None_Fail()
+		{
+			TestExtraFieldCore( SerializationMethod.Array, EmitterFlavor.CodeDomBased, PackerCompatibilityOptions.None );
+		}
+
+		[Test]
+		public void TestMissingField_Array_CodeDomBased_MissingIsTreatedAsNil()
+		{
+			TestMissingFieldCore( SerializationMethod.Array, EmitterFlavor.CodeDomBased );
+		}
+
+		[Test]
+		public void TestFieldInvalidType_Array_CodeDomBased_Fail()
+		{
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.CodeDomBased ) );
+		}
+#endif // !NETFX_CORE
+#if !NETFX_CORE
+
+		[Test]
 		public void TestExtraField_NotExtensible_Map_FieldBased_Classic_Fail()
 		{
 			TestExtraFieldCore( SerializationMethod.Map, EmitterFlavor.FieldBased, PackerCompatibilityOptions.Classic );
@@ -152,6 +178,38 @@ namespace MsgPack.Serialization
 			TestFieldSwappedCore( EmitterFlavor.ExpressionBased );
 		}
 #endif // !NETFX_35
+#if !NETFX_CORE
+
+		[Test]
+		public void TestExtraField_NotExtensible_Map_CodeDomBased_Classic_Fail()
+		{
+			TestExtraFieldCore( SerializationMethod.Map, EmitterFlavor.CodeDomBased, PackerCompatibilityOptions.Classic );
+		}
+
+		[Test]
+		public void TestExtraField_NotExtensible_Map_CodeDomBased_None_Fail()
+		{
+			TestExtraFieldCore( SerializationMethod.Map, EmitterFlavor.CodeDomBased, PackerCompatibilityOptions.None );
+		}
+
+		[Test]
+		public void TestMissingField_Map_CodeDomBased_MissingIsTreatedAsNil()
+		{
+			TestMissingFieldCore( SerializationMethod.Map, EmitterFlavor.CodeDomBased );
+		}
+
+		[Test]
+		public void TestFieldInvalidType_Map_CodeDomBased_Fail()
+		{
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Map, EmitterFlavor.CodeDomBased ) );
+		}
+
+		[Test]
+		public void TestFieldModified_Map_CodeDomBased_ExtraIsStoredAsExtensionData_MissingIsTreatedAsNil()
+		{
+			TestFieldSwappedCore( EmitterFlavor.CodeDomBased );
+		}
+#endif // !NETFX_CORE
 	}
 
 }

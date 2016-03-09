@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,11 +24,11 @@
 
 using System;
 #if !UNITY
-#if XAMIOS || XAMDROID || CORE_CLR
+#if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID || CORE_CLR
+#endif // CORE_CLR
 #endif // !UNITY
 using System.Runtime.InteropServices;
 
@@ -41,7 +41,7 @@ namespace MsgPack
 	///		Represents deserialized object of MsgPack.
 	/// </summary>
 	[StructLayout( LayoutKind.Auto )]
-	public partial struct MessagePackObject : IEquatable<MessagePackObject>, IPackable
+	public partial struct MessagePackObject : IEquatable<MessagePackObject>
 	{
 		#region -- Constructors --
 		/// <summary>

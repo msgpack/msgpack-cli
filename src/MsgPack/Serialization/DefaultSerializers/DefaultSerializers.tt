@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@
 <#@ import namespace="System.Reflection" #>
 <#@ import namespace="System.Text" #>
 <#
-var __excludes =
+var excludes =
 	new HashSet<Type>()
 	{
 		// Special(manual) handlings on builtin marshaler:
@@ -44,6 +44,13 @@ var __excludes =
 		// Special(manual) handlings on builtin serializer:
 		typeof( System.DateTimeOffset ),
 		typeof( System.Numerics.Complex ),
+		typeof( System.Numerics.Vector2 ),
+		typeof( System.Numerics.Vector3 ),
+		typeof( System.Numerics.Vector4 ),
+		typeof( System.Numerics.Matrix3x2 ),
+		typeof( System.Numerics.Matrix4x4 ),
+		typeof( System.Numerics.Plane ),
+		typeof( System.Numerics.Quaternion ),
 		// Special handling on serializer:
 		typeof( System.Nullable<> ),
 		// Not supported:
@@ -62,6 +69,7 @@ var __excludes =
 		typeof( System.Diagnostics.CounterSample ),
 		typeof( System.Diagnostics.Eventing.EventDescriptor ),
 		typeof( System.Diagnostics.SymbolStore.SymbolToken ),
+		typeof( System.Diagnostics.Tracing.EventSourceOptions ),
 		typeof( System.IO.WaitForChangedResult ),
 		typeof( System.Net.Sockets.IPPacketInformation ),
 		typeof( System.Net.Sockets.SocketInformation ),
@@ -106,7 +114,9 @@ var __excludes =
 		typeof( System.Security.Cryptography.RSAParameters ),
 		typeof( System.Security.Cryptography.CngProperty ),
 		typeof( System.Security.Cryptography.X509Certificates.X509ChainStatus ),
+		typeof( System.Security.Cryptography.HashAlgorithmName ),
 		typeof( System.Threading.AsyncFlowControl ),
+		typeof( System.Threading.AsyncLocalValueChangedArgs<> ),
 		typeof( System.Threading.CancellationToken ),
 		typeof( System.Threading.CancellationTokenRegistration ),
 		typeof( System.Threading.LockCookie ),
@@ -115,7 +125,7 @@ var __excludes =
 		typeof( System.Threading.SpinWait ),
 		typeof( System.Threading.Tasks.ParallelLoopResult ),
 	};
-var __winRTExcludes =
+var winRTExcludes =
 	new HashSet<string>()
 	{
 		"System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken",
@@ -132,7 +142,7 @@ var __winRTExcludes =
 		"System.Net.Sockets.UdpReceiveResult",
 	};
 	
-var __types = 
+var types = 
 	typeof( object ).Assembly.GetTypes()
 	.Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
 	.Concat(
@@ -141,11 +151,11 @@ var __types =
 		typeof( Enumerable ).Assembly.GetTypes().Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
 	).Concat(
 		typeof( BigInteger ).Assembly.GetTypes().Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
-	).Except( __excludes )
-	.Where( t => !__winRTExcludes.Contains( t.FullName ) )
+	).Except( excludes )
+	.Where( t => !winRTExcludes.Contains( t.FullName ) )
 	.ToArray();
 	
-var __workArounds =
+var workArounds =
 	new Dictionary<Type, WorkAround>()
 	{
 		{ typeof( char ), new WorkAround(){ PackCode = "packer.Pack( ( System.UInt16 )value );", UnpackCode = "return ( System.Char ) unpacker.LastReadData.AsUInt16(); " } },
@@ -154,13 +164,22 @@ var __workArounds =
 		{ typeof( BigInteger ), new WorkAround(){ PackCode = "packer.PackRaw( value.ToByteArray() );", UnpackCode = "return new System.Numerics.BigInteger( unpacker.LastReadData.AsBinary() ); " } },
 	};
 
-var __notInSLs =
+var asyncWorkArounds =
+	new Dictionary<Type, string>()
+	{
+		{ typeof( char ), "packer.PackAsync( ( System.UInt16 )value, cancellationToken ).ConfigureAwait( false );" },
+		{ typeof( decimal ), "packer.PackStringAsync( value.ToString( \"G\", CultureInfo.InvariantCulture ), cancellationToken ).ConfigureAwait( false );" },
+		{ typeof( Guid ), "packer.PackRawAsync( value.ToByteArray(), cancellationToken ).ConfigureAwait( false );" },
+		{ typeof( BigInteger ), "packer.PackRawAsync( value.ToByteArray(), cancellationToken ).ConfigureAwait( false );" },
+	};
+
+var notInSLs =
 	new HashSet<Type>()
 	{
 		typeof( System.Collections.Specialized.BitVector32 ),
 	};
 
-var __notInWPs =
+var notInWPs =
 	new HashSet<Type>()
 	{
 		typeof( System.Numerics.BigInteger ),
@@ -172,7 +191,7 @@ var __notInWPs =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -195,70 +214,78 @@ var __notInWPs =
 using System;
 using System.Globalization;
 using System.Runtime.Serialization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	// This file generated from DefaultSerializers.tt T4Template.
 	// Do not modify this file. Edit DefaultMarshalers.tt instead.
+
+	// ReSharper disable InconsistentNaming
+	// ReSharper disable RedundantNameQualifier
+	// ReSharper disable RedundantCast
 <#
-foreach( Type __type in __types )
+foreach( Type type in types )
 {
-	if( __type.IsEnum )
+	if( type.IsEnum )
 	{
 		continue;
 	}
 #>
 
 <#
-	if( __type.IsGenericTypeDefinition && !__workArounds.ContainsKey( __type ) )
+	if( type.IsGenericTypeDefinition && !workArounds.ContainsKey( type ) )
 	{
 #>
-#error <#= __type #> cannot be generated
+#error <#= type #> cannot be generated
 <#
 		continue;
 	}
 	
-	var ctors = __type.GetConstructors( BindingFlags.Public | BindingFlags.Instance ).Where( item => item.GetParameters().Length == 1 ).Where( item => IsMessagePackPrimitive( item.GetParameters()[ 0 ].ParameterType ) ).ToArray();
+	var ctors = type.GetConstructors( BindingFlags.Public | BindingFlags.Instance ).Where( item => item.GetParameters().Length == 1 ).Where( item => IsMessagePackPrimitive( item.GetParameters()[ 0 ].ParameterType ) ).ToArray();
 	
-	if ( __notInSLs.Contains( __type ) )
+	if ( notInSLs.Contains( type ) )
 	{
 #>
 #if !SILVERLIGHT && !NETFX_CORE
 <#
 	}
 	
-	if ( __notInWPs.Contains( __type ) )
+	if ( notInWPs.Contains( type ) )
 	{
 #>
 #if !WINDOWS_PHONE && !NETFX_35 && !UNITY
 <#
 	}
 
-	var __typeName = __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) + "MessagePackSerializer";
+	var typeName = type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) + "MessagePackSerializer";
 
-	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	if ( type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
 #if !UNITY || MSGPACK_UNITY_FULL
 <#
 	}
 #>
-	internal sealed class <#= __typeName #> : MessagePackSerializer< <#= ToCSharpToken( __type ) #> >
+	internal sealed class <#= typeName #> : MessagePackSerializer< <#= ToCSharpToken( type ) #> >
 	{
-		public <#= __typeName #>( SerializationContext ownerContext )
+		public <#= typeName #>( SerializationContext ownerContext )
 			: base( ownerContext ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		protected internal sealed override void PackToCore( Packer packer, <#= __type.FullName #> value )
+		protected internal override void PackToCore( Packer packer, <#= type.FullName #> value )
 		{
 <#
-	if ( __workArounds.ContainsKey( __type ) )
+	if ( workArounds.ContainsKey( type ) )
 	{
 #>
-			<#= __workArounds[ __type ].PackCode #>
+			<#= workArounds[ type ].PackCode #>
 <#
 	}
-	else if ( __type.IsPrimitive )
+	else if ( type.IsPrimitive )
 	{
 #>
 			packer.Pack( value );
@@ -267,7 +294,7 @@ foreach( Type __type in __types )
 	else if ( ctors.Length != 1 )
 	{
 #>
-#error <#= __type.FullName #> has <#= ctors.Length #> parameter constructors
+#error <#= type.FullName #> has <#= ctors.Length #> parameter constructors
 			/*
 <#
 foreach( var ctor in ctors )
@@ -296,15 +323,15 @@ foreach( var ctor in ctors )
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		protected internal sealed override  <#= __type.FullName #> UnpackFromCore( Unpacker unpacker )
+		protected internal override <#= type.FullName #> UnpackFromCore( Unpacker unpacker )
 		{
 <#
-	if ( __workArounds.ContainsKey( __type ) )
+	if ( workArounds.ContainsKey( type ) )
 	{
 #>
 			try
 			{
-				<#= __workArounds[ __type ].UnpackCode #>
+				<#= workArounds[ type ].UnpackCode #>
 			}
 			catch( ArgumentException ex )
 			{
@@ -316,23 +343,23 @@ foreach( var ctor in ctors )
 			}
 <#
 	}
-	else if ( __type.IsPrimitive )
+	else if ( type.IsPrimitive )
 	{
 #>
 			try
 			{
-				return unpacker.LastReadData.As<#= __type.Name #>();
+				return unpacker.LastReadData.As<#= type.Name #>();
 			}
 			catch( InvalidOperationException ex )
 			{
-				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( <#= __type #> ), ex.Message ) );
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( <#= type #> ), ex.Message ) );
 			}
 <#
 	}
 	else if ( ctors.Length != 1 )
 	{
 #>
-#error <#= __type.FullName #> has <#= ctors.Length #> parameter constructors
+#error <#= type.FullName #> has <#= ctors.Length #> parameter constructors
 			/*
 <#
 foreach( var ctor in ctors )
@@ -347,19 +374,19 @@ foreach( var ctor in ctors )
 	}
 	else if ( IsMessagePackPrimitive( ctors[ 0 ].GetParameters()[ 0 ].ParameterType ) )
 	{
-		var __ctorParameterType = ctors[ 0 ].GetParameters()[ 0 ].ParameterType;
+		var ctorParameterType = ctors[ 0 ].GetParameters()[ 0 ].ParameterType;
 #>
-			<#= __ctorParameterType #> ctorArgument;
+			<#= ctorParameterType #> ctorArgument;
 			try
 			{
-				ctorArgument = unpacker.LastReadData.As<#= __ctorParameterType.Name #>();
+				ctorArgument = unpacker.LastReadData.As<#= ctorParameterType.Name #>();
 			}
 			catch( InvalidOperationException ex )
 			{
-				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( <#= __ctorParameterType #> ), ex.Message ) );
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( <#= ctorParameterType #> ), ex.Message ) );
 			}
 
-			return new <#= __type.FullName #>( ctorArgument );
+			return new <#= type.FullName #>( ctorArgument );
 <#
 	}
 	else
@@ -370,23 +397,123 @@ foreach( var ctor in ctors )
 	}
 #>
 		}
+
+#if FEATURE_TAP
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		protected internal override async Task PackToAsyncCore( Packer packer, <#= type.FullName #> value, CancellationToken cancellationToken )
+		{
+<#
+	if ( asyncWorkArounds.ContainsKey( type ) )
+	{
+#>
+			await <#= asyncWorkArounds[ type ] #>
+<#
+	}
+	else if ( type.IsPrimitive )
+	{
+#>
+			await packer.PackAsync( value, cancellationToken ).ConfigureAwait( false );
+<#
+	}
+	else if ( ctors.Length != 1 )
+	{
+#>
+#error <#= type.FullName #> has <#= ctors.Length #> parameter constructors
+			/*
+<#
+foreach( var ctor in ctors )
+{
+#>
+			 * <#= ctor #>
+<#
+}
+#>
+			 */
+<#
+	}
+	else if ( IsMessagePackPrimitive( ctors[ 0 ].GetParameters()[ 0 ].ParameterType ) )
+	{
+#>
+			await packer.PackAsync( value.<#= Pascalize( ctors[ 0 ].GetParameters()[ 0 ].Name ) #>, cancellationToken ).ConfigureAwait( false );
+<#
+	}
+	else
+	{
+#>
+#error ParameterType '<#= ctors[ 0 ].GetParameters()[ 0 ].ParameterType #>' is not primitive.
+<#
+	}
+#>
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		protected internal override Task<#= "<" + type.FullName + ">" #> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+<#
+	if ( workArounds.ContainsKey( type ) 
+		|| type.IsPrimitive
+		|| ( ctors.Length == 1 && IsMessagePackPrimitive( ctors[ 0 ].GetParameters()[ 0 ].ParameterType ) )
+	)
+	{
+#>
+			var tcs = new TaskCompletionSource<#= "<" + type.FullName + ">" #>();
+			try
+			{
+				tcs.SetResult( this.UnpackFromCore( unpacker ) );
+			}
+			catch( Exception ex )
+			{
+				tcs.SetException( ex );
+			}
+
+			return tcs.Task;
+<#
+	}
+	else if ( ctors.Length != 1 )
+	{
+#>
+#error <#= type.FullName #> has <#= ctors.Length #> parameter constructors
+			/*
+<#
+foreach( var ctor in ctors )
+{
+#>
+			 * <#= ctor #>
+<#
+}
+#>
+			 */
+<#
+	}
+	else
+	{
+#>
+#error ParameterType '<#= ctors[ 0 ].GetParameters()[ 0 ].ParameterType #>' is not primitive.
+<#
+	}
+#>
+		}
+
+#endif // FEATURE_TAP
+
 	}
 <#
-	if ( __notInWPs.Contains( __type ) )
+	if ( notInWPs.Contains( type ) )
 	{
 #>
 #endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
 <#
 	}
 
-	if ( __notInSLs.Contains( __type ) )
+	if ( notInSLs.Contains( type ) )
 	{
 #>
 #endif // !SILVERLIGHT && !NETFX_CORE
 <#
 	}
 
-	if ( __type.Assembly.FullName != typeof( object ).Assembly.FullName )
+	if ( type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
 #endif // !UNITY || MSGPACK_UNITY_FULL
@@ -394,6 +521,9 @@ foreach( var ctor in ctors )
 	}
 }
 #>
+	// ReSharper restore RedundantCast
+	// ReSharper restore RedundantNameQualifier
+	// ReSharper restore InconsistentNaming
 }
 <#+
 private static string Pascalize( string value )

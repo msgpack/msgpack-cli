@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -36,13 +37,14 @@ namespace MsgPack
 	// This file was generated from UnpackerTest.Scalar.tt T4Template.
 	// Do not modify this file. Edit UnpackerTest.Scalar.tt instead.
 
+	#warning TODO: Read int and unpack as real and vice versa.
 	[TestFixture]
-	public partial class UnpackerTest_Scalar
+	[Timeout( 500 )]
+	public class UnpackerTest_Scalar
 	{
-		// FIXME: Direct reading and direct/MPO mixing cases.
 
 		[Test]
-		public void TestUnpackInt64MinValue_Read()
+		public void TestRead_Int64MinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -57,7 +59,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt64MinValue_Read_Splitted()
+		public void TestRead_Int64MinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -73,7 +75,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt64MinValue_ReadInt64()
+		public void TestReadInt64_Int64MinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -85,7 +87,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt64MinValue_ReadInt64_Splitted()
+		public void TestReadInt64_Int64MinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -98,7 +100,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt64MinValue_ReadNullableInt64()
+		public void TestReadNullableInt64_Int64MinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -110,7 +112,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt64MinValue_ReadNullableInt64_Splitted()
+		public void TestReadNullableInt64_Int64MinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -123,7 +125,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt32MinValueMinusOne_Read()
+		public void TestRead_Int32MinValueMinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -138,7 +140,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt32MinValueMinusOne_Read_Splitted()
+		public void TestRead_Int32MinValueMinusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -154,7 +156,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt32MinValueMinusOne_ReadInt64()
+		public void TestReadInt64_Int32MinValueMinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -166,7 +168,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt32MinValueMinusOne_ReadInt64_Splitted()
+		public void TestReadInt64_Int32MinValueMinusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -179,7 +181,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt32MinValueMinusOne_ReadNullableInt64()
+		public void TestReadNullableInt64_Int32MinValueMinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -191,7 +193,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt32MinValueMinusOne_ReadNullableInt64_Splitted()
+		public void TestReadNullableInt64_Int32MinValueMinusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -204,7 +206,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt32MinValue_Read()
+		public void TestRead_Int32MinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -219,7 +221,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt32MinValue_Read_Splitted()
+		public void TestRead_Int32MinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -235,7 +237,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt32MinValue_ReadInt64()
+		public void TestReadInt64_Int32MinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -247,7 +249,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt32MinValue_ReadInt64_Splitted()
+		public void TestReadInt64_Int32MinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -260,7 +262,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt32MinValue_ReadNullableInt64()
+		public void TestReadNullableInt64_Int32MinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -272,7 +274,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt32MinValue_ReadNullableInt64_Splitted()
+		public void TestReadNullableInt64_Int32MinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -285,7 +287,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt16MinValueMinusOne_Read()
+		public void TestRead_Int16MinValueMinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -300,7 +302,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt16MinValueMinusOne_Read_Splitted()
+		public void TestRead_Int16MinValueMinusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -316,7 +318,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt16MinValueMinusOne_ReadInt64()
+		public void TestReadInt64_Int16MinValueMinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -328,7 +330,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt16MinValueMinusOne_ReadInt64_Splitted()
+		public void TestReadInt64_Int16MinValueMinusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -341,7 +343,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt16MinValueMinusOne_ReadNullableInt64()
+		public void TestReadNullableInt64_Int16MinValueMinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -353,7 +355,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt16MinValueMinusOne_ReadNullableInt64_Splitted()
+		public void TestReadNullableInt64_Int16MinValueMinusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -366,7 +368,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt16MinValue_Read()
+		public void TestRead_Int16MinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0x80, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -381,7 +383,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt16MinValue_Read_Splitted()
+		public void TestRead_Int16MinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0x80, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -397,7 +399,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt16MinValue_ReadInt64()
+		public void TestReadInt64_Int16MinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0x80, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -409,7 +411,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt16MinValue_ReadInt64_Splitted()
+		public void TestReadInt64_Int16MinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0x80, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -422,7 +424,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt16MinValue_ReadNullableInt64()
+		public void TestReadNullableInt64_Int16MinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0x80, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -434,7 +436,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackInt16MinValue_ReadNullableInt64_Splitted()
+		public void TestReadNullableInt64_Int16MinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0x80, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -447,7 +449,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSByteMinValueMinusOne_Read()
+		public void TestRead_SByteMinValueMinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0xFF, 0x7F } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -462,7 +464,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSByteMinValueMinusOne_Read_Splitted()
+		public void TestRead_SByteMinValueMinusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0xFF, 0x7F } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -478,7 +480,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSByteMinValueMinusOne_ReadInt64()
+		public void TestReadInt64_SByteMinValueMinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0xFF, 0x7F } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -490,7 +492,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSByteMinValueMinusOne_ReadInt64_Splitted()
+		public void TestReadInt64_SByteMinValueMinusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0xFF, 0x7F } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -503,7 +505,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSByteMinValueMinusOne_ReadNullableInt64()
+		public void TestReadNullableInt64_SByteMinValueMinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0xFF, 0x7F } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -515,7 +517,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSByteMinValueMinusOne_ReadNullableInt64_Splitted()
+		public void TestReadNullableInt64_SByteMinValueMinusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0xFF, 0x7F } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -528,7 +530,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSByteMinValue_Read()
+		public void TestRead_SByteMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0x80 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -543,7 +545,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSByteMinValue_Read_Splitted()
+		public void TestRead_SByteMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0x80 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -559,7 +561,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSByteMinValue_ReadInt64()
+		public void TestReadInt64_SByteMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0x80 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -571,7 +573,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSByteMinValue_ReadInt64_Splitted()
+		public void TestReadInt64_SByteMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0x80 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -584,7 +586,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSByteMinValue_ReadNullableInt64()
+		public void TestReadNullableInt64_SByteMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0x80 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -596,7 +598,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSByteMinValue_ReadNullableInt64_Splitted()
+		public void TestReadNullableInt64_SByteMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0x80 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -609,7 +611,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNegativeFixNumMinValueMinusOne_Read()
+		public void TestRead_NegativeFixNumMinValueMinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0xDF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -624,7 +626,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNegativeFixNumMinValueMinusOne_Read_Splitted()
+		public void TestRead_NegativeFixNumMinValueMinusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0xDF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -640,7 +642,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNegativeFixNumMinValueMinusOne_ReadInt64()
+		public void TestReadInt64_NegativeFixNumMinValueMinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0xDF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -652,7 +654,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNegativeFixNumMinValueMinusOne_ReadInt64_Splitted()
+		public void TestReadInt64_NegativeFixNumMinValueMinusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0xDF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -665,7 +667,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNegativeFixNumMinValueMinusOne_ReadNullableInt64()
+		public void TestReadNullableInt64_NegativeFixNumMinValueMinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0xDF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -677,7 +679,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNegativeFixNumMinValueMinusOne_ReadNullableInt64_Splitted()
+		public void TestReadNullableInt64_NegativeFixNumMinValueMinusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0xDF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -690,7 +692,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNegativeFixNumMinValue_Read()
+		public void TestRead_NegativeFixNumMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xE0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -705,7 +707,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNegativeFixNumMinValue_Read_Splitted()
+		public void TestRead_NegativeFixNumMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xE0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -721,7 +723,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNegativeFixNumMinValue_ReadInt64()
+		public void TestReadInt64_NegativeFixNumMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xE0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -733,7 +735,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNegativeFixNumMinValue_ReadInt64_Splitted()
+		public void TestReadInt64_NegativeFixNumMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xE0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -746,7 +748,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNegativeFixNumMinValue_ReadNullableInt64()
+		public void TestReadNullableInt64_NegativeFixNumMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xE0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -758,7 +760,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNegativeFixNumMinValue_ReadNullableInt64_Splitted()
+		public void TestReadNullableInt64_NegativeFixNumMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xE0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -771,7 +773,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackMinusOne_Read()
+		public void TestRead_MinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -786,7 +788,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackMinusOne_Read_Splitted()
+		public void TestRead_MinusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -802,7 +804,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackMinusOne_ReadInt64()
+		public void TestReadInt64_MinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -814,7 +816,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackMinusOne_ReadInt64_Splitted()
+		public void TestReadInt64_MinusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -827,7 +829,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackMinusOne_ReadNullableInt64()
+		public void TestReadNullableInt64_MinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -839,7 +841,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackMinusOne_ReadNullableInt64_Splitted()
+		public void TestReadNullableInt64_MinusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -852,7 +854,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackZero_Read()
+		public void TestRead_Zero()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -867,7 +869,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackZero_Read_Splitted()
+		public void TestRead_Zero_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -883,7 +885,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackZero_ReadUInt64()
+		public void TestReadUInt64_Zero()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -895,7 +897,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackZero_ReadUInt64_Splitted()
+		public void TestReadUInt64_Zero_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -908,7 +910,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackZero_ReadNullableUInt64()
+		public void TestReadNullableUInt64_Zero()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -920,7 +922,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackZero_ReadNullableUInt64_Splitted()
+		public void TestReadNullableUInt64_Zero_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -933,7 +935,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPlusOne_Read()
+		public void TestRead_PlusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -948,7 +950,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPlusOne_Read_Splitted()
+		public void TestRead_PlusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -964,7 +966,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPlusOne_ReadUInt64()
+		public void TestReadUInt64_PlusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -976,7 +978,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPlusOne_ReadUInt64_Splitted()
+		public void TestReadUInt64_PlusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -989,7 +991,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPlusOne_ReadNullableUInt64()
+		public void TestReadNullableUInt64_PlusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1001,7 +1003,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPlusOne_ReadNullableUInt64_Splitted()
+		public void TestReadNullableUInt64_PlusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1014,7 +1016,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPositiveFixNumMaxValue_Read()
+		public void TestRead_PositiveFixNumMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x7F } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1029,7 +1031,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPositiveFixNumMaxValue_Read_Splitted()
+		public void TestRead_PositiveFixNumMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x7F } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1045,7 +1047,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPositiveFixNumMaxValue_ReadUInt64()
+		public void TestReadUInt64_PositiveFixNumMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x7F } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1057,7 +1059,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPositiveFixNumMaxValue_ReadUInt64_Splitted()
+		public void TestReadUInt64_PositiveFixNumMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x7F } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1070,7 +1072,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPositiveFixNumMaxValue_ReadNullableUInt64()
+		public void TestReadNullableUInt64_PositiveFixNumMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x7F } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1082,7 +1084,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPositiveFixNumMaxValue_ReadNullableUInt64_Splitted()
+		public void TestReadNullableUInt64_PositiveFixNumMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0x7F } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1095,7 +1097,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPositiveFixNumMaxValuePlusOne_Read()
+		public void TestRead_PositiveFixNumMaxValuePlusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0x80 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1110,7 +1112,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPositiveFixNumMaxValuePlusOne_Read_Splitted()
+		public void TestRead_PositiveFixNumMaxValuePlusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0x80 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1126,7 +1128,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPositiveFixNumMaxValuePlusOne_ReadUInt64()
+		public void TestReadUInt64_PositiveFixNumMaxValuePlusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0x80 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1138,7 +1140,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPositiveFixNumMaxValuePlusOne_ReadUInt64_Splitted()
+		public void TestReadUInt64_PositiveFixNumMaxValuePlusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0x80 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1151,7 +1153,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPositiveFixNumMaxValuePlusOne_ReadNullableUInt64()
+		public void TestReadNullableUInt64_PositiveFixNumMaxValuePlusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0x80 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1163,7 +1165,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackPositiveFixNumMaxValuePlusOne_ReadNullableUInt64_Splitted()
+		public void TestReadNullableUInt64_PositiveFixNumMaxValuePlusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0x80 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1176,7 +1178,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackByteMaxValue_Read()
+		public void TestRead_ByteMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1191,7 +1193,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackByteMaxValue_Read_Splitted()
+		public void TestRead_ByteMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1207,7 +1209,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackByteMaxValue_ReadUInt64()
+		public void TestReadUInt64_ByteMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1219,7 +1221,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackByteMaxValue_ReadUInt64_Splitted()
+		public void TestReadUInt64_ByteMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1232,7 +1234,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackByteMaxValue_ReadNullableUInt64()
+		public void TestReadNullableUInt64_ByteMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1244,7 +1246,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackByteMaxValue_ReadNullableUInt64_Splitted()
+		public void TestReadNullableUInt64_ByteMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1257,7 +1259,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackByteMaxValuePlusOne_Read()
+		public void TestRead_ByteMaxValuePlusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0x1, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1272,7 +1274,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackByteMaxValuePlusOne_Read_Splitted()
+		public void TestRead_ByteMaxValuePlusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0x1, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1288,7 +1290,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackByteMaxValuePlusOne_ReadUInt64()
+		public void TestReadUInt64_ByteMaxValuePlusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0x1, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1300,7 +1302,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackByteMaxValuePlusOne_ReadUInt64_Splitted()
+		public void TestReadUInt64_ByteMaxValuePlusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0x1, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1313,7 +1315,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackByteMaxValuePlusOne_ReadNullableUInt64()
+		public void TestReadNullableUInt64_ByteMaxValuePlusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0x1, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1325,7 +1327,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackByteMaxValuePlusOne_ReadNullableUInt64_Splitted()
+		public void TestReadNullableUInt64_ByteMaxValuePlusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0x1, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1338,7 +1340,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt16MaxValue_Read()
+		public void TestRead_UInt16MaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1353,7 +1355,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt16MaxValue_Read_Splitted()
+		public void TestRead_UInt16MaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1369,7 +1371,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt16MaxValue_ReadUInt64()
+		public void TestReadUInt64_UInt16MaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1381,7 +1383,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt16MaxValue_ReadUInt64_Splitted()
+		public void TestReadUInt64_UInt16MaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1394,7 +1396,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt16MaxValue_ReadNullableUInt64()
+		public void TestReadNullableUInt64_UInt16MaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1406,7 +1408,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt16MaxValue_ReadNullableUInt64_Splitted()
+		public void TestReadNullableUInt64_UInt16MaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1419,7 +1421,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt16MaxValuePlusOne_Read()
+		public void TestRead_UInt16MaxValuePlusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0x0, 0x1, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1434,7 +1436,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt16MaxValuePlusOne_Read_Splitted()
+		public void TestRead_UInt16MaxValuePlusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0x0, 0x1, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1450,7 +1452,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt16MaxValuePlusOne_ReadUInt64()
+		public void TestReadUInt64_UInt16MaxValuePlusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0x0, 0x1, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1462,7 +1464,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt16MaxValuePlusOne_ReadUInt64_Splitted()
+		public void TestReadUInt64_UInt16MaxValuePlusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0x0, 0x1, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1475,7 +1477,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt16MaxValuePlusOne_ReadNullableUInt64()
+		public void TestReadNullableUInt64_UInt16MaxValuePlusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0x0, 0x1, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1487,7 +1489,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt16MaxValuePlusOne_ReadNullableUInt64_Splitted()
+		public void TestReadNullableUInt64_UInt16MaxValuePlusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0x0, 0x1, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1500,7 +1502,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt32MaxValue_Read()
+		public void TestRead_UInt32MaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1515,7 +1517,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt32MaxValue_Read_Splitted()
+		public void TestRead_UInt32MaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1531,7 +1533,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt32MaxValue_ReadUInt64()
+		public void TestReadUInt64_UInt32MaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1543,7 +1545,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt32MaxValue_ReadUInt64_Splitted()
+		public void TestReadUInt64_UInt32MaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1556,7 +1558,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt32MaxValue_ReadNullableUInt64()
+		public void TestReadNullableUInt64_UInt32MaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1568,7 +1570,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt32MaxValue_ReadNullableUInt64_Splitted()
+		public void TestReadNullableUInt64_UInt32MaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1581,7 +1583,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt32MaxValuePlusOne_Read()
+		public void TestRead_UInt32MaxValuePlusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1596,7 +1598,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt32MaxValuePlusOne_Read_Splitted()
+		public void TestRead_UInt32MaxValuePlusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1612,7 +1614,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt32MaxValuePlusOne_ReadUInt64()
+		public void TestReadUInt64_UInt32MaxValuePlusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1624,7 +1626,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt32MaxValuePlusOne_ReadUInt64_Splitted()
+		public void TestReadUInt64_UInt32MaxValuePlusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1637,7 +1639,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt32MaxValuePlusOne_ReadNullableUInt64()
+		public void TestReadNullableUInt64_UInt32MaxValuePlusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1649,7 +1651,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt32MaxValuePlusOne_ReadNullableUInt64_Splitted()
+		public void TestReadNullableUInt64_UInt32MaxValuePlusOne_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1662,7 +1664,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt64MaxValue_Read()
+		public void TestRead_UInt64MaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1677,7 +1679,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt64MaxValue_Read_Splitted()
+		public void TestRead_UInt64MaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1693,7 +1695,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt64MaxValue_ReadUInt64()
+		public void TestReadUInt64_UInt64MaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1705,7 +1707,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt64MaxValue_ReadUInt64_Splitted()
+		public void TestReadUInt64_UInt64MaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1718,7 +1720,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt64MaxValue_ReadNullableUInt64()
+		public void TestReadNullableUInt64_UInt64MaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1730,7 +1732,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackUInt64MaxValue_ReadNullableUInt64_Splitted()
+		public void TestReadNullableUInt64_UInt64MaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1743,7 +1745,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBooleanTrue_Read()
+		public void TestRead_BooleanTrue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC3 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1758,7 +1760,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBooleanTrue_Read_Splitted()
+		public void TestRead_BooleanTrue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC3 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1774,7 +1776,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBooleanTrue_ReadBoolean()
+		public void TestReadBoolean_BooleanTrue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC3 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1786,7 +1788,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBooleanTrue_ReadBoolean_Splitted()
+		public void TestReadBoolean_BooleanTrue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC3 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1799,7 +1801,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBooleanTrue_ReadNullableBoolean()
+		public void TestReadNullableBoolean_BooleanTrue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC3 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1811,7 +1813,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBooleanTrue_ReadNullableBoolean_Splitted()
+		public void TestReadNullableBoolean_BooleanTrue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC3 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1824,7 +1826,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBooleanFalse_Read()
+		public void TestRead_BooleanFalse()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1839,7 +1841,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBooleanFalse_Read_Splitted()
+		public void TestRead_BooleanFalse_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1855,7 +1857,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBooleanFalse_ReadBoolean()
+		public void TestReadBoolean_BooleanFalse()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1867,7 +1869,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBooleanFalse_ReadBoolean_Splitted()
+		public void TestReadBoolean_BooleanFalse_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1880,7 +1882,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBooleanFalse_ReadNullableBoolean()
+		public void TestReadNullableBoolean_BooleanFalse()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1892,7 +1894,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBooleanFalse_ReadNullableBoolean_Splitted()
+		public void TestReadNullableBoolean_BooleanFalse_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1905,7 +1907,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleMinValue_Read()
+		public void TestRead_SingleMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1920,7 +1922,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleMinValue_Read_Splitted()
+		public void TestRead_SingleMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1936,7 +1938,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleMinValue_ReadSingle()
+		public void TestReadSingle_SingleMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1948,7 +1950,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleMinValue_ReadSingle_Splitted()
+		public void TestReadSingle_SingleMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1961,7 +1963,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleMinValue_ReadNullableSingle()
+		public void TestReadNullableSingle_SingleMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -1973,7 +1975,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleMinValue_ReadNullableSingle_Splitted()
+		public void TestReadNullableSingle_SingleMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -1986,7 +1988,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleMaxValue_Read()
+		public void TestRead_SingleMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2001,7 +2003,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleMaxValue_Read_Splitted()
+		public void TestRead_SingleMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2017,7 +2019,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleMaxValue_ReadSingle()
+		public void TestReadSingle_SingleMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2029,7 +2031,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleMaxValue_ReadSingle_Splitted()
+		public void TestReadSingle_SingleMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2042,7 +2044,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleMaxValue_ReadNullableSingle()
+		public void TestReadNullableSingle_SingleMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2054,7 +2056,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleMaxValue_ReadNullableSingle_Splitted()
+		public void TestReadNullableSingle_SingleMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2067,7 +2069,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleEpsilon_Read()
+		public void TestRead_SingleEpsilon()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2082,7 +2084,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleEpsilon_Read_Splitted()
+		public void TestRead_SingleEpsilon_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2098,7 +2100,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleEpsilon_ReadSingle()
+		public void TestReadSingle_SingleEpsilon()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2110,7 +2112,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleEpsilon_ReadSingle_Splitted()
+		public void TestReadSingle_SingleEpsilon_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2123,7 +2125,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleEpsilon_ReadNullableSingle()
+		public void TestReadNullableSingle_SingleEpsilon()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2135,7 +2137,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleEpsilon_ReadNullableSingle_Splitted()
+		public void TestReadNullableSingle_SingleEpsilon_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2148,7 +2150,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSinglePositiveZero_Read()
+		public void TestRead_SinglePositiveZero()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2163,7 +2165,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSinglePositiveZero_Read_Splitted()
+		public void TestRead_SinglePositiveZero_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2179,7 +2181,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSinglePositiveZero_ReadSingle()
+		public void TestReadSingle_SinglePositiveZero()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2191,7 +2193,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSinglePositiveZero_ReadSingle_Splitted()
+		public void TestReadSingle_SinglePositiveZero_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2204,7 +2206,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSinglePositiveZero_ReadNullableSingle()
+		public void TestReadNullableSingle_SinglePositiveZero()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2216,7 +2218,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSinglePositiveZero_ReadNullableSingle_Splitted()
+		public void TestReadNullableSingle_SinglePositiveZero_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2229,7 +2231,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNegativeZero_Read()
+		public void TestRead_SingleNegativeZero()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x80, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2244,7 +2246,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNegativeZero_Read_Splitted()
+		public void TestRead_SingleNegativeZero_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x80, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2260,7 +2262,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNegativeZero_ReadSingle()
+		public void TestReadSingle_SingleNegativeZero()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x80, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2272,7 +2274,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNegativeZero_ReadSingle_Splitted()
+		public void TestReadSingle_SingleNegativeZero_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x80, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2285,7 +2287,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNegativeZero_ReadNullableSingle()
+		public void TestReadNullableSingle_SingleNegativeZero()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x80, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2297,7 +2299,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNegativeZero_ReadNullableSingle_Splitted()
+		public void TestReadNullableSingle_SingleNegativeZero_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x80, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2310,7 +2312,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNPositiveMinValue_Read()
+		public void TestRead_SingleNaNPositiveMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2325,7 +2327,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNPositiveMinValue_Read_Splitted()
+		public void TestRead_SingleNaNPositiveMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2341,7 +2343,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNPositiveMinValue_ReadSingle()
+		public void TestReadSingle_SingleNaNPositiveMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2353,7 +2355,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNPositiveMinValue_ReadSingle_Splitted()
+		public void TestReadSingle_SingleNaNPositiveMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2366,7 +2368,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNPositiveMinValue_ReadNullableSingle()
+		public void TestReadNullableSingle_SingleNaNPositiveMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2378,7 +2380,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNPositiveMinValue_ReadNullableSingle_Splitted()
+		public void TestReadNullableSingle_SingleNaNPositiveMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2391,7 +2393,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNPositiveMaxValue_Read()
+		public void TestRead_SingleNaNPositiveMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2406,7 +2408,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNPositiveMaxValue_Read_Splitted()
+		public void TestRead_SingleNaNPositiveMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2422,7 +2424,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNPositiveMaxValue_ReadSingle()
+		public void TestReadSingle_SingleNaNPositiveMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2434,7 +2436,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNPositiveMaxValue_ReadSingle_Splitted()
+		public void TestReadSingle_SingleNaNPositiveMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2447,7 +2449,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNPositiveMaxValue_ReadNullableSingle()
+		public void TestReadNullableSingle_SingleNaNPositiveMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2459,7 +2461,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNPositiveMaxValue_ReadNullableSingle_Splitted()
+		public void TestReadNullableSingle_SingleNaNPositiveMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2472,7 +2474,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNNegativeMinValue_Read()
+		public void TestRead_SingleNaNNegativeMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2487,7 +2489,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNNegativeMinValue_Read_Splitted()
+		public void TestRead_SingleNaNNegativeMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2503,7 +2505,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNNegativeMinValue_ReadSingle()
+		public void TestReadSingle_SingleNaNNegativeMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2515,7 +2517,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNNegativeMinValue_ReadSingle_Splitted()
+		public void TestReadSingle_SingleNaNNegativeMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2528,7 +2530,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNNegativeMinValue_ReadNullableSingle()
+		public void TestReadNullableSingle_SingleNaNNegativeMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2540,7 +2542,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNNegativeMinValue_ReadNullableSingle_Splitted()
+		public void TestReadNullableSingle_SingleNaNNegativeMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2553,7 +2555,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNNegativeMaxValue_Read()
+		public void TestRead_SingleNaNNegativeMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2568,7 +2570,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNNegativeMaxValue_Read_Splitted()
+		public void TestRead_SingleNaNNegativeMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2584,7 +2586,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNNegativeMaxValue_ReadSingle()
+		public void TestReadSingle_SingleNaNNegativeMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2596,7 +2598,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNNegativeMaxValue_ReadSingle_Splitted()
+		public void TestReadSingle_SingleNaNNegativeMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2609,7 +2611,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNNegativeMaxValue_ReadNullableSingle()
+		public void TestReadNullableSingle_SingleNaNNegativeMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2621,7 +2623,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNaNNegativeMaxValue_ReadNullableSingle_Splitted()
+		public void TestReadNullableSingle_SingleNaNNegativeMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2634,7 +2636,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNegativeInfinity_Read()
+		public void TestRead_SingleNegativeInfinity()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2649,7 +2651,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNegativeInfinity_Read_Splitted()
+		public void TestRead_SingleNegativeInfinity_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2665,7 +2667,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNegativeInfinity_ReadSingle()
+		public void TestReadSingle_SingleNegativeInfinity()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2677,7 +2679,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNegativeInfinity_ReadSingle_Splitted()
+		public void TestReadSingle_SingleNegativeInfinity_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2690,7 +2692,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNegativeInfinity_ReadNullableSingle()
+		public void TestReadNullableSingle_SingleNegativeInfinity()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2702,7 +2704,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSingleNegativeInfinity_ReadNullableSingle_Splitted()
+		public void TestReadNullableSingle_SingleNegativeInfinity_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2715,7 +2717,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSinglePositiveInfinity_Read()
+		public void TestRead_SinglePositiveInfinity()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2730,7 +2732,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSinglePositiveInfinity_Read_Splitted()
+		public void TestRead_SinglePositiveInfinity_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2746,7 +2748,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSinglePositiveInfinity_ReadSingle()
+		public void TestReadSingle_SinglePositiveInfinity()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2758,7 +2760,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSinglePositiveInfinity_ReadSingle_Splitted()
+		public void TestReadSingle_SinglePositiveInfinity_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2771,7 +2773,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSinglePositiveInfinity_ReadNullableSingle()
+		public void TestReadNullableSingle_SinglePositiveInfinity()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2783,7 +2785,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackSinglePositiveInfinity_ReadNullableSingle_Splitted()
+		public void TestReadNullableSingle_SinglePositiveInfinity_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2796,7 +2798,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleMinValue_Read()
+		public void TestRead_DoubleMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2811,7 +2813,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleMinValue_Read_Splitted()
+		public void TestRead_DoubleMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2827,7 +2829,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleMinValue_ReadDouble()
+		public void TestReadDouble_DoubleMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2839,7 +2841,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleMinValue_ReadDouble_Splitted()
+		public void TestReadDouble_DoubleMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2852,7 +2854,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleMinValue_ReadNullableDouble()
+		public void TestReadNullableDouble_DoubleMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2864,7 +2866,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleMinValue_ReadNullableDouble_Splitted()
+		public void TestReadNullableDouble_DoubleMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2877,7 +2879,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleMaxValue_Read()
+		public void TestRead_DoubleMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2892,7 +2894,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleMaxValue_Read_Splitted()
+		public void TestRead_DoubleMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2908,7 +2910,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleMaxValue_ReadDouble()
+		public void TestReadDouble_DoubleMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2920,7 +2922,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleMaxValue_ReadDouble_Splitted()
+		public void TestReadDouble_DoubleMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2933,7 +2935,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleMaxValue_ReadNullableDouble()
+		public void TestReadNullableDouble_DoubleMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2945,7 +2947,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleMaxValue_ReadNullableDouble_Splitted()
+		public void TestReadNullableDouble_DoubleMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2958,7 +2960,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleEpsilon_Read()
+		public void TestRead_DoubleEpsilon()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -2973,7 +2975,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleEpsilon_Read_Splitted()
+		public void TestRead_DoubleEpsilon_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -2989,7 +2991,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleEpsilon_ReadDouble()
+		public void TestReadDouble_DoubleEpsilon()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3001,7 +3003,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleEpsilon_ReadDouble_Splitted()
+		public void TestReadDouble_DoubleEpsilon_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3014,7 +3016,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleEpsilon_ReadNullableDouble()
+		public void TestReadNullableDouble_DoubleEpsilon()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3026,7 +3028,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleEpsilon_ReadNullableDouble_Splitted()
+		public void TestReadNullableDouble_DoubleEpsilon_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3039,7 +3041,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoublePositiveZero_Read()
+		public void TestRead_DoublePositiveZero()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3054,7 +3056,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoublePositiveZero_Read_Splitted()
+		public void TestRead_DoublePositiveZero_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3070,7 +3072,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoublePositiveZero_ReadDouble()
+		public void TestReadDouble_DoublePositiveZero()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3082,7 +3084,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoublePositiveZero_ReadDouble_Splitted()
+		public void TestReadDouble_DoublePositiveZero_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3095,7 +3097,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoublePositiveZero_ReadNullableDouble()
+		public void TestReadNullableDouble_DoublePositiveZero()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3107,7 +3109,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoublePositiveZero_ReadNullableDouble_Splitted()
+		public void TestReadNullableDouble_DoublePositiveZero_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3120,7 +3122,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNegativeZero_Read()
+		public void TestRead_DoubleNegativeZero()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3135,7 +3137,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNegativeZero_Read_Splitted()
+		public void TestRead_DoubleNegativeZero_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3151,7 +3153,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNegativeZero_ReadDouble()
+		public void TestReadDouble_DoubleNegativeZero()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3163,7 +3165,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNegativeZero_ReadDouble_Splitted()
+		public void TestReadDouble_DoubleNegativeZero_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3176,7 +3178,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNegativeZero_ReadNullableDouble()
+		public void TestReadNullableDouble_DoubleNegativeZero()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3188,7 +3190,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNegativeZero_ReadNullableDouble_Splitted()
+		public void TestReadNullableDouble_DoubleNegativeZero_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3201,7 +3203,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNPositiveMinValue_Read()
+		public void TestRead_DoubleNaNPositiveMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3216,7 +3218,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNPositiveMinValue_Read_Splitted()
+		public void TestRead_DoubleNaNPositiveMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3232,7 +3234,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNPositiveMinValue_ReadDouble()
+		public void TestReadDouble_DoubleNaNPositiveMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3244,7 +3246,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNPositiveMinValue_ReadDouble_Splitted()
+		public void TestReadDouble_DoubleNaNPositiveMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3257,7 +3259,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNPositiveMinValue_ReadNullableDouble()
+		public void TestReadNullableDouble_DoubleNaNPositiveMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3269,7 +3271,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNPositiveMinValue_ReadNullableDouble_Splitted()
+		public void TestReadNullableDouble_DoubleNaNPositiveMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3282,7 +3284,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNPositiveMaxValue_Read()
+		public void TestRead_DoubleNaNPositiveMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3297,7 +3299,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNPositiveMaxValue_Read_Splitted()
+		public void TestRead_DoubleNaNPositiveMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3313,7 +3315,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNPositiveMaxValue_ReadDouble()
+		public void TestReadDouble_DoubleNaNPositiveMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3325,7 +3327,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNPositiveMaxValue_ReadDouble_Splitted()
+		public void TestReadDouble_DoubleNaNPositiveMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3338,7 +3340,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNPositiveMaxValue_ReadNullableDouble()
+		public void TestReadNullableDouble_DoubleNaNPositiveMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3350,7 +3352,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNPositiveMaxValue_ReadNullableDouble_Splitted()
+		public void TestReadNullableDouble_DoubleNaNPositiveMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3363,7 +3365,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNNegativeMinValue_Read()
+		public void TestRead_DoubleNaNNegativeMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3378,7 +3380,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNNegativeMinValue_Read_Splitted()
+		public void TestRead_DoubleNaNNegativeMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3394,7 +3396,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNNegativeMinValue_ReadDouble()
+		public void TestReadDouble_DoubleNaNNegativeMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3406,7 +3408,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNNegativeMinValue_ReadDouble_Splitted()
+		public void TestReadDouble_DoubleNaNNegativeMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3419,7 +3421,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNNegativeMinValue_ReadNullableDouble()
+		public void TestReadNullableDouble_DoubleNaNNegativeMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3431,7 +3433,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNNegativeMinValue_ReadNullableDouble_Splitted()
+		public void TestReadNullableDouble_DoubleNaNNegativeMinValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3444,7 +3446,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNNegativeMaxValue_Read()
+		public void TestRead_DoubleNaNNegativeMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3459,7 +3461,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNNegativeMaxValue_Read_Splitted()
+		public void TestRead_DoubleNaNNegativeMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3475,7 +3477,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNNegativeMaxValue_ReadDouble()
+		public void TestReadDouble_DoubleNaNNegativeMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3487,7 +3489,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNNegativeMaxValue_ReadDouble_Splitted()
+		public void TestReadDouble_DoubleNaNNegativeMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3500,7 +3502,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNNegativeMaxValue_ReadNullableDouble()
+		public void TestReadNullableDouble_DoubleNaNNegativeMaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3512,7 +3514,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNaNNegativeMaxValue_ReadNullableDouble_Splitted()
+		public void TestReadNullableDouble_DoubleNaNNegativeMaxValue_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3525,7 +3527,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNegativeInfinity_Read()
+		public void TestRead_DoubleNegativeInfinity()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3540,7 +3542,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNegativeInfinity_Read_Splitted()
+		public void TestRead_DoubleNegativeInfinity_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3556,7 +3558,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNegativeInfinity_ReadDouble()
+		public void TestReadDouble_DoubleNegativeInfinity()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3568,7 +3570,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNegativeInfinity_ReadDouble_Splitted()
+		public void TestReadDouble_DoubleNegativeInfinity_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3581,7 +3583,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNegativeInfinity_ReadNullableDouble()
+		public void TestReadNullableDouble_DoubleNegativeInfinity()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3593,7 +3595,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoubleNegativeInfinity_ReadNullableDouble_Splitted()
+		public void TestReadNullableDouble_DoubleNegativeInfinity_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3606,7 +3608,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoublePositiveInfinity_Read()
+		public void TestRead_DoublePositiveInfinity()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3621,7 +3623,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoublePositiveInfinity_Read_Splitted()
+		public void TestRead_DoublePositiveInfinity_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3637,7 +3639,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoublePositiveInfinity_ReadDouble()
+		public void TestReadDouble_DoublePositiveInfinity()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3649,7 +3651,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoublePositiveInfinity_ReadDouble_Splitted()
+		public void TestReadDouble_DoublePositiveInfinity_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3662,7 +3664,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoublePositiveInfinity_ReadNullableDouble()
+		public void TestReadNullableDouble_DoublePositiveInfinity()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3674,7 +3676,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackDoublePositiveInfinity_ReadNullableDouble_Splitted()
+		public void TestReadNullableDouble_DoublePositiveInfinity_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3687,7 +3689,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableBoolean()
+		public void TestReadNullableBoolean()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3699,7 +3701,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableBoolean_Splitted()
+		public void TestReadNullableBoolean_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3712,7 +3714,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableSingle()
+		public void TestReadNullableSingle()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3724,7 +3726,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableSingle_Splitted()
+		public void TestReadNullableSingle_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3737,7 +3739,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableDouble()
+		public void TestReadNullableDouble()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3749,7 +3751,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableDouble_Splitted()
+		public void TestReadNullableDouble_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3762,7 +3764,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableSByte()
+		public void TestReadNullableSByte()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3774,7 +3776,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableSByte_Splitted()
+		public void TestReadNullableSByte_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3787,7 +3789,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableInt16()
+		public void TestReadNullableInt16()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3799,7 +3801,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableInt16_Splitted()
+		public void TestReadNullableInt16_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3812,7 +3814,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableInt32()
+		public void TestReadNullableInt32()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3824,7 +3826,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableInt32_Splitted()
+		public void TestReadNullableInt32_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3837,7 +3839,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableInt64()
+		public void TestReadNullableInt64()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3849,7 +3851,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableInt64_Splitted()
+		public void TestReadNullableInt64_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3862,7 +3864,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableByte()
+		public void TestReadNullableByte()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3874,7 +3876,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableByte_Splitted()
+		public void TestReadNullableByte_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3887,7 +3889,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableUInt16()
+		public void TestReadNullableUInt16()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3899,7 +3901,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableUInt16_Splitted()
+		public void TestReadNullableUInt16_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3912,7 +3914,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableUInt32()
+		public void TestReadNullableUInt32()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3924,7 +3926,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableUInt32_Splitted()
+		public void TestReadNullableUInt32_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3937,7 +3939,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableUInt64()
+		public void TestReadNullableUInt64()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -3949,7 +3951,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackNil_ReadNullableUInt64_Splitted()
+		public void TestReadNullableUInt64_Splitted()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var splitted = new SplittingStream( buffer ) )
@@ -3961,4986 +3963,4333 @@ namespace MsgPack
 			}
 		}
 
+#if FEATURE_TAP
+
+		[Test]
+		public async Task TestReadAsync_Int64MinValue()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -9223372036854775808 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadAsync_Int64MinValue_Splitted()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
+			{
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -9223372036854775808 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadInt64Async_Int64MinValue()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -9223372036854775808 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadInt64Async_Int64MinValue_Splitted()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
+			{
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -9223372036854775808 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadNullableInt64Async_Int64MinValue()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -9223372036854775808 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadNullableInt64Async_Int64MinValue_Splitted()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
+			{
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -9223372036854775808 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadAsync_Int32MinValueMinusOne()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -2147483649 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadAsync_Int32MinValueMinusOne_Splitted()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
+			{
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -2147483649 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadInt64Async_Int32MinValueMinusOne()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -2147483649 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadInt64Async_Int32MinValueMinusOne_Splitted()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
+			{
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -2147483649 ) );
+			}
+		}
+
 		[Test]
-		public void TestReadSingleFromPackedPositiveFixNum_Minimum_Normal()
+		public async Task TestReadNullableInt64Async_Int32MinValueMinusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( 0 ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -2147483649 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedPositiveFixNum_Maximum_Normal()
+		public async Task TestReadNullableInt64Async_Int32MinValueMinusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0x7F );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( 0x7F ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -2147483649 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedNegativeFixNum_Minimum_Normal()
+		public async Task TestReadAsync_Int32MinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -31 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( -31 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -2147483648 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedNegativeFixNum_Maximum_Normal()
+		public async Task TestReadAsync_Int32MinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( -1 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -2147483648 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedInt8_Minimum_Normal()
+		public async Task TestReadInt64Async_Int32MinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( SByte.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( SByte.MinValue ) ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -2147483648 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedInt8_Maximum_Normal()
+		public async Task TestReadInt64Async_Int32MinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -32 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( -32 ) ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -2147483648 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedUInt8_Minimum_Normal()
+		public async Task TestReadNullableInt64Async_Int32MinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0x80 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( 0x80 ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -2147483648 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedUInt8_Maximum_Normal()
+		public async Task TestReadNullableInt64Async_Int32MinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( Byte.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( Byte.MaxValue ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -2147483648 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedInt16_Minimum_Normal()
+		public async Task TestReadAsync_Int16MinValueMinusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int16.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( Int16.MinValue ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -32769 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedInt16_Maximum_Normal()
+		public async Task TestReadAsync_Int16MinValueMinusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( SByte.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( SByte.MinValue - 1 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -32769 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedUInt16_Minimum_Normal()
+		public async Task TestReadInt64Async_Int16MinValueMinusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ushort )Byte.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( ( ushort )Byte.MaxValue + 1 ) ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -32769 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedUInt16_Maximum_Normal()
+		public async Task TestReadInt64Async_Int16MinValueMinusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt16.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( UInt16.MaxValue ) ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -32769 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedInt32_Minimum_Normal()
+		public async Task TestReadNullableInt64Async_Int16MinValueMinusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int32.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( Int32.MinValue ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -32769 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedInt32_Maximum_Normal()
+		public async Task TestReadNullableInt64Async_Int16MinValueMinusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( int )Int16.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( ( int )Int16.MinValue - 1 ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -32769 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedUInt32_Minimum_Normal()
+		public async Task TestReadAsync_Int16MinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0x80, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( uint )UInt16.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( ( uint )UInt16.MaxValue + 1 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -32768 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedUInt32_Maximum_Normal()
+		public async Task TestReadAsync_Int16MinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0x80, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt32.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( UInt32.MaxValue ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -32768 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedInt64_Minimum_Normal()
+		public async Task TestReadInt64Async_Int16MinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0x80, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int64.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( Int64.MinValue ) ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -32768 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedInt64_Maximum_Normal()
+		public async Task TestReadInt64Async_Int16MinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0x80, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( long )Int32.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( ( long )Int32.MinValue - 1 ) ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -32768 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedUInt64_Minimum_Normal()
+		public async Task TestReadNullableInt64Async_Int16MinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0x80, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ulong )UInt32.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( ( ulong )UInt32.MaxValue + 1 ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -32768 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedUInt64_Maximum_Normal()
+		public async Task TestReadNullableInt64Async_Int16MinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0x80, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt64.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )( UInt64.MaxValue ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -32768 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSingleFromPackedZero_Normal()
+		public async Task TestReadAsync_SByteMinValueMinusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0xFF, 0x7F } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Single result;
-					Assert.That( unpacker.ReadSingle( out result ) );
-					Assert.That( result, Is.EqualTo( ( Single )0 ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -129 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedPositiveFixNum_Minimum_Normal()
+		public async Task TestReadAsync_SByteMinValueMinusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0xFF, 0x7F } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( 0 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -129 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedPositiveFixNum_Maximum_Normal()
+		public async Task TestReadInt64Async_SByteMinValueMinusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0xFF, 0x7F } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0x7F );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( 0x7F ) ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -129 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedNegativeFixNum_Minimum_Normal()
+		public async Task TestReadInt64Async_SByteMinValueMinusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0xFF, 0x7F } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -31 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( -31 ) ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -129 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedNegativeFixNum_Maximum_Normal()
+		public async Task TestReadNullableInt64Async_SByteMinValueMinusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0xFF, 0x7F } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( -1 ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -129 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedInt8_Minimum_Normal()
+		public async Task TestReadNullableInt64Async_SByteMinValueMinusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0xFF, 0x7F } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( SByte.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( SByte.MinValue ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -129 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedInt8_Maximum_Normal()
+		public async Task TestReadAsync_SByteMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0x80 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -32 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( -32 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -128 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedUInt8_Minimum_Normal()
+		public async Task TestReadAsync_SByteMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0x80 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0x80 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( 0x80 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -128 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedUInt8_Maximum_Normal()
+		public async Task TestReadInt64Async_SByteMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0x80 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Byte.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( Byte.MaxValue ) ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -128 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedInt16_Minimum_Normal()
+		public async Task TestReadInt64Async_SByteMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0x80 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( Int16.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( Int16.MinValue ) ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -128 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedInt16_Maximum_Normal()
+		public async Task TestReadNullableInt64Async_SByteMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0x80 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( SByte.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( SByte.MinValue - 1 ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -128 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedUInt16_Minimum_Normal()
+		public async Task TestReadNullableInt64Async_SByteMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0x80 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( ushort )Byte.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( ( ushort )Byte.MaxValue + 1 ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -128 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedUInt16_Maximum_Normal()
+		public async Task TestReadAsync_NegativeFixNumMinValueMinusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0xDF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( UInt16.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( UInt16.MaxValue ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -33 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedInt32_Minimum_Normal()
+		public async Task TestReadAsync_NegativeFixNumMinValueMinusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0xDF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( Int32.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( Int32.MinValue ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -33 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedInt32_Maximum_Normal()
+		public async Task TestReadInt64Async_NegativeFixNumMinValueMinusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0xDF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( int )Int16.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( ( int )Int16.MinValue - 1 ) ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -33 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedUInt32_Minimum_Normal()
+		public async Task TestReadInt64Async_NegativeFixNumMinValueMinusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0xDF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( uint )UInt16.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( ( uint )UInt16.MaxValue + 1 ) ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -33 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedUInt32_Maximum_Normal()
+		public async Task TestReadNullableInt64Async_NegativeFixNumMinValueMinusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0xDF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( UInt32.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( UInt32.MaxValue ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -33 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedInt64_Minimum_Normal()
+		public async Task TestReadNullableInt64Async_NegativeFixNumMinValueMinusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0xDF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( Int64.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( Int64.MinValue ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -33 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedInt64_Maximum_Normal()
+		public async Task TestReadAsync_NegativeFixNumMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xE0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( long )Int32.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( ( long )Int32.MinValue - 1 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -32 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedUInt64_Minimum_Normal()
+		public async Task TestReadAsync_NegativeFixNumMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xE0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( ulong )UInt32.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( ( ulong )UInt32.MaxValue + 1 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -32 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedUInt64_Maximum_Normal()
+		public async Task TestReadInt64Async_NegativeFixNumMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xE0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( UInt64.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )( UInt64.MaxValue ) ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -32 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadDoubleFromPackedZero_Normal()
+		public async Task TestReadInt64Async_NegativeFixNumMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xE0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Double result;
-					Assert.That( unpacker.ReadDouble( out result ) );
-					Assert.That( result, Is.EqualTo( ( Double )0 ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -32 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedSingle_Negative_AsInteger()
+		public async Task TestReadNullableInt64Async_NegativeFixNumMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xE0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( SByte )( -1.1f ) ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -32 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedSingle_Positive_AsInteger()
+		public async Task TestReadNullableInt64Async_NegativeFixNumMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xE0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( SByte )( 1.1f ) ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -32 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedSingle_LittleNegative_AsZero()
+		public async Task TestReadAsync_MinusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( SByte )( -0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -1 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedSingle_LittlePositive_AsZero()
+		public async Task TestReadAsync_MinusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( SByte )( 0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -1 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedSingle_Zero_AsInteger()
+		public async Task TestReadInt64Async_MinusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.0f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( ( SByte )0.0f ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -1 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedDouble_Negative_AsInteger()
+		public async Task TestReadInt64Async_MinusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( SByte )( -1.1 ) ) ) );
-				}
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -1 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedDouble_Positive_AsInteger()
+		public async Task TestReadNullableInt64Async_MinusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( SByte )( 1.1 ) ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -1 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedDouble_LittleNegative_AsZero()
+		public async Task TestReadNullableInt64Async_MinusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( SByte )( -0.1 ) ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -1 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedDouble_LittlePositive_AsZero()
+		public async Task TestReadAsync_Zero()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( SByte )( 0.1 ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 0 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedDouble_Zero_AsInteger()
+		public async Task TestReadAsync_Zero_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( ( SByte )0.0 ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 0 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedPositiveFixNum_MinValue_AsInteger()
+		public async Task TestReadUInt64Async_Zero()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( ( SByte )( 0 ) ) );
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 0 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedPositiveFixNum_MaxValue_AsInteger()
+		public async Task TestReadUInt64Async_Zero_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0x7F );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( ( SByte )( 0x7F ) ) );
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 0 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadSByteFromPackedNegativeFixNum_MinValue_AsInteger()
+		public async Task TestReadNullableUInt64Async_Zero()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -31 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( ( SByte )( -31 ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 0 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedNegativeFixNum_MaxValue_AsInteger()
+		public async Task TestReadNullableUInt64Async_Zero_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( ( SByte )( -1 ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 0 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadSByteFromPackedInt8_MinValue_AsInteger()
+		public async Task TestReadAsync_PlusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( SByte.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( ( SByte )( SByte.MinValue ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 1 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedInt8_MaxValue_AsInteger()
+		public async Task TestReadAsync_PlusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -32 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					SByte result;
-					Assert.That( unpacker.ReadSByte( out result ) );
-					Assert.That( result, Is.EqualTo( ( SByte )( -32 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 1 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadSByteFromPackedUInt8_MinValue_Overflow()
+		public async Task TestReadUInt64Async_PlusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0x80 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							SByte result;
-							unpacker.ReadSByte( out result );
-						}
-					);
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 1 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedUInt8_MaxValue_Overflow()
+		public async Task TestReadUInt64Async_PlusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( Byte.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							SByte result;
-							unpacker.ReadSByte( out result );
-						}
-					);
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 1 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadSByteFromPackedInt16_MinValue_Overflow()
+		public async Task TestReadNullableUInt64Async_PlusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int16.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							SByte result;
-							unpacker.ReadSByte( out result );
-						}
-					);
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 1 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedInt16_MaxValue_Overflow()
+		public async Task TestReadNullableUInt64Async_PlusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( SByte.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							SByte result;
-							unpacker.ReadSByte( out result );
-						}
-					);
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 1 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadSByteFromPackedUInt16_MinValue_Overflow()
+		public async Task TestReadAsync_PositiveFixNumMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x7F } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ushort )Byte.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							SByte result;
-							unpacker.ReadSByte( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 127 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedUInt16_MaxValue_Overflow()
+		public async Task TestReadAsync_PositiveFixNumMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x7F } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt16.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							SByte result;
-							unpacker.ReadSByte( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 127 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadSByteFromPackedInt32_MinValue_Overflow()
+		public async Task TestReadUInt64Async_PositiveFixNumMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x7F } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int32.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							SByte result;
-							unpacker.ReadSByte( out result );
-						}
-					);
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 127 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedInt32_MaxValue_Overflow()
+		public async Task TestReadUInt64Async_PositiveFixNumMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x7F } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( int )Int16.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							SByte result;
-							unpacker.ReadSByte( out result );
-						}
-					);
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 127 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadSByteFromPackedUInt32_MinValue_Overflow()
+		public async Task TestReadNullableUInt64Async_PositiveFixNumMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x7F } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( uint )UInt16.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							SByte result;
-							unpacker.ReadSByte( out result );
-						}
-					);
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 127 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedUInt32_MaxValue_Overflow()
+		public async Task TestReadNullableUInt64Async_PositiveFixNumMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0x7F } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt32.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							SByte result;
-							unpacker.ReadSByte( out result );
-						}
-					);
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 127 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadSByteFromPackedInt64_MinValue_Overflow()
+		public async Task TestReadAsync_PositiveFixNumMaxValuePlusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0x80 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int64.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							SByte result;
-							unpacker.ReadSByte( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 128 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedInt64_MaxValue_Overflow()
+		public async Task TestReadAsync_PositiveFixNumMaxValuePlusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0x80 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( long )Int32.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							SByte result;
-							unpacker.ReadSByte( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 128 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadSByteFromPackedUInt64_MinValue_Overflow()
+		public async Task TestReadUInt64Async_PositiveFixNumMaxValuePlusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0x80 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ulong )UInt32.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							SByte result;
-							unpacker.ReadSByte( out result );
-						}
-					);
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 128 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadSByteFromPackedUInt64_MaxValue_Overflow()
+		public async Task TestReadUInt64Async_PositiveFixNumMaxValuePlusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0x80 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt64.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							SByte result;
-							unpacker.ReadSByte( out result );
-						}
-					);
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 128 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt16FromPackedSingle_Negative_AsInteger()
+		public async Task TestReadNullableUInt64Async_PositiveFixNumMaxValuePlusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0x80 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int16 )( -1.1f ) ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 128 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedSingle_Positive_AsInteger()
+		public async Task TestReadNullableUInt64Async_PositiveFixNumMaxValuePlusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0x80 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int16 )( 1.1f ) ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 128 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedSingle_LittleNegative_AsZero()
+		public async Task TestReadAsync_ByteMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int16 )( -0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 255 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedSingle_LittlePositive_AsZero()
+		public async Task TestReadAsync_ByteMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int16 )( 0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 255 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedSingle_Zero_AsInteger()
+		public async Task TestReadUInt64Async_ByteMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.0f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int16 )0.0f ) );
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 255 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedDouble_Negative_AsInteger()
+		public async Task TestReadUInt64Async_ByteMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int16 )( -1.1 ) ) ) );
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 255 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedDouble_Positive_AsInteger()
+		public async Task TestReadNullableUInt64Async_ByteMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int16 )( 1.1 ) ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 255 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedDouble_LittleNegative_AsZero()
+		public async Task TestReadNullableUInt64Async_ByteMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCC, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int16 )( -0.1 ) ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 255 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedDouble_LittlePositive_AsZero()
+		public async Task TestReadAsync_ByteMaxValuePlusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0x1, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int16 )( 0.1 ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 256 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedDouble_Zero_AsInteger()
+		public async Task TestReadAsync_ByteMaxValuePlusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0x1, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int16 )0.0 ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 256 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedPositiveFixNum_MinValue_AsInteger()
+		public async Task TestReadUInt64Async_ByteMaxValuePlusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0x1, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int16 )( 0 ) ) );
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 256 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedPositiveFixNum_MaxValue_AsInteger()
+		public async Task TestReadUInt64Async_ByteMaxValuePlusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0x1, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0x7F );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int16 )( 0x7F ) ) );
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 256 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt16FromPackedNegativeFixNum_MinValue_AsInteger()
+		public async Task TestReadNullableUInt64Async_ByteMaxValuePlusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0x1, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -31 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int16 )( -31 ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 256 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedNegativeFixNum_MaxValue_AsInteger()
+		public async Task TestReadNullableUInt64Async_ByteMaxValuePlusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0x1, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int16 )( -1 ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 256 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt16FromPackedInt8_MinValue_AsInteger()
+		public async Task TestReadAsync_UInt16MaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( SByte.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int16 )( SByte.MinValue ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 65535 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedInt8_MaxValue_AsInteger()
+		public async Task TestReadAsync_UInt16MaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -32 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int16 )( -32 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 65535 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt16FromPackedUInt8_MinValue_AsInteger()
+		public async Task TestReadUInt64Async_UInt16MaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0x80 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int16 )( 0x80 ) ) );
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 65535 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedUInt8_MaxValue_AsInteger()
+		public async Task TestReadUInt64Async_UInt16MaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( Byte.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int16 )( Byte.MaxValue ) ) );
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 65535 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt16FromPackedInt16_MinValue_AsInteger()
+		public async Task TestReadNullableUInt64Async_UInt16MaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int16.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int16 )( Int16.MinValue ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 65535 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedInt16_MaxValue_AsInteger()
+		public async Task TestReadNullableUInt64Async_UInt16MaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCD, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( SByte.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int16 )( SByte.MinValue - 1 ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 65535 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt16FromPackedUInt16_MinValue_AsInteger()
+		public async Task TestReadAsync_UInt16MaxValuePlusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0x0, 0x1, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ushort )Byte.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int16 result;
-					Assert.That( unpacker.ReadInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int16 )( ( ushort )Byte.MaxValue + 1 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 65536 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedUInt16_MaxValue_Overflow()
+		public async Task TestReadAsync_UInt16MaxValuePlusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0x0, 0x1, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt16.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Int16 result;
-							unpacker.ReadInt16( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 65536 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt16FromPackedInt32_MinValue_Overflow()
+		public async Task TestReadUInt64Async_UInt16MaxValuePlusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0x0, 0x1, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int32.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Int16 result;
-							unpacker.ReadInt16( out result );
-						}
-					);
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 65536 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedInt32_MaxValue_Overflow()
+		public async Task TestReadUInt64Async_UInt16MaxValuePlusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0x0, 0x1, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( int )Int16.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Int16 result;
-							unpacker.ReadInt16( out result );
-						}
-					);
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 65536 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt16FromPackedUInt32_MinValue_Overflow()
+		public async Task TestReadNullableUInt64Async_UInt16MaxValuePlusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0x0, 0x1, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( uint )UInt16.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Int16 result;
-							unpacker.ReadInt16( out result );
-						}
-					);
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 65536 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedUInt32_MaxValue_Overflow()
+		public async Task TestReadNullableUInt64Async_UInt16MaxValuePlusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0x0, 0x1, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt32.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Int16 result;
-							unpacker.ReadInt16( out result );
-						}
-					);
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 65536 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt16FromPackedInt64_MinValue_Overflow()
+		public async Task TestReadAsync_UInt32MaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int64.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Int16 result;
-							unpacker.ReadInt16( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 4294967295 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedInt64_MaxValue_Overflow()
+		public async Task TestReadAsync_UInt32MaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( long )Int32.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Int16 result;
-							unpacker.ReadInt16( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 4294967295 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt16FromPackedUInt64_MinValue_Overflow()
+		public async Task TestReadUInt64Async_UInt32MaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ulong )UInt32.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Int16 result;
-							unpacker.ReadInt16( out result );
-						}
-					);
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 4294967295 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt16FromPackedUInt64_MaxValue_Overflow()
+		public async Task TestReadUInt64Async_UInt32MaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt64.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Int16 result;
-							unpacker.ReadInt16( out result );
-						}
-					);
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 4294967295 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt32FromPackedSingle_Negative_AsInteger()
+		public async Task TestReadNullableUInt64Async_UInt32MaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int32 )( -1.1f ) ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 4294967295 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedSingle_Positive_AsInteger()
+		public async Task TestReadNullableUInt64Async_UInt32MaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int32 )( 1.1f ) ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 4294967295 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedSingle_LittleNegative_AsZero()
+		public async Task TestReadAsync_UInt32MaxValuePlusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int32 )( -0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 4294967296 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedSingle_LittlePositive_AsZero()
+		public async Task TestReadAsync_UInt32MaxValuePlusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int32 )( 0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 4294967296 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedSingle_Zero_AsInteger()
+		public async Task TestReadUInt64Async_UInt32MaxValuePlusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.0f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )0.0f ) );
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 4294967296 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedDouble_Negative_AsInteger()
+		public async Task TestReadUInt64Async_UInt32MaxValuePlusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int32 )( -1.1 ) ) ) );
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 4294967296 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedDouble_Positive_AsInteger()
+		public async Task TestReadNullableUInt64Async_UInt32MaxValuePlusOne()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int32 )( 1.1 ) ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 4294967296 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedDouble_LittleNegative_AsZero()
+		public async Task TestReadNullableUInt64Async_UInt32MaxValuePlusOne_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int32 )( -0.1 ) ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 4294967296 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedDouble_LittlePositive_AsZero()
+		public async Task TestReadAsync_UInt64MaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int32 )( 0.1 ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 18446744073709551615 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedDouble_Zero_AsInteger()
+		public async Task TestReadAsync_UInt64MaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )0.0 ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 18446744073709551615 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedPositiveFixNum_MinValue_AsInteger()
+		public async Task TestReadUInt64Async_UInt64MaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )( 0 ) ) );
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 18446744073709551615 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedPositiveFixNum_MaxValue_AsInteger()
+		public async Task TestReadUInt64Async_UInt64MaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0x7F );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )( 0x7F ) ) );
-				}
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 18446744073709551615 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt32FromPackedNegativeFixNum_MinValue_AsInteger()
+		public async Task TestReadNullableUInt64Async_UInt64MaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -31 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )( -31 ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 18446744073709551615 ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedNegativeFixNum_MaxValue_AsInteger()
+		public async Task TestReadNullableUInt64Async_UInt64MaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )( -1 ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 18446744073709551615 ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt32FromPackedInt8_MinValue_AsInteger()
+		public async Task TestReadAsync_BooleanTrue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC3 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( SByte.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )( SByte.MinValue ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Boolean )result.Value, Is.EqualTo( true ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedInt8_MaxValue_AsInteger()
+		public async Task TestReadAsync_BooleanTrue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC3 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -32 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )( -32 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Boolean )result.Value, Is.EqualTo( true ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt32FromPackedUInt8_MinValue_AsInteger()
+		public async Task TestReadBooleanAsync_BooleanTrue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC3 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0x80 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )( 0x80 ) ) );
-				}
+				Boolean result;
+				var ret = await unpacker.ReadBooleanAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( true ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedUInt8_MaxValue_AsInteger()
+		public async Task TestReadBooleanAsync_BooleanTrue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC3 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( Byte.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )( Byte.MaxValue ) ) );
-				}
+				Boolean result;
+				var ret = await unpacker.ReadBooleanAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( true ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt32FromPackedInt16_MinValue_AsInteger()
+		public async Task TestReadNullableBooleanAsync_BooleanTrue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC3 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int16.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )( Int16.MinValue ) ) );
-				}
+				Boolean? result;
+				var ret = await unpacker.ReadNullableBooleanAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( true ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedInt16_MaxValue_AsInteger()
+		public async Task TestReadNullableBooleanAsync_BooleanTrue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC3 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( SByte.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )( SByte.MinValue - 1 ) ) );
-				}
+				Boolean? result;
+				var ret = await unpacker.ReadNullableBooleanAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( true ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt32FromPackedUInt16_MinValue_AsInteger()
+		public async Task TestReadAsync_BooleanFalse()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ushort )Byte.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )( ( ushort )Byte.MaxValue + 1 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Boolean )result.Value, Is.EqualTo( false ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedUInt16_MaxValue_AsInteger()
+		public async Task TestReadAsync_BooleanFalse_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt16.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )( UInt16.MaxValue ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Boolean )result.Value, Is.EqualTo( false ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt32FromPackedInt32_MinValue_AsInteger()
+		public async Task TestReadBooleanAsync_BooleanFalse()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int32.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )( Int32.MinValue ) ) );
-				}
+				Boolean result;
+				var ret = await unpacker.ReadBooleanAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( false ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedInt32_MaxValue_AsInteger()
+		public async Task TestReadBooleanAsync_BooleanFalse_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( int )Int16.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )( ( int )Int16.MinValue - 1 ) ) );
-				}
+				Boolean result;
+				var ret = await unpacker.ReadBooleanAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( false ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt32FromPackedUInt32_MinValue_AsInteger()
+		public async Task TestReadNullableBooleanAsync_BooleanFalse()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( uint )UInt16.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int32 result;
-					Assert.That( unpacker.ReadInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int32 )( ( uint )UInt16.MaxValue + 1 ) ) );
-				}
+				Boolean? result;
+				var ret = await unpacker.ReadNullableBooleanAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( false ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedUInt32_MaxValue_Overflow()
+		public async Task TestReadNullableBooleanAsync_BooleanFalse_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt32.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Int32 result;
-							unpacker.ReadInt32( out result );
-						}
-					);
-				}
+				Boolean? result;
+				var ret = await unpacker.ReadNullableBooleanAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( false ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt32FromPackedInt64_MinValue_Overflow()
+		public async Task TestReadAsync_SingleMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int64.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Int32 result;
-							unpacker.ReadInt32( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.MinValue.Equals( ( System.Single )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedInt64_MaxValue_Overflow()
+		public async Task TestReadAsync_SingleMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( long )Int32.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Int32 result;
-							unpacker.ReadInt32( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.MinValue.Equals( ( System.Single )result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt32FromPackedUInt64_MinValue_Overflow()
+		public async Task TestReadSingleAsync_SingleMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ulong )UInt32.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Int32 result;
-							unpacker.ReadInt32( out result );
-						}
-					);
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.MinValue.Equals( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt32FromPackedUInt64_MaxValue_Overflow()
+		public async Task TestReadSingleAsync_SingleMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt64.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Int32 result;
-							unpacker.ReadInt32( out result );
-						}
-					);
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.MinValue.Equals( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt64FromPackedSingle_Negative_AsInteger()
+		public async Task TestReadNullableSingleAsync_SingleMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int64 )( -1.1f ) ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.MinValue.Equals( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedSingle_Positive_AsInteger()
+		public async Task TestReadNullableSingleAsync_SingleMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int64 )( 1.1f ) ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.MinValue.Equals( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedSingle_LittleNegative_AsZero()
+		public async Task TestReadAsync_SingleMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int64 )( -0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.MaxValue.Equals( ( System.Single )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedSingle_LittlePositive_AsZero()
+		public async Task TestReadAsync_SingleMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int64 )( 0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.MaxValue.Equals( ( System.Single )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedSingle_Zero_AsInteger()
+		public async Task TestReadSingleAsync_SingleMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.0f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )0.0f ) );
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.MaxValue.Equals( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedDouble_Negative_AsInteger()
+		public async Task TestReadSingleAsync_SingleMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int64 )( -1.1 ) ) ) );
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.MaxValue.Equals( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedDouble_Positive_AsInteger()
+		public async Task TestReadNullableSingleAsync_SingleMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int64 )( 1.1 ) ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.MaxValue.Equals( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedDouble_LittleNegative_AsZero()
+		public async Task TestReadNullableSingleAsync_SingleMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int64 )( -0.1 ) ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.MaxValue.Equals( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedDouble_LittlePositive_AsZero()
+		public async Task TestReadAsync_SingleEpsilon()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Int64 )( 0.1 ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.Epsilon.Equals( ( System.Single )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedDouble_Zero_AsInteger()
+		public async Task TestReadAsync_SingleEpsilon_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )0.0 ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.Epsilon.Equals( ( System.Single )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedPositiveFixNum_MinValue_AsInteger()
+		public async Task TestReadSingleAsync_SingleEpsilon()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( 0 ) ) );
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.Epsilon.Equals( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedPositiveFixNum_MaxValue_AsInteger()
+		public async Task TestReadSingleAsync_SingleEpsilon_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0x7F );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( 0x7F ) ) );
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.Epsilon.Equals( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt64FromPackedNegativeFixNum_MinValue_AsInteger()
+		public async Task TestReadNullableSingleAsync_SingleEpsilon()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -31 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( -31 ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.Epsilon.Equals( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedNegativeFixNum_MaxValue_AsInteger()
+		public async Task TestReadNullableSingleAsync_SingleEpsilon_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( -1 ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.Epsilon.Equals( result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt64FromPackedInt8_MinValue_AsInteger()
+		public async Task TestReadAsync_SinglePositiveZero()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( SByte.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( SByte.MinValue ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( 0.0f ).Equals( ( System.Single )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedInt8_MaxValue_AsInteger()
+		public async Task TestReadAsync_SinglePositiveZero_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -32 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( -32 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( 0.0f ).Equals( ( System.Single )result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt64FromPackedUInt8_MinValue_AsInteger()
+		public async Task TestReadSingleAsync_SinglePositiveZero()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0x80 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( 0x80 ) ) );
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( 0.0f ).Equals( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedUInt8_MaxValue_AsInteger()
+		public async Task TestReadSingleAsync_SinglePositiveZero_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( Byte.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( Byte.MaxValue ) ) );
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( 0.0f ).Equals( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt64FromPackedInt16_MinValue_AsInteger()
+		public async Task TestReadNullableSingleAsync_SinglePositiveZero()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int16.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( Int16.MinValue ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( 0.0f ).Equals( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedInt16_MaxValue_AsInteger()
+		public async Task TestReadNullableSingleAsync_SinglePositiveZero_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( SByte.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( SByte.MinValue - 1 ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( 0.0f ).Equals( result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt64FromPackedUInt16_MinValue_AsInteger()
+		public async Task TestReadAsync_SingleNegativeZero()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x80, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ushort )Byte.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( ( ushort )Byte.MaxValue + 1 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( -0.0f ).Equals( ( System.Single )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedUInt16_MaxValue_AsInteger()
+		public async Task TestReadAsync_SingleNegativeZero_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x80, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt16.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( UInt16.MaxValue ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( -0.0f ).Equals( ( System.Single )result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt64FromPackedInt32_MinValue_AsInteger()
+		public async Task TestReadSingleAsync_SingleNegativeZero()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x80, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int32.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( Int32.MinValue ) ) );
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( -0.0f ).Equals( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedInt32_MaxValue_AsInteger()
+		public async Task TestReadSingleAsync_SingleNegativeZero_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x80, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( int )Int16.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( ( int )Int16.MinValue - 1 ) ) );
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( -0.0f ).Equals( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt64FromPackedUInt32_MinValue_AsInteger()
+		public async Task TestReadNullableSingleAsync_SingleNegativeZero()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x80, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( uint )UInt16.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( ( uint )UInt16.MaxValue + 1 ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( -0.0f ).Equals( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedUInt32_MaxValue_AsInteger()
+		public async Task TestReadNullableSingleAsync_SingleNegativeZero_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x80, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt32.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( UInt32.MaxValue ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( -0.0f ).Equals( result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt64FromPackedInt64_MinValue_AsInteger()
+		public async Task TestReadAsync_SingleNaNPositiveMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int64.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( Int64.MinValue ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.IsNaN( ( System.Single )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedInt64_MaxValue_AsInteger()
+		public async Task TestReadAsync_SingleNaNPositiveMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( long )Int32.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( ( long )Int32.MinValue - 1 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.IsNaN( ( System.Single )result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadInt64FromPackedUInt64_MinValue_AsInteger()
+		public async Task TestReadSingleAsync_SingleNaNPositiveMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ulong )UInt32.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Int64 result;
-					Assert.That( unpacker.ReadInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( Int64 )( ( ulong )UInt32.MaxValue + 1 ) ) );
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadInt64FromPackedUInt64_MaxValue_Overflow()
+		public async Task TestReadSingleAsync_SingleNaNPositiveMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt64.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Int64 result;
-							unpacker.ReadInt64( out result );
-						}
-					);
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadByteFromPackedSingle_Negative_Overflow()
+		public async Task TestReadNullableSingleAsync_SingleNaNPositiveMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedSingle_Positive_AsInteger()
+		public async Task TestReadNullableSingleAsync_SingleNaNPositiveMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Byte result;
-					Assert.That( unpacker.ReadByte( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Byte )( 1.1f ) ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedSingle_LittleNegative_AsZero()
+		public async Task TestReadAsync_SingleNaNPositiveMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Byte result;
-					Assert.That( unpacker.ReadByte( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Byte )( -0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.IsNaN( ( System.Single )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedSingle_LittlePositive_AsZero()
+		public async Task TestReadAsync_SingleNaNPositiveMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Byte result;
-					Assert.That( unpacker.ReadByte( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Byte )( 0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.IsNaN( ( System.Single )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedSingle_Zero_AsInteger()
+		public async Task TestReadSingleAsync_SingleNaNPositiveMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.0f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Byte result;
-					Assert.That( unpacker.ReadByte( out result ) );
-					Assert.That( result, Is.EqualTo( ( Byte )0.0f ) );
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedDouble_Negative_Overflow()
+		public async Task TestReadSingleAsync_SingleNaNPositiveMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedDouble_Positive_AsInteger()
+		public async Task TestReadNullableSingleAsync_SingleNaNPositiveMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Byte result;
-					Assert.That( unpacker.ReadByte( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Byte )( 1.1 ) ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedDouble_LittleNegative_AsZero()
+		public async Task TestReadNullableSingleAsync_SingleNaNPositiveMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Byte result;
-					Assert.That( unpacker.ReadByte( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Byte )( -0.1 ) ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedDouble_LittlePositive_AsZero()
+		public async Task TestReadAsync_SingleNaNNegativeMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Byte result;
-					Assert.That( unpacker.ReadByte( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( Byte )( 0.1 ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.IsNaN( ( System.Single )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedDouble_Zero_AsInteger()
+		public async Task TestReadAsync_SingleNaNNegativeMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Byte result;
-					Assert.That( unpacker.ReadByte( out result ) );
-					Assert.That( result, Is.EqualTo( ( Byte )0.0 ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.IsNaN( ( System.Single )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedPositiveFixNum_MinValue_AsInteger()
+		public async Task TestReadSingleAsync_SingleNaNNegativeMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Byte result;
-					Assert.That( unpacker.ReadByte( out result ) );
-					Assert.That( result, Is.EqualTo( ( Byte )( 0 ) ) );
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedPositiveFixNum_MaxValue_AsInteger()
+		public async Task TestReadSingleAsync_SingleNaNNegativeMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0x7F );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Byte result;
-					Assert.That( unpacker.ReadByte( out result ) );
-					Assert.That( result, Is.EqualTo( ( Byte )( 0x7F ) ) );
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadByteFromPackedNegativeFixNum_MinValue_Overflow()
+		public async Task TestReadNullableSingleAsync_SingleNaNNegativeMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -31 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedNegativeFixNum_MaxValue_Overflow()
+		public async Task TestReadNullableSingleAsync_SingleNaNNegativeMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadByteFromPackedInt8_MinValue_Overflow()
+		public async Task TestReadAsync_SingleNaNNegativeMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( SByte.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.IsNaN( ( System.Single )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedInt8_MaxValue_Overflow()
+		public async Task TestReadAsync_SingleNaNNegativeMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -32 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.IsNaN( ( System.Single )result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadByteFromPackedUInt8_MinValue_AsInteger()
+		public async Task TestReadSingleAsync_SingleNaNNegativeMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0x80 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Byte result;
-					Assert.That( unpacker.ReadByte( out result ) );
-					Assert.That( result, Is.EqualTo( ( Byte )( 0x80 ) ) );
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedUInt8_MaxValue_AsInteger()
+		public async Task TestReadSingleAsync_SingleNaNNegativeMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( Byte.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Byte result;
-					Assert.That( unpacker.ReadByte( out result ) );
-					Assert.That( result, Is.EqualTo( ( Byte )( Byte.MaxValue ) ) );
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadByteFromPackedInt16_MinValue_Overflow()
+		public async Task TestReadNullableSingleAsync_SingleNaNNegativeMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int16.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedInt16_MaxValue_Overflow()
+		public async Task TestReadNullableSingleAsync_SingleNaNNegativeMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( SByte.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNaN( result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadByteFromPackedUInt16_MinValue_Overflow()
+		public async Task TestReadAsync_SingleNegativeInfinity()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ushort )Byte.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.IsNegativeInfinity( ( System.Single )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedUInt16_MaxValue_Overflow()
+		public async Task TestReadAsync_SingleNegativeInfinity_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt16.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.IsNegativeInfinity( ( System.Single )result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadByteFromPackedInt32_MinValue_Overflow()
+		public async Task TestReadSingleAsync_SingleNegativeInfinity()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int32.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNegativeInfinity( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedInt32_MaxValue_Overflow()
+		public async Task TestReadSingleAsync_SingleNegativeInfinity_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( int )Int16.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNegativeInfinity( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadByteFromPackedUInt32_MinValue_Overflow()
+		public async Task TestReadNullableSingleAsync_SingleNegativeInfinity()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( uint )UInt16.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNegativeInfinity( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedUInt32_MaxValue_Overflow()
+		public async Task TestReadNullableSingleAsync_SingleNegativeInfinity_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt32.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsNegativeInfinity( result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadByteFromPackedInt64_MinValue_Overflow()
+		public async Task TestReadAsync_SinglePositiveInfinity()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int64.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.IsPositiveInfinity( ( System.Single )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedInt64_MaxValue_Overflow()
+		public async Task TestReadAsync_SinglePositiveInfinity_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( long )Int32.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.IsPositiveInfinity( ( System.Single )result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadByteFromPackedUInt64_MinValue_Overflow()
+		public async Task TestReadSingleAsync_SinglePositiveInfinity()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ulong )UInt32.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsPositiveInfinity( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadByteFromPackedUInt64_MaxValue_Overflow()
+		public async Task TestReadSingleAsync_SinglePositiveInfinity_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt64.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							Byte result;
-							unpacker.ReadByte( out result );
-						}
-					);
-				}
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsPositiveInfinity( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt16FromPackedSingle_Negative_Overflow()
+		public async Task TestReadNullableSingleAsync_SinglePositiveInfinity()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsPositiveInfinity( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedSingle_Positive_AsInteger()
+		public async Task TestReadNullableSingleAsync_SinglePositiveInfinity_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt16 result;
-					Assert.That( unpacker.ReadUInt16( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt16 )( 1.1f ) ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.IsPositiveInfinity( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedSingle_LittleNegative_AsZero()
+		public async Task TestReadAsync_DoubleMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt16 result;
-					Assert.That( unpacker.ReadUInt16( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt16 )( -0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.MinValue.Equals( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedSingle_LittlePositive_AsZero()
+		public async Task TestReadAsync_DoubleMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt16 result;
-					Assert.That( unpacker.ReadUInt16( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt16 )( 0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.MinValue.Equals( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedSingle_Zero_AsInteger()
+		public async Task TestReadDoubleAsync_DoubleMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.0f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt16 result;
-					Assert.That( unpacker.ReadUInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt16 )0.0f ) );
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.MinValue.Equals( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedDouble_Negative_Overflow()
+		public async Task TestReadDoubleAsync_DoubleMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.MinValue.Equals( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedDouble_Positive_AsInteger()
+		public async Task TestReadNullableDoubleAsync_DoubleMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt16 result;
-					Assert.That( unpacker.ReadUInt16( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt16 )( 1.1 ) ) ) );
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.MinValue.Equals( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedDouble_LittleNegative_AsZero()
+		public async Task TestReadNullableDoubleAsync_DoubleMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt16 result;
-					Assert.That( unpacker.ReadUInt16( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt16 )( -0.1 ) ) ) );
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.MinValue.Equals( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedDouble_LittlePositive_AsZero()
+		public async Task TestReadAsync_DoubleMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt16 result;
-					Assert.That( unpacker.ReadUInt16( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt16 )( 0.1 ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.MaxValue.Equals( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedDouble_Zero_AsInteger()
+		public async Task TestReadAsync_DoubleMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt16 result;
-					Assert.That( unpacker.ReadUInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt16 )0.0 ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.MaxValue.Equals( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedPositiveFixNum_MinValue_AsInteger()
+		public async Task TestReadDoubleAsync_DoubleMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt16 result;
-					Assert.That( unpacker.ReadUInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt16 )( 0 ) ) );
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.MaxValue.Equals( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedPositiveFixNum_MaxValue_AsInteger()
+		public async Task TestReadDoubleAsync_DoubleMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0x7F );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt16 result;
-					Assert.That( unpacker.ReadUInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt16 )( 0x7F ) ) );
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.MaxValue.Equals( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt16FromPackedNegativeFixNum_MinValue_Overflow()
+		public async Task TestReadNullableDoubleAsync_DoubleMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -31 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.MaxValue.Equals( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedNegativeFixNum_MaxValue_Overflow()
+		public async Task TestReadNullableDoubleAsync_DoubleMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.MaxValue.Equals( result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt16FromPackedInt8_MinValue_Overflow()
+		public async Task TestReadAsync_DoubleEpsilon()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( SByte.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.Epsilon.Equals( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedInt8_MaxValue_Overflow()
+		public async Task TestReadAsync_DoubleEpsilon_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -32 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.Epsilon.Equals( ( System.Double )result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt16FromPackedUInt8_MinValue_AsInteger()
+		public async Task TestReadDoubleAsync_DoubleEpsilon()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0x80 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt16 result;
-					Assert.That( unpacker.ReadUInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt16 )( 0x80 ) ) );
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.Epsilon.Equals( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedUInt8_MaxValue_AsInteger()
+		public async Task TestReadDoubleAsync_DoubleEpsilon_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( Byte.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt16 result;
-					Assert.That( unpacker.ReadUInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt16 )( Byte.MaxValue ) ) );
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.Epsilon.Equals( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt16FromPackedInt16_MinValue_Overflow()
+		public async Task TestReadNullableDoubleAsync_DoubleEpsilon()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int16.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.Epsilon.Equals( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedInt16_MaxValue_Overflow()
+		public async Task TestReadNullableDoubleAsync_DoubleEpsilon_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( SByte.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.Epsilon.Equals( result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt16FromPackedUInt16_MinValue_AsInteger()
+		public async Task TestReadAsync_DoublePositiveZero()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ushort )Byte.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt16 result;
-					Assert.That( unpacker.ReadUInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt16 )( ( ushort )Byte.MaxValue + 1 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( 0.0 ).Equals( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedUInt16_MaxValue_AsInteger()
+		public async Task TestReadAsync_DoublePositiveZero_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt16.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt16 result;
-					Assert.That( unpacker.ReadUInt16( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt16 )( UInt16.MaxValue ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( 0.0 ).Equals( ( System.Double )result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt16FromPackedInt32_MinValue_Overflow()
+		public async Task TestReadDoubleAsync_DoublePositiveZero()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int32.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( 0.0 ).Equals( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedInt32_MaxValue_Overflow()
+		public async Task TestReadDoubleAsync_DoublePositiveZero_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( int )Int16.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( 0.0 ).Equals( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt16FromPackedUInt32_MinValue_Overflow()
+		public async Task TestReadNullableDoubleAsync_DoublePositiveZero()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( uint )UInt16.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( 0.0 ).Equals( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedUInt32_MaxValue_Overflow()
+		public async Task TestReadNullableDoubleAsync_DoublePositiveZero_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt32.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( 0.0 ).Equals( result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt16FromPackedInt64_MinValue_Overflow()
+		public async Task TestReadAsync_DoubleNegativeZero()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int64.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( -0.0 ).Equals( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedInt64_MaxValue_Overflow()
+		public async Task TestReadAsync_DoubleNegativeZero_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( long )Int32.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( -0.0 ).Equals( ( System.Double )result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt16FromPackedUInt64_MinValue_Overflow()
+		public async Task TestReadDoubleAsync_DoubleNegativeZero()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ulong )UInt32.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( -0.0 ).Equals( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt16FromPackedUInt64_MaxValue_Overflow()
+		public async Task TestReadDoubleAsync_DoubleNegativeZero_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt64.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt16 result;
-							unpacker.ReadUInt16( out result );
-						}
-					);
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( -0.0 ).Equals( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt32FromPackedSingle_Negative_Overflow()
+		public async Task TestReadNullableDoubleAsync_DoubleNegativeZero()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt32 result;
-							unpacker.ReadUInt32( out result );
-						}
-					);
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( -0.0 ).Equals( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedSingle_Positive_AsInteger()
+		public async Task TestReadNullableDoubleAsync_DoubleNegativeZero_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt32 )( 1.1f ) ) ) );
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( ( -0.0 ).Equals( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedSingle_LittleNegative_AsZero()
+		public async Task TestReadAsync_DoubleNaNPositiveMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt32 )( -0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.IsNaN( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedSingle_LittlePositive_AsZero()
+		public async Task TestReadAsync_DoubleNaNPositiveMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt32 )( 0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.IsNaN( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedSingle_Zero_AsInteger()
+		public async Task TestReadDoubleAsync_DoubleNaNPositiveMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.0f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt32 )0.0f ) );
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedDouble_Negative_Overflow()
+		public async Task TestReadDoubleAsync_DoubleNaNPositiveMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt32 result;
-							unpacker.ReadUInt32( out result );
-						}
-					);
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedDouble_Positive_AsInteger()
+		public async Task TestReadNullableDoubleAsync_DoubleNaNPositiveMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt32 )( 1.1 ) ) ) );
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedDouble_LittleNegative_AsZero()
+		public async Task TestReadNullableDoubleAsync_DoubleNaNPositiveMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt32 )( -0.1 ) ) ) );
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedDouble_LittlePositive_AsZero()
+		public async Task TestReadAsync_DoubleNaNPositiveMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt32 )( 0.1 ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.IsNaN( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedDouble_Zero_AsInteger()
+		public async Task TestReadAsync_DoubleNaNPositiveMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt32 )0.0 ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.IsNaN( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedPositiveFixNum_MinValue_AsInteger()
+		public async Task TestReadDoubleAsync_DoubleNaNPositiveMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt32 )( 0 ) ) );
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedPositiveFixNum_MaxValue_AsInteger()
+		public async Task TestReadDoubleAsync_DoubleNaNPositiveMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0x7F );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt32 )( 0x7F ) ) );
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt32FromPackedNegativeFixNum_MinValue_Overflow()
+		public async Task TestReadNullableDoubleAsync_DoubleNaNPositiveMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -31 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt32 result;
-							unpacker.ReadUInt32( out result );
-						}
-					);
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedNegativeFixNum_MaxValue_Overflow()
+		public async Task TestReadNullableDoubleAsync_DoubleNaNPositiveMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt32 result;
-							unpacker.ReadUInt32( out result );
-						}
-					);
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt32FromPackedInt8_MinValue_Overflow()
+		public async Task TestReadAsync_DoubleNaNNegativeMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( SByte.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt32 result;
-							unpacker.ReadUInt32( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.IsNaN( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedInt8_MaxValue_Overflow()
+		public async Task TestReadAsync_DoubleNaNNegativeMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -32 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt32 result;
-							unpacker.ReadUInt32( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.IsNaN( ( System.Double )result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt32FromPackedUInt8_MinValue_AsInteger()
+		public async Task TestReadDoubleAsync_DoubleNaNNegativeMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0x80 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt32 )( 0x80 ) ) );
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedUInt8_MaxValue_AsInteger()
+		public async Task TestReadDoubleAsync_DoubleNaNNegativeMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( Byte.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt32 )( Byte.MaxValue ) ) );
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt32FromPackedInt16_MinValue_Overflow()
+		public async Task TestReadNullableDoubleAsync_DoubleNaNNegativeMinValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int16.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt32 result;
-							unpacker.ReadUInt32( out result );
-						}
-					);
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedInt16_MaxValue_Overflow()
+		public async Task TestReadNullableDoubleAsync_DoubleNaNNegativeMinValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( SByte.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt32 result;
-							unpacker.ReadUInt32( out result );
-						}
-					);
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt32FromPackedUInt16_MinValue_AsInteger()
+		public async Task TestReadAsync_DoubleNaNNegativeMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ushort )Byte.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt32 )( ( ushort )Byte.MaxValue + 1 ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.IsNaN( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedUInt16_MaxValue_AsInteger()
+		public async Task TestReadAsync_DoubleNaNNegativeMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt16.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt32 )( UInt16.MaxValue ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.IsNaN( ( System.Double )result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt32FromPackedInt32_MinValue_Overflow()
+		public async Task TestReadDoubleAsync_DoubleNaNNegativeMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int32.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt32 result;
-							unpacker.ReadUInt32( out result );
-						}
-					);
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedInt32_MaxValue_Overflow()
+		public async Task TestReadDoubleAsync_DoubleNaNNegativeMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( int )Int16.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt32 result;
-							unpacker.ReadUInt32( out result );
-						}
-					);
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt32FromPackedUInt32_MinValue_AsInteger()
+		public async Task TestReadNullableDoubleAsync_DoubleNaNNegativeMaxValue()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( uint )UInt16.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt32 )( ( uint )UInt16.MaxValue + 1 ) ) );
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedUInt32_MaxValue_AsInteger()
+		public async Task TestReadNullableDoubleAsync_DoubleNaNNegativeMaxValue_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt32.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt32 result;
-					Assert.That( unpacker.ReadUInt32( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt32 )( UInt32.MaxValue ) ) );
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNaN( result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt32FromPackedInt64_MinValue_Overflow()
+		public async Task TestReadAsync_DoubleNegativeInfinity()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int64.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt32 result;
-							unpacker.ReadUInt32( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.IsNegativeInfinity( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedInt64_MaxValue_Overflow()
+		public async Task TestReadAsync_DoubleNegativeInfinity_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( long )Int32.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt32 result;
-							unpacker.ReadUInt32( out result );
-						}
-					);
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.IsNegativeInfinity( ( System.Double )result.Value ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt32FromPackedUInt64_MinValue_Overflow()
+		public async Task TestReadDoubleAsync_DoubleNegativeInfinity()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ulong )UInt32.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt32 result;
-							unpacker.ReadUInt32( out result );
-						}
-					);
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNegativeInfinity( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt32FromPackedUInt64_MaxValue_Overflow()
+		public async Task TestReadDoubleAsync_DoubleNegativeInfinity_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt64.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt32 result;
-							unpacker.ReadUInt32( out result );
-						}
-					);
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNegativeInfinity( result ) );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt64FromPackedSingle_Negative_Overflow()
+		public async Task TestReadNullableDoubleAsync_DoubleNegativeInfinity()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt64 result;
-							unpacker.ReadUInt64( out result );
-						}
-					);
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNegativeInfinity( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedSingle_Positive_AsInteger()
+		public async Task TestReadNullableDoubleAsync_DoubleNegativeInfinity_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 1.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt64 )( 1.1f ) ) ) );
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsNegativeInfinity( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedSingle_LittleNegative_AsZero()
+		public async Task TestReadAsync_DoublePositiveInfinity()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt64 )( -0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.IsPositiveInfinity( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedSingle_LittlePositive_AsZero()
+		public async Task TestReadAsync_DoublePositiveInfinity_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.1f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt64 )( 0.1f ) ) ) );
-				}
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.IsPositiveInfinity( ( System.Double )result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedSingle_Zero_AsInteger()
+		public async Task TestReadDoubleAsync_DoublePositiveInfinity()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.0f );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt64 )0.0f ) );
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsPositiveInfinity( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedDouble_Negative_Overflow()
+		public async Task TestReadDoubleAsync_DoublePositiveInfinity_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt64 result;
-							unpacker.ReadUInt64( out result );
-						}
-					);
-				}
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsPositiveInfinity( result ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedDouble_Positive_AsInteger()
+		public async Task TestReadNullableDoubleAsync_DoublePositiveInfinity()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 1.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt64 )( 1.1 ) ) ) );
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsPositiveInfinity( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedDouble_LittleNegative_AsZero()
+		public async Task TestReadNullableDoubleAsync_DoublePositiveInfinity_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt64 )( -0.1 ) ) ) );
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.IsPositiveInfinity( result.Value ) );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedDouble_LittlePositive_AsZero()
+		public async Task TestReadNullableBooleanAsync()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0.1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( unchecked( ( UInt64 )( 0.1 ) ) ) );
-				}
+				Boolean? result;
+				var ret = await unpacker.ReadNullableBooleanAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedDouble_Zero_AsInteger()
+		public async Task TestReadNullableBooleanAsync_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0.0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt64 )0.0 ) );
-				}
+				Boolean? result;
+				var ret = await unpacker.ReadNullableBooleanAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedPositiveFixNum_MinValue_AsInteger()
+		public async Task TestReadNullableSingleAsync()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt64 )( 0 ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedPositiveFixNum_MaxValue_AsInteger()
+		public async Task TestReadNullableSingleAsync_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( 0x7F );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt64 )( 0x7F ) ) );
-				}
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt64FromPackedNegativeFixNum_MinValue_Overflow()
+		public async Task TestReadNullableDoubleAsync()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( -31 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt64 result;
-							unpacker.ReadUInt64( out result );
-						}
-					);
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedNegativeFixNum_MaxValue_Overflow()
+		public async Task TestReadNullableDoubleAsync_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt64 result;
-							unpacker.ReadUInt64( out result );
-						}
-					);
-				}
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt64FromPackedInt8_MinValue_Overflow()
+		public async Task TestReadNullableSByteAsync()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( SByte.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt64 result;
-							unpacker.ReadUInt64( out result );
-						}
-					);
-				}
+				SByte? result;
+				var ret = await unpacker.ReadNullableSByteAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedInt8_MaxValue_Overflow()
+		public async Task TestReadNullableSByteAsync_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( -32 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt64 result;
-							unpacker.ReadUInt64( out result );
-						}
-					);
-				}
+				SByte? result;
+				var ret = await unpacker.ReadNullableSByteAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt64FromPackedUInt8_MinValue_AsInteger()
+		public async Task TestReadNullableInt16Async()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( 0x80 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt64 )( 0x80 ) ) );
-				}
+				Int16? result;
+				var ret = await unpacker.ReadNullableInt16Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedUInt8_MaxValue_AsInteger()
+		public async Task TestReadNullableInt16Async_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( Byte.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt64 )( Byte.MaxValue ) ) );
-				}
+				Int16? result;
+				var ret = await unpacker.ReadNullableInt16Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt64FromPackedInt16_MinValue_Overflow()
+		public async Task TestReadNullableInt32Async()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int16.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt64 result;
-							unpacker.ReadUInt64( out result );
-						}
-					);
-				}
+				Int32? result;
+				var ret = await unpacker.ReadNullableInt32Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedInt16_MaxValue_Overflow()
+		public async Task TestReadNullableInt32Async_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( SByte.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt64 result;
-							unpacker.ReadUInt64( out result );
-						}
-					);
-				}
+				Int32? result;
+				var ret = await unpacker.ReadNullableInt32Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt64FromPackedUInt16_MinValue_AsInteger()
+		public async Task TestReadNullableInt64Async()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ushort )Byte.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt64 )( ( ushort )Byte.MaxValue + 1 ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedUInt16_MaxValue_AsInteger()
+		public async Task TestReadNullableInt64Async_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt16.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt64 )( UInt16.MaxValue ) ) );
-				}
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt64FromPackedInt32_MinValue_Overflow()
+		public async Task TestReadNullableByteAsync()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int32.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt64 result;
-							unpacker.ReadUInt64( out result );
-						}
-					);
-				}
+				Byte? result;
+				var ret = await unpacker.ReadNullableByteAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedInt32_MaxValue_Overflow()
+		public async Task TestReadNullableByteAsync_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( int )Int16.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt64 result;
-							unpacker.ReadUInt64( out result );
-						}
-					);
-				}
+				Byte? result;
+				var ret = await unpacker.ReadNullableByteAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt64FromPackedUInt32_MinValue_AsInteger()
+		public async Task TestReadNullableUInt16Async()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( uint )UInt16.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt64 )( ( uint )UInt16.MaxValue + 1 ) ) );
-				}
+				UInt16? result;
+				var ret = await unpacker.ReadNullableUInt16Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedUInt32_MaxValue_AsInteger()
+		public async Task TestReadNullableUInt16Async_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt32.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt64 )( UInt32.MaxValue ) ) );
-				}
+				UInt16? result;
+				var ret = await unpacker.ReadNullableUInt16Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt64FromPackedInt64_MinValue_Overflow()
+		public async Task TestReadNullableUInt32Async()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( Int64.MinValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt64 result;
-							unpacker.ReadUInt64( out result );
-						}
-					);
-				}
+				UInt32? result;
+				var ret = await unpacker.ReadNullableUInt32Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedInt64_MaxValue_Overflow()
+		public async Task TestReadNullableUInt32Async_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( ( long )Int32.MinValue - 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					Assert.Throws<OverflowException>( () =>
-						{
-							UInt64 result;
-							unpacker.ReadUInt64( out result );
-						}
-					);
-				}
+				UInt32? result;
+				var ret = await unpacker.ReadNullableUInt32Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
+
 		[Test]
-		public void TestReadUInt64FromPackedUInt64_MinValue_AsInteger()
+		public async Task TestReadNullableUInt64Async()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				packer.Pack( ( ulong )UInt32.MaxValue + 1 );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt64 )( ( ulong )UInt32.MaxValue + 1 ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
 
 		[Test]
-		public void TestReadUInt64FromPackedUInt64_MaxValue_AsInteger()
+		public async Task TestReadNullableUInt64Async_Splitted()
 		{
-			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
-				packer.Pack( UInt64.MaxValue );
-				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
-				{
-					UInt64 result;
-					Assert.That( unpacker.ReadUInt64( out result ) );
-					Assert.That( result, Is.EqualTo( ( UInt64 )( UInt64.MaxValue ) ) );
-				}
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.Null );
 			}
 		}
+
+#endif // FEATURE_TAP
+
 	}
 }

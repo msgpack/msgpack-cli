@@ -101,7 +101,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		#endregion -- Dependent Serializer Management --
 
-#region -- FieldInfo Cache Management --
+		#region -- FieldInfo Cache Management --
 
 #if !CORE_CLR
 		private readonly Dictionary<RuntimeFieldHandle, CachedFieldInfo> _cachedFieldInfos = new Dictionary<RuntimeFieldHandle, CachedFieldInfo>();
@@ -227,7 +227,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 #endregion -- MethodInfo Cache Management --
 
-#region -- UnpackingContext Management --
+		#region -- UnpackingContext Management --
 
 		private TypeBuilder _unpackingContextType;
 
@@ -284,24 +284,22 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <summary>
 		///		Creates the serializer type built now and returns its new instance.
 		/// </summary>
-		/// <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
 		/// <param name="context">The <see cref="SerializationContext"/> to holds serializers.</param>
 		/// <param name="builder">The builder which implements actions initialization emit.</param>
 		/// <param name="targetInfo">The information of the target.</param>
 		/// <param name="schema">The <see cref="PolymorphismSchema"/> for this instance.</param>
 		/// <returns>
-		///		Newly built <see cref="MessagePackSerializer{T}"/> instance.
+		///		Newly built <see cref="MessagePackSerializer"/> instance.
 		///		This value will not be <c>null</c>.
 		///	</returns>
-		public MessagePackSerializer<T> CreateObjectInstance<T>( AssemblyBuilderEmittingContext context, AssemblyBuilderSerializerBuilder<T> builder, SerializationTarget targetInfo, PolymorphismSchema schema )
+		public MessagePackSerializer CreateObjectInstance( AssemblyBuilderEmittingContext context, AssemblyBuilderSerializerBuilder builder, SerializationTarget targetInfo, PolymorphismSchema schema )
 		{
-			return this.CreateObjectConstructor( context, builder, targetInfo )( context.SerializationContext, schema );
+			return this.CreateObjectConstructor(  context, builder, targetInfo )( context.SerializationContext, schema );
 		}
 
 		/// <summary>
 		///		Creates the serializer type built now and returns its constructor.
 		/// </summary>
-		/// <typeparam name="T">The type of serialization target.</typeparam>
 		/// <param name="context">The context.</param>
 		/// <param name="builder">The builder which implements actions initialization emit.</param>
 		/// <param name="targetInfo">The information of the target</param>
@@ -310,11 +308,23 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		This value will not be <c>null</c>.
 		///	</returns>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Reflection objects" )]
-		public Func<SerializationContext, PolymorphismSchema, MessagePackSerializer<T>> CreateObjectConstructor<T>( AssemblyBuilderEmittingContext context, AssemblyBuilderSerializerBuilder<T> builder, SerializationTarget targetInfo )
+		public Func<SerializationContext, PolymorphismSchema, MessagePackSerializer> CreateObjectConstructor( AssemblyBuilderEmittingContext context, AssemblyBuilderSerializerBuilder builder, SerializationTarget targetInfo )
 		{
-			var hasPackActions = targetInfo != null && !typeof( IPackable ).IsAssignableFrom( typeof( T ) );
-			var hasUnackActions = targetInfo != null && !typeof( IUnpackable ).IsAssignableFrom( typeof( T ) );
+			var hasPackActions = targetInfo != null && !typeof( IPackable ).IsAssignableFrom( builder.TargetType );
+			var hasUnackActions = targetInfo != null && !typeof( IUnpackable ).IsAssignableFrom( builder.TargetType );
 			var hasUnpackActionTables = hasUnackActions && targetInfo.Members.Any( m => m.Member != null ); // Except tuples
+			// ReSharper disable RedundantDelegateCreation
+			Func<bool, Func<ILConstruct>> packActionsInitialization =
+				isAsync =>
+					new Func<ILConstruct>( () => builder.EmitPackOperationListInitialization( context, targetInfo, isAsync ) );
+			Func<bool, Func<ILConstruct>> packActionTableInitialization =
+				isAsync =>
+					new Func<ILConstruct>( () => builder.EmitPackOperationTableInitialization( context, targetInfo, isAsync ) );
+			Func<bool, Func<ILConstruct>> unpackActionsInitialization =
+				isAsync => new Func<ILConstruct>( () => builder.EmitUnpackOperationListInitialization( context, targetInfo, isAsync ) );
+			Func<bool, Func<ILConstruct>> unpackActionTableInitialization =
+				isAsync => new Func<ILConstruct>( () => builder.EmitUnpackOperationTableInitialization( context, targetInfo, isAsync ) );
+			// ReSharper restore RedundantDelegateCreation
 
 			var contextfulConstructor =
 				this.CreateConstructor(
@@ -322,21 +332,35 @@ namespace MsgPack.Serialization.EmittingSerializers
 					ConstructorParameterTypes,
 					( type, il ) =>
 						this.CreateContextfulObjectConstructor(
+							context,
 							type,
 							il,
 							hasPackActions
-								? () => 
-									context.SerializationContext.SerializationMethod == SerializationMethod.Array
-									|| ( targetInfo != null && targetInfo.Members.All( m => m.Member == null ) ) // tuple
-									? builder.EmitPackOperationListInitialization( context, targetInfo )
-									: builder.EmitPackOperationTableInitialization( context, targetInfo )
+								? packActionsInitialization( false )
+								: default( Func<ILConstruct> ),
+							hasPackActions
+								? packActionTableInitialization( false )
 								: default( Func<ILConstruct> ),
 							hasUnackActions
-								? () => builder.EmitUnpackOperationListInitialization( context, targetInfo )
+								? unpackActionsInitialization( false )
 								: default( Func<ILConstruct> ),
 							hasUnpackActionTables
-								? () => builder.EmitUnpackOperationTableInitialization( context, targetInfo )
+								? unpackActionTableInitialization( false )
 								: default( Func<ILConstruct> ),
+#if FEATURE_TAP
+							hasPackActions && context.SerializationContext.SerializerOptions.WithAsync
+								? packActionsInitialization( true )
+								: default( Func<ILConstruct> ),
+							hasPackActions && context.SerializationContext.SerializerOptions.WithAsync
+								? packActionTableInitialization( true )
+								: default( Func<ILConstruct> ),
+							hasUnackActions && context.SerializationContext.SerializerOptions.WithAsync
+								? unpackActionsInitialization( true )
+								: default( Func<ILConstruct> ),
+							hasUnpackActionTables && context.SerializationContext.SerializerOptions.WithAsync
+								? unpackActionTableInitialization( true )
+								: default( Func<ILConstruct> ),
+#endif // FEATURE_TAP
 							hasUnackActions
 								? () => builder.EmitMemberListInitialization( context, targetInfo )
 								: default( Func<ILConstruct> ),
@@ -362,7 +386,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Contract.Assert( ctor != null, "ctor != null" );
 #endif
 			return
-				Expression.Lambda<Func<SerializationContext, PolymorphismSchema, MessagePackSerializer<T>>>(
+				Expression.Lambda<Func<SerializationContext, PolymorphismSchema, MessagePackSerializer>>(
 					Expression.New(
 						ctor,
 						contextParameter
@@ -386,11 +410,19 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		private void CreateContextfulObjectConstructor(
+			AssemblyBuilderEmittingContext context,
 			Type baseType,
 			TracingILGenerator il,
 			Func<ILConstruct> packActionListInitializerProvider,
+			Func<ILConstruct> packActionTableInitializerProvider,
 			Func<ILConstruct> unpackActionListInitializerProvider,
 			Func<ILConstruct> unpackActionTableInitializerProvider,
+#if FEATURE_TAP
+			Func<ILConstruct> packAsyncActionListInitializerProvider,
+			Func<ILConstruct> packAsyncActionTableInitializerProvider,
+			Func<ILConstruct> unpackAsyncActionListInitializerProvider,
+			Func<ILConstruct> unpackAsyncActionTableInitializerProvider,
+#endif // FEATURE_TAP
 			Func<ILConstruct> memberNamesInitializerProvider,
 			Func<ILConstruct> unpackToInitializerProvider
 		)
@@ -496,15 +528,48 @@ namespace MsgPack.Serialization.EmittingSerializers
 				packActionListInitializerProvider().Evaluate( il );
 			}
 
+#if FEATURE_TAP
+			if ( packAsyncActionListInitializerProvider != null )
+			{
+				packAsyncActionListInitializerProvider().Evaluate( il );
+			}
+#endif // FEATURE_TAP
+
+			if ( packActionTableInitializerProvider != null )
+			{
+				packActionTableInitializerProvider().Evaluate( il );
+			}
+
+#if FEATURE_TAP
+			if ( packAsyncActionTableInitializerProvider != null )
+			{
+				packAsyncActionTableInitializerProvider().Evaluate( il );
+			}
+#endif // FEATURE_TAP
+
 			if ( unpackActionListInitializerProvider != null )
 			{
 				unpackActionListInitializerProvider().Evaluate( il );
 			}
 
+#if FEATURE_TAP
+			if ( unpackAsyncActionListInitializerProvider != null )
+			{
+				unpackAsyncActionListInitializerProvider().Evaluate( il );
+			}
+#endif // FEATURE_TAP
+
 			if ( unpackActionTableInitializerProvider != null )
 			{
 				unpackActionTableInitializerProvider().Evaluate( il );
 			}
+
+#if FEATURE_TAP
+			if ( unpackAsyncActionTableInitializerProvider != null )
+			{
+				unpackAsyncActionTableInitializerProvider().Evaluate( il );
+			}
+#endif // FEATURE_TAP
 
 			if ( memberNamesInitializerProvider != null )
 			{
@@ -514,6 +579,33 @@ namespace MsgPack.Serialization.EmittingSerializers
 			if ( unpackToInitializerProvider != null )
 			{
 				unpackToInitializerProvider().Evaluate( il );
+			}
+
+			foreach ( var cachedDelegateInfo in context.GetCachedDelegateInfos() )
+			{
+				// this for stfld
+				il.EmitLdargThis();
+
+				var delegateType = cachedDelegateInfo.BackingField.FieldType.ResolveRuntimeType();
+
+				// Declare backing field now.
+				var field = context.GetDeclaredField( cachedDelegateInfo.BackingField.FieldName ).ResolveRuntimeField();
+
+				if ( cachedDelegateInfo.IsThisInstance )
+				{
+					il.EmitLdargThis();
+				}
+				else
+				{
+					il.EmitLdnull();
+				}
+
+				// OK this should not be ldvirtftn because target is private or static.
+				il.EmitLdftn( cachedDelegateInfo.TargetMethod.ResolveRuntimeMethod() );
+				// call extern .ctor(Object, void*)
+				il.EmitNewobj( delegateType.GetConstructors().Single() );
+
+				il.EmitStfld( field );
 			}
 
 			il.EmitRet();

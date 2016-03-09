@@ -33,6 +33,10 @@ using System.Diagnostics.Contracts;
 #endif // DEBUG && !UNITY
 using System.Globalization;
 using System.IO;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack
 {
@@ -140,7 +144,7 @@ namespace MsgPack
 		protected override bool ReadCore()
 		{
 			MessagePackObject value;
-			var success = this.ReadSubtreeObject( false, out value );
+			var success = this.ReadSubtreeObject( /* isDeep */false, out value );
 			if ( success )
 			{
 				this.InternalData = value;
@@ -151,6 +155,24 @@ namespace MsgPack
 				return false;
 			}
 		}
+
+#if FEATURE_TAP
+
+		protected override async Task<bool> ReadAsyncCore( CancellationToken cancellationToken )
+		{
+			var result = await this.ReadSubtreeObjectAsync( /* isDeep */false, cancellationToken ).ConfigureAwait( false );
+			if ( result.Success )
+			{
+				this.InternalData = result.Value;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+#endif // FEATURE_TAP
 
 		/// <summary>
 		///		Starts unpacking of current subtree.
@@ -179,10 +201,28 @@ namespace MsgPack
 			return this.ReadCore();
 		}
 
+#if FEATURE_TAP
+		
+		internal Task<bool> ReadSubtreeItemAsync( CancellationToken cancellationToken )
+		{
+			return this.ReadAsyncCore( cancellationToken );
+		}
+
+#endif // FEATURE_TAP
+
 		internal long? SkipSubtreeItem()
 		{
 			return this.SkipCore();
 		}
+
+#if FEATURE_TAP
+
+		internal Task<long?> SkipSubtreeItemAsync( CancellationToken cancellationToken )
+		{
+			return this.SkipAsyncCore( cancellationToken );
+		}
+
+#endif // FEATURE_TAP
 
 		private void ReadStrict( byte[] buffer, int size )
 		{
@@ -223,6 +263,50 @@ namespace MsgPack
 				this.ThrowEofException( size );
 			}
 		}
+
+#if FEATURE_TAP
+
+		private async Task ReadStrictAsync( byte[] buffer, int size, CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG && !UNITY
+			// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
+			if ( size == 0 )
+			{
+				return;
+			}
+
+			this._lastOffset = this._offset;
+			var remaining = size;
+			var offset = 0;
+			int read;
+
+			do
+			{
+				read = await this._source.ReadAsync( buffer, offset, remaining, cancellationToken ).ConfigureAwait( false );
+				remaining -= read;
+				offset += read;
+			} while ( read > 0 && remaining > 0 );
+
+			this._offset += offset;
+#if DEBUG && !UNITY
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG && !UNITY
+
+			if ( offset < size )
+			{
+				this.ThrowEofException( size );
+			}
+		}
+
+#endif // FEATURE_TAP
 
 		private int ReadByteFromSource()
 		{
@@ -272,6 +356,59 @@ namespace MsgPack
 #endif // DEBUG && !UNITY
 			return this._oneByteBuffer[ 0 ];
 		}
+
+#if FEATURE_TAP
+
+		private async Task<int> ReadByteFromSourceAsync( CancellationToken cancellationToken )
+		{
+			this._lastOffset = this._offset;
+#if DEBUG && !UNITY
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG && !UNITY
+			var read = await this._source.ReadAsync( this._oneByteBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
+			if ( read > 0 )
+			{
+				this._offset++;
+			}
+
+#if DEBUG && !UNITY
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG && !UNITY
+			return read == 0 ? -1 : this._oneByteBuffer[ 0 ];
+		}
+
+		private async Task<byte> ReadByteStrictAsync( CancellationToken cancellationToken )
+		{
+#if DEBUG && !UNITY
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG && !UNITY
+			this._lastOffset = this._offset;
+			var read = await this._source.ReadAsync( this._oneByteBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
+			if ( read == 0 )
+			{
+				this.ThrowEofException( 1 );
+			}
+
+			this._offset++;
+#if DEBUG && !UNITY
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG && !UNITY
+			return this._oneByteBuffer[ 0 ];
+		}
+
+#endif // FEATURE_TAP
 
 		internal override void ThrowEofException()
 		{
@@ -443,6 +580,19 @@ namespace MsgPack
 			Ext16,
 			Ext32,
 		}
+
+#if FEATURE_TAP
+
+		private struct AsyncReadValueResult
+		{
+			public ReadValueResult type;
+			public byte header;
+			public long integral;
+			public float real32;
+			public double real64;
+		}
+
+#endif // FEATURE_TAP
 
 		internal enum CollectionType
 		{

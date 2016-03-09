@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,13 +26,17 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal class ImmutableCollectionSerializer<T, TItem> : MessagePackSerializer<T>
 		where T : IEnumerable<TItem>
 	{
-		protected static readonly Func<TItem[], T> factory = FindFactory();
+		protected static readonly Func<TItem[], T> Factory = FindFactory();
 
 		private static Func<TItem[], T> FindFactory()
 		{
@@ -135,7 +139,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				}
 			}
 
-			return factory( buffer );
+			return Factory( buffer );
 		}
 
 		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
@@ -148,5 +152,56 @@ namespace MsgPack.Serialization.DefaultSerializers
 				)
 			);
 		}
+
+#if FEATURE_TAP
+
+		protected internal override async Task PackToAsyncCore( Packer packer, T objectTree, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( objectTree.Count(), cancellationToken ).ConfigureAwait( false );
+
+			foreach ( var item in objectTree )
+			{
+				await this._itemSerializer.PackToAsync( packer, item, cancellationToken ).ConfigureAwait( false );
+			}
+		}
+
+		protected internal override async Task<T> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			var buffer = new TItem[ UnpackHelpers.GetItemsCount( unpacker ) ];
+
+			using ( var subTreeUnpacker = unpacker.ReadSubtree() )
+			{
+				for ( int i = 0; i < buffer.Length; i++ )
+				{
+					if ( !await subTreeUnpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+					{
+						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+					}
+
+					buffer[ i ] = await this._itemSerializer.UnpackFromAsync( subTreeUnpacker, cancellationToken ).ConfigureAwait( false );
+				}
+			}
+
+			return Factory( buffer );
+		}
+
+		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, T collection, CancellationToken cancellationToken )
+		{
+			throw new NotSupportedException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					"Unable to unpack items to existing immutable collection '{0}'.",
+					typeof( T )
+				)
+			);
+		}
+
+#endif // FEATURE_TAP
+
 	}
 }

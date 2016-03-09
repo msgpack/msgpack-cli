@@ -1,15 +1,25 @@
+#TODO: CommonAssemblyInfo.cs 1つにする、FileVersion の集約、CopyRight の集約
+
 param([Switch]$Rebuild)
 
 [string]$temp = '.\nugettmp'
 [string]$builder = "$env:windir\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
-[string]$winBuilder = "${env:ProgramFiles(x86)}\MSBuild\14.0\Bin\MSBuild.exe";
+[string]$winBuilder = "${env:ProgramFiles(x86)}\MSBuild\14.0\Bin\MSBuild.exe"
+[string]$projCoreClr = "src/MsgPack"
+
 if ( ![IO.File]::Exists( "$winBuilder" ) )
 {
-	$winBuilder = "${env:ProgramFiles}\MSBuild\14.0\Bin\MSBuild.exe";
+	$winBuilder = "${env:ProgramFiles}\MSBuild\14.0\Bin\MSBuild.exe"
 }
 if ( ![IO.File]::Exists( "$winBuilder" ) )
 {
 	Write-Error "MSBuild v14 is required."
+	exit 1
+}
+
+if ( ![IO.File]::Exists( "${env:ProgramFiles}\dotnet\bin\dotnet.exe" ) )
+{
+	Write-Error "DotNet CLI is required."
 	exit 1
 }
 
@@ -56,6 +66,19 @@ if ( $LastExitCode -ne 0 )
 }
 
 &$winBuilder $slnWindows $buildOptions
+if ( $LastExitCode -ne 0 )
+{
+	exit $LastExitCode
+}
+
+dotnet restore $projCoreClr
+if ( $LastExitCode -ne 0 )
+{
+	exit $LastExitCode
+}
+
+#TODO: netcore50 -> netstandard1.4 netcore50 -> netstandard1.4
+dotnet build $projCoreClr -o bin\dnxcore50 -f dnxcore50 -c Release
 if ( $LastExitCode -ne 0 )
 {
 	exit $LastExitCode

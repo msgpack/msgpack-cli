@@ -24,11 +24,11 @@
 
 using System;
 #if DEBUG && !UNITY
-#if XAMIOS || XAMDROID || CORE_CLR
+#if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID || CORE_CLR
+#endif // CORE_CLR
 #endif // DEBUG && !UNITY
 using System.Globalization;
 
@@ -67,7 +67,7 @@ namespace MsgPack.Serialization
 		/// </value>
 		public PolymorphismSchema PolymorphismSchema { get; private set; }
 
-		private IMessagePackSerializer _foundSerializer;
+		private MessagePackSerializer _foundSerializer;
 
 		/// <summary>
 		///		Gets the found serializer the event subscriber specified.

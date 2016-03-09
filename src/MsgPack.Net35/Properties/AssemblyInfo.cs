@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,10 +24,8 @@ using System.Security;
 
 [assembly: AssemblyTitle( "MessagePack for CLI(.NET/Mono)" )]
 [assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library for .NET 3.5." )]
-[assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010-2014" )]
 
-
-[assembly: AssemblyFileVersion( "0.7.2151.1010" )]
+[assembly: AssemblyFileVersion( "0.7.2250.831" )]
 
 [assembly: AllowPartiallyTrustedCallers]
 

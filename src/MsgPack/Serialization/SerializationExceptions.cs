@@ -27,14 +27,16 @@ using System;
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #if !UNITY
-#if XAMIOS || XAMDROID || CORE_CLR
+#if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID || CORE_CLR
+#endif // CORE_CLR
 #endif // !UNITY
 using System.Globalization;
+#if !UNITY
 using System.Reflection;
+#endif // !UNITY
 using System.Runtime.Serialization;
 
 using MsgPack.Serialization.CollectionSerializers;
@@ -365,6 +367,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="name">The name of the property.</param>
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+		[Obsolete]
 		public static Exception NewMissingProperty( string name )
 		{
 #if !UNITY
@@ -377,7 +380,9 @@ namespace MsgPack.Serialization
 
 		internal static void ThrowMissingProperty( string name )
 		{
+#pragma warning disable 612
 			throw NewMissingProperty( name );
+#pragma warning restore 612
 		}
 
 		/// <summary>
@@ -385,6 +390,7 @@ namespace MsgPack.Serialization
 		///		Returns new exception to notify that unpacking stream ends on unexpectedly position.
 		/// </summary>
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+		[Obsolete]
 		public static Exception NewUnexpectedEndOfStream()
 		{
 #if !UNITY
@@ -894,6 +900,32 @@ namespace MsgPack.Serialization
 		internal static void ThrowSerializationException( string message, Exception innerException )
 		{
 			throw new SerializationException( message, innerException );
+		}
+
+		internal static void ThrowInvalidArrayItemsCount( Unpacker unpacker, Type targetType, int requiredCount )
+		{
+			throw
+				unpacker.IsCollectionHeader
+					? new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Cannot deserialize type '{0}' because stream is not {1} elements array. Current type is {2} and its element count is {3}.",
+							targetType,
+							requiredCount,
+							unpacker.IsArrayHeader ? "array" : "map",
+							unpacker.LastReadData.AsInt64()
+						)
+					)
+					: new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Cannot deserialize type '{0}' because stream is not {1} elements array. Current type is {2}.",
+							targetType,
+							requiredCount,
+							unpacker.LastReadData.UnderlyingType
+						)
+					);
+
 		}
 	}
 }

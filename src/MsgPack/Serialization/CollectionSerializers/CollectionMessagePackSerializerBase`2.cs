@@ -25,6 +25,10 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.CollectionSerializers
 {
@@ -81,6 +85,46 @@ namespace MsgPack.Serialization.CollectionSerializers
 #endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
 		}
 
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Serializes specified object with specified <see cref="Packer"/> asynchronously.
+		/// </summary>
+		/// <param name="packer"><see cref="Packer"/> which packs values in <paramref name="objectTree"/>. This value will not be <c>null</c>.</param>
+		/// <param name="objectTree">Object to be serialized.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to serialize object.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		<typeparamref name="TCollection"/> is not serializable even if it can be deserialized.
+		/// </exception>
+		/// <seealso cref="P:Capabilities"/>
+		protected internal sealed override async Task PackToAsyncCore( Packer packer, TCollection objectTree, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( this.GetCount( objectTree ), cancellationToken ).ConfigureAwait( false );
+#if ( !UNITY && !XAMIOS ) || AOT_CHECK
+			var itemSerializer = this.ItemSerializer;
+			foreach ( var item in objectTree )
+			{
+				await itemSerializer.PackToAsync( packer, item, cancellationToken ).ConfigureAwait( false );
+			}
+#else
+			// .constraind call for TCollection.get_Count/TCollection.GetEnumerator() causes AOT error.
+			// So use cast and invoke as normal call (it might cause boxing, but most collection should be reference type).
+			var itemSerializer = this.ItemSerializer;
+			foreach ( var item in objectTree as IEnumerable<TItem> )
+			{
+				await itemSerializer.PackToAsync( packer, item, cancellationToken ).ConfigureAwait( false );
+			}
+#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
+		}
+
+#endif // FEATURE_TAP
+
 		/// <summary>
 		///		When overridden in derived class, returns count of the collection.
 		/// </summary>
@@ -126,5 +170,48 @@ namespace MsgPack.Serialization.CollectionSerializers
 			this.UnpackToCore( unpacker, collection, itemsCount );
 			return collection;
 		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Deserializes object with specified <see cref="Unpacker"/> asynchronously.
+		/// </summary>
+		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains the deserialized object.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to deserialize object.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		Failed to deserialize object due to invalid stream.
+		/// </exception>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Failed to deserialize object due to invalid stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		<typeparamref name="TCollection"/> is not serializable even if it can be serialized.
+		/// </exception>
+		/// <seealso cref="P:Capabilities"/>
+		protected internal sealed override Task<TCollection> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			return this.InternalUnpackFromAsyncCore( unpacker, cancellationToken );
+		}
+
+		internal virtual Task<TCollection> InternalUnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+			var collection = this.CreateInstance( itemsCount );
+			return this.InternalUnpackToAsyncCore( unpacker, collection, itemsCount, cancellationToken );
+		}
+
+#endif // FEATURE_TAP
 	}
 }

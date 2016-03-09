@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -33,14 +33,18 @@ using System.ComponentModel;
 #endif //!UNITY || MSGPACK_UNITY_FULL
 using System.Diagnostics;
 #if !UNITY
-#if XAMIOS || XAMDROID || CORE_CLR
+#if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID || CORE_CLR
+#endif // CORE_CLR
 #endif // !UNITY
 using System.Reflection;
 using System.Runtime.CompilerServices;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.DefaultSerializers;
 
@@ -810,222 +814,7 @@ namespace MsgPack.Serialization
 			return AotHelper.GetEqualityComparer<T>();
 #endif // !UNITY
 		}
-
-
-		/// <summary>
-		///		Unpacks object from msgpack array.
-		/// </summary>
-		/// <typeparam name="TContext">The type of the context.</typeparam>
-		/// <typeparam name="TResult">The type of the unpacked object.</typeparam>
-		/// <param name="unpacker">The unpacker.</param>
-		/// <param name="context">The context which holds intermediate states. This value may be <c>null</c> when the caller implementation allows it.</param>
-		/// <param name="factory">A delegate to the factory method which creates the result from the context.</param>
-		/// <param name="itemNames">The names of the membesr for pretty exception.</param>
-		/// <param name="operations">
-		///		Delegates each ones unpack single member in order.
-		///		The 1st argument will be <paramref name="unpacker"/>, 2nd argument will be <paramref name="context"/>,
-		///		and 3rd argument is index of current item.
-		/// </param>
-		/// <returns>The unpacked object.</returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="unpacker"/> is <c>null</c>.
-		///		Or, <paramref name="factory"/> is <c>null</c>.
-		///		Or, <paramref name="operations"/> is <c>null</c>.
-		/// </exception>
-#if !UNITY || MSGPACK_UNITY_FULL
-		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !UNITY || MSGPACK_UNITY_FULL
-		public static TResult UnpackFromArray<TContext, TResult>(
-			Unpacker unpacker,
-			TContext context,
-			Func<TContext, TResult> factory,
-			IList<string> itemNames,
-			IList<Action<Unpacker, TContext, int>> operations
-		)
-		{
-			if ( unpacker == null )
-			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
-			}
-
-			if ( factory == null )
-			{
-				SerializationExceptions.ThrowArgumentNullException( "factory" );
-			}
-
-			if ( operations == null )
-			{
-				SerializationExceptions.ThrowArgumentNullException( "operations" );
-			}
-
-			var count = GetItemsCount( unpacker );
-
-#if DEBUG && !UNITY
-			Contract.Assert( unpacker != null );
-			Contract.Assert( factory != null );
-			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY
-
-			// ReSharper disable once RedundantAssignment
-			var ctx = default( UnpackerTraceContext );
-			InitializeUnpackerTrace( unpacker, ref ctx );
-
-			var limit = Math.Min( count, operations.Count );
-			for ( var i = 0; i < limit; i++ )
-			{
-				operations[ i ]( unpacker, context, i );
-				Trace( ctx, "ReadItem", unpacker, i, itemNames );
-			}
-
-			if ( count > limit )
-			{
-				for ( var i = limit; i < count; i++ )
-				{
-					unpacker.Read();
-				}
-			}
-
-			return factory( context );
-		}
-
-		/// <summary>
-		///		Unpacks object from msgpack map.
-		/// </summary>
-		/// <typeparam name="TContext">The type of the context.</typeparam>
-		/// <typeparam name="TResult">The type of the unpacked object.</typeparam>
-		/// <param name="unpacker">The unpacker.</param>
-		/// <param name="context">The context which holds intermediate states. This value may be <c>null</c> when the caller implementation allows it.</param>
-		/// <param name="factory">A delegate to the factory method which creates the result from the context.</param>
-		/// <param name="operations">
-		///		Delegates table each ones unpack single member and their keys correspond to unpacking membmer names.
-		///		The 1st argument will be <paramref name="unpacker"/>, 2nd argument will be <paramref name="context"/>,
-		///		and 3rd argument is index of current key value pair assuming map is sequence of key value pairs.
-		/// </param>
-		/// <returns>The unpacked object.</returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="unpacker"/> is <c>null</c>.
-		///		Or, <paramref name="factory"/> is <c>null</c>.
-		///		Or, <paramref name="operations"/> is <c>null</c>.
-		/// </exception>
-#if !UNITY || MSGPACK_UNITY_FULL
-		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !UNITY || MSGPACK_UNITY_FULL
-		public static TResult UnpackFromMap<TContext, TResult>(
-			Unpacker unpacker,
-			TContext context,
-			Func<TContext, TResult> factory,
-			IDictionary<string, Action<Unpacker, TContext, int>> operations
-		)
-		{
-			if ( unpacker == null )
-			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
-			}
-
-			if ( factory == null )
-			{
-				SerializationExceptions.ThrowArgumentNullException( "factory" );
-			}
-
-			if ( operations == null )
-			{
-				SerializationExceptions.ThrowArgumentNullException( "operations" );
-			}
-
-#if DEBUG && !UNITY
-			Contract.Assert( unpacker != null );
-			Contract.Assert( factory != null );
-			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY
-
-			// ReSharper disable once RedundantAssignment
-			var ctx = default( UnpackerTraceContext );
-			InitializeUnpackerTrace( unpacker, ref ctx );
-
-			var count = GetItemsCount( unpacker );
-			for ( var i = 0; i < count; i++ )
-			{
-				var key = UnpackStringValue( unpacker, typeof( TResult ), "MemberName" );
-				Trace( ctx, "ReadKey", unpacker, i, key );
-
-				Action<Unpacker, TContext, int> operation;
-				if ( key != null && operations.TryGetValue( key, out operation ) )
-				{
-					operation( unpacker, context, i );
-					Trace( ctx, "ReadValue", unpacker, i, key );
-				}
-				else
-				{
-					// skip unknown item.
-					unpacker.Skip();
-					Trace( ctx, "Skip", unpacker, i, key ?? "(null)" );
-				}
-			}
-
-			return factory( context );
-		}
-
-		/// <summary>
-		///		Unpacks the collection from msgpack stream.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="unpacker">The unpacker where position is located at array or map header.</param>
-		/// <param name="itemsCount">The collection count gotten from the <paramref name="unpacker"/>.</param>
-		/// <param name="collection">The collection instance to be added unpacked items.</param>
-		/// <param name="bulkOperation">
-		///		A delegate to the bulk operation (typically UnpackToCore call). 
-		///		The 1st argument will be <paramref name="unpacker"/>, 2nd argument will be <paramref name="collection"/>,
-		///		and 3rd argument will be <paramref name="itemsCount"/>.
-		///		If this parameter is <c>null</c>, <paramref name="eachOperation"/> will be used.
-		/// </param>
-		/// <param name="eachOperation">
-		///		A delegate to the operation for each items, which typically unpack value and append it to the <paramref name="collection"/>.
-		///		The 1st argument will be <paramref name="unpacker"/>, 2nd argument will be <paramref name="collection"/>,
-		///		and 3rd argument will be index of the current item.
-		///		If <paramref name="bulkOperation"/> parameter is not <c>null</c>, this parameter will be ignored.
-		/// </param>
-		/// <returns></returns>
-#if !UNITY || MSGPACK_UNITY_FULL
-		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !UNITY || MSGPACK_UNITY_FULL
-		public static T UnpackCollection<T>( Unpacker unpacker, int itemsCount, T collection, Action<Unpacker, T, int> bulkOperation, Action<Unpacker, T, int> eachOperation )
-		{
-			if ( collection == null )
-			{
-				SerializationExceptions.ThrowArgumentNullException( "collection" );
-			}
-
-			// ReSharper disable once RedundantAssignment
-			var ctx = default( UnpackerTraceContext );
-			InitializeUnpackerTrace( unpacker, ref ctx );
-
-			if ( bulkOperation != null )
-			{
-				bulkOperation( unpacker, collection, itemsCount );
-
-				Trace( ctx, "UnpackTo", unpacker );
-			}
-			else
-			{
-				if ( eachOperation == null )
-				{
-					SerializationExceptions.ThrowArgumentException( "bulkOperation or eachOperation must not be null." );
-				}
-
-#if DEBUG && !UNITY
-				Contract.Assert( eachOperation != null );
-#endif // DEBUG && !UNITY
-
-				for ( var i = 0; i < itemsCount; i++ )
-				{
-					eachOperation( unpacker, collection, i );
-					Trace( ctx, "ReadItem", unpacker, i );
-				}
-			}
-
-			return collection;
-		}
-
+		
 		/// <summary>
 		///		Gets the delegate which just returns the input ('identity' function).
 		/// </summary>
@@ -1055,6 +844,25 @@ namespace MsgPack.Serialization
 		{
 			return v => ( T )v;
 		}
+
+#if FEATURE_TAP
+		/// <summary>
+		///		Returns <see cref="Task{T}"/> which returns nullable wrapper for the value returned from specified <see cref="Task{T}" />.
+		/// </summary>
+		/// <typeparam name="T">The type of value.</typeparam>
+		/// <param name="task">The <see cref="Task{T}"/> which returns non nullable one.</param>
+		/// <returns>The <see cref="Task{T}"/> which returns nullable one.</returns>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static async Task<T?> ToNullable<T>( Task<T> task )
+			where T : struct
+		{
+			// Use async for exception handling.
+			return await task.ConfigureAwait( false );
+		}
+
+#endif // FEATURE_TAP
 
 		[Conditional( "TRACING" )]
 		// ReSharper disable once RedundantAssignment

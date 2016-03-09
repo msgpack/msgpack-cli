@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,6 +20,10 @@
 
 using System;
 using System.Runtime.InteropServices.ComTypes;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -33,11 +37,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, FILETIME objectTree )
 		{
-			packer.Pack(
-				MessagePackConvert.FromDateTime(
-					objectTree.ToDateTime()
-					)
-				);
+			packer.Pack( MessagePackConvert.FromDateTime( objectTree.ToDateTime() ) );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
@@ -45,5 +45,31 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			return MessagePackConvert.ToDateTime( unpacker.LastReadData.AsInt64() ).ToWin32FileTimeUtc();
 		}
+
+#if FEATURE_TAP
+
+		protected internal override Task PackToAsyncCore( Packer packer, FILETIME objectTree, CancellationToken cancellationToken )
+		{
+			return packer.PackAsync( MessagePackConvert.FromDateTime( objectTree.ToDateTime() ), cancellationToken );
+		}
+
+		protected internal override Task<FILETIME> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			var tcs = new TaskCompletionSource<FILETIME>();
+			try
+			{
+				tcs.SetResult( this.UnpackFromCore( unpacker ) );
+			}
+			catch ( Exception ex )
+			{
+				tcs.SetException( ex );
+			}
+
+			return tcs.Task;
+		}
+
+#endif // FEATURE_TAP
+
+	
 	}
 }

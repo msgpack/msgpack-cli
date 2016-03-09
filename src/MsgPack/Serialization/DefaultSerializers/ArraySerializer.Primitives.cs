@@ -3,7 +3,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -21,6 +21,10 @@
 
 using System;
 using System.Collections.Generic;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -122,6 +126,62 @@ internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, SByte[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<SByte[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new SByte[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, SByte[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, SByte[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadSByteAsync( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
@@ -178,6 +238,62 @@ internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, Int16[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<Int16[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new Int16[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Int16[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, Int16[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadInt16Async( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
@@ -234,6 +350,62 @@ internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, Int32[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<Int32[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new Int32[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Int32[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, Int32[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadInt32Async( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
@@ -290,6 +462,62 @@ internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, Int64[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<Int64[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new Int64[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Int64[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, Int64[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadInt64Async( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
@@ -346,6 +574,62 @@ internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, Byte[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<Byte[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new Byte[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Byte[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, Byte[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadByteAsync( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
@@ -402,6 +686,62 @@ internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, UInt16[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<UInt16[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new UInt16[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, UInt16[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, UInt16[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadUInt16Async( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
@@ -458,6 +798,62 @@ internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, UInt32[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<UInt32[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new UInt32[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, UInt32[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, UInt32[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadUInt32Async( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
@@ -514,6 +910,62 @@ internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, UInt64[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<UInt64[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new UInt64[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, UInt64[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, UInt64[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadUInt64Async( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
@@ -570,6 +1022,62 @@ internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, Single[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<Single[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new Single[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Single[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, Single[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadSingleAsync( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
@@ -626,6 +1134,62 @@ internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, Double[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<Double[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new Double[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Double[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, Double[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadDoubleAsync( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
@@ -682,6 +1246,62 @@ internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, Boolean[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<Boolean[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new Boolean[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Boolean[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, Boolean[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadBooleanAsync( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte?[]>
@@ -738,6 +1358,62 @@ internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, SByte?[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<SByte?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new SByte?[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, SByte?[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, SByte?[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadNullableSByteAsync( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16?[]>
@@ -794,6 +1470,62 @@ internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, Int16?[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<Int16?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new Int16?[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Int16?[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, Int16?[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadNullableInt16Async( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32?[]>
@@ -850,6 +1582,62 @@ internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, Int32?[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<Int32?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new Int32?[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Int32?[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, Int32?[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadNullableInt32Async( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64?[]>
@@ -906,6 +1694,62 @@ internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, Int64?[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<Int64?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new Int64?[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Int64?[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, Int64?[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadNullableInt64Async( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[]>
@@ -962,6 +1806,62 @@ internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, Byte?[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<Byte?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new Byte?[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Byte?[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, Byte?[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadNullableByteAsync( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt16?[]>
@@ -1018,6 +1918,62 @@ internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, UInt16?[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<UInt16?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new UInt16?[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, UInt16?[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, UInt16?[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadNullableUInt16Async( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt32?[]>
@@ -1074,6 +2030,62 @@ internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, UInt32?[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<UInt32?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new UInt32?[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, UInt32?[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, UInt32?[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadNullableUInt32Async( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt64?[]>
@@ -1130,6 +2142,62 @@ internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, UInt64?[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<UInt64?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new UInt64?[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, UInt64?[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, UInt64?[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadNullableUInt64Async( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Single?[]>
@@ -1186,6 +2254,62 @@ internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Sing
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, Single?[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<Single?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new Single?[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Single?[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, Single?[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadNullableSingleAsync( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Double?[]>
@@ -1242,6 +2366,62 @@ internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Doub
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, Double?[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<Double?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new Double?[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Double?[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, Double?[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadNullableDoubleAsync( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boolean?[]>
@@ -1298,6 +2478,62 @@ internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boo
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, Boolean?[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<Boolean?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new Boolean?[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Boolean?[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, Boolean?[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadNullableBooleanAsync( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
@@ -1354,6 +2590,62 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, String[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackStringAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<String[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new String[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, String[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, String[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadStringAsync( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
@@ -1410,6 +2702,62 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, Byte[][] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await packer.PackBinaryAsync( item, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<Byte[][]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new Byte[ count ][];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Byte[][] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, Byte[][] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadBinaryAsync( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<MessagePackObject[]>
@@ -1466,6 +2814,62 @@ internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<M
 			collection[ i ] = item;
 		}
 	}
+
+#if FEATURE_TAP
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	protected internal override async Task PackToAsyncCore( Packer packer, MessagePackObject[] objectTree, CancellationToken cancellationToken )
+	{
+		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
+		foreach ( var item in objectTree )
+		{
+			await item.PackToMessageAsync( packer, null, cancellationToken ).ConfigureAwait( false );
+		}
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override async Task<MessagePackObject[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+		var result = new MessagePackObject[ count ];
+		await UnpackToAsyncCore( unpacker, result, count, cancellationToken ).ConfigureAwait( false );
+		return result;
+	}
+
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, MessagePackObject[] collection, CancellationToken cancellationToken )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+		}
+
+		return UnpackToAsyncCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ), cancellationToken );
+	}
+
+	private static async Task UnpackToAsyncCore( Unpacker unpacker, MessagePackObject[] collection, int count, CancellationToken cancellationToken )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			var item = await unpacker.ReadObjectAsync( cancellationToken ).ConfigureAwait( false );
+			if ( !item.Success )
+			{
+				SerializationExceptions.ThrowMissingItem( i, unpacker );
+			}
+
+			collection[ i ] = item.Value;
+		}
+	}
+
+
+#endif // FEATURE_TAP
+
 }
 
 }

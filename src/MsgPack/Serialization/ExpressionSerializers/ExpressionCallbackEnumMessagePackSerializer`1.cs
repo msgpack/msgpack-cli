@@ -23,7 +23,7 @@ using System;
 namespace MsgPack.Serialization.ExpressionSerializers
 {
 	/// <summary>
-	///		A helper <see cref="EnumMessagePackSerializer{TEnum}"/> for <see cref="ExpressionTreeSerializerBuilder{TObject}"/>.
+	///		A helper <see cref="EnumMessagePackSerializer{TEnum}"/> for <see cref="ExpressionTreeSerializerBuilder"/>.
 	/// </summary>
 	/// <typeparam name="TEnum">The type of the serialization target.</typeparam>
 	internal class ExpressionCallbackEnumMessagePackSerializer<TEnum> : EnumMessagePackSerializer<TEnum>

@@ -24,11 +24,11 @@
 
 using System;
 #if !UNITY
-#if XAMIOS || XAMDROID || CORE_CLR
+#if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // XAMIOS || XAMDROID || CORE_CLR
+#endif // CORE_CLR
 #endif // !UNITY
 
 namespace MsgPack.Serialization.DefaultSerializers
@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return Create( context, typeof( T ), itemsSchema ) as MessagePackSerializer<T>;
 		}
 
-		public static IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema itemsSchema ) 
+		public static MessagePackSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema itemsSchema ) 
 		{
 #if DEBUG && !UNITY
 			Contract.Assert( targetType.IsArray, "targetType.IsArray" );
@@ -60,7 +60,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #else
 					?? new UnityArraySerializer( context, targetType.GetElementType(), itemsSchema )
 #endif
-					) as IMessagePackSingleObjectSerializer;
+					) as MessagePackSerializer;
 			}
 			else
 			{
@@ -70,7 +70,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 						typeof( MultidimensionalArraySerializer<,> ).MakeGenericType( targetType, targetType.GetElementType() ),
 						context,
 						itemsSchema
-					) as IMessagePackSingleObjectSerializer;
+					) as MessagePackSerializer;
 #else
 					new UnityMultidimensionalArraySerializer( context, targetType.GetElementType(), itemsSchema );
 #endif

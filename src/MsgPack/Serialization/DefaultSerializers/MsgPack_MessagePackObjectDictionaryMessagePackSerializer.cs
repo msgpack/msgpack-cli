@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2015 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,6 +19,10 @@
 #endregion -- License Terms --
 
 using System;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.CollectionSerializers;
 
@@ -98,5 +102,71 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			return new MessagePackObjectDictionary( initialCapacity );
 		}
+
+#if FEATURE_TAP
+
+		protected internal override async Task PackToAsyncCore( Packer packer, MessagePackObjectDictionary objectTree, CancellationToken cancellationToken )
+		{
+			await packer.PackMapHeaderAsync( objectTree.Count, cancellationToken ).ConfigureAwait( false );
+			foreach ( var entry in objectTree )
+			{
+				await entry.Key.PackToMessageAsync( packer, null, cancellationToken ).ConfigureAwait( false );
+				await entry.Value.PackToMessageAsync( packer, null, cancellationToken ).ConfigureAwait( false );
+			}
+		}
+
+		protected internal override async Task<MessagePackObjectDictionary> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( !unpacker.IsMapHeader )
+			{
+				SerializationExceptions.ThrowIsNotMapHeader( unpacker );
+			}
+
+			var count = UnpackHelpers.GetItemsCount( unpacker );
+			var result = new MessagePackObjectDictionary( count );
+			await UnpackToAsyncCore( unpacker, count, result, cancellationToken ).ConfigureAwait( false );
+			return result;
+		}
+
+		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, MessagePackObjectDictionary collection, CancellationToken cancellationToken )
+		{
+			return UnpackToAsyncCore( unpacker, UnpackHelpers.GetItemsCount( unpacker ), collection, cancellationToken );
+		}
+
+		private static async Task UnpackToAsyncCore( Unpacker unpacker, int count, MessagePackObjectDictionary collection, CancellationToken cancellationToken )
+		{
+			for ( int i = 0; i < count; i++ )
+			{
+				if ( !await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+				{
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+				}
+
+				var key = unpacker.LastReadData;
+
+				if ( !await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+				{
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+				}
+
+				if ( unpacker.IsCollectionHeader )
+				{
+					var value = await unpacker.UnpackSubtreeDataAsyncCore( cancellationToken ).ConfigureAwait( false );
+					if ( !value.Success )
+					{
+						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+					}
+
+					collection.Add( key, value.Value );
+				}
+				else
+				{
+					collection.Add( key, unpacker.LastReadData );
+				}
+			}
+		}
+
+#endif // FEATURE_TAP
+
 	}
 }
