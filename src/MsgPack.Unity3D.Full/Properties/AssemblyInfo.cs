@@ -25,7 +25,7 @@ using System.Security;
 [assembly: AssemblyTitle( "MessagePack for CLI(.NET/Mono)" )]
 [assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library for Unity3D with Full .NET 2.0 mode." )]
 
-[assembly: AssemblyFileVersion( "0.7.2250.831" )]
+[assembly: AssemblyFileVersion( "0.7.2259.1047" )]
 
 [assembly: AllowPartiallyTrustedCallers]
 

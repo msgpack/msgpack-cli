@@ -24,6 +24,6 @@ using System.Reflection;
 [assembly: AssemblyDescription( "Command line utility to generate serializer code for Unity assets." )]
 [assembly: AssemblyConfiguration( "" )]
 
-[assembly: AssemblyFileVersion( "0.7.2250.831" )]
+[assembly: AssemblyFileVersion( "0.7.2259.1047" )]
 
 

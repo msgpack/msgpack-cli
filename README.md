@@ -48,7 +48,7 @@ See [wiki](https://github.com/msgpack/msgpack-cli/wiki)
   1. Download *.zip file from [GitHub Release page](https://github.com/msgpack/msgpack-cli/releases/).
   2. Extract it.
   3. Under the `bin` directory, binaries are there!
-    * For mono, you can use `net45` or `net35` drops as you run with.
+    * For mono, you can use `net461` or `net35` drops as you run with.
     * For Unity, `unity3d` drop is suitable.
 
 ## How to build

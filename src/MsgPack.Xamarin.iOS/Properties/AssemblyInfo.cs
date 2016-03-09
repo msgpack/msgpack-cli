@@ -25,7 +25,7 @@ using System.Security;
 [assembly: AssemblyTitle( "MessagePack for CLI(.NET/Mono)" )]
 [assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library for Xamarin.iOS." )]
 
-[assembly: AssemblyFileVersion( "0.7.2250.831" )]
+[assembly: AssemblyFileVersion( "0.7.2259.1047" )]
 
 [assembly: SecurityRules( SecurityRuleSet.Level2, SkipVerificationInFullTrust = true )]
 [assembly: AllowPartiallyTrustedCallers]

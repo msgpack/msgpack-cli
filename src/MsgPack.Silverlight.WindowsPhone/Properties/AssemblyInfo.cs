@@ -25,7 +25,7 @@ using System.Security;
 [assembly: AssemblyTitle( "MessagePack for Silverlight 8/8.1" )]
 [assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library for Silverlight 8/8.1." )]
 
-[assembly: AssemblyFileVersion( "0.7.2250.831" )]
+[assembly: AssemblyFileVersion( "0.7.2259.1047" )]
 
 [assembly: AllowPartiallyTrustedCallers]
 
