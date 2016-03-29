@@ -311,6 +311,37 @@ namespace MsgPack.Serialization
 			[DataMember( Order = 2 )]
 			public int MyProperty2 { get; set; }
 		}
+
+		[Test]
+		public void TestIssue152()
+		{
+			var serializer = MessagePackSerializer.Get<Issue152>( new SerializationContext() );
+			using ( var buffer = new MemoryStream() )
+			{
+				var target = new Issue152();
+				target.SetItems( new List<int> { 1, 2, 3 } );
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result.GetItems(), Is.EqualTo( target.GetItems() ) );
+			}
+		}
+
+		public class Issue152
+		{
+			[MessagePackMember( 0 )]
+			private List<int> Items { get; set; }
+
+			public List<int> GetItems()
+			{
+				return this.Items;
+			}
+
+			public void SetItems( List<int> items )
+			{
+				this.Items = items;
+			}
+		}
 #endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY
 	}
 }

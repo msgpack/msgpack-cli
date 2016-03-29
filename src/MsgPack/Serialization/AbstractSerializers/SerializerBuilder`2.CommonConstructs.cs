@@ -923,6 +923,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 				traits = asProperty.PropertyType.GetCollectionTraits();
 			}
 
+			var existent = this.DeclareLocal( context, member.GetMemberValueType(), "existent" );
+			var existentInitialization = this.EmitStoreVariableStatement( context, existent, getCollection );
+
 			// use Add(T) for appendable collection elementType read only member.
 
 			switch ( traits.CollectionType )
@@ -935,11 +938,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 					 *		target.Prop.Add(item);
 					 *	}
 					 */
-					return
+					var store =
 						this.EmitStoreCollectionItemsEmitSetCollectionMemberIfNullAndSettable(
 							context,
 							instance,
 							value,
+							existent,
 							member.GetMemberValueType(),
 							asField,
 							asProperty,
@@ -954,10 +958,18 @@ namespace MsgPack.Serialization.AbstractSerializers
 											context,
 											member,
 											traits,
-											getCollection,
+											existent,
 											current
-										)
-								)
+											)
+									)
+							);
+					return
+						this.EmitSequentialStatements(
+							context,
+							store.ContextType,
+							existent,
+							existentInitialization,
+							store
 						);
 				}
 				case CollectionKind.Map:
@@ -970,54 +982,65 @@ namespace MsgPack.Serialization.AbstractSerializers
 					 */
 					Type keyType, valueType;
 					GetDictionaryKeyValueType( traits.ElementType, out keyType, out valueType );
-					return
-						this.EmitStoreCollectionItemsEmitSetCollectionMemberIfNullAndSettable(
-							context,
-							instance,
-							value,
-							member.GetMemberValueType(),
-							asField,
-							asProperty,
-							traits.AddMethod == null
-								? null
-								: this.EmitForEachLoop(
-									context,
-									traits,
-									value,
-									// ReSharper disable ImplicitlyCapturedClosure
-									current =>
-										this.EmitAppendDictionaryItem(
-											context,
-											traits,
-											getCollection,
-											keyType,
-											this.EmitGetPropertyExpression(
+
+					var store =
+							this.EmitStoreCollectionItemsEmitSetCollectionMemberIfNullAndSettable(
+								context,
+								instance,
+								value,
+								existent,
+								member.GetMemberValueType(),
+								asField,
+								asProperty,
+								traits.AddMethod == null
+									? null
+									: this.EmitForEachLoop(
+										context,
+										traits,
+										value,
+										// ReSharper disable ImplicitlyCapturedClosure
+										current =>
+											this.EmitAppendDictionaryItem(
 												context,
-												current,
+												traits,
+												existent,
+												keyType,
+												this.EmitGetPropertyExpression(
+													context,
+													current,
 #if !NETFX_CORE
-												traits.ElementType == typeof( DictionaryEntry )
-													? Metadata._DictionaryEntry.Key
-													: traits.ElementType.GetProperty( "Key" )
+													traits.ElementType == typeof( DictionaryEntry )
+														? Metadata._DictionaryEntry.Key
+														: traits.ElementType.GetProperty( "Key" )
 #else
-												traits.ElementType.GetProperty( "Key" )
-#endif // !NETFX_CORE
-											),
-											valueType,
-											this.EmitGetPropertyExpression(
-												context,
-												current,
-#if !NETFX_CORE
-												traits.ElementType == typeof( DictionaryEntry )
-													? Metadata._DictionaryEntry.Value
-													: traits.ElementType.GetProperty( "Value" )
-#else
-												traits.ElementType.GetProperty( "Value" )
+													traits.ElementType.GetProperty( "Key" )
 #endif // !NETFX_CORE
 												),
-											false
-										)
-									// ReSharper restore ImplicitlyCapturedClosure
-								)
+												valueType,
+												this.EmitGetPropertyExpression(
+													context,
+													current,
+#if !NETFX_CORE
+													traits.ElementType == typeof( DictionaryEntry )
+														? Metadata._DictionaryEntry.Value
+														: traits.ElementType.GetProperty( "Value" )
+#else
+													traits.ElementType.GetProperty( "Value" )
+#endif // !NETFX_CORE
+												),
+												false
+											)
+										// ReSharper restore ImplicitlyCapturedClosure
+									)
+							);
+
+					return
+						this.EmitSequentialStatements(
+							context,
+							store.ContextType,
+							existent,
+							existentInitialization,
+							store
 						);
 				}
 			}
@@ -1047,6 +1070,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TContext context,
 			TConstruct instance,
 			TConstruct collection,
+			TConstruct existent,
 			TypeDefinition collectionType,
 			FieldInfo asField,
 			PropertyInfo asProperty,
@@ -1083,21 +1107,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 
 			return
-				this.EmitSequentialStatements(
+				this.EmitConditionalExpression(
 					context,
-					storeCollectionItems.ContextType,
-					this.EmitConditionalExpression(
+					this.EmitEqualsExpression(
 						context,
-						this.EmitEqualsExpression(
-							context,
-							asField != null
-								? this.EmitGetFieldExpression( context, instance, asField )
-								: this.EmitGetPropertyExpression( context, instance, asProperty ),
-							this.MakeNullLiteral( context, collectionType )
-						),
-						invokeSetter, // then
-						storeCollectionItems // else
-					)
+						existent,
+						this.MakeNullLiteral( context, collectionType )
+					),
+					invokeSetter, // then
+					storeCollectionItems // else
 				);
 		}
 

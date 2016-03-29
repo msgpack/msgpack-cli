@@ -21,6 +21,8 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MsgPack.Serialization
 {
@@ -42,6 +44,24 @@ namespace MsgPack.Serialization
 		public readonly int PublicReadOnlyField;
 		private int NonPublicProperty { get; set; }
 		private int NonPublicField;
+
+		private List<int> NonPublicCollectionProperty { get; set; }
+		private List<int> NonPublicCollectionField;
+		private readonly List<int> _nonPublicCollectionReadOnlyProperty;
+		private List<int> NonPublicCollectionReadOnlyProperty { get { return this._nonPublicCollectionReadOnlyProperty; } }
+		private readonly List<int> NonPublicCollectionReadOnlyField;
+
+		private Dictionary<string, int> NonPublicDictionaryProperty { get; set; }
+		private Dictionary<string, int> NonPublicDictionaryField;
+		private readonly Dictionary<string, int> _nonPublicDictionaryReadOnlyProperty;
+		private Dictionary<string, int> NonPublicDictionaryReadOnlyProperty { get { return this._nonPublicDictionaryReadOnlyProperty; } }
+		private readonly Dictionary<string, int> NonPublicDictionaryReadOnlyField;
+
+		private System.Collections.Hashtable NonPublicHashtableProperty { get; set; }
+		private System.Collections.Hashtable NonPublicHashtableField;
+		private readonly System.Collections.Hashtable _nonPublicHashtableReadOnlyProperty;
+		private System.Collections.Hashtable NonPublicHashtableReadOnlyProperty { get { return this._nonPublicHashtableReadOnlyProperty; } }
+		private readonly System.Collections.Hashtable NonPublicHashtableReadOnlyField;
 
 #if !NETFX_CORE && !SILVERLIGHT
 		[NonSerialized]
@@ -72,6 +92,48 @@ namespace MsgPack.Serialization
 			this.NonSerializedNonPublicField = 9;
 #endif // !NETFX_CORE && !SILVERLIGHT
 			this._collectionReadOnlyProperty = new List<int>();
+			this.NonPublicCollectionProperty = new List<int>();
+			this.NonPublicCollectionField = new List<int>();
+			this._nonPublicCollectionReadOnlyProperty = new List<int>();
+			this.NonPublicCollectionReadOnlyField = new List<int>();
+			this.NonPublicDictionaryProperty = new Dictionary<string, int>();
+			this.NonPublicDictionaryField = new Dictionary<string, int>();
+			this._nonPublicDictionaryReadOnlyProperty = new Dictionary<string, int>();
+			this.NonPublicDictionaryReadOnlyField = new Dictionary<string, int>();
+			this.NonPublicHashtableProperty = new System.Collections.Hashtable();
+			this.NonPublicHashtableField = new System.Collections.Hashtable();
+			this._nonPublicHashtableReadOnlyProperty = new System.Collections.Hashtable();
+			this.NonPublicHashtableReadOnlyField = new System.Collections.Hashtable();
+		}
+
+		public void InitializeCollectionMembers()
+		{
+			this.CollectionReadOnlyProperty.Add( 51 );
+			this.CollectionReadOnlyProperty.Add( 52 );
+			this.NonPublicCollectionProperty.Add( 61 );
+			this.NonPublicCollectionProperty.Add( 62 );
+			this.NonPublicCollectionField.Add( 63 );
+			this.NonPublicCollectionField.Add( 64 );
+			this._nonPublicCollectionReadOnlyProperty.Add( 65 );
+			this._nonPublicCollectionReadOnlyProperty.Add( 66 );
+			this.NonPublicCollectionReadOnlyField.Add( 67 );
+			this.NonPublicCollectionReadOnlyField.Add( 68 );
+			this.NonPublicDictionaryProperty.Add( "71", 71 );
+			this.NonPublicDictionaryProperty.Add( "72", 72 );
+			this.NonPublicDictionaryField.Add( "73", 73 );
+			this.NonPublicDictionaryField.Add( "74", 74 );
+			this._nonPublicDictionaryReadOnlyProperty.Add( "75", 75 );
+			this._nonPublicDictionaryReadOnlyProperty.Add( "76", 76 );
+			this.NonPublicDictionaryReadOnlyField.Add( "77", 77 );
+			this.NonPublicDictionaryReadOnlyField.Add( "78", 78 );
+			this.NonPublicHashtableProperty.Add( "81", 81 );
+			this.NonPublicHashtableProperty.Add( "82", 82 );
+			this.NonPublicHashtableField.Add( "83", 83 );
+			this.NonPublicHashtableField.Add( "84", 84 );
+			this._nonPublicHashtableReadOnlyProperty.Add( "85", 85 );
+			this._nonPublicHashtableReadOnlyProperty.Add( "86", 86 );
+			this.NonPublicHashtableReadOnlyField.Add( "87", 87 );
+			this.NonPublicHashtableReadOnlyField.Add( "88", 88 );
 		}
 	}
 
@@ -112,6 +174,36 @@ namespace MsgPack.Serialization
 		[MessagePackMember( 9 )]
 		public List<int> CollectionReadOnlyProperty { get { return this._collectionReadOnlyProperty; } }
 
+		[MessagePackMember( 10 )]
+		private List<int> NonPublicCollectionProperty { get; set; }
+		[MessagePackMember( 11 )]
+		private List<int> NonPublicCollectionField;
+		private readonly List<int> _nonPublicCollectionReadOnlyProperty;
+		[MessagePackMember( 12 )]
+		private List<int> NonPublicCollectionReadOnlyProperty { get { return this._nonPublicCollectionReadOnlyProperty; } }
+		[MessagePackMember( 13 )]
+		private readonly List<int> NonPublicCollectionReadOnlyField;
+
+		[MessagePackMember( 14 )]
+		private Dictionary<string, int> NonPublicDictionaryProperty { get; set; }
+		[MessagePackMember( 15 )]
+		private Dictionary<string, int> NonPublicDictionaryField;
+		private readonly Dictionary<string, int> _nonPublicDictionaryReadOnlyProperty;
+		[MessagePackMember( 16 )]
+		private Dictionary<string, int> NonPublicDictionaryReadOnlyProperty { get { return this._nonPublicDictionaryReadOnlyProperty; } }
+		[MessagePackMember( 17 )]
+		private readonly Dictionary<string, int> NonPublicDictionaryReadOnlyField;
+
+		[MessagePackMember( 18 )]
+		private System.Collections.Hashtable NonPublicHashtableProperty { get; set; }
+		[MessagePackMember( 19 )]
+		private System.Collections.Hashtable NonPublicHashtableField;
+		private readonly System.Collections.Hashtable _nonPublicHashtableReadOnlyProperty;
+		[MessagePackMember( 20 )]
+		private System.Collections.Hashtable NonPublicHashtableReadOnlyProperty { get { return this._nonPublicHashtableReadOnlyProperty; } }
+		[MessagePackMember( 21 )]
+		private readonly System.Collections.Hashtable NonPublicHashtableReadOnlyField;
+
 		public int PublicPropertyPlain { get; set; }
 		public int PublicFieldPlain;
 		private readonly int _publicReadOnlyPropertyPlain;
@@ -119,6 +211,24 @@ namespace MsgPack.Serialization
 		public int PublicReadOnlyFieldPlain;
 		private int NonPublicPropertyPlain { get; set; }
 		private int NonPublicFieldPlain;
+
+		private List<int> NonPublicCollectionPropertyPlain { get; set; }
+		private List<int> NonPublicCollectionFieldPlain;
+		private readonly List<int> _nonPublicCollectionReadOnlyPropertyPlain;
+		private List<int> NonPublicCollectionReadOnlyPropertyPlain { get { return this._nonPublicCollectionReadOnlyPropertyPlain; } }
+		private readonly List<int> NonPublicCollectionReadOnlyFieldPlain;
+
+		private Dictionary<string, int> NonPublicDictionaryPropertyPlain { get; set; }
+		private Dictionary<string, int> NonPublicDictionaryFieldPlain;
+		private readonly Dictionary<string, int> _nonPublicDictionaryReadOnlyPropertyPlain;
+		private Dictionary<string, int> NonPublicDictionaryReadOnlyPropertyPlain { get { return this._nonPublicDictionaryReadOnlyPropertyPlain; } }
+		private readonly Dictionary<string, int> NonPublicDictionaryReadOnlyFieldPlain;
+
+		private System.Collections.Hashtable NonPublicHashtablePropertyPlain { get; set; }
+		private System.Collections.Hashtable NonPublicHashtableFieldPlain;
+		private readonly System.Collections.Hashtable _nonPublicHashtableReadOnlyPropertyPlain;
+		private System.Collections.Hashtable NonPublicHashtableReadOnlyPropertyPlain { get { return this._nonPublicHashtableReadOnlyPropertyPlain; } }
+		private readonly System.Collections.Hashtable NonPublicHashtableReadOnlyFieldPlain;
 
 #if !NETFX_CORE && !SILVERLIGHT
 		[NonSerialized]
@@ -158,6 +268,84 @@ namespace MsgPack.Serialization
 			this.NonSerializedPublicReadOnlyFieldPlain = 18;
 			this.NonSerializedNonPublicFieldPlain = 19;
 #endif // !NETFX_CORE && !SILVERLIGHT
+			this.NonPublicCollectionProperty = new List<int>();
+			this.NonPublicCollectionField = new List<int>();
+			this._nonPublicCollectionReadOnlyProperty = new List<int>();
+			this.NonPublicCollectionReadOnlyField = new List<int>();
+			this.NonPublicDictionaryProperty = new Dictionary<string, int>();
+			this.NonPublicDictionaryField = new Dictionary<string, int>();
+			this._nonPublicDictionaryReadOnlyProperty = new Dictionary<string, int>();
+			this.NonPublicDictionaryReadOnlyField = new Dictionary<string, int>();
+			this.NonPublicHashtableProperty = new System.Collections.Hashtable();
+			this.NonPublicHashtableField = new System.Collections.Hashtable();
+			this._nonPublicHashtableReadOnlyProperty = new System.Collections.Hashtable();
+			this.NonPublicHashtableReadOnlyField = new System.Collections.Hashtable();
+			this.NonPublicCollectionPropertyPlain = new List<int>();
+			this.NonPublicCollectionFieldPlain = new List<int>();
+			this._nonPublicCollectionReadOnlyPropertyPlain = new List<int>();
+			this.NonPublicCollectionReadOnlyFieldPlain = new List<int>();
+			this.NonPublicDictionaryPropertyPlain = new Dictionary<string, int>();
+			this.NonPublicDictionaryFieldPlain = new Dictionary<string, int>();
+			this._nonPublicDictionaryReadOnlyPropertyPlain = new Dictionary<string, int>();
+			this.NonPublicDictionaryReadOnlyFieldPlain = new Dictionary<string, int>();
+			this.NonPublicHashtablePropertyPlain = new System.Collections.Hashtable();
+			this.NonPublicHashtableFieldPlain = new System.Collections.Hashtable();
+			this._nonPublicHashtableReadOnlyPropertyPlain = new System.Collections.Hashtable();
+			this.NonPublicHashtableReadOnlyFieldPlain = new System.Collections.Hashtable();
+		}
+
+		public void InitializeCollectionMembers()
+		{
+			this.CollectionReadOnlyProperty.Add( 51 );
+			this.CollectionReadOnlyProperty.Add( 52 );
+			this.NonPublicCollectionProperty.Add( 61 );
+			this.NonPublicCollectionProperty.Add( 62 );
+			this.NonPublicCollectionField.Add( 63 );
+			this.NonPublicCollectionField.Add( 64 );
+			this._nonPublicCollectionReadOnlyProperty.Add( 65 );
+			this._nonPublicCollectionReadOnlyProperty.Add( 66 );
+			this.NonPublicCollectionReadOnlyField.Add( 67 );
+			this.NonPublicCollectionReadOnlyField.Add( 68 );
+			this.NonPublicDictionaryProperty.Add( "71", 71 );
+			this.NonPublicDictionaryProperty.Add( "72", 72 );
+			this.NonPublicDictionaryField.Add( "73", 73 );
+			this.NonPublicDictionaryField.Add( "74", 74 );
+			this._nonPublicDictionaryReadOnlyProperty.Add( "75", 75 );
+			this._nonPublicDictionaryReadOnlyProperty.Add( "76", 76 );
+			this.NonPublicDictionaryReadOnlyField.Add( "77", 77 );
+			this.NonPublicDictionaryReadOnlyField.Add( "78", 78 );
+			this.NonPublicHashtableProperty.Add( "81", 81 );
+			this.NonPublicHashtableProperty.Add( "82", 82 );
+			this.NonPublicHashtableField.Add( "83", 83 );
+			this.NonPublicHashtableField.Add( "84", 84 );
+			this._nonPublicHashtableReadOnlyProperty.Add( "85", 85 );
+			this._nonPublicHashtableReadOnlyProperty.Add( "86", 86 );
+			this.NonPublicHashtableReadOnlyField.Add( "87", 87 );
+			this.NonPublicHashtableReadOnlyField.Add( "88", 88 );
+			this.NonPublicCollectionPropertyPlain.Add( 91 );
+			this.NonPublicCollectionPropertyPlain.Add( 92 );
+			this.NonPublicCollectionFieldPlain.Add( 93 );
+			this.NonPublicCollectionFieldPlain.Add( 94 );
+			this._nonPublicCollectionReadOnlyPropertyPlain.Add( 95 );
+			this._nonPublicCollectionReadOnlyPropertyPlain.Add( 96 );
+			this.NonPublicCollectionReadOnlyFieldPlain.Add( 97 );
+			this.NonPublicCollectionReadOnlyFieldPlain.Add( 98 );
+			this.NonPublicDictionaryPropertyPlain.Add( "101", 101 );
+			this.NonPublicDictionaryPropertyPlain.Add( "102", 102 );
+			this.NonPublicDictionaryFieldPlain.Add( "103", 103 );
+			this.NonPublicDictionaryFieldPlain.Add( "104", 104 );
+			this._nonPublicDictionaryReadOnlyPropertyPlain.Add( "105", 105 );
+			this._nonPublicDictionaryReadOnlyPropertyPlain.Add( "106", 106 );
+			this.NonPublicDictionaryReadOnlyFieldPlain.Add( "107", 197 );
+			this.NonPublicDictionaryReadOnlyFieldPlain.Add( "108", 108 );
+			this.NonPublicHashtablePropertyPlain.Add( "111", 111 );
+			this.NonPublicHashtablePropertyPlain.Add( "112", 112 );
+			this.NonPublicHashtableFieldPlain.Add( "113", 113 );
+			this.NonPublicHashtableFieldPlain.Add( "114", 114 );
+			this._nonPublicHashtableReadOnlyPropertyPlain.Add( "115", 115 );
+			this._nonPublicHashtableReadOnlyPropertyPlain.Add( "116", 116 );
+			this.NonPublicHashtableReadOnlyFieldPlain.Add( "117", 117 );
+			this.NonPublicHashtableReadOnlyFieldPlain.Add( "118", 118 );
 		}
 	}
 
@@ -199,6 +387,37 @@ namespace MsgPack.Serialization
 		[DataMember( Order = 9 )]
 		public List<int> CollectionReadOnlyProperty { get { return this._collectionReadOnlyProperty; } }
 
+		[DataMember( Order = 10 )]
+		private List<int> NonPublicCollectionProperty { get; set; }
+		[DataMember( Order = 11 )]
+		private List<int> NonPublicCollectionField;
+
+		private readonly List<int> _nonPublicCollectionReadOnlyProperty;
+		[DataMember( Order = 12 )]
+		private List<int> NonPublicCollectionReadOnlyProperty { get { return this._nonPublicCollectionReadOnlyProperty; } }
+		[DataMember( Order = 13 )]
+		private readonly List<int> NonPublicCollectionReadOnlyField;
+
+		[DataMember( Order = 14 )]
+		private Dictionary<string, int> NonPublicDictionaryProperty { get; set; }
+		[DataMember( Order = 15 )]
+		private Dictionary<string, int> NonPublicDictionaryField;
+		private readonly Dictionary<string, int> _nonPublicDictionaryReadOnlyProperty;
+		[DataMember( Order = 16 )]
+		private Dictionary<string, int> NonPublicDictionaryReadOnlyProperty { get { return this._nonPublicDictionaryReadOnlyProperty; } }
+		[DataMember( Order = 17 )]
+		private readonly Dictionary<string, int> NonPublicDictionaryReadOnlyField;
+
+		[DataMember( Order = 18 )]
+		private System.Collections.Hashtable NonPublicHashtableProperty { get; set; }
+		[DataMember( Order = 19 )]
+		private System.Collections.Hashtable NonPublicHashtableField;
+		private readonly System.Collections.Hashtable _nonPublicHashtableReadOnlyProperty;
+		[DataMember( Order = 20 )]
+		private System.Collections.Hashtable NonPublicHashtableReadOnlyProperty { get { return this._nonPublicHashtableReadOnlyProperty; } }
+		[DataMember( Order = 21 )]
+		private readonly System.Collections.Hashtable NonPublicHashtableReadOnlyField;
+
 		public int PublicPropertyPlain { get; set; }
 		public int PublicFieldPlain;
 		private readonly int _publicReadOnlyPropertyPlain;
@@ -206,6 +425,24 @@ namespace MsgPack.Serialization
 		public int PublicReadOnlyFieldPlain;
 		private int NonPublicPropertyPlain { get; set; }
 		private int NonPublicFieldPlain;
+
+		private List<int> NonPublicCollectionPropertyPlain { get; set; }
+		private List<int> NonPublicCollectionFieldPlain;
+		private readonly List<int> _nonPublicCollectionReadOnlyPropertyPlain;
+		private List<int> NonPublicCollectionReadOnlyPropertyPlain { get { return this._nonPublicCollectionReadOnlyPropertyPlain; } }
+		private readonly List<int> NonPublicCollectionReadOnlyFieldPlain;
+
+		private Dictionary<string, int> NonPublicDictionaryPropertyPlain { get; set; }
+		private Dictionary<string, int> NonPublicDictionaryFieldPlain;
+		private readonly Dictionary<string, int> _nonPublicDictionaryReadOnlyPropertyPlain;
+		private Dictionary<string, int> NonPublicDictionaryReadOnlyPropertyPlain { get { return this._nonPublicDictionaryReadOnlyPropertyPlain; } }
+		private readonly Dictionary<string, int> NonPublicDictionaryReadOnlyFieldPlain;
+
+		private System.Collections.Hashtable NonPublicHashtablePropertyPlain { get; set; }
+		private System.Collections.Hashtable NonPublicHashtableFieldPlain;
+		private readonly System.Collections.Hashtable _nonPublicHashtableReadOnlyPropertyPlain;
+		private System.Collections.Hashtable NonPublicHashtableReadOnlyPropertyPlain { get { return this._nonPublicHashtableReadOnlyPropertyPlain; } }
+		private readonly System.Collections.Hashtable NonPublicHashtableReadOnlyFieldPlain;
 
 #if !NETFX_CORE && !SILVERLIGHT
 		[NonSerialized]
@@ -245,6 +482,84 @@ namespace MsgPack.Serialization
 			this.NonSerializedPublicReadOnlyFieldPlain = 18;
 			this.NonSerializedNonPublicFieldPlain = 19;
 #endif // !NETFX_CORE && !SILVERLIGHT
+			this.NonPublicCollectionProperty = new List<int>();
+			this.NonPublicCollectionField = new List<int>();
+			this._nonPublicCollectionReadOnlyProperty = new List<int>();
+			this.NonPublicCollectionReadOnlyField = new List<int>();
+			this.NonPublicDictionaryProperty = new Dictionary<string, int>();
+			this.NonPublicDictionaryField = new Dictionary<string, int>();
+			this._nonPublicDictionaryReadOnlyProperty = new Dictionary<string, int>();
+			this.NonPublicDictionaryReadOnlyField = new Dictionary<string, int>();
+			this.NonPublicHashtableProperty = new System.Collections.Hashtable();
+			this.NonPublicHashtableField = new System.Collections.Hashtable();
+			this._nonPublicHashtableReadOnlyProperty = new System.Collections.Hashtable();
+			this.NonPublicHashtableReadOnlyField = new System.Collections.Hashtable();
+			this.NonPublicCollectionPropertyPlain = new List<int>();
+			this.NonPublicCollectionFieldPlain = new List<int>();
+			this._nonPublicCollectionReadOnlyPropertyPlain = new List<int>();
+			this.NonPublicCollectionReadOnlyFieldPlain = new List<int>();
+			this.NonPublicDictionaryPropertyPlain = new Dictionary<string, int>();
+			this.NonPublicDictionaryFieldPlain = new Dictionary<string, int>();
+			this._nonPublicDictionaryReadOnlyPropertyPlain = new Dictionary<string, int>();
+			this.NonPublicDictionaryReadOnlyFieldPlain = new Dictionary<string, int>();
+			this.NonPublicHashtablePropertyPlain = new System.Collections.Hashtable();
+			this.NonPublicHashtableFieldPlain = new System.Collections.Hashtable();
+			this._nonPublicHashtableReadOnlyPropertyPlain = new System.Collections.Hashtable();
+			this.NonPublicHashtableReadOnlyFieldPlain = new System.Collections.Hashtable();
+		}
+
+		public void InitializeCollectionMembers()
+		{
+			this.CollectionReadOnlyProperty.Add( 51 );
+			this.CollectionReadOnlyProperty.Add( 52 );
+			this.NonPublicCollectionProperty.Add( 61 );
+			this.NonPublicCollectionProperty.Add( 62 );
+			this.NonPublicCollectionField.Add( 63 );
+			this.NonPublicCollectionField.Add( 64 );
+			this._nonPublicCollectionReadOnlyProperty.Add( 65 );
+			this._nonPublicCollectionReadOnlyProperty.Add( 66 );
+			this.NonPublicCollectionReadOnlyField.Add( 67 );
+			this.NonPublicCollectionReadOnlyField.Add( 68 );
+			this.NonPublicDictionaryProperty.Add( "71", 71 );
+			this.NonPublicDictionaryProperty.Add( "72", 72 );
+			this.NonPublicDictionaryField.Add( "73", 73 );
+			this.NonPublicDictionaryField.Add( "74", 74 );
+			this._nonPublicDictionaryReadOnlyProperty.Add( "75", 75 );
+			this._nonPublicDictionaryReadOnlyProperty.Add( "76", 76 );
+			this.NonPublicDictionaryReadOnlyField.Add( "77", 77 );
+			this.NonPublicDictionaryReadOnlyField.Add( "78", 78 );
+			this.NonPublicHashtableProperty.Add( "81", 81 );
+			this.NonPublicHashtableProperty.Add( "82", 82 );
+			this.NonPublicHashtableField.Add( "83", 83 );
+			this.NonPublicHashtableField.Add( "84", 84 );
+			this._nonPublicHashtableReadOnlyProperty.Add( "85", 85 );
+			this._nonPublicHashtableReadOnlyProperty.Add( "86", 86 );
+			this.NonPublicHashtableReadOnlyField.Add( "87", 87 );
+			this.NonPublicHashtableReadOnlyField.Add( "88", 88 );
+			this.NonPublicCollectionPropertyPlain.Add( 91 );
+			this.NonPublicCollectionPropertyPlain.Add( 92 );
+			this.NonPublicCollectionFieldPlain.Add( 93 );
+			this.NonPublicCollectionFieldPlain.Add( 94 );
+			this._nonPublicCollectionReadOnlyPropertyPlain.Add( 95 );
+			this._nonPublicCollectionReadOnlyPropertyPlain.Add( 96 );
+			this.NonPublicCollectionReadOnlyFieldPlain.Add( 97 );
+			this.NonPublicCollectionReadOnlyFieldPlain.Add( 98 );
+			this.NonPublicDictionaryPropertyPlain.Add( "101", 101 );
+			this.NonPublicDictionaryPropertyPlain.Add( "102", 102 );
+			this.NonPublicDictionaryFieldPlain.Add( "103", 103 );
+			this.NonPublicDictionaryFieldPlain.Add( "104", 104 );
+			this._nonPublicDictionaryReadOnlyPropertyPlain.Add( "105", 105 );
+			this._nonPublicDictionaryReadOnlyPropertyPlain.Add( "106", 106 );
+			this.NonPublicDictionaryReadOnlyFieldPlain.Add( "107", 197 );
+			this.NonPublicDictionaryReadOnlyFieldPlain.Add( "108", 108 );
+			this.NonPublicHashtablePropertyPlain.Add( "111", 111 );
+			this.NonPublicHashtablePropertyPlain.Add( "112", 112 );
+			this.NonPublicHashtableFieldPlain.Add( "113", 113 );
+			this.NonPublicHashtableFieldPlain.Add( "114", 114 );
+			this._nonPublicHashtableReadOnlyPropertyPlain.Add( "115", 115 );
+			this._nonPublicHashtableReadOnlyPropertyPlain.Add( "116", 116 );
+			this.NonPublicHashtableReadOnlyFieldPlain.Add( "117", 117 );
+			this.NonPublicHashtableReadOnlyFieldPlain.Add( "118", 118 );
 		}
 	}
 

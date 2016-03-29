@@ -46,6 +46,18 @@ namespace MsgPack.Serialization
 		private const string PublicReadOnlyPropertyPlain = "PublicReadOnlyPropertyPlain";
 		private const string NonPublicPropertyPlain = "NonPublicPropertyPlain";
 		private const string CollectionReadOnlyProperty = "CollectionReadOnlyProperty";
+		private const string NonPublicCollectionProperty = "NonPublicCollectionProperty";
+		private const string NonPublicCollectionField = "NonPublicCollectionField";
+		private const string NonPublicCollectionReadOnlyProperty = "NonPublicCollectionReadOnlyProperty";
+		private const string NonPublicCollectionReadOnlyField = "NonPublicCollectionReadOnlyField";
+		private const string NonPublicDictionaryProperty = "NonPublicDictionaryProperty";
+		private const string NonPublicDictionaryField = "NonPublicDictionaryField";
+		private const string NonPublicDictionaryReadOnlyProperty = "NonPublicDictionaryReadOnlyProperty";
+		private const string NonPublicDictionaryReadOnlyField = "NonPublicDictionaryReadOnlyField";
+		private const string NonPublicHashtableProperty = "NonPublicHashtableProperty";
+		private const string NonPublicHashtableField = "NonPublicHashtableField";
+		private const string NonPublicHashtableReadOnlyProperty = "NonPublicHashtableReadOnlyProperty";
+		private const string NonPublicHashtableReadOnlyField = "NonPublicHashtableReadOnlyField";
 		private const string PublicField = "PublicField";
 		private const string PublicReadOnlyField = "PublicReadOnlyField";
 		private const string NonPublicField = "NonPublicField";
@@ -77,7 +89,10 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE && !WINDOWS_PHONE
 				NonSerializedPublicField, NonSerializedNonPublicField,
 #endif
-				CollectionReadOnlyProperty
+				CollectionReadOnlyProperty, 
+				NonPublicCollectionProperty, NonPublicCollectionField, NonPublicCollectionReadOnlyProperty, NonPublicCollectionReadOnlyField,
+				NonPublicDictionaryProperty, NonPublicDictionaryField, NonPublicDictionaryReadOnlyProperty, NonPublicDictionaryReadOnlyField,
+				NonPublicHashtableProperty, NonPublicHashtableField, NonPublicHashtableReadOnlyProperty, NonPublicHashtableReadOnlyField
 			);
 		}
 
@@ -90,7 +105,10 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE && !WINDOWS_PHONE
 				NonSerializedPublicField, NonSerializedNonPublicField,
 #endif
-				CollectionReadOnlyProperty
+				CollectionReadOnlyProperty,
+				NonPublicCollectionProperty, NonPublicCollectionField, NonPublicCollectionReadOnlyProperty, NonPublicCollectionReadOnlyField,
+				NonPublicDictionaryProperty, NonPublicDictionaryField, NonPublicDictionaryReadOnlyProperty, NonPublicDictionaryReadOnlyField,
+				NonPublicHashtableProperty, NonPublicHashtableField, NonPublicHashtableReadOnlyProperty, NonPublicHashtableReadOnlyField
 			);
 		}
 

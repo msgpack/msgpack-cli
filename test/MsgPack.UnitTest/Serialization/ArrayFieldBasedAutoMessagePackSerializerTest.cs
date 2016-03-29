@@ -106,8 +106,8 @@ namespace MsgPack.Serialization
 		public void SetUp()
 		{
 			SerializerDebugging.DeletePastTemporaries();
-			SerializerDebugging.TraceEnabled = true;
-			SerializerDebugging.DumpEnabled = true;
+			//SerializerDebugging.TraceEnabled = true;
+			//SerializerDebugging.DumpEnabled = true;
 			if ( SerializerDebugging.TraceEnabled )
 			{
 				Tracer.Emit.Listeners.Clear();
@@ -2359,6 +2359,18 @@ namespace MsgPack.Serialization
 		private const string PublicReadOnlyPropertyPlain = "PublicReadOnlyPropertyPlain";
 		private const string NonPublicPropertyPlain = "NonPublicPropertyPlain";
 		private const string CollectionReadOnlyProperty = "CollectionReadOnlyProperty";
+		private const string NonPublicCollectionProperty = "NonPublicCollectionProperty";
+		private const string NonPublicCollectionField = "NonPublicCollectionField";
+		private const string NonPublicCollectionReadOnlyProperty = "NonPublicCollectionReadOnlyProperty";
+		private const string NonPublicCollectionReadOnlyField = "NonPublicCollectionReadOnlyField";
+		private const string NonPublicDictionaryProperty = "NonPublicDictionaryProperty";
+		private const string NonPublicDictionaryField = "NonPublicDictionaryField";
+		private const string NonPublicDictionaryReadOnlyProperty = "NonPublicDictionaryReadOnlyProperty";
+		private const string NonPublicDictionaryReadOnlyField = "NonPublicDictionaryReadOnlyField";
+		private const string NonPublicHashtableProperty = "NonPublicHashtableProperty";
+		private const string NonPublicHashtableField = "NonPublicHashtableField";
+		private const string NonPublicHashtableReadOnlyProperty = "NonPublicHashtableReadOnlyProperty";
+		private const string NonPublicHashtableReadOnlyField = "NonPublicHashtableReadOnlyField";
 		private const string PublicField = "PublicField";
 		private const string PublicReadOnlyField = "PublicReadOnlyField";
 		private const string NonPublicField = "NonPublicField";
@@ -2379,7 +2391,7 @@ namespace MsgPack.Serialization
 		public void TestNonPublicWritableMember_PlainOldCliClass()
 		{
 			var target = new PlainClass();
-			target.CollectionReadOnlyProperty.Add( 10 );
+			target.InitializeCollectionMembers();
 			TestNonPublicWritableMemberCore( target, PublicProperty, PublicField, CollectionReadOnlyProperty );
 		}
 
@@ -2387,11 +2399,21 @@ namespace MsgPack.Serialization
 		public void TestNonPublicWritableMember_MessagePackMember()
 		{
 			var target = new AnnotatedClass();
-			target.CollectionReadOnlyProperty.Add( 10 );
+			target.InitializeCollectionMembers();
 #if !NETFX_CORE && !SILVERLIGHT
-			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, NonSerializedPublicField, NonSerializedNonPublicField, CollectionReadOnlyProperty );
+			TestNonPublicWritableMemberCore(
+				target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, NonSerializedPublicField, NonSerializedNonPublicField, CollectionReadOnlyProperty, 
+				NonPublicCollectionProperty, NonPublicCollectionField, NonPublicCollectionReadOnlyProperty, NonPublicCollectionReadOnlyField,
+				NonPublicDictionaryProperty, NonPublicDictionaryField, NonPublicDictionaryReadOnlyProperty, NonPublicDictionaryReadOnlyField,
+				NonPublicHashtableProperty, NonPublicHashtableField, NonPublicHashtableReadOnlyProperty, NonPublicHashtableReadOnlyField
+			);
 #else
-			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, CollectionReadOnlyProperty );
+			TestNonPublicWritableMemberCore(
+				target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, CollectionReadOnlyProperty, 
+				NonPublicCollectionProperty, NonPublicCollectionField, NonPublicCollectionReadOnlyProperty, NonPublicCollectionReadOnlyField,
+				NonPublicDictionaryProperty, NonPublicDictionaryField, NonPublicDictionaryReadOnlyProperty, NonPublicDictionaryReadOnlyField,
+				NonPublicHashtableProperty, NonPublicHashtableField, NonPublicHashtableReadOnlyProperty, NonPublicHashtableReadOnlyField
+			);
 #endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
@@ -2400,11 +2422,21 @@ namespace MsgPack.Serialization
 		{
 			// includes issue33
 			var target = new DataMamberClass();
-			target.CollectionReadOnlyProperty.Add( 10 );
+			target.InitializeCollectionMembers();
 #if !NETFX_CORE && !SILVERLIGHT
-			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, NonSerializedPublicField, NonSerializedNonPublicField, CollectionReadOnlyProperty );
+			TestNonPublicWritableMemberCore(
+				target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, NonSerializedPublicField, NonSerializedNonPublicField, CollectionReadOnlyProperty, 
+				NonPublicCollectionProperty, NonPublicCollectionField, NonPublicCollectionReadOnlyProperty, NonPublicCollectionReadOnlyField,
+				NonPublicDictionaryProperty, NonPublicDictionaryField, NonPublicDictionaryReadOnlyProperty, NonPublicDictionaryReadOnlyField,
+				NonPublicHashtableProperty, NonPublicHashtableField, NonPublicHashtableReadOnlyProperty, NonPublicHashtableReadOnlyField
+			 );
 #else
-			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, CollectionReadOnlyProperty );
+			TestNonPublicWritableMemberCore(
+				target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, CollectionReadOnlyProperty, 
+				NonPublicCollectionProperty, NonPublicCollectionField, NonPublicCollectionReadOnlyProperty, NonPublicCollectionReadOnlyField,
+				NonPublicDictionaryProperty, NonPublicDictionaryField, NonPublicDictionaryReadOnlyProperty, NonPublicDictionaryReadOnlyField,
+				NonPublicHashtableProperty, NonPublicHashtableField, NonPublicHashtableReadOnlyProperty, NonPublicHashtableReadOnlyField
+			);
 #endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
@@ -2448,7 +2480,27 @@ namespace MsgPack.Serialization
 						getter = obj => field.GetValue( obj );
 					}
 
-					Assert.That( getter( actual ), Is.EqualTo( getter( original ) ), typeof(T) + "." + memberName );
+					// Naive, but OK
+					if ( memberName.Contains( "Hashtable" ) )
+					{
+						Func<object, Dictionary<string, int>> toDictionary =
+							hashTable =>
+								( ( System.Collections.IEnumerable )hashTable )
+								.OfType<System.Collections.DictionaryEntry>()
+								.ToDictionary( 
+									de => de.Key.ToString(), 
+									de => 
+										( de.Value is MessagePackObject )
+										? ( int )( MessagePackObject )de.Value
+										: ( int )de.Value
+								 );
+
+						Assert.That( toDictionary( getter( actual ) ), Is.EqualTo( toDictionary( getter( original ) ) ), typeof(T) + "." + memberName );
+					}
+					else
+					{
+						Assert.That( getter( actual ), Is.EqualTo( getter( original ) ), typeof(T) + "." + memberName );
+					}
 				}
 			}
 		}

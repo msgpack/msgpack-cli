@@ -278,6 +278,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		protected override ExpressionConstruct EmitSequentialStatements( ExpressionTreeContext context, TypeDefinition contextType, IEnumerable<ExpressionConstruct> statements )
 		{
 			var sts = statements.Where( s => s != null ).ToArray();
+#if DEBUG
+			Contract.Assert(
+				contextType.ResolveRuntimeType().IsAssignableFrom( sts.Last().ContextType.ResolveRuntimeType() ),
+				sts.Last().ContextType.ResolveRuntimeType()  + " is " + contextType.ResolveRuntimeType()
+			);
+#endif // DEBUG
 
 			return
 				Expression.Block(
