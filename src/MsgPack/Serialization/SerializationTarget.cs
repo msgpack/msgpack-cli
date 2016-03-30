@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2015 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ namespace MsgPack.Serialization
 	{
 		public IList<SerializingMember> Members { get; private set; }
 		public ConstructorInfo DeserializationConstructor { get; private set; }
-		public bool IsConstructorDeserialization 
+		public bool IsConstructorDeserialization
 		{
 			get { return this.DeserializationConstructor != null && this.DeserializationConstructor.GetParameters().Length > 0; }
 		}
@@ -191,30 +191,30 @@ namespace MsgPack.Serialization
 						new
 						{
 							member = item,
-							data = 
+							data =
 								item.GetCustomAttributesData()
 								.FirstOrDefault(
-									data => data.GetAttributeType().FullName == "System.Runtime.Serialization.DataMemberAttribute" 
+									data => data.GetAttributeType().FullName == "System.Runtime.Serialization.DataMemberAttribute"
 								)
 						}
 					).Where( item => item.data != null )
 					.Select(
 						item =>
 						{
-							var name = 
+							var name =
 								item.data.GetNamedArguments()
 								.Where( arg => arg.GetMemberName() == "Name" )
-								.Select( arg => ( string ) arg.GetTypedValue().Value )
+								.Select( arg => ( string )arg.GetTypedValue().Value )
 								.FirstOrDefault();
-							var id = 
+							var id =
 								item.data.GetNamedArguments()
 								.Where( arg => arg.GetMemberName() == "Order" )
 #if !UNITY
-								.Select( arg => ( int? )arg.GetTypedValue().Value )
+.Select( arg => ( int? )arg.GetTypedValue().Value )
 #else
 								.Select( arg => arg.GetTypedValue().Value )
 #endif
-								.FirstOrDefault();
+.FirstOrDefault();
 #if SILVERLIGHT
 							if ( id == -1 )
 							{
@@ -227,11 +227,11 @@ namespace MsgPack.Serialization
 								new SerializingMember(
 									item.member,
 #if !UNITY
-									new DataMemberContract( item.member, name, NilImplication.MemberDefault, id )
+ new DataMemberContract( item.member, name, NilImplication.MemberDefault, id )
 #else
 									new DataMemberContract( item.member, name, NilImplication.MemberDefault, ( int? )id )
 #endif // !UNITY
-								);
+ );
 						}
 					);
 		}
@@ -239,11 +239,15 @@ namespace MsgPack.Serialization
 		private static IEnumerable<SerializingMember> GetPublicUnpreventedMembers( MemberInfo[] members )
 		{
 			return members.Where(
-				member => member.GetIsPublic()
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
-						&& !Attribute.IsDefined( member, typeof( NonSerializedAttribute ) )
-#endif // !SILVERLIGHT && !NETFX_CORE
-						&& !member.IsDefined( typeof( MessagePackIgnoreAttribute ) ) 
+				member =>
+					member.GetIsPublic()
+					&& !member.GetCustomAttributesData()
+						.Select( data => data.GetAttributeType().FullName )
+						.Any( attr =>
+							attr == "MsgPack.Serialization.MessagePackIgnoreAttribute"
+							|| attr == "System.NonSerializedAttribute"
+							|| attr == "System.Runtime.Serialization.IgnoreDataMemberAttribute"
+						)
 				).Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
 		}
 
@@ -319,7 +323,7 @@ namespace MsgPack.Serialization
 					CultureInfo.CurrentCulture,
 					"Cannot serialize type '{0}' because it does not have any serializable fields nor properties, and it does not have any public constructors with parameters.",
 					targetType
-					) 
+					)
 				);
 		}
 

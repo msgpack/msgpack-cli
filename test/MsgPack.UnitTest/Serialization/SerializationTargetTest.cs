@@ -144,5 +144,13 @@ namespace MsgPack.Serialization
 			var actual = SerializationTarget.Prepare( new SerializationContext(), typeof( T ) ).Members.Where( m => m.Member != null ).OrderBy( m => m.Member.Name ).Select( m => m.Member.Name ).ToArray();
 			Assert.That( actual, Is.EqualTo( expected ), String.Join( ", ", actual ) );
 		}
+
+		[Test]
+		public void TestIgnoreKinds()
+		{
+			var result = SerializationTarget.Prepare( new SerializationContext(), typeof( IgnoreAttributesTester ) );
+			Assert.That( result.Members.Count, Is.EqualTo( 1 ), String.Join( ",", result.Members.Select( m => m.Contract.Name ) ) ); ;
+			Assert.That( result.Members[ 0 ].Contract.Name, Is.EqualTo( "Vanilla" ), String.Join( ",", result.Members.Select( m => m.Contract.Name ) ) );
+		}
 	}
 }

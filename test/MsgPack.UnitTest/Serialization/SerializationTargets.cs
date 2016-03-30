@@ -563,6 +563,20 @@ namespace MsgPack.Serialization
 		}
 	}
 
+	public class IgnoreAttributesTester
+	{
+		[NonSerialized]
+		public string NonSerialized;
+
+		[MessagePackIgnore]
+		public string MessagePackIgnore;
+
+		[IgnoreDataMember]
+		public string IgnoreDataMember;
+
+		public string Vanilla;
+	}
+
 	public class WithIndexerOverload
 	{
 		public string this[ int index ]
