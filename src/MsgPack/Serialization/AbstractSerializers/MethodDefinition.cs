@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -47,6 +47,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 		}
 
 		private readonly TypeDefinition[] _genericArguments;
+
+		public readonly Type Interface;
 
 		public MethodInfo ResolveRuntimeMethod()
 		{
@@ -134,9 +136,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 		}
 
 		public MethodDefinition( MethodInfo runtimeMethod )
-			: this( runtimeMethod, runtimeMethod.GetParameters().Select( p => TypeDefinition.Object( p.ParameterType ) ) ) {}
+			: this( runtimeMethod, null, runtimeMethod.GetParameters().Select( p => TypeDefinition.Object( p.ParameterType ) ) ) {}
 
-		public MethodDefinition( MethodInfo runtimeMethod, IEnumerable<TypeDefinition> parameterTypes )
+		public MethodDefinition( MethodInfo runtimeMethod, Type @interface )
+			: this( runtimeMethod, @interface, runtimeMethod.GetParameters().Select( p => TypeDefinition.Object( p.ParameterType ) ) ) { }
+
+		public MethodDefinition( MethodInfo runtimeMethod, Type @interface, IEnumerable<TypeDefinition> parameterTypes )
 		{
 #if DEBUG
 			Contract.Assert( runtimeMethod.DeclaringType != null, "runtimeMethod.DeclaringType != null" );
@@ -146,6 +151,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 			this._runtimeMethod = runtimeMethod;
 			this.ReturnType = runtimeMethod.ReturnType;
 			this.ParameterTypes = parameterTypes.ToArray();
+			if ( runtimeMethod.Name.Contains( '.' ) && !runtimeMethod.GetIsPublic() )
+			{
+				// should be explicit interface impl.
+				this.Interface = @interface;
+			}
 		}
 
 		public override string ToString()

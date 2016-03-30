@@ -396,18 +396,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return
 				CodeDomConstruct.Statement(
 					new CodeExpressionStatement(
-						new CodeMethodInvokeExpression(
-							new CodeMethodReferenceExpression(
-								instance == null
-								? new CodeTypeReferenceExpression( method.DeclaringType.TypeName )
-								: instance.AsExpression(),
-								method.MethodName,
-								( method.TryGetRuntimeMethod() != null && method.TryGetRuntimeMethod().IsGenericMethod )
-								? method.TryGetRuntimeMethod().GetGenericArguments().Select( t => new CodeTypeReference( t ) ).ToArray()
-								: EmptyGenericArguments
-							),
-							arguments.Select( a => a.AsExpression() ).ToArray()
-						)
+						CreateMethodInvocation( method, instance, arguments )
 					)
 				);
 		}
@@ -424,18 +413,49 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return
 				CodeDomConstruct.Expression(
 					method.ReturnType,
-					new CodeMethodInvokeExpression(
-						new CodeMethodReferenceExpression(
-							instance == null
-							? new CodeTypeReferenceExpression( method.DeclaringType.TypeName )
-							: instance.AsExpression(),
-							method.MethodName,
-							( method.TryGetRuntimeMethod() != null && method.TryGetRuntimeMethod().IsGenericMethod )
+					CreateMethodInvocation( method, instance, arguments )
+				);
+		}
+
+		private static CodeMethodInvokeExpression CreateMethodInvocation( MethodDefinition method, CodeDomConstruct instance, IEnumerable<CodeDomConstruct> arguments )
+		{
+			CodeExpression target;
+			var methodName = method.MethodName;
+
+			if ( method.Interface != null )
+			{
+				// Explicit interface impl.
+#if DEBUG
+				Contract.Assert( instance != null, "instance != null" );
+				Contract.Assert( method.TryGetRuntimeMethod() != null, "method.TryGetRuntimeMethod() != null" );
+				Contract.Assert( !method.TryGetRuntimeMethod().GetIsPublic(), method.TryGetRuntimeMethod() + " is non public" );
+#endif // DEBUG
+				target =
+					new CodeCastExpression(
+						// Generics is not supported yet.
+						method.Interface,
+						instance.AsExpression()
+					);
+				methodName = method.MethodName.Substring( method.MethodName.LastIndexOf( '.' ) + 1 );
+			}
+			else
+			{
+				target =
+					instance == null
+						? new CodeTypeReferenceExpression( method.DeclaringType.TypeName )
+						: instance.AsExpression();
+			}
+
+			return
+				new CodeMethodInvokeExpression(
+					new CodeMethodReferenceExpression(
+						target,
+						methodName,
+						( method.TryGetRuntimeMethod() != null && method.TryGetRuntimeMethod().IsGenericMethod )
 							? method.TryGetRuntimeMethod().GetGenericArguments().Select( t => new CodeTypeReference( t ) ).ToArray()
 							: EmptyGenericArguments
 						),
-						arguments.Select( a => a.AsExpression() ).ToArray()
-					)
+					arguments.Select( a => a.AsExpression() ).ToArray()
 				);
 		}
 

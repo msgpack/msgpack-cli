@@ -1421,6 +1421,23 @@ namespace MsgPack.Serialization
 
 #endregion -- ReadOnly / Private Members --
 
+		// Issue 150
+		[Test]
+		public void TestExplicitlyImplementedPackableUnpackable()
+		{
+			var target = GetSerializationContext().GetSerializer<PackableUnpackableImplementedExplictly>();
+			var obj = new PackableUnpackableImplementedExplictly();
+			obj.Data = "ABC";
+
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, obj );
+				buffer.Position = 0;
+				var actual = target.Unpack( buffer );
+				Assert.That( actual.Data, Is.EqualTo( PackableUnpackableImplementedExplictly.UnpackingPrefix + PackableUnpackableImplementedExplictly.PackingPrefix + obj.Data ) );
+			}
+		}
+
 		public class HasInitOnlyField
 		{
 			public readonly string Field = "ABC";

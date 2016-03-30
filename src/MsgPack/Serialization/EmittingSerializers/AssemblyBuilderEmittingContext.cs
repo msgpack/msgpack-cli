@@ -174,7 +174,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				lastMethod = this._ilGeneratorStack.Pop();
 			}
 
-			return new MethodDefinition( lastMethod.Method, lastMethod.ParameterTypes );
+			return new MethodDefinition( lastMethod.Method, null, lastMethod.ParameterTypes );
 		}
 
 		protected override FieldDefinition DeclarePrivateFieldCore( string name, TypeDefinition type )

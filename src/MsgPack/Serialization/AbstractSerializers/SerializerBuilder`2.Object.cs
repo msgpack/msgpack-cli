@@ -134,7 +134,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitInvokeVoidMethod(
 						context,
 						context.PackToTarget,
-						packTo,
+						new MethodDefinition( packTo,  @interface ),
 						context.Packer,
 						this.MakeNullLiteral( context, typeof( PackingOptions ) )
 					);
@@ -144,13 +144,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if FEATURE_TAP
 				Contract.Assert( context.SerializationContext.SerializerOptions.WithAsync );
 				return
-					this.EmitInvokeVoidMethod(
+					this.EmitRetrunStatement(
 						context,
-						context.PackToTarget,
-						packTo,
-						context.Packer,
-						this.MakeNullLiteral( context, typeof( PackingOptions ) ),
-						this.ReferCancellationToken( context, 3 )
+						this.EmitInvokeMethodExpression(
+							context,
+							context.PackToTarget,
+							new MethodDefinition( packTo, @interface ),
+							context.Packer,
+							this.MakeNullLiteral( context, typeof( PackingOptions ) ),
+							this.ReferCancellationToken( context, 3 )
+						)
 					);
 #else
 				ThrowAsyncNotSupportedException();
@@ -555,7 +558,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			if ( unpackFrom.ReturnType == typeof( void ) )
 			{
-				yield return this.EmitInvokeVoidMethod( context, result, unpackFrom, context.Unpacker );
+				yield return this.EmitInvokeVoidMethod( context, result, new MethodDefinition( unpackFrom, @interface ), context.Unpacker );
 				yield return this.EmitRetrunStatement( context, this.EmitLoadVariableExpression( context, result ) );
 			}
 			else
@@ -567,8 +570,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						this.EmitInvokeMethodExpression(
 							context,
+							null,
+							Metadata._UnpackHelpers.UnpackFromMessageAsyncMethod.MakeGenericMethod( this.TargetType ),
 							result,
-							unpackFrom,
 							context.Unpacker,
 							this.ReferCancellationToken( context, 2 )
 						)

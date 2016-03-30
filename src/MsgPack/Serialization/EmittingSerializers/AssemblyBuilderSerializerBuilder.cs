@@ -534,15 +534,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitInvokeVoidMethod( AssemblyBuilderEmittingContext context, ILConstruct instance, MethodDefinition method, params ILConstruct[] arguments )
 		{
-			var runtimeMethod = method.ResolveRuntimeMethod();
 			return
-				runtimeMethod.ReturnType == typeof( void )
-					? ILConstruct.Invoke( instance, runtimeMethod, arguments )
+				method.ResolveRuntimeMethod().ReturnType == typeof( void )
+					? ILConstruct.Invoke( instance, method, arguments )
 					: ILConstruct.Sequence(
 						typeof( void ),
 						new[]
 						{
-							ILConstruct.Invoke( instance, runtimeMethod, arguments ),
+							ILConstruct.Invoke( instance, method, arguments ),
 							ILConstruct.Instruction( "pop", typeof( void ), false, il => il.EmitPop() )
 						}
 					);
@@ -668,7 +667,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		protected override ILConstruct EmitInvokeMethodExpression( AssemblyBuilderEmittingContext context, ILConstruct instance, MethodDefinition method, IEnumerable<ILConstruct> arguments )
 		{
-			return ILConstruct.Invoke( instance, method.ResolveRuntimeMethod(), arguments );
+			return ILConstruct.Invoke( instance, method, arguments );
 		}
 
 		protected override ILConstruct EmitInvokeDelegateExpression( AssemblyBuilderEmittingContext context, TypeDefinition delegateReturnType, ILConstruct @delegate, params ILConstruct[] arguments )

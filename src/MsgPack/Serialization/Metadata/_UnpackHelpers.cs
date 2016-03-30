@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -108,6 +109,11 @@ namespace MsgPack.Serialization.Metadata
 		///		<see cref="UnpackHelpers.ToNullable{T}"/> generic method.
 		/// </summary>
 		public static readonly MethodInfo ToNullable1Method = typeof( UnpackHelpers ).GetMethod( "ToNullable" );
+
+		/// <summary>
+		///		<see cref="UnpackHelpers.UnpackFromMessageAsync{T}(T,Unpacker,CancellationToken)"/> generic method.
+		/// </summary>
+		public static readonly MethodInfo UnpackFromMessageAsyncMethod = typeof( UnpackHelpers ).GetMethod( "UnpackFromMessageAsync" );
 
 #endif // FEATURE_MAP
 

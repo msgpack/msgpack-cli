@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -182,9 +182,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return new BinaryOperatorILConstruct( @operator, resultType, left, right, operation, branchOperation );
 		}
 
-		public static ILConstruct Invoke( ILConstruct target, MethodInfo method, IEnumerable<ILConstruct> arguments )
+		public static ILConstruct Invoke( ILConstruct target, MethodDefinition method, IEnumerable<ILConstruct> arguments )
 		{
-			return new InvocationILConsruct( method, target, arguments );
+			return new InvocationILConsruct( method.ResolveRuntimeMethod(), method.Interface, target, arguments );
+		}
+
+		public static ILConstruct Invoke( ILConstruct target, MethodInfo runtimeMethod, IEnumerable<ILConstruct> arguments )
+		{
+			return new InvocationILConsruct( runtimeMethod, null, target, arguments );
 		}
 
 		internal static ILConstruct NewObject( ILConstruct variable, ConstructorInfo constructor, IEnumerable<ILConstruct> arguments )

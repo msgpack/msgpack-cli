@@ -862,6 +862,24 @@ namespace MsgPack.Serialization
 			return await task.ConfigureAwait( false );
 		}
 
+		/// <summary>
+		///		Returns <see cref="Task{T}"/> which returns nullable wrapper for the value returned from specified <see cref="Task{T}" />.
+		/// </summary>
+		/// <typeparam name="T">The type of deserializing object.</typeparam>
+		/// <param name="target">The deserializing object.</param>
+		/// <param name="unpacker">The <see cref="Unpacker"/> which points deserializing data.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <returns>The <see cref="Task{T}"/> which returns deserialized <paramref name="target" />.</returns>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static async Task<T> UnpackFromMessageAsync<T>( T target, Unpacker unpacker, CancellationToken cancellationToken )
+			where T : IAsyncUnpackable
+		{
+			await target.UnpackFromMessageAsync( unpacker, cancellationToken );
+			return target;
+		}
+
 #endif // FEATURE_TAP
 
 		[Conditional( "TRACING" )]

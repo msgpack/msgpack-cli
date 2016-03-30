@@ -37,6 +37,12 @@ using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
+
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -1379,6 +1385,69 @@ namespace MsgPack.Serialization
 			: base( genericField, genericProperty )	{ }
 	}
 #endif // !UNITY
+
+	// Issue 150
+	public class PackableUnpackableImplementedExplictly
+		: IPackable, IUnpackable
+#if FEATURE_TAP
+		, IAsyncPackable, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public const string PackingPrefix = "Packed:";
+		public const string UnpackingPrefix = "Unpacked:";
+		public string Data { get; set; }
+
+		private void PackToMessageCore( Packer packer )
+		{
+			packer.PackArrayHeader( 1 );
+			packer.Pack( PackingPrefix + this.Data );
+		}
+
+		void IPackable.PackToMessage( Packer packer, PackingOptions options )
+		{
+			this.PackToMessageCore( packer );
+		}
+
+		private void UnpackFromMessageCore( Unpacker unpacker )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
+			}
+
+			if ( unpacker.LastReadData != 1 )
+			{
+				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( PackableUnpackableImplementedExplictly ), 1 );
+			}
+
+			string data;
+			if ( !unpacker.ReadString( out data ) )
+			{
+				SerializationExceptions.ThrowMissingItem( 0, unpacker );
+			}
+
+			this.Data = UnpackingPrefix + data;
+		}
+
+		void IUnpackable.UnpackFromMessage( Unpacker unpacker )
+		{
+			this.UnpackFromMessageCore( unpacker );
+		}
+
+#if FEATURE_TAP
+
+		Task IAsyncPackable.PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			return Task.Run( () => this.PackToMessageCore( packer ), cancellationToken );
+		}
+
+		Task IAsyncUnpackable.UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			return Task.Run( () => this.UnpackFromMessageCore( unpacker ), cancellationToken );
+		}
+
+#endif // FEATURE_TAP
+	}
 
 		#region -- Polymorphism --
 		#region ---- KnownType ----
@@ -9665,4 +9734,3 @@ public class HasGlobalNamespaceType
 	[MsgPack.Serialization.MessagePackRuntimeType]
 	public TypeInGlobalNamespace GlobalType { get; set; }
 }
-
