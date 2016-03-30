@@ -17,17 +17,17 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<object> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject> this_PackValueOfPolymorphicPackValueOfPolymorphicDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject> this_PackValueOfPolymorphicDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject>> _packOperationTable;
         
-        private System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject> this_CreateInstanceFromContextCreateInstanceFromContextDelegate;
+        private System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject> this_CreateInstanceFromContextDelegate;
         
-        private System.Action<UnpackingContext, object> this_SetUnpackedValueOfPolymorphicSetUnpackedValueOfPolymorphicDelegate;
+        private System.Action<UnpackingContext, object> this_SetUnpackedValueOfPolymorphicDelegate;
         
-        private System.Action<MsgPack.Unpacker, UnpackingContext, int, int> this_UnpackValueOfPolymorphicUnpackValueOfPolymorphicDelegate;
+        private System.Action<MsgPack.Unpacker, UnpackingContext, int, int> this_UnpackValueOfPolymorphicDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -40,8 +40,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<string, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
             typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
-            typeMap0.Add("0", typeof(MsgPack.Serialization.FileEntry));
             typeMap0.Add("1", typeof(MsgPack.Serialization.DirectoryEntry));
+            typeMap0.Add("0", typeof(MsgPack.Serialization.FileEntry));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(object), typeMap0);
             this._serializer0 = context.GetSerializer<object>(schema0);
             System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject>[]);
@@ -62,10 +62,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "Polymorphic"};
-            this.this_PackValueOfPolymorphicPackValueOfPolymorphicDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject>(this.PackValueOfPolymorphic);
-            this.this_CreateInstanceFromContextCreateInstanceFromContextDelegate = new System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject>(this.CreateInstanceFromContext);
-            this.this_SetUnpackedValueOfPolymorphicSetUnpackedValueOfPolymorphicDelegate = new System.Action<UnpackingContext, object>(this.SetUnpackedValueOfPolymorphic);
-            this.this_UnpackValueOfPolymorphicUnpackValueOfPolymorphicDelegate = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfPolymorphic);
+            this.this_PackValueOfPolymorphicDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject>(this.PackValueOfPolymorphic);
+            this.this_CreateInstanceFromContextDelegate = new System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject>(this.CreateInstanceFromContext);
+            this.this_SetUnpackedValueOfPolymorphicDelegate = new System.Action<UnpackingContext, object>(this.SetUnpackedValueOfPolymorphic);
+            this.this_UnpackValueOfPolymorphicDelegate = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfPolymorphic);
         }
         
         private void PackValueOfPolymorphic(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject objectTree) {
@@ -92,7 +92,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfPolymorphic(MsgPack.Unpacker unpacker, UnpackingContext unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(object), "Polymorphic", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfPolymorphicSetUnpackedValueOfPolymorphicDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(object), "Polymorphic", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfPolymorphicDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -101,10 +101,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             ctorArg0 = null;
             unpackingContext = new UnpackingContext(ctorArg0);
             if (unpacker.IsArrayHeader) {
-                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, unpackingContext, this.this_CreateInstanceFromContextCreateInstanceFromContextDelegate, this._memberNames, this._unpackOperationList);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, unpackingContext, this.this_CreateInstanceFromContextDelegate, this._memberNames, this._unpackOperationList);
             }
             else {
-                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, unpackingContext, this.this_CreateInstanceFromContextCreateInstanceFromContextDelegate, this._unpackOperationTable);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, unpackingContext, this.this_CreateInstanceFromContextDelegate, this._unpackOperationTable);
             }
         }
         

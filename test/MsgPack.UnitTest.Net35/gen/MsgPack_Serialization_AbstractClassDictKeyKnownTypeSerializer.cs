@@ -17,15 +17,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<MsgPack.Serialization.AbstractFileSystemEntry, string>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassDictKeyKnownType> this_PackValueOfValuePackValueOfValueDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassDictKeyKnownType> this_PackValueOfValueDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassDictKeyKnownType>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassDictKeyKnownType>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.AbstractClassDictKeyKnownType, System.Collections.Generic.IDictionary<MsgPack.Serialization.AbstractFileSystemEntry, string>> this_SetUnpackedValueOfValueSetUnpackedValueOfValueDelegate;
+        private System.Action<MsgPack.Serialization.AbstractClassDictKeyKnownType, System.Collections.Generic.IDictionary<MsgPack.Serialization.AbstractFileSystemEntry, string>> this_SetUnpackedValueOfValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassDictKeyKnownType, int, int> this_UnpackValueOfValueUnpackValueOfValueDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassDictKeyKnownType, int, int> this_UnpackValueOfValueDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -61,9 +61,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "Value"};
-            this.this_PackValueOfValuePackValueOfValueDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassDictKeyKnownType>(this.PackValueOfValue);
-            this.this_SetUnpackedValueOfValueSetUnpackedValueOfValueDelegate = new System.Action<MsgPack.Serialization.AbstractClassDictKeyKnownType, System.Collections.Generic.IDictionary<MsgPack.Serialization.AbstractFileSystemEntry, string>>(this.SetUnpackedValueOfValue);
-            this.this_UnpackValueOfValueUnpackValueOfValueDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassDictKeyKnownType, int, int>(this.UnpackValueOfValue);
+            this.this_PackValueOfValueDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassDictKeyKnownType>(this.PackValueOfValue);
+            this.this_SetUnpackedValueOfValueDelegate = new System.Action<MsgPack.Serialization.AbstractClassDictKeyKnownType, System.Collections.Generic.IDictionary<MsgPack.Serialization.AbstractFileSystemEntry, string>>(this.SetUnpackedValueOfValue);
+            this.this_UnpackValueOfValueDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassDictKeyKnownType, int, int>(this.UnpackValueOfValue);
         }
         
         private void PackValueOfValue(MsgPack.Packer packer, MsgPack.Serialization.AbstractClassDictKeyKnownType objectTree) {
@@ -84,7 +84,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfValue(MsgPack.Unpacker unpacker, MsgPack.Serialization.AbstractClassDictKeyKnownType unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<MsgPack.Serialization.AbstractFileSystemEntry, string>), "Value", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfValueSetUnpackedValueOfValueDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<MsgPack.Serialization.AbstractFileSystemEntry, string>), "Value", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfValueDelegate);
         }
         
         protected internal override MsgPack.Serialization.AbstractClassDictKeyKnownType UnpackFromCore(MsgPack.Unpacker unpacker) {

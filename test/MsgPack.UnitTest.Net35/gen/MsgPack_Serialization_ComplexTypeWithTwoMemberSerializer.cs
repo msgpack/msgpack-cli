@@ -17,23 +17,23 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithTwoMember> this_PackValueOfValue1PackValueOfValue1Delegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithTwoMember> this_PackValueOfValue1Delegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithTwoMember> this_PackValueOfValue2PackValueOfValue2Delegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithTwoMember> this_PackValueOfValue2Delegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithTwoMember>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithTwoMember>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeWithTwoMember, string> this_SetUnpackedValueOfValue1SetUnpackedValueOfValue1Delegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeWithTwoMember, string> this_SetUnpackedValueOfValue1Delegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithTwoMember, int, int> this_UnpackValueOfValue1UnpackValueOfValue1Delegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithTwoMember, int, int> this_UnpackValueOfValue1Delegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeWithTwoMember, string> this_SetUnpackedValueOfValue2SetUnpackedValueOfValue2Delegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeWithTwoMember, string> this_SetUnpackedValueOfValue2Delegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithTwoMember, int, int> this_UnpackValueOfValue2UnpackValueOfValue2Delegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithTwoMember, int, int> this_UnpackValueOfValue2Delegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -69,13 +69,13 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._memberNames = new string[] {
                     "Value1",
                     "Value2"};
-            this.this_PackValueOfValue1PackValueOfValue1Delegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithTwoMember>(this.PackValueOfValue1);
-            this.this_PackValueOfValue2PackValueOfValue2Delegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithTwoMember>(this.PackValueOfValue2);
-            this.this_SetUnpackedValueOfValue1SetUnpackedValueOfValue1Delegate = new System.Action<MsgPack.Serialization.ComplexTypeWithTwoMember, string>(this.SetUnpackedValueOfValue1);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
-            this.this_UnpackValueOfValue1UnpackValueOfValue1Delegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithTwoMember, int, int>(this.UnpackValueOfValue1);
-            this.this_SetUnpackedValueOfValue2SetUnpackedValueOfValue2Delegate = new System.Action<MsgPack.Serialization.ComplexTypeWithTwoMember, string>(this.SetUnpackedValueOfValue2);
-            this.this_UnpackValueOfValue2UnpackValueOfValue2Delegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithTwoMember, int, int>(this.UnpackValueOfValue2);
+            this.this_PackValueOfValue1Delegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithTwoMember>(this.PackValueOfValue1);
+            this.this_PackValueOfValue2Delegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithTwoMember>(this.PackValueOfValue2);
+            this.this_SetUnpackedValueOfValue1Delegate = new System.Action<MsgPack.Serialization.ComplexTypeWithTwoMember, string>(this.SetUnpackedValueOfValue1);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
+            this.this_UnpackValueOfValue1Delegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithTwoMember, int, int>(this.UnpackValueOfValue1);
+            this.this_SetUnpackedValueOfValue2Delegate = new System.Action<MsgPack.Serialization.ComplexTypeWithTwoMember, string>(this.SetUnpackedValueOfValue2);
+            this.this_UnpackValueOfValue2Delegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithTwoMember, int, int>(this.UnpackValueOfValue2);
         }
         
         private void PackValueOfValue1(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeWithTwoMember objectTree) {
@@ -100,7 +100,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfValue1(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeWithTwoMember unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "Value1", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate, this.this_SetUnpackedValueOfValue1SetUnpackedValueOfValue1Delegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "Value1", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfValue1Delegate);
         }
         
         private void SetUnpackedValueOfValue2(MsgPack.Serialization.ComplexTypeWithTwoMember unpackingContext, string unpackedValue) {
@@ -108,7 +108,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfValue2(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeWithTwoMember unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "Value2", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate, this.this_SetUnpackedValueOfValue2SetUnpackedValueOfValue2Delegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "Value2", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfValue2Delegate);
         }
         
         protected internal override MsgPack.Serialization.ComplexTypeWithTwoMember UnpackFromCore(MsgPack.Unpacker unpacker) {

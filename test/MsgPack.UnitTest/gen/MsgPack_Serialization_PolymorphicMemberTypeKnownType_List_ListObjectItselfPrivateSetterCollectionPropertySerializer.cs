@@ -17,23 +17,35 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<object> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty> this_PackValueOfListObjectItselfPackValueOfListObjectItselfDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty> this_PackValueOfListObjectItselfDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>> _packOperationTable;
         
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfListObjectItselfAsyncDelegate;
+        
+        private System.Collections.Generic.IList<System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationListAsync;
+        
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationTableAsync;
+        
         private System.Reflection.MethodBase _methodBasePolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty_set_ListObjectItself0;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, object> this_SetUnpackedValueOfListObjectItselfSetUnpackedValueOfListObjectItselfDelegate;
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, object> this_SetUnpackedValueOfListObjectItselfDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int> this_UnpackValueOfListObjectItselfUnpackValueOfListObjectItselfDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int> this_UnpackValueOfListObjectItselfDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int>> _unpackOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int>> _unpackOperationTable;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfListObjectItselfAsyncDelegate;
+        
+        private System.Collections.Generic.IList<System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationListAsync;
+        
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationTableAsync;
         
         public MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionPropertySerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
@@ -51,23 +63,41 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>[1];
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>(this.PackValueOfListObjectItself);
             this._packOperationList = packOperationList;
+            System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] packOperationListAsync = default(System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            packOperationListAsync = new System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, System.Threading.CancellationToken, System.Threading.Tasks.Task>[1];
+            packOperationListAsync[0] = new System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfListObjectItselfAsync);
+            this._packOperationListAsync = packOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>>);
             packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>>(1);
             packOperationTable["ListObjectItself"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>(this.PackValueOfListObjectItself);
             this._packOperationTable = packOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, System.Threading.CancellationToken, System.Threading.Tasks.Task>> packOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            packOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(1);
+            packOperationTableAsync["ListObjectItself"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfListObjectItselfAsync);
+            this._packOperationTableAsync = packOperationTableAsync;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int>[1];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int>(this.UnpackValueOfListObjectItself);
             this._unpackOperationList = unpackOperationList;
+            System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] unpackOperationListAsync = default(System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            unpackOperationListAsync = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[1];
+            unpackOperationListAsync[0] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfListObjectItselfAsync);
+            this._unpackOperationListAsync = unpackOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int>>);
             unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int>>(1);
             unpackOperationTable["ListObjectItself"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int>(this.UnpackValueOfListObjectItself);
             this._unpackOperationTable = unpackOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> unpackOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            unpackOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(1);
+            unpackOperationTableAsync["ListObjectItself"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfListObjectItselfAsync);
+            this._unpackOperationTableAsync = unpackOperationTableAsync;
             this._memberNames = new string[] {
                     "ListObjectItself"};
-            this.this_PackValueOfListObjectItselfPackValueOfListObjectItselfDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>(this.PackValueOfListObjectItself);
-            this.this_SetUnpackedValueOfListObjectItselfSetUnpackedValueOfListObjectItselfDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, object>(this.SetUnpackedValueOfListObjectItself);
-            this.this_UnpackValueOfListObjectItselfUnpackValueOfListObjectItselfDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int>(this.UnpackValueOfListObjectItself);
+            this.this_PackValueOfListObjectItselfDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>(this.PackValueOfListObjectItself);
+            this.this_PackValueOfListObjectItselfAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfListObjectItselfAsync);
+            this.this_SetUnpackedValueOfListObjectItselfDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, object>(this.SetUnpackedValueOfListObjectItself);
+            this.this_UnpackValueOfListObjectItselfDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int>(this.UnpackValueOfListObjectItself);
+            this.this_UnpackValueOfListObjectItselfAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfListObjectItselfAsync);
         }
         
         private void PackValueOfListObjectItself(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty objectTree) {
@@ -83,13 +113,26 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
         }
         
+        private System.Threading.Tasks.Task PackValueOfListObjectItselfAsync(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer0.PackToAsync(packer, objectTree.ListObjectItself, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task PackToAsyncCore(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty objectTree, System.Threading.CancellationToken cancellationToken) {
+            if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
+                return MsgPack.Serialization.PackHelpers.PackToArrayAsync(packer, objectTree, this._packOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.PackHelpers.PackToMapAsync(packer, objectTree, this._packOperationTableAsync, cancellationToken);
+            }
+        }
+        
         private void SetUnpackedValueOfListObjectItself(MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty unpackingContext, object unpackedValue) {
             this._methodBasePolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty_set_ListObjectItself0.Invoke(unpackingContext, new object[] {
                         unpackedValue});
         }
         
         private void UnpackValueOfListObjectItself(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(object), "ListObjectItself", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListObjectItselfSetUnpackedValueOfListObjectItselfDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(object), "ListObjectItself", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListObjectItselfDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -100,6 +143,21 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
             else {
                 return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>(), this._unpackOperationTable);
+            }
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfListObjectItselfAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(object), "ListObjectItself", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListObjectItselfDelegate, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {
+            MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty result = default(MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty);
+            result = new MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty();
+            if (unpacker.IsArrayHeader) {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArrayAsync(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>(), this._memberNames, this._unpackOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMapAsync(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>(), this._unpackOperationTableAsync, cancellationToken);
             }
         }
     }

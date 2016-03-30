@@ -17,15 +17,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IEnumerable<int>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.HasEnumerable> this_PackValueOfNumbersPackValueOfNumbersDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.HasEnumerable> this_PackValueOfNumbersDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.HasEnumerable>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.HasEnumerable>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.HasEnumerable, System.Collections.Generic.IEnumerable<int>> this_SetUnpackedValueOfNumbersSetUnpackedValueOfNumbersDelegate;
+        private System.Action<MsgPack.Serialization.HasEnumerable, System.Collections.Generic.IEnumerable<int>> this_SetUnpackedValueOfNumbersDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.HasEnumerable, int, int> this_UnpackValueOfNumbersUnpackValueOfNumbersDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.HasEnumerable, int, int> this_UnpackValueOfNumbersDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -56,9 +56,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "Numbers"};
-            this.this_PackValueOfNumbersPackValueOfNumbersDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.HasEnumerable>(this.PackValueOfNumbers);
-            this.this_SetUnpackedValueOfNumbersSetUnpackedValueOfNumbersDelegate = new System.Action<MsgPack.Serialization.HasEnumerable, System.Collections.Generic.IEnumerable<int>>(this.SetUnpackedValueOfNumbers);
-            this.this_UnpackValueOfNumbersUnpackValueOfNumbersDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.HasEnumerable, int, int>(this.UnpackValueOfNumbers);
+            this.this_PackValueOfNumbersDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.HasEnumerable>(this.PackValueOfNumbers);
+            this.this_SetUnpackedValueOfNumbersDelegate = new System.Action<MsgPack.Serialization.HasEnumerable, System.Collections.Generic.IEnumerable<int>>(this.SetUnpackedValueOfNumbers);
+            this.this_UnpackValueOfNumbersDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.HasEnumerable, int, int>(this.UnpackValueOfNumbers);
         }
         
         private void PackValueOfNumbers(MsgPack.Packer packer, MsgPack.Serialization.HasEnumerable objectTree) {
@@ -79,7 +79,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNumbers(MsgPack.Unpacker unpacker, MsgPack.Serialization.HasEnumerable unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IEnumerable<int>), "Numbers", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNumbersSetUnpackedValueOfNumbersDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IEnumerable<int>), "Numbers", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNumbersDelegate);
         }
         
         protected internal override MsgPack.Serialization.HasEnumerable UnpackFromCore(MsgPack.Unpacker unpacker) {

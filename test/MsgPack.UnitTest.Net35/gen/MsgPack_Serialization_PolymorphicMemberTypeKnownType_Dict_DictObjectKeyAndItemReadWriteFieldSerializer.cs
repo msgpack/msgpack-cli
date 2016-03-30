@@ -17,15 +17,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<object, object>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField> this_PackValueOfDictObjectKeyAndItemPackValueOfDictObjectKeyAndItemDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField> this_PackValueOfDictObjectKeyAndItemDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField, System.Collections.Generic.IDictionary<object, object>> this_SetUnpackedValueOfDictObjectKeyAndItemSetUnpackedValueOfDictObjectKeyAndItemDelegate;
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField, System.Collections.Generic.IDictionary<object, object>> this_SetUnpackedValueOfDictObjectKeyAndItemDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField, int, int> this_UnpackValueOfDictObjectKeyAndItemUnpackValueOfDictObjectKeyAndItemDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField, int, int> this_UnpackValueOfDictObjectKeyAndItemDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -39,14 +39,14 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.PolymorphismSchema keysSchema0 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<string, System.Type> keysSchemaTypeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
             keysSchemaTypeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
-            keysSchemaTypeMap0.Add("1", typeof(MsgPack.Serialization.DirectoryEntry));
             keysSchemaTypeMap0.Add("0", typeof(MsgPack.Serialization.FileEntry));
+            keysSchemaTypeMap0.Add("1", typeof(MsgPack.Serialization.DirectoryEntry));
             keysSchema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(object), keysSchemaTypeMap0);
             MsgPack.Serialization.PolymorphismSchema valuesSchema0 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<string, System.Type> valuesSchemaTypeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
             valuesSchemaTypeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
-            valuesSchemaTypeMap0.Add("0", typeof(MsgPack.Serialization.FileEntry));
             valuesSchemaTypeMap0.Add("1", typeof(MsgPack.Serialization.DirectoryEntry));
+            valuesSchemaTypeMap0.Add("0", typeof(MsgPack.Serialization.FileEntry));
             valuesSchema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(object), valuesSchemaTypeMap0);
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForContextSpecifiedDictionary(typeof(System.Collections.Generic.IDictionary<object, object>), keysSchema0, valuesSchema0);
             this._serializer0 = context.GetSerializer<System.Collections.Generic.IDictionary<object, object>>(schema0);
@@ -68,9 +68,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "DictObjectKeyAndItem"};
-            this.this_PackValueOfDictObjectKeyAndItemPackValueOfDictObjectKeyAndItemDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField>(this.PackValueOfDictObjectKeyAndItem);
-            this.this_SetUnpackedValueOfDictObjectKeyAndItemSetUnpackedValueOfDictObjectKeyAndItemDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField, System.Collections.Generic.IDictionary<object, object>>(this.SetUnpackedValueOfDictObjectKeyAndItem);
-            this.this_UnpackValueOfDictObjectKeyAndItemUnpackValueOfDictObjectKeyAndItemDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField, int, int>(this.UnpackValueOfDictObjectKeyAndItem);
+            this.this_PackValueOfDictObjectKeyAndItemDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField>(this.PackValueOfDictObjectKeyAndItem);
+            this.this_SetUnpackedValueOfDictObjectKeyAndItemDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField, System.Collections.Generic.IDictionary<object, object>>(this.SetUnpackedValueOfDictObjectKeyAndItem);
+            this.this_UnpackValueOfDictObjectKeyAndItemDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField, int, int>(this.UnpackValueOfDictObjectKeyAndItem);
         }
         
         private void PackValueOfDictObjectKeyAndItem(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField objectTree) {
@@ -91,7 +91,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDictObjectKeyAndItem(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<object, object>), "DictObjectKeyAndItem", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictObjectKeyAndItemSetUnpackedValueOfDictObjectKeyAndItemDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<object, object>), "DictObjectKeyAndItem", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictObjectKeyAndItemDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField UnpackFromCore(MsgPack.Unpacker unpacker) {

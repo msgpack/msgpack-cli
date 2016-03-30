@@ -17,15 +17,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.FileSystemEntry> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty> this_PackValueOfPolymorphicPackValueOfPolymorphicDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty> this_PackValueOfPolymorphicDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty, MsgPack.Serialization.FileSystemEntry> this_SetUnpackedValueOfPolymorphicSetUnpackedValueOfPolymorphicDelegate;
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty, MsgPack.Serialization.FileSystemEntry> this_SetUnpackedValueOfPolymorphicDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty, int, int> this_UnpackValueOfPolymorphicUnpackValueOfPolymorphicDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty, int, int> this_UnpackValueOfPolymorphicDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -38,8 +38,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<string, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
             typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
-            typeMap0.Add("1", typeof(MsgPack.Serialization.DirectoryEntry));
             typeMap0.Add("0", typeof(MsgPack.Serialization.FileEntry));
+            typeMap0.Add("1", typeof(MsgPack.Serialization.DirectoryEntry));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), typeMap0);
             this._serializer0 = context.GetSerializer<MsgPack.Serialization.FileSystemEntry>(schema0);
             System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty>[]);
@@ -60,9 +60,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "Polymorphic"};
-            this.this_PackValueOfPolymorphicPackValueOfPolymorphicDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty>(this.PackValueOfPolymorphic);
-            this.this_SetUnpackedValueOfPolymorphicSetUnpackedValueOfPolymorphicDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty, MsgPack.Serialization.FileSystemEntry>(this.SetUnpackedValueOfPolymorphic);
-            this.this_UnpackValueOfPolymorphicUnpackValueOfPolymorphicDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty, int, int>(this.UnpackValueOfPolymorphic);
+            this.this_PackValueOfPolymorphicDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty>(this.PackValueOfPolymorphic);
+            this.this_SetUnpackedValueOfPolymorphicDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty, MsgPack.Serialization.FileSystemEntry>(this.SetUnpackedValueOfPolymorphic);
+            this.this_UnpackValueOfPolymorphicDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty, int, int>(this.UnpackValueOfPolymorphic);
         }
         
         private void PackValueOfPolymorphic(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty objectTree) {
@@ -83,7 +83,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfPolymorphic(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(MsgPack.Serialization.FileSystemEntry), "Polymorphic", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfPolymorphicSetUnpackedValueOfPolymorphicDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(MsgPack.Serialization.FileSystemEntry), "Polymorphic", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfPolymorphicDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty UnpackFromCore(MsgPack.Unpacker unpacker) {

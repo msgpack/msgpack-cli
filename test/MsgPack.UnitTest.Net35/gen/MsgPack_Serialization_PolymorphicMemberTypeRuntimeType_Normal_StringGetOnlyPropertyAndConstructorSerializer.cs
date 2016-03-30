@@ -17,19 +17,19 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor> this_PackValueOfStringPackValueOfStringDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor> this_PackValueOfStringDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor>> _packOperationTable;
         
-        private System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor> this_CreateInstanceFromContextCreateInstanceFromContextDelegate;
+        private System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor> this_CreateInstanceFromContextDelegate;
         
-        private System.Action<UnpackingContext, string> this_SetUnpackedValueOfStringSetUnpackedValueOfStringDelegate;
+        private System.Action<UnpackingContext, string> this_SetUnpackedValueOfStringDelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, UnpackingContext, int, int> this_UnpackValueOfStringUnpackValueOfStringDelegate;
+        private System.Action<MsgPack.Unpacker, UnpackingContext, int, int> this_UnpackValueOfStringDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -60,11 +60,11 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "String"};
-            this.this_PackValueOfStringPackValueOfStringDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor>(this.PackValueOfString);
-            this.this_CreateInstanceFromContextCreateInstanceFromContextDelegate = new System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor>(this.CreateInstanceFromContext);
-            this.this_SetUnpackedValueOfStringSetUnpackedValueOfStringDelegate = new System.Action<UnpackingContext, string>(this.SetUnpackedValueOfString);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
-            this.this_UnpackValueOfStringUnpackValueOfStringDelegate = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfString);
+            this.this_PackValueOfStringDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor>(this.PackValueOfString);
+            this.this_CreateInstanceFromContextDelegate = new System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor>(this.CreateInstanceFromContext);
+            this.this_SetUnpackedValueOfStringDelegate = new System.Action<UnpackingContext, string>(this.SetUnpackedValueOfString);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
+            this.this_UnpackValueOfStringDelegate = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfString);
         }
         
         private void PackValueOfString(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor objectTree) {
@@ -91,7 +91,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfString(MsgPack.Unpacker unpacker, UnpackingContext unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "String", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate, this.this_SetUnpackedValueOfStringSetUnpackedValueOfStringDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "String", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfStringDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -100,10 +100,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             ctorArg0 = null;
             unpackingContext = new UnpackingContext(ctorArg0);
             if (unpacker.IsArrayHeader) {
-                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, unpackingContext, this.this_CreateInstanceFromContextCreateInstanceFromContextDelegate, this._memberNames, this._unpackOperationList);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, unpackingContext, this.this_CreateInstanceFromContextDelegate, this._memberNames, this._unpackOperationList);
             }
             else {
-                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, unpackingContext, this.this_CreateInstanceFromContextCreateInstanceFromContextDelegate, this._unpackOperationTable);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, unpackingContext, this.this_CreateInstanceFromContextDelegate, this._unpackOperationTable);
             }
         }
         

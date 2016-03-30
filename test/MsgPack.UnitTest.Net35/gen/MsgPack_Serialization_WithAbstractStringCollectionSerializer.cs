@@ -17,15 +17,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<string>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractStringCollection> this_PackValueOfCollectionPackValueOfCollectionDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractStringCollection> this_PackValueOfCollectionDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractStringCollection>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractStringCollection>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.WithAbstractStringCollection, System.Collections.Generic.IList<string>> this_SetUnpackedValueOfCollectionSetUnpackedValueOfCollectionDelegate;
+        private System.Action<MsgPack.Serialization.WithAbstractStringCollection, System.Collections.Generic.IList<string>> this_SetUnpackedValueOfCollectionDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractStringCollection, int, int> this_UnpackValueOfCollectionUnpackValueOfCollectionDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractStringCollection, int, int> this_UnpackValueOfCollectionDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -56,9 +56,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "Collection"};
-            this.this_PackValueOfCollectionPackValueOfCollectionDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractStringCollection>(this.PackValueOfCollection);
-            this.this_SetUnpackedValueOfCollectionSetUnpackedValueOfCollectionDelegate = new System.Action<MsgPack.Serialization.WithAbstractStringCollection, System.Collections.Generic.IList<string>>(this.SetUnpackedValueOfCollection);
-            this.this_UnpackValueOfCollectionUnpackValueOfCollectionDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractStringCollection, int, int>(this.UnpackValueOfCollection);
+            this.this_PackValueOfCollectionDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractStringCollection>(this.PackValueOfCollection);
+            this.this_SetUnpackedValueOfCollectionDelegate = new System.Action<MsgPack.Serialization.WithAbstractStringCollection, System.Collections.Generic.IList<string>>(this.SetUnpackedValueOfCollection);
+            this.this_UnpackValueOfCollectionDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractStringCollection, int, int>(this.UnpackValueOfCollection);
         }
         
         private void PackValueOfCollection(MsgPack.Packer packer, MsgPack.Serialization.WithAbstractStringCollection objectTree) {
@@ -79,7 +79,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfCollection(MsgPack.Unpacker unpacker, MsgPack.Serialization.WithAbstractStringCollection unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<string>), "Collection", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCollectionSetUnpackedValueOfCollectionDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<string>), "Collection", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCollectionDelegate);
         }
         
         protected internal override MsgPack.Serialization.WithAbstractStringCollection UnpackFromCore(MsgPack.Unpacker unpacker) {

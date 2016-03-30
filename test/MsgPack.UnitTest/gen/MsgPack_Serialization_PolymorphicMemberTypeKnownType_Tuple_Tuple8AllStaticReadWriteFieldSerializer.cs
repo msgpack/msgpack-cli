@@ -17,21 +17,33 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Tuple<string, string, string, string, string, string, string, System.Tuple<string>>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField> this_PackValueOfTuple8AllStaticPackValueOfTuple8AllStaticDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField> this_PackValueOfTuple8AllStaticDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Tuple<string, string, string, string, string, string, string, System.Tuple<string>>> this_SetUnpackedValueOfTuple8AllStaticSetUnpackedValueOfTuple8AllStaticDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfTuple8AllStaticAsyncDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int> this_UnpackValueOfTuple8AllStaticUnpackValueOfTuple8AllStaticDelegate;
+        private System.Collections.Generic.IList<System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationListAsync;
+        
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationTableAsync;
+        
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Tuple<string, string, string, string, string, string, string, System.Tuple<string>>> this_SetUnpackedValueOfTuple8AllStaticDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int> this_UnpackValueOfTuple8AllStaticDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int>> _unpackOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int>> _unpackOperationTable;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfTuple8AllStaticAsyncDelegate;
+        
+        private System.Collections.Generic.IList<System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationListAsync;
+        
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationTableAsync;
         
         public MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteFieldSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
@@ -68,23 +80,41 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>[1];
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>(this.PackValueOfTuple8AllStatic);
             this._packOperationList = packOperationList;
+            System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] packOperationListAsync = default(System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            packOperationListAsync = new System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Threading.CancellationToken, System.Threading.Tasks.Task>[1];
+            packOperationListAsync[0] = new System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfTuple8AllStaticAsync);
+            this._packOperationListAsync = packOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>>);
             packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>>(1);
             packOperationTable["Tuple8AllStatic"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>(this.PackValueOfTuple8AllStatic);
             this._packOperationTable = packOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Threading.CancellationToken, System.Threading.Tasks.Task>> packOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            packOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(1);
+            packOperationTableAsync["Tuple8AllStatic"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfTuple8AllStaticAsync);
+            this._packOperationTableAsync = packOperationTableAsync;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int>[1];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int>(this.UnpackValueOfTuple8AllStatic);
             this._unpackOperationList = unpackOperationList;
+            System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] unpackOperationListAsync = default(System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            unpackOperationListAsync = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[1];
+            unpackOperationListAsync[0] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfTuple8AllStaticAsync);
+            this._unpackOperationListAsync = unpackOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int>>);
             unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int>>(1);
             unpackOperationTable["Tuple8AllStatic"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int>(this.UnpackValueOfTuple8AllStatic);
             this._unpackOperationTable = unpackOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> unpackOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            unpackOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(1);
+            unpackOperationTableAsync["Tuple8AllStatic"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfTuple8AllStaticAsync);
+            this._unpackOperationTableAsync = unpackOperationTableAsync;
             this._memberNames = new string[] {
                     "Tuple8AllStatic"};
-            this.this_PackValueOfTuple8AllStaticPackValueOfTuple8AllStaticDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>(this.PackValueOfTuple8AllStatic);
-            this.this_SetUnpackedValueOfTuple8AllStaticSetUnpackedValueOfTuple8AllStaticDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Tuple<string, string, string, string, string, string, string, System.Tuple<string>>>(this.SetUnpackedValueOfTuple8AllStatic);
-            this.this_UnpackValueOfTuple8AllStaticUnpackValueOfTuple8AllStaticDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int>(this.UnpackValueOfTuple8AllStatic);
+            this.this_PackValueOfTuple8AllStaticDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>(this.PackValueOfTuple8AllStatic);
+            this.this_PackValueOfTuple8AllStaticAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfTuple8AllStaticAsync);
+            this.this_SetUnpackedValueOfTuple8AllStaticDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, System.Tuple<string, string, string, string, string, string, string, System.Tuple<string>>>(this.SetUnpackedValueOfTuple8AllStatic);
+            this.this_UnpackValueOfTuple8AllStaticDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int>(this.UnpackValueOfTuple8AllStatic);
+            this.this_UnpackValueOfTuple8AllStaticAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfTuple8AllStaticAsync);
         }
         
         private void PackValueOfTuple8AllStatic(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField objectTree) {
@@ -100,12 +130,25 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
         }
         
+        private System.Threading.Tasks.Task PackValueOfTuple8AllStaticAsync(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer0.PackToAsync(packer, objectTree.Tuple8AllStatic, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task PackToAsyncCore(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField objectTree, System.Threading.CancellationToken cancellationToken) {
+            if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
+                return MsgPack.Serialization.PackHelpers.PackToArrayAsync(packer, objectTree, this._packOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.PackHelpers.PackToMapAsync(packer, objectTree, this._packOperationTableAsync, cancellationToken);
+            }
+        }
+        
         private void SetUnpackedValueOfTuple8AllStatic(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField unpackingContext, System.Tuple<string, string, string, string, string, string, string, System.Tuple<string>> unpackedValue) {
             unpackingContext.Tuple8AllStatic = unpackedValue;
         }
         
         private void UnpackValueOfTuple8AllStatic(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Tuple<string, string, string, string, string, string, string, System.Tuple<string>>), "Tuple8AllStatic", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTuple8AllStaticSetUnpackedValueOfTuple8AllStaticDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Tuple<string, string, string, string, string, string, string, System.Tuple<string>>), "Tuple8AllStatic", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTuple8AllStaticDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -116,6 +159,21 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
             else {
                 return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>(), this._unpackOperationTable);
+            }
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfTuple8AllStaticAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Tuple<string, string, string, string, string, string, string, System.Tuple<string>>), "Tuple8AllStatic", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTuple8AllStaticDelegate, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {
+            MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField result = default(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField);
+            result = new MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField();
+            if (unpacker.IsArrayHeader) {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArrayAsync(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>(), this._memberNames, this._unpackOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMapAsync(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>(), this._unpackOperationTableAsync, cancellationToken);
             }
         }
     }

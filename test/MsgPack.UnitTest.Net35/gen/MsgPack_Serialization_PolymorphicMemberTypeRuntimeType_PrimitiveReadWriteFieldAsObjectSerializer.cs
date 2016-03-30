@@ -17,15 +17,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<object> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject> this_PackValueOfPrimitivePackValueOfPrimitiveDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject> this_PackValueOfPrimitiveDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject, object> this_SetUnpackedValueOfPrimitiveSetUnpackedValueOfPrimitiveDelegate;
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject, object> this_SetUnpackedValueOfPrimitiveDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject, int, int> this_UnpackValueOfPrimitiveUnpackValueOfPrimitiveDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject, int, int> this_UnpackValueOfPrimitiveDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -56,9 +56,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "Primitive"};
-            this.this_PackValueOfPrimitivePackValueOfPrimitiveDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject>(this.PackValueOfPrimitive);
-            this.this_SetUnpackedValueOfPrimitiveSetUnpackedValueOfPrimitiveDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject, object>(this.SetUnpackedValueOfPrimitive);
-            this.this_UnpackValueOfPrimitiveUnpackValueOfPrimitiveDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject, int, int>(this.UnpackValueOfPrimitive);
+            this.this_PackValueOfPrimitiveDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject>(this.PackValueOfPrimitive);
+            this.this_SetUnpackedValueOfPrimitiveDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject, object>(this.SetUnpackedValueOfPrimitive);
+            this.this_UnpackValueOfPrimitiveDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject, int, int>(this.UnpackValueOfPrimitive);
         }
         
         private void PackValueOfPrimitive(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject objectTree) {
@@ -79,7 +79,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfPrimitive(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(object), "Primitive", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfPrimitiveSetUnpackedValueOfPrimitiveDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(object), "Primitive", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfPrimitiveDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject UnpackFromCore(MsgPack.Unpacker unpacker) {

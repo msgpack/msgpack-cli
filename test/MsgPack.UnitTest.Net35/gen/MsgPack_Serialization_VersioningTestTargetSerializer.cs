@@ -17,33 +17,33 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<int> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.VersioningTestTarget> this_PackValueOfField1PackValueOfField1Delegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.VersioningTestTarget> this_PackValueOfField1Delegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.VersioningTestTarget> this_PackValueOfField2PackValueOfField2Delegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.VersioningTestTarget> this_PackValueOfField2Delegate;
         
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer1;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.VersioningTestTarget> this_PackValueOfField3PackValueOfField3Delegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.VersioningTestTarget> this_PackValueOfField3Delegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.VersioningTestTarget>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.VersioningTestTarget>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.VersioningTestTarget, int> this_SetUnpackedValueOfField1SetUnpackedValueOfField1Delegate;
+        private System.Action<MsgPack.Serialization.VersioningTestTarget, int> this_SetUnpackedValueOfField1Delegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, int> MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, int> MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.VersioningTestTarget, int, int> this_UnpackValueOfField1UnpackValueOfField1Delegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.VersioningTestTarget, int, int> this_UnpackValueOfField1Delegate;
         
-        private System.Action<MsgPack.Serialization.VersioningTestTarget, int> this_SetUnpackedValueOfField2SetUnpackedValueOfField2Delegate;
+        private System.Action<MsgPack.Serialization.VersioningTestTarget, int> this_SetUnpackedValueOfField2Delegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.VersioningTestTarget, int, int> this_UnpackValueOfField2UnpackValueOfField2Delegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.VersioningTestTarget, int, int> this_UnpackValueOfField2Delegate;
         
-        private System.Action<MsgPack.Serialization.VersioningTestTarget, string> this_SetUnpackedValueOfField3SetUnpackedValueOfField3Delegate;
+        private System.Action<MsgPack.Serialization.VersioningTestTarget, string> this_SetUnpackedValueOfField3Delegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.VersioningTestTarget, int, int> this_UnpackValueOfField3UnpackValueOfField3Delegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.VersioningTestTarget, int, int> this_UnpackValueOfField3Delegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -87,17 +87,17 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                     "Field1",
                     "Field2",
                     "Field3"};
-            this.this_PackValueOfField1PackValueOfField1Delegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.VersioningTestTarget>(this.PackValueOfField1);
-            this.this_PackValueOfField2PackValueOfField2Delegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.VersioningTestTarget>(this.PackValueOfField2);
-            this.this_PackValueOfField3PackValueOfField3Delegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.VersioningTestTarget>(this.PackValueOfField3);
-            this.this_SetUnpackedValueOfField1SetUnpackedValueOfField1Delegate = new System.Action<MsgPack.Serialization.VersioningTestTarget, int>(this.SetUnpackedValueOfField1);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, int>(MsgPack.Serialization.UnpackHelpers.UnpackInt32Value);
-            this.this_UnpackValueOfField1UnpackValueOfField1Delegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.VersioningTestTarget, int, int>(this.UnpackValueOfField1);
-            this.this_SetUnpackedValueOfField2SetUnpackedValueOfField2Delegate = new System.Action<MsgPack.Serialization.VersioningTestTarget, int>(this.SetUnpackedValueOfField2);
-            this.this_UnpackValueOfField2UnpackValueOfField2Delegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.VersioningTestTarget, int, int>(this.UnpackValueOfField2);
-            this.this_SetUnpackedValueOfField3SetUnpackedValueOfField3Delegate = new System.Action<MsgPack.Serialization.VersioningTestTarget, string>(this.SetUnpackedValueOfField3);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
-            this.this_UnpackValueOfField3UnpackValueOfField3Delegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.VersioningTestTarget, int, int>(this.UnpackValueOfField3);
+            this.this_PackValueOfField1Delegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.VersioningTestTarget>(this.PackValueOfField1);
+            this.this_PackValueOfField2Delegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.VersioningTestTarget>(this.PackValueOfField2);
+            this.this_PackValueOfField3Delegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.VersioningTestTarget>(this.PackValueOfField3);
+            this.this_SetUnpackedValueOfField1Delegate = new System.Action<MsgPack.Serialization.VersioningTestTarget, int>(this.SetUnpackedValueOfField1);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, int>(MsgPack.Serialization.UnpackHelpers.UnpackInt32Value);
+            this.this_UnpackValueOfField1Delegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.VersioningTestTarget, int, int>(this.UnpackValueOfField1);
+            this.this_SetUnpackedValueOfField2Delegate = new System.Action<MsgPack.Serialization.VersioningTestTarget, int>(this.SetUnpackedValueOfField2);
+            this.this_UnpackValueOfField2Delegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.VersioningTestTarget, int, int>(this.UnpackValueOfField2);
+            this.this_SetUnpackedValueOfField3Delegate = new System.Action<MsgPack.Serialization.VersioningTestTarget, string>(this.SetUnpackedValueOfField3);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
+            this.this_UnpackValueOfField3Delegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.VersioningTestTarget, int, int>(this.UnpackValueOfField3);
         }
         
         private void PackValueOfField1(MsgPack.Packer packer, MsgPack.Serialization.VersioningTestTarget objectTree) {
@@ -126,7 +126,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfField1(MsgPack.Unpacker unpacker, MsgPack.Serialization.VersioningTestTarget unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "Field1", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate, this.this_SetUnpackedValueOfField1SetUnpackedValueOfField1Delegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "Field1", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfField1Delegate);
         }
         
         private void SetUnpackedValueOfField2(MsgPack.Serialization.VersioningTestTarget unpackingContext, int unpackedValue) {
@@ -134,7 +134,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfField2(MsgPack.Unpacker unpacker, MsgPack.Serialization.VersioningTestTarget unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "Field2", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate, this.this_SetUnpackedValueOfField2SetUnpackedValueOfField2Delegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "Field2", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfField2Delegate);
         }
         
         private void SetUnpackedValueOfField3(MsgPack.Serialization.VersioningTestTarget unpackingContext, string unpackedValue) {
@@ -142,7 +142,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfField3(MsgPack.Unpacker unpacker, MsgPack.Serialization.VersioningTestTarget unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(string), "Field3", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate, this.this_SetUnpackedValueOfField3SetUnpackedValueOfField3Delegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(string), "Field3", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfField3Delegate);
         }
         
         protected internal override MsgPack.Serialization.VersioningTestTarget UnpackFromCore(MsgPack.Unpacker unpacker) {

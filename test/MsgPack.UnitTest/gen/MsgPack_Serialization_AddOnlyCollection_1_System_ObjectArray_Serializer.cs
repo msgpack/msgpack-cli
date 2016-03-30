@@ -17,6 +17,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AddOnlyCollection<object[]>, int> _unpackTo;
         
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.AddOnlyCollection<object[]>, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> _unpackToAsync;
+        
         public MsgPack_Serialization_AddOnlyCollection_1_System_ObjectArray_Serializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context, MsgPack_Serialization_AddOnlyCollection_1_System_ObjectArray_Serializer.RestoreSchema()) {
             this._unpackTo = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AddOnlyCollection<object[]>, int>(this.UnpackToCore);
@@ -39,6 +41,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             int itemsCount = default(int);
             itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
             return MsgPack.Serialization.UnpackHelpers.UnpackCollection<MsgPack.Serialization.AddOnlyCollection<object[]>>(unpacker, itemsCount, this.CreateInstance(itemsCount), this._unpackTo, null);
+        }
+        
+        protected internal override System.Threading.Tasks.Task<MsgPack.Serialization.AddOnlyCollection<object[]>> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {
+            if ((unpacker.IsArrayHeader == false)) {
+                MsgPack.Serialization.SerializationExceptions.ThrowIsNotArrayHeader(unpacker);
+            }
+            int itemsCount = default(int);
+            itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
+            return MsgPack.Serialization.UnpackHelpers.UnpackCollectionAsync<MsgPack.Serialization.AddOnlyCollection<object[]>>(unpacker, itemsCount, this.CreateInstance(itemsCount), this._unpackToAsync, null, cancellationToken);
         }
         
         private static MsgPack.Serialization.PolymorphismSchema RestoreSchema() {

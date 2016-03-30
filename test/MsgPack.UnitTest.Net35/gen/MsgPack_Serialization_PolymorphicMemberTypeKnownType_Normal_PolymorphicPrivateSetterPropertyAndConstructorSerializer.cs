@@ -17,7 +17,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.FileSystemEntry> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor> this_PackValueOfPolymorphicPackValueOfPolymorphicDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor> this_PackValueOfPolymorphicDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor>> _packOperationList;
         
@@ -25,9 +25,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private System.Reflection.MethodBase _methodBasePolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor_set_Polymorphic0;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor, MsgPack.Serialization.FileSystemEntry> this_SetUnpackedValueOfPolymorphicSetUnpackedValueOfPolymorphicDelegate;
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor, MsgPack.Serialization.FileSystemEntry> this_SetUnpackedValueOfPolymorphicDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor, int, int> this_UnpackValueOfPolymorphicUnpackValueOfPolymorphicDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor, int, int> this_UnpackValueOfPolymorphicDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -40,8 +40,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<string, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
             typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
-            typeMap0.Add("0", typeof(MsgPack.Serialization.FileEntry));
             typeMap0.Add("1", typeof(MsgPack.Serialization.DirectoryEntry));
+            typeMap0.Add("0", typeof(MsgPack.Serialization.FileEntry));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), typeMap0);
             this._serializer0 = context.GetSerializer<MsgPack.Serialization.FileSystemEntry>(schema0);
             this._methodBasePolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor_set_Polymorphic0 = typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor).GetMethod("set_Polymorphic", (System.Reflection.BindingFlags.Instance 
@@ -65,9 +65,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "Polymorphic"};
-            this.this_PackValueOfPolymorphicPackValueOfPolymorphicDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor>(this.PackValueOfPolymorphic);
-            this.this_SetUnpackedValueOfPolymorphicSetUnpackedValueOfPolymorphicDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor, MsgPack.Serialization.FileSystemEntry>(this.SetUnpackedValueOfPolymorphic);
-            this.this_UnpackValueOfPolymorphicUnpackValueOfPolymorphicDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor, int, int>(this.UnpackValueOfPolymorphic);
+            this.this_PackValueOfPolymorphicDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor>(this.PackValueOfPolymorphic);
+            this.this_SetUnpackedValueOfPolymorphicDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor, MsgPack.Serialization.FileSystemEntry>(this.SetUnpackedValueOfPolymorphic);
+            this.this_UnpackValueOfPolymorphicDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor, int, int>(this.UnpackValueOfPolymorphic);
         }
         
         private void PackValueOfPolymorphic(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor objectTree) {
@@ -89,7 +89,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfPolymorphic(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(MsgPack.Serialization.FileSystemEntry), "Polymorphic", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfPolymorphicSetUnpackedValueOfPolymorphicDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(MsgPack.Serialization.FileSystemEntry), "Polymorphic", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfPolymorphicDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor UnpackFromCore(MsgPack.Unpacker unpacker) {

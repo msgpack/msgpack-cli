@@ -17,15 +17,21 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<string, string>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField> this_PackValueOfDictPolymorphicItselfPackValueOfDictPolymorphicItselfDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField> this_PackValueOfDictPolymorphicItselfDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Collections.Generic.IDictionary<string, string>> this_SetUnpackedValueOfDictPolymorphicItselfSetUnpackedValueOfDictPolymorphicItselfDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfDictPolymorphicItselfAsyncDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int> this_UnpackValueOfDictPolymorphicItselfUnpackValueOfDictPolymorphicItselfDelegate;
+        private System.Collections.Generic.IList<System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationListAsync;
+        
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationTableAsync;
+        
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Collections.Generic.IDictionary<string, string>> this_SetUnpackedValueOfDictPolymorphicItselfDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int> this_UnpackValueOfDictPolymorphicItselfDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -33,37 +39,61 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int>> _unpackOperationTable;
         
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfDictPolymorphicItselfAsyncDelegate;
+        
+        private System.Collections.Generic.IList<System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationListAsync;
+        
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationTableAsync;
+        
         public MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionFieldSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<string, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
             typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
             typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
-            typeMap0.Add("0", typeof(System.Collections.Generic.Dictionary<string, string>));
             typeMap0.Add("1", typeof(System.Collections.Generic.SortedDictionary<string, string>));
+            typeMap0.Add("0", typeof(System.Collections.Generic.Dictionary<string, string>));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicDictionary(typeof(System.Collections.Generic.IDictionary<string, string>), typeMap0, null, null);
             this._serializer0 = context.GetSerializer<System.Collections.Generic.IDictionary<string, string>>(schema0);
             System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>[]);
             packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>[1];
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>(this.PackValueOfDictPolymorphicItself);
             this._packOperationList = packOperationList;
+            System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] packOperationListAsync = default(System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            packOperationListAsync = new System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Threading.CancellationToken, System.Threading.Tasks.Task>[1];
+            packOperationListAsync[0] = new System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfDictPolymorphicItselfAsync);
+            this._packOperationListAsync = packOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>>);
             packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>>(1);
             packOperationTable["DictPolymorphicItself"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>(this.PackValueOfDictPolymorphicItself);
             this._packOperationTable = packOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Threading.CancellationToken, System.Threading.Tasks.Task>> packOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            packOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(1);
+            packOperationTableAsync["DictPolymorphicItself"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfDictPolymorphicItselfAsync);
+            this._packOperationTableAsync = packOperationTableAsync;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int>[1];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int>(this.UnpackValueOfDictPolymorphicItself);
             this._unpackOperationList = unpackOperationList;
+            System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] unpackOperationListAsync = default(System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            unpackOperationListAsync = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[1];
+            unpackOperationListAsync[0] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfDictPolymorphicItselfAsync);
+            this._unpackOperationListAsync = unpackOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int>>);
             unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int>>(1);
             unpackOperationTable["DictPolymorphicItself"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int>(this.UnpackValueOfDictPolymorphicItself);
             this._unpackOperationTable = unpackOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> unpackOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            unpackOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(1);
+            unpackOperationTableAsync["DictPolymorphicItself"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfDictPolymorphicItselfAsync);
+            this._unpackOperationTableAsync = unpackOperationTableAsync;
             this._memberNames = new string[] {
                     "DictPolymorphicItself"};
-            this.this_PackValueOfDictPolymorphicItselfPackValueOfDictPolymorphicItselfDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>(this.PackValueOfDictPolymorphicItself);
-            this.this_SetUnpackedValueOfDictPolymorphicItselfSetUnpackedValueOfDictPolymorphicItselfDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Collections.Generic.IDictionary<string, string>>(this.SetUnpackedValueOfDictPolymorphicItself);
-            this.this_UnpackValueOfDictPolymorphicItselfUnpackValueOfDictPolymorphicItselfDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int>(this.UnpackValueOfDictPolymorphicItself);
+            this.this_PackValueOfDictPolymorphicItselfDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>(this.PackValueOfDictPolymorphicItself);
+            this.this_PackValueOfDictPolymorphicItselfAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfDictPolymorphicItselfAsync);
+            this.this_SetUnpackedValueOfDictPolymorphicItselfDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, System.Collections.Generic.IDictionary<string, string>>(this.SetUnpackedValueOfDictPolymorphicItself);
+            this.this_UnpackValueOfDictPolymorphicItselfDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int>(this.UnpackValueOfDictPolymorphicItself);
+            this.this_UnpackValueOfDictPolymorphicItselfAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfDictPolymorphicItselfAsync);
         }
         
         private void PackValueOfDictPolymorphicItself(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField objectTree) {
@@ -79,7 +109,22 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
         }
         
+        private System.Threading.Tasks.Task PackValueOfDictPolymorphicItselfAsync(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer0.PackToAsync(packer, objectTree.DictPolymorphicItself, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task PackToAsyncCore(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField objectTree, System.Threading.CancellationToken cancellationToken) {
+            if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
+                return MsgPack.Serialization.PackHelpers.PackToArrayAsync(packer, objectTree, this._packOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.PackHelpers.PackToMapAsync(packer, objectTree, this._packOperationTableAsync, cancellationToken);
+            }
+        }
+        
         private void SetUnpackedValueOfDictPolymorphicItself(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField unpackingContext, System.Collections.Generic.IDictionary<string, string> unpackedValue) {
+            System.Collections.Generic.IDictionary<string, string> existent = default(System.Collections.Generic.IDictionary<string, string>);
+            existent = unpackingContext.DictPolymorphicItself;
             System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, string>> enumerator = unpackedValue.GetEnumerator();
             System.Collections.Generic.KeyValuePair<string, string> current;
             try {
@@ -87,7 +132,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                 ; enumerator.MoveNext(); 
                 ) {
                     current = enumerator.Current;
-                    unpackingContext.DictPolymorphicItself.Add(current.Key, current.Value);
+                    existent.Add(current.Key, current.Value);
                 }
             }
             finally {
@@ -96,7 +141,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDictPolymorphicItself(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<string, string>), "DictPolymorphicItself", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictPolymorphicItselfSetUnpackedValueOfDictPolymorphicItselfDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<string, string>), "DictPolymorphicItself", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictPolymorphicItselfDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -107,6 +152,21 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
             else {
                 return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>(), this._unpackOperationTable);
+            }
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfDictPolymorphicItselfAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<string, string>), "DictPolymorphicItself", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictPolymorphicItselfDelegate, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {
+            MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField result = default(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField);
+            result = new MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField();
+            if (unpacker.IsArrayHeader) {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArrayAsync(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>(), this._memberNames, this._unpackOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMapAsync(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>(), this._unpackOperationTableAsync, cancellationToken);
             }
         }
     }

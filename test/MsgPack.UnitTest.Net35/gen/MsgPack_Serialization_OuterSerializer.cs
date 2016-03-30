@@ -17,31 +17,31 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.Outer> this_PackValueOfAPackValueOfADelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.Outer> this_PackValueOfADelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.Inner> _serializer1;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.Outer> this_PackValueOfInnerPackValueOfInnerDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.Outer> this_PackValueOfInnerDelegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.Outer> this_PackValueOfOPackValueOfODelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.Outer> this_PackValueOfODelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.Outer>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.Outer>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.Outer, string> this_SetUnpackedValueOfASetUnpackedValueOfADelegate;
+        private System.Action<MsgPack.Serialization.Outer, string> this_SetUnpackedValueOfADelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int, int> this_UnpackValueOfAUnpackValueOfADelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int, int> this_UnpackValueOfADelegate;
         
-        private System.Action<MsgPack.Serialization.Outer, MsgPack.Serialization.Inner> this_SetUnpackedValueOfInnerSetUnpackedValueOfInnerDelegate;
+        private System.Action<MsgPack.Serialization.Outer, MsgPack.Serialization.Inner> this_SetUnpackedValueOfInnerDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int, int> this_UnpackValueOfInnerUnpackValueOfInnerDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int, int> this_UnpackValueOfInnerDelegate;
         
-        private System.Action<MsgPack.Serialization.Outer, string> this_SetUnpackedValueOfOSetUnpackedValueOfODelegate;
+        private System.Action<MsgPack.Serialization.Outer, string> this_SetUnpackedValueOfODelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int, int> this_UnpackValueOfOUnpackValueOfODelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int, int> this_UnpackValueOfODelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -85,16 +85,16 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                     "A",
                     "Inner",
                     "O"};
-            this.this_PackValueOfAPackValueOfADelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.Outer>(this.PackValueOfA);
-            this.this_PackValueOfInnerPackValueOfInnerDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.Outer>(this.PackValueOfInner);
-            this.this_PackValueOfOPackValueOfODelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.Outer>(this.PackValueOfO);
-            this.this_SetUnpackedValueOfASetUnpackedValueOfADelegate = new System.Action<MsgPack.Serialization.Outer, string>(this.SetUnpackedValueOfA);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
-            this.this_UnpackValueOfAUnpackValueOfADelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int, int>(this.UnpackValueOfA);
-            this.this_SetUnpackedValueOfInnerSetUnpackedValueOfInnerDelegate = new System.Action<MsgPack.Serialization.Outer, MsgPack.Serialization.Inner>(this.SetUnpackedValueOfInner);
-            this.this_UnpackValueOfInnerUnpackValueOfInnerDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int, int>(this.UnpackValueOfInner);
-            this.this_SetUnpackedValueOfOSetUnpackedValueOfODelegate = new System.Action<MsgPack.Serialization.Outer, string>(this.SetUnpackedValueOfO);
-            this.this_UnpackValueOfOUnpackValueOfODelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int, int>(this.UnpackValueOfO);
+            this.this_PackValueOfADelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.Outer>(this.PackValueOfA);
+            this.this_PackValueOfInnerDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.Outer>(this.PackValueOfInner);
+            this.this_PackValueOfODelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.Outer>(this.PackValueOfO);
+            this.this_SetUnpackedValueOfADelegate = new System.Action<MsgPack.Serialization.Outer, string>(this.SetUnpackedValueOfA);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
+            this.this_UnpackValueOfADelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int, int>(this.UnpackValueOfA);
+            this.this_SetUnpackedValueOfInnerDelegate = new System.Action<MsgPack.Serialization.Outer, MsgPack.Serialization.Inner>(this.SetUnpackedValueOfInner);
+            this.this_UnpackValueOfInnerDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int, int>(this.UnpackValueOfInner);
+            this.this_SetUnpackedValueOfODelegate = new System.Action<MsgPack.Serialization.Outer, string>(this.SetUnpackedValueOfO);
+            this.this_UnpackValueOfODelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Outer, int, int>(this.UnpackValueOfO);
         }
         
         private void PackValueOfA(MsgPack.Packer packer, MsgPack.Serialization.Outer objectTree) {
@@ -123,7 +123,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfA(MsgPack.Unpacker unpacker, MsgPack.Serialization.Outer unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "A", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate, this.this_SetUnpackedValueOfASetUnpackedValueOfADelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "A", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfADelegate);
         }
         
         private void SetUnpackedValueOfInner(MsgPack.Serialization.Outer unpackingContext, MsgPack.Serialization.Inner unpackedValue) {
@@ -131,7 +131,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfInner(MsgPack.Unpacker unpacker, MsgPack.Serialization.Outer unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(MsgPack.Serialization.Inner), "Inner", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfInnerSetUnpackedValueOfInnerDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(MsgPack.Serialization.Inner), "Inner", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfInnerDelegate);
         }
         
         private void SetUnpackedValueOfO(MsgPack.Serialization.Outer unpackingContext, string unpackedValue) {
@@ -139,7 +139,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfO(MsgPack.Unpacker unpacker, MsgPack.Serialization.Outer unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "O", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate, this.this_SetUnpackedValueOfOSetUnpackedValueOfODelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "O", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfODelegate);
         }
         
         protected internal override MsgPack.Serialization.Outer UnpackFromCore(MsgPack.Unpacker unpacker) {

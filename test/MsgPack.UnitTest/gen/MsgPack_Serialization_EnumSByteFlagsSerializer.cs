@@ -30,5 +30,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         protected internal override MsgPack.Serialization.EnumSByteFlags UnpackFromUnderlyingValue(MsgPack.MessagePackObject messagePackObject) {
             return ((MsgPack.Serialization.EnumSByteFlags)(messagePackObject.AsSByte()));
         }
+        
+        protected internal override System.Threading.Tasks.Task PackUnderlyingValueToAsync(MsgPack.Packer packer, MsgPack.Serialization.EnumSByteFlags enumValue, System.Threading.CancellationToken cancellationToken) {
+            return packer.PackAsync(((sbyte)(enumValue)), cancellationToken);
+        }
     }
 }

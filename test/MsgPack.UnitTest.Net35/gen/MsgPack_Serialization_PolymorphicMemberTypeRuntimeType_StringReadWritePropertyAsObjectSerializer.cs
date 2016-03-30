@@ -17,15 +17,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<object> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject> this_PackValueOfStringPackValueOfStringDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject> this_PackValueOfStringDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject, object> this_SetUnpackedValueOfStringSetUnpackedValueOfStringDelegate;
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject, object> this_SetUnpackedValueOfStringDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject, int, int> this_UnpackValueOfStringUnpackValueOfStringDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject, int, int> this_UnpackValueOfStringDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -56,9 +56,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "String"};
-            this.this_PackValueOfStringPackValueOfStringDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject>(this.PackValueOfString);
-            this.this_SetUnpackedValueOfStringSetUnpackedValueOfStringDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject, object>(this.SetUnpackedValueOfString);
-            this.this_UnpackValueOfStringUnpackValueOfStringDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject, int, int>(this.UnpackValueOfString);
+            this.this_PackValueOfStringDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject>(this.PackValueOfString);
+            this.this_SetUnpackedValueOfStringDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject, object>(this.SetUnpackedValueOfString);
+            this.this_UnpackValueOfStringDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject, int, int>(this.UnpackValueOfString);
         }
         
         private void PackValueOfString(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject objectTree) {
@@ -79,7 +79,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfString(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(object), "String", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfStringSetUnpackedValueOfStringDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(object), "String", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfStringDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject UnpackFromCore(MsgPack.Unpacker unpacker) {

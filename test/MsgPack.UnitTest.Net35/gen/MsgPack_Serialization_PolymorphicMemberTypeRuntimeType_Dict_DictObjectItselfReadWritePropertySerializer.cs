@@ -17,15 +17,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<object> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty> this_PackValueOfDictObjectItselfPackValueOfDictObjectItselfDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty> this_PackValueOfDictObjectItselfDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty, object> this_SetUnpackedValueOfDictObjectItselfSetUnpackedValueOfDictObjectItselfDelegate;
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty, object> this_SetUnpackedValueOfDictObjectItselfDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty, int, int> this_UnpackValueOfDictObjectItselfUnpackValueOfDictObjectItselfDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty, int, int> this_UnpackValueOfDictObjectItselfDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -56,9 +56,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "DictObjectItself"};
-            this.this_PackValueOfDictObjectItselfPackValueOfDictObjectItselfDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty>(this.PackValueOfDictObjectItself);
-            this.this_SetUnpackedValueOfDictObjectItselfSetUnpackedValueOfDictObjectItselfDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty, object>(this.SetUnpackedValueOfDictObjectItself);
-            this.this_UnpackValueOfDictObjectItselfUnpackValueOfDictObjectItselfDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty, int, int>(this.UnpackValueOfDictObjectItself);
+            this.this_PackValueOfDictObjectItselfDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty>(this.PackValueOfDictObjectItself);
+            this.this_SetUnpackedValueOfDictObjectItselfDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty, object>(this.SetUnpackedValueOfDictObjectItself);
+            this.this_UnpackValueOfDictObjectItselfDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty, int, int>(this.UnpackValueOfDictObjectItself);
         }
         
         private void PackValueOfDictObjectItself(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty objectTree) {
@@ -79,7 +79,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDictObjectItself(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(object), "DictObjectItself", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictObjectItselfSetUnpackedValueOfDictObjectItselfDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(object), "DictObjectItself", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictObjectItselfDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty UnpackFromCore(MsgPack.Unpacker unpacker) {

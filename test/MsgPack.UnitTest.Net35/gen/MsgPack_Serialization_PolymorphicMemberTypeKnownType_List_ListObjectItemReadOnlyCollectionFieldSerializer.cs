@@ -17,15 +17,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<object>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField> this_PackValueOfListObjectItemPackValueOfListObjectItemDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField> this_PackValueOfListObjectItemDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField, System.Collections.Generic.IList<object>> this_SetUnpackedValueOfListObjectItemSetUnpackedValueOfListObjectItemDelegate;
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField, System.Collections.Generic.IList<object>> this_SetUnpackedValueOfListObjectItemDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField, int, int> this_UnpackValueOfListObjectItemUnpackValueOfListObjectItemDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField, int, int> this_UnpackValueOfListObjectItemDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -62,9 +62,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "ListObjectItem"};
-            this.this_PackValueOfListObjectItemPackValueOfListObjectItemDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField>(this.PackValueOfListObjectItem);
-            this.this_SetUnpackedValueOfListObjectItemSetUnpackedValueOfListObjectItemDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField, System.Collections.Generic.IList<object>>(this.SetUnpackedValueOfListObjectItem);
-            this.this_UnpackValueOfListObjectItemUnpackValueOfListObjectItemDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField, int, int>(this.UnpackValueOfListObjectItem);
+            this.this_PackValueOfListObjectItemDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField>(this.PackValueOfListObjectItem);
+            this.this_SetUnpackedValueOfListObjectItemDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField, System.Collections.Generic.IList<object>>(this.SetUnpackedValueOfListObjectItem);
+            this.this_UnpackValueOfListObjectItemDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField, int, int>(this.UnpackValueOfListObjectItem);
         }
         
         private void PackValueOfListObjectItem(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField objectTree) {
@@ -81,6 +81,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void SetUnpackedValueOfListObjectItem(MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField unpackingContext, System.Collections.Generic.IList<object> unpackedValue) {
+            System.Collections.Generic.IList<object> existent = default(System.Collections.Generic.IList<object>);
+            existent = unpackingContext.ListObjectItem;
             System.Collections.Generic.IEnumerator<object> enumerator = unpackedValue.GetEnumerator();
             object current;
             try {
@@ -88,7 +90,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                 ; enumerator.MoveNext(); 
                 ) {
                     current = enumerator.Current;
-                    unpackingContext.ListObjectItem.Add(current);
+                    existent.Add(current);
                 }
             }
             finally {
@@ -97,7 +99,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfListObjectItem(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<object>), "ListObjectItem", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListObjectItemSetUnpackedValueOfListObjectItemDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<object>), "ListObjectItem", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListObjectItemDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField UnpackFromCore(MsgPack.Unpacker unpacker) {

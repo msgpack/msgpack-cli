@@ -17,7 +17,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<string>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty> this_PackValueOfListStaticItemPackValueOfListStaticItemDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty> this_PackValueOfListStaticItemDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty>> _packOperationList;
         
@@ -25,9 +25,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private System.Reflection.MethodBase _methodBasePolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty_set_ListStaticItem0;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty, System.Collections.Generic.IList<string>> this_SetUnpackedValueOfListStaticItemSetUnpackedValueOfListStaticItemDelegate;
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty, System.Collections.Generic.IList<string>> this_SetUnpackedValueOfListStaticItemDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty, int, int> this_UnpackValueOfListStaticItemUnpackValueOfListStaticItemDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty, int, int> this_UnpackValueOfListStaticItemDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -61,9 +61,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "ListStaticItem"};
-            this.this_PackValueOfListStaticItemPackValueOfListStaticItemDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty>(this.PackValueOfListStaticItem);
-            this.this_SetUnpackedValueOfListStaticItemSetUnpackedValueOfListStaticItemDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty, System.Collections.Generic.IList<string>>(this.SetUnpackedValueOfListStaticItem);
-            this.this_UnpackValueOfListStaticItemUnpackValueOfListStaticItemDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty, int, int>(this.UnpackValueOfListStaticItem);
+            this.this_PackValueOfListStaticItemDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty>(this.PackValueOfListStaticItem);
+            this.this_SetUnpackedValueOfListStaticItemDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty, System.Collections.Generic.IList<string>>(this.SetUnpackedValueOfListStaticItem);
+            this.this_UnpackValueOfListStaticItemDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty, int, int>(this.UnpackValueOfListStaticItem);
         }
         
         private void PackValueOfListStaticItem(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty objectTree) {
@@ -80,7 +80,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void SetUnpackedValueOfListStaticItem(MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty unpackingContext, System.Collections.Generic.IList<string> unpackedValue) {
-            if ((unpackingContext.ListStaticItem == null)) {
+            System.Collections.Generic.IList<string> existent = default(System.Collections.Generic.IList<string>);
+            existent = unpackingContext.ListStaticItem;
+            if ((existent == null)) {
                 this._methodBasePolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty_set_ListStaticItem0.Invoke(unpackingContext, new object[] {
                             unpackedValue});
             }
@@ -92,7 +94,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                     ; enumerator.MoveNext(); 
                     ) {
                         current = enumerator.Current;
-                        unpackingContext.ListStaticItem.Add(current);
+                        existent.Add(current);
                     }
                 }
                 finally {
@@ -102,7 +104,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfListStaticItem(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<string>), "ListStaticItem", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListStaticItemSetUnpackedValueOfListStaticItemDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<string>), "ListStaticItem", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListStaticItemDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty UnpackFromCore(MsgPack.Unpacker unpacker) {

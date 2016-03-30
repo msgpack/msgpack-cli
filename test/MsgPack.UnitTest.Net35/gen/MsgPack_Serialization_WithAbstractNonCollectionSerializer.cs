@@ -17,15 +17,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.IO.Stream> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractNonCollection> this_PackValueOfNonCollectionPackValueOfNonCollectionDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractNonCollection> this_PackValueOfNonCollectionDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractNonCollection>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractNonCollection>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.WithAbstractNonCollection, System.IO.Stream> this_SetUnpackedValueOfNonCollectionSetUnpackedValueOfNonCollectionDelegate;
+        private System.Action<MsgPack.Serialization.WithAbstractNonCollection, System.IO.Stream> this_SetUnpackedValueOfNonCollectionDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractNonCollection, int, int> this_UnpackValueOfNonCollectionUnpackValueOfNonCollectionDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractNonCollection, int, int> this_UnpackValueOfNonCollectionDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -56,9 +56,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "NonCollection"};
-            this.this_PackValueOfNonCollectionPackValueOfNonCollectionDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractNonCollection>(this.PackValueOfNonCollection);
-            this.this_SetUnpackedValueOfNonCollectionSetUnpackedValueOfNonCollectionDelegate = new System.Action<MsgPack.Serialization.WithAbstractNonCollection, System.IO.Stream>(this.SetUnpackedValueOfNonCollection);
-            this.this_UnpackValueOfNonCollectionUnpackValueOfNonCollectionDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractNonCollection, int, int>(this.UnpackValueOfNonCollection);
+            this.this_PackValueOfNonCollectionDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.WithAbstractNonCollection>(this.PackValueOfNonCollection);
+            this.this_SetUnpackedValueOfNonCollectionDelegate = new System.Action<MsgPack.Serialization.WithAbstractNonCollection, System.IO.Stream>(this.SetUnpackedValueOfNonCollection);
+            this.this_UnpackValueOfNonCollectionDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.WithAbstractNonCollection, int, int>(this.UnpackValueOfNonCollection);
         }
         
         private void PackValueOfNonCollection(MsgPack.Packer packer, MsgPack.Serialization.WithAbstractNonCollection objectTree) {
@@ -79,7 +79,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNonCollection(MsgPack.Unpacker unpacker, MsgPack.Serialization.WithAbstractNonCollection unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.IO.Stream), "NonCollection", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonCollectionSetUnpackedValueOfNonCollectionDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.IO.Stream), "NonCollection", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonCollectionDelegate);
         }
         
         protected internal override MsgPack.Serialization.WithAbstractNonCollection UnpackFromCore(MsgPack.Unpacker unpacker) {

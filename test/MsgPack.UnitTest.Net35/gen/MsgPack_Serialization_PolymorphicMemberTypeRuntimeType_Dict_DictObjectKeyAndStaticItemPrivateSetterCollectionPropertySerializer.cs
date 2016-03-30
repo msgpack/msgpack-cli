@@ -17,7 +17,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<object, string>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty> this_PackValueOfDictObjectKeyAndStaticItemPackValueOfDictObjectKeyAndStaticItemDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty> this_PackValueOfDictObjectKeyAndStaticItemDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty>> _packOperationList;
         
@@ -25,9 +25,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private System.Reflection.MethodBase _methodBasePolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty_set_DictObjectKeyAndStaticItem0;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty, System.Collections.Generic.IDictionary<object, string>> this_SetUnpackedValueOfDictObjectKeyAndStaticItemSetUnpackedValueOfDictObjectKeyAndStaticItemDelegate;
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty, System.Collections.Generic.IDictionary<object, string>> this_SetUnpackedValueOfDictObjectKeyAndStaticItemDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty, int, int> this_UnpackValueOfDictObjectKeyAndStaticItemUnpackValueOfDictObjectKeyAndStaticItemDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty, int, int> this_UnpackValueOfDictObjectKeyAndStaticItemDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -63,9 +63,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "DictObjectKeyAndStaticItem"};
-            this.this_PackValueOfDictObjectKeyAndStaticItemPackValueOfDictObjectKeyAndStaticItemDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty>(this.PackValueOfDictObjectKeyAndStaticItem);
-            this.this_SetUnpackedValueOfDictObjectKeyAndStaticItemSetUnpackedValueOfDictObjectKeyAndStaticItemDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty, System.Collections.Generic.IDictionary<object, string>>(this.SetUnpackedValueOfDictObjectKeyAndStaticItem);
-            this.this_UnpackValueOfDictObjectKeyAndStaticItemUnpackValueOfDictObjectKeyAndStaticItemDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty, int, int>(this.UnpackValueOfDictObjectKeyAndStaticItem);
+            this.this_PackValueOfDictObjectKeyAndStaticItemDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty>(this.PackValueOfDictObjectKeyAndStaticItem);
+            this.this_SetUnpackedValueOfDictObjectKeyAndStaticItemDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty, System.Collections.Generic.IDictionary<object, string>>(this.SetUnpackedValueOfDictObjectKeyAndStaticItem);
+            this.this_UnpackValueOfDictObjectKeyAndStaticItemDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty, int, int>(this.UnpackValueOfDictObjectKeyAndStaticItem);
         }
         
         private void PackValueOfDictObjectKeyAndStaticItem(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty objectTree) {
@@ -82,7 +82,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void SetUnpackedValueOfDictObjectKeyAndStaticItem(MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty unpackingContext, System.Collections.Generic.IDictionary<object, string> unpackedValue) {
-            if ((unpackingContext.DictObjectKeyAndStaticItem == null)) {
+            System.Collections.Generic.IDictionary<object, string> existent = default(System.Collections.Generic.IDictionary<object, string>);
+            existent = unpackingContext.DictObjectKeyAndStaticItem;
+            if ((existent == null)) {
                 this._methodBasePolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty_set_DictObjectKeyAndStaticItem0.Invoke(unpackingContext, new object[] {
                             unpackedValue});
             }
@@ -94,7 +96,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                     ; enumerator.MoveNext(); 
                     ) {
                         current = enumerator.Current;
-                        unpackingContext.DictObjectKeyAndStaticItem.Add(current.Key, current.Value);
+                        existent.Add(current.Key, current.Value);
                     }
                 }
                 finally {
@@ -104,7 +106,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDictObjectKeyAndStaticItem(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<object, string>), "DictObjectKeyAndStaticItem", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictObjectKeyAndStaticItemSetUnpackedValueOfDictObjectKeyAndStaticItemDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<object, string>), "DictObjectKeyAndStaticItem", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictObjectKeyAndStaticItemDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty UnpackFromCore(MsgPack.Unpacker unpacker) {

@@ -17,15 +17,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<object> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty> this_PackValueOfListObjectItselfPackValueOfListObjectItselfDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty> this_PackValueOfListObjectItselfDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty, object> this_SetUnpackedValueOfListObjectItselfSetUnpackedValueOfListObjectItselfDelegate;
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty, object> this_SetUnpackedValueOfListObjectItselfDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty, int, int> this_UnpackValueOfListObjectItselfUnpackValueOfListObjectItselfDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty, int, int> this_UnpackValueOfListObjectItselfDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -38,8 +38,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<string, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
             typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
-            typeMap0.Add("0", typeof(System.Collections.ObjectModel.Collection<string>));
             typeMap0.Add("1", typeof(System.Collections.Generic.List<string>));
+            typeMap0.Add("0", typeof(System.Collections.ObjectModel.Collection<string>));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(object), typeMap0);
             this._serializer0 = context.GetSerializer<object>(schema0);
             System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty>[]);
@@ -60,9 +60,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "ListObjectItself"};
-            this.this_PackValueOfListObjectItselfPackValueOfListObjectItselfDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty>(this.PackValueOfListObjectItself);
-            this.this_SetUnpackedValueOfListObjectItselfSetUnpackedValueOfListObjectItselfDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty, object>(this.SetUnpackedValueOfListObjectItself);
-            this.this_UnpackValueOfListObjectItselfUnpackValueOfListObjectItselfDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty, int, int>(this.UnpackValueOfListObjectItself);
+            this.this_PackValueOfListObjectItselfDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty>(this.PackValueOfListObjectItself);
+            this.this_SetUnpackedValueOfListObjectItselfDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty, object>(this.SetUnpackedValueOfListObjectItself);
+            this.this_UnpackValueOfListObjectItselfDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty, int, int>(this.UnpackValueOfListObjectItself);
         }
         
         private void PackValueOfListObjectItself(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty objectTree) {
@@ -83,7 +83,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfListObjectItself(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(object), "ListObjectItself", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListObjectItselfSetUnpackedValueOfListObjectItselfDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(object), "ListObjectItself", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListObjectItselfDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty UnpackFromCore(MsgPack.Unpacker unpacker) {

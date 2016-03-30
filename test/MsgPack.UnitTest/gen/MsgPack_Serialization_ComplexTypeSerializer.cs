@@ -17,57 +17,87 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Uri> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType> this_PackValueOfSourcePackValueOfSourceDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType> this_PackValueOfSourceDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<byte[]> _serializer1;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType> this_PackValueOfDataPackValueOfDataDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType> this_PackValueOfDataDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.DateTime> _serializer2;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType> this_PackValueOfTimeStampPackValueOfTimeStampDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType> this_PackValueOfTimeStampDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<System.DateTime, string>> _serializer3;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType> this_PackValueOfHistoryPackValueOfHistoryDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType> this_PackValueOfHistoryDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<int>> _serializer4;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType> this_PackValueOfPointsPackValueOfPointsDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType> this_PackValueOfPointsDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.ComplexType, System.Uri> this_SetUnpackedValueOfSourceSetUnpackedValueOfSourceDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfSourceAsyncDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int> this_UnpackValueOfSourceUnpackValueOfSourceDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfDataAsyncDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexType, byte[]> this_SetUnpackedValueOfDataSetUnpackedValueOfDataDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfTimeStampAsyncDelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, byte[]> MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueUnpackBinaryValueDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfHistoryAsyncDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int> this_UnpackValueOfDataUnpackValueOfDataDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfPointsAsyncDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexType, System.DateTime> this_SetUnpackedValueOfTimeStampSetUnpackedValueOfTimeStampDelegate;
+        private System.Collections.Generic.IList<System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationListAsync;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int> this_UnpackValueOfTimeStampUnpackValueOfTimeStampDelegate;
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationTableAsync;
         
-        private System.Action<MsgPack.Serialization.ComplexType, System.Collections.Generic.Dictionary<System.DateTime, string>> this_SetUnpackedValueOfHistorySetUnpackedValueOfHistoryDelegate;
+        private System.Action<MsgPack.Serialization.ComplexType, System.Uri> this_SetUnpackedValueOfSourceDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int> this_UnpackValueOfHistoryUnpackValueOfHistoryDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int> this_UnpackValueOfSourceDelegate;
+        
+        private System.Action<MsgPack.Serialization.ComplexType, byte[]> this_SetUnpackedValueOfDataDelegate;
+        
+        private System.Func<MsgPack.Unpacker, System.Type, string, byte[]> MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int> this_UnpackValueOfDataDelegate;
+        
+        private System.Action<MsgPack.Serialization.ComplexType, System.DateTime> this_SetUnpackedValueOfTimeStampDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int> this_UnpackValueOfTimeStampDelegate;
+        
+        private System.Action<MsgPack.Serialization.ComplexType, System.Collections.Generic.Dictionary<System.DateTime, string>> this_SetUnpackedValueOfHistoryDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int> this_UnpackValueOfHistoryDelegate;
         
         private System.Reflection.MethodBase _methodBaseComplexType_set_Points0;
         
-        private System.Action<MsgPack.Serialization.ComplexType, System.Collections.Generic.List<int>> this_SetUnpackedValueOfPointsSetUnpackedValueOfPointsDelegate;
+        private System.Action<MsgPack.Serialization.ComplexType, System.Collections.Generic.List<int>> this_SetUnpackedValueOfPointsDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int> this_UnpackValueOfPointsUnpackValueOfPointsDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int> this_UnpackValueOfPointsDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>> _unpackOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>> _unpackOperationTable;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfSourceAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<byte[]>> MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfDataAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfTimeStampAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfHistoryAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfPointsAsyncDelegate;
+        
+        private System.Collections.Generic.IList<System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationListAsync;
+        
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationTableAsync;
         
         public MsgPack_Serialization_ComplexTypeSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
@@ -95,6 +125,14 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationList[3] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfHistory);
             packOperationList[4] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfPoints);
             this._packOperationList = packOperationList;
+            System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] packOperationListAsync = default(System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            packOperationListAsync = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>[5];
+            packOperationListAsync[0] = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfSourceAsync);
+            packOperationListAsync[1] = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfDataAsync);
+            packOperationListAsync[2] = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfTimeStampAsync);
+            packOperationListAsync[3] = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfHistoryAsync);
+            packOperationListAsync[4] = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfPointsAsync);
+            this._packOperationListAsync = packOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>>);
             packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>>(5);
             packOperationTable["Source"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfSource);
@@ -103,6 +141,14 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationTable["History"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfHistory);
             packOperationTable["Points"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfPoints);
             this._packOperationTable = packOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>> packOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            packOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(5);
+            packOperationTableAsync["Source"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfSourceAsync);
+            packOperationTableAsync["Data"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfDataAsync);
+            packOperationTableAsync["TimeStamp"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfTimeStampAsync);
+            packOperationTableAsync["History"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfHistoryAsync);
+            packOperationTableAsync["Points"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfPointsAsync);
+            this._packOperationTableAsync = packOperationTableAsync;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>[5];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfSource);
@@ -111,6 +157,14 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             unpackOperationList[3] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfHistory);
             unpackOperationList[4] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfPoints);
             this._unpackOperationList = unpackOperationList;
+            System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] unpackOperationListAsync = default(System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            unpackOperationListAsync = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[5];
+            unpackOperationListAsync[0] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfSourceAsync);
+            unpackOperationListAsync[1] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfDataAsync);
+            unpackOperationListAsync[2] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfTimeStampAsync);
+            unpackOperationListAsync[3] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfHistoryAsync);
+            unpackOperationListAsync[4] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfPointsAsync);
+            this._unpackOperationListAsync = unpackOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>>);
             unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>>(5);
             unpackOperationTable["Source"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfSource);
@@ -119,28 +173,47 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             unpackOperationTable["History"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfHistory);
             unpackOperationTable["Points"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfPoints);
             this._unpackOperationTable = unpackOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> unpackOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            unpackOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(5);
+            unpackOperationTableAsync["Source"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfSourceAsync);
+            unpackOperationTableAsync["Data"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfDataAsync);
+            unpackOperationTableAsync["TimeStamp"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfTimeStampAsync);
+            unpackOperationTableAsync["History"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfHistoryAsync);
+            unpackOperationTableAsync["Points"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfPointsAsync);
+            this._unpackOperationTableAsync = unpackOperationTableAsync;
             this._memberNames = new string[] {
                     "Source",
                     "Data",
                     "TimeStamp",
                     "History",
                     "Points"};
-            this.this_PackValueOfSourcePackValueOfSourceDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfSource);
-            this.this_PackValueOfDataPackValueOfDataDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfData);
-            this.this_PackValueOfTimeStampPackValueOfTimeStampDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfTimeStamp);
-            this.this_PackValueOfHistoryPackValueOfHistoryDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfHistory);
-            this.this_PackValueOfPointsPackValueOfPointsDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfPoints);
-            this.this_SetUnpackedValueOfSourceSetUnpackedValueOfSourceDelegate = new System.Action<MsgPack.Serialization.ComplexType, System.Uri>(this.SetUnpackedValueOfSource);
-            this.this_UnpackValueOfSourceUnpackValueOfSourceDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfSource);
-            this.this_SetUnpackedValueOfDataSetUnpackedValueOfDataDelegate = new System.Action<MsgPack.Serialization.ComplexType, byte[]>(this.SetUnpackedValueOfData);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueUnpackBinaryValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, byte[]>(MsgPack.Serialization.UnpackHelpers.UnpackBinaryValue);
-            this.this_UnpackValueOfDataUnpackValueOfDataDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfData);
-            this.this_SetUnpackedValueOfTimeStampSetUnpackedValueOfTimeStampDelegate = new System.Action<MsgPack.Serialization.ComplexType, System.DateTime>(this.SetUnpackedValueOfTimeStamp);
-            this.this_UnpackValueOfTimeStampUnpackValueOfTimeStampDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfTimeStamp);
-            this.this_SetUnpackedValueOfHistorySetUnpackedValueOfHistoryDelegate = new System.Action<MsgPack.Serialization.ComplexType, System.Collections.Generic.Dictionary<System.DateTime, string>>(this.SetUnpackedValueOfHistory);
-            this.this_UnpackValueOfHistoryUnpackValueOfHistoryDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfHistory);
-            this.this_SetUnpackedValueOfPointsSetUnpackedValueOfPointsDelegate = new System.Action<MsgPack.Serialization.ComplexType, System.Collections.Generic.List<int>>(this.SetUnpackedValueOfPoints);
-            this.this_UnpackValueOfPointsUnpackValueOfPointsDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfPoints);
+            this.this_PackValueOfSourceDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfSource);
+            this.this_PackValueOfDataDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfData);
+            this.this_PackValueOfTimeStampDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfTimeStamp);
+            this.this_PackValueOfHistoryDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfHistory);
+            this.this_PackValueOfPointsDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfPoints);
+            this.this_PackValueOfSourceAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfSourceAsync);
+            this.this_PackValueOfDataAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfDataAsync);
+            this.this_PackValueOfTimeStampAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfTimeStampAsync);
+            this.this_PackValueOfHistoryAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfHistoryAsync);
+            this.this_PackValueOfPointsAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfPointsAsync);
+            this.this_SetUnpackedValueOfSourceDelegate = new System.Action<MsgPack.Serialization.ComplexType, System.Uri>(this.SetUnpackedValueOfSource);
+            this.this_UnpackValueOfSourceDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfSource);
+            this.this_SetUnpackedValueOfDataDelegate = new System.Action<MsgPack.Serialization.ComplexType, byte[]>(this.SetUnpackedValueOfData);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, byte[]>(MsgPack.Serialization.UnpackHelpers.UnpackBinaryValue);
+            this.this_UnpackValueOfDataDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfData);
+            this.this_SetUnpackedValueOfTimeStampDelegate = new System.Action<MsgPack.Serialization.ComplexType, System.DateTime>(this.SetUnpackedValueOfTimeStamp);
+            this.this_UnpackValueOfTimeStampDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfTimeStamp);
+            this.this_SetUnpackedValueOfHistoryDelegate = new System.Action<MsgPack.Serialization.ComplexType, System.Collections.Generic.Dictionary<System.DateTime, string>>(this.SetUnpackedValueOfHistory);
+            this.this_UnpackValueOfHistoryDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfHistory);
+            this.this_SetUnpackedValueOfPointsDelegate = new System.Action<MsgPack.Serialization.ComplexType, System.Collections.Generic.List<int>>(this.SetUnpackedValueOfPoints);
+            this.this_UnpackValueOfPointsDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int>(this.UnpackValueOfPoints);
+            this.this_UnpackValueOfSourceAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfSourceAsync);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueAsyncDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<byte[]>>(MsgPack.Serialization.UnpackHelpers.UnpackBinaryValueAsync);
+            this.this_UnpackValueOfDataAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfDataAsync);
+            this.this_UnpackValueOfTimeStampAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfTimeStampAsync);
+            this.this_UnpackValueOfHistoryAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfHistoryAsync);
+            this.this_UnpackValueOfPointsAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfPointsAsync);
         }
         
         private void PackValueOfSource(MsgPack.Packer packer, MsgPack.Serialization.ComplexType objectTree) {
@@ -172,12 +245,41 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
         }
         
+        private System.Threading.Tasks.Task PackValueOfSourceAsync(MsgPack.Packer packer, MsgPack.Serialization.ComplexType objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer0.PackToAsync(packer, objectTree.Source, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task PackValueOfDataAsync(MsgPack.Packer packer, MsgPack.Serialization.ComplexType objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer1.PackToAsync(packer, objectTree.Data, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task PackValueOfTimeStampAsync(MsgPack.Packer packer, MsgPack.Serialization.ComplexType objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer2.PackToAsync(packer, objectTree.TimeStamp, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task PackValueOfHistoryAsync(MsgPack.Packer packer, MsgPack.Serialization.ComplexType objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer3.PackToAsync(packer, objectTree.History, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task PackValueOfPointsAsync(MsgPack.Packer packer, MsgPack.Serialization.ComplexType objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer4.PackToAsync(packer, objectTree.Points, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task PackToAsyncCore(MsgPack.Packer packer, MsgPack.Serialization.ComplexType objectTree, System.Threading.CancellationToken cancellationToken) {
+            if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
+                return MsgPack.Serialization.PackHelpers.PackToArrayAsync(packer, objectTree, this._packOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.PackHelpers.PackToMapAsync(packer, objectTree, this._packOperationTableAsync, cancellationToken);
+            }
+        }
+        
         private void SetUnpackedValueOfSource(MsgPack.Serialization.ComplexType unpackingContext, System.Uri unpackedValue) {
             unpackingContext.Source = unpackedValue;
         }
         
         private void UnpackValueOfSource(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexType unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Uri), "Source", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfSourceSetUnpackedValueOfSourceDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Uri), "Source", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfSourceDelegate);
         }
         
         private void SetUnpackedValueOfData(MsgPack.Serialization.ComplexType unpackingContext, byte[] unpackedValue) {
@@ -185,7 +287,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfData(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexType unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(byte[]), "Data", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueUnpackBinaryValueDelegate, this.this_SetUnpackedValueOfDataSetUnpackedValueOfDataDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(byte[]), "Data", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueDelegate, this.this_SetUnpackedValueOfDataDelegate);
         }
         
         private void SetUnpackedValueOfTimeStamp(MsgPack.Serialization.ComplexType unpackingContext, System.DateTime unpackedValue) {
@@ -193,10 +295,12 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTimeStamp(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexType unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.DateTime), "TimeStamp", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTimeStampSetUnpackedValueOfTimeStampDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.DateTime), "TimeStamp", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTimeStampDelegate);
         }
         
         private void SetUnpackedValueOfHistory(MsgPack.Serialization.ComplexType unpackingContext, System.Collections.Generic.Dictionary<System.DateTime, string> unpackedValue) {
+            System.Collections.Generic.Dictionary<System.DateTime, string> existent = default(System.Collections.Generic.Dictionary<System.DateTime, string>);
+            existent = unpackingContext.History;
             System.Collections.Generic.Dictionary<System.DateTime, string>.Enumerator enumerator = unpackedValue.GetEnumerator();
             System.Collections.Generic.KeyValuePair<System.DateTime, string> current;
             try {
@@ -204,7 +308,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                 ; enumerator.MoveNext(); 
                 ) {
                     current = enumerator.Current;
-                    unpackingContext.History.Add(current.Key, current.Value);
+                    existent.Add(current.Key, current.Value);
                 }
             }
             finally {
@@ -213,33 +317,35 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfHistory(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexType unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<System.DateTime, string>), "History", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfHistorySetUnpackedValueOfHistoryDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<System.DateTime, string>), "History", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfHistoryDelegate);
         }
         
         private void SetUnpackedValueOfPoints(MsgPack.Serialization.ComplexType unpackingContext, System.Collections.Generic.List<int> unpackedValue) {
-            if ((unpackingContext.Points == null)) {
+            System.Collections.Generic.List<int> existent = default(System.Collections.Generic.List<int>);
+            existent = unpackingContext.Points;
+            if ((existent == null)) {
                 this._methodBaseComplexType_set_Points0.Invoke(unpackingContext, new object[] {
                             unpackedValue});
             }
             else {
-                System.Collections.Generic.List<int>.Enumerator enumerator0 = unpackedValue.GetEnumerator();
-                int current0;
+                System.Collections.Generic.List<int>.Enumerator enumerator = unpackedValue.GetEnumerator();
+                int current;
                 try {
                     for (
-                    ; enumerator0.MoveNext(); 
+                    ; enumerator.MoveNext(); 
                     ) {
-                        current0 = enumerator0.Current;
-                        unpackingContext.Points.Add(current0);
+                        current = enumerator.Current;
+                        existent.Add(current);
                     }
                 }
                 finally {
-                    enumerator0.Dispose();
+                    enumerator.Dispose();
                 }
             }
         }
         
         private void UnpackValueOfPoints(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexType unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer4, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<int>), "Points", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfPointsSetUnpackedValueOfPointsDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer4, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<int>), "Points", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfPointsDelegate);
         }
         
         protected internal override MsgPack.Serialization.ComplexType UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -250,6 +356,37 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
             else {
                 return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.ComplexType>(), this._unpackOperationTable);
+            }
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfSourceAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexType unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Uri), "Source", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfSourceDelegate, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfDataAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexType unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(byte[]), "Data", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueAsyncDelegate, this.this_SetUnpackedValueOfDataDelegate, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfTimeStampAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexType unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.DateTime), "TimeStamp", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTimeStampDelegate, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfHistoryAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexType unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<System.DateTime, string>), "History", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfHistoryDelegate, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfPointsAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexType unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer4, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<int>), "Points", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfPointsDelegate, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task<MsgPack.Serialization.ComplexType> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {
+            MsgPack.Serialization.ComplexType result = default(MsgPack.Serialization.ComplexType);
+            result = new MsgPack.Serialization.ComplexType();
+            if (unpacker.IsArrayHeader) {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArrayAsync(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.ComplexType>(), this._memberNames, this._unpackOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMapAsync(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.ComplexType>(), this._unpackOperationTableAsync, cancellationToken);
             }
         }
     }

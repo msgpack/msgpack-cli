@@ -17,25 +17,25 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure> this_PackValueOfNamePackValueOfNameDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure> this_PackValueOfNameDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.ComplexTypeGenerated> _serializer1;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure> this_PackValueOfNestedPackValueOfNestedDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure> this_PackValueOfNestedDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, string> this_SetUnpackedValueOfNameSetUnpackedValueOfNameDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, string> this_SetUnpackedValueOfNameDelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int> this_UnpackValueOfNameUnpackValueOfNameDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int> this_UnpackValueOfNameDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, MsgPack.Serialization.ComplexTypeGenerated> this_SetUnpackedValueOfNestedSetUnpackedValueOfNestedDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, MsgPack.Serialization.ComplexTypeGenerated> this_SetUnpackedValueOfNestedDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int> this_UnpackValueOfNestedUnpackValueOfNestedDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int> this_UnpackValueOfNestedDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -74,13 +74,13 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._memberNames = new string[] {
                     "Name",
                     "Nested"};
-            this.this_PackValueOfNamePackValueOfNameDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfName);
-            this.this_PackValueOfNestedPackValueOfNestedDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfNested);
-            this.this_SetUnpackedValueOfNameSetUnpackedValueOfNameDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, string>(this.SetUnpackedValueOfName);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
-            this.this_UnpackValueOfNameUnpackValueOfNameDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>(this.UnpackValueOfName);
-            this.this_SetUnpackedValueOfNestedSetUnpackedValueOfNestedDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, MsgPack.Serialization.ComplexTypeGenerated>(this.SetUnpackedValueOfNested);
-            this.this_UnpackValueOfNestedUnpackValueOfNestedDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>(this.UnpackValueOfNested);
+            this.this_PackValueOfNameDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfName);
+            this.this_PackValueOfNestedDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfNested);
+            this.this_SetUnpackedValueOfNameDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, string>(this.SetUnpackedValueOfName);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
+            this.this_UnpackValueOfNameDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>(this.UnpackValueOfName);
+            this.this_SetUnpackedValueOfNestedDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, MsgPack.Serialization.ComplexTypeGenerated>(this.SetUnpackedValueOfNested);
+            this.this_UnpackValueOfNestedDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>(this.UnpackValueOfNested);
         }
         
         private void PackValueOfName(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure objectTree) {
@@ -105,7 +105,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfName(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "Name", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate, this.this_SetUnpackedValueOfNameSetUnpackedValueOfNameDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "Name", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfNameDelegate);
         }
         
         private void SetUnpackedValueOfNested(MsgPack.Serialization.ComplexTypeGeneratedEnclosure unpackingContext, MsgPack.Serialization.ComplexTypeGenerated unpackedValue) {
@@ -113,7 +113,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNested(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Nested", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNestedSetUnpackedValueOfNestedDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Nested", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNestedDelegate);
         }
         
         protected internal override MsgPack.Serialization.ComplexTypeGeneratedEnclosure UnpackFromCore(MsgPack.Unpacker unpacker) {

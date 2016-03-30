@@ -17,41 +17,63 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<int, int>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType> this_PackValueOfDictionaryFieldPackValueOfDictionaryFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType> this_PackValueOfDictionaryFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<int[]> _serializer1;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType> this_PackValueOfInt32ArrayFieldPackValueOfInt32ArrayFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType> this_PackValueOfInt32ArrayFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer2;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType> this_PackValueOfStringFieldPackValueOfStringFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType> this_PackValueOfStringFieldDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>> _packOperationTable;
         
-        private System.Func<UnpackingContext, MsgPack.Serialization.TestValueType> this_CreateInstanceFromContextCreateInstanceFromContextDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfDictionaryFieldAsyncDelegate;
         
-        private System.Action<UnpackingContext, System.Collections.Generic.Dictionary<int, int>> this_SetUnpackedValueOfDictionaryFieldSetUnpackedValueOfDictionaryFieldDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfInt32ArrayFieldAsyncDelegate;
         
-        private System.Action<MsgPack.Unpacker, UnpackingContext, int, int> this_UnpackValueOfDictionaryFieldUnpackValueOfDictionaryFieldDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfStringFieldAsyncDelegate;
         
-        private System.Action<UnpackingContext, int[]> this_SetUnpackedValueOfInt32ArrayFieldSetUnpackedValueOfInt32ArrayFieldDelegate;
+        private System.Collections.Generic.IList<System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationListAsync;
         
-        private System.Action<MsgPack.Unpacker, UnpackingContext, int, int> this_UnpackValueOfInt32ArrayFieldUnpackValueOfInt32ArrayFieldDelegate;
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationTableAsync;
         
-        private System.Action<UnpackingContext, string> this_SetUnpackedValueOfStringFieldSetUnpackedValueOfStringFieldDelegate;
+        private System.Func<UnpackingContext, MsgPack.Serialization.TestValueType> this_CreateInstanceFromContextDelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate;
+        private System.Action<UnpackingContext, System.Collections.Generic.Dictionary<int, int>> this_SetUnpackedValueOfDictionaryFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, UnpackingContext, int, int> this_UnpackValueOfStringFieldUnpackValueOfStringFieldDelegate;
+        private System.Action<MsgPack.Unpacker, UnpackingContext, int, int> this_UnpackValueOfDictionaryFieldDelegate;
+        
+        private System.Action<UnpackingContext, int[]> this_SetUnpackedValueOfInt32ArrayFieldDelegate;
+        
+        private System.Action<MsgPack.Unpacker, UnpackingContext, int, int> this_UnpackValueOfInt32ArrayFieldDelegate;
+        
+        private System.Action<UnpackingContext, string> this_SetUnpackedValueOfStringFieldDelegate;
+        
+        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
+        
+        private System.Action<MsgPack.Unpacker, UnpackingContext, int, int> this_UnpackValueOfStringFieldDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, UnpackingContext, int, int>> _unpackOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, UnpackingContext, int, int>> _unpackOperationTable;
+        
+        private System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfDictionaryFieldAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfInt32ArrayFieldAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<string>> MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfStringFieldAsyncDelegate;
+        
+        private System.Collections.Generic.IList<System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationListAsync;
+        
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationTableAsync;
         
         public MsgPack_Serialization_TestValueTypeSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
@@ -70,39 +92,70 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationList[1] = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfInt32ArrayField);
             packOperationList[2] = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfStringField);
             this._packOperationList = packOperationList;
+            System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] packOperationListAsync = default(System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            packOperationListAsync = new System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>[3];
+            packOperationListAsync[0] = new System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfDictionaryFieldAsync);
+            packOperationListAsync[1] = new System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfInt32ArrayFieldAsync);
+            packOperationListAsync[2] = new System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfStringFieldAsync);
+            this._packOperationListAsync = packOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>>);
             packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>>(3);
             packOperationTable["DictionaryField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfDictionaryField);
             packOperationTable["Int32ArrayField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfInt32ArrayField);
             packOperationTable["StringField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfStringField);
             this._packOperationTable = packOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>> packOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            packOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(3);
+            packOperationTableAsync["DictionaryField"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfDictionaryFieldAsync);
+            packOperationTableAsync["Int32ArrayField"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfInt32ArrayFieldAsync);
+            packOperationTableAsync["StringField"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfStringFieldAsync);
+            this._packOperationTableAsync = packOperationTableAsync;
             System.Action<MsgPack.Unpacker, UnpackingContext, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, UnpackingContext, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>[3];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfDictionaryField);
             unpackOperationList[1] = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfInt32ArrayField);
             unpackOperationList[2] = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfStringField);
             this._unpackOperationList = unpackOperationList;
+            System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] unpackOperationListAsync = default(System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            unpackOperationListAsync = new System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[3];
+            unpackOperationListAsync[0] = new System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfDictionaryFieldAsync);
+            unpackOperationListAsync[1] = new System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfInt32ArrayFieldAsync);
+            unpackOperationListAsync[2] = new System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfStringFieldAsync);
+            this._unpackOperationListAsync = unpackOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, UnpackingContext, int, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, UnpackingContext, int, int>>);
             unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, UnpackingContext, int, int>>(3);
             unpackOperationTable["DictionaryField"] = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfDictionaryField);
             unpackOperationTable["Int32ArrayField"] = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfInt32ArrayField);
             unpackOperationTable["StringField"] = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfStringField);
             this._unpackOperationTable = unpackOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> unpackOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            unpackOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(3);
+            unpackOperationTableAsync["DictionaryField"] = new System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfDictionaryFieldAsync);
+            unpackOperationTableAsync["Int32ArrayField"] = new System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfInt32ArrayFieldAsync);
+            unpackOperationTableAsync["StringField"] = new System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfStringFieldAsync);
+            this._unpackOperationTableAsync = unpackOperationTableAsync;
             this._memberNames = new string[] {
                     "DictionaryField",
                     "Int32ArrayField",
                     "StringField"};
-            this.this_PackValueOfDictionaryFieldPackValueOfDictionaryFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfDictionaryField);
-            this.this_PackValueOfInt32ArrayFieldPackValueOfInt32ArrayFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfInt32ArrayField);
-            this.this_PackValueOfStringFieldPackValueOfStringFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfStringField);
-            this.this_CreateInstanceFromContextCreateInstanceFromContextDelegate = new System.Func<UnpackingContext, MsgPack.Serialization.TestValueType>(this.CreateInstanceFromContext);
-            this.this_SetUnpackedValueOfDictionaryFieldSetUnpackedValueOfDictionaryFieldDelegate = new System.Action<UnpackingContext, System.Collections.Generic.Dictionary<int, int>>(this.SetUnpackedValueOfDictionaryField);
-            this.this_UnpackValueOfDictionaryFieldUnpackValueOfDictionaryFieldDelegate = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfDictionaryField);
-            this.this_SetUnpackedValueOfInt32ArrayFieldSetUnpackedValueOfInt32ArrayFieldDelegate = new System.Action<UnpackingContext, int[]>(this.SetUnpackedValueOfInt32ArrayField);
-            this.this_UnpackValueOfInt32ArrayFieldUnpackValueOfInt32ArrayFieldDelegate = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfInt32ArrayField);
-            this.this_SetUnpackedValueOfStringFieldSetUnpackedValueOfStringFieldDelegate = new System.Action<UnpackingContext, string>(this.SetUnpackedValueOfStringField);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
-            this.this_UnpackValueOfStringFieldUnpackValueOfStringFieldDelegate = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfStringField);
+            this.this_PackValueOfDictionaryFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfDictionaryField);
+            this.this_PackValueOfInt32ArrayFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfInt32ArrayField);
+            this.this_PackValueOfStringFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfStringField);
+            this.this_PackValueOfDictionaryFieldAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfDictionaryFieldAsync);
+            this.this_PackValueOfInt32ArrayFieldAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfInt32ArrayFieldAsync);
+            this.this_PackValueOfStringFieldAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.TestValueType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfStringFieldAsync);
+            this.this_CreateInstanceFromContextDelegate = new System.Func<UnpackingContext, MsgPack.Serialization.TestValueType>(this.CreateInstanceFromContext);
+            this.this_SetUnpackedValueOfDictionaryFieldDelegate = new System.Action<UnpackingContext, System.Collections.Generic.Dictionary<int, int>>(this.SetUnpackedValueOfDictionaryField);
+            this.this_UnpackValueOfDictionaryFieldDelegate = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfDictionaryField);
+            this.this_SetUnpackedValueOfInt32ArrayFieldDelegate = new System.Action<UnpackingContext, int[]>(this.SetUnpackedValueOfInt32ArrayField);
+            this.this_UnpackValueOfInt32ArrayFieldDelegate = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfInt32ArrayField);
+            this.this_SetUnpackedValueOfStringFieldDelegate = new System.Action<UnpackingContext, string>(this.SetUnpackedValueOfStringField);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
+            this.this_UnpackValueOfStringFieldDelegate = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfStringField);
+            this.this_UnpackValueOfDictionaryFieldAsyncDelegate = new System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfDictionaryFieldAsync);
+            this.this_UnpackValueOfInt32ArrayFieldAsyncDelegate = new System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfInt32ArrayFieldAsync);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<string>>(MsgPack.Serialization.UnpackHelpers.UnpackStringValueAsync);
+            this.this_UnpackValueOfStringFieldAsyncDelegate = new System.Func<MsgPack.Unpacker, UnpackingContext, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfStringFieldAsync);
         }
         
         private void PackValueOfDictionaryField(MsgPack.Packer packer, MsgPack.Serialization.TestValueType objectTree) {
@@ -126,6 +179,27 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
         }
         
+        private System.Threading.Tasks.Task PackValueOfDictionaryFieldAsync(MsgPack.Packer packer, MsgPack.Serialization.TestValueType objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer0.PackToAsync(packer, objectTree.DictionaryField, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task PackValueOfInt32ArrayFieldAsync(MsgPack.Packer packer, MsgPack.Serialization.TestValueType objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer1.PackToAsync(packer, objectTree.Int32ArrayField, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task PackValueOfStringFieldAsync(MsgPack.Packer packer, MsgPack.Serialization.TestValueType objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer2.PackToAsync(packer, objectTree.StringField, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task PackToAsyncCore(MsgPack.Packer packer, MsgPack.Serialization.TestValueType objectTree, System.Threading.CancellationToken cancellationToken) {
+            if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
+                return MsgPack.Serialization.PackHelpers.PackToArrayAsync(packer, objectTree, this._packOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.PackHelpers.PackToMapAsync(packer, objectTree, this._packOperationTableAsync, cancellationToken);
+            }
+        }
+        
         private MsgPack.Serialization.TestValueType CreateInstanceFromContext(UnpackingContext unpackingContext) {
             MsgPack.Serialization.TestValueType result = default(MsgPack.Serialization.TestValueType);
             result.DictionaryField = unpackingContext.DictionaryField;
@@ -139,7 +213,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDictionaryField(MsgPack.Unpacker unpacker, UnpackingContext unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<int, int>), "DictionaryField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryFieldSetUnpackedValueOfDictionaryFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<int, int>), "DictionaryField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryFieldDelegate);
         }
         
         private void SetUnpackedValueOfInt32ArrayField(UnpackingContext unpackingContext, int[] unpackedValue) {
@@ -147,7 +221,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfInt32ArrayField(MsgPack.Unpacker unpacker, UnpackingContext unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(int[]), "Int32ArrayField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfInt32ArrayFieldSetUnpackedValueOfInt32ArrayFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(int[]), "Int32ArrayField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfInt32ArrayFieldDelegate);
         }
         
         private void SetUnpackedValueOfStringField(UnpackingContext unpackingContext, string unpackedValue) {
@@ -155,7 +229,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfStringField(MsgPack.Unpacker unpacker, UnpackingContext unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(string), "StringField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate, this.this_SetUnpackedValueOfStringFieldSetUnpackedValueOfStringFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(string), "StringField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfStringFieldDelegate);
         }
         
         protected internal override MsgPack.Serialization.TestValueType UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -168,10 +242,39 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             ctorArg2 = default(string);
             unpackingContext = new UnpackingContext(ctorArg0, ctorArg1, ctorArg2);
             if (unpacker.IsArrayHeader) {
-                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, unpackingContext, this.this_CreateInstanceFromContextCreateInstanceFromContextDelegate, this._memberNames, this._unpackOperationList);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, unpackingContext, this.this_CreateInstanceFromContextDelegate, this._memberNames, this._unpackOperationList);
             }
             else {
-                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, unpackingContext, this.this_CreateInstanceFromContextCreateInstanceFromContextDelegate, this._unpackOperationTable);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, unpackingContext, this.this_CreateInstanceFromContextDelegate, this._unpackOperationTable);
+            }
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfDictionaryFieldAsync(MsgPack.Unpacker unpacker, UnpackingContext unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<int, int>), "DictionaryField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryFieldDelegate, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfInt32ArrayFieldAsync(MsgPack.Unpacker unpacker, UnpackingContext unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(int[]), "Int32ArrayField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfInt32ArrayFieldDelegate, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfStringFieldAsync(MsgPack.Unpacker unpacker, UnpackingContext unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(string), "StringField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate, this.this_SetUnpackedValueOfStringFieldDelegate, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task<MsgPack.Serialization.TestValueType> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {
+            UnpackingContext unpackingContext = default(UnpackingContext);
+            System.Collections.Generic.Dictionary<int, int> ctorArg0 = default(System.Collections.Generic.Dictionary<int, int>);
+            ctorArg0 = default(System.Collections.Generic.Dictionary<int, int>);
+            int[] ctorArg1 = default(int[]);
+            ctorArg1 = default(int[]);
+            string ctorArg2 = default(string);
+            ctorArg2 = default(string);
+            unpackingContext = new UnpackingContext(ctorArg0, ctorArg1, ctorArg2);
+            if (unpacker.IsArrayHeader) {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArrayAsync(unpacker, unpackingContext, this.this_CreateInstanceFromContextDelegate, this._memberNames, this._unpackOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMapAsync(unpacker, unpackingContext, this.this_CreateInstanceFromContextDelegate, this._unpackOperationTableAsync, cancellationToken);
             }
         }
         

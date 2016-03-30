@@ -17,7 +17,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Version> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor> this_PackValueOfReferencePackValueOfReferenceDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor> this_PackValueOfReferenceDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor>> _packOperationList;
         
@@ -25,9 +25,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private System.Reflection.MethodBase _methodBasePolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor_set_Reference0;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor, System.Version> this_SetUnpackedValueOfReferenceSetUnpackedValueOfReferenceDelegate;
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor, System.Version> this_SetUnpackedValueOfReferenceDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor, int, int> this_UnpackValueOfReferenceUnpackValueOfReferenceDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor, int, int> this_UnpackValueOfReferenceDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -61,9 +61,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "Reference"};
-            this.this_PackValueOfReferencePackValueOfReferenceDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor>(this.PackValueOfReference);
-            this.this_SetUnpackedValueOfReferenceSetUnpackedValueOfReferenceDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor, System.Version>(this.SetUnpackedValueOfReference);
-            this.this_UnpackValueOfReferenceUnpackValueOfReferenceDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor, int, int>(this.UnpackValueOfReference);
+            this.this_PackValueOfReferenceDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor>(this.PackValueOfReference);
+            this.this_SetUnpackedValueOfReferenceDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor, System.Version>(this.SetUnpackedValueOfReference);
+            this.this_UnpackValueOfReferenceDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor, int, int>(this.UnpackValueOfReference);
         }
         
         private void PackValueOfReference(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor objectTree) {
@@ -85,7 +85,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfReference(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Version), "Reference", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfReferenceSetUnpackedValueOfReferenceDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Version), "Reference", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfReferenceDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor UnpackFromCore(MsgPack.Unpacker unpacker) {

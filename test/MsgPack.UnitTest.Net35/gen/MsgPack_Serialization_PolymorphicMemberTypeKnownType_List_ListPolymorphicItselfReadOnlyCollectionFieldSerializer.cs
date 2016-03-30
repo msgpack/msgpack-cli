@@ -17,15 +17,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<string>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField> this_PackValueOfListPolymorphicItselfPackValueOfListPolymorphicItselfDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField> this_PackValueOfListPolymorphicItselfDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField, System.Collections.Generic.IList<string>> this_SetUnpackedValueOfListPolymorphicItselfSetUnpackedValueOfListPolymorphicItselfDelegate;
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField, System.Collections.Generic.IList<string>> this_SetUnpackedValueOfListPolymorphicItselfDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField, int, int> this_UnpackValueOfListPolymorphicItselfUnpackValueOfListPolymorphicItselfDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField, int, int> this_UnpackValueOfListPolymorphicItselfDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -39,8 +39,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             System.Collections.Generic.Dictionary<string, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
             typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
             typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
-            typeMap0.Add("1", typeof(System.Collections.Generic.List<string>));
             typeMap0.Add("0", typeof(System.Collections.ObjectModel.Collection<string>));
+            typeMap0.Add("1", typeof(System.Collections.Generic.List<string>));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicCollection(typeof(System.Collections.Generic.IList<string>), typeMap0, null);
             this._serializer0 = context.GetSerializer<System.Collections.Generic.IList<string>>(schema0);
             System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField>[]);
@@ -61,9 +61,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "ListPolymorphicItself"};
-            this.this_PackValueOfListPolymorphicItselfPackValueOfListPolymorphicItselfDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField>(this.PackValueOfListPolymorphicItself);
-            this.this_SetUnpackedValueOfListPolymorphicItselfSetUnpackedValueOfListPolymorphicItselfDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField, System.Collections.Generic.IList<string>>(this.SetUnpackedValueOfListPolymorphicItself);
-            this.this_UnpackValueOfListPolymorphicItselfUnpackValueOfListPolymorphicItselfDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField, int, int>(this.UnpackValueOfListPolymorphicItself);
+            this.this_PackValueOfListPolymorphicItselfDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField>(this.PackValueOfListPolymorphicItself);
+            this.this_SetUnpackedValueOfListPolymorphicItselfDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField, System.Collections.Generic.IList<string>>(this.SetUnpackedValueOfListPolymorphicItself);
+            this.this_UnpackValueOfListPolymorphicItselfDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField, int, int>(this.UnpackValueOfListPolymorphicItself);
         }
         
         private void PackValueOfListPolymorphicItself(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField objectTree) {
@@ -80,6 +80,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void SetUnpackedValueOfListPolymorphicItself(MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField unpackingContext, System.Collections.Generic.IList<string> unpackedValue) {
+            System.Collections.Generic.IList<string> existent = default(System.Collections.Generic.IList<string>);
+            existent = unpackingContext.ListPolymorphicItself;
             System.Collections.Generic.IEnumerator<string> enumerator = unpackedValue.GetEnumerator();
             string current;
             try {
@@ -87,7 +89,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                 ; enumerator.MoveNext(); 
                 ) {
                     current = enumerator.Current;
-                    unpackingContext.ListPolymorphicItself.Add(current);
+                    existent.Add(current);
                 }
             }
             finally {
@@ -96,7 +98,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfListPolymorphicItself(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<string>), "ListPolymorphicItself", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListPolymorphicItselfSetUnpackedValueOfListPolymorphicItselfDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<string>), "ListPolymorphicItself", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListPolymorphicItselfDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField UnpackFromCore(MsgPack.Unpacker unpacker) {

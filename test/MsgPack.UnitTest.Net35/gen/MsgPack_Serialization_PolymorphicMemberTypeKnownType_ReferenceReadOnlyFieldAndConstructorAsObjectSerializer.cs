@@ -17,17 +17,17 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<object> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject> this_PackValueOfReferencePackValueOfReferenceDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject> this_PackValueOfReferenceDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject>> _packOperationTable;
         
-        private System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject> this_CreateInstanceFromContextCreateInstanceFromContextDelegate;
+        private System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject> this_CreateInstanceFromContextDelegate;
         
-        private System.Action<UnpackingContext, object> this_SetUnpackedValueOfReferenceSetUnpackedValueOfReferenceDelegate;
+        private System.Action<UnpackingContext, object> this_SetUnpackedValueOfReferenceDelegate;
         
-        private System.Action<MsgPack.Unpacker, UnpackingContext, int, int> this_UnpackValueOfReferenceUnpackValueOfReferenceDelegate;
+        private System.Action<MsgPack.Unpacker, UnpackingContext, int, int> this_UnpackValueOfReferenceDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -58,10 +58,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "Reference"};
-            this.this_PackValueOfReferencePackValueOfReferenceDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject>(this.PackValueOfReference);
-            this.this_CreateInstanceFromContextCreateInstanceFromContextDelegate = new System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject>(this.CreateInstanceFromContext);
-            this.this_SetUnpackedValueOfReferenceSetUnpackedValueOfReferenceDelegate = new System.Action<UnpackingContext, object>(this.SetUnpackedValueOfReference);
-            this.this_UnpackValueOfReferenceUnpackValueOfReferenceDelegate = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfReference);
+            this.this_PackValueOfReferenceDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject>(this.PackValueOfReference);
+            this.this_CreateInstanceFromContextDelegate = new System.Func<UnpackingContext, MsgPack.Serialization.PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject>(this.CreateInstanceFromContext);
+            this.this_SetUnpackedValueOfReferenceDelegate = new System.Action<UnpackingContext, object>(this.SetUnpackedValueOfReference);
+            this.this_UnpackValueOfReferenceDelegate = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfReference);
         }
         
         private void PackValueOfReference(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject objectTree) {
@@ -88,7 +88,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfReference(MsgPack.Unpacker unpacker, UnpackingContext unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(object), "Reference", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfReferenceSetUnpackedValueOfReferenceDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(object), "Reference", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfReferenceDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -97,10 +97,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             ctorArg0 = null;
             unpackingContext = new UnpackingContext(ctorArg0);
             if (unpacker.IsArrayHeader) {
-                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, unpackingContext, this.this_CreateInstanceFromContextCreateInstanceFromContextDelegate, this._memberNames, this._unpackOperationList);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArray(unpacker, unpackingContext, this.this_CreateInstanceFromContextDelegate, this._memberNames, this._unpackOperationList);
             }
             else {
-                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, unpackingContext, this.this_CreateInstanceFromContextCreateInstanceFromContextDelegate, this._unpackOperationTable);
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, unpackingContext, this.this_CreateInstanceFromContextDelegate, this._unpackOperationTable);
             }
         }
         

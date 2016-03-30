@@ -17,39 +17,63 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.Inner> this_PackValueOfAPackValueOfADelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.Inner> this_PackValueOfADelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<byte[]> _serializer1;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.Inner> this_PackValueOfBytesPackValueOfBytesDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.Inner> this_PackValueOfBytesDelegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.Inner> this_PackValueOfCPackValueOfCDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.Inner> this_PackValueOfCDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.Inner, string> this_SetUnpackedValueOfASetUnpackedValueOfADelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfAAsyncDelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfBytesAsyncDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int> this_UnpackValueOfAUnpackValueOfADelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfCAsyncDelegate;
         
-        private System.Action<MsgPack.Serialization.Inner, byte[]> this_SetUnpackedValueOfBytesSetUnpackedValueOfBytesDelegate;
+        private System.Collections.Generic.IList<System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationListAsync;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, byte[]> MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueUnpackBinaryValueDelegate;
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationTableAsync;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int> this_UnpackValueOfBytesUnpackValueOfBytesDelegate;
+        private System.Action<MsgPack.Serialization.Inner, string> this_SetUnpackedValueOfADelegate;
         
-        private System.Action<MsgPack.Serialization.Inner, string> this_SetUnpackedValueOfCSetUnpackedValueOfCDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int> this_UnpackValueOfCUnpackValueOfCDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int> this_UnpackValueOfADelegate;
+        
+        private System.Action<MsgPack.Serialization.Inner, byte[]> this_SetUnpackedValueOfBytesDelegate;
+        
+        private System.Func<MsgPack.Unpacker, System.Type, string, byte[]> MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int> this_UnpackValueOfBytesDelegate;
+        
+        private System.Action<MsgPack.Serialization.Inner, string> this_SetUnpackedValueOfCDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int> this_UnpackValueOfCDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>> _unpackOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>> _unpackOperationTable;
+        
+        private System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<string>> MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfAAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<byte[]>> MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfBytesAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfCAsyncDelegate;
+        
+        private System.Collections.Generic.IList<System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationListAsync;
+        
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationTableAsync;
         
         public MsgPack_Serialization_InnerSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
@@ -65,39 +89,71 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationList[1] = new System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>(this.PackValueOfBytes);
             packOperationList[2] = new System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>(this.PackValueOfC);
             this._packOperationList = packOperationList;
+            System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] packOperationListAsync = default(System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            packOperationListAsync = new System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>[3];
+            packOperationListAsync[0] = new System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfAAsync);
+            packOperationListAsync[1] = new System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfBytesAsync);
+            packOperationListAsync[2] = new System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfCAsync);
+            this._packOperationListAsync = packOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>>);
             packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>>(3);
             packOperationTable["A"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>(this.PackValueOfA);
             packOperationTable["Bytes"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>(this.PackValueOfBytes);
             packOperationTable["C"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>(this.PackValueOfC);
             this._packOperationTable = packOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>> packOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            packOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(3);
+            packOperationTableAsync["A"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfAAsync);
+            packOperationTableAsync["Bytes"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfBytesAsync);
+            packOperationTableAsync["C"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfCAsync);
+            this._packOperationTableAsync = packOperationTableAsync;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>[3];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>(this.UnpackValueOfA);
             unpackOperationList[1] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>(this.UnpackValueOfBytes);
             unpackOperationList[2] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>(this.UnpackValueOfC);
             this._unpackOperationList = unpackOperationList;
+            System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] unpackOperationListAsync = default(System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            unpackOperationListAsync = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[3];
+            unpackOperationListAsync[0] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfAAsync);
+            unpackOperationListAsync[1] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfBytesAsync);
+            unpackOperationListAsync[2] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfCAsync);
+            this._unpackOperationListAsync = unpackOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>>);
             unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>>(3);
             unpackOperationTable["A"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>(this.UnpackValueOfA);
             unpackOperationTable["Bytes"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>(this.UnpackValueOfBytes);
             unpackOperationTable["C"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>(this.UnpackValueOfC);
             this._unpackOperationTable = unpackOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> unpackOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            unpackOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(3);
+            unpackOperationTableAsync["A"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfAAsync);
+            unpackOperationTableAsync["Bytes"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfBytesAsync);
+            unpackOperationTableAsync["C"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfCAsync);
+            this._unpackOperationTableAsync = unpackOperationTableAsync;
             this._memberNames = new string[] {
                     "A",
                     "Bytes",
                     "C"};
-            this.this_PackValueOfAPackValueOfADelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>(this.PackValueOfA);
-            this.this_PackValueOfBytesPackValueOfBytesDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>(this.PackValueOfBytes);
-            this.this_PackValueOfCPackValueOfCDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>(this.PackValueOfC);
-            this.this_SetUnpackedValueOfASetUnpackedValueOfADelegate = new System.Action<MsgPack.Serialization.Inner, string>(this.SetUnpackedValueOfA);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
-            this.this_UnpackValueOfAUnpackValueOfADelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>(this.UnpackValueOfA);
-            this.this_SetUnpackedValueOfBytesSetUnpackedValueOfBytesDelegate = new System.Action<MsgPack.Serialization.Inner, byte[]>(this.SetUnpackedValueOfBytes);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueUnpackBinaryValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, byte[]>(MsgPack.Serialization.UnpackHelpers.UnpackBinaryValue);
-            this.this_UnpackValueOfBytesUnpackValueOfBytesDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>(this.UnpackValueOfBytes);
-            this.this_SetUnpackedValueOfCSetUnpackedValueOfCDelegate = new System.Action<MsgPack.Serialization.Inner, string>(this.SetUnpackedValueOfC);
-            this.this_UnpackValueOfCUnpackValueOfCDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>(this.UnpackValueOfC);
+            this.this_PackValueOfADelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>(this.PackValueOfA);
+            this.this_PackValueOfBytesDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>(this.PackValueOfBytes);
+            this.this_PackValueOfCDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.Inner>(this.PackValueOfC);
+            this.this_PackValueOfAAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfAAsync);
+            this.this_PackValueOfBytesAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfBytesAsync);
+            this.this_PackValueOfCAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.Inner, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfCAsync);
+            this.this_SetUnpackedValueOfADelegate = new System.Action<MsgPack.Serialization.Inner, string>(this.SetUnpackedValueOfA);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
+            this.this_UnpackValueOfADelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>(this.UnpackValueOfA);
+            this.this_SetUnpackedValueOfBytesDelegate = new System.Action<MsgPack.Serialization.Inner, byte[]>(this.SetUnpackedValueOfBytes);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, byte[]>(MsgPack.Serialization.UnpackHelpers.UnpackBinaryValue);
+            this.this_UnpackValueOfBytesDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>(this.UnpackValueOfBytes);
+            this.this_SetUnpackedValueOfCDelegate = new System.Action<MsgPack.Serialization.Inner, string>(this.SetUnpackedValueOfC);
+            this.this_UnpackValueOfCDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int>(this.UnpackValueOfC);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<string>>(MsgPack.Serialization.UnpackHelpers.UnpackStringValueAsync);
+            this.this_UnpackValueOfAAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfAAsync);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueAsyncDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<byte[]>>(MsgPack.Serialization.UnpackHelpers.UnpackBinaryValueAsync);
+            this.this_UnpackValueOfBytesAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfBytesAsync);
+            this.this_UnpackValueOfCAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.Inner, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfCAsync);
         }
         
         private void PackValueOfA(MsgPack.Packer packer, MsgPack.Serialization.Inner objectTree) {
@@ -121,12 +177,33 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
         }
         
+        private System.Threading.Tasks.Task PackValueOfAAsync(MsgPack.Packer packer, MsgPack.Serialization.Inner objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer0.PackToAsync(packer, objectTree.A, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task PackValueOfBytesAsync(MsgPack.Packer packer, MsgPack.Serialization.Inner objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer1.PackToAsync(packer, objectTree.Bytes, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task PackValueOfCAsync(MsgPack.Packer packer, MsgPack.Serialization.Inner objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer0.PackToAsync(packer, objectTree.C, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task PackToAsyncCore(MsgPack.Packer packer, MsgPack.Serialization.Inner objectTree, System.Threading.CancellationToken cancellationToken) {
+            if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
+                return MsgPack.Serialization.PackHelpers.PackToArrayAsync(packer, objectTree, this._packOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.PackHelpers.PackToMapAsync(packer, objectTree, this._packOperationTableAsync, cancellationToken);
+            }
+        }
+        
         private void SetUnpackedValueOfA(MsgPack.Serialization.Inner unpackingContext, string unpackedValue) {
             unpackingContext.A = unpackedValue;
         }
         
         private void UnpackValueOfA(MsgPack.Unpacker unpacker, MsgPack.Serialization.Inner unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "A", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate, this.this_SetUnpackedValueOfASetUnpackedValueOfADelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "A", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfADelegate);
         }
         
         private void SetUnpackedValueOfBytes(MsgPack.Serialization.Inner unpackingContext, byte[] unpackedValue) {
@@ -134,7 +211,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfBytes(MsgPack.Unpacker unpacker, MsgPack.Serialization.Inner unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(byte[]), "Bytes", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueUnpackBinaryValueDelegate, this.this_SetUnpackedValueOfBytesSetUnpackedValueOfBytesDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(byte[]), "Bytes", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueDelegate, this.this_SetUnpackedValueOfBytesDelegate);
         }
         
         private void SetUnpackedValueOfC(MsgPack.Serialization.Inner unpackingContext, string unpackedValue) {
@@ -142,7 +219,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfC(MsgPack.Unpacker unpacker, MsgPack.Serialization.Inner unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "C", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate, this.this_SetUnpackedValueOfCSetUnpackedValueOfCDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "C", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfCDelegate);
         }
         
         protected internal override MsgPack.Serialization.Inner UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -153,6 +230,29 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
             else {
                 return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.Inner>(), this._unpackOperationTable);
+            }
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfAAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.Inner unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "A", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate, this.this_SetUnpackedValueOfADelegate, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfBytesAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.Inner unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(byte[]), "Bytes", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueAsyncDelegate, this.this_SetUnpackedValueOfBytesDelegate, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfCAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.Inner unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "C", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate, this.this_SetUnpackedValueOfCDelegate, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task<MsgPack.Serialization.Inner> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {
+            MsgPack.Serialization.Inner result = default(MsgPack.Serialization.Inner);
+            result = new MsgPack.Serialization.Inner();
+            if (unpacker.IsArrayHeader) {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArrayAsync(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.Inner>(), this._memberNames, this._unpackOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMapAsync(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.Inner>(), this._unpackOperationTableAsync, cancellationToken);
             }
         }
     }

@@ -15,12 +15,112 @@ namespace MsgPack.Serialization.GeneratedSerializers {
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class MsgPack_ImageSerializer : MsgPack.Serialization.MessagePackSerializer<MsgPack.Image> {
         
+        private MsgPack.Serialization.MessagePackSerializer<int> _serializer0;
+        
+        private System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfheightAsyncDelegate;
+        
+        private System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfsizeAsyncDelegate;
+        
+        private MsgPack.Serialization.MessagePackSerializer<string> _serializer1;
+        
+        private System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOftitleAsyncDelegate;
+        
+        private System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfuriAsyncDelegate;
+        
+        private System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfwidthAsyncDelegate;
+        
+        private System.Collections.Generic.IList<System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationListAsync;
+        
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationTableAsync;
+        
+        private System.Action<MsgPack.Image, int> this_SetUnpackedValueOfheightDelegate;
+        
+        private System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<int>> MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfheightAsyncDelegate;
+        
+        private System.Action<MsgPack.Image, int> this_SetUnpackedValueOfsizeDelegate;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfsizeAsyncDelegate;
+        
+        private System.Action<MsgPack.Image, string> this_SetUnpackedValueOftitleDelegate;
+        
+        private System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<string>> MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOftitleAsyncDelegate;
+        
+        private System.Action<MsgPack.Image, string> this_SetUnpackedValueOfuriDelegate;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfuriAsyncDelegate;
+        
+        private System.Action<MsgPack.Image, int> this_SetUnpackedValueOfwidthDelegate;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfwidthAsyncDelegate;
+        
+        private System.Collections.Generic.IList<string> _memberNames;
+        
+        private System.Collections.Generic.IList<System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationListAsync;
+        
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationTableAsync;
+        
         public MsgPack_ImageSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
+            MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
+            schema0 = null;
+            this._serializer0 = context.GetSerializer<int>(schema0);
+            MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
+            schema1 = null;
+            this._serializer1 = context.GetSerializer<string>(schema1);
+            this.this_PackValueOfheightAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfheightAsync);
+            this.this_PackValueOfsizeAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfsizeAsync);
+            this.this_PackValueOftitleAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOftitleAsync);
+            this.this_PackValueOfuriAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfuriAsync);
+            this.this_PackValueOfwidthAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfwidthAsync);
+            this.this_SetUnpackedValueOfheightDelegate = new System.Action<MsgPack.Image, int>(this.SetUnpackedValueOfheight);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<int>>(MsgPack.Serialization.UnpackHelpers.UnpackInt32ValueAsync);
+            this.this_UnpackValueOfheightAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfheightAsync);
+            this.this_SetUnpackedValueOfsizeDelegate = new System.Action<MsgPack.Image, int>(this.SetUnpackedValueOfsize);
+            this.this_UnpackValueOfsizeAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfsizeAsync);
+            this.this_SetUnpackedValueOftitleDelegate = new System.Action<MsgPack.Image, string>(this.SetUnpackedValueOftitle);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<string>>(MsgPack.Serialization.UnpackHelpers.UnpackStringValueAsync);
+            this.this_UnpackValueOftitleAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOftitleAsync);
+            this.this_SetUnpackedValueOfuriDelegate = new System.Action<MsgPack.Image, string>(this.SetUnpackedValueOfuri);
+            this.this_UnpackValueOfuriAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfuriAsync);
+            this.this_SetUnpackedValueOfwidthDelegate = new System.Action<MsgPack.Image, int>(this.SetUnpackedValueOfwidth);
+            this.this_UnpackValueOfwidthAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfwidthAsync);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Image objectTree) {
             objectTree.PackToMessage(packer, null);
+        }
+        
+        private System.Threading.Tasks.Task PackValueOfheightAsync(MsgPack.Packer packer, MsgPack.Image objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer0.PackToAsync(packer, objectTree.height, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task PackValueOfsizeAsync(MsgPack.Packer packer, MsgPack.Image objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer0.PackToAsync(packer, objectTree.size, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task PackValueOftitleAsync(MsgPack.Packer packer, MsgPack.Image objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer1.PackToAsync(packer, objectTree.title, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task PackValueOfuriAsync(MsgPack.Packer packer, MsgPack.Image objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer1.PackToAsync(packer, objectTree.uri, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task PackValueOfwidthAsync(MsgPack.Packer packer, MsgPack.Image objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer0.PackToAsync(packer, objectTree.width, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task PackToAsyncCore(MsgPack.Packer packer, MsgPack.Image objectTree, System.Threading.CancellationToken cancellationToken) {
+            if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
+                return MsgPack.Serialization.PackHelpers.PackToArrayAsync(packer, objectTree, this._packOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.PackHelpers.PackToMapAsync(packer, objectTree, this._packOperationTableAsync, cancellationToken);
+            }
         }
         
         protected internal override MsgPack.Image UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -28,6 +128,57 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             result = new MsgPack.Image();
             result.UnpackFromMessage(unpacker);
             return result;
+        }
+        
+        private void SetUnpackedValueOfheight(MsgPack.Image unpackingContext, int unpackedValue) {
+            unpackingContext.height = unpackedValue;
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfheightAsync(MsgPack.Unpacker unpacker, MsgPack.Image unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "height", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfheightDelegate, cancellationToken);
+        }
+        
+        private void SetUnpackedValueOfsize(MsgPack.Image unpackingContext, int unpackedValue) {
+            unpackingContext.size = unpackedValue;
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfsizeAsync(MsgPack.Unpacker unpacker, MsgPack.Image unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "size", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfsizeDelegate, cancellationToken);
+        }
+        
+        private void SetUnpackedValueOftitle(MsgPack.Image unpackingContext, string unpackedValue) {
+            unpackingContext.title = unpackedValue;
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOftitleAsync(MsgPack.Unpacker unpacker, MsgPack.Image unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(string), "title", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate, this.this_SetUnpackedValueOftitleDelegate, cancellationToken);
+        }
+        
+        private void SetUnpackedValueOfuri(MsgPack.Image unpackingContext, string unpackedValue) {
+            unpackingContext.uri = unpackedValue;
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfuriAsync(MsgPack.Unpacker unpacker, MsgPack.Image unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(string), "uri", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate, this.this_SetUnpackedValueOfuriDelegate, cancellationToken);
+        }
+        
+        private void SetUnpackedValueOfwidth(MsgPack.Image unpackingContext, int unpackedValue) {
+            unpackingContext.width = unpackedValue;
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfwidthAsync(MsgPack.Unpacker unpacker, MsgPack.Image unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "width", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfwidthDelegate, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task<MsgPack.Image> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {
+            MsgPack.Image result = default(MsgPack.Image);
+            result = new MsgPack.Image();
+            if (unpacker.IsArrayHeader) {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArrayAsync(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Image>(), this._memberNames, this._unpackOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMapAsync(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Image>(), this._unpackOperationTableAsync, cancellationToken);
+            }
         }
     }
 }

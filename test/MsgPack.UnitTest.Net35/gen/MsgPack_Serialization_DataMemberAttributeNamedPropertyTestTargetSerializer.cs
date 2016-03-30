@@ -17,17 +17,17 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget> this_PackValueOfAliasPackValueOfAliasDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget> this_PackValueOfAliasDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, string> this_SetUnpackedValueOfMemberSetUnpackedValueOfMemberDelegate;
+        private System.Action<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, string> this_SetUnpackedValueOfMemberDelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, int, int> this_UnpackValueOfAliasUnpackValueOfAliasDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, int, int> this_UnpackValueOfAliasDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -58,10 +58,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "Alias"};
-            this.this_PackValueOfAliasPackValueOfAliasDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget>(this.PackValueOfAlias);
-            this.this_SetUnpackedValueOfMemberSetUnpackedValueOfMemberDelegate = new System.Action<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, string>(this.SetUnpackedValueOfMember);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
-            this.this_UnpackValueOfAliasUnpackValueOfAliasDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, int, int>(this.UnpackValueOfAlias);
+            this.this_PackValueOfAliasDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget>(this.PackValueOfAlias);
+            this.this_SetUnpackedValueOfMemberDelegate = new System.Action<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, string>(this.SetUnpackedValueOfMember);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
+            this.this_UnpackValueOfAliasDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, int, int>(this.UnpackValueOfAlias);
         }
         
         private void PackValueOfAlias(MsgPack.Packer packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget objectTree) {
@@ -82,7 +82,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfAlias(MsgPack.Unpacker unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "Alias", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate, this.this_SetUnpackedValueOfMemberSetUnpackedValueOfMemberDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "Alias", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfMemberDelegate);
         }
         
         protected internal override MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget UnpackFromCore(MsgPack.Unpacker unpacker) {

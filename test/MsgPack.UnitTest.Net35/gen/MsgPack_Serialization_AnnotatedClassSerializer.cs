@@ -17,67 +17,173 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<int> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfAliasPackValueOfAliasDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfAliasDelegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfPublicFieldPackValueOfPublicFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfPublicFieldDelegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackMemberPlaceHolderPackMemberPlaceHolderDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackMemberPlaceHolderDelegate;
         
         private System.Reflection.MethodBase _methodBaseAnnotatedClass_get_NonPublicProperty0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicPropertyPackValueOfNonPublicPropertyDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicPropertyDelegate;
         
         private System.Reflection.FieldInfo _fieldAnnotatedClass_NonPublicField0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicFieldPackValueOfNonPublicFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicFieldDelegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonSerializedPublicFieldPackValueOfNonSerializedPublicFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonSerializedPublicFieldDelegate;
         
         private System.Reflection.FieldInfo _fieldAnnotatedClass_NonSerializedNonPublicField1;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonSerializedNonPublicFieldPackValueOfNonSerializedNonPublicFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonSerializedNonPublicFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<int>> _serializer1;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfCollectionReadOnlyPropertyPackValueOfCollectionReadOnlyPropertyDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfCollectionReadOnlyPropertyDelegate;
+        
+        private System.Reflection.MethodBase _methodBaseAnnotatedClass_get_NonPublicCollectionProperty1;
+        
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicCollectionPropertyDelegate;
+        
+        private System.Reflection.FieldInfo _fieldAnnotatedClass_NonPublicCollectionField2;
+        
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicCollectionFieldDelegate;
+        
+        private System.Reflection.MethodBase _methodBaseAnnotatedClass_get_NonPublicCollectionReadOnlyProperty2;
+        
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicCollectionReadOnlyPropertyDelegate;
+        
+        private System.Reflection.FieldInfo _fieldAnnotatedClass_NonPublicCollectionReadOnlyField3;
+        
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicCollectionReadOnlyFieldDelegate;
+        
+        private System.Reflection.MethodBase _methodBaseAnnotatedClass_get_NonPublicDictionaryProperty3;
+        
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<string, int>> _serializer2;
+        
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicDictionaryPropertyDelegate;
+        
+        private System.Reflection.FieldInfo _fieldAnnotatedClass_NonPublicDictionaryField4;
+        
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicDictionaryFieldDelegate;
+        
+        private System.Reflection.MethodBase _methodBaseAnnotatedClass_get_NonPublicDictionaryReadOnlyProperty4;
+        
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicDictionaryReadOnlyPropertyDelegate;
+        
+        private System.Reflection.FieldInfo _fieldAnnotatedClass_NonPublicDictionaryReadOnlyField5;
+        
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicDictionaryReadOnlyFieldDelegate;
+        
+        private System.Reflection.MethodBase _methodBaseAnnotatedClass_get_NonPublicHashtableProperty5;
+        
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Hashtable> _serializer3;
+        
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicHashtablePropertyDelegate;
+        
+        private System.Reflection.FieldInfo _fieldAnnotatedClass_NonPublicHashtableField6;
+        
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicHashtableFieldDelegate;
+        
+        private System.Reflection.MethodBase _methodBaseAnnotatedClass_get_NonPublicHashtableReadOnlyProperty6;
+        
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicHashtableReadOnlyPropertyDelegate;
+        
+        private System.Reflection.FieldInfo _fieldAnnotatedClass_NonPublicHashtableReadOnlyField7;
+        
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicHashtableReadOnlyFieldDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.AnnotatedClass, int> this_SetUnpackedValueOfPublicPropertySetUnpackedValueOfPublicPropertyDelegate;
+        private System.Action<MsgPack.Serialization.AnnotatedClass, int> this_SetUnpackedValueOfPublicPropertyDelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, int> MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, int> MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfAliasUnpackValueOfAliasDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfAliasDelegate;
         
-        private System.Action<MsgPack.Serialization.AnnotatedClass, int> this_SetUnpackedValueOfPublicFieldSetUnpackedValueOfPublicFieldDelegate;
+        private System.Action<MsgPack.Serialization.AnnotatedClass, int> this_SetUnpackedValueOfPublicFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfPublicFieldUnpackValueOfPublicFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfPublicFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackMemberPlaceHolderUnpackMemberPlaceHolderDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackMemberPlaceHolderDelegate;
         
-        private System.Reflection.MethodBase _methodBaseAnnotatedClass_set_NonPublicProperty1;
+        private System.Reflection.MethodBase _methodBaseAnnotatedClass_set_NonPublicProperty7;
         
-        private System.Action<MsgPack.Serialization.AnnotatedClass, int> this_SetUnpackedValueOfNonPublicPropertySetUnpackedValueOfNonPublicPropertyDelegate;
+        private System.Action<MsgPack.Serialization.AnnotatedClass, int> this_SetUnpackedValueOfNonPublicPropertyDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicPropertyUnpackValueOfNonPublicPropertyDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicPropertyDelegate;
         
-        private System.Action<MsgPack.Serialization.AnnotatedClass, int> this_SetUnpackedValueOfNonPublicFieldSetUnpackedValueOfNonPublicFieldDelegate;
+        private System.Action<MsgPack.Serialization.AnnotatedClass, int> this_SetUnpackedValueOfNonPublicFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicFieldUnpackValueOfNonPublicFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.AnnotatedClass, int> this_SetUnpackedValueOfNonSerializedPublicFieldSetUnpackedValueOfNonSerializedPublicFieldDelegate;
+        private System.Action<MsgPack.Serialization.AnnotatedClass, int> this_SetUnpackedValueOfNonSerializedPublicFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonSerializedPublicFieldUnpackValueOfNonSerializedPublicFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonSerializedPublicFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.AnnotatedClass, int> this_SetUnpackedValueOfNonSerializedNonPublicFieldSetUnpackedValueOfNonSerializedNonPublicFieldDelegate;
+        private System.Action<MsgPack.Serialization.AnnotatedClass, int> this_SetUnpackedValueOfNonSerializedNonPublicFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonSerializedNonPublicFieldUnpackValueOfNonSerializedNonPublicFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonSerializedNonPublicFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.List<int>> this_SetUnpackedValueOfCollectionReadOnlyPropertySetUnpackedValueOfCollectionReadOnlyPropertyDelegate;
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.List<int>> this_SetUnpackedValueOfCollectionReadOnlyPropertyDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfCollectionReadOnlyPropertyUnpackValueOfCollectionReadOnlyPropertyDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfCollectionReadOnlyPropertyDelegate;
+        
+        private System.Reflection.MethodBase _methodBaseAnnotatedClass_set_NonPublicCollectionProperty8;
+        
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.List<int>> this_SetUnpackedValueOfNonPublicCollectionPropertyDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicCollectionPropertyDelegate;
+        
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.List<int>> this_SetUnpackedValueOfNonPublicCollectionFieldDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicCollectionFieldDelegate;
+        
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.List<int>> this_SetUnpackedValueOfNonPublicCollectionReadOnlyPropertyDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicCollectionReadOnlyPropertyDelegate;
+        
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.List<int>> this_SetUnpackedValueOfNonPublicCollectionReadOnlyFieldDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicCollectionReadOnlyFieldDelegate;
+        
+        private System.Reflection.MethodBase _methodBaseAnnotatedClass_set_NonPublicDictionaryProperty9;
+        
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.Dictionary<string, int>> this_SetUnpackedValueOfNonPublicDictionaryPropertyDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicDictionaryPropertyDelegate;
+        
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.Dictionary<string, int>> this_SetUnpackedValueOfNonPublicDictionaryFieldDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicDictionaryFieldDelegate;
+        
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.Dictionary<string, int>> this_SetUnpackedValueOfNonPublicDictionaryReadOnlyPropertyDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicDictionaryReadOnlyPropertyDelegate;
+        
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.Dictionary<string, int>> this_SetUnpackedValueOfNonPublicDictionaryReadOnlyFieldDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicDictionaryReadOnlyFieldDelegate;
+        
+        private System.Reflection.MethodBase _methodBaseAnnotatedClass_set_NonPublicHashtableProperty10;
+        
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable> this_SetUnpackedValueOfNonPublicHashtablePropertyDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicHashtablePropertyDelegate;
+        
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable> this_SetUnpackedValueOfNonPublicHashtableFieldDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicHashtableFieldDelegate;
+        
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable> this_SetUnpackedValueOfNonPublicHashtableReadOnlyPropertyDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicHashtableReadOnlyPropertyDelegate;
+        
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable> this_SetUnpackedValueOfNonPublicHashtableReadOnlyFieldDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicHashtableReadOnlyFieldDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -93,17 +199,56 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
             schema1 = null;
             this._serializer1 = context.GetSerializer<System.Collections.Generic.List<int>>(schema1);
+            MsgPack.Serialization.PolymorphismSchema schema2 = default(MsgPack.Serialization.PolymorphismSchema);
+            schema2 = null;
+            this._serializer2 = context.GetSerializer<System.Collections.Generic.Dictionary<string, int>>(schema2);
+            MsgPack.Serialization.PolymorphismSchema schema3 = default(MsgPack.Serialization.PolymorphismSchema);
+            schema3 = null;
+            this._serializer3 = context.GetSerializer<System.Collections.Hashtable>(schema3);
             this._fieldAnnotatedClass_NonPublicField0 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicField", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
             this._fieldAnnotatedClass_NonSerializedNonPublicField1 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonSerializedNonPublicField", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            this._fieldAnnotatedClass_NonPublicCollectionField2 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicCollectionField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            this._fieldAnnotatedClass_NonPublicCollectionReadOnlyField3 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicCollectionReadOnlyField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            this._fieldAnnotatedClass_NonPublicDictionaryField4 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicDictionaryField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            this._fieldAnnotatedClass_NonPublicDictionaryReadOnlyField5 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicDictionaryReadOnlyField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            this._fieldAnnotatedClass_NonPublicHashtableField6 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicHashtableField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            this._fieldAnnotatedClass_NonPublicHashtableReadOnlyField7 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicHashtableReadOnlyField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
             this._methodBaseAnnotatedClass_get_NonPublicProperty0 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicProperty", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
-            this._methodBaseAnnotatedClass_set_NonPublicProperty1 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("set_NonPublicProperty", (System.Reflection.BindingFlags.Instance 
+            this._methodBaseAnnotatedClass_get_NonPublicCollectionProperty1 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicCollectionProperty", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseAnnotatedClass_get_NonPublicCollectionReadOnlyProperty2 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicCollectionReadOnlyProperty", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseAnnotatedClass_get_NonPublicDictionaryProperty3 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicDictionaryProperty", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseAnnotatedClass_get_NonPublicDictionaryReadOnlyProperty4 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicDictionaryReadOnlyProperty", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseAnnotatedClass_get_NonPublicHashtableProperty5 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicHashtableProperty", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseAnnotatedClass_get_NonPublicHashtableReadOnlyProperty6 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicHashtableReadOnlyProperty", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseAnnotatedClass_set_NonPublicProperty7 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("set_NonPublicProperty", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
                         typeof(int)}, null);
+            this._methodBaseAnnotatedClass_set_NonPublicCollectionProperty8 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("set_NonPublicCollectionProperty", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
+                        typeof(System.Collections.Generic.List<int>)}, null);
+            this._methodBaseAnnotatedClass_set_NonPublicDictionaryProperty9 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("set_NonPublicDictionaryProperty", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
+                        typeof(System.Collections.Generic.Dictionary<string, int>)}, null);
+            this._methodBaseAnnotatedClass_set_NonPublicHashtableProperty10 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("set_NonPublicHashtableProperty", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
+                        typeof(System.Collections.Hashtable)}, null);
             System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>[]);
-            packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>[10];
+            packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>[22];
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfAlias);
             packOperationList[1] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfPublicField);
             packOperationList[2] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackMemberPlaceHolder);
@@ -114,9 +259,21 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationList[7] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackMemberPlaceHolder);
             packOperationList[8] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonSerializedNonPublicField);
             packOperationList[9] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfCollectionReadOnlyProperty);
+            packOperationList[10] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicCollectionProperty);
+            packOperationList[11] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicCollectionField);
+            packOperationList[12] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicCollectionReadOnlyProperty);
+            packOperationList[13] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicCollectionReadOnlyField);
+            packOperationList[14] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryProperty);
+            packOperationList[15] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryField);
+            packOperationList[16] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryReadOnlyProperty);
+            packOperationList[17] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryReadOnlyField);
+            packOperationList[18] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableProperty);
+            packOperationList[19] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableField);
+            packOperationList[20] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableReadOnlyProperty);
+            packOperationList[21] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableReadOnlyField);
             this._packOperationList = packOperationList;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>>);
-            packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>>(7);
+            packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>>(19);
             packOperationTable["Alias"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfAlias);
             packOperationTable["PublicField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfPublicField);
             packOperationTable["NonPublicProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicProperty);
@@ -124,9 +281,21 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationTable["NonSerializedPublicField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonSerializedPublicField);
             packOperationTable["NonSerializedNonPublicField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonSerializedNonPublicField);
             packOperationTable["CollectionReadOnlyProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfCollectionReadOnlyProperty);
+            packOperationTable["NonPublicCollectionProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicCollectionProperty);
+            packOperationTable["NonPublicCollectionField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicCollectionField);
+            packOperationTable["NonPublicCollectionReadOnlyProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicCollectionReadOnlyProperty);
+            packOperationTable["NonPublicCollectionReadOnlyField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicCollectionReadOnlyField);
+            packOperationTable["NonPublicDictionaryProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryProperty);
+            packOperationTable["NonPublicDictionaryField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryField);
+            packOperationTable["NonPublicDictionaryReadOnlyProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryReadOnlyProperty);
+            packOperationTable["NonPublicDictionaryReadOnlyField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryReadOnlyField);
+            packOperationTable["NonPublicHashtableProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableProperty);
+            packOperationTable["NonPublicHashtableField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableField);
+            packOperationTable["NonPublicHashtableReadOnlyProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableReadOnlyProperty);
+            packOperationTable["NonPublicHashtableReadOnlyField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableReadOnlyField);
             this._packOperationTable = packOperationTable;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>[]);
-            unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>[10];
+            unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>[22];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfAlias);
             unpackOperationList[1] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfPublicField);
             unpackOperationList[2] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackMemberPlaceHolder);
@@ -137,9 +306,21 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             unpackOperationList[7] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackMemberPlaceHolder);
             unpackOperationList[8] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonSerializedNonPublicField);
             unpackOperationList[9] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfCollectionReadOnlyProperty);
+            unpackOperationList[10] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicCollectionProperty);
+            unpackOperationList[11] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicCollectionField);
+            unpackOperationList[12] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicCollectionReadOnlyProperty);
+            unpackOperationList[13] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicCollectionReadOnlyField);
+            unpackOperationList[14] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryProperty);
+            unpackOperationList[15] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryField);
+            unpackOperationList[16] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryReadOnlyProperty);
+            unpackOperationList[17] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryReadOnlyField);
+            unpackOperationList[18] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableProperty);
+            unpackOperationList[19] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableField);
+            unpackOperationList[20] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableReadOnlyProperty);
+            unpackOperationList[21] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableReadOnlyField);
             this._unpackOperationList = unpackOperationList;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>>);
-            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>>(7);
+            unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>>(19);
             unpackOperationTable["Alias"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfAlias);
             unpackOperationTable["PublicField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfPublicField);
             unpackOperationTable["NonPublicProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicProperty);
@@ -147,6 +328,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             unpackOperationTable["NonSerializedPublicField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonSerializedPublicField);
             unpackOperationTable["NonSerializedNonPublicField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonSerializedNonPublicField);
             unpackOperationTable["CollectionReadOnlyProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfCollectionReadOnlyProperty);
+            unpackOperationTable["NonPublicCollectionProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicCollectionProperty);
+            unpackOperationTable["NonPublicCollectionField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicCollectionField);
+            unpackOperationTable["NonPublicCollectionReadOnlyProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicCollectionReadOnlyProperty);
+            unpackOperationTable["NonPublicCollectionReadOnlyField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicCollectionReadOnlyField);
+            unpackOperationTable["NonPublicDictionaryProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryProperty);
+            unpackOperationTable["NonPublicDictionaryField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryField);
+            unpackOperationTable["NonPublicDictionaryReadOnlyProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryReadOnlyProperty);
+            unpackOperationTable["NonPublicDictionaryReadOnlyField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryReadOnlyField);
+            unpackOperationTable["NonPublicHashtableProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableProperty);
+            unpackOperationTable["NonPublicHashtableField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableField);
+            unpackOperationTable["NonPublicHashtableReadOnlyProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableReadOnlyProperty);
+            unpackOperationTable["NonPublicHashtableReadOnlyField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableReadOnlyField);
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "Alias",
@@ -158,31 +351,79 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                     "NonSerializedPublicField",
                     null,
                     "NonSerializedNonPublicField",
-                    "CollectionReadOnlyProperty"};
-            this.this_PackValueOfAliasPackValueOfAliasDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfAlias);
-            this.this_PackValueOfPublicFieldPackValueOfPublicFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfPublicField);
-            this.this_PackMemberPlaceHolderPackMemberPlaceHolderDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackMemberPlaceHolder);
-            this.this_PackValueOfNonPublicPropertyPackValueOfNonPublicPropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicProperty);
-            this.this_PackValueOfNonPublicFieldPackValueOfNonPublicFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicField);
-            this.this_PackValueOfNonSerializedPublicFieldPackValueOfNonSerializedPublicFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonSerializedPublicField);
-            this.this_PackValueOfNonSerializedNonPublicFieldPackValueOfNonSerializedNonPublicFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonSerializedNonPublicField);
-            this.this_PackValueOfCollectionReadOnlyPropertyPackValueOfCollectionReadOnlyPropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfCollectionReadOnlyProperty);
-            this.this_SetUnpackedValueOfPublicPropertySetUnpackedValueOfPublicPropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, int>(this.SetUnpackedValueOfPublicProperty);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, int>(MsgPack.Serialization.UnpackHelpers.UnpackInt32Value);
-            this.this_UnpackValueOfAliasUnpackValueOfAliasDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfAlias);
-            this.this_SetUnpackedValueOfPublicFieldSetUnpackedValueOfPublicFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, int>(this.SetUnpackedValueOfPublicField);
-            this.this_UnpackValueOfPublicFieldUnpackValueOfPublicFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfPublicField);
-            this.this_UnpackMemberPlaceHolderUnpackMemberPlaceHolderDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackMemberPlaceHolder);
-            this.this_SetUnpackedValueOfNonPublicPropertySetUnpackedValueOfNonPublicPropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, int>(this.SetUnpackedValueOfNonPublicProperty);
-            this.this_UnpackValueOfNonPublicPropertyUnpackValueOfNonPublicPropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicProperty);
-            this.this_SetUnpackedValueOfNonPublicFieldSetUnpackedValueOfNonPublicFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, int>(this.SetUnpackedValueOfNonPublicField);
-            this.this_UnpackValueOfNonPublicFieldUnpackValueOfNonPublicFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicField);
-            this.this_SetUnpackedValueOfNonSerializedPublicFieldSetUnpackedValueOfNonSerializedPublicFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, int>(this.SetUnpackedValueOfNonSerializedPublicField);
-            this.this_UnpackValueOfNonSerializedPublicFieldUnpackValueOfNonSerializedPublicFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonSerializedPublicField);
-            this.this_SetUnpackedValueOfNonSerializedNonPublicFieldSetUnpackedValueOfNonSerializedNonPublicFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, int>(this.SetUnpackedValueOfNonSerializedNonPublicField);
-            this.this_UnpackValueOfNonSerializedNonPublicFieldUnpackValueOfNonSerializedNonPublicFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonSerializedNonPublicField);
-            this.this_SetUnpackedValueOfCollectionReadOnlyPropertySetUnpackedValueOfCollectionReadOnlyPropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.List<int>>(this.SetUnpackedValueOfCollectionReadOnlyProperty);
-            this.this_UnpackValueOfCollectionReadOnlyPropertyUnpackValueOfCollectionReadOnlyPropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfCollectionReadOnlyProperty);
+                    "CollectionReadOnlyProperty",
+                    "NonPublicCollectionProperty",
+                    "NonPublicCollectionField",
+                    "NonPublicCollectionReadOnlyProperty",
+                    "NonPublicCollectionReadOnlyField",
+                    "NonPublicDictionaryProperty",
+                    "NonPublicDictionaryField",
+                    "NonPublicDictionaryReadOnlyProperty",
+                    "NonPublicDictionaryReadOnlyField",
+                    "NonPublicHashtableProperty",
+                    "NonPublicHashtableField",
+                    "NonPublicHashtableReadOnlyProperty",
+                    "NonPublicHashtableReadOnlyField"};
+            this.this_PackValueOfAliasDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfAlias);
+            this.this_PackValueOfPublicFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfPublicField);
+            this.this_PackMemberPlaceHolderDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackMemberPlaceHolder);
+            this.this_PackValueOfNonPublicPropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicProperty);
+            this.this_PackValueOfNonPublicFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicField);
+            this.this_PackValueOfNonSerializedPublicFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonSerializedPublicField);
+            this.this_PackValueOfNonSerializedNonPublicFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonSerializedNonPublicField);
+            this.this_PackValueOfCollectionReadOnlyPropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfCollectionReadOnlyProperty);
+            this.this_PackValueOfNonPublicCollectionPropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicCollectionProperty);
+            this.this_PackValueOfNonPublicCollectionFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicCollectionField);
+            this.this_PackValueOfNonPublicCollectionReadOnlyPropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicCollectionReadOnlyProperty);
+            this.this_PackValueOfNonPublicCollectionReadOnlyFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicCollectionReadOnlyField);
+            this.this_PackValueOfNonPublicDictionaryPropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryProperty);
+            this.this_PackValueOfNonPublicDictionaryFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryField);
+            this.this_PackValueOfNonPublicDictionaryReadOnlyPropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryReadOnlyProperty);
+            this.this_PackValueOfNonPublicDictionaryReadOnlyFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryReadOnlyField);
+            this.this_PackValueOfNonPublicHashtablePropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableProperty);
+            this.this_PackValueOfNonPublicHashtableFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableField);
+            this.this_PackValueOfNonPublicHashtableReadOnlyPropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableReadOnlyProperty);
+            this.this_PackValueOfNonPublicHashtableReadOnlyFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableReadOnlyField);
+            this.this_SetUnpackedValueOfPublicPropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, int>(this.SetUnpackedValueOfPublicProperty);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, int>(MsgPack.Serialization.UnpackHelpers.UnpackInt32Value);
+            this.this_UnpackValueOfAliasDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfAlias);
+            this.this_SetUnpackedValueOfPublicFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, int>(this.SetUnpackedValueOfPublicField);
+            this.this_UnpackValueOfPublicFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfPublicField);
+            this.this_UnpackMemberPlaceHolderDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackMemberPlaceHolder);
+            this.this_SetUnpackedValueOfNonPublicPropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, int>(this.SetUnpackedValueOfNonPublicProperty);
+            this.this_UnpackValueOfNonPublicPropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicProperty);
+            this.this_SetUnpackedValueOfNonPublicFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, int>(this.SetUnpackedValueOfNonPublicField);
+            this.this_UnpackValueOfNonPublicFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicField);
+            this.this_SetUnpackedValueOfNonSerializedPublicFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, int>(this.SetUnpackedValueOfNonSerializedPublicField);
+            this.this_UnpackValueOfNonSerializedPublicFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonSerializedPublicField);
+            this.this_SetUnpackedValueOfNonSerializedNonPublicFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, int>(this.SetUnpackedValueOfNonSerializedNonPublicField);
+            this.this_UnpackValueOfNonSerializedNonPublicFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonSerializedNonPublicField);
+            this.this_SetUnpackedValueOfCollectionReadOnlyPropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.List<int>>(this.SetUnpackedValueOfCollectionReadOnlyProperty);
+            this.this_UnpackValueOfCollectionReadOnlyPropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfCollectionReadOnlyProperty);
+            this.this_SetUnpackedValueOfNonPublicCollectionPropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.List<int>>(this.SetUnpackedValueOfNonPublicCollectionProperty);
+            this.this_UnpackValueOfNonPublicCollectionPropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicCollectionProperty);
+            this.this_SetUnpackedValueOfNonPublicCollectionFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.List<int>>(this.SetUnpackedValueOfNonPublicCollectionField);
+            this.this_UnpackValueOfNonPublicCollectionFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicCollectionField);
+            this.this_SetUnpackedValueOfNonPublicCollectionReadOnlyPropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.List<int>>(this.SetUnpackedValueOfNonPublicCollectionReadOnlyProperty);
+            this.this_UnpackValueOfNonPublicCollectionReadOnlyPropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicCollectionReadOnlyProperty);
+            this.this_SetUnpackedValueOfNonPublicCollectionReadOnlyFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.List<int>>(this.SetUnpackedValueOfNonPublicCollectionReadOnlyField);
+            this.this_UnpackValueOfNonPublicCollectionReadOnlyFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicCollectionReadOnlyField);
+            this.this_SetUnpackedValueOfNonPublicDictionaryPropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.Dictionary<string, int>>(this.SetUnpackedValueOfNonPublicDictionaryProperty);
+            this.this_UnpackValueOfNonPublicDictionaryPropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryProperty);
+            this.this_SetUnpackedValueOfNonPublicDictionaryFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.Dictionary<string, int>>(this.SetUnpackedValueOfNonPublicDictionaryField);
+            this.this_UnpackValueOfNonPublicDictionaryFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryField);
+            this.this_SetUnpackedValueOfNonPublicDictionaryReadOnlyPropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.Dictionary<string, int>>(this.SetUnpackedValueOfNonPublicDictionaryReadOnlyProperty);
+            this.this_UnpackValueOfNonPublicDictionaryReadOnlyPropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryReadOnlyProperty);
+            this.this_SetUnpackedValueOfNonPublicDictionaryReadOnlyFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.Dictionary<string, int>>(this.SetUnpackedValueOfNonPublicDictionaryReadOnlyField);
+            this.this_UnpackValueOfNonPublicDictionaryReadOnlyFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryReadOnlyField);
+            this.this_SetUnpackedValueOfNonPublicHashtablePropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable>(this.SetUnpackedValueOfNonPublicHashtableProperty);
+            this.this_UnpackValueOfNonPublicHashtablePropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableProperty);
+            this.this_SetUnpackedValueOfNonPublicHashtableFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable>(this.SetUnpackedValueOfNonPublicHashtableField);
+            this.this_UnpackValueOfNonPublicHashtableFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableField);
+            this.this_SetUnpackedValueOfNonPublicHashtableReadOnlyPropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable>(this.SetUnpackedValueOfNonPublicHashtableReadOnlyProperty);
+            this.this_UnpackValueOfNonPublicHashtableReadOnlyPropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableReadOnlyProperty);
+            this.this_SetUnpackedValueOfNonPublicHashtableReadOnlyFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable>(this.SetUnpackedValueOfNonPublicHashtableReadOnlyField);
+            this.this_UnpackValueOfNonPublicHashtableReadOnlyFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableReadOnlyField);
         }
         
         private void PackValueOfAlias(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
@@ -217,6 +458,54 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._serializer1.PackTo(packer, objectTree.CollectionReadOnlyProperty);
         }
         
+        private void PackValueOfNonPublicCollectionProperty(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer1.PackTo(packer, ((System.Collections.Generic.List<int>)(this._methodBaseAnnotatedClass_get_NonPublicCollectionProperty1.Invoke(objectTree, null))));
+        }
+        
+        private void PackValueOfNonPublicCollectionField(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer1.PackTo(packer, ((System.Collections.Generic.List<int>)(this._fieldAnnotatedClass_NonPublicCollectionField2.GetValue(objectTree))));
+        }
+        
+        private void PackValueOfNonPublicCollectionReadOnlyProperty(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer1.PackTo(packer, ((System.Collections.Generic.List<int>)(this._methodBaseAnnotatedClass_get_NonPublicCollectionReadOnlyProperty2.Invoke(objectTree, null))));
+        }
+        
+        private void PackValueOfNonPublicCollectionReadOnlyField(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer1.PackTo(packer, ((System.Collections.Generic.List<int>)(this._fieldAnnotatedClass_NonPublicCollectionReadOnlyField3.GetValue(objectTree))));
+        }
+        
+        private void PackValueOfNonPublicDictionaryProperty(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer2.PackTo(packer, ((System.Collections.Generic.Dictionary<string, int>)(this._methodBaseAnnotatedClass_get_NonPublicDictionaryProperty3.Invoke(objectTree, null))));
+        }
+        
+        private void PackValueOfNonPublicDictionaryField(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer2.PackTo(packer, ((System.Collections.Generic.Dictionary<string, int>)(this._fieldAnnotatedClass_NonPublicDictionaryField4.GetValue(objectTree))));
+        }
+        
+        private void PackValueOfNonPublicDictionaryReadOnlyProperty(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer2.PackTo(packer, ((System.Collections.Generic.Dictionary<string, int>)(this._methodBaseAnnotatedClass_get_NonPublicDictionaryReadOnlyProperty4.Invoke(objectTree, null))));
+        }
+        
+        private void PackValueOfNonPublicDictionaryReadOnlyField(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer2.PackTo(packer, ((System.Collections.Generic.Dictionary<string, int>)(this._fieldAnnotatedClass_NonPublicDictionaryReadOnlyField5.GetValue(objectTree))));
+        }
+        
+        private void PackValueOfNonPublicHashtableProperty(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer3.PackTo(packer, ((System.Collections.Hashtable)(this._methodBaseAnnotatedClass_get_NonPublicHashtableProperty5.Invoke(objectTree, null))));
+        }
+        
+        private void PackValueOfNonPublicHashtableField(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer3.PackTo(packer, ((System.Collections.Hashtable)(this._fieldAnnotatedClass_NonPublicHashtableField6.GetValue(objectTree))));
+        }
+        
+        private void PackValueOfNonPublicHashtableReadOnlyProperty(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer3.PackTo(packer, ((System.Collections.Hashtable)(this._methodBaseAnnotatedClass_get_NonPublicHashtableReadOnlyProperty6.Invoke(objectTree, null))));
+        }
+        
+        private void PackValueOfNonPublicHashtableReadOnlyField(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer3.PackTo(packer, ((System.Collections.Hashtable)(this._fieldAnnotatedClass_NonPublicHashtableReadOnlyField7.GetValue(objectTree))));
+        }
+        
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
             if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
                 MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
@@ -231,7 +520,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfAlias(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "Alias", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate, this.this_SetUnpackedValueOfPublicPropertySetUnpackedValueOfPublicPropertyDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "Alias", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfPublicPropertyDelegate);
         }
         
         private void SetUnpackedValueOfPublicField(MsgPack.Serialization.AnnotatedClass unpackingContext, int unpackedValue) {
@@ -239,7 +528,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfPublicField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "PublicField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate, this.this_SetUnpackedValueOfPublicFieldSetUnpackedValueOfPublicFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "PublicField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfPublicFieldDelegate);
         }
         
         private void UnpackMemberPlaceHolder(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
@@ -247,12 +536,12 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void SetUnpackedValueOfNonPublicProperty(MsgPack.Serialization.AnnotatedClass unpackingContext, int unpackedValue) {
-            this._methodBaseAnnotatedClass_set_NonPublicProperty1.Invoke(unpackingContext, new object[] {
+            this._methodBaseAnnotatedClass_set_NonPublicProperty7.Invoke(unpackingContext, new object[] {
                         ((object)(unpackedValue))});
         }
         
         private void UnpackValueOfNonPublicProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonPublicProperty", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonPublicPropertySetUnpackedValueOfNonPublicPropertyDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonPublicProperty", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonPublicPropertyDelegate);
         }
         
         private void SetUnpackedValueOfNonPublicField(MsgPack.Serialization.AnnotatedClass unpackingContext, int unpackedValue) {
@@ -260,7 +549,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNonPublicField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonPublicField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonPublicFieldSetUnpackedValueOfNonPublicFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonPublicField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonPublicFieldDelegate);
         }
         
         private void SetUnpackedValueOfNonSerializedPublicField(MsgPack.Serialization.AnnotatedClass unpackingContext, int unpackedValue) {
@@ -268,7 +557,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNonSerializedPublicField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonSerializedPublicField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonSerializedPublicFieldSetUnpackedValueOfNonSerializedPublicFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonSerializedPublicField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonSerializedPublicFieldDelegate);
         }
         
         private void SetUnpackedValueOfNonSerializedNonPublicField(MsgPack.Serialization.AnnotatedClass unpackingContext, int unpackedValue) {
@@ -276,10 +565,12 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNonSerializedNonPublicField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonSerializedNonPublicField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonSerializedNonPublicFieldSetUnpackedValueOfNonSerializedNonPublicFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonSerializedNonPublicField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonSerializedNonPublicFieldDelegate);
         }
         
         private void SetUnpackedValueOfCollectionReadOnlyProperty(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Generic.List<int> unpackedValue) {
+            System.Collections.Generic.List<int> existent = default(System.Collections.Generic.List<int>);
+            existent = unpackingContext.CollectionReadOnlyProperty;
             System.Collections.Generic.List<int>.Enumerator enumerator = unpackedValue.GetEnumerator();
             int current;
             try {
@@ -287,7 +578,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                 ; enumerator.MoveNext(); 
                 ) {
                     current = enumerator.Current;
-                    unpackingContext.CollectionReadOnlyProperty.Add(current);
+                    existent.Add(current);
                 }
             }
             finally {
@@ -296,7 +587,284 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfCollectionReadOnlyProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<int>), "CollectionReadOnlyProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCollectionReadOnlyPropertySetUnpackedValueOfCollectionReadOnlyPropertyDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<int>), "CollectionReadOnlyProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCollectionReadOnlyPropertyDelegate);
+        }
+        
+        private void SetUnpackedValueOfNonPublicCollectionProperty(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Generic.List<int> unpackedValue) {
+            System.Collections.Generic.List<int> existent = default(System.Collections.Generic.List<int>);
+            existent = ((System.Collections.Generic.List<int>)(this._methodBaseAnnotatedClass_get_NonPublicCollectionProperty1.Invoke(unpackingContext, null)));
+            if ((existent == null)) {
+                this._methodBaseAnnotatedClass_set_NonPublicCollectionProperty8.Invoke(unpackingContext, new object[] {
+                            unpackedValue});
+            }
+            else {
+                System.Collections.Generic.List<int>.Enumerator enumerator = unpackedValue.GetEnumerator();
+                int current;
+                try {
+                    for (
+                    ; enumerator.MoveNext(); 
+                    ) {
+                        current = enumerator.Current;
+                        existent.Add(current);
+                    }
+                }
+                finally {
+                    enumerator.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfNonPublicCollectionProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<int>), "NonPublicCollectionProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicCollectionPropertyDelegate);
+        }
+        
+        private void SetUnpackedValueOfNonPublicCollectionField(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Generic.List<int> unpackedValue) {
+            System.Collections.Generic.List<int> existent = default(System.Collections.Generic.List<int>);
+            existent = ((System.Collections.Generic.List<int>)(this._fieldAnnotatedClass_NonPublicCollectionField2.GetValue(unpackingContext)));
+            if ((existent == null)) {
+                this._fieldAnnotatedClass_NonPublicCollectionField2.SetValue(unpackingContext, unpackedValue);
+            }
+            else {
+                System.Collections.Generic.List<int>.Enumerator enumerator = unpackedValue.GetEnumerator();
+                int current;
+                try {
+                    for (
+                    ; enumerator.MoveNext(); 
+                    ) {
+                        current = enumerator.Current;
+                        existent.Add(current);
+                    }
+                }
+                finally {
+                    enumerator.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfNonPublicCollectionField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<int>), "NonPublicCollectionField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicCollectionFieldDelegate);
+        }
+        
+        private void SetUnpackedValueOfNonPublicCollectionReadOnlyProperty(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Generic.List<int> unpackedValue) {
+            System.Collections.Generic.List<int> existent = default(System.Collections.Generic.List<int>);
+            existent = ((System.Collections.Generic.List<int>)(this._methodBaseAnnotatedClass_get_NonPublicCollectionReadOnlyProperty2.Invoke(unpackingContext, null)));
+            System.Collections.Generic.List<int>.Enumerator enumerator = unpackedValue.GetEnumerator();
+            int current;
+            try {
+                for (
+                ; enumerator.MoveNext(); 
+                ) {
+                    current = enumerator.Current;
+                    existent.Add(current);
+                }
+            }
+            finally {
+                enumerator.Dispose();
+            }
+        }
+        
+        private void UnpackValueOfNonPublicCollectionReadOnlyProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<int>), "NonPublicCollectionReadOnlyProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicCollectionReadOnlyPropertyDelegate);
+        }
+        
+        private void SetUnpackedValueOfNonPublicCollectionReadOnlyField(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Generic.List<int> unpackedValue) {
+            System.Collections.Generic.List<int> existent = default(System.Collections.Generic.List<int>);
+            existent = ((System.Collections.Generic.List<int>)(this._fieldAnnotatedClass_NonPublicCollectionReadOnlyField3.GetValue(unpackingContext)));
+            System.Collections.Generic.List<int>.Enumerator enumerator = unpackedValue.GetEnumerator();
+            int current;
+            try {
+                for (
+                ; enumerator.MoveNext(); 
+                ) {
+                    current = enumerator.Current;
+                    existent.Add(current);
+                }
+            }
+            finally {
+                enumerator.Dispose();
+            }
+        }
+        
+        private void UnpackValueOfNonPublicCollectionReadOnlyField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<int>), "NonPublicCollectionReadOnlyField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicCollectionReadOnlyFieldDelegate);
+        }
+        
+        private void SetUnpackedValueOfNonPublicDictionaryProperty(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Generic.Dictionary<string, int> unpackedValue) {
+            System.Collections.Generic.Dictionary<string, int> existent = default(System.Collections.Generic.Dictionary<string, int>);
+            existent = ((System.Collections.Generic.Dictionary<string, int>)(this._methodBaseAnnotatedClass_get_NonPublicDictionaryProperty3.Invoke(unpackingContext, null)));
+            if ((existent == null)) {
+                this._methodBaseAnnotatedClass_set_NonPublicDictionaryProperty9.Invoke(unpackingContext, new object[] {
+                            unpackedValue});
+            }
+            else {
+                System.Collections.Generic.Dictionary<string, int>.Enumerator enumerator = unpackedValue.GetEnumerator();
+                System.Collections.Generic.KeyValuePair<string, int> current;
+                try {
+                    for (
+                    ; enumerator.MoveNext(); 
+                    ) {
+                        current = enumerator.Current;
+                        existent.Add(current.Key, current.Value);
+                    }
+                }
+                finally {
+                    enumerator.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfNonPublicDictionaryProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<string, int>), "NonPublicDictionaryProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicDictionaryPropertyDelegate);
+        }
+        
+        private void SetUnpackedValueOfNonPublicDictionaryField(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Generic.Dictionary<string, int> unpackedValue) {
+            System.Collections.Generic.Dictionary<string, int> existent = default(System.Collections.Generic.Dictionary<string, int>);
+            existent = ((System.Collections.Generic.Dictionary<string, int>)(this._fieldAnnotatedClass_NonPublicDictionaryField4.GetValue(unpackingContext)));
+            if ((existent == null)) {
+                this._fieldAnnotatedClass_NonPublicDictionaryField4.SetValue(unpackingContext, unpackedValue);
+            }
+            else {
+                System.Collections.Generic.Dictionary<string, int>.Enumerator enumerator = unpackedValue.GetEnumerator();
+                System.Collections.Generic.KeyValuePair<string, int> current;
+                try {
+                    for (
+                    ; enumerator.MoveNext(); 
+                    ) {
+                        current = enumerator.Current;
+                        existent.Add(current.Key, current.Value);
+                    }
+                }
+                finally {
+                    enumerator.Dispose();
+                }
+            }
+        }
+        
+        private void UnpackValueOfNonPublicDictionaryField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<string, int>), "NonPublicDictionaryField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicDictionaryFieldDelegate);
+        }
+        
+        private void SetUnpackedValueOfNonPublicDictionaryReadOnlyProperty(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Generic.Dictionary<string, int> unpackedValue) {
+            System.Collections.Generic.Dictionary<string, int> existent = default(System.Collections.Generic.Dictionary<string, int>);
+            existent = ((System.Collections.Generic.Dictionary<string, int>)(this._methodBaseAnnotatedClass_get_NonPublicDictionaryReadOnlyProperty4.Invoke(unpackingContext, null)));
+            System.Collections.Generic.Dictionary<string, int>.Enumerator enumerator = unpackedValue.GetEnumerator();
+            System.Collections.Generic.KeyValuePair<string, int> current;
+            try {
+                for (
+                ; enumerator.MoveNext(); 
+                ) {
+                    current = enumerator.Current;
+                    existent.Add(current.Key, current.Value);
+                }
+            }
+            finally {
+                enumerator.Dispose();
+            }
+        }
+        
+        private void UnpackValueOfNonPublicDictionaryReadOnlyProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<string, int>), "NonPublicDictionaryReadOnlyProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicDictionaryReadOnlyPropertyDelegate);
+        }
+        
+        private void SetUnpackedValueOfNonPublicDictionaryReadOnlyField(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Generic.Dictionary<string, int> unpackedValue) {
+            System.Collections.Generic.Dictionary<string, int> existent = default(System.Collections.Generic.Dictionary<string, int>);
+            existent = ((System.Collections.Generic.Dictionary<string, int>)(this._fieldAnnotatedClass_NonPublicDictionaryReadOnlyField5.GetValue(unpackingContext)));
+            System.Collections.Generic.Dictionary<string, int>.Enumerator enumerator = unpackedValue.GetEnumerator();
+            System.Collections.Generic.KeyValuePair<string, int> current;
+            try {
+                for (
+                ; enumerator.MoveNext(); 
+                ) {
+                    current = enumerator.Current;
+                    existent.Add(current.Key, current.Value);
+                }
+            }
+            finally {
+                enumerator.Dispose();
+            }
+        }
+        
+        private void UnpackValueOfNonPublicDictionaryReadOnlyField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<string, int>), "NonPublicDictionaryReadOnlyField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicDictionaryReadOnlyFieldDelegate);
+        }
+        
+        private void SetUnpackedValueOfNonPublicHashtableProperty(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Hashtable unpackedValue) {
+            System.Collections.Hashtable existent = default(System.Collections.Hashtable);
+            existent = ((System.Collections.Hashtable)(this._methodBaseAnnotatedClass_get_NonPublicHashtableProperty5.Invoke(unpackingContext, null)));
+            if ((existent == null)) {
+                this._methodBaseAnnotatedClass_set_NonPublicHashtableProperty10.Invoke(unpackingContext, new object[] {
+                            unpackedValue});
+            }
+            else {
+                System.Collections.IDictionaryEnumerator enumerator = unpackedValue.GetEnumerator();
+                System.Collections.DictionaryEntry current;
+                for (
+                ; enumerator.MoveNext(); 
+                ) {
+                    current = enumerator.Entry;
+                    existent.Add(current.Key, current.Value);
+                }
+            }
+        }
+        
+        private void UnpackValueOfNonPublicHashtableProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Hashtable), "NonPublicHashtableProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicHashtablePropertyDelegate);
+        }
+        
+        private void SetUnpackedValueOfNonPublicHashtableField(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Hashtable unpackedValue) {
+            System.Collections.Hashtable existent = default(System.Collections.Hashtable);
+            existent = ((System.Collections.Hashtable)(this._fieldAnnotatedClass_NonPublicHashtableField6.GetValue(unpackingContext)));
+            if ((existent == null)) {
+                this._fieldAnnotatedClass_NonPublicHashtableField6.SetValue(unpackingContext, unpackedValue);
+            }
+            else {
+                System.Collections.IDictionaryEnumerator enumerator = unpackedValue.GetEnumerator();
+                System.Collections.DictionaryEntry current;
+                for (
+                ; enumerator.MoveNext(); 
+                ) {
+                    current = enumerator.Entry;
+                    existent.Add(current.Key, current.Value);
+                }
+            }
+        }
+        
+        private void UnpackValueOfNonPublicHashtableField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Hashtable), "NonPublicHashtableField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicHashtableFieldDelegate);
+        }
+        
+        private void SetUnpackedValueOfNonPublicHashtableReadOnlyProperty(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Hashtable unpackedValue) {
+            System.Collections.Hashtable existent = default(System.Collections.Hashtable);
+            existent = ((System.Collections.Hashtable)(this._methodBaseAnnotatedClass_get_NonPublicHashtableReadOnlyProperty6.Invoke(unpackingContext, null)));
+            System.Collections.IDictionaryEnumerator enumerator = unpackedValue.GetEnumerator();
+            System.Collections.DictionaryEntry current;
+            for (
+            ; enumerator.MoveNext(); 
+            ) {
+                current = enumerator.Entry;
+                existent.Add(current.Key, current.Value);
+            }
+        }
+        
+        private void UnpackValueOfNonPublicHashtableReadOnlyProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Hashtable), "NonPublicHashtableReadOnlyProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicHashtableReadOnlyPropertyDelegate);
+        }
+        
+        private void SetUnpackedValueOfNonPublicHashtableReadOnlyField(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Hashtable unpackedValue) {
+            System.Collections.Hashtable existent = default(System.Collections.Hashtable);
+            existent = ((System.Collections.Hashtable)(this._fieldAnnotatedClass_NonPublicHashtableReadOnlyField7.GetValue(unpackingContext)));
+            System.Collections.IDictionaryEnumerator enumerator = unpackedValue.GetEnumerator();
+            System.Collections.DictionaryEntry current;
+            for (
+            ; enumerator.MoveNext(); 
+            ) {
+                current = enumerator.Entry;
+                existent.Add(current.Key, current.Value);
+            }
+        }
+        
+        private void UnpackValueOfNonPublicHashtableReadOnlyField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Hashtable), "NonPublicHashtableReadOnlyField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicHashtableReadOnlyFieldDelegate);
         }
         
         protected internal override MsgPack.Serialization.AnnotatedClass UnpackFromCore(MsgPack.Unpacker unpacker) {

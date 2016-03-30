@@ -17,537 +17,537 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<System.DateTime>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfAddOnlyCollection_DateTimeFieldPackValueOfAddOnlyCollection_DateTimeFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfAddOnlyCollection_DateTimeFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>> _serializer1;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfAddOnlyCollection_MessagePackObjectFieldPackValueOfAddOnlyCollection_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfAddOnlyCollection_MessagePackObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<object>> _serializer2;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfAddOnlyCollection_ObjectFieldPackValueOfAddOnlyCollection_ObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfAddOnlyCollection_ObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.ArrayList> _serializer3;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfArrayListFieldPackValueOfArrayListFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfArrayListFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.ArraySegment<byte>> _serializer4;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfArraySegmentByteFieldPackValueOfArraySegmentByteFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfArraySegmentByteFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.ArraySegment<decimal>> _serializer5;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfArraySegmentDecimalFieldPackValueOfArraySegmentDecimalFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfArraySegmentDecimalFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.ArraySegment<int>> _serializer6;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfArraySegmentInt32FieldPackValueOfArraySegmentInt32FieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfArraySegmentInt32FieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<byte[]> _serializer7;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfByteArrayFieldPackValueOfByteArrayFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfByteArrayFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<byte> _serializer8;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfByteFieldPackValueOfByteFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfByteFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<char[]> _serializer9;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfCharArrayFieldPackValueOfCharArrayFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfCharArrayFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<char> _serializer10;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfCharFieldPackValueOfCharFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfCharFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>> _serializer11;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfCollection_MessagePackObjectFieldPackValueOfCollection_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfCollection_MessagePackObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<System.DateTime>> _serializer12;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfCollectionDateTimeFieldPackValueOfCollectionDateTimeFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfCollectionDateTimeFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<object>> _serializer13;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfCollectionObjectFieldPackValueOfCollectionObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfCollectionObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Globalization.CultureInfo> _serializer14;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfCurrentCultureFieldPackValueOfCurrentCultureFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfCurrentCultureFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.DateTime> _serializer15;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfDateTimeFieldPackValueOfDateTimeFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfDateTimeFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.DateTimeOffset> _serializer16;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfDateTimeOffsetFieldPackValueOfDateTimeOffsetFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfDateTimeOffsetFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<decimal> _serializer17;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfDecimalFieldPackValueOfDecimalFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfDecimalFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> _serializer18;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfDictionary_MessagePackObject_MessagePackObjectFieldPackValueOfDictionary_MessagePackObject_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfDictionary_MessagePackObject_MessagePackObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.DictionaryEntry> _serializer19;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfDictionaryEntryFieldPackValueOfDictionaryEntryFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfDictionaryEntryFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<object, object>> _serializer20;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfDictionaryObjectObjectFieldPackValueOfDictionaryObjectObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfDictionaryObjectObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<string, System.DateTime>> _serializer21;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfDictionaryStringDateTimeFieldPackValueOfDictionaryStringDateTimeFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfDictionaryStringDateTimeFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<bool> _serializer22;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfFalseFieldPackValueOfFalseFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfFalseFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Runtime.InteropServices.ComTypes.FILETIME> _serializer23;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfFILETIMEFieldPackValueOfFILETIMEFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfFILETIMEFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Guid> _serializer24;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfGuidFieldPackValueOfGuidFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfGuidFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<MsgPack.MessagePackObject>> _serializer25;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfHashSet_MessagePackObjectFieldPackValueOfHashSet_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfHashSet_MessagePackObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<System.DateTime>> _serializer26;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfHashSetDateTimeFieldPackValueOfHashSetDateTimeFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfHashSetDateTimeFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<object>> _serializer27;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfHashSetObjectFieldPackValueOfHashSetObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfHashSetObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Hashtable> _serializer28;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfHashtableFieldPackValueOfHashtableFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfHashtableFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ICollection<MsgPack.MessagePackObject>> _serializer29;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfICollection_MessagePackObjectFieldPackValueOfICollection_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfICollection_MessagePackObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ICollection<System.DateTime>> _serializer30;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfICollectionDateTimeFieldPackValueOfICollectionDateTimeFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfICollectionDateTimeFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ICollection<object>> _serializer31;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfICollectionObjectFieldPackValueOfICollectionObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfICollectionObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> _serializer32;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfIDictionary_MessagePackObject_MessagePackObjectFieldPackValueOfIDictionary_MessagePackObject_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfIDictionary_MessagePackObject_MessagePackObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<object, object>> _serializer33;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfIDictionaryObjectObjectFieldPackValueOfIDictionaryObjectObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfIDictionaryObjectObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<string, System.DateTime>> _serializer34;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfIDictionaryStringDateTimeFieldPackValueOfIDictionaryStringDateTimeFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfIDictionaryStringDateTimeFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<MsgPack.MessagePackObject>> _serializer35;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfIList_MessagePackObjectFieldPackValueOfIList_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfIList_MessagePackObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<System.DateTime>> _serializer36;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfIListDateTimeFieldPackValueOfIListDateTimeFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfIListDateTimeFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<object>> _serializer37;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfIListObjectFieldPackValueOfIListObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfIListObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Image> _serializer38;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfImage_FieldPackValueOfImage_FieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfImage_FieldDelegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfInvariantCultureFieldPackValueOfInvariantCultureFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfInvariantCultureFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>> _serializer39;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfKeyValuePairStringDateTimeOffsetFieldPackValueOfKeyValuePairStringDateTimeOffsetFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfKeyValuePairStringDateTimeOffsetFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<MsgPack.MessagePackObject>> _serializer40;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfList_MessagePackObjectFieldPackValueOfList_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfList_MessagePackObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<System.DateTime>> _serializer41;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfListDateTimeFieldPackValueOfListDateTimeFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfListDateTimeFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<object>> _serializer42;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfListObjectFieldPackValueOfListObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfListObjectFieldDelegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMaxByteFieldPackValueOfMaxByteFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMaxByteFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<int> _serializer43;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMaxInt32FieldPackValueOfMaxInt32FieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMaxInt32FieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<long> _serializer44;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMaxInt64FieldPackValueOfMaxInt64FieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMaxInt64FieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<ushort> _serializer45;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMaxUInt16FieldPackValueOfMaxUInt16FieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMaxUInt16FieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject> _serializer46;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMessagePackObject_FieldPackValueOfMessagePackObject_FieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMessagePackObject_FieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject[]> _serializer47;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMessagePackObjectArray_FieldPackValueOfMessagePackObjectArray_FieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMessagePackObjectArray_FieldDelegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMinInt32FieldPackValueOfMinInt32FieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMinInt32FieldDelegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMinInt64FieldPackValueOfMinInt64FieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfMinInt64FieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<object> _serializer48;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfNullFieldPackValueOfNullFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfNullFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<object[]> _serializer49;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfObjectArrayFieldPackValueOfObjectArrayFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfObjectArrayFieldDelegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfObjectFieldPackValueOfObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer50;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfStringFieldPackValueOfStringFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfStringFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.StringKeyedCollection<System.DateTime>> _serializer51;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfStringKeyedCollection_DateTimeFieldPackValueOfStringKeyedCollection_DateTimeFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfStringKeyedCollection_DateTimeFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>> _serializer52;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfStringKeyedCollection_MessagePackObjectFieldPackValueOfStringKeyedCollection_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfStringKeyedCollection_MessagePackObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.StringKeyedCollection<object>> _serializer53;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfStringKeyedCollection_ObjectFieldPackValueOfStringKeyedCollection_ObjectFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfStringKeyedCollection_ObjectFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.TimeSpan> _serializer54;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfTimeSpanFieldPackValueOfTimeSpanFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfTimeSpanFieldDelegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfTinyByteFieldPackValueOfTinyByteFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfTinyByteFieldDelegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfTinyInt32FieldPackValueOfTinyInt32FieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfTinyInt32FieldDelegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfTinyInt64FieldPackValueOfTinyInt64FieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfTinyInt64FieldDelegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfTinyUInt16FieldPackValueOfTinyUInt16FieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfTinyUInt16FieldDelegate;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfTrueFieldPackValueOfTrueFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfTrueFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Uri> _serializer55;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfUriFieldPackValueOfUriFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfUriFieldDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Version> _serializer56;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfVersionFieldPackValueOfVersionFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated> this_PackValueOfVersionFieldDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.AddOnlyCollection<System.DateTime>> this_SetUnpackedValueOfAddOnlyCollection_DateTimeFieldSetUnpackedValueOfAddOnlyCollection_DateTimeFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.AddOnlyCollection<System.DateTime>> this_SetUnpackedValueOfAddOnlyCollection_DateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfAddOnlyCollection_DateTimeFieldUnpackValueOfAddOnlyCollection_DateTimeFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfAddOnlyCollection_DateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>> this_SetUnpackedValueOfAddOnlyCollection_MessagePackObjectFieldSetUnpackedValueOfAddOnlyCollection_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>> this_SetUnpackedValueOfAddOnlyCollection_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfAddOnlyCollection_MessagePackObjectFieldUnpackValueOfAddOnlyCollection_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfAddOnlyCollection_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.AddOnlyCollection<object>> this_SetUnpackedValueOfAddOnlyCollection_ObjectFieldSetUnpackedValueOfAddOnlyCollection_ObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.AddOnlyCollection<object>> this_SetUnpackedValueOfAddOnlyCollection_ObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfAddOnlyCollection_ObjectFieldUnpackValueOfAddOnlyCollection_ObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfAddOnlyCollection_ObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ArrayList> this_SetUnpackedValueOfArrayListFieldSetUnpackedValueOfArrayListFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ArrayList> this_SetUnpackedValueOfArrayListFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfArrayListFieldUnpackValueOfArrayListFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfArrayListFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.ArraySegment<byte>> this_SetUnpackedValueOfArraySegmentByteFieldSetUnpackedValueOfArraySegmentByteFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.ArraySegment<byte>> this_SetUnpackedValueOfArraySegmentByteFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfArraySegmentByteFieldUnpackValueOfArraySegmentByteFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfArraySegmentByteFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.ArraySegment<decimal>> this_SetUnpackedValueOfArraySegmentDecimalFieldSetUnpackedValueOfArraySegmentDecimalFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.ArraySegment<decimal>> this_SetUnpackedValueOfArraySegmentDecimalFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfArraySegmentDecimalFieldUnpackValueOfArraySegmentDecimalFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfArraySegmentDecimalFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.ArraySegment<int>> this_SetUnpackedValueOfArraySegmentInt32FieldSetUnpackedValueOfArraySegmentInt32FieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.ArraySegment<int>> this_SetUnpackedValueOfArraySegmentInt32FieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfArraySegmentInt32FieldUnpackValueOfArraySegmentInt32FieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfArraySegmentInt32FieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte[]> this_SetUnpackedValueOfByteArrayFieldSetUnpackedValueOfByteArrayFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte[]> this_SetUnpackedValueOfByteArrayFieldDelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, byte[]> MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueUnpackBinaryValueDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, byte[]> MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfByteArrayFieldUnpackValueOfByteArrayFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfByteArrayFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte> this_SetUnpackedValueOfByteFieldSetUnpackedValueOfByteFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte> this_SetUnpackedValueOfByteFieldDelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, byte> MsgPack_Serialization_UnpackHelpers_UnpackByteValueUnpackByteValueDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, byte> MsgPack_Serialization_UnpackHelpers_UnpackByteValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfByteFieldUnpackValueOfByteFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfByteFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, char[]> this_SetUnpackedValueOfCharArrayFieldSetUnpackedValueOfCharArrayFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, char[]> this_SetUnpackedValueOfCharArrayFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfCharArrayFieldUnpackValueOfCharArrayFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfCharArrayFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, char> this_SetUnpackedValueOfCharFieldSetUnpackedValueOfCharFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, char> this_SetUnpackedValueOfCharFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfCharFieldUnpackValueOfCharFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfCharFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>> this_SetUnpackedValueOfCollection_MessagePackObjectFieldSetUnpackedValueOfCollection_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>> this_SetUnpackedValueOfCollection_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfCollection_MessagePackObjectFieldUnpackValueOfCollection_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfCollection_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ObjectModel.Collection<System.DateTime>> this_SetUnpackedValueOfCollectionDateTimeFieldSetUnpackedValueOfCollectionDateTimeFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ObjectModel.Collection<System.DateTime>> this_SetUnpackedValueOfCollectionDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfCollectionDateTimeFieldUnpackValueOfCollectionDateTimeFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfCollectionDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ObjectModel.Collection<object>> this_SetUnpackedValueOfCollectionObjectFieldSetUnpackedValueOfCollectionObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ObjectModel.Collection<object>> this_SetUnpackedValueOfCollectionObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfCollectionObjectFieldUnpackValueOfCollectionObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfCollectionObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Globalization.CultureInfo> this_SetUnpackedValueOfCurrentCultureFieldSetUnpackedValueOfCurrentCultureFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Globalization.CultureInfo> this_SetUnpackedValueOfCurrentCultureFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfCurrentCultureFieldUnpackValueOfCurrentCultureFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfCurrentCultureFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.DateTime> this_SetUnpackedValueOfDateTimeFieldSetUnpackedValueOfDateTimeFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.DateTime> this_SetUnpackedValueOfDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfDateTimeFieldUnpackValueOfDateTimeFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.DateTimeOffset> this_SetUnpackedValueOfDateTimeOffsetFieldSetUnpackedValueOfDateTimeOffsetFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.DateTimeOffset> this_SetUnpackedValueOfDateTimeOffsetFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfDateTimeOffsetFieldUnpackValueOfDateTimeOffsetFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfDateTimeOffsetFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, decimal> this_SetUnpackedValueOfDecimalFieldSetUnpackedValueOfDecimalFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, decimal> this_SetUnpackedValueOfDecimalFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfDecimalFieldUnpackValueOfDecimalFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfDecimalFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> this_SetUnpackedValueOfDictionary_MessagePackObject_MessagePackObjectFieldSetUnpackedValueOfDictionary_MessagePackObject_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> this_SetUnpackedValueOfDictionary_MessagePackObject_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfDictionary_MessagePackObject_MessagePackObjectFieldUnpackValueOfDictionary_MessagePackObject_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfDictionary_MessagePackObject_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.DictionaryEntry> this_SetUnpackedValueOfDictionaryEntryFieldSetUnpackedValueOfDictionaryEntryFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.DictionaryEntry> this_SetUnpackedValueOfDictionaryEntryFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfDictionaryEntryFieldUnpackValueOfDictionaryEntryFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfDictionaryEntryFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.Dictionary<object, object>> this_SetUnpackedValueOfDictionaryObjectObjectFieldSetUnpackedValueOfDictionaryObjectObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.Dictionary<object, object>> this_SetUnpackedValueOfDictionaryObjectObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfDictionaryObjectObjectFieldUnpackValueOfDictionaryObjectObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfDictionaryObjectObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.Dictionary<string, System.DateTime>> this_SetUnpackedValueOfDictionaryStringDateTimeFieldSetUnpackedValueOfDictionaryStringDateTimeFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.Dictionary<string, System.DateTime>> this_SetUnpackedValueOfDictionaryStringDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfDictionaryStringDateTimeFieldUnpackValueOfDictionaryStringDateTimeFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfDictionaryStringDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, bool> this_SetUnpackedValueOfFalseFieldSetUnpackedValueOfFalseFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, bool> this_SetUnpackedValueOfFalseFieldDelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, bool> MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueUnpackBooleanValueDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, bool> MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfFalseFieldUnpackValueOfFalseFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfFalseFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Runtime.InteropServices.ComTypes.FILETIME> this_SetUnpackedValueOfFILETIMEFieldSetUnpackedValueOfFILETIMEFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Runtime.InteropServices.ComTypes.FILETIME> this_SetUnpackedValueOfFILETIMEFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfFILETIMEFieldUnpackValueOfFILETIMEFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfFILETIMEFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Guid> this_SetUnpackedValueOfGuidFieldSetUnpackedValueOfGuidFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Guid> this_SetUnpackedValueOfGuidFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfGuidFieldUnpackValueOfGuidFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfGuidFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.HashSet<MsgPack.MessagePackObject>> this_SetUnpackedValueOfHashSet_MessagePackObjectFieldSetUnpackedValueOfHashSet_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.HashSet<MsgPack.MessagePackObject>> this_SetUnpackedValueOfHashSet_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfHashSet_MessagePackObjectFieldUnpackValueOfHashSet_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfHashSet_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.HashSet<System.DateTime>> this_SetUnpackedValueOfHashSetDateTimeFieldSetUnpackedValueOfHashSetDateTimeFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.HashSet<System.DateTime>> this_SetUnpackedValueOfHashSetDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfHashSetDateTimeFieldUnpackValueOfHashSetDateTimeFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfHashSetDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.HashSet<object>> this_SetUnpackedValueOfHashSetObjectFieldSetUnpackedValueOfHashSetObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.HashSet<object>> this_SetUnpackedValueOfHashSetObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfHashSetObjectFieldUnpackValueOfHashSetObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfHashSetObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Hashtable> this_SetUnpackedValueOfHashtableFieldSetUnpackedValueOfHashtableFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Hashtable> this_SetUnpackedValueOfHashtableFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfHashtableFieldUnpackValueOfHashtableFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfHashtableFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.ICollection<MsgPack.MessagePackObject>> this_SetUnpackedValueOfICollection_MessagePackObjectFieldSetUnpackedValueOfICollection_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.ICollection<MsgPack.MessagePackObject>> this_SetUnpackedValueOfICollection_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfICollection_MessagePackObjectFieldUnpackValueOfICollection_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfICollection_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.ICollection<System.DateTime>> this_SetUnpackedValueOfICollectionDateTimeFieldSetUnpackedValueOfICollectionDateTimeFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.ICollection<System.DateTime>> this_SetUnpackedValueOfICollectionDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfICollectionDateTimeFieldUnpackValueOfICollectionDateTimeFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfICollectionDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.ICollection<object>> this_SetUnpackedValueOfICollectionObjectFieldSetUnpackedValueOfICollectionObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.ICollection<object>> this_SetUnpackedValueOfICollectionObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfICollectionObjectFieldUnpackValueOfICollectionObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfICollectionObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> this_SetUnpackedValueOfIDictionary_MessagePackObject_MessagePackObjectFieldSetUnpackedValueOfIDictionary_MessagePackObject_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> this_SetUnpackedValueOfIDictionary_MessagePackObject_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfIDictionary_MessagePackObject_MessagePackObjectFieldUnpackValueOfIDictionary_MessagePackObject_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfIDictionary_MessagePackObject_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IDictionary<object, object>> this_SetUnpackedValueOfIDictionaryObjectObjectFieldSetUnpackedValueOfIDictionaryObjectObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IDictionary<object, object>> this_SetUnpackedValueOfIDictionaryObjectObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfIDictionaryObjectObjectFieldUnpackValueOfIDictionaryObjectObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfIDictionaryObjectObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IDictionary<string, System.DateTime>> this_SetUnpackedValueOfIDictionaryStringDateTimeFieldSetUnpackedValueOfIDictionaryStringDateTimeFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IDictionary<string, System.DateTime>> this_SetUnpackedValueOfIDictionaryStringDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfIDictionaryStringDateTimeFieldUnpackValueOfIDictionaryStringDateTimeFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfIDictionaryStringDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IList<MsgPack.MessagePackObject>> this_SetUnpackedValueOfIList_MessagePackObjectFieldSetUnpackedValueOfIList_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IList<MsgPack.MessagePackObject>> this_SetUnpackedValueOfIList_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfIList_MessagePackObjectFieldUnpackValueOfIList_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfIList_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IList<System.DateTime>> this_SetUnpackedValueOfIListDateTimeFieldSetUnpackedValueOfIListDateTimeFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IList<System.DateTime>> this_SetUnpackedValueOfIListDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfIListDateTimeFieldUnpackValueOfIListDateTimeFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfIListDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IList<object>> this_SetUnpackedValueOfIListObjectFieldSetUnpackedValueOfIListObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IList<object>> this_SetUnpackedValueOfIListObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfIListObjectFieldUnpackValueOfIListObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfIListObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Image> this_SetUnpackedValueOfImage_FieldSetUnpackedValueOfImage_FieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Image> this_SetUnpackedValueOfImage_FieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfImage_FieldUnpackValueOfImage_FieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfImage_FieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Globalization.CultureInfo> this_SetUnpackedValueOfInvariantCultureFieldSetUnpackedValueOfInvariantCultureFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Globalization.CultureInfo> this_SetUnpackedValueOfInvariantCultureFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfInvariantCultureFieldUnpackValueOfInvariantCultureFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfInvariantCultureFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>> this_SetUnpackedValueOfKeyValuePairStringDateTimeOffsetFieldSetUnpackedValueOfKeyValuePairStringDateTimeOffsetFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>> this_SetUnpackedValueOfKeyValuePairStringDateTimeOffsetFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfKeyValuePairStringDateTimeOffsetFieldUnpackValueOfKeyValuePairStringDateTimeOffsetFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfKeyValuePairStringDateTimeOffsetFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.List<MsgPack.MessagePackObject>> this_SetUnpackedValueOfList_MessagePackObjectFieldSetUnpackedValueOfList_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.List<MsgPack.MessagePackObject>> this_SetUnpackedValueOfList_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfList_MessagePackObjectFieldUnpackValueOfList_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfList_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.List<System.DateTime>> this_SetUnpackedValueOfListDateTimeFieldSetUnpackedValueOfListDateTimeFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.List<System.DateTime>> this_SetUnpackedValueOfListDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfListDateTimeFieldUnpackValueOfListDateTimeFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfListDateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.List<object>> this_SetUnpackedValueOfListObjectFieldSetUnpackedValueOfListObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.List<object>> this_SetUnpackedValueOfListObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfListObjectFieldUnpackValueOfListObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfListObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte> this_SetUnpackedValueOfMaxByteFieldSetUnpackedValueOfMaxByteFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte> this_SetUnpackedValueOfMaxByteFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMaxByteFieldUnpackValueOfMaxByteFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMaxByteFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, int> this_SetUnpackedValueOfMaxInt32FieldSetUnpackedValueOfMaxInt32FieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, int> this_SetUnpackedValueOfMaxInt32FieldDelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, int> MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, int> MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMaxInt32FieldUnpackValueOfMaxInt32FieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMaxInt32FieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, long> this_SetUnpackedValueOfMaxInt64FieldSetUnpackedValueOfMaxInt64FieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, long> this_SetUnpackedValueOfMaxInt64FieldDelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, long> MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueUnpackInt64ValueDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, long> MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMaxInt64FieldUnpackValueOfMaxInt64FieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMaxInt64FieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, ushort> this_SetUnpackedValueOfMaxUInt16FieldSetUnpackedValueOfMaxUInt16FieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, ushort> this_SetUnpackedValueOfMaxUInt16FieldDelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, ushort> MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueUnpackUInt16ValueDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, ushort> MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMaxUInt16FieldUnpackValueOfMaxUInt16FieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMaxUInt16FieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.MessagePackObject> this_SetUnpackedValueOfMessagePackObject_FieldSetUnpackedValueOfMessagePackObject_FieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.MessagePackObject> this_SetUnpackedValueOfMessagePackObject_FieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMessagePackObject_FieldUnpackValueOfMessagePackObject_FieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMessagePackObject_FieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.MessagePackObject[]> this_SetUnpackedValueOfMessagePackObjectArray_FieldSetUnpackedValueOfMessagePackObjectArray_FieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.MessagePackObject[]> this_SetUnpackedValueOfMessagePackObjectArray_FieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMessagePackObjectArray_FieldUnpackValueOfMessagePackObjectArray_FieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMessagePackObjectArray_FieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, int> this_SetUnpackedValueOfMinInt32FieldSetUnpackedValueOfMinInt32FieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, int> this_SetUnpackedValueOfMinInt32FieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMinInt32FieldUnpackValueOfMinInt32FieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMinInt32FieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, long> this_SetUnpackedValueOfMinInt64FieldSetUnpackedValueOfMinInt64FieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, long> this_SetUnpackedValueOfMinInt64FieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMinInt64FieldUnpackValueOfMinInt64FieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfMinInt64FieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, object> this_SetUnpackedValueOfNullFieldSetUnpackedValueOfNullFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, object> this_SetUnpackedValueOfNullFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfNullFieldUnpackValueOfNullFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfNullFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, object[]> this_SetUnpackedValueOfObjectArrayFieldSetUnpackedValueOfObjectArrayFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, object[]> this_SetUnpackedValueOfObjectArrayFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfObjectArrayFieldUnpackValueOfObjectArrayFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfObjectArrayFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, object> this_SetUnpackedValueOfObjectFieldSetUnpackedValueOfObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, object> this_SetUnpackedValueOfObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfObjectFieldUnpackValueOfObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, string> this_SetUnpackedValueOfStringFieldSetUnpackedValueOfStringFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, string> this_SetUnpackedValueOfStringFieldDelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate;
+        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfStringFieldUnpackValueOfStringFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfStringFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.StringKeyedCollection<System.DateTime>> this_SetUnpackedValueOfStringKeyedCollection_DateTimeFieldSetUnpackedValueOfStringKeyedCollection_DateTimeFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.StringKeyedCollection<System.DateTime>> this_SetUnpackedValueOfStringKeyedCollection_DateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfStringKeyedCollection_DateTimeFieldUnpackValueOfStringKeyedCollection_DateTimeFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfStringKeyedCollection_DateTimeFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>> this_SetUnpackedValueOfStringKeyedCollection_MessagePackObjectFieldSetUnpackedValueOfStringKeyedCollection_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>> this_SetUnpackedValueOfStringKeyedCollection_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfStringKeyedCollection_MessagePackObjectFieldUnpackValueOfStringKeyedCollection_MessagePackObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfStringKeyedCollection_MessagePackObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.StringKeyedCollection<object>> this_SetUnpackedValueOfStringKeyedCollection_ObjectFieldSetUnpackedValueOfStringKeyedCollection_ObjectFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.StringKeyedCollection<object>> this_SetUnpackedValueOfStringKeyedCollection_ObjectFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfStringKeyedCollection_ObjectFieldUnpackValueOfStringKeyedCollection_ObjectFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfStringKeyedCollection_ObjectFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.TimeSpan> this_SetUnpackedValueOfTimeSpanFieldSetUnpackedValueOfTimeSpanFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.TimeSpan> this_SetUnpackedValueOfTimeSpanFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfTimeSpanFieldUnpackValueOfTimeSpanFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfTimeSpanFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte> this_SetUnpackedValueOfTinyByteFieldSetUnpackedValueOfTinyByteFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte> this_SetUnpackedValueOfTinyByteFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfTinyByteFieldUnpackValueOfTinyByteFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfTinyByteFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, int> this_SetUnpackedValueOfTinyInt32FieldSetUnpackedValueOfTinyInt32FieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, int> this_SetUnpackedValueOfTinyInt32FieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfTinyInt32FieldUnpackValueOfTinyInt32FieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfTinyInt32FieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, long> this_SetUnpackedValueOfTinyInt64FieldSetUnpackedValueOfTinyInt64FieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, long> this_SetUnpackedValueOfTinyInt64FieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfTinyInt64FieldUnpackValueOfTinyInt64FieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfTinyInt64FieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, ushort> this_SetUnpackedValueOfTinyUInt16FieldSetUnpackedValueOfTinyUInt16FieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, ushort> this_SetUnpackedValueOfTinyUInt16FieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfTinyUInt16FieldUnpackValueOfTinyUInt16FieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfTinyUInt16FieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, bool> this_SetUnpackedValueOfTrueFieldSetUnpackedValueOfTrueFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, bool> this_SetUnpackedValueOfTrueFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfTrueFieldUnpackValueOfTrueFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfTrueFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Uri> this_SetUnpackedValueOfUriFieldSetUnpackedValueOfUriFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Uri> this_SetUnpackedValueOfUriFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfUriFieldUnpackValueOfUriFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfUriFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Version> this_SetUnpackedValueOfVersionFieldSetUnpackedValueOfVersionFieldDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Version> this_SetUnpackedValueOfVersionFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfVersionFieldUnpackValueOfVersionFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int> this_UnpackValueOfVersionFieldDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -1070,214 +1070,214 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                     "TrueField",
                     "UriField",
                     "VersionField"};
-            this.this_PackValueOfAddOnlyCollection_DateTimeFieldPackValueOfAddOnlyCollection_DateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfAddOnlyCollection_DateTimeField);
-            this.this_PackValueOfAddOnlyCollection_MessagePackObjectFieldPackValueOfAddOnlyCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfAddOnlyCollection_MessagePackObjectField);
-            this.this_PackValueOfAddOnlyCollection_ObjectFieldPackValueOfAddOnlyCollection_ObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfAddOnlyCollection_ObjectField);
-            this.this_PackValueOfArrayListFieldPackValueOfArrayListFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfArrayListField);
-            this.this_PackValueOfArraySegmentByteFieldPackValueOfArraySegmentByteFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfArraySegmentByteField);
-            this.this_PackValueOfArraySegmentDecimalFieldPackValueOfArraySegmentDecimalFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfArraySegmentDecimalField);
-            this.this_PackValueOfArraySegmentInt32FieldPackValueOfArraySegmentInt32FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfArraySegmentInt32Field);
-            this.this_PackValueOfByteArrayFieldPackValueOfByteArrayFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfByteArrayField);
-            this.this_PackValueOfByteFieldPackValueOfByteFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfByteField);
-            this.this_PackValueOfCharArrayFieldPackValueOfCharArrayFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCharArrayField);
-            this.this_PackValueOfCharFieldPackValueOfCharFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCharField);
-            this.this_PackValueOfCollection_MessagePackObjectFieldPackValueOfCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCollection_MessagePackObjectField);
-            this.this_PackValueOfCollectionDateTimeFieldPackValueOfCollectionDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCollectionDateTimeField);
-            this.this_PackValueOfCollectionObjectFieldPackValueOfCollectionObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCollectionObjectField);
-            this.this_PackValueOfCurrentCultureFieldPackValueOfCurrentCultureFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCurrentCultureField);
-            this.this_PackValueOfDateTimeFieldPackValueOfDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDateTimeField);
-            this.this_PackValueOfDateTimeOffsetFieldPackValueOfDateTimeOffsetFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDateTimeOffsetField);
-            this.this_PackValueOfDecimalFieldPackValueOfDecimalFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDecimalField);
-            this.this_PackValueOfDictionary_MessagePackObject_MessagePackObjectFieldPackValueOfDictionary_MessagePackObject_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDictionary_MessagePackObject_MessagePackObjectField);
-            this.this_PackValueOfDictionaryEntryFieldPackValueOfDictionaryEntryFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDictionaryEntryField);
-            this.this_PackValueOfDictionaryObjectObjectFieldPackValueOfDictionaryObjectObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDictionaryObjectObjectField);
-            this.this_PackValueOfDictionaryStringDateTimeFieldPackValueOfDictionaryStringDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDictionaryStringDateTimeField);
-            this.this_PackValueOfFalseFieldPackValueOfFalseFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfFalseField);
-            this.this_PackValueOfFILETIMEFieldPackValueOfFILETIMEFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfFILETIMEField);
-            this.this_PackValueOfGuidFieldPackValueOfGuidFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfGuidField);
-            this.this_PackValueOfHashSet_MessagePackObjectFieldPackValueOfHashSet_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfHashSet_MessagePackObjectField);
-            this.this_PackValueOfHashSetDateTimeFieldPackValueOfHashSetDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfHashSetDateTimeField);
-            this.this_PackValueOfHashSetObjectFieldPackValueOfHashSetObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfHashSetObjectField);
-            this.this_PackValueOfHashtableFieldPackValueOfHashtableFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfHashtableField);
-            this.this_PackValueOfICollection_MessagePackObjectFieldPackValueOfICollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfICollection_MessagePackObjectField);
-            this.this_PackValueOfICollectionDateTimeFieldPackValueOfICollectionDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfICollectionDateTimeField);
-            this.this_PackValueOfICollectionObjectFieldPackValueOfICollectionObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfICollectionObjectField);
-            this.this_PackValueOfIDictionary_MessagePackObject_MessagePackObjectFieldPackValueOfIDictionary_MessagePackObject_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIDictionary_MessagePackObject_MessagePackObjectField);
-            this.this_PackValueOfIDictionaryObjectObjectFieldPackValueOfIDictionaryObjectObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIDictionaryObjectObjectField);
-            this.this_PackValueOfIDictionaryStringDateTimeFieldPackValueOfIDictionaryStringDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIDictionaryStringDateTimeField);
-            this.this_PackValueOfIList_MessagePackObjectFieldPackValueOfIList_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIList_MessagePackObjectField);
-            this.this_PackValueOfIListDateTimeFieldPackValueOfIListDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIListDateTimeField);
-            this.this_PackValueOfIListObjectFieldPackValueOfIListObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIListObjectField);
-            this.this_PackValueOfImage_FieldPackValueOfImage_FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfImage_Field);
-            this.this_PackValueOfInvariantCultureFieldPackValueOfInvariantCultureFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfInvariantCultureField);
-            this.this_PackValueOfKeyValuePairStringDateTimeOffsetFieldPackValueOfKeyValuePairStringDateTimeOffsetFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfKeyValuePairStringDateTimeOffsetField);
-            this.this_PackValueOfList_MessagePackObjectFieldPackValueOfList_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfList_MessagePackObjectField);
-            this.this_PackValueOfListDateTimeFieldPackValueOfListDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfListDateTimeField);
-            this.this_PackValueOfListObjectFieldPackValueOfListObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfListObjectField);
-            this.this_PackValueOfMaxByteFieldPackValueOfMaxByteFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMaxByteField);
-            this.this_PackValueOfMaxInt32FieldPackValueOfMaxInt32FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMaxInt32Field);
-            this.this_PackValueOfMaxInt64FieldPackValueOfMaxInt64FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMaxInt64Field);
-            this.this_PackValueOfMaxUInt16FieldPackValueOfMaxUInt16FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMaxUInt16Field);
-            this.this_PackValueOfMessagePackObject_FieldPackValueOfMessagePackObject_FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMessagePackObject_Field);
-            this.this_PackValueOfMessagePackObjectArray_FieldPackValueOfMessagePackObjectArray_FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMessagePackObjectArray_Field);
-            this.this_PackValueOfMinInt32FieldPackValueOfMinInt32FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMinInt32Field);
-            this.this_PackValueOfMinInt64FieldPackValueOfMinInt64FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMinInt64Field);
-            this.this_PackValueOfNullFieldPackValueOfNullFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfNullField);
-            this.this_PackValueOfObjectArrayFieldPackValueOfObjectArrayFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfObjectArrayField);
-            this.this_PackValueOfObjectFieldPackValueOfObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfObjectField);
-            this.this_PackValueOfStringFieldPackValueOfStringFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfStringField);
-            this.this_PackValueOfStringKeyedCollection_DateTimeFieldPackValueOfStringKeyedCollection_DateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfStringKeyedCollection_DateTimeField);
-            this.this_PackValueOfStringKeyedCollection_MessagePackObjectFieldPackValueOfStringKeyedCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfStringKeyedCollection_MessagePackObjectField);
-            this.this_PackValueOfStringKeyedCollection_ObjectFieldPackValueOfStringKeyedCollection_ObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfStringKeyedCollection_ObjectField);
-            this.this_PackValueOfTimeSpanFieldPackValueOfTimeSpanFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTimeSpanField);
-            this.this_PackValueOfTinyByteFieldPackValueOfTinyByteFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTinyByteField);
-            this.this_PackValueOfTinyInt32FieldPackValueOfTinyInt32FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTinyInt32Field);
-            this.this_PackValueOfTinyInt64FieldPackValueOfTinyInt64FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTinyInt64Field);
-            this.this_PackValueOfTinyUInt16FieldPackValueOfTinyUInt16FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTinyUInt16Field);
-            this.this_PackValueOfTrueFieldPackValueOfTrueFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTrueField);
-            this.this_PackValueOfUriFieldPackValueOfUriFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfUriField);
-            this.this_PackValueOfVersionFieldPackValueOfVersionFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfVersionField);
-            this.this_SetUnpackedValueOfAddOnlyCollection_DateTimeFieldSetUnpackedValueOfAddOnlyCollection_DateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.AddOnlyCollection<System.DateTime>>(this.SetUnpackedValueOfAddOnlyCollection_DateTimeField);
-            this.this_UnpackValueOfAddOnlyCollection_DateTimeFieldUnpackValueOfAddOnlyCollection_DateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfAddOnlyCollection_DateTimeField);
-            this.this_SetUnpackedValueOfAddOnlyCollection_MessagePackObjectFieldSetUnpackedValueOfAddOnlyCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>>(this.SetUnpackedValueOfAddOnlyCollection_MessagePackObjectField);
-            this.this_UnpackValueOfAddOnlyCollection_MessagePackObjectFieldUnpackValueOfAddOnlyCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfAddOnlyCollection_MessagePackObjectField);
-            this.this_SetUnpackedValueOfAddOnlyCollection_ObjectFieldSetUnpackedValueOfAddOnlyCollection_ObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.AddOnlyCollection<object>>(this.SetUnpackedValueOfAddOnlyCollection_ObjectField);
-            this.this_UnpackValueOfAddOnlyCollection_ObjectFieldUnpackValueOfAddOnlyCollection_ObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfAddOnlyCollection_ObjectField);
-            this.this_SetUnpackedValueOfArrayListFieldSetUnpackedValueOfArrayListFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ArrayList>(this.SetUnpackedValueOfArrayListField);
-            this.this_UnpackValueOfArrayListFieldUnpackValueOfArrayListFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfArrayListField);
-            this.this_SetUnpackedValueOfArraySegmentByteFieldSetUnpackedValueOfArraySegmentByteFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.ArraySegment<byte>>(this.SetUnpackedValueOfArraySegmentByteField);
-            this.this_UnpackValueOfArraySegmentByteFieldUnpackValueOfArraySegmentByteFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfArraySegmentByteField);
-            this.this_SetUnpackedValueOfArraySegmentDecimalFieldSetUnpackedValueOfArraySegmentDecimalFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.ArraySegment<decimal>>(this.SetUnpackedValueOfArraySegmentDecimalField);
-            this.this_UnpackValueOfArraySegmentDecimalFieldUnpackValueOfArraySegmentDecimalFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfArraySegmentDecimalField);
-            this.this_SetUnpackedValueOfArraySegmentInt32FieldSetUnpackedValueOfArraySegmentInt32FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.ArraySegment<int>>(this.SetUnpackedValueOfArraySegmentInt32Field);
-            this.this_UnpackValueOfArraySegmentInt32FieldUnpackValueOfArraySegmentInt32FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfArraySegmentInt32Field);
-            this.this_SetUnpackedValueOfByteArrayFieldSetUnpackedValueOfByteArrayFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte[]>(this.SetUnpackedValueOfByteArrayField);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueUnpackBinaryValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, byte[]>(MsgPack.Serialization.UnpackHelpers.UnpackBinaryValue);
-            this.this_UnpackValueOfByteArrayFieldUnpackValueOfByteArrayFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfByteArrayField);
-            this.this_SetUnpackedValueOfByteFieldSetUnpackedValueOfByteFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte>(this.SetUnpackedValueOfByteField);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueUnpackByteValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, byte>(MsgPack.Serialization.UnpackHelpers.UnpackByteValue);
-            this.this_UnpackValueOfByteFieldUnpackValueOfByteFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfByteField);
-            this.this_SetUnpackedValueOfCharArrayFieldSetUnpackedValueOfCharArrayFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, char[]>(this.SetUnpackedValueOfCharArrayField);
-            this.this_UnpackValueOfCharArrayFieldUnpackValueOfCharArrayFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfCharArrayField);
-            this.this_SetUnpackedValueOfCharFieldSetUnpackedValueOfCharFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, char>(this.SetUnpackedValueOfCharField);
-            this.this_UnpackValueOfCharFieldUnpackValueOfCharFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfCharField);
-            this.this_SetUnpackedValueOfCollection_MessagePackObjectFieldSetUnpackedValueOfCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>>(this.SetUnpackedValueOfCollection_MessagePackObjectField);
-            this.this_UnpackValueOfCollection_MessagePackObjectFieldUnpackValueOfCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfCollection_MessagePackObjectField);
-            this.this_SetUnpackedValueOfCollectionDateTimeFieldSetUnpackedValueOfCollectionDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ObjectModel.Collection<System.DateTime>>(this.SetUnpackedValueOfCollectionDateTimeField);
-            this.this_UnpackValueOfCollectionDateTimeFieldUnpackValueOfCollectionDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfCollectionDateTimeField);
-            this.this_SetUnpackedValueOfCollectionObjectFieldSetUnpackedValueOfCollectionObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ObjectModel.Collection<object>>(this.SetUnpackedValueOfCollectionObjectField);
-            this.this_UnpackValueOfCollectionObjectFieldUnpackValueOfCollectionObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfCollectionObjectField);
-            this.this_SetUnpackedValueOfCurrentCultureFieldSetUnpackedValueOfCurrentCultureFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Globalization.CultureInfo>(this.SetUnpackedValueOfCurrentCultureField);
-            this.this_UnpackValueOfCurrentCultureFieldUnpackValueOfCurrentCultureFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfCurrentCultureField);
-            this.this_SetUnpackedValueOfDateTimeFieldSetUnpackedValueOfDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.DateTime>(this.SetUnpackedValueOfDateTimeField);
-            this.this_UnpackValueOfDateTimeFieldUnpackValueOfDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfDateTimeField);
-            this.this_SetUnpackedValueOfDateTimeOffsetFieldSetUnpackedValueOfDateTimeOffsetFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.DateTimeOffset>(this.SetUnpackedValueOfDateTimeOffsetField);
-            this.this_UnpackValueOfDateTimeOffsetFieldUnpackValueOfDateTimeOffsetFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfDateTimeOffsetField);
-            this.this_SetUnpackedValueOfDecimalFieldSetUnpackedValueOfDecimalFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, decimal>(this.SetUnpackedValueOfDecimalField);
-            this.this_UnpackValueOfDecimalFieldUnpackValueOfDecimalFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfDecimalField);
-            this.this_SetUnpackedValueOfDictionary_MessagePackObject_MessagePackObjectFieldSetUnpackedValueOfDictionary_MessagePackObject_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>(this.SetUnpackedValueOfDictionary_MessagePackObject_MessagePackObjectField);
-            this.this_UnpackValueOfDictionary_MessagePackObject_MessagePackObjectFieldUnpackValueOfDictionary_MessagePackObject_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfDictionary_MessagePackObject_MessagePackObjectField);
-            this.this_SetUnpackedValueOfDictionaryEntryFieldSetUnpackedValueOfDictionaryEntryFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.DictionaryEntry>(this.SetUnpackedValueOfDictionaryEntryField);
-            this.this_UnpackValueOfDictionaryEntryFieldUnpackValueOfDictionaryEntryFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfDictionaryEntryField);
-            this.this_SetUnpackedValueOfDictionaryObjectObjectFieldSetUnpackedValueOfDictionaryObjectObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.Dictionary<object, object>>(this.SetUnpackedValueOfDictionaryObjectObjectField);
-            this.this_UnpackValueOfDictionaryObjectObjectFieldUnpackValueOfDictionaryObjectObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfDictionaryObjectObjectField);
-            this.this_SetUnpackedValueOfDictionaryStringDateTimeFieldSetUnpackedValueOfDictionaryStringDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.Dictionary<string, System.DateTime>>(this.SetUnpackedValueOfDictionaryStringDateTimeField);
-            this.this_UnpackValueOfDictionaryStringDateTimeFieldUnpackValueOfDictionaryStringDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfDictionaryStringDateTimeField);
-            this.this_SetUnpackedValueOfFalseFieldSetUnpackedValueOfFalseFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, bool>(this.SetUnpackedValueOfFalseField);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueUnpackBooleanValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, bool>(MsgPack.Serialization.UnpackHelpers.UnpackBooleanValue);
-            this.this_UnpackValueOfFalseFieldUnpackValueOfFalseFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfFalseField);
-            this.this_SetUnpackedValueOfFILETIMEFieldSetUnpackedValueOfFILETIMEFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Runtime.InteropServices.ComTypes.FILETIME>(this.SetUnpackedValueOfFILETIMEField);
-            this.this_UnpackValueOfFILETIMEFieldUnpackValueOfFILETIMEFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfFILETIMEField);
-            this.this_SetUnpackedValueOfGuidFieldSetUnpackedValueOfGuidFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Guid>(this.SetUnpackedValueOfGuidField);
-            this.this_UnpackValueOfGuidFieldUnpackValueOfGuidFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfGuidField);
-            this.this_SetUnpackedValueOfHashSet_MessagePackObjectFieldSetUnpackedValueOfHashSet_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.HashSet<MsgPack.MessagePackObject>>(this.SetUnpackedValueOfHashSet_MessagePackObjectField);
-            this.this_UnpackValueOfHashSet_MessagePackObjectFieldUnpackValueOfHashSet_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfHashSet_MessagePackObjectField);
-            this.this_SetUnpackedValueOfHashSetDateTimeFieldSetUnpackedValueOfHashSetDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.HashSet<System.DateTime>>(this.SetUnpackedValueOfHashSetDateTimeField);
-            this.this_UnpackValueOfHashSetDateTimeFieldUnpackValueOfHashSetDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfHashSetDateTimeField);
-            this.this_SetUnpackedValueOfHashSetObjectFieldSetUnpackedValueOfHashSetObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.HashSet<object>>(this.SetUnpackedValueOfHashSetObjectField);
-            this.this_UnpackValueOfHashSetObjectFieldUnpackValueOfHashSetObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfHashSetObjectField);
-            this.this_SetUnpackedValueOfHashtableFieldSetUnpackedValueOfHashtableFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Hashtable>(this.SetUnpackedValueOfHashtableField);
-            this.this_UnpackValueOfHashtableFieldUnpackValueOfHashtableFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfHashtableField);
-            this.this_SetUnpackedValueOfICollection_MessagePackObjectFieldSetUnpackedValueOfICollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.ICollection<MsgPack.MessagePackObject>>(this.SetUnpackedValueOfICollection_MessagePackObjectField);
-            this.this_UnpackValueOfICollection_MessagePackObjectFieldUnpackValueOfICollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfICollection_MessagePackObjectField);
-            this.this_SetUnpackedValueOfICollectionDateTimeFieldSetUnpackedValueOfICollectionDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.ICollection<System.DateTime>>(this.SetUnpackedValueOfICollectionDateTimeField);
-            this.this_UnpackValueOfICollectionDateTimeFieldUnpackValueOfICollectionDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfICollectionDateTimeField);
-            this.this_SetUnpackedValueOfICollectionObjectFieldSetUnpackedValueOfICollectionObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.ICollection<object>>(this.SetUnpackedValueOfICollectionObjectField);
-            this.this_UnpackValueOfICollectionObjectFieldUnpackValueOfICollectionObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfICollectionObjectField);
-            this.this_SetUnpackedValueOfIDictionary_MessagePackObject_MessagePackObjectFieldSetUnpackedValueOfIDictionary_MessagePackObject_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>(this.SetUnpackedValueOfIDictionary_MessagePackObject_MessagePackObjectField);
-            this.this_UnpackValueOfIDictionary_MessagePackObject_MessagePackObjectFieldUnpackValueOfIDictionary_MessagePackObject_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfIDictionary_MessagePackObject_MessagePackObjectField);
-            this.this_SetUnpackedValueOfIDictionaryObjectObjectFieldSetUnpackedValueOfIDictionaryObjectObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IDictionary<object, object>>(this.SetUnpackedValueOfIDictionaryObjectObjectField);
-            this.this_UnpackValueOfIDictionaryObjectObjectFieldUnpackValueOfIDictionaryObjectObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfIDictionaryObjectObjectField);
-            this.this_SetUnpackedValueOfIDictionaryStringDateTimeFieldSetUnpackedValueOfIDictionaryStringDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IDictionary<string, System.DateTime>>(this.SetUnpackedValueOfIDictionaryStringDateTimeField);
-            this.this_UnpackValueOfIDictionaryStringDateTimeFieldUnpackValueOfIDictionaryStringDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfIDictionaryStringDateTimeField);
-            this.this_SetUnpackedValueOfIList_MessagePackObjectFieldSetUnpackedValueOfIList_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IList<MsgPack.MessagePackObject>>(this.SetUnpackedValueOfIList_MessagePackObjectField);
-            this.this_UnpackValueOfIList_MessagePackObjectFieldUnpackValueOfIList_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfIList_MessagePackObjectField);
-            this.this_SetUnpackedValueOfIListDateTimeFieldSetUnpackedValueOfIListDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IList<System.DateTime>>(this.SetUnpackedValueOfIListDateTimeField);
-            this.this_UnpackValueOfIListDateTimeFieldUnpackValueOfIListDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfIListDateTimeField);
-            this.this_SetUnpackedValueOfIListObjectFieldSetUnpackedValueOfIListObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IList<object>>(this.SetUnpackedValueOfIListObjectField);
-            this.this_UnpackValueOfIListObjectFieldUnpackValueOfIListObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfIListObjectField);
-            this.this_SetUnpackedValueOfImage_FieldSetUnpackedValueOfImage_FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Image>(this.SetUnpackedValueOfImage_Field);
-            this.this_UnpackValueOfImage_FieldUnpackValueOfImage_FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfImage_Field);
-            this.this_SetUnpackedValueOfInvariantCultureFieldSetUnpackedValueOfInvariantCultureFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Globalization.CultureInfo>(this.SetUnpackedValueOfInvariantCultureField);
-            this.this_UnpackValueOfInvariantCultureFieldUnpackValueOfInvariantCultureFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfInvariantCultureField);
-            this.this_SetUnpackedValueOfKeyValuePairStringDateTimeOffsetFieldSetUnpackedValueOfKeyValuePairStringDateTimeOffsetFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>(this.SetUnpackedValueOfKeyValuePairStringDateTimeOffsetField);
-            this.this_UnpackValueOfKeyValuePairStringDateTimeOffsetFieldUnpackValueOfKeyValuePairStringDateTimeOffsetFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfKeyValuePairStringDateTimeOffsetField);
-            this.this_SetUnpackedValueOfList_MessagePackObjectFieldSetUnpackedValueOfList_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.List<MsgPack.MessagePackObject>>(this.SetUnpackedValueOfList_MessagePackObjectField);
-            this.this_UnpackValueOfList_MessagePackObjectFieldUnpackValueOfList_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfList_MessagePackObjectField);
-            this.this_SetUnpackedValueOfListDateTimeFieldSetUnpackedValueOfListDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.List<System.DateTime>>(this.SetUnpackedValueOfListDateTimeField);
-            this.this_UnpackValueOfListDateTimeFieldUnpackValueOfListDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfListDateTimeField);
-            this.this_SetUnpackedValueOfListObjectFieldSetUnpackedValueOfListObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.List<object>>(this.SetUnpackedValueOfListObjectField);
-            this.this_UnpackValueOfListObjectFieldUnpackValueOfListObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfListObjectField);
-            this.this_SetUnpackedValueOfMaxByteFieldSetUnpackedValueOfMaxByteFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte>(this.SetUnpackedValueOfMaxByteField);
-            this.this_UnpackValueOfMaxByteFieldUnpackValueOfMaxByteFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMaxByteField);
-            this.this_SetUnpackedValueOfMaxInt32FieldSetUnpackedValueOfMaxInt32FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, int>(this.SetUnpackedValueOfMaxInt32Field);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, int>(MsgPack.Serialization.UnpackHelpers.UnpackInt32Value);
-            this.this_UnpackValueOfMaxInt32FieldUnpackValueOfMaxInt32FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMaxInt32Field);
-            this.this_SetUnpackedValueOfMaxInt64FieldSetUnpackedValueOfMaxInt64FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, long>(this.SetUnpackedValueOfMaxInt64Field);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueUnpackInt64ValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, long>(MsgPack.Serialization.UnpackHelpers.UnpackInt64Value);
-            this.this_UnpackValueOfMaxInt64FieldUnpackValueOfMaxInt64FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMaxInt64Field);
-            this.this_SetUnpackedValueOfMaxUInt16FieldSetUnpackedValueOfMaxUInt16FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, ushort>(this.SetUnpackedValueOfMaxUInt16Field);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueUnpackUInt16ValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, ushort>(MsgPack.Serialization.UnpackHelpers.UnpackUInt16Value);
-            this.this_UnpackValueOfMaxUInt16FieldUnpackValueOfMaxUInt16FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMaxUInt16Field);
-            this.this_SetUnpackedValueOfMessagePackObject_FieldSetUnpackedValueOfMessagePackObject_FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.MessagePackObject>(this.SetUnpackedValueOfMessagePackObject_Field);
-            this.this_UnpackValueOfMessagePackObject_FieldUnpackValueOfMessagePackObject_FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMessagePackObject_Field);
-            this.this_SetUnpackedValueOfMessagePackObjectArray_FieldSetUnpackedValueOfMessagePackObjectArray_FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.MessagePackObject[]>(this.SetUnpackedValueOfMessagePackObjectArray_Field);
-            this.this_UnpackValueOfMessagePackObjectArray_FieldUnpackValueOfMessagePackObjectArray_FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMessagePackObjectArray_Field);
-            this.this_SetUnpackedValueOfMinInt32FieldSetUnpackedValueOfMinInt32FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, int>(this.SetUnpackedValueOfMinInt32Field);
-            this.this_UnpackValueOfMinInt32FieldUnpackValueOfMinInt32FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMinInt32Field);
-            this.this_SetUnpackedValueOfMinInt64FieldSetUnpackedValueOfMinInt64FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, long>(this.SetUnpackedValueOfMinInt64Field);
-            this.this_UnpackValueOfMinInt64FieldUnpackValueOfMinInt64FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMinInt64Field);
-            this.this_SetUnpackedValueOfNullFieldSetUnpackedValueOfNullFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, object>(this.SetUnpackedValueOfNullField);
-            this.this_UnpackValueOfNullFieldUnpackValueOfNullFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfNullField);
-            this.this_SetUnpackedValueOfObjectArrayFieldSetUnpackedValueOfObjectArrayFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, object[]>(this.SetUnpackedValueOfObjectArrayField);
-            this.this_UnpackValueOfObjectArrayFieldUnpackValueOfObjectArrayFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfObjectArrayField);
-            this.this_SetUnpackedValueOfObjectFieldSetUnpackedValueOfObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, object>(this.SetUnpackedValueOfObjectField);
-            this.this_UnpackValueOfObjectFieldUnpackValueOfObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfObjectField);
-            this.this_SetUnpackedValueOfStringFieldSetUnpackedValueOfStringFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, string>(this.SetUnpackedValueOfStringField);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
-            this.this_UnpackValueOfStringFieldUnpackValueOfStringFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfStringField);
-            this.this_SetUnpackedValueOfStringKeyedCollection_DateTimeFieldSetUnpackedValueOfStringKeyedCollection_DateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.StringKeyedCollection<System.DateTime>>(this.SetUnpackedValueOfStringKeyedCollection_DateTimeField);
-            this.this_UnpackValueOfStringKeyedCollection_DateTimeFieldUnpackValueOfStringKeyedCollection_DateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfStringKeyedCollection_DateTimeField);
-            this.this_SetUnpackedValueOfStringKeyedCollection_MessagePackObjectFieldSetUnpackedValueOfStringKeyedCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>>(this.SetUnpackedValueOfStringKeyedCollection_MessagePackObjectField);
-            this.this_UnpackValueOfStringKeyedCollection_MessagePackObjectFieldUnpackValueOfStringKeyedCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfStringKeyedCollection_MessagePackObjectField);
-            this.this_SetUnpackedValueOfStringKeyedCollection_ObjectFieldSetUnpackedValueOfStringKeyedCollection_ObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.StringKeyedCollection<object>>(this.SetUnpackedValueOfStringKeyedCollection_ObjectField);
-            this.this_UnpackValueOfStringKeyedCollection_ObjectFieldUnpackValueOfStringKeyedCollection_ObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfStringKeyedCollection_ObjectField);
-            this.this_SetUnpackedValueOfTimeSpanFieldSetUnpackedValueOfTimeSpanFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.TimeSpan>(this.SetUnpackedValueOfTimeSpanField);
-            this.this_UnpackValueOfTimeSpanFieldUnpackValueOfTimeSpanFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfTimeSpanField);
-            this.this_SetUnpackedValueOfTinyByteFieldSetUnpackedValueOfTinyByteFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte>(this.SetUnpackedValueOfTinyByteField);
-            this.this_UnpackValueOfTinyByteFieldUnpackValueOfTinyByteFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfTinyByteField);
-            this.this_SetUnpackedValueOfTinyInt32FieldSetUnpackedValueOfTinyInt32FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, int>(this.SetUnpackedValueOfTinyInt32Field);
-            this.this_UnpackValueOfTinyInt32FieldUnpackValueOfTinyInt32FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfTinyInt32Field);
-            this.this_SetUnpackedValueOfTinyInt64FieldSetUnpackedValueOfTinyInt64FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, long>(this.SetUnpackedValueOfTinyInt64Field);
-            this.this_UnpackValueOfTinyInt64FieldUnpackValueOfTinyInt64FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfTinyInt64Field);
-            this.this_SetUnpackedValueOfTinyUInt16FieldSetUnpackedValueOfTinyUInt16FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, ushort>(this.SetUnpackedValueOfTinyUInt16Field);
-            this.this_UnpackValueOfTinyUInt16FieldUnpackValueOfTinyUInt16FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfTinyUInt16Field);
-            this.this_SetUnpackedValueOfTrueFieldSetUnpackedValueOfTrueFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, bool>(this.SetUnpackedValueOfTrueField);
-            this.this_UnpackValueOfTrueFieldUnpackValueOfTrueFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfTrueField);
-            this.this_SetUnpackedValueOfUriFieldSetUnpackedValueOfUriFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Uri>(this.SetUnpackedValueOfUriField);
-            this.this_UnpackValueOfUriFieldUnpackValueOfUriFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfUriField);
-            this.this_SetUnpackedValueOfVersionFieldSetUnpackedValueOfVersionFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Version>(this.SetUnpackedValueOfVersionField);
-            this.this_UnpackValueOfVersionFieldUnpackValueOfVersionFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfVersionField);
+            this.this_PackValueOfAddOnlyCollection_DateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfAddOnlyCollection_DateTimeField);
+            this.this_PackValueOfAddOnlyCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfAddOnlyCollection_MessagePackObjectField);
+            this.this_PackValueOfAddOnlyCollection_ObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfAddOnlyCollection_ObjectField);
+            this.this_PackValueOfArrayListFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfArrayListField);
+            this.this_PackValueOfArraySegmentByteFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfArraySegmentByteField);
+            this.this_PackValueOfArraySegmentDecimalFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfArraySegmentDecimalField);
+            this.this_PackValueOfArraySegmentInt32FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfArraySegmentInt32Field);
+            this.this_PackValueOfByteArrayFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfByteArrayField);
+            this.this_PackValueOfByteFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfByteField);
+            this.this_PackValueOfCharArrayFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCharArrayField);
+            this.this_PackValueOfCharFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCharField);
+            this.this_PackValueOfCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCollection_MessagePackObjectField);
+            this.this_PackValueOfCollectionDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCollectionDateTimeField);
+            this.this_PackValueOfCollectionObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCollectionObjectField);
+            this.this_PackValueOfCurrentCultureFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfCurrentCultureField);
+            this.this_PackValueOfDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDateTimeField);
+            this.this_PackValueOfDateTimeOffsetFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDateTimeOffsetField);
+            this.this_PackValueOfDecimalFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDecimalField);
+            this.this_PackValueOfDictionary_MessagePackObject_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDictionary_MessagePackObject_MessagePackObjectField);
+            this.this_PackValueOfDictionaryEntryFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDictionaryEntryField);
+            this.this_PackValueOfDictionaryObjectObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDictionaryObjectObjectField);
+            this.this_PackValueOfDictionaryStringDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfDictionaryStringDateTimeField);
+            this.this_PackValueOfFalseFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfFalseField);
+            this.this_PackValueOfFILETIMEFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfFILETIMEField);
+            this.this_PackValueOfGuidFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfGuidField);
+            this.this_PackValueOfHashSet_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfHashSet_MessagePackObjectField);
+            this.this_PackValueOfHashSetDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfHashSetDateTimeField);
+            this.this_PackValueOfHashSetObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfHashSetObjectField);
+            this.this_PackValueOfHashtableFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfHashtableField);
+            this.this_PackValueOfICollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfICollection_MessagePackObjectField);
+            this.this_PackValueOfICollectionDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfICollectionDateTimeField);
+            this.this_PackValueOfICollectionObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfICollectionObjectField);
+            this.this_PackValueOfIDictionary_MessagePackObject_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIDictionary_MessagePackObject_MessagePackObjectField);
+            this.this_PackValueOfIDictionaryObjectObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIDictionaryObjectObjectField);
+            this.this_PackValueOfIDictionaryStringDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIDictionaryStringDateTimeField);
+            this.this_PackValueOfIList_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIList_MessagePackObjectField);
+            this.this_PackValueOfIListDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIListDateTimeField);
+            this.this_PackValueOfIListObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfIListObjectField);
+            this.this_PackValueOfImage_FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfImage_Field);
+            this.this_PackValueOfInvariantCultureFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfInvariantCultureField);
+            this.this_PackValueOfKeyValuePairStringDateTimeOffsetFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfKeyValuePairStringDateTimeOffsetField);
+            this.this_PackValueOfList_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfList_MessagePackObjectField);
+            this.this_PackValueOfListDateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfListDateTimeField);
+            this.this_PackValueOfListObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfListObjectField);
+            this.this_PackValueOfMaxByteFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMaxByteField);
+            this.this_PackValueOfMaxInt32FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMaxInt32Field);
+            this.this_PackValueOfMaxInt64FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMaxInt64Field);
+            this.this_PackValueOfMaxUInt16FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMaxUInt16Field);
+            this.this_PackValueOfMessagePackObject_FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMessagePackObject_Field);
+            this.this_PackValueOfMessagePackObjectArray_FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMessagePackObjectArray_Field);
+            this.this_PackValueOfMinInt32FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMinInt32Field);
+            this.this_PackValueOfMinInt64FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfMinInt64Field);
+            this.this_PackValueOfNullFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfNullField);
+            this.this_PackValueOfObjectArrayFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfObjectArrayField);
+            this.this_PackValueOfObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfObjectField);
+            this.this_PackValueOfStringFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfStringField);
+            this.this_PackValueOfStringKeyedCollection_DateTimeFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfStringKeyedCollection_DateTimeField);
+            this.this_PackValueOfStringKeyedCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfStringKeyedCollection_MessagePackObjectField);
+            this.this_PackValueOfStringKeyedCollection_ObjectFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfStringKeyedCollection_ObjectField);
+            this.this_PackValueOfTimeSpanFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTimeSpanField);
+            this.this_PackValueOfTinyByteFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTinyByteField);
+            this.this_PackValueOfTinyInt32FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTinyInt32Field);
+            this.this_PackValueOfTinyInt64FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTinyInt64Field);
+            this.this_PackValueOfTinyUInt16FieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTinyUInt16Field);
+            this.this_PackValueOfTrueFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfTrueField);
+            this.this_PackValueOfUriFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfUriField);
+            this.this_PackValueOfVersionFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGenerated>(this.PackValueOfVersionField);
+            this.this_SetUnpackedValueOfAddOnlyCollection_DateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.AddOnlyCollection<System.DateTime>>(this.SetUnpackedValueOfAddOnlyCollection_DateTimeField);
+            this.this_UnpackValueOfAddOnlyCollection_DateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfAddOnlyCollection_DateTimeField);
+            this.this_SetUnpackedValueOfAddOnlyCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>>(this.SetUnpackedValueOfAddOnlyCollection_MessagePackObjectField);
+            this.this_UnpackValueOfAddOnlyCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfAddOnlyCollection_MessagePackObjectField);
+            this.this_SetUnpackedValueOfAddOnlyCollection_ObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.AddOnlyCollection<object>>(this.SetUnpackedValueOfAddOnlyCollection_ObjectField);
+            this.this_UnpackValueOfAddOnlyCollection_ObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfAddOnlyCollection_ObjectField);
+            this.this_SetUnpackedValueOfArrayListFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ArrayList>(this.SetUnpackedValueOfArrayListField);
+            this.this_UnpackValueOfArrayListFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfArrayListField);
+            this.this_SetUnpackedValueOfArraySegmentByteFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.ArraySegment<byte>>(this.SetUnpackedValueOfArraySegmentByteField);
+            this.this_UnpackValueOfArraySegmentByteFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfArraySegmentByteField);
+            this.this_SetUnpackedValueOfArraySegmentDecimalFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.ArraySegment<decimal>>(this.SetUnpackedValueOfArraySegmentDecimalField);
+            this.this_UnpackValueOfArraySegmentDecimalFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfArraySegmentDecimalField);
+            this.this_SetUnpackedValueOfArraySegmentInt32FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.ArraySegment<int>>(this.SetUnpackedValueOfArraySegmentInt32Field);
+            this.this_UnpackValueOfArraySegmentInt32FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfArraySegmentInt32Field);
+            this.this_SetUnpackedValueOfByteArrayFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte[]>(this.SetUnpackedValueOfByteArrayField);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, byte[]>(MsgPack.Serialization.UnpackHelpers.UnpackBinaryValue);
+            this.this_UnpackValueOfByteArrayFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfByteArrayField);
+            this.this_SetUnpackedValueOfByteFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte>(this.SetUnpackedValueOfByteField);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, byte>(MsgPack.Serialization.UnpackHelpers.UnpackByteValue);
+            this.this_UnpackValueOfByteFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfByteField);
+            this.this_SetUnpackedValueOfCharArrayFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, char[]>(this.SetUnpackedValueOfCharArrayField);
+            this.this_UnpackValueOfCharArrayFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfCharArrayField);
+            this.this_SetUnpackedValueOfCharFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, char>(this.SetUnpackedValueOfCharField);
+            this.this_UnpackValueOfCharFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfCharField);
+            this.this_SetUnpackedValueOfCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>>(this.SetUnpackedValueOfCollection_MessagePackObjectField);
+            this.this_UnpackValueOfCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfCollection_MessagePackObjectField);
+            this.this_SetUnpackedValueOfCollectionDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ObjectModel.Collection<System.DateTime>>(this.SetUnpackedValueOfCollectionDateTimeField);
+            this.this_UnpackValueOfCollectionDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfCollectionDateTimeField);
+            this.this_SetUnpackedValueOfCollectionObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.ObjectModel.Collection<object>>(this.SetUnpackedValueOfCollectionObjectField);
+            this.this_UnpackValueOfCollectionObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfCollectionObjectField);
+            this.this_SetUnpackedValueOfCurrentCultureFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Globalization.CultureInfo>(this.SetUnpackedValueOfCurrentCultureField);
+            this.this_UnpackValueOfCurrentCultureFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfCurrentCultureField);
+            this.this_SetUnpackedValueOfDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.DateTime>(this.SetUnpackedValueOfDateTimeField);
+            this.this_UnpackValueOfDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfDateTimeField);
+            this.this_SetUnpackedValueOfDateTimeOffsetFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.DateTimeOffset>(this.SetUnpackedValueOfDateTimeOffsetField);
+            this.this_UnpackValueOfDateTimeOffsetFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfDateTimeOffsetField);
+            this.this_SetUnpackedValueOfDecimalFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, decimal>(this.SetUnpackedValueOfDecimalField);
+            this.this_UnpackValueOfDecimalFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfDecimalField);
+            this.this_SetUnpackedValueOfDictionary_MessagePackObject_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>(this.SetUnpackedValueOfDictionary_MessagePackObject_MessagePackObjectField);
+            this.this_UnpackValueOfDictionary_MessagePackObject_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfDictionary_MessagePackObject_MessagePackObjectField);
+            this.this_SetUnpackedValueOfDictionaryEntryFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.DictionaryEntry>(this.SetUnpackedValueOfDictionaryEntryField);
+            this.this_UnpackValueOfDictionaryEntryFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfDictionaryEntryField);
+            this.this_SetUnpackedValueOfDictionaryObjectObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.Dictionary<object, object>>(this.SetUnpackedValueOfDictionaryObjectObjectField);
+            this.this_UnpackValueOfDictionaryObjectObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfDictionaryObjectObjectField);
+            this.this_SetUnpackedValueOfDictionaryStringDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.Dictionary<string, System.DateTime>>(this.SetUnpackedValueOfDictionaryStringDateTimeField);
+            this.this_UnpackValueOfDictionaryStringDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfDictionaryStringDateTimeField);
+            this.this_SetUnpackedValueOfFalseFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, bool>(this.SetUnpackedValueOfFalseField);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, bool>(MsgPack.Serialization.UnpackHelpers.UnpackBooleanValue);
+            this.this_UnpackValueOfFalseFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfFalseField);
+            this.this_SetUnpackedValueOfFILETIMEFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Runtime.InteropServices.ComTypes.FILETIME>(this.SetUnpackedValueOfFILETIMEField);
+            this.this_UnpackValueOfFILETIMEFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfFILETIMEField);
+            this.this_SetUnpackedValueOfGuidFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Guid>(this.SetUnpackedValueOfGuidField);
+            this.this_UnpackValueOfGuidFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfGuidField);
+            this.this_SetUnpackedValueOfHashSet_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.HashSet<MsgPack.MessagePackObject>>(this.SetUnpackedValueOfHashSet_MessagePackObjectField);
+            this.this_UnpackValueOfHashSet_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfHashSet_MessagePackObjectField);
+            this.this_SetUnpackedValueOfHashSetDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.HashSet<System.DateTime>>(this.SetUnpackedValueOfHashSetDateTimeField);
+            this.this_UnpackValueOfHashSetDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfHashSetDateTimeField);
+            this.this_SetUnpackedValueOfHashSetObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.HashSet<object>>(this.SetUnpackedValueOfHashSetObjectField);
+            this.this_UnpackValueOfHashSetObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfHashSetObjectField);
+            this.this_SetUnpackedValueOfHashtableFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Hashtable>(this.SetUnpackedValueOfHashtableField);
+            this.this_UnpackValueOfHashtableFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfHashtableField);
+            this.this_SetUnpackedValueOfICollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.ICollection<MsgPack.MessagePackObject>>(this.SetUnpackedValueOfICollection_MessagePackObjectField);
+            this.this_UnpackValueOfICollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfICollection_MessagePackObjectField);
+            this.this_SetUnpackedValueOfICollectionDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.ICollection<System.DateTime>>(this.SetUnpackedValueOfICollectionDateTimeField);
+            this.this_UnpackValueOfICollectionDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfICollectionDateTimeField);
+            this.this_SetUnpackedValueOfICollectionObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.ICollection<object>>(this.SetUnpackedValueOfICollectionObjectField);
+            this.this_UnpackValueOfICollectionObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfICollectionObjectField);
+            this.this_SetUnpackedValueOfIDictionary_MessagePackObject_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>(this.SetUnpackedValueOfIDictionary_MessagePackObject_MessagePackObjectField);
+            this.this_UnpackValueOfIDictionary_MessagePackObject_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfIDictionary_MessagePackObject_MessagePackObjectField);
+            this.this_SetUnpackedValueOfIDictionaryObjectObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IDictionary<object, object>>(this.SetUnpackedValueOfIDictionaryObjectObjectField);
+            this.this_UnpackValueOfIDictionaryObjectObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfIDictionaryObjectObjectField);
+            this.this_SetUnpackedValueOfIDictionaryStringDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IDictionary<string, System.DateTime>>(this.SetUnpackedValueOfIDictionaryStringDateTimeField);
+            this.this_UnpackValueOfIDictionaryStringDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfIDictionaryStringDateTimeField);
+            this.this_SetUnpackedValueOfIList_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IList<MsgPack.MessagePackObject>>(this.SetUnpackedValueOfIList_MessagePackObjectField);
+            this.this_UnpackValueOfIList_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfIList_MessagePackObjectField);
+            this.this_SetUnpackedValueOfIListDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IList<System.DateTime>>(this.SetUnpackedValueOfIListDateTimeField);
+            this.this_UnpackValueOfIListDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfIListDateTimeField);
+            this.this_SetUnpackedValueOfIListObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.IList<object>>(this.SetUnpackedValueOfIListObjectField);
+            this.this_UnpackValueOfIListObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfIListObjectField);
+            this.this_SetUnpackedValueOfImage_FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Image>(this.SetUnpackedValueOfImage_Field);
+            this.this_UnpackValueOfImage_FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfImage_Field);
+            this.this_SetUnpackedValueOfInvariantCultureFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Globalization.CultureInfo>(this.SetUnpackedValueOfInvariantCultureField);
+            this.this_UnpackValueOfInvariantCultureFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfInvariantCultureField);
+            this.this_SetUnpackedValueOfKeyValuePairStringDateTimeOffsetFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>(this.SetUnpackedValueOfKeyValuePairStringDateTimeOffsetField);
+            this.this_UnpackValueOfKeyValuePairStringDateTimeOffsetFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfKeyValuePairStringDateTimeOffsetField);
+            this.this_SetUnpackedValueOfList_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.List<MsgPack.MessagePackObject>>(this.SetUnpackedValueOfList_MessagePackObjectField);
+            this.this_UnpackValueOfList_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfList_MessagePackObjectField);
+            this.this_SetUnpackedValueOfListDateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.List<System.DateTime>>(this.SetUnpackedValueOfListDateTimeField);
+            this.this_UnpackValueOfListDateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfListDateTimeField);
+            this.this_SetUnpackedValueOfListObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Collections.Generic.List<object>>(this.SetUnpackedValueOfListObjectField);
+            this.this_UnpackValueOfListObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfListObjectField);
+            this.this_SetUnpackedValueOfMaxByteFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte>(this.SetUnpackedValueOfMaxByteField);
+            this.this_UnpackValueOfMaxByteFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMaxByteField);
+            this.this_SetUnpackedValueOfMaxInt32FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, int>(this.SetUnpackedValueOfMaxInt32Field);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, int>(MsgPack.Serialization.UnpackHelpers.UnpackInt32Value);
+            this.this_UnpackValueOfMaxInt32FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMaxInt32Field);
+            this.this_SetUnpackedValueOfMaxInt64FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, long>(this.SetUnpackedValueOfMaxInt64Field);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, long>(MsgPack.Serialization.UnpackHelpers.UnpackInt64Value);
+            this.this_UnpackValueOfMaxInt64FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMaxInt64Field);
+            this.this_SetUnpackedValueOfMaxUInt16FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, ushort>(this.SetUnpackedValueOfMaxUInt16Field);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, ushort>(MsgPack.Serialization.UnpackHelpers.UnpackUInt16Value);
+            this.this_UnpackValueOfMaxUInt16FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMaxUInt16Field);
+            this.this_SetUnpackedValueOfMessagePackObject_FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.MessagePackObject>(this.SetUnpackedValueOfMessagePackObject_Field);
+            this.this_UnpackValueOfMessagePackObject_FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMessagePackObject_Field);
+            this.this_SetUnpackedValueOfMessagePackObjectArray_FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.MessagePackObject[]>(this.SetUnpackedValueOfMessagePackObjectArray_Field);
+            this.this_UnpackValueOfMessagePackObjectArray_FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMessagePackObjectArray_Field);
+            this.this_SetUnpackedValueOfMinInt32FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, int>(this.SetUnpackedValueOfMinInt32Field);
+            this.this_UnpackValueOfMinInt32FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMinInt32Field);
+            this.this_SetUnpackedValueOfMinInt64FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, long>(this.SetUnpackedValueOfMinInt64Field);
+            this.this_UnpackValueOfMinInt64FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfMinInt64Field);
+            this.this_SetUnpackedValueOfNullFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, object>(this.SetUnpackedValueOfNullField);
+            this.this_UnpackValueOfNullFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfNullField);
+            this.this_SetUnpackedValueOfObjectArrayFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, object[]>(this.SetUnpackedValueOfObjectArrayField);
+            this.this_UnpackValueOfObjectArrayFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfObjectArrayField);
+            this.this_SetUnpackedValueOfObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, object>(this.SetUnpackedValueOfObjectField);
+            this.this_UnpackValueOfObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfObjectField);
+            this.this_SetUnpackedValueOfStringFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, string>(this.SetUnpackedValueOfStringField);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
+            this.this_UnpackValueOfStringFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfStringField);
+            this.this_SetUnpackedValueOfStringKeyedCollection_DateTimeFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.StringKeyedCollection<System.DateTime>>(this.SetUnpackedValueOfStringKeyedCollection_DateTimeField);
+            this.this_UnpackValueOfStringKeyedCollection_DateTimeFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfStringKeyedCollection_DateTimeField);
+            this.this_SetUnpackedValueOfStringKeyedCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>>(this.SetUnpackedValueOfStringKeyedCollection_MessagePackObjectField);
+            this.this_UnpackValueOfStringKeyedCollection_MessagePackObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfStringKeyedCollection_MessagePackObjectField);
+            this.this_SetUnpackedValueOfStringKeyedCollection_ObjectFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, MsgPack.Serialization.StringKeyedCollection<object>>(this.SetUnpackedValueOfStringKeyedCollection_ObjectField);
+            this.this_UnpackValueOfStringKeyedCollection_ObjectFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfStringKeyedCollection_ObjectField);
+            this.this_SetUnpackedValueOfTimeSpanFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.TimeSpan>(this.SetUnpackedValueOfTimeSpanField);
+            this.this_UnpackValueOfTimeSpanFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfTimeSpanField);
+            this.this_SetUnpackedValueOfTinyByteFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, byte>(this.SetUnpackedValueOfTinyByteField);
+            this.this_UnpackValueOfTinyByteFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfTinyByteField);
+            this.this_SetUnpackedValueOfTinyInt32FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, int>(this.SetUnpackedValueOfTinyInt32Field);
+            this.this_UnpackValueOfTinyInt32FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfTinyInt32Field);
+            this.this_SetUnpackedValueOfTinyInt64FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, long>(this.SetUnpackedValueOfTinyInt64Field);
+            this.this_UnpackValueOfTinyInt64FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfTinyInt64Field);
+            this.this_SetUnpackedValueOfTinyUInt16FieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, ushort>(this.SetUnpackedValueOfTinyUInt16Field);
+            this.this_UnpackValueOfTinyUInt16FieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfTinyUInt16Field);
+            this.this_SetUnpackedValueOfTrueFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, bool>(this.SetUnpackedValueOfTrueField);
+            this.this_UnpackValueOfTrueFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfTrueField);
+            this.this_SetUnpackedValueOfUriFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Uri>(this.SetUnpackedValueOfUriField);
+            this.this_UnpackValueOfUriFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfUriField);
+            this.this_SetUnpackedValueOfVersionFieldDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGenerated, System.Version>(this.SetUnpackedValueOfVersionField);
+            this.this_UnpackValueOfVersionFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGenerated, int, int>(this.UnpackValueOfVersionField);
         }
         
         private void PackValueOfAddOnlyCollection_DateTimeField(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
@@ -1558,6 +1558,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void SetUnpackedValueOfAddOnlyCollection_DateTimeField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, MsgPack.Serialization.AddOnlyCollection<System.DateTime> unpackedValue) {
+            MsgPack.Serialization.AddOnlyCollection<System.DateTime> existent = default(MsgPack.Serialization.AddOnlyCollection<System.DateTime>);
+            existent = unpackingContext.AddOnlyCollection_DateTimeField;
             System.Collections.Generic.IEnumerator<System.DateTime> enumerator = unpackedValue.GetEnumerator();
             System.DateTime current;
             try {
@@ -1565,7 +1567,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                 ; enumerator.MoveNext(); 
                 ) {
                     current = enumerator.Current;
-                    unpackingContext.AddOnlyCollection_DateTimeField.Add(current);
+                    existent.Add(current);
                 }
             }
             finally {
@@ -1574,62 +1576,68 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfAddOnlyCollection_DateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(MsgPack.Serialization.AddOnlyCollection<System.DateTime>), "AddOnlyCollection_DateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfAddOnlyCollection_DateTimeFieldSetUnpackedValueOfAddOnlyCollection_DateTimeFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(MsgPack.Serialization.AddOnlyCollection<System.DateTime>), "AddOnlyCollection_DateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfAddOnlyCollection_DateTimeFieldDelegate);
         }
         
         private void SetUnpackedValueOfAddOnlyCollection_MessagePackObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject> unpackedValue) {
-            System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator0 = unpackedValue.GetEnumerator();
-            MsgPack.MessagePackObject current0;
+            MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject> existent = default(MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>);
+            existent = unpackingContext.AddOnlyCollection_MessagePackObjectField;
+            System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator = unpackedValue.GetEnumerator();
+            MsgPack.MessagePackObject current;
             try {
                 for (
-                ; enumerator0.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current0 = enumerator0.Current;
-                    unpackingContext.AddOnlyCollection_MessagePackObjectField.Add(current0);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator0.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfAddOnlyCollection_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>), "AddOnlyCollection_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfAddOnlyCollection_MessagePackObjectFieldSetUnpackedValueOfAddOnlyCollection_MessagePackObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>), "AddOnlyCollection_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfAddOnlyCollection_MessagePackObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfAddOnlyCollection_ObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, MsgPack.Serialization.AddOnlyCollection<object> unpackedValue) {
-            System.Collections.Generic.IEnumerator<object> enumerator1 = unpackedValue.GetEnumerator();
-            object current1;
+            MsgPack.Serialization.AddOnlyCollection<object> existent = default(MsgPack.Serialization.AddOnlyCollection<object>);
+            existent = unpackingContext.AddOnlyCollection_ObjectField;
+            System.Collections.Generic.IEnumerator<object> enumerator = unpackedValue.GetEnumerator();
+            object current;
             try {
                 for (
-                ; enumerator1.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current1 = enumerator1.Current;
-                    unpackingContext.AddOnlyCollection_ObjectField.Add(current1);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator1.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfAddOnlyCollection_ObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(MsgPack.Serialization.AddOnlyCollection<object>), "AddOnlyCollection_ObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfAddOnlyCollection_ObjectFieldSetUnpackedValueOfAddOnlyCollection_ObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(MsgPack.Serialization.AddOnlyCollection<object>), "AddOnlyCollection_ObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfAddOnlyCollection_ObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfArrayListField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.ArrayList unpackedValue) {
-            System.Collections.IEnumerator enumerator2 = unpackedValue.GetEnumerator();
-            object current2;
+            System.Collections.ArrayList existent = default(System.Collections.ArrayList);
+            existent = unpackingContext.ArrayListField;
+            System.Collections.IEnumerator enumerator = unpackedValue.GetEnumerator();
+            object current;
             for (
-            ; enumerator2.MoveNext(); 
+            ; enumerator.MoveNext(); 
             ) {
-                current2 = enumerator2.Current;
-                unpackingContext.ArrayListField.Add(current2);
+                current = enumerator.Current;
+                existent.Add(current);
             }
         }
         
         private void UnpackValueOfArrayListField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.ArrayList), "ArrayListField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfArrayListFieldSetUnpackedValueOfArrayListFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.ArrayList), "ArrayListField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfArrayListFieldDelegate);
         }
         
         private void SetUnpackedValueOfArraySegmentByteField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.ArraySegment<byte> unpackedValue) {
@@ -1637,7 +1645,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfArraySegmentByteField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer4, itemsCount, indexOfItem, typeof(System.ArraySegment<byte>), "ArraySegmentByteField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfArraySegmentByteFieldSetUnpackedValueOfArraySegmentByteFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer4, itemsCount, indexOfItem, typeof(System.ArraySegment<byte>), "ArraySegmentByteField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfArraySegmentByteFieldDelegate);
         }
         
         private void SetUnpackedValueOfArraySegmentDecimalField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.ArraySegment<decimal> unpackedValue) {
@@ -1645,7 +1653,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfArraySegmentDecimalField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer5, itemsCount, indexOfItem, typeof(System.ArraySegment<decimal>), "ArraySegmentDecimalField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfArraySegmentDecimalFieldSetUnpackedValueOfArraySegmentDecimalFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer5, itemsCount, indexOfItem, typeof(System.ArraySegment<decimal>), "ArraySegmentDecimalField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfArraySegmentDecimalFieldDelegate);
         }
         
         private void SetUnpackedValueOfArraySegmentInt32Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.ArraySegment<int> unpackedValue) {
@@ -1653,7 +1661,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfArraySegmentInt32Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer6, itemsCount, indexOfItem, typeof(System.ArraySegment<int>), "ArraySegmentInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfArraySegmentInt32FieldSetUnpackedValueOfArraySegmentInt32FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer6, itemsCount, indexOfItem, typeof(System.ArraySegment<int>), "ArraySegmentInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfArraySegmentInt32FieldDelegate);
         }
         
         private void SetUnpackedValueOfByteArrayField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, byte[] unpackedValue) {
@@ -1661,7 +1669,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfByteArrayField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer7, itemsCount, indexOfItem, typeof(byte[]), "ByteArrayField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueUnpackBinaryValueDelegate, this.this_SetUnpackedValueOfByteArrayFieldSetUnpackedValueOfByteArrayFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer7, itemsCount, indexOfItem, typeof(byte[]), "ByteArrayField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBinaryValueDelegate, this.this_SetUnpackedValueOfByteArrayFieldDelegate);
         }
         
         private void SetUnpackedValueOfByteField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, byte unpackedValue) {
@@ -1669,7 +1677,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfByteField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer8, itemsCount, indexOfItem, typeof(byte), "ByteField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueUnpackByteValueDelegate, this.this_SetUnpackedValueOfByteFieldSetUnpackedValueOfByteFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer8, itemsCount, indexOfItem, typeof(byte), "ByteField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueDelegate, this.this_SetUnpackedValueOfByteFieldDelegate);
         }
         
         private void SetUnpackedValueOfCharArrayField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, char[] unpackedValue) {
@@ -1677,7 +1685,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfCharArrayField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer9, itemsCount, indexOfItem, typeof(char[]), "CharArrayField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCharArrayFieldSetUnpackedValueOfCharArrayFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer9, itemsCount, indexOfItem, typeof(char[]), "CharArrayField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCharArrayFieldDelegate);
         }
         
         private void SetUnpackedValueOfCharField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, char unpackedValue) {
@@ -1685,67 +1693,73 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfCharField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer10, itemsCount, indexOfItem, typeof(char), "CharField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCharFieldSetUnpackedValueOfCharFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer10, itemsCount, indexOfItem, typeof(char), "CharField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCharFieldDelegate);
         }
         
         private void SetUnpackedValueOfCollection_MessagePackObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> unpackedValue) {
-            System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator3 = unpackedValue.GetEnumerator();
-            MsgPack.MessagePackObject current3;
+            System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> existent = default(System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>);
+            existent = unpackingContext.Collection_MessagePackObjectField;
+            System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator = unpackedValue.GetEnumerator();
+            MsgPack.MessagePackObject current;
             try {
                 for (
-                ; enumerator3.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current3 = enumerator3.Current;
-                    unpackingContext.Collection_MessagePackObjectField.Add(current3);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator3.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfCollection_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer11, itemsCount, indexOfItem, typeof(System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>), "Collection_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCollection_MessagePackObjectFieldSetUnpackedValueOfCollection_MessagePackObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer11, itemsCount, indexOfItem, typeof(System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>), "Collection_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCollection_MessagePackObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfCollectionDateTimeField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.ObjectModel.Collection<System.DateTime> unpackedValue) {
-            System.Collections.Generic.IEnumerator<System.DateTime> enumerator4 = unpackedValue.GetEnumerator();
-            System.DateTime current4;
+            System.Collections.ObjectModel.Collection<System.DateTime> existent = default(System.Collections.ObjectModel.Collection<System.DateTime>);
+            existent = unpackingContext.CollectionDateTimeField;
+            System.Collections.Generic.IEnumerator<System.DateTime> enumerator = unpackedValue.GetEnumerator();
+            System.DateTime current;
             try {
                 for (
-                ; enumerator4.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current4 = enumerator4.Current;
-                    unpackingContext.CollectionDateTimeField.Add(current4);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator4.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfCollectionDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer12, itemsCount, indexOfItem, typeof(System.Collections.ObjectModel.Collection<System.DateTime>), "CollectionDateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCollectionDateTimeFieldSetUnpackedValueOfCollectionDateTimeFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer12, itemsCount, indexOfItem, typeof(System.Collections.ObjectModel.Collection<System.DateTime>), "CollectionDateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCollectionDateTimeFieldDelegate);
         }
         
         private void SetUnpackedValueOfCollectionObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.ObjectModel.Collection<object> unpackedValue) {
-            System.Collections.Generic.IEnumerator<object> enumerator5 = unpackedValue.GetEnumerator();
-            object current5;
+            System.Collections.ObjectModel.Collection<object> existent = default(System.Collections.ObjectModel.Collection<object>);
+            existent = unpackingContext.CollectionObjectField;
+            System.Collections.Generic.IEnumerator<object> enumerator = unpackedValue.GetEnumerator();
+            object current;
             try {
                 for (
-                ; enumerator5.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current5 = enumerator5.Current;
-                    unpackingContext.CollectionObjectField.Add(current5);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator5.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfCollectionObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer13, itemsCount, indexOfItem, typeof(System.Collections.ObjectModel.Collection<object>), "CollectionObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCollectionObjectFieldSetUnpackedValueOfCollectionObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer13, itemsCount, indexOfItem, typeof(System.Collections.ObjectModel.Collection<object>), "CollectionObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCollectionObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfCurrentCultureField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Globalization.CultureInfo unpackedValue) {
@@ -1753,7 +1767,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfCurrentCultureField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer14, itemsCount, indexOfItem, typeof(System.Globalization.CultureInfo), "CurrentCultureField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCurrentCultureFieldSetUnpackedValueOfCurrentCultureFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer14, itemsCount, indexOfItem, typeof(System.Globalization.CultureInfo), "CurrentCultureField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCurrentCultureFieldDelegate);
         }
         
         private void SetUnpackedValueOfDateTimeField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.DateTime unpackedValue) {
@@ -1761,7 +1775,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer15, itemsCount, indexOfItem, typeof(System.DateTime), "DateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDateTimeFieldSetUnpackedValueOfDateTimeFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer15, itemsCount, indexOfItem, typeof(System.DateTime), "DateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDateTimeFieldDelegate);
         }
         
         private void SetUnpackedValueOfDateTimeOffsetField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.DateTimeOffset unpackedValue) {
@@ -1769,7 +1783,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDateTimeOffsetField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer16, itemsCount, indexOfItem, typeof(System.DateTimeOffset), "DateTimeOffsetField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDateTimeOffsetFieldSetUnpackedValueOfDateTimeOffsetFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer16, itemsCount, indexOfItem, typeof(System.DateTimeOffset), "DateTimeOffsetField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDateTimeOffsetFieldDelegate);
         }
         
         private void SetUnpackedValueOfDecimalField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, decimal unpackedValue) {
@@ -1777,27 +1791,29 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDecimalField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer17, itemsCount, indexOfItem, typeof(decimal), "DecimalField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDecimalFieldSetUnpackedValueOfDecimalFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer17, itemsCount, indexOfItem, typeof(decimal), "DecimalField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDecimalFieldDelegate);
         }
         
         private void SetUnpackedValueOfDictionary_MessagePackObject_MessagePackObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> unpackedValue) {
-            System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>.Enumerator enumerator6 = unpackedValue.GetEnumerator();
-            System.Collections.Generic.KeyValuePair<MsgPack.MessagePackObject, MsgPack.MessagePackObject> current6;
+            System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> existent = default(System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>);
+            existent = unpackingContext.Dictionary_MessagePackObject_MessagePackObjectField;
+            System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>.Enumerator enumerator = unpackedValue.GetEnumerator();
+            System.Collections.Generic.KeyValuePair<MsgPack.MessagePackObject, MsgPack.MessagePackObject> current;
             try {
                 for (
-                ; enumerator6.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current6 = enumerator6.Current;
-                    unpackingContext.Dictionary_MessagePackObject_MessagePackObjectField.Add(current6.Key, current6.Value);
+                    current = enumerator.Current;
+                    existent.Add(current.Key, current.Value);
                 }
             }
             finally {
-                enumerator6.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfDictionary_MessagePackObject_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer18, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>), "Dictionary_MessagePackObject_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionary_MessagePackObject_MessagePackObjectFieldSetUnpackedValueOfDictionary_MessagePackObject_MessagePackObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer18, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>), "Dictionary_MessagePackObject_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionary_MessagePackObject_MessagePackObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfDictionaryEntryField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.DictionaryEntry unpackedValue) {
@@ -1805,47 +1821,51 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDictionaryEntryField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer19, itemsCount, indexOfItem, typeof(System.Collections.DictionaryEntry), "DictionaryEntryField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryEntryFieldSetUnpackedValueOfDictionaryEntryFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer19, itemsCount, indexOfItem, typeof(System.Collections.DictionaryEntry), "DictionaryEntryField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryEntryFieldDelegate);
         }
         
         private void SetUnpackedValueOfDictionaryObjectObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.Dictionary<object, object> unpackedValue) {
-            System.Collections.Generic.Dictionary<object, object>.Enumerator enumerator7 = unpackedValue.GetEnumerator();
-            System.Collections.Generic.KeyValuePair<object, object> current7;
+            System.Collections.Generic.Dictionary<object, object> existent = default(System.Collections.Generic.Dictionary<object, object>);
+            existent = unpackingContext.DictionaryObjectObjectField;
+            System.Collections.Generic.Dictionary<object, object>.Enumerator enumerator = unpackedValue.GetEnumerator();
+            System.Collections.Generic.KeyValuePair<object, object> current;
             try {
                 for (
-                ; enumerator7.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current7 = enumerator7.Current;
-                    unpackingContext.DictionaryObjectObjectField.Add(current7.Key, current7.Value);
+                    current = enumerator.Current;
+                    existent.Add(current.Key, current.Value);
                 }
             }
             finally {
-                enumerator7.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfDictionaryObjectObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer20, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<object, object>), "DictionaryObjectObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryObjectObjectFieldSetUnpackedValueOfDictionaryObjectObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer20, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<object, object>), "DictionaryObjectObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryObjectObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfDictionaryStringDateTimeField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.Dictionary<string, System.DateTime> unpackedValue) {
-            System.Collections.Generic.Dictionary<string, System.DateTime>.Enumerator enumerator8 = unpackedValue.GetEnumerator();
-            System.Collections.Generic.KeyValuePair<string, System.DateTime> current8;
+            System.Collections.Generic.Dictionary<string, System.DateTime> existent = default(System.Collections.Generic.Dictionary<string, System.DateTime>);
+            existent = unpackingContext.DictionaryStringDateTimeField;
+            System.Collections.Generic.Dictionary<string, System.DateTime>.Enumerator enumerator = unpackedValue.GetEnumerator();
+            System.Collections.Generic.KeyValuePair<string, System.DateTime> current;
             try {
                 for (
-                ; enumerator8.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current8 = enumerator8.Current;
-                    unpackingContext.DictionaryStringDateTimeField.Add(current8.Key, current8.Value);
+                    current = enumerator.Current;
+                    existent.Add(current.Key, current.Value);
                 }
             }
             finally {
-                enumerator8.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfDictionaryStringDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer21, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<string, System.DateTime>), "DictionaryStringDateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryStringDateTimeFieldSetUnpackedValueOfDictionaryStringDateTimeFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer21, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<string, System.DateTime>), "DictionaryStringDateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryStringDateTimeFieldDelegate);
         }
         
         private void SetUnpackedValueOfFalseField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, bool unpackedValue) {
@@ -1853,7 +1873,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfFalseField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer22, itemsCount, indexOfItem, typeof(bool), "FalseField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueUnpackBooleanValueDelegate, this.this_SetUnpackedValueOfFalseFieldSetUnpackedValueOfFalseFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer22, itemsCount, indexOfItem, typeof(bool), "FalseField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueDelegate, this.this_SetUnpackedValueOfFalseFieldDelegate);
         }
         
         private void SetUnpackedValueOfFILETIMEField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Runtime.InteropServices.ComTypes.FILETIME unpackedValue) {
@@ -1861,7 +1881,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfFILETIMEField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer23, itemsCount, indexOfItem, typeof(System.Runtime.InteropServices.ComTypes.FILETIME), "FILETIMEField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfFILETIMEFieldSetUnpackedValueOfFILETIMEFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer23, itemsCount, indexOfItem, typeof(System.Runtime.InteropServices.ComTypes.FILETIME), "FILETIMEField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfFILETIMEFieldDelegate);
         }
         
         private void SetUnpackedValueOfGuidField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Guid unpackedValue) {
@@ -1869,262 +1889,288 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfGuidField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer24, itemsCount, indexOfItem, typeof(System.Guid), "GuidField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfGuidFieldSetUnpackedValueOfGuidFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer24, itemsCount, indexOfItem, typeof(System.Guid), "GuidField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfGuidFieldDelegate);
         }
         
         private void SetUnpackedValueOfHashSet_MessagePackObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.HashSet<MsgPack.MessagePackObject> unpackedValue) {
-            System.Collections.Generic.HashSet<MsgPack.MessagePackObject>.Enumerator enumerator9 = unpackedValue.GetEnumerator();
-            MsgPack.MessagePackObject current9;
+            System.Collections.Generic.HashSet<MsgPack.MessagePackObject> existent = default(System.Collections.Generic.HashSet<MsgPack.MessagePackObject>);
+            existent = unpackingContext.HashSet_MessagePackObjectField;
+            System.Collections.Generic.HashSet<MsgPack.MessagePackObject>.Enumerator enumerator = unpackedValue.GetEnumerator();
+            MsgPack.MessagePackObject current;
             try {
                 for (
-                ; enumerator9.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current9 = enumerator9.Current;
-                    unpackingContext.HashSet_MessagePackObjectField.Add(current9);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator9.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfHashSet_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer25, itemsCount, indexOfItem, typeof(System.Collections.Generic.HashSet<MsgPack.MessagePackObject>), "HashSet_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfHashSet_MessagePackObjectFieldSetUnpackedValueOfHashSet_MessagePackObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer25, itemsCount, indexOfItem, typeof(System.Collections.Generic.HashSet<MsgPack.MessagePackObject>), "HashSet_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfHashSet_MessagePackObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfHashSetDateTimeField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.HashSet<System.DateTime> unpackedValue) {
-            System.Collections.Generic.HashSet<System.DateTime>.Enumerator enumerator10 = unpackedValue.GetEnumerator();
-            System.DateTime current10;
+            System.Collections.Generic.HashSet<System.DateTime> existent = default(System.Collections.Generic.HashSet<System.DateTime>);
+            existent = unpackingContext.HashSetDateTimeField;
+            System.Collections.Generic.HashSet<System.DateTime>.Enumerator enumerator = unpackedValue.GetEnumerator();
+            System.DateTime current;
             try {
                 for (
-                ; enumerator10.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current10 = enumerator10.Current;
-                    unpackingContext.HashSetDateTimeField.Add(current10);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator10.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfHashSetDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer26, itemsCount, indexOfItem, typeof(System.Collections.Generic.HashSet<System.DateTime>), "HashSetDateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfHashSetDateTimeFieldSetUnpackedValueOfHashSetDateTimeFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer26, itemsCount, indexOfItem, typeof(System.Collections.Generic.HashSet<System.DateTime>), "HashSetDateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfHashSetDateTimeFieldDelegate);
         }
         
         private void SetUnpackedValueOfHashSetObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.HashSet<object> unpackedValue) {
-            System.Collections.Generic.HashSet<object>.Enumerator enumerator11 = unpackedValue.GetEnumerator();
-            object current11;
+            System.Collections.Generic.HashSet<object> existent = default(System.Collections.Generic.HashSet<object>);
+            existent = unpackingContext.HashSetObjectField;
+            System.Collections.Generic.HashSet<object>.Enumerator enumerator = unpackedValue.GetEnumerator();
+            object current;
             try {
                 for (
-                ; enumerator11.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current11 = enumerator11.Current;
-                    unpackingContext.HashSetObjectField.Add(current11);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator11.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfHashSetObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer27, itemsCount, indexOfItem, typeof(System.Collections.Generic.HashSet<object>), "HashSetObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfHashSetObjectFieldSetUnpackedValueOfHashSetObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer27, itemsCount, indexOfItem, typeof(System.Collections.Generic.HashSet<object>), "HashSetObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfHashSetObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfHashtableField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Hashtable unpackedValue) {
-            System.Collections.IDictionaryEnumerator enumerator12 = unpackedValue.GetEnumerator();
-            System.Collections.DictionaryEntry current12;
+            System.Collections.Hashtable existent = default(System.Collections.Hashtable);
+            existent = unpackingContext.HashtableField;
+            System.Collections.IDictionaryEnumerator enumerator = unpackedValue.GetEnumerator();
+            System.Collections.DictionaryEntry current;
             for (
-            ; enumerator12.MoveNext(); 
+            ; enumerator.MoveNext(); 
             ) {
-                current12 = enumerator12.Entry;
-                unpackingContext.HashtableField.Add(current12.Key, current12.Value);
+                current = enumerator.Entry;
+                existent.Add(current.Key, current.Value);
             }
         }
         
         private void UnpackValueOfHashtableField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer28, itemsCount, indexOfItem, typeof(System.Collections.Hashtable), "HashtableField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfHashtableFieldSetUnpackedValueOfHashtableFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer28, itemsCount, indexOfItem, typeof(System.Collections.Hashtable), "HashtableField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfHashtableFieldDelegate);
         }
         
         private void SetUnpackedValueOfICollection_MessagePackObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.ICollection<MsgPack.MessagePackObject> unpackedValue) {
-            System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator13 = unpackedValue.GetEnumerator();
-            MsgPack.MessagePackObject current13;
+            System.Collections.Generic.ICollection<MsgPack.MessagePackObject> existent = default(System.Collections.Generic.ICollection<MsgPack.MessagePackObject>);
+            existent = unpackingContext.ICollection_MessagePackObjectField;
+            System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator = unpackedValue.GetEnumerator();
+            MsgPack.MessagePackObject current;
             try {
                 for (
-                ; enumerator13.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current13 = enumerator13.Current;
-                    unpackingContext.ICollection_MessagePackObjectField.Add(current13);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator13.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfICollection_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer29, itemsCount, indexOfItem, typeof(System.Collections.Generic.ICollection<MsgPack.MessagePackObject>), "ICollection_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfICollection_MessagePackObjectFieldSetUnpackedValueOfICollection_MessagePackObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer29, itemsCount, indexOfItem, typeof(System.Collections.Generic.ICollection<MsgPack.MessagePackObject>), "ICollection_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfICollection_MessagePackObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfICollectionDateTimeField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.ICollection<System.DateTime> unpackedValue) {
-            System.Collections.Generic.IEnumerator<System.DateTime> enumerator14 = unpackedValue.GetEnumerator();
-            System.DateTime current14;
+            System.Collections.Generic.ICollection<System.DateTime> existent = default(System.Collections.Generic.ICollection<System.DateTime>);
+            existent = unpackingContext.ICollectionDateTimeField;
+            System.Collections.Generic.IEnumerator<System.DateTime> enumerator = unpackedValue.GetEnumerator();
+            System.DateTime current;
             try {
                 for (
-                ; enumerator14.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current14 = enumerator14.Current;
-                    unpackingContext.ICollectionDateTimeField.Add(current14);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator14.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfICollectionDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer30, itemsCount, indexOfItem, typeof(System.Collections.Generic.ICollection<System.DateTime>), "ICollectionDateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfICollectionDateTimeFieldSetUnpackedValueOfICollectionDateTimeFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer30, itemsCount, indexOfItem, typeof(System.Collections.Generic.ICollection<System.DateTime>), "ICollectionDateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfICollectionDateTimeFieldDelegate);
         }
         
         private void SetUnpackedValueOfICollectionObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.ICollection<object> unpackedValue) {
-            System.Collections.Generic.IEnumerator<object> enumerator15 = unpackedValue.GetEnumerator();
-            object current15;
+            System.Collections.Generic.ICollection<object> existent = default(System.Collections.Generic.ICollection<object>);
+            existent = unpackingContext.ICollectionObjectField;
+            System.Collections.Generic.IEnumerator<object> enumerator = unpackedValue.GetEnumerator();
+            object current;
             try {
                 for (
-                ; enumerator15.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current15 = enumerator15.Current;
-                    unpackingContext.ICollectionObjectField.Add(current15);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator15.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfICollectionObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer31, itemsCount, indexOfItem, typeof(System.Collections.Generic.ICollection<object>), "ICollectionObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfICollectionObjectFieldSetUnpackedValueOfICollectionObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer31, itemsCount, indexOfItem, typeof(System.Collections.Generic.ICollection<object>), "ICollectionObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfICollectionObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfIDictionary_MessagePackObject_MessagePackObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> unpackedValue) {
-            System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> enumerator16 = unpackedValue.GetEnumerator();
-            System.Collections.Generic.KeyValuePair<MsgPack.MessagePackObject, MsgPack.MessagePackObject> current16;
+            System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> existent = default(System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>);
+            existent = unpackingContext.IDictionary_MessagePackObject_MessagePackObjectField;
+            System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> enumerator = unpackedValue.GetEnumerator();
+            System.Collections.Generic.KeyValuePair<MsgPack.MessagePackObject, MsgPack.MessagePackObject> current;
             try {
                 for (
-                ; enumerator16.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current16 = enumerator16.Current;
-                    unpackingContext.IDictionary_MessagePackObject_MessagePackObjectField.Add(current16.Key, current16.Value);
+                    current = enumerator.Current;
+                    existent.Add(current.Key, current.Value);
                 }
             }
             finally {
-                enumerator16.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfIDictionary_MessagePackObject_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer32, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>), "IDictionary_MessagePackObject_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfIDictionary_MessagePackObject_MessagePackObjectFieldSetUnpackedValueOfIDictionary_MessagePackObject_MessagePackObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer32, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>), "IDictionary_MessagePackObject_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfIDictionary_MessagePackObject_MessagePackObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfIDictionaryObjectObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.IDictionary<object, object> unpackedValue) {
-            System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<object, object>> enumerator17 = unpackedValue.GetEnumerator();
-            System.Collections.Generic.KeyValuePair<object, object> current17;
+            System.Collections.Generic.IDictionary<object, object> existent = default(System.Collections.Generic.IDictionary<object, object>);
+            existent = unpackingContext.IDictionaryObjectObjectField;
+            System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<object, object>> enumerator = unpackedValue.GetEnumerator();
+            System.Collections.Generic.KeyValuePair<object, object> current;
             try {
                 for (
-                ; enumerator17.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current17 = enumerator17.Current;
-                    unpackingContext.IDictionaryObjectObjectField.Add(current17.Key, current17.Value);
+                    current = enumerator.Current;
+                    existent.Add(current.Key, current.Value);
                 }
             }
             finally {
-                enumerator17.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfIDictionaryObjectObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer33, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<object, object>), "IDictionaryObjectObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfIDictionaryObjectObjectFieldSetUnpackedValueOfIDictionaryObjectObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer33, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<object, object>), "IDictionaryObjectObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfIDictionaryObjectObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfIDictionaryStringDateTimeField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.IDictionary<string, System.DateTime> unpackedValue) {
-            System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, System.DateTime>> enumerator18 = unpackedValue.GetEnumerator();
-            System.Collections.Generic.KeyValuePair<string, System.DateTime> current18;
+            System.Collections.Generic.IDictionary<string, System.DateTime> existent = default(System.Collections.Generic.IDictionary<string, System.DateTime>);
+            existent = unpackingContext.IDictionaryStringDateTimeField;
+            System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, System.DateTime>> enumerator = unpackedValue.GetEnumerator();
+            System.Collections.Generic.KeyValuePair<string, System.DateTime> current;
             try {
                 for (
-                ; enumerator18.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current18 = enumerator18.Current;
-                    unpackingContext.IDictionaryStringDateTimeField.Add(current18.Key, current18.Value);
+                    current = enumerator.Current;
+                    existent.Add(current.Key, current.Value);
                 }
             }
             finally {
-                enumerator18.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfIDictionaryStringDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer34, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<string, System.DateTime>), "IDictionaryStringDateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfIDictionaryStringDateTimeFieldSetUnpackedValueOfIDictionaryStringDateTimeFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer34, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<string, System.DateTime>), "IDictionaryStringDateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfIDictionaryStringDateTimeFieldDelegate);
         }
         
         private void SetUnpackedValueOfIList_MessagePackObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.IList<MsgPack.MessagePackObject> unpackedValue) {
-            System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator19 = unpackedValue.GetEnumerator();
-            MsgPack.MessagePackObject current19;
+            System.Collections.Generic.IList<MsgPack.MessagePackObject> existent = default(System.Collections.Generic.IList<MsgPack.MessagePackObject>);
+            existent = unpackingContext.IList_MessagePackObjectField;
+            System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator = unpackedValue.GetEnumerator();
+            MsgPack.MessagePackObject current;
             try {
                 for (
-                ; enumerator19.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current19 = enumerator19.Current;
-                    unpackingContext.IList_MessagePackObjectField.Add(current19);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator19.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfIList_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer35, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<MsgPack.MessagePackObject>), "IList_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfIList_MessagePackObjectFieldSetUnpackedValueOfIList_MessagePackObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer35, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<MsgPack.MessagePackObject>), "IList_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfIList_MessagePackObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfIListDateTimeField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.IList<System.DateTime> unpackedValue) {
-            System.Collections.Generic.IEnumerator<System.DateTime> enumerator20 = unpackedValue.GetEnumerator();
-            System.DateTime current20;
+            System.Collections.Generic.IList<System.DateTime> existent = default(System.Collections.Generic.IList<System.DateTime>);
+            existent = unpackingContext.IListDateTimeField;
+            System.Collections.Generic.IEnumerator<System.DateTime> enumerator = unpackedValue.GetEnumerator();
+            System.DateTime current;
             try {
                 for (
-                ; enumerator20.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current20 = enumerator20.Current;
-                    unpackingContext.IListDateTimeField.Add(current20);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator20.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfIListDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer36, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<System.DateTime>), "IListDateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfIListDateTimeFieldSetUnpackedValueOfIListDateTimeFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer36, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<System.DateTime>), "IListDateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfIListDateTimeFieldDelegate);
         }
         
         private void SetUnpackedValueOfIListObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.IList<object> unpackedValue) {
-            System.Collections.Generic.IEnumerator<object> enumerator21 = unpackedValue.GetEnumerator();
-            object current21;
+            System.Collections.Generic.IList<object> existent = default(System.Collections.Generic.IList<object>);
+            existent = unpackingContext.IListObjectField;
+            System.Collections.Generic.IEnumerator<object> enumerator = unpackedValue.GetEnumerator();
+            object current;
             try {
                 for (
-                ; enumerator21.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current21 = enumerator21.Current;
-                    unpackingContext.IListObjectField.Add(current21);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator21.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfIListObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer37, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<object>), "IListObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfIListObjectFieldSetUnpackedValueOfIListObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer37, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<object>), "IListObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfIListObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfImage_Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, MsgPack.Image unpackedValue) {
@@ -2132,7 +2178,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfImage_Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer38, itemsCount, indexOfItem, typeof(MsgPack.Image), "Image_Field", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfImage_FieldSetUnpackedValueOfImage_FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer38, itemsCount, indexOfItem, typeof(MsgPack.Image), "Image_Field", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfImage_FieldDelegate);
         }
         
         private void SetUnpackedValueOfInvariantCultureField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Globalization.CultureInfo unpackedValue) {
@@ -2140,7 +2186,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfInvariantCultureField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer14, itemsCount, indexOfItem, typeof(System.Globalization.CultureInfo), "InvariantCultureField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfInvariantCultureFieldSetUnpackedValueOfInvariantCultureFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer14, itemsCount, indexOfItem, typeof(System.Globalization.CultureInfo), "InvariantCultureField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfInvariantCultureFieldDelegate);
         }
         
         private void SetUnpackedValueOfKeyValuePairStringDateTimeOffsetField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset> unpackedValue) {
@@ -2148,67 +2194,73 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfKeyValuePairStringDateTimeOffsetField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer39, itemsCount, indexOfItem, typeof(System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>), "KeyValuePairStringDateTimeOffsetField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfKeyValuePairStringDateTimeOffsetFieldSetUnpackedValueOfKeyValuePairStringDateTimeOffsetFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer39, itemsCount, indexOfItem, typeof(System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>), "KeyValuePairStringDateTimeOffsetField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfKeyValuePairStringDateTimeOffsetFieldDelegate);
         }
         
         private void SetUnpackedValueOfList_MessagePackObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.List<MsgPack.MessagePackObject> unpackedValue) {
-            System.Collections.Generic.List<MsgPack.MessagePackObject>.Enumerator enumerator22 = unpackedValue.GetEnumerator();
-            MsgPack.MessagePackObject current22;
+            System.Collections.Generic.List<MsgPack.MessagePackObject> existent = default(System.Collections.Generic.List<MsgPack.MessagePackObject>);
+            existent = unpackingContext.List_MessagePackObjectField;
+            System.Collections.Generic.List<MsgPack.MessagePackObject>.Enumerator enumerator = unpackedValue.GetEnumerator();
+            MsgPack.MessagePackObject current;
             try {
                 for (
-                ; enumerator22.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current22 = enumerator22.Current;
-                    unpackingContext.List_MessagePackObjectField.Add(current22);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator22.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfList_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer40, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<MsgPack.MessagePackObject>), "List_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfList_MessagePackObjectFieldSetUnpackedValueOfList_MessagePackObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer40, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<MsgPack.MessagePackObject>), "List_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfList_MessagePackObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfListDateTimeField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.List<System.DateTime> unpackedValue) {
-            System.Collections.Generic.List<System.DateTime>.Enumerator enumerator23 = unpackedValue.GetEnumerator();
-            System.DateTime current23;
+            System.Collections.Generic.List<System.DateTime> existent = default(System.Collections.Generic.List<System.DateTime>);
+            existent = unpackingContext.ListDateTimeField;
+            System.Collections.Generic.List<System.DateTime>.Enumerator enumerator = unpackedValue.GetEnumerator();
+            System.DateTime current;
             try {
                 for (
-                ; enumerator23.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current23 = enumerator23.Current;
-                    unpackingContext.ListDateTimeField.Add(current23);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator23.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfListDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer41, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<System.DateTime>), "ListDateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListDateTimeFieldSetUnpackedValueOfListDateTimeFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer41, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<System.DateTime>), "ListDateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListDateTimeFieldDelegate);
         }
         
         private void SetUnpackedValueOfListObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.List<object> unpackedValue) {
-            System.Collections.Generic.List<object>.Enumerator enumerator24 = unpackedValue.GetEnumerator();
-            object current24;
+            System.Collections.Generic.List<object> existent = default(System.Collections.Generic.List<object>);
+            existent = unpackingContext.ListObjectField;
+            System.Collections.Generic.List<object>.Enumerator enumerator = unpackedValue.GetEnumerator();
+            object current;
             try {
                 for (
-                ; enumerator24.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current24 = enumerator24.Current;
-                    unpackingContext.ListObjectField.Add(current24);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator24.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfListObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer42, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<object>), "ListObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListObjectFieldSetUnpackedValueOfListObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer42, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<object>), "ListObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfMaxByteField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, byte unpackedValue) {
@@ -2216,7 +2268,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfMaxByteField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer8, itemsCount, indexOfItem, typeof(byte), "MaxByteField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueUnpackByteValueDelegate, this.this_SetUnpackedValueOfMaxByteFieldSetUnpackedValueOfMaxByteFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer8, itemsCount, indexOfItem, typeof(byte), "MaxByteField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueDelegate, this.this_SetUnpackedValueOfMaxByteFieldDelegate);
         }
         
         private void SetUnpackedValueOfMaxInt32Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int unpackedValue) {
@@ -2224,7 +2276,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfMaxInt32Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer43, itemsCount, indexOfItem, typeof(int), "MaxInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate, this.this_SetUnpackedValueOfMaxInt32FieldSetUnpackedValueOfMaxInt32FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer43, itemsCount, indexOfItem, typeof(int), "MaxInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfMaxInt32FieldDelegate);
         }
         
         private void SetUnpackedValueOfMaxInt64Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, long unpackedValue) {
@@ -2232,7 +2284,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfMaxInt64Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer44, itemsCount, indexOfItem, typeof(long), "MaxInt64Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueUnpackInt64ValueDelegate, this.this_SetUnpackedValueOfMaxInt64FieldSetUnpackedValueOfMaxInt64FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer44, itemsCount, indexOfItem, typeof(long), "MaxInt64Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueDelegate, this.this_SetUnpackedValueOfMaxInt64FieldDelegate);
         }
         
         private void SetUnpackedValueOfMaxUInt16Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, ushort unpackedValue) {
@@ -2240,7 +2292,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfMaxUInt16Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer45, itemsCount, indexOfItem, typeof(ushort), "MaxUInt16Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueUnpackUInt16ValueDelegate, this.this_SetUnpackedValueOfMaxUInt16FieldSetUnpackedValueOfMaxUInt16FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer45, itemsCount, indexOfItem, typeof(ushort), "MaxUInt16Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueDelegate, this.this_SetUnpackedValueOfMaxUInt16FieldDelegate);
         }
         
         private void SetUnpackedValueOfMessagePackObject_Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, MsgPack.MessagePackObject unpackedValue) {
@@ -2248,7 +2300,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfMessagePackObject_Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackMessagePackObjectValueFromArray(unpacker, unpackingContext, itemsCount, indexOfItem, "MessagePackObject_Field", MsgPack.Serialization.NilImplication.MemberDefault, this.this_SetUnpackedValueOfMessagePackObject_FieldSetUnpackedValueOfMessagePackObject_FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackMessagePackObjectValueFromArray(unpacker, unpackingContext, itemsCount, indexOfItem, "MessagePackObject_Field", MsgPack.Serialization.NilImplication.MemberDefault, this.this_SetUnpackedValueOfMessagePackObject_FieldDelegate);
         }
         
         private void SetUnpackedValueOfMessagePackObjectArray_Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, MsgPack.MessagePackObject[] unpackedValue) {
@@ -2256,7 +2308,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfMessagePackObjectArray_Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer47, itemsCount, indexOfItem, typeof(MsgPack.MessagePackObject[]), "MessagePackObjectArray_Field", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfMessagePackObjectArray_FieldSetUnpackedValueOfMessagePackObjectArray_FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer47, itemsCount, indexOfItem, typeof(MsgPack.MessagePackObject[]), "MessagePackObjectArray_Field", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfMessagePackObjectArray_FieldDelegate);
         }
         
         private void SetUnpackedValueOfMinInt32Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int unpackedValue) {
@@ -2264,7 +2316,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfMinInt32Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer43, itemsCount, indexOfItem, typeof(int), "MinInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate, this.this_SetUnpackedValueOfMinInt32FieldSetUnpackedValueOfMinInt32FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer43, itemsCount, indexOfItem, typeof(int), "MinInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfMinInt32FieldDelegate);
         }
         
         private void SetUnpackedValueOfMinInt64Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, long unpackedValue) {
@@ -2272,7 +2324,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfMinInt64Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer44, itemsCount, indexOfItem, typeof(long), "MinInt64Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueUnpackInt64ValueDelegate, this.this_SetUnpackedValueOfMinInt64FieldSetUnpackedValueOfMinInt64FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer44, itemsCount, indexOfItem, typeof(long), "MinInt64Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueDelegate, this.this_SetUnpackedValueOfMinInt64FieldDelegate);
         }
         
         private void SetUnpackedValueOfNullField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, object unpackedValue) {
@@ -2280,7 +2332,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNullField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer48, itemsCount, indexOfItem, typeof(object), "NullField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNullFieldSetUnpackedValueOfNullFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer48, itemsCount, indexOfItem, typeof(object), "NullField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNullFieldDelegate);
         }
         
         private void SetUnpackedValueOfObjectArrayField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, object[] unpackedValue) {
@@ -2288,7 +2340,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfObjectArrayField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer49, itemsCount, indexOfItem, typeof(object[]), "ObjectArrayField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfObjectArrayFieldSetUnpackedValueOfObjectArrayFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer49, itemsCount, indexOfItem, typeof(object[]), "ObjectArrayField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfObjectArrayFieldDelegate);
         }
         
         private void SetUnpackedValueOfObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, object unpackedValue) {
@@ -2296,7 +2348,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer48, itemsCount, indexOfItem, typeof(object), "ObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfObjectFieldSetUnpackedValueOfObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer48, itemsCount, indexOfItem, typeof(object), "ObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfStringField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, string unpackedValue) {
@@ -2304,67 +2356,73 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfStringField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer50, itemsCount, indexOfItem, typeof(string), "StringField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate, this.this_SetUnpackedValueOfStringFieldSetUnpackedValueOfStringFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer50, itemsCount, indexOfItem, typeof(string), "StringField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfStringFieldDelegate);
         }
         
         private void SetUnpackedValueOfStringKeyedCollection_DateTimeField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, MsgPack.Serialization.StringKeyedCollection<System.DateTime> unpackedValue) {
-            System.Collections.Generic.IEnumerator<System.DateTime> enumerator25 = unpackedValue.GetEnumerator();
-            System.DateTime current25;
+            MsgPack.Serialization.StringKeyedCollection<System.DateTime> existent = default(MsgPack.Serialization.StringKeyedCollection<System.DateTime>);
+            existent = unpackingContext.StringKeyedCollection_DateTimeField;
+            System.Collections.Generic.IEnumerator<System.DateTime> enumerator = unpackedValue.GetEnumerator();
+            System.DateTime current;
             try {
                 for (
-                ; enumerator25.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current25 = enumerator25.Current;
-                    unpackingContext.StringKeyedCollection_DateTimeField.Add(current25);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator25.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfStringKeyedCollection_DateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer51, itemsCount, indexOfItem, typeof(MsgPack.Serialization.StringKeyedCollection<System.DateTime>), "StringKeyedCollection_DateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfStringKeyedCollection_DateTimeFieldSetUnpackedValueOfStringKeyedCollection_DateTimeFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer51, itemsCount, indexOfItem, typeof(MsgPack.Serialization.StringKeyedCollection<System.DateTime>), "StringKeyedCollection_DateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfStringKeyedCollection_DateTimeFieldDelegate);
         }
         
         private void SetUnpackedValueOfStringKeyedCollection_MessagePackObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject> unpackedValue) {
-            System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator26 = unpackedValue.GetEnumerator();
-            MsgPack.MessagePackObject current26;
+            MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject> existent = default(MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>);
+            existent = unpackingContext.StringKeyedCollection_MessagePackObjectField;
+            System.Collections.Generic.IEnumerator<MsgPack.MessagePackObject> enumerator = unpackedValue.GetEnumerator();
+            MsgPack.MessagePackObject current;
             try {
                 for (
-                ; enumerator26.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current26 = enumerator26.Current;
-                    unpackingContext.StringKeyedCollection_MessagePackObjectField.Add(current26);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator26.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfStringKeyedCollection_MessagePackObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer52, itemsCount, indexOfItem, typeof(MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>), "StringKeyedCollection_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfStringKeyedCollection_MessagePackObjectFieldSetUnpackedValueOfStringKeyedCollection_MessagePackObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer52, itemsCount, indexOfItem, typeof(MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>), "StringKeyedCollection_MessagePackObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfStringKeyedCollection_MessagePackObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfStringKeyedCollection_ObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, MsgPack.Serialization.StringKeyedCollection<object> unpackedValue) {
-            System.Collections.Generic.IEnumerator<object> enumerator27 = unpackedValue.GetEnumerator();
-            object current27;
+            MsgPack.Serialization.StringKeyedCollection<object> existent = default(MsgPack.Serialization.StringKeyedCollection<object>);
+            existent = unpackingContext.StringKeyedCollection_ObjectField;
+            System.Collections.Generic.IEnumerator<object> enumerator = unpackedValue.GetEnumerator();
+            object current;
             try {
                 for (
-                ; enumerator27.MoveNext(); 
+                ; enumerator.MoveNext(); 
                 ) {
-                    current27 = enumerator27.Current;
-                    unpackingContext.StringKeyedCollection_ObjectField.Add(current27);
+                    current = enumerator.Current;
+                    existent.Add(current);
                 }
             }
             finally {
-                enumerator27.Dispose();
+                enumerator.Dispose();
             }
         }
         
         private void UnpackValueOfStringKeyedCollection_ObjectField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer53, itemsCount, indexOfItem, typeof(MsgPack.Serialization.StringKeyedCollection<object>), "StringKeyedCollection_ObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfStringKeyedCollection_ObjectFieldSetUnpackedValueOfStringKeyedCollection_ObjectFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer53, itemsCount, indexOfItem, typeof(MsgPack.Serialization.StringKeyedCollection<object>), "StringKeyedCollection_ObjectField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfStringKeyedCollection_ObjectFieldDelegate);
         }
         
         private void SetUnpackedValueOfTimeSpanField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.TimeSpan unpackedValue) {
@@ -2372,7 +2430,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTimeSpanField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer54, itemsCount, indexOfItem, typeof(System.TimeSpan), "TimeSpanField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTimeSpanFieldSetUnpackedValueOfTimeSpanFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer54, itemsCount, indexOfItem, typeof(System.TimeSpan), "TimeSpanField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTimeSpanFieldDelegate);
         }
         
         private void SetUnpackedValueOfTinyByteField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, byte unpackedValue) {
@@ -2380,7 +2438,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTinyByteField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer8, itemsCount, indexOfItem, typeof(byte), "TinyByteField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueUnpackByteValueDelegate, this.this_SetUnpackedValueOfTinyByteFieldSetUnpackedValueOfTinyByteFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer8, itemsCount, indexOfItem, typeof(byte), "TinyByteField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueDelegate, this.this_SetUnpackedValueOfTinyByteFieldDelegate);
         }
         
         private void SetUnpackedValueOfTinyInt32Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int unpackedValue) {
@@ -2388,7 +2446,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTinyInt32Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer43, itemsCount, indexOfItem, typeof(int), "TinyInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueUnpackInt32ValueDelegate, this.this_SetUnpackedValueOfTinyInt32FieldSetUnpackedValueOfTinyInt32FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer43, itemsCount, indexOfItem, typeof(int), "TinyInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfTinyInt32FieldDelegate);
         }
         
         private void SetUnpackedValueOfTinyInt64Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, long unpackedValue) {
@@ -2396,7 +2454,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTinyInt64Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer44, itemsCount, indexOfItem, typeof(long), "TinyInt64Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueUnpackInt64ValueDelegate, this.this_SetUnpackedValueOfTinyInt64FieldSetUnpackedValueOfTinyInt64FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer44, itemsCount, indexOfItem, typeof(long), "TinyInt64Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueDelegate, this.this_SetUnpackedValueOfTinyInt64FieldDelegate);
         }
         
         private void SetUnpackedValueOfTinyUInt16Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, ushort unpackedValue) {
@@ -2404,7 +2462,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTinyUInt16Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer45, itemsCount, indexOfItem, typeof(ushort), "TinyUInt16Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueUnpackUInt16ValueDelegate, this.this_SetUnpackedValueOfTinyUInt16FieldSetUnpackedValueOfTinyUInt16FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer45, itemsCount, indexOfItem, typeof(ushort), "TinyUInt16Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueDelegate, this.this_SetUnpackedValueOfTinyUInt16FieldDelegate);
         }
         
         private void SetUnpackedValueOfTrueField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, bool unpackedValue) {
@@ -2412,7 +2470,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTrueField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer22, itemsCount, indexOfItem, typeof(bool), "TrueField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueUnpackBooleanValueDelegate, this.this_SetUnpackedValueOfTrueFieldSetUnpackedValueOfTrueFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer22, itemsCount, indexOfItem, typeof(bool), "TrueField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueDelegate, this.this_SetUnpackedValueOfTrueFieldDelegate);
         }
         
         private void SetUnpackedValueOfUriField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Uri unpackedValue) {
@@ -2420,7 +2478,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfUriField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer55, itemsCount, indexOfItem, typeof(System.Uri), "UriField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfUriFieldSetUnpackedValueOfUriFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer55, itemsCount, indexOfItem, typeof(System.Uri), "UriField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfUriFieldDelegate);
         }
         
         private void SetUnpackedValueOfVersionField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Version unpackedValue) {
@@ -2428,7 +2486,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfVersionField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer56, itemsCount, indexOfItem, typeof(System.Version), "VersionField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfVersionFieldSetUnpackedValueOfVersionFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer56, itemsCount, indexOfItem, typeof(System.Version), "VersionField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfVersionFieldDelegate);
         }
         
         protected internal override MsgPack.Serialization.ComplexTypeGenerated UnpackFromCore(MsgPack.Unpacker unpacker) {

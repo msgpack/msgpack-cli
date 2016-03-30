@@ -30,5 +30,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         protected internal override System.DayOfWeek UnpackFromUnderlyingValue(MsgPack.MessagePackObject messagePackObject) {
             return ((System.DayOfWeek)(messagePackObject.AsInt32()));
         }
+        
+        protected internal override System.Threading.Tasks.Task PackUnderlyingValueToAsync(MsgPack.Packer packer, System.DayOfWeek enumValue, System.Threading.CancellationToken cancellationToken) {
+            return packer.PackAsync(((int)(enumValue)), cancellationToken);
+        }
     }
 }

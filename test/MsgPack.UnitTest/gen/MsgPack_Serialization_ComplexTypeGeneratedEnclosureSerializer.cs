@@ -17,31 +17,49 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure> this_PackValueOfNamePackValueOfNameDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure> this_PackValueOfNameDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.ComplexTypeGenerated> _serializer1;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure> this_PackValueOfNestedPackValueOfNestedDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure> this_PackValueOfNestedDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, string> this_SetUnpackedValueOfNameSetUnpackedValueOfNameDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfNameAsyncDelegate;
         
-        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfNestedAsyncDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int> this_UnpackValueOfNameUnpackValueOfNameDelegate;
+        private System.Collections.Generic.IList<System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationListAsync;
         
-        private System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, MsgPack.Serialization.ComplexTypeGenerated> this_SetUnpackedValueOfNestedSetUnpackedValueOfNestedDelegate;
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationTableAsync;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int> this_UnpackValueOfNestedUnpackValueOfNestedDelegate;
+        private System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, string> this_SetUnpackedValueOfNameDelegate;
+        
+        private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int> this_UnpackValueOfNameDelegate;
+        
+        private System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, MsgPack.Serialization.ComplexTypeGenerated> this_SetUnpackedValueOfNestedDelegate;
+        
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int> this_UnpackValueOfNestedDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>> _unpackOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>> _unpackOperationTable;
+        
+        private System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<string>> MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfNameAsyncDelegate;
+        
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfNestedAsyncDelegate;
+        
+        private System.Collections.Generic.IList<System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationListAsync;
+        
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationTableAsync;
         
         public MsgPack_Serialization_ComplexTypeGeneratedEnclosureSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
@@ -56,31 +74,56 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfName);
             packOperationList[1] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfNested);
             this._packOperationList = packOperationList;
+            System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] packOperationListAsync = default(System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            packOperationListAsync = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task>[2];
+            packOperationListAsync[0] = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNameAsync);
+            packOperationListAsync[1] = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNestedAsync);
+            this._packOperationListAsync = packOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>>);
             packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>>(2);
             packOperationTable["Name"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfName);
             packOperationTable["Nested"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfNested);
             this._packOperationTable = packOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task>> packOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            packOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(2);
+            packOperationTableAsync["Name"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNameAsync);
+            packOperationTableAsync["Nested"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNestedAsync);
+            this._packOperationTableAsync = packOperationTableAsync;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>[2];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>(this.UnpackValueOfName);
             unpackOperationList[1] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>(this.UnpackValueOfNested);
             this._unpackOperationList = unpackOperationList;
+            System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] unpackOperationListAsync = default(System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            unpackOperationListAsync = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[2];
+            unpackOperationListAsync[0] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNameAsync);
+            unpackOperationListAsync[1] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNestedAsync);
+            this._unpackOperationListAsync = unpackOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>>);
             unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>>(2);
             unpackOperationTable["Name"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>(this.UnpackValueOfName);
             unpackOperationTable["Nested"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>(this.UnpackValueOfNested);
             this._unpackOperationTable = unpackOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> unpackOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            unpackOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(2);
+            unpackOperationTableAsync["Name"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNameAsync);
+            unpackOperationTableAsync["Nested"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNestedAsync);
+            this._unpackOperationTableAsync = unpackOperationTableAsync;
             this._memberNames = new string[] {
                     "Name",
                     "Nested"};
-            this.this_PackValueOfNamePackValueOfNameDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfName);
-            this.this_PackValueOfNestedPackValueOfNestedDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfNested);
-            this.this_SetUnpackedValueOfNameSetUnpackedValueOfNameDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, string>(this.SetUnpackedValueOfName);
-            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
-            this.this_UnpackValueOfNameUnpackValueOfNameDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>(this.UnpackValueOfName);
-            this.this_SetUnpackedValueOfNestedSetUnpackedValueOfNestedDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, MsgPack.Serialization.ComplexTypeGenerated>(this.SetUnpackedValueOfNested);
-            this.this_UnpackValueOfNestedUnpackValueOfNestedDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>(this.UnpackValueOfNested);
+            this.this_PackValueOfNameDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfName);
+            this.this_PackValueOfNestedDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfNested);
+            this.this_PackValueOfNameAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNameAsync);
+            this.this_PackValueOfNestedAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNestedAsync);
+            this.this_SetUnpackedValueOfNameDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, string>(this.SetUnpackedValueOfName);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
+            this.this_UnpackValueOfNameDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>(this.UnpackValueOfName);
+            this.this_SetUnpackedValueOfNestedDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, MsgPack.Serialization.ComplexTypeGenerated>(this.SetUnpackedValueOfNested);
+            this.this_UnpackValueOfNestedDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>(this.UnpackValueOfNested);
+            this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<string>>(MsgPack.Serialization.UnpackHelpers.UnpackStringValueAsync);
+            this.this_UnpackValueOfNameAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNameAsync);
+            this.this_UnpackValueOfNestedAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNestedAsync);
         }
         
         private void PackValueOfName(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure objectTree) {
@@ -100,12 +143,29 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
         }
         
+        private System.Threading.Tasks.Task PackValueOfNameAsync(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer0.PackToAsync(packer, objectTree.Name, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task PackValueOfNestedAsync(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer1.PackToAsync(packer, objectTree.Nested, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task PackToAsyncCore(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure objectTree, System.Threading.CancellationToken cancellationToken) {
+            if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
+                return MsgPack.Serialization.PackHelpers.PackToArrayAsync(packer, objectTree, this._packOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.PackHelpers.PackToMapAsync(packer, objectTree, this._packOperationTableAsync, cancellationToken);
+            }
+        }
+        
         private void SetUnpackedValueOfName(MsgPack.Serialization.ComplexTypeGeneratedEnclosure unpackingContext, string unpackedValue) {
             unpackingContext.Name = unpackedValue;
         }
         
         private void UnpackValueOfName(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "Name", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueUnpackStringValueDelegate, this.this_SetUnpackedValueOfNameSetUnpackedValueOfNameDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "Name", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfNameDelegate);
         }
         
         private void SetUnpackedValueOfNested(MsgPack.Serialization.ComplexTypeGeneratedEnclosure unpackingContext, MsgPack.Serialization.ComplexTypeGenerated unpackedValue) {
@@ -113,7 +173,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNested(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Nested", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNestedSetUnpackedValueOfNestedDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Nested", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNestedDelegate);
         }
         
         protected internal override MsgPack.Serialization.ComplexTypeGeneratedEnclosure UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -124,6 +184,25 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
             else {
                 return MsgPack.Serialization.UnpackHelpers.UnpackFromMap(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(), this._unpackOperationTable);
+            }
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfNameAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "Name", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate, this.this_SetUnpackedValueOfNameDelegate, cancellationToken);
+        }
+        
+        private System.Threading.Tasks.Task UnpackValueOfNestedAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Nested", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNestedDelegate, cancellationToken);
+        }
+        
+        protected internal override System.Threading.Tasks.Task<MsgPack.Serialization.ComplexTypeGeneratedEnclosure> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {
+            MsgPack.Serialization.ComplexTypeGeneratedEnclosure result = default(MsgPack.Serialization.ComplexTypeGeneratedEnclosure);
+            result = new MsgPack.Serialization.ComplexTypeGeneratedEnclosure();
+            if (unpacker.IsArrayHeader) {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromArrayAsync(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(), this._memberNames, this._unpackOperationListAsync, cancellationToken);
+            }
+            else {
+                return MsgPack.Serialization.UnpackHelpers.UnpackFromMapAsync(unpacker, result, MsgPack.Serialization.UnpackHelpers.GetIdentity<MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(), this._unpackOperationTableAsync, cancellationToken);
             }
         }
     }
