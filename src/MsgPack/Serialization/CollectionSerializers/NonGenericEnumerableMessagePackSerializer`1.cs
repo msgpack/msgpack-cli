@@ -140,7 +140,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 
 			packer.PackArrayHeader( count );
 
-			foreach ( var item in asCollection )
+			foreach ( var item in asEnumerable )
 			{
 				this.ItemSerializer.PackTo( packer, item );
 			}
