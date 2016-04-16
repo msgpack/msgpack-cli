@@ -88,11 +88,51 @@ namespace MsgPack.Serialization
 			set { Volatile.Write( ref this._packerCompatibilityOptions, ( int )value ); }
 		}
 
+#if NETFX_35 || UNITY || SILVERLIGHT
+		private volatile bool _ignorePackabilityForCollection;
+#else
+		private bool _ignorePackabilityForCollection;
+#endif // NETFX_35 || UNITY || SILVERLIGHT
+
+		/// <summary>
+		///		Gets or sets a value indicating whether serializer generator ignores packability interfaces for collections or not.
+		/// </summary>
+		/// <value>
+		///		<c>true</c> if serializer generator ignores packability interfaces for collections; otherwise, <c>false</c>. The default is <c>true</c>.
+		/// </value>
+		/// <remarks>
+		///		Historically, MessagePack for CLI ignored packability interfaces (<see cref="IPackable"/>, <see cref="IUnpackable"/>, 
+		///		<see cref="IAsyncPackable"/> and <see cref="IAsyncUnpackable"/>) for collection which implements <see cref="IEquatable{T}"/> (except <see cref="String"/> and its kinds).
+		///		As of 0.7, the generator respects such interfaces even if the target type is collection.
+		///		Although this behavior is desirable and correct, setting this property <c>true</c> turn out the new behavior for backward compatibility.
+		/// </remarks>
+		public bool IgnorePackabilityForCollection
+		{
+			get
+			{
+#if NETFX_35 || UNITY || SILVERLIGHT
+				return this._ignorePackabilityForCollection;
+#else
+				return Volatile.Read( ref this._ignorePackabilityForCollection );
+#endif // NETFX_35 || UNITY || SILVERLIGHT
+			}
+			set
+			{
+#if NETFX_35 || UNITY || SILVERLIGHT
+				this._ignorePackabilityForCollection = value;
+#else
+				Volatile.Write( ref this._ignorePackabilityForCollection, value );
+#endif // NETFX_35 || UNITY || SILVERLIGHT
+			}
+		}
+
 		// TODO: CheckNilImplicationInConstructorDeserialization
+#warning TODO: Classic as default should be obsolete.
 
 		internal SerializationCompatibilityOptions()
 		{
 			this.PackerCompatibilityOptions = PackerCompatibilityOptions.Classic;
+			this.IgnorePackabilityForCollection = false;
 		}
 	}
 }

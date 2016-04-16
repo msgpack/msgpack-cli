@@ -2509,6 +2509,8 @@ namespace MsgPack.Serialization
 
 #endregion -- ReadOnly / Private Members --
 
+#region -- IPackabke/IUnpackable --
+
 		// Issue 150
 		[Test]
 		public void TestExplicitlyImplementedPackableUnpackable()
@@ -2525,6 +2527,780 @@ namespace MsgPack.Serialization
 				Assert.That( actual.Data, Is.EqualTo( PackableUnpackableImplementedExplictly.UnpackingPrefix + PackableUnpackableImplementedExplictly.PackingPrefix + obj.Data ) );
 			}
 		}
+
+		// Issue153
+
+#warning Issue 153 tests for ET are not executed because expression based serializer should be removed in 0.7.
+
+		[Test]
+		public void TestEnumerable_Packable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestEnumerable_Packable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestEnumerable_Unpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestEnumerable_Unpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestEnumerable_PackableUnpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestEnumerable_PackableUnpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestCollection_Packable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestCollection_Packable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestCollection_Unpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestCollection_Unpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestCollection_PackableUnpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestCollection_PackableUnpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestList_Packable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestList_Packable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestList_Unpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestList_Unpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestList_PackableUnpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestList_PackableUnpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestDictionary_Packable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestDictionary_Packable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestDictionary_Unpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestDictionary_Unpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestDictionary_PackableUnpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestDictionary_PackableUnpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericEnumerable_Packable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericEnumerable_Packable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericEnumerable_Unpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericEnumerable_Unpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericEnumerable_PackableUnpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericEnumerable_PackableUnpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericCollection_Packable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericCollection_Packable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericCollection_Unpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericCollection_Unpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericCollection_PackableUnpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericCollection_PackableUnpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericList_Packable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericList_Packable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericList_Unpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericList_Unpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericList_PackableUnpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericList_PackableUnpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericDictionary_Packable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericDictionary_Packable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericDictionary_Unpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericDictionary_Unpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericDictionary_PackableUnpackable_NotAware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+
+		[Test]
+		public void TestNonGenericDictionary_PackableUnpackable_Aware()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestEnumerable_Packable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestEnumerable_Packable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestEnumerable_Unpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestEnumerable_Unpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestEnumerable_PackableUnpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestEnumerable_PackableUnpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestCollection_Packable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestCollection_Packable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestCollection_Unpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestCollection_Unpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestCollection_PackableUnpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestCollection_PackableUnpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestList_Packable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestList_Packable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestList_Unpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestList_Unpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestList_PackableUnpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestList_PackableUnpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestDictionary_Packable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestDictionary_Packable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestDictionary_Unpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestDictionary_Unpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestDictionary_PackableUnpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestDictionary_PackableUnpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericEnumerable_Packable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericEnumerable_Packable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericEnumerable_Unpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericEnumerable_Unpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericEnumerable_PackableUnpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericEnumerable_PackableUnpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericCollection_Packable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericCollection_Packable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericCollection_Unpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericCollection_Unpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericCollection_PackableUnpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericCollection_PackableUnpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericList_Packable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericList_Packable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericList_Unpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericList_Unpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericList_PackableUnpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericList_PackableUnpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericDictionary_Packable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericDictionary_Packable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericDictionary_Unpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericDictionary_Unpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericDictionary_PackableUnpackable_NotAwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+#if FEATURE_TAP
+#pragma restore disable 1998
+
+		[Test]
+		public async Task TestNonGenericDictionary_PackableUnpackable_AwareAsync()
+		{
+			Assert.Inconclusive( "Expression based serializer should be removed in 0.7" );
+		}
+#endif // FEATURE_TAP
+#pragma restore warning 1998
+
+#endregion -- IPackabke/IUnpackable --
 
 #region -- Exclusion --
 

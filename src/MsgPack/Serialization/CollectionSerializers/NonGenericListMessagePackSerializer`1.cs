@@ -2,7 +2,7 @@
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		This method invokes <see cref="NonGenericEnumerableMessagePackSerializerBase{TList}.CreateInstance(int)"/>, and then fill deserialized items to resultong collection.
 		/// </remarks>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
-		protected internal sealed override TList UnpackFromCore( Unpacker unpacker )
+		protected internal override TList UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
@@ -155,7 +155,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		protected UnityNonGenericListMessagePackSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema schema )
 			: base( ownerContext, targetType, schema ) { }
 
-		protected internal sealed override object UnpackFromCore( Unpacker unpacker )
+		protected internal override object UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsArrayHeader )
 			{

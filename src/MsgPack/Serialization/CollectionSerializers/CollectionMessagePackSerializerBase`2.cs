@@ -2,7 +2,7 @@
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// </exception>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
-		protected internal sealed override void PackToCore( Packer packer, TCollection objectTree )
+		protected internal override void PackToCore( Packer packer, TCollection objectTree )
 		{
 			packer.PackArrayHeader( this.GetCount( objectTree ) );
 #if ( !UNITY && !XAMIOS ) || AOT_CHECK
@@ -75,8 +75,8 @@ namespace MsgPack.Serialization.CollectionSerializers
 				itemSerializer.PackTo( packer, item );
 			}
 #else
-	// .constraind call for TCollection.get_Count/TCollection.GetEnumerator() causes AOT error.
-	// So use cast and invoke as normal call (it might cause boxing, but most collection should be reference type).
+			// .constraind call for TCollection.get_Count/TCollection.GetEnumerator() causes AOT error.
+			// So use cast and invoke as normal call (it might cause boxing, but most collection should be reference type).
 			var itemSerializer = this.ItemSerializer;
 			foreach ( var item in objectTree as IEnumerable<TItem> )
 			{
@@ -103,7 +103,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TCollection"/> is not serializable even if it can be deserialized.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
-		protected internal sealed override async Task PackToAsyncCore( Packer packer, TCollection objectTree, CancellationToken cancellationToken )
+		protected internal override async Task PackToAsyncCore( Packer packer, TCollection objectTree, CancellationToken cancellationToken )
 		{
 			await packer.PackArrayHeaderAsync( this.GetCount( objectTree ), cancellationToken ).ConfigureAwait( false );
 #if ( !UNITY && !XAMIOS ) || AOT_CHECK
@@ -153,7 +153,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		This method invokes <see cref="EnumerableMessagePackSerializerBase{TCollection,TItem}.CreateInstance(int)"/>, and then fill deserialized items to resultong collection.
 		/// </remarks>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected internal sealed override TCollection UnpackFromCore( Unpacker unpacker )
+		protected internal override TCollection UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
@@ -195,7 +195,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TCollection"/> is not serializable even if it can be serialized.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
-		protected internal sealed override Task<TCollection> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		protected internal override Task<TCollection> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			if ( !unpacker.IsArrayHeader )
 			{

@@ -2,7 +2,7 @@
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// </exception>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
-		protected internal sealed override void PackToCore( Packer packer, TDictionary objectTree )
+		protected internal override void PackToCore( Packer packer, TDictionary objectTree )
 		{
 			packer.PackMapHeader( objectTree.Count );
 			foreach ( DictionaryEntry item in objectTree )
@@ -137,7 +137,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		This method invokes <see cref="CreateInstance(int)"/>, and then fill deserialized items to resultong collection.
 		/// </remarks>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
-		protected internal sealed override TDictionary UnpackFromCore( Unpacker unpacker )
+		protected internal override TDictionary UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsMapHeader )
 			{
@@ -234,7 +234,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// </exception>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
-		protected internal sealed override void UnpackToCore( Unpacker unpacker, TDictionary collection )
+		protected internal override void UnpackToCore( Unpacker unpacker, TDictionary collection )
 		{
 			if ( !unpacker.IsMapHeader )
 			{
@@ -312,7 +312,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TDictionary"/> is not mutable collection.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
-		protected internal sealed override Task UnpackToAsyncCore( Unpacker unpacker, TDictionary collection, CancellationToken cancellationToken )
+		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, TDictionary collection, CancellationToken cancellationToken )
 		{
 			if ( !unpacker.IsMapHeader )
 			{
@@ -386,7 +386,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 			this._valueSerializer = ownerContext.GetSerializer( typeof( object ), safeSchema.ItemSchema );
 		}
 
-		protected internal sealed override void PackToCore( Packer packer, object objectTree )
+		protected internal override void PackToCore( Packer packer, object objectTree )
 		{
 			var asDictionary = objectTree as IDictionary;
 			// ReSharper disable once PossibleNullReferenceException
@@ -398,7 +398,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 			}
 		}
 
-		protected internal sealed override object UnpackFromCore( Unpacker unpacker )
+		protected internal override object UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsMapHeader )
 			{
@@ -423,7 +423,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 			return this.CreateInstance( initialCapacity );
 		}
 
-		protected internal sealed override void UnpackToCore( Unpacker unpacker, object collection )
+		protected internal override void UnpackToCore( Unpacker unpacker, object collection )
 		{
 			if ( !unpacker.IsMapHeader )
 			{

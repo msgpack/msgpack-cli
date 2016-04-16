@@ -51,24 +51,65 @@ namespace MsgPack.Serialization.AbstractSerializers
 			bool isAddItemRequired;
 			this.DetermineSerializationStrategy( out isUnpackFromRequired, out isAddItemRequired );
 
-			if ( isAddItemRequired )
+			if ( typeof( IPackable ).IsAssignableFrom( this.TargetType ) )
 			{
-				// For IEnumerable implements and IReadOnlyXXX implements
-				if ( this.CollectionTraits.AddMethod != null )
+				this.BuildIPackablePackTo( context );
+			}
+#if FEATURE_TAP
+
+			if ( this.WithAsync( context ) )
+			{
+				if ( typeof( IAsyncPackable ).IsAssignableFrom( this.TargetType ) )
 				{
-					// For standard path.
-					this.BuildCollectionAddItem( context, this.CollectionTraits );
-				}
-				else
-				{
-					// For concrete collection path.
-					this.BuildCollectionAddItem( context, concreteType.GetCollectionTraits() );
+					this.BuildIAsyncPackablePackTo( context );
 				}
 			}
 
+#endif // FEATURE_TAP
+
 			this.BuildCollectionCreateInstance( context, concreteType );
 
-			if ( isUnpackFromRequired )
+			var useUnpackable = false;
+
+			if ( typeof( IUnpackable ).IsAssignableFrom( concreteType ?? this.TargetType ) )
+			{
+				this.BuildIUnpackableUnpackFrom( context, this.GetUnpackableCollectionInstantiation( context ) );
+				useUnpackable = true;
+			}
+
+#if FEATURE_TAP
+
+			if ( this.WithAsync( context ) )
+			{
+				if ( typeof( IAsyncUnpackable ).IsAssignableFrom( concreteType ?? this.TargetType ) )
+				{
+					this.BuildIAsyncUnpackableUnpackFrom( context, this.GetUnpackableCollectionInstantiation( context ) );
+					useUnpackable = true;
+				}
+			}
+
+#endif // FEATURE_TAP
+
+			if ( isAddItemRequired )
+			{
+				if ( useUnpackable )
+				{
+					// AddItem should never called because UnpackFromCore calls IUnpackable/IAsyncUnpackable
+					this.BuildCollectionAddItemNotImplemented( context );
+				}
+				else
+				{
+					// For IEnumerable implements and IReadOnlyXXX implements
+					this.BuildCollectionAddItem( 
+						context, 
+						this.CollectionTraits.AddMethod != null
+						? this.CollectionTraits // For declared collection.
+						: ( concreteType ?? this.TargetType ).GetCollectionTraits() // For concrete collection.
+					);
+				}
+			}
+
+			if ( isUnpackFromRequired && !useUnpackable )
 			{
 				this.BuildCollectionUnpackFromCore( context, concreteType, schema, false );
 #if FEATURE_TAP
@@ -141,6 +182,17 @@ namespace MsgPack.Serialization.AbstractSerializers
 			} // switch
 		}
 
+		private TConstruct GetUnpackableCollectionInstantiation( TContext context )
+		{
+			return
+				this.EmitInvokeMethodExpression(
+					context,
+					this.EmitThisReferenceExpression( context ),
+					context.GetDeclaredMethod( MethodName.CreateInstance ),
+					this.MakeInt32Literal( context, 0 ) // Always 0
+				);
+		}
+
 		#region -- AddItem --
 
 		private void BuildCollectionAddItem( TContext context, CollectionTraits traits )
@@ -167,6 +219,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context.CollectionToBeAdded,
 					context.ItemToAdd
 				)
+			);
+		}
+
+		private void BuildCollectionAddItemNotImplemented( TContext context )
+		{
+			context.BeginMethodOverride( MethodName.AddItem );
+			context.EndMethodOverride(
+				MethodName.AddItem,
+				this.EmitSequentialStatements( context, typeof( void ) ) // nop
 			);
 		}
 

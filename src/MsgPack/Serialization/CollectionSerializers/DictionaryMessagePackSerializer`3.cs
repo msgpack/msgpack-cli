@@ -2,7 +2,7 @@
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -128,7 +128,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 			this._getValue = traits.ElementType.GetProperty( "Value" ).GetGetMethod();
 		}
 
-		protected internal override sealed void PackToCore( Packer packer, object objectTree )
+		protected internal override void PackToCore( Packer packer, object objectTree )
 		{
 			packer.PackMapHeader( ( int )this._getCount.InvokePreservingExceptionType( objectTree ) );
 			// ReSharper disable once PossibleNullReferenceException
@@ -139,7 +139,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 			}
 		}
 
-		protected internal override sealed object UnpackFromCore( Unpacker unpacker )
+		protected internal override object UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsMapHeader )
 			{
@@ -164,7 +164,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 			return this.CreateInstance( initialCapacity );
 		}
 
-		protected internal override sealed void UnpackToCore( Unpacker unpacker, object collection )
+		protected internal override void UnpackToCore( Unpacker unpacker, object collection )
 		{
 			if ( !unpacker.IsMapHeader )
 			{

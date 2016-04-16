@@ -705,6 +705,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Serialization\BaseCollections.cs" />
     <Compile Include="Serialization\ComplexType.cs" />
     <Compile Include="Serialization\ComplexTypeWithDataContractWithOrder.cs" />
     <Compile Include="Serialization\ComplexTypeWithOneBaseOrder.cs" />
@@ -719,6 +720,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EnumSerializationTest.EnumDefinitions.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\MapReflectionBasedAutoMessagePackSerializerTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MapReflectionBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+    </Compile>
     <Compile Include="Serialization\PerformanceTest.cs" />
     <Compile Include="Serialization\AppendableReadOnlyCollections.cs" />
     <Compile Include="Serialization\ReflectionBasedNilImplicationTest.cs">
@@ -732,11 +738,6 @@
       <DependentUpon>FieldBasedNilImplicationTest.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\FromExpressionTest.cs" />
-    <Compile Include="Serialization\MapReflectionBasedAutoMessagePackSerializerTest.cs">
-      <DependentUpon>MapReflectionBasedAutoMessagePackSerializerTest.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Serialization\MapReflectionBasedEnumSerializationTest.cs">
       <DependentUpon>MapReflectionBasedEnumSerializationTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>

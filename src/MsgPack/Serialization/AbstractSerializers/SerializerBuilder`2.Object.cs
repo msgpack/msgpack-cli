@@ -70,7 +70,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			if ( typeof( IUnpackable ).IsAssignableFrom( this.TargetType ) )
 			{
-				this.BuildIUnpackableUnpackFrom( context );
+				this.BuildIUnpackableUnpackFrom( context, this.GetUnpackableObjectInstantiation( context ) );
 			}
 			else
 			{
@@ -83,7 +83,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			{
 				if ( typeof( IAsyncUnpackable ).IsAssignableFrom( this.TargetType ) )
 				{
-					this.BuildIAsyncUnpackableUnpackFrom( context );
+					this.BuildIAsyncUnpackableUnpackFrom( context, this.GetUnpackableObjectInstantiation( context ) );
 				}
 				else
 				{
@@ -490,7 +490,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		#region -- IUnpackable --
 
-		private void BuildIUnpackableUnpackFrom( TContext context )
+		private void BuildIUnpackableUnpackFrom( TContext context, TConstruct objectCreation )
 		{
 
 			context.BeginMethodOverride( MethodName.UnpackFromCore );
@@ -498,9 +498,20 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitSequentialStatements(
 					context,
 					this.TargetType,
-					this.BuildIUnpackableUnpackFromCore( context, typeof( IUnpackable ) )
+					this.BuildIUnpackableUnpackFromCore( context, typeof( IUnpackable ), objectCreation )
 				)
 			);
+		}
+
+		private TConstruct GetUnpackableObjectInstantiation( TContext context )
+		{
+			return
+				this.EmitCreateNewObjectExpression(
+					context,
+					null,
+					// reference contextType.
+					this.GetDefaultConstructor( this.TargetType )
+				);
 		}
 
 		#endregion -- IUnpackable --
@@ -509,7 +520,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		#region -- IAsyncUnpackable --
 
-		private void BuildIAsyncUnpackableUnpackFrom( TContext context )
+		private void BuildIAsyncUnpackableUnpackFrom( TContext context, TConstruct objectCreation )
 		{
 
 			context.BeginMethodOverride( MethodName.UnpackFromAsyncCore );
@@ -518,7 +529,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitSequentialStatements(
 					context,
 					this.TargetType,
-					this.BuildIUnpackableUnpackFromCore( context, typeof( IAsyncUnpackable ) )
+					this.BuildIUnpackableUnpackFromCore( context, typeof( IAsyncUnpackable ), objectCreation )
 				)
 			);
 		}
@@ -529,7 +540,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		#region -- UnpackFrom --
 
-		private IEnumerable<TConstruct> BuildIUnpackableUnpackFromCore( TContext context, Type @interface )
+		private IEnumerable<TConstruct> BuildIUnpackableUnpackFromCore( TContext context, Type @interface, TConstruct objectCreation )
 		{
 			var result =
 				this.DeclareLocal(
@@ -546,11 +557,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitStoreVariableStatement(
 						context,
 						result,
-						this.EmitCreateNewObjectExpression(
-							context,
-							null, // reference contextType.
-							this.GetDefaultConstructor( this.TargetType )
-						)
+						objectCreation
 					);
 			}
 

@@ -2,7 +2,7 @@
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// </exception>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
-		protected internal sealed override void PackToCore( Packer packer, TDictionary objectTree )
+		protected internal override void PackToCore( Packer packer, TDictionary objectTree )
 		{
 #if ( !UNITY && !XAMIOS ) || AOT_CHECK
 			packer.PackMapHeader( this.GetCount( objectTree ) );
@@ -118,7 +118,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TDictionary"/> is not serializable even if it can be deserialized.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
-		protected internal sealed override async Task PackToAsyncCore( Packer packer, TDictionary objectTree, CancellationToken cancellationToken )
+		protected internal override async Task PackToAsyncCore( Packer packer, TDictionary objectTree, CancellationToken cancellationToken )
 		{
 #if ( !UNITY && !XAMIOS ) || AOT_CHECK
 			await packer.PackMapHeaderAsync( this.GetCount( objectTree ), cancellationToken ).ConfigureAwait( false );
@@ -169,7 +169,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		This method invokes <see cref="CreateInstance(int)"/>, and then fill deserialized items to resultong collection.
 		/// </remarks>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
-		protected internal sealed override TDictionary UnpackFromCore( Unpacker unpacker )
+		protected internal override TDictionary UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsMapHeader )
 			{
@@ -211,7 +211,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TDictionary"/> is not serializable even if it can be serialized.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
-		protected internal sealed override Task<TDictionary> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		protected internal override Task<TDictionary> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			if ( !unpacker.IsMapHeader )
 			{
@@ -267,7 +267,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// </exception>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
-		protected internal sealed override void UnpackToCore( Unpacker unpacker, TDictionary collection )
+		protected internal override void UnpackToCore( Unpacker unpacker, TDictionary collection )
 		{
 			if ( !unpacker.IsMapHeader )
 			{
@@ -346,7 +346,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TDictionary"/> is not mutable collection.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
-		protected internal sealed override Task UnpackToAsyncCore( Unpacker unpacker, TDictionary collection, CancellationToken cancellationToken )
+		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, TDictionary collection, CancellationToken cancellationToken )
 		{
 			if ( !unpacker.IsMapHeader )
 			{

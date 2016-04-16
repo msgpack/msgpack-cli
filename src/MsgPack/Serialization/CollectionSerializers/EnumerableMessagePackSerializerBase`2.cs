@@ -2,7 +2,7 @@
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// </exception>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods",
 			MessageId = "0", Justification = "By design" )]
-		protected internal sealed override void UnpackToCore( Unpacker unpacker, TCollection collection )
+		protected internal override void UnpackToCore( Unpacker unpacker, TCollection collection )
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
@@ -171,7 +171,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TCollection"/> is not mutable collection.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
-		protected internal sealed override Task UnpackToAsyncCore( Unpacker unpacker, TCollection collection, CancellationToken cancellationToken )
+		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, TCollection collection, CancellationToken cancellationToken )
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
@@ -268,7 +268,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods",
 			MessageId = "0", Justification = "By design" )]
-		protected internal sealed override void UnpackToCore( Unpacker unpacker, object collection )
+		protected internal override void UnpackToCore( Unpacker unpacker, object collection )
 		{
 			if ( !unpacker.IsArrayHeader )
 			{

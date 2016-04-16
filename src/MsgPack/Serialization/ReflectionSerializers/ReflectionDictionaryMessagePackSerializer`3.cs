@@ -2,7 +2,7 @@
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,6 +26,10 @@ using System;
 #if !UNITY
 using System.Collections.Generic;
 #endif // !UNITY
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.CollectionSerializers;
 
@@ -44,6 +48,13 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		private readonly Func<int, object> _factory;
 #endif // !UNITY
 
+		private readonly bool _isPackable;
+		private readonly bool _isUnpackable;
+#if FEATURE_TAP
+		private readonly bool _isAsyncPackable;
+		private readonly bool _isAsyncUnpackable;
+#endif // FEATURE_TAP
+
 #if !UNITY
 		public ReflectionDictionaryMessagePackSerializer(
 			SerializationContext ownerContext,
@@ -53,6 +64,12 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			: base( ownerContext, itemsSchema )
 		{
 			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TDictionary, TKey>( targetType );
+			this._isPackable = typeof( IPackable ).IsAssignableFrom( targetType ?? typeof( TDictionary ) );
+			this._isUnpackable = typeof( IUnpackable ).IsAssignableFrom( targetType ?? typeof( TDictionary ) );
+#if FEATURE_TAP
+			this._isAsyncPackable = typeof( IAsyncPackable ).IsAssignableFrom( targetType ?? typeof( TDictionary ) );
+			this._isAsyncUnpackable = typeof( IAsyncUnpackable ).IsAssignableFrom( targetType ?? typeof( TDictionary ) );
+#endif // FEATURE_TAP
 		}
 #else
 		public ReflectionDictionaryMessagePackSerializer(
@@ -67,8 +84,72 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			: base( ownerContext, abstractType, keyType, valueType, traits, itemsSchema )
 		{
 			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory( abstractType, concreteType, keyType );
+			this._isPackable = typeof( IPackable ).IsAssignableFrom( concreteType ?? abstractType );
+			this._isUnpackable = typeof( IUnpackable ).IsAssignableFrom( concreteType ?? abstractType );
 		}
 #endif // !UNITY
+
+#if !UNITY
+		protected internal override void PackToCore( Packer packer, TDictionary objectTree )
+#else
+		protected internal override void PackToCore( Packer packer, object objectTree )
+#endif
+		{
+			if ( this._isPackable )
+			{
+				( ( IPackable )objectTree ).PackToMessage( packer, null );
+				return;
+			}
+
+			base.PackToCore( packer, objectTree );
+		}
+
+#if !UNITY
+		protected internal override TDictionary UnpackFromCore( Unpacker unpacker )
+#else
+		protected internal override object UnpackFromCore( Unpacker unpacker )
+#endif
+		{
+			if ( this._isUnpackable )
+			{
+				var result = this.CreateInstance( 0 );
+				( ( IUnpackable )result ).UnpackFromMessage( unpacker );
+				return result;
+			}
+
+			return base.UnpackFromCore( unpacker );
+		}
+
+#if FEATURE_TAP
+
+		protected internal override Task PackToAsyncCore( Packer packer, TDictionary objectTree, CancellationToken cancellationToken )
+		{
+			if ( this._isAsyncPackable )
+			{
+				return ( ( IAsyncPackable )objectTree ).PackToMessageAsync( packer, null, cancellationToken );
+			}
+
+			return base.PackToAsyncCore( packer, objectTree, cancellationToken );
+		}
+
+		protected internal override Task<TDictionary> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			if ( this._isAsyncUnpackable )
+			{
+				return this.UnpackFromMessageAasync( unpacker, cancellationToken );
+			}
+
+			return base.UnpackFromAsyncCore( unpacker, cancellationToken );
+		}
+
+		private async Task<TDictionary> UnpackFromMessageAasync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			var result = this.CreateInstance( 0 );
+			await ( ( IAsyncUnpackable )result ).UnpackFromMessageAsync( unpacker, cancellationToken ).ConfigureAwait( false );
+			return result;
+		}
+
+#endif // FEATURE_TAP
 
 #if !UNITY
 		protected override TDictionary CreateInstance( int initialCapacity )

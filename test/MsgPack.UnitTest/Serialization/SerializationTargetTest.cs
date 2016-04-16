@@ -149,8 +149,8 @@ namespace MsgPack.Serialization
 		public void TestIgnoreKinds()
 		{
 			var result = SerializationTarget.Prepare( new SerializationContext(), typeof( IgnoreAttributesTester ) );
-			Assert.That( result.Members.Count, Is.EqualTo( 1 ), String.Join( ",", result.Members.Select( m => m.Contract.Name ) ) ); ;
-			Assert.That( result.Members[ 0 ].Contract.Name, Is.EqualTo( "Vanilla" ), String.Join( ",", result.Members.Select( m => m.Contract.Name ) ) );
+			Assert.That( result.Members.Count, Is.EqualTo( 1 ), String.Join( ",", result.Members.Select( m => m.Contract.Name ).ToArray() ) ); ;
+			Assert.That( result.Members[ 0 ].Contract.Name, Is.EqualTo( "Vanilla" ), String.Join( ",", result.Members.Select( m => m.Contract.Name ).ToArray() ) );
 		}
 	}
 }

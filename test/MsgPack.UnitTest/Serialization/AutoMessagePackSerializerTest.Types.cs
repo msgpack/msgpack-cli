@@ -1449,6 +1449,1298 @@ namespace MsgPack.Serialization
 #endif // FEATURE_TAP
 	}
 
+	public class PackableEnumerable : EnumerableBase<int>
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableEnumerable() : this( -1 ) { }
+
+		public PackableEnumerable( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.ToArray();
+		}
+
+		// To avoid SerializationException
+		public void Add( object item )
+		{
+			this.Underlying.Add( ( int )item );
+		}
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackArrayHeader( 1 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+	}
+
+	public class UnpackableEnumerable : EnumerableBase<int>
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public UnpackableEnumerable() : this( -1 ) { }
+
+		public UnpackableEnumerable( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.ToArray();
+		}
+
+		// To avoid SerializationException
+		public void Add( object item )
+		{
+			this.Underlying.Add( ( int )item );
+		}
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0 );
+			this.Underlying.Add( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+	public class PackableUnpackableEnumerable : EnumerableBase<int>
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableUnpackableEnumerable() : this( -1 ) { }
+
+		public PackableUnpackableEnumerable( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.ToArray();
+		}
+
+		// To avoid SerializationException
+		public void Add( object item )
+		{
+			this.Underlying.Add( ( int )item );
+		}
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackArrayHeader( 1 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0 );
+			this.Underlying.Add( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+	public class PackableCollection : CollectionBase<int>
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableCollection() : this( -1 ) { }
+
+		public PackableCollection( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.ToArray();
+		}
+
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackArrayHeader( 1 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+	}
+
+	public class UnpackableCollection : CollectionBase<int>
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public UnpackableCollection() : this( -1 ) { }
+
+		public UnpackableCollection( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.ToArray();
+		}
+
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0 );
+			this.Underlying.Add( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+	public class PackableUnpackableCollection : CollectionBase<int>
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableUnpackableCollection() : this( -1 ) { }
+
+		public PackableUnpackableCollection( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.ToArray();
+		}
+
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackArrayHeader( 1 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0 );
+			this.Underlying.Add( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+	public class PackableList : ListBase<int>
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableList() : this( -1 ) { }
+
+		public PackableList( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.ToArray();
+		}
+
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackArrayHeader( 1 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+	}
+
+	public class UnpackableList : ListBase<int>
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public UnpackableList() : this( -1 ) { }
+
+		public UnpackableList( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.ToArray();
+		}
+
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0 );
+			this.Underlying.Add( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+	public class PackableUnpackableList : ListBase<int>
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableUnpackableList() : this( -1 ) { }
+
+		public PackableUnpackableList( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.ToArray();
+		}
+
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackArrayHeader( 1 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0 );
+			this.Underlying.Add( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+	public class PackableDictionary : DictionaryBase<int>
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableDictionary() : this( -1 ) { }
+
+		public PackableDictionary( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item, item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.Values
+				.ToArray();
+		}
+
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackMapHeader( 1 );
+				packer.Pack( 0 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+	}
+
+	public class UnpackableDictionary : DictionaryBase<int>
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public UnpackableDictionary() : this( -1 ) { }
+
+		public UnpackableDictionary( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item, item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.Values
+				.ToArray();
+		}
+
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0, 0 );
+			this.Underlying.Add( 1, 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+	public class PackableUnpackableDictionary : DictionaryBase<int>
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableUnpackableDictionary() : this( -1 ) { }
+
+		public PackableUnpackableDictionary( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item, item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.Values
+				.ToArray();
+		}
+
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackMapHeader( 1 );
+				packer.Pack( 0 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0, 0 );
+			this.Underlying.Add( 1, 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+	public class PackableNonGenericEnumerable : NonGenericEnumerableBase
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableNonGenericEnumerable() : this( -1 ) { }
+
+		public PackableNonGenericEnumerable( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.Cast<int>()
+				.ToArray();
+		}
+
+		// To avoid SerializationException
+		public void Add( object item )
+		{
+			this.Underlying.Add( ( int )item );
+		}
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackArrayHeader( 1 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+	}
+
+	public class UnpackableNonGenericEnumerable : NonGenericEnumerableBase
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public UnpackableNonGenericEnumerable() : this( -1 ) { }
+
+		public UnpackableNonGenericEnumerable( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.Cast<int>()
+				.ToArray();
+		}
+
+		// To avoid SerializationException
+		public void Add( object item )
+		{
+			this.Underlying.Add( ( int )item );
+		}
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0 );
+			this.Underlying.Add( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+	public class PackableUnpackableNonGenericEnumerable : NonGenericEnumerableBase
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableUnpackableNonGenericEnumerable() : this( -1 ) { }
+
+		public PackableUnpackableNonGenericEnumerable( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.Cast<int>()
+				.ToArray();
+		}
+
+		// To avoid SerializationException
+		public void Add( object item )
+		{
+			this.Underlying.Add( ( int )item );
+		}
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackArrayHeader( 1 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0 );
+			this.Underlying.Add( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+	public class PackableNonGenericCollection : NonGenericCollectionBase
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableNonGenericCollection() : this( -1 ) { }
+
+		public PackableNonGenericCollection( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.Cast<int>()
+				.ToArray();
+		}
+
+		// To avoid SerializationException
+		public void Add( object item )
+		{
+			this.Underlying.Add( ( int )item );
+		}
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackArrayHeader( 1 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+	}
+
+	public class UnpackableNonGenericCollection : NonGenericCollectionBase
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public UnpackableNonGenericCollection() : this( -1 ) { }
+
+		public UnpackableNonGenericCollection( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.Cast<int>()
+				.ToArray();
+		}
+
+		// To avoid SerializationException
+		public void Add( object item )
+		{
+			this.Underlying.Add( ( int )item );
+		}
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0 );
+			this.Underlying.Add( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+	public class PackableUnpackableNonGenericCollection : NonGenericCollectionBase
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableUnpackableNonGenericCollection() : this( -1 ) { }
+
+		public PackableUnpackableNonGenericCollection( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.Cast<int>()
+				.ToArray();
+		}
+
+		// To avoid SerializationException
+		public void Add( object item )
+		{
+			this.Underlying.Add( ( int )item );
+		}
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackArrayHeader( 1 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0 );
+			this.Underlying.Add( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+	public class PackableNonGenericList : NonGenericListBase
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableNonGenericList() : this( -1 ) { }
+
+		public PackableNonGenericList( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.Cast<int>()
+				.ToArray();
+		}
+
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackArrayHeader( 1 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+	}
+
+	public class UnpackableNonGenericList : NonGenericListBase
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public UnpackableNonGenericList() : this( -1 ) { }
+
+		public UnpackableNonGenericList( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.Cast<int>()
+				.ToArray();
+		}
+
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0 );
+			this.Underlying.Add( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+	public class PackableUnpackableNonGenericList : NonGenericListBase
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableUnpackableNonGenericList() : this( -1 ) { }
+
+		public PackableUnpackableNonGenericList( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.Cast<int>()
+				.ToArray();
+		}
+
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackArrayHeader( 1 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0 );
+			this.Underlying.Add( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+	public class PackableNonGenericDictionary : NonGenericDictionaryBase
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableNonGenericDictionary() : this( -1 ) { }
+
+		public PackableNonGenericDictionary( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item, item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.Values
+				.Cast<int>()
+				.ToArray();
+		}
+
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackMapHeader( 1 );
+				packer.Pack( 0 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+	}
+
+	public class UnpackableNonGenericDictionary : NonGenericDictionaryBase
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public UnpackableNonGenericDictionary() : this( -1 ) { }
+
+		public UnpackableNonGenericDictionary( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item, item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.Values
+				.Cast<int>()
+				.ToArray();
+		}
+
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0, 0 );
+			this.Underlying.Add( 1, 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+	public class PackableUnpackableNonGenericDictionary : NonGenericDictionaryBase
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+	{
+		public int Capacity { get; private set; }
+
+		public PackableUnpackableNonGenericDictionary() : this( -1 ) { }
+
+		public PackableUnpackableNonGenericDictionary( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+				this.Underlying.Add( item, item );
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+				.Values
+				.Cast<int>()
+				.ToArray();
+		}
+
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+				packer.PackMapHeader( 1 );
+				packer.Pack( 0 );
+				packer.Pack( 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			this.Underlying.Add( 0, 0 );
+			this.Underlying.Add( 1, 0 );
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+	}
+
+
 		#region -- Polymorphism --
 		#region ---- KnownType ----
 

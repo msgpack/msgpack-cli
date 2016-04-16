@@ -2,7 +2,7 @@
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TCollection"/> is not serializable etc.
 		/// </exception>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
-		protected internal sealed override void PackToCore( Packer packer, TCollection objectTree )
+		protected internal override void PackToCore( Packer packer, TCollection objectTree )
 		{
 			ICollection asICollection;
 			if ( ( asICollection = objectTree as ICollection ) == null )
@@ -98,7 +98,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TCollection"/> is not serializable even if it can be deserialized.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
-		protected internal sealed override async Task PackToAsyncCore( Packer packer, TCollection objectTree, CancellationToken cancellationToken )
+		protected internal override async Task PackToAsyncCore( Packer packer, TCollection objectTree, CancellationToken cancellationToken )
 		{
 			ICollection asICollection;
 			if ( ( asICollection = objectTree as ICollection ) == null )
@@ -123,7 +123,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		protected UnityNonGenericEnumerableMessagePackSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema schema )
 			: base( ownerContext, targetType, schema ) { }
 
-		protected internal sealed override void PackToCore( Packer packer, object objectTree )
+		protected internal override void PackToCore( Packer packer, object objectTree )
 		{
 			var asEnumerable = objectTree as IEnumerable;
 			int count;

@@ -1042,6 +1042,199 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 	}
 
 <#
+foreach ( var collection in new []
+	{
+		"Enumerable",
+		"Collection",
+		"List",
+		"Dictionary",
+		"NonGenericEnumerable",
+		"NonGenericCollection",
+		"NonGenericList",
+		"NonGenericDictionary"
+	}
+)
+{
+	foreach ( var isUnpackable in new [] { false, true } )
+	{
+		foreach ( var isPackable in new [] { false, true } )
+		{
+			if ( !isPackable && !isUnpackable )
+			{
+				continue;
+			}
+
+			var comnination = 
+				isPackable
+					? ( isUnpackable ? "PackableUnpackable" : "Packable" )
+					: "Unpackable";
+				var typeName = comnination + collection;
+			var genericArgument = collection.StartsWith( "NonGeneric" ) ? String.Empty : "<int>";
+#>
+	public class <#= typeName #> : <#= collection#>Base<#= genericArgument#>
+<#
+			if ( isPackable )
+			{
+#>
+	, IPackable
+#if FEATURE_TAP
+	, IAsyncPackable
+#endif // FEATURE_TAP
+<#
+			}
+
+			if ( isUnpackable )
+			{
+#>
+	, IUnpackable
+#if FEATURE_TAP
+	, IAsyncUnpackable
+#endif // FEATURE_TAP
+<#
+			}
+#>
+	{
+		public int Capacity { get; private set; }
+
+		public <#= typeName #>() : this( -1 ) { }
+
+		public <#= typeName #>( int capacity )
+		{
+			this.Capacity = capacity;
+		}
+
+		public void Initialize( params int[] items )
+		{
+			foreach( var item in items )
+			{
+<#
+			if ( collection.Contains( "Dictionary" ) )
+			{
+#>
+				this.Underlying.Add( item, item );
+<#
+			}
+			else
+			{
+#>
+				this.Underlying.Add( item );
+<#
+			}
+#>
+			}
+		}
+
+		public int[] GetValues()
+		{
+			return
+				this.Underlying
+<#
+			if ( collection.Contains( "Dictionary" ) )
+			{
+#>
+				.Values
+<#
+			}
+
+			if ( collection.StartsWith( "NonGeneric" ) )
+			{
+#>
+				.Cast<int>()
+<#
+			}
+#>
+				.ToArray();
+		}
+
+<#
+			if ( collection.Contains( "Enumerable" ) || collection.Contains( "NonGenericCollection" ) )
+			{
+#>
+		// To avoid SerializationException
+		public void Add( object item )
+		{
+			this.Underlying.Add( ( int )item );
+		}
+<#
+			}
+#>
+
+<#
+				if ( isPackable )
+				{
+#>
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+<#
+			if ( collection.Contains( "Dictionary" ) )
+			{
+#>
+				packer.PackMapHeader( 1 );
+				packer.Pack( 0 );
+				packer.Pack( 0 );
+<#
+			}
+			else
+			{
+#>
+				packer.PackArrayHeader( 1 );
+				packer.Pack( 0 );
+<#
+			}
+#>
+		}
+
+#if FEATURE_TAP
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.PackToMessage( packer, options ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+
+<#
+			}
+
+			if ( isUnpackable )
+			{
+#>
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+<#
+			if ( collection.Contains( "Dictionary" ) )
+			{
+#>
+			this.Underlying.Add( 0, 0 );
+			this.Underlying.Add( 1, 0 );
+<#
+			}
+			else
+			{
+#>
+			this.Underlying.Add( 0 );
+			this.Underlying.Add( 0 );
+<#
+			}
+#>
+		}
+
+#if FEATURE_TAP
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			await Task.Run( () => this.UnpackFromMessage( unpacker ), cancellationToken ).ConfigureAwait( false );
+		}
+#endif // FEATURE_TAP
+<#
+			}
+#>
+	}
+
+<#
+		} // isPackable
+	} // isUnpackable
+} // collection
+#>
+
+<#
 GeneratePolymorphismTestTypes();
 #>
 }
