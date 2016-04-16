@@ -1741,6 +1741,9 @@
     <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Ext.cs">
       <Link>UnpackerTest.Ext.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Object.cs">
+      <Link>UnpackerTest.Object.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Raw.cs">
       <Link>UnpackerTest.Raw.cs</Link>
     </Compile>
