@@ -22,16 +22,17 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         public MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObjectArray_Serializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context, MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObjectArray_Serializer.RestoreSchema()) {
             this._unpackTo = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject[]>, int>(this.UnpackToCore);
-        }
-        
-        protected override void AddItem(MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject[]> collection, MsgPack.MessagePackObject[] item) {
-            collection.Add(item);
+            this._unpackToAsync = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject[]>, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackToAsyncCore);
         }
         
         protected override MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject[]> CreateInstance(int initialCapacity) {
             MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject[]> collection = default(MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject[]>);
             collection = new MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject[]>();
             return collection;
+        }
+        
+        protected override void AddItem(MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject[]> collection, MsgPack.MessagePackObject[] item) {
+            collection.Add(item);
         }
         
         protected internal override MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject[]> UnpackFromCore(MsgPack.Unpacker unpacker) {

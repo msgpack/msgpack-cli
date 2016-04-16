@@ -22,16 +22,17 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         public MsgPack_Serialization_AddOnlyCollection_1_System_DateTimeArray_Serializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context, MsgPack_Serialization_AddOnlyCollection_1_System_DateTimeArray_Serializer.RestoreSchema()) {
             this._unpackTo = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AddOnlyCollection<System.DateTime[]>, int>(this.UnpackToCore);
-        }
-        
-        protected override void AddItem(MsgPack.Serialization.AddOnlyCollection<System.DateTime[]> collection, System.DateTime[] item) {
-            collection.Add(item);
+            this._unpackToAsync = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AddOnlyCollection<System.DateTime[]>, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackToAsyncCore);
         }
         
         protected override MsgPack.Serialization.AddOnlyCollection<System.DateTime[]> CreateInstance(int initialCapacity) {
             MsgPack.Serialization.AddOnlyCollection<System.DateTime[]> collection = default(MsgPack.Serialization.AddOnlyCollection<System.DateTime[]>);
             collection = new MsgPack.Serialization.AddOnlyCollection<System.DateTime[]>();
             return collection;
+        }
+        
+        protected override void AddItem(MsgPack.Serialization.AddOnlyCollection<System.DateTime[]> collection, System.DateTime[] item) {
+            collection.Add(item);
         }
         
         protected internal override MsgPack.Serialization.AddOnlyCollection<System.DateTime[]> UnpackFromCore(MsgPack.Unpacker unpacker) {

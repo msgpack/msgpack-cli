@@ -416,9 +416,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		protected internal TConstruct EmitUnpackToInitialization( TContext context )
 		{
-			// This method should be called at most once, so caching follosing array should be wasting.
+			// This method should be called at most once, so caching following array should be wasting.
 			var parameterTypes = new[] { typeof( Unpacker ), this.TargetType, typeof( int ) };
-			return
+			var initUnpackTo =
 				this.EmitSetField(
 					context,
 					this.EmitThisReferenceExpression( context ),
@@ -428,6 +428,28 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.BaseClass.GetRuntimeMethod( MethodName.UnpackToCore, parameterTypes )
 					)
 				);
+
+#if FEATURE_TAP
+			if ( context.SerializationContext.SerializerOptions.WithAsync )
+			{
+				// This method should be called at most once, so caching following array should be wasting.
+				var asyncParameterTypes = new[] { typeof( Unpacker ), this.TargetType, typeof( int ), typeof( CancellationToken ) };
+				var initAsyncUnpackTo =
+					this.EmitSetField(
+						context,
+						this.EmitThisReferenceExpression( context ),
+						context.GetDeclaredField( FieldName.UnpackTo + "Async" ),
+						this.EmitNewPrivateMethodDelegateExpression(
+							context,
+							this.BaseClass.GetRuntimeMethod( MethodName.UnpackToAsyncCore, asyncParameterTypes )
+						)
+					);
+
+				return this.EmitSequentialStatements( context, typeof( void ), initUnpackTo, initAsyncUnpackTo );
+			}
+#endif // FEATURE_TAP
+
+			return initUnpackTo;
 		}
 		
 		#endregion -- Constructor Helpers --

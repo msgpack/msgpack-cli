@@ -22,16 +22,17 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         public MsgPack_Serialization_AddOnlyCollection_1_System_ObjectArray_Serializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context, MsgPack_Serialization_AddOnlyCollection_1_System_ObjectArray_Serializer.RestoreSchema()) {
             this._unpackTo = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AddOnlyCollection<object[]>, int>(this.UnpackToCore);
-        }
-        
-        protected override void AddItem(MsgPack.Serialization.AddOnlyCollection<object[]> collection, object[] item) {
-            collection.Add(item);
+            this._unpackToAsync = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AddOnlyCollection<object[]>, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackToAsyncCore);
         }
         
         protected override MsgPack.Serialization.AddOnlyCollection<object[]> CreateInstance(int initialCapacity) {
             MsgPack.Serialization.AddOnlyCollection<object[]> collection = default(MsgPack.Serialization.AddOnlyCollection<object[]>);
             collection = new MsgPack.Serialization.AddOnlyCollection<object[]>();
             return collection;
+        }
+        
+        protected override void AddItem(MsgPack.Serialization.AddOnlyCollection<object[]> collection, object[] item) {
+            collection.Add(item);
         }
         
         protected internal override MsgPack.Serialization.AddOnlyCollection<object[]> UnpackFromCore(MsgPack.Unpacker unpacker) {
