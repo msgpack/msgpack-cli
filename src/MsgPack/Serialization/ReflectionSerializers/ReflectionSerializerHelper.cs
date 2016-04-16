@@ -149,7 +149,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 #if !UNITY
 						( MessagePackSerializer<T> )
 						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantReflectionSerializerFactory>(
-							typeof( NonGenericCollectionSerializerFactory<> ).MakeGenericType( typeof( T ), traits.ElementType )
+							typeof( NonGenericCollectionSerializerFactory<> ).MakeGenericType( typeof( T ) )
 						).Create( context, targetType, schema );
 #else
 						new ReflectionNonGenericCollectionMessagePackSerializer( context, typeof( T ), targetType, schema );
@@ -161,7 +161,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 #if !UNITY
 						( MessagePackSerializer<T> )
 						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantReflectionSerializerFactory>(
-							typeof( NonGenericEnumerableSerializerFactory<> ).MakeGenericType( typeof( T ), traits.ElementType )
+							typeof( NonGenericEnumerableSerializerFactory<> ).MakeGenericType( typeof( T ) )
 						).Create( context, targetType, schema );
 #else
 						new ReflectionNonGenericEnumerableMessagePackSerializer( context, typeof( T ), targetType, schema );
