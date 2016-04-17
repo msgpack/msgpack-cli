@@ -2,6 +2,7 @@
 *.suo
 *.bak
 *.csproj.user
+*.xproj.user
 *.pidb
 *.nupkg
 *.shfbproj_*
@@ -27,3 +28,7 @@ TestResults/
 src/MsgPack.Unity/Assets/MsgPack/*
 src/MsgPack.Unity/Library/
 MsgPack.unitypackage
+
+project.lock.json
+artifacts/
+.vs/
