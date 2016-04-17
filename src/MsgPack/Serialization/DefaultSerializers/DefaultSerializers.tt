@@ -73,11 +73,13 @@ var excludes =
 		typeof( System.IO.WaitForChangedResult ),
 		typeof( System.Net.Sockets.IPPacketInformation ),
 		typeof( System.Net.Sockets.SocketInformation ),
+		typeof( System.Net.Sockets.UdpReceiveResult ),
 		typeof( System.Reflection.CustomAttributeNamedArgument ),
 		typeof( System.Reflection.CustomAttributeTypedArgument ),
 		typeof( System.Reflection.InterfaceMapping ),
 		typeof( System.Reflection.ParameterModifier ),
 		typeof( System.Reflection.Emit.EventToken ),
+		typeof( System.Reflection.Emit.ExceptionHandler ),
 		typeof( System.Reflection.Emit.FieldToken ),
 		typeof( System.Reflection.Emit.Label ),
 		typeof( System.Reflection.Emit.MethodToken ),
@@ -87,6 +89,14 @@ var excludes =
 		typeof( System.Reflection.Emit.SignatureToken ),
 		typeof( System.Reflection.Emit.StringToken ),
 		typeof( System.Reflection.Emit.TypeToken ),
+		typeof( System.Runtime.CompilerServices.AsyncTaskMethodBuilder ),
+		typeof( System.Runtime.CompilerServices.AsyncTaskMethodBuilder<> ),
+		typeof( System.Runtime.CompilerServices.AsyncVoidMethodBuilder ),
+		typeof( System.Runtime.CompilerServices.ConfiguredTaskAwaitable ),
+		typeof( System.Runtime.CompilerServices.ConfiguredTaskAwaitable<> ),
+		typeof( System.Runtime.CompilerServices.TaskAwaiter ),
+		typeof( System.Runtime.CompilerServices.TaskAwaiter<> ),
+		typeof( System.Runtime.CompilerServices.YieldAwaitable ),
 		typeof( System.Runtime.InteropServices.ArrayWithOffset ),
 		typeof( System.Runtime.InteropServices.GCHandle ),
 		typeof( System.Runtime.InteropServices.HandleRef ),
@@ -107,6 +117,7 @@ var excludes =
 		typeof( System.Runtime.InteropServices.ComTypes.TYPEDESC ),
 		typeof( System.Runtime.InteropServices.ComTypes.TYPELIBATTR ),
 		typeof( System.Runtime.InteropServices.ComTypes.VARDESC ),
+		typeof( System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken ),
 		typeof( System.Runtime.Serialization.SerializationEntry ),
 		typeof( System.Runtime.Serialization.StreamingContext ),
 		typeof( System.Security.Cryptography.CngProperty ),
@@ -125,22 +136,6 @@ var excludes =
 		typeof( System.Threading.SpinWait ),
 		typeof( System.Threading.Tasks.ParallelLoopResult ),
 	};
-var winRTExcludes =
-	new HashSet<string>()
-	{
-		"System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken",
-		"System.Runtime.CompilerServices.AsyncVoidMethodBuilder",
-		"System.Runtime.CompilerServices.AsyncTaskMethodBuilder",
-		"System.Runtime.CompilerServices.AsyncVoidMethodBuilder",
-		"System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1",
-		"System.Runtime.CompilerServices.TaskAwaiter",
-		"System.Runtime.CompilerServices.TaskAwaiter`1",
-		"System.Runtime.CompilerServices.ConfiguredTaskAwaitable",
-		"System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1",
-		"System.Runtime.CompilerServices.YieldAwaitable",
-		"System.Reflection.Emit.ExceptionHandler",
-		"System.Net.Sockets.UdpReceiveResult",
-	};
 	
 var types = 
 	typeof( object ).Assembly.GetTypes()
@@ -152,7 +147,6 @@ var types =
 	).Concat(
 		typeof( BigInteger ).Assembly.GetTypes().Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
 	).Except( excludes )
-	.Where( t => !winRTExcludes.Contains( t.FullName ) )
 	.ToArray();
 	
 var workArounds =
