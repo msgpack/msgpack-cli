@@ -223,7 +223,7 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 	if( __asType != null && __desktopOnly.Contains( __asType ) )
 	{
 #>
-#if !NETFX_CORE && !SILVERLIGHT
+#if !SILVERLIGHT && !NETSTD_11
 <#
 	}
 	else if( __notInNet35.Contains( __typeName ) )
@@ -260,7 +260,7 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 	if( __asType != null && __desktopOnly.Contains( __asType ) )
 	{
 #>
-#endif // !NETFX_CORE && !SILVERLIGHT
+#endif // !SILVERLIGHT && !NETSTD_11
 <#
 	}
 	else if( __notInNet35.Contains( __typeName ) )

@@ -62,8 +62,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.PolymorphismSchema tupleItemSchema1 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<string, System.Type> tupleItemSchema1TypeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
             tupleItemSchema1TypeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
-            tupleItemSchema1TypeMap0.Add("1", typeof(MsgPack.Serialization.DirectoryEntry));
             tupleItemSchema1TypeMap0.Add("0", typeof(MsgPack.Serialization.FileEntry));
+            tupleItemSchema1TypeMap0.Add("1", typeof(MsgPack.Serialization.DirectoryEntry));
             tupleItemSchema1 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), tupleItemSchema1TypeMap0);
             tupleItemsSchema0[1] = tupleItemSchema1;
             MsgPack.Serialization.PolymorphismSchema tupleItemSchema2 = default(MsgPack.Serialization.PolymorphismSchema);

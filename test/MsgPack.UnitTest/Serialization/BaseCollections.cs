@@ -376,7 +376,7 @@ namespace MsgPack.Serialization
 
 	public abstract class NonGenericEnumerableBase : IEnumerable
 	{
-		private readonly ArrayList _underlying;
+		private readonly IList _underlying;
 
 		protected IList Underlying
 		{
@@ -385,7 +385,7 @@ namespace MsgPack.Serialization
 
 		protected NonGenericEnumerableBase()
 		{
-			this._underlying = new ArrayList();
+			this._underlying = new List<object>();
 		}
 
 		public IEnumerator GetEnumerator()
@@ -525,7 +525,7 @@ namespace MsgPack.Serialization
 
 		protected NonGenericDictionaryBase()
 		{
-			this._underlying = new Hashtable();
+			this._underlying = new Dictionary<object, object>();
 		}
 
 		public void Add( object key, object value )

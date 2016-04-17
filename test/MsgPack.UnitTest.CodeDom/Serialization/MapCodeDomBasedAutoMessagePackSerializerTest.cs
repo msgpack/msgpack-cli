@@ -2369,10 +2369,10 @@ namespace MsgPack.Serialization
 		private const string NonPublicDictionaryField = "NonPublicDictionaryField";
 		private const string NonPublicDictionaryReadOnlyProperty = "NonPublicDictionaryReadOnlyProperty";
 		private const string NonPublicDictionaryReadOnlyField = "NonPublicDictionaryReadOnlyField";
-		private const string NonPublicHashtableProperty = "NonPublicHashtableProperty";
-		private const string NonPublicHashtableField = "NonPublicHashtableField";
-		private const string NonPublicHashtableReadOnlyProperty = "NonPublicHashtableReadOnlyProperty";
-		private const string NonPublicHashtableReadOnlyField = "NonPublicHashtableReadOnlyField";
+		private const string NonPublicIDictionaryProperty = "NonPublicIDictionaryProperty";
+		private const string NonPublicIDictionaryField = "NonPublicIDictionaryField";
+		private const string NonPublicIDictionaryReadOnlyProperty = "NonPublicIDictionaryReadOnlyProperty";
+		private const string NonPublicIDictionaryReadOnlyField = "NonPublicIDictionaryReadOnlyField";
 		private const string PublicField = "PublicField";
 		private const string PublicReadOnlyField = "PublicReadOnlyField";
 		private const string NonPublicField = "NonPublicField";
@@ -2407,14 +2407,14 @@ namespace MsgPack.Serialization
 				target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, NonSerializedPublicField, NonSerializedNonPublicField, CollectionReadOnlyProperty, 
 				NonPublicCollectionProperty, NonPublicCollectionField, NonPublicCollectionReadOnlyProperty, NonPublicCollectionReadOnlyField,
 				NonPublicDictionaryProperty, NonPublicDictionaryField, NonPublicDictionaryReadOnlyProperty, NonPublicDictionaryReadOnlyField,
-				NonPublicHashtableProperty, NonPublicHashtableField, NonPublicHashtableReadOnlyProperty, NonPublicHashtableReadOnlyField
+				NonPublicIDictionaryProperty, NonPublicIDictionaryField, NonPublicIDictionaryReadOnlyProperty, NonPublicIDictionaryReadOnlyField
 			);
 #else
 			TestNonPublicWritableMemberCore(
 				target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, CollectionReadOnlyProperty, 
 				NonPublicCollectionProperty, NonPublicCollectionField, NonPublicCollectionReadOnlyProperty, NonPublicCollectionReadOnlyField,
 				NonPublicDictionaryProperty, NonPublicDictionaryField, NonPublicDictionaryReadOnlyProperty, NonPublicDictionaryReadOnlyField,
-				NonPublicHashtableProperty, NonPublicHashtableField, NonPublicHashtableReadOnlyProperty, NonPublicHashtableReadOnlyField
+				NonPublicIDictionaryProperty, NonPublicIDictionaryField, NonPublicIDictionaryReadOnlyProperty, NonPublicIDictionaryReadOnlyField
 			);
 #endif // !NETFX_CORE && !SILVERLIGHT
 		}
@@ -2430,14 +2430,14 @@ namespace MsgPack.Serialization
 				target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, NonSerializedPublicField, NonSerializedNonPublicField, CollectionReadOnlyProperty, 
 				NonPublicCollectionProperty, NonPublicCollectionField, NonPublicCollectionReadOnlyProperty, NonPublicCollectionReadOnlyField,
 				NonPublicDictionaryProperty, NonPublicDictionaryField, NonPublicDictionaryReadOnlyProperty, NonPublicDictionaryReadOnlyField,
-				NonPublicHashtableProperty, NonPublicHashtableField, NonPublicHashtableReadOnlyProperty, NonPublicHashtableReadOnlyField
+				NonPublicIDictionaryProperty, NonPublicIDictionaryField, NonPublicIDictionaryReadOnlyProperty, NonPublicIDictionaryReadOnlyField
 			 );
 #else
 			TestNonPublicWritableMemberCore(
 				target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, CollectionReadOnlyProperty, 
 				NonPublicCollectionProperty, NonPublicCollectionField, NonPublicCollectionReadOnlyProperty, NonPublicCollectionReadOnlyField,
 				NonPublicDictionaryProperty, NonPublicDictionaryField, NonPublicDictionaryReadOnlyProperty, NonPublicDictionaryReadOnlyField,
-				NonPublicHashtableProperty, NonPublicHashtableField, NonPublicHashtableReadOnlyProperty, NonPublicHashtableReadOnlyField
+				NonPublicIDictionaryProperty, NonPublicIDictionaryField, NonPublicIDictionaryReadOnlyProperty, NonPublicIDictionaryReadOnlyField
 			);
 #endif // !NETFX_CORE && !SILVERLIGHT
 		}
@@ -2483,7 +2483,7 @@ namespace MsgPack.Serialization
 					}
 
 					// Naive, but OK
-					if ( memberName.Contains( "Hashtable" ) )
+					if ( memberName.Contains( "IDictionary" ) )
 					{
 						Func<object, Dictionary<string, int>> toDictionary =
 							hashTable =>

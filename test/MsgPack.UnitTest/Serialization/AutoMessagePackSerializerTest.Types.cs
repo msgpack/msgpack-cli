@@ -435,22 +435,22 @@ namespace MsgPack.Serialization
 			get { return this._ObjectArrayField; }
 			set { this._ObjectArrayField = value; }
 		}
-#if !NETFX_CORE && !SILVERLIGHT
+#if !SILVERLIGHT && !NETSTD_11
 		private ArrayList _ArrayListField = new ArrayList();
 		
 		public ArrayList ArrayListField
 		{
 			get { return this._ArrayListField; }
 		}
-#endif // !NETFX_CORE && !SILVERLIGHT
-#if !NETFX_CORE && !SILVERLIGHT
+#endif // !SILVERLIGHT && !NETSTD_11
+#if !SILVERLIGHT && !NETSTD_11
 		private Hashtable _HashtableField = new Hashtable();
 		
 		public Hashtable HashtableField
 		{
 			get { return this._HashtableField; }
 		}
-#endif // !NETFX_CORE && !SILVERLIGHT
+#endif // !SILVERLIGHT && !NETSTD_11
 		private List<Object> _ListObjectField = new List<Object>();
 		
 		public List<Object> ListObjectField

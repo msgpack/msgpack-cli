@@ -57,23 +57,35 @@ namespace MsgPack.Serialization
 		private Dictionary<string, int> NonPublicDictionaryReadOnlyProperty { get { return this._nonPublicDictionaryReadOnlyProperty; } }
 		private readonly Dictionary<string, int> NonPublicDictionaryReadOnlyField;
 
-		private System.Collections.Hashtable NonPublicHashtableProperty { get; set; }
-		private System.Collections.Hashtable NonPublicHashtableField;
-		private readonly System.Collections.Hashtable _nonPublicHashtableReadOnlyProperty;
-		private System.Collections.Hashtable NonPublicHashtableReadOnlyProperty { get { return this._nonPublicHashtableReadOnlyProperty; } }
-		private readonly System.Collections.Hashtable NonPublicHashtableReadOnlyField;
+		private System.Collections.IDictionary NonPublicIDictionaryProperty { get; set; }
+		private System.Collections.IDictionary NonPublicIDictionaryField;
+		private readonly System.Collections.IDictionary _nonPublicIDictionaryReadOnlyProperty;
+		private System.Collections.IDictionary NonPublicIDictionaryReadOnlyProperty { get { return this._nonPublicIDictionaryReadOnlyProperty; } }
+		private readonly System.Collections.IDictionary NonPublicIDictionaryReadOnlyField;
 
-#if !NETFX_CORE && !SILVERLIGHT
+#if !SILVERLIGHT && !NETSTD_11
+#if !NETFX_CORE
 		[NonSerialized]
+#else
+		[MessagePackIgnore]
+#endif // !NETFX_CORE
 		public int NonSerializedPublicField;
 
+#if !NETFX_CORE
 		[NonSerialized]
+#else
+		[MessagePackIgnore]
+#endif // !NETFX_CORE
 		public readonly int NonSerializedPublicReadOnlyField;
 
+#if !NETFX_CORE
 		[NonSerialized]
+#else
+		[MessagePackIgnore]
+#endif // !NETFX_CORE
 		// ReSharper disable once InconsistentNaming
 		private int NonSerializedNonPublicField;
-#endif // !NETFX_CORE && !SILVERLIGHT
+#endif // !SILVERLIGHT && !NETSTD_11
 		private readonly List<int> _collectionReadOnlyProperty;
 		public List<int> CollectionReadOnlyProperty { get { return this._collectionReadOnlyProperty; } }
 
@@ -100,10 +112,10 @@ namespace MsgPack.Serialization
 			this.NonPublicDictionaryField = new Dictionary<string, int>();
 			this._nonPublicDictionaryReadOnlyProperty = new Dictionary<string, int>();
 			this.NonPublicDictionaryReadOnlyField = new Dictionary<string, int>();
-			this.NonPublicHashtableProperty = new System.Collections.Hashtable();
-			this.NonPublicHashtableField = new System.Collections.Hashtable();
-			this._nonPublicHashtableReadOnlyProperty = new System.Collections.Hashtable();
-			this.NonPublicHashtableReadOnlyField = new System.Collections.Hashtable();
+			this.NonPublicIDictionaryProperty = new Dictionary<object, object>();
+			this.NonPublicIDictionaryField = new Dictionary<object, object>();
+			this._nonPublicIDictionaryReadOnlyProperty = new Dictionary<object, object>();
+			this.NonPublicIDictionaryReadOnlyField = new Dictionary<object, object>();
 		}
 
 		public void InitializeCollectionMembers()
@@ -126,14 +138,14 @@ namespace MsgPack.Serialization
 			this._nonPublicDictionaryReadOnlyProperty.Add( "76", 76 );
 			this.NonPublicDictionaryReadOnlyField.Add( "77", 77 );
 			this.NonPublicDictionaryReadOnlyField.Add( "78", 78 );
-			this.NonPublicHashtableProperty.Add( "81", 81 );
-			this.NonPublicHashtableProperty.Add( "82", 82 );
-			this.NonPublicHashtableField.Add( "83", 83 );
-			this.NonPublicHashtableField.Add( "84", 84 );
-			this._nonPublicHashtableReadOnlyProperty.Add( "85", 85 );
-			this._nonPublicHashtableReadOnlyProperty.Add( "86", 86 );
-			this.NonPublicHashtableReadOnlyField.Add( "87", 87 );
-			this.NonPublicHashtableReadOnlyField.Add( "88", 88 );
+			this.NonPublicIDictionaryProperty.Add( "81", 81 );
+			this.NonPublicIDictionaryProperty.Add( "82", 82 );
+			this.NonPublicIDictionaryField.Add( "83", 83 );
+			this.NonPublicIDictionaryField.Add( "84", 84 );
+			this._nonPublicIDictionaryReadOnlyProperty.Add( "85", 85 );
+			this._nonPublicIDictionaryReadOnlyProperty.Add( "86", 86 );
+			this.NonPublicIDictionaryReadOnlyField.Add( "87", 87 );
+			this.NonPublicIDictionaryReadOnlyField.Add( "88", 88 );
 		}
 	}
 
@@ -156,20 +168,32 @@ namespace MsgPack.Serialization
 		[MessagePackMember( 5 )]
 		private int NonPublicField;
 
-#if !NETFX_CORE && !SILVERLIGHT
+#if !SILVERLIGHT && !NETSTD_11
+#if !NETFX_CORE
 		[NonSerialized]
+#else
+		[MessagePackIgnore]
+#endif // !NETFX_CORE
 		[MessagePackMember( 6 )]
 		public int NonSerializedPublicField;
 
+#if !NETFX_CORE
 		[NonSerialized]
+#else
+		[MessagePackIgnore]
+#endif // !NETFX_CORE
 		[MessagePackMember( 7 )]
 		public readonly int NonSerializedPublicReadOnlyField;
 
+#if !NETFX_CORE
 		[NonSerialized]
+#else
+		[MessagePackIgnore]
+#endif // !NETFX_CORE
 		[MessagePackMember( 8 )]
 		// ReSharper disable once InconsistentNaming
 		private int NonSerializedNonPublicField;
-#endif // !NETFX_CORE && !SILVERLIGHT
+#endif // !SILVERLIGHT && !NETSTD_11
 		private readonly List<int> _collectionReadOnlyProperty;
 		[MessagePackMember( 9 )]
 		public List<int> CollectionReadOnlyProperty { get { return this._collectionReadOnlyProperty; } }
@@ -195,14 +219,14 @@ namespace MsgPack.Serialization
 		private readonly Dictionary<string, int> NonPublicDictionaryReadOnlyField;
 
 		[MessagePackMember( 18 )]
-		private System.Collections.Hashtable NonPublicHashtableProperty { get; set; }
+		private System.Collections.IDictionary NonPublicIDictionaryProperty { get; set; }
 		[MessagePackMember( 19 )]
-		private System.Collections.Hashtable NonPublicHashtableField;
-		private readonly System.Collections.Hashtable _nonPublicHashtableReadOnlyProperty;
+		private System.Collections.IDictionary NonPublicIDictionaryField;
+		private readonly System.Collections.IDictionary _nonPublicIDictionaryReadOnlyProperty;
 		[MessagePackMember( 20 )]
-		private System.Collections.Hashtable NonPublicHashtableReadOnlyProperty { get { return this._nonPublicHashtableReadOnlyProperty; } }
+		private System.Collections.IDictionary NonPublicIDictionaryReadOnlyProperty { get { return this._nonPublicIDictionaryReadOnlyProperty; } }
 		[MessagePackMember( 21 )]
-		private readonly System.Collections.Hashtable NonPublicHashtableReadOnlyField;
+		private readonly System.Collections.IDictionary NonPublicIDictionaryReadOnlyField;
 
 		public int PublicPropertyPlain { get; set; }
 		public int PublicFieldPlain;
@@ -224,23 +248,35 @@ namespace MsgPack.Serialization
 		private Dictionary<string, int> NonPublicDictionaryReadOnlyPropertyPlain { get { return this._nonPublicDictionaryReadOnlyPropertyPlain; } }
 		private readonly Dictionary<string, int> NonPublicDictionaryReadOnlyFieldPlain;
 
-		private System.Collections.Hashtable NonPublicHashtablePropertyPlain { get; set; }
-		private System.Collections.Hashtable NonPublicHashtableFieldPlain;
-		private readonly System.Collections.Hashtable _nonPublicHashtableReadOnlyPropertyPlain;
-		private System.Collections.Hashtable NonPublicHashtableReadOnlyPropertyPlain { get { return this._nonPublicHashtableReadOnlyPropertyPlain; } }
-		private readonly System.Collections.Hashtable NonPublicHashtableReadOnlyFieldPlain;
+		private System.Collections.IDictionary NonPublicIDictionaryPropertyPlain { get; set; }
+		private System.Collections.IDictionary NonPublicIDictionaryFieldPlain;
+		private readonly System.Collections.IDictionary _nonPublicIDictionaryReadOnlyPropertyPlain;
+		private System.Collections.IDictionary NonPublicIDictionaryReadOnlyPropertyPlain { get { return this._nonPublicIDictionaryReadOnlyPropertyPlain; } }
+		private readonly System.Collections.IDictionary NonPublicIDictionaryReadOnlyFieldPlain;
 
-#if !NETFX_CORE && !SILVERLIGHT
+#if !SILVERLIGHT && !NETSTD_11
+#if !NETFX_CORE
 		[NonSerialized]
+#else
+		[MessagePackIgnore]
+#endif // !NETFX_CORE
 		public int NonSerializedPublicFieldPlain;
 
+#if !NETFX_CORE
 		[NonSerialized]
+#else
+		[MessagePackIgnore]
+#endif // !NETFX_CORE
 		public readonly int NonSerializedPublicReadOnlyFieldPlain;
 
+#if !NETFX_CORE
 		[NonSerialized]
+#else
+		[MessagePackIgnore]
+#endif // !NETFX_CORE
 		// ReSharper disable once InconsistentNaming
 		private int NonSerializedNonPublicFieldPlain;
-#endif // !NETFX_CORE && !SILVERLIGHT
+#endif // !SILVERLIGHT && !NETSTD_11
 
 		public AnnotatedClass()
 		{
@@ -276,10 +312,10 @@ namespace MsgPack.Serialization
 			this.NonPublicDictionaryField = new Dictionary<string, int>();
 			this._nonPublicDictionaryReadOnlyProperty = new Dictionary<string, int>();
 			this.NonPublicDictionaryReadOnlyField = new Dictionary<string, int>();
-			this.NonPublicHashtableProperty = new System.Collections.Hashtable();
-			this.NonPublicHashtableField = new System.Collections.Hashtable();
-			this._nonPublicHashtableReadOnlyProperty = new System.Collections.Hashtable();
-			this.NonPublicHashtableReadOnlyField = new System.Collections.Hashtable();
+			this.NonPublicIDictionaryProperty = new Dictionary<object, object>();
+			this.NonPublicIDictionaryField = new Dictionary<object, object>();
+			this._nonPublicIDictionaryReadOnlyProperty = new Dictionary<object, object>();
+			this.NonPublicIDictionaryReadOnlyField = new Dictionary<object, object>();
 			this.NonPublicCollectionPropertyPlain = new List<int>();
 			this.NonPublicCollectionFieldPlain = new List<int>();
 			this._nonPublicCollectionReadOnlyPropertyPlain = new List<int>();
@@ -288,10 +324,10 @@ namespace MsgPack.Serialization
 			this.NonPublicDictionaryFieldPlain = new Dictionary<string, int>();
 			this._nonPublicDictionaryReadOnlyPropertyPlain = new Dictionary<string, int>();
 			this.NonPublicDictionaryReadOnlyFieldPlain = new Dictionary<string, int>();
-			this.NonPublicHashtablePropertyPlain = new System.Collections.Hashtable();
-			this.NonPublicHashtableFieldPlain = new System.Collections.Hashtable();
-			this._nonPublicHashtableReadOnlyPropertyPlain = new System.Collections.Hashtable();
-			this.NonPublicHashtableReadOnlyFieldPlain = new System.Collections.Hashtable();
+			this.NonPublicIDictionaryPropertyPlain = new Dictionary<object, object>();
+			this.NonPublicIDictionaryFieldPlain = new Dictionary<object, object>();
+			this._nonPublicIDictionaryReadOnlyPropertyPlain = new Dictionary<object, object>();
+			this.NonPublicIDictionaryReadOnlyFieldPlain = new Dictionary<object, object>();
 		}
 
 		public void InitializeCollectionMembers()
@@ -314,14 +350,14 @@ namespace MsgPack.Serialization
 			this._nonPublicDictionaryReadOnlyProperty.Add( "76", 76 );
 			this.NonPublicDictionaryReadOnlyField.Add( "77", 77 );
 			this.NonPublicDictionaryReadOnlyField.Add( "78", 78 );
-			this.NonPublicHashtableProperty.Add( "81", 81 );
-			this.NonPublicHashtableProperty.Add( "82", 82 );
-			this.NonPublicHashtableField.Add( "83", 83 );
-			this.NonPublicHashtableField.Add( "84", 84 );
-			this._nonPublicHashtableReadOnlyProperty.Add( "85", 85 );
-			this._nonPublicHashtableReadOnlyProperty.Add( "86", 86 );
-			this.NonPublicHashtableReadOnlyField.Add( "87", 87 );
-			this.NonPublicHashtableReadOnlyField.Add( "88", 88 );
+			this.NonPublicIDictionaryProperty.Add( "81", 81 );
+			this.NonPublicIDictionaryProperty.Add( "82", 82 );
+			this.NonPublicIDictionaryField.Add( "83", 83 );
+			this.NonPublicIDictionaryField.Add( "84", 84 );
+			this._nonPublicIDictionaryReadOnlyProperty.Add( "85", 85 );
+			this._nonPublicIDictionaryReadOnlyProperty.Add( "86", 86 );
+			this.NonPublicIDictionaryReadOnlyField.Add( "87", 87 );
+			this.NonPublicIDictionaryReadOnlyField.Add( "88", 88 );
 			this.NonPublicCollectionPropertyPlain.Add( 91 );
 			this.NonPublicCollectionPropertyPlain.Add( 92 );
 			this.NonPublicCollectionFieldPlain.Add( 93 );
@@ -338,14 +374,14 @@ namespace MsgPack.Serialization
 			this._nonPublicDictionaryReadOnlyPropertyPlain.Add( "106", 106 );
 			this.NonPublicDictionaryReadOnlyFieldPlain.Add( "107", 197 );
 			this.NonPublicDictionaryReadOnlyFieldPlain.Add( "108", 108 );
-			this.NonPublicHashtablePropertyPlain.Add( "111", 111 );
-			this.NonPublicHashtablePropertyPlain.Add( "112", 112 );
-			this.NonPublicHashtableFieldPlain.Add( "113", 113 );
-			this.NonPublicHashtableFieldPlain.Add( "114", 114 );
-			this._nonPublicHashtableReadOnlyPropertyPlain.Add( "115", 115 );
-			this._nonPublicHashtableReadOnlyPropertyPlain.Add( "116", 116 );
-			this.NonPublicHashtableReadOnlyFieldPlain.Add( "117", 117 );
-			this.NonPublicHashtableReadOnlyFieldPlain.Add( "118", 118 );
+			this.NonPublicIDictionaryPropertyPlain.Add( "111", 111 );
+			this.NonPublicIDictionaryPropertyPlain.Add( "112", 112 );
+			this.NonPublicIDictionaryFieldPlain.Add( "113", 113 );
+			this.NonPublicIDictionaryFieldPlain.Add( "114", 114 );
+			this._nonPublicIDictionaryReadOnlyPropertyPlain.Add( "115", 115 );
+			this._nonPublicIDictionaryReadOnlyPropertyPlain.Add( "116", 116 );
+			this.NonPublicIDictionaryReadOnlyFieldPlain.Add( "117", 117 );
+			this.NonPublicIDictionaryReadOnlyFieldPlain.Add( "118", 118 );
 		}
 	}
 
@@ -369,20 +405,32 @@ namespace MsgPack.Serialization
 		[DataMember( Order = 5 )]
 		private int NonPublicField;
 
-#if !NETFX_CORE && !SILVERLIGHT
+#if !SILVERLIGHT && !NETSTD_11
+#if !NETFX_CORE
 		[NonSerialized]
+#else
+		[MessagePackIgnore]
+#endif // !NETFX_CORE
 		[DataMember( Order = 6 )]
 		public int NonSerializedPublicField;
 
+#if !NETFX_CORE
 		[NonSerialized]
+#else
+		[MessagePackIgnore]
+#endif // !NETFX_CORE
 		[DataMember( Order = 7 )]
 		public readonly int NonSerializedPublicReadOnlyField;
 
+#if !NETFX_CORE
 		[NonSerialized]
+#else
+		[MessagePackIgnore]
+#endif // !NETFX_CORE
 		[DataMember( Order = 8 )]
 		// ReSharper disable once InconsistentNaming
 		private int NonSerializedNonPublicField;
-#endif // !NETFX_CORE && !SILVERLIGHT
+#endif // !SILVERLIGHT && !NETSTD_11
 		private readonly List<int> _collectionReadOnlyProperty;
 		[DataMember( Order = 9 )]
 		public List<int> CollectionReadOnlyProperty { get { return this._collectionReadOnlyProperty; } }
@@ -409,14 +457,14 @@ namespace MsgPack.Serialization
 		private readonly Dictionary<string, int> NonPublicDictionaryReadOnlyField;
 
 		[DataMember( Order = 18 )]
-		private System.Collections.Hashtable NonPublicHashtableProperty { get; set; }
+		private System.Collections.IDictionary NonPublicIDictionaryProperty { get; set; }
 		[DataMember( Order = 19 )]
-		private System.Collections.Hashtable NonPublicHashtableField;
-		private readonly System.Collections.Hashtable _nonPublicHashtableReadOnlyProperty;
+		private System.Collections.IDictionary NonPublicIDictionaryField;
+		private readonly System.Collections.IDictionary _nonPublicIDictionaryReadOnlyProperty;
 		[DataMember( Order = 20 )]
-		private System.Collections.Hashtable NonPublicHashtableReadOnlyProperty { get { return this._nonPublicHashtableReadOnlyProperty; } }
+		private System.Collections.IDictionary NonPublicIDictionaryReadOnlyProperty { get { return this._nonPublicIDictionaryReadOnlyProperty; } }
 		[DataMember( Order = 21 )]
-		private readonly System.Collections.Hashtable NonPublicHashtableReadOnlyField;
+		private readonly System.Collections.IDictionary NonPublicIDictionaryReadOnlyField;
 
 		public int PublicPropertyPlain { get; set; }
 		public int PublicFieldPlain;
@@ -438,23 +486,35 @@ namespace MsgPack.Serialization
 		private Dictionary<string, int> NonPublicDictionaryReadOnlyPropertyPlain { get { return this._nonPublicDictionaryReadOnlyPropertyPlain; } }
 		private readonly Dictionary<string, int> NonPublicDictionaryReadOnlyFieldPlain;
 
-		private System.Collections.Hashtable NonPublicHashtablePropertyPlain { get; set; }
-		private System.Collections.Hashtable NonPublicHashtableFieldPlain;
-		private readonly System.Collections.Hashtable _nonPublicHashtableReadOnlyPropertyPlain;
-		private System.Collections.Hashtable NonPublicHashtableReadOnlyPropertyPlain { get { return this._nonPublicHashtableReadOnlyPropertyPlain; } }
-		private readonly System.Collections.Hashtable NonPublicHashtableReadOnlyFieldPlain;
+		private System.Collections.IDictionary NonPublicIDictionaryPropertyPlain { get; set; }
+		private System.Collections.IDictionary NonPublicIDictionaryFieldPlain;
+		private readonly System.Collections.IDictionary _nonPublicIDictionaryReadOnlyPropertyPlain;
+		private System.Collections.IDictionary NonPublicIDictionaryReadOnlyPropertyPlain { get { return this._nonPublicIDictionaryReadOnlyPropertyPlain; } }
+		private readonly System.Collections.IDictionary NonPublicIDictionaryReadOnlyFieldPlain;
 
-#if !NETFX_CORE && !SILVERLIGHT
+#if !SILVERLIGHT && !NETSTD_11
+#if !NETFX_CORE
 		[NonSerialized]
+#else
+		[MessagePackIgnore]
+#endif // !NETFX_CORE
 		public int NonSerializedPublicFieldPlain;
 
+#if !NETFX_CORE
 		[NonSerialized]
+#else
+		[MessagePackIgnore]
+#endif // !NETFX_CORE
 		public readonly int NonSerializedPublicReadOnlyFieldPlain;
 
+#if !NETFX_CORE
 		[NonSerialized]
+#else
+		[MessagePackIgnore]
+#endif // !NETFX_CORE
 		// ReSharper disable once InconsistentNaming
 		private int NonSerializedNonPublicFieldPlain;
-#endif // !NETFX_CORE && !SILVERLIGHT
+#endif // !SILVERLIGHT && !NETSTD_11
 
 		public DataMamberClass()
 		{
@@ -490,10 +550,10 @@ namespace MsgPack.Serialization
 			this.NonPublicDictionaryField = new Dictionary<string, int>();
 			this._nonPublicDictionaryReadOnlyProperty = new Dictionary<string, int>();
 			this.NonPublicDictionaryReadOnlyField = new Dictionary<string, int>();
-			this.NonPublicHashtableProperty = new System.Collections.Hashtable();
-			this.NonPublicHashtableField = new System.Collections.Hashtable();
-			this._nonPublicHashtableReadOnlyProperty = new System.Collections.Hashtable();
-			this.NonPublicHashtableReadOnlyField = new System.Collections.Hashtable();
+			this.NonPublicIDictionaryProperty = new Dictionary<object, object>();
+			this.NonPublicIDictionaryField = new Dictionary<object, object>();
+			this._nonPublicIDictionaryReadOnlyProperty = new Dictionary<object, object>();
+			this.NonPublicIDictionaryReadOnlyField = new Dictionary<object, object>();
 			this.NonPublicCollectionPropertyPlain = new List<int>();
 			this.NonPublicCollectionFieldPlain = new List<int>();
 			this._nonPublicCollectionReadOnlyPropertyPlain = new List<int>();
@@ -502,10 +562,10 @@ namespace MsgPack.Serialization
 			this.NonPublicDictionaryFieldPlain = new Dictionary<string, int>();
 			this._nonPublicDictionaryReadOnlyPropertyPlain = new Dictionary<string, int>();
 			this.NonPublicDictionaryReadOnlyFieldPlain = new Dictionary<string, int>();
-			this.NonPublicHashtablePropertyPlain = new System.Collections.Hashtable();
-			this.NonPublicHashtableFieldPlain = new System.Collections.Hashtable();
-			this._nonPublicHashtableReadOnlyPropertyPlain = new System.Collections.Hashtable();
-			this.NonPublicHashtableReadOnlyFieldPlain = new System.Collections.Hashtable();
+			this.NonPublicIDictionaryPropertyPlain = new Dictionary<object, object>();
+			this.NonPublicIDictionaryFieldPlain = new Dictionary<object, object>();
+			this._nonPublicIDictionaryReadOnlyPropertyPlain = new Dictionary<object, object>();
+			this.NonPublicIDictionaryReadOnlyFieldPlain = new Dictionary<object, object>();
 		}
 
 		public void InitializeCollectionMembers()
@@ -528,14 +588,14 @@ namespace MsgPack.Serialization
 			this._nonPublicDictionaryReadOnlyProperty.Add( "76", 76 );
 			this.NonPublicDictionaryReadOnlyField.Add( "77", 77 );
 			this.NonPublicDictionaryReadOnlyField.Add( "78", 78 );
-			this.NonPublicHashtableProperty.Add( "81", 81 );
-			this.NonPublicHashtableProperty.Add( "82", 82 );
-			this.NonPublicHashtableField.Add( "83", 83 );
-			this.NonPublicHashtableField.Add( "84", 84 );
-			this._nonPublicHashtableReadOnlyProperty.Add( "85", 85 );
-			this._nonPublicHashtableReadOnlyProperty.Add( "86", 86 );
-			this.NonPublicHashtableReadOnlyField.Add( "87", 87 );
-			this.NonPublicHashtableReadOnlyField.Add( "88", 88 );
+			this.NonPublicIDictionaryProperty.Add( "81", 81 );
+			this.NonPublicIDictionaryProperty.Add( "82", 82 );
+			this.NonPublicIDictionaryField.Add( "83", 83 );
+			this.NonPublicIDictionaryField.Add( "84", 84 );
+			this._nonPublicIDictionaryReadOnlyProperty.Add( "85", 85 );
+			this._nonPublicIDictionaryReadOnlyProperty.Add( "86", 86 );
+			this.NonPublicIDictionaryReadOnlyField.Add( "87", 87 );
+			this.NonPublicIDictionaryReadOnlyField.Add( "88", 88 );
 			this.NonPublicCollectionPropertyPlain.Add( 91 );
 			this.NonPublicCollectionPropertyPlain.Add( 92 );
 			this.NonPublicCollectionFieldPlain.Add( 93 );
@@ -552,21 +612,23 @@ namespace MsgPack.Serialization
 			this._nonPublicDictionaryReadOnlyPropertyPlain.Add( "106", 106 );
 			this.NonPublicDictionaryReadOnlyFieldPlain.Add( "107", 197 );
 			this.NonPublicDictionaryReadOnlyFieldPlain.Add( "108", 108 );
-			this.NonPublicHashtablePropertyPlain.Add( "111", 111 );
-			this.NonPublicHashtablePropertyPlain.Add( "112", 112 );
-			this.NonPublicHashtableFieldPlain.Add( "113", 113 );
-			this.NonPublicHashtableFieldPlain.Add( "114", 114 );
-			this._nonPublicHashtableReadOnlyPropertyPlain.Add( "115", 115 );
-			this._nonPublicHashtableReadOnlyPropertyPlain.Add( "116", 116 );
-			this.NonPublicHashtableReadOnlyFieldPlain.Add( "117", 117 );
-			this.NonPublicHashtableReadOnlyFieldPlain.Add( "118", 118 );
+			this.NonPublicIDictionaryPropertyPlain.Add( "111", 111 );
+			this.NonPublicIDictionaryPropertyPlain.Add( "112", 112 );
+			this.NonPublicIDictionaryFieldPlain.Add( "113", 113 );
+			this.NonPublicIDictionaryFieldPlain.Add( "114", 114 );
+			this._nonPublicIDictionaryReadOnlyPropertyPlain.Add( "115", 115 );
+			this._nonPublicIDictionaryReadOnlyPropertyPlain.Add( "116", 116 );
+			this.NonPublicIDictionaryReadOnlyFieldPlain.Add( "117", 117 );
+			this.NonPublicIDictionaryReadOnlyFieldPlain.Add( "118", 118 );
 		}
 	}
 
 	public class IgnoreAttributesTester
 	{
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		[NonSerialized]
 		public string NonSerialized;
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 
 		[MessagePackIgnore]
 		public string MessagePackIgnore;

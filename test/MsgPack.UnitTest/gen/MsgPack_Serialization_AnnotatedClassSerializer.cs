@@ -75,23 +75,23 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicDictionaryReadOnlyFieldDelegate;
         
-        private System.Reflection.MethodBase _methodBaseAnnotatedClass_get_NonPublicHashtableProperty5;
+        private System.Reflection.MethodBase _methodBaseAnnotatedClass_get_NonPublicIDictionaryProperty5;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Hashtable> _serializer3;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.IDictionary> _serializer3;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicHashtablePropertyDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicIDictionaryPropertyDelegate;
         
-        private System.Reflection.FieldInfo _fieldAnnotatedClass_NonPublicHashtableField6;
+        private System.Reflection.FieldInfo _fieldAnnotatedClass_NonPublicIDictionaryField6;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicHashtableFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicIDictionaryFieldDelegate;
         
-        private System.Reflection.MethodBase _methodBaseAnnotatedClass_get_NonPublicHashtableReadOnlyProperty6;
+        private System.Reflection.MethodBase _methodBaseAnnotatedClass_get_NonPublicIDictionaryReadOnlyProperty6;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicHashtableReadOnlyPropertyDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicIDictionaryReadOnlyPropertyDelegate;
         
-        private System.Reflection.FieldInfo _fieldAnnotatedClass_NonPublicHashtableReadOnlyField7;
+        private System.Reflection.FieldInfo _fieldAnnotatedClass_NonPublicIDictionaryReadOnlyField7;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicHashtableReadOnlyFieldDelegate;
+        private System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass> this_PackValueOfNonPublicIDictionaryReadOnlyFieldDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>> _packOperationList;
         
@@ -129,13 +129,13 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfNonPublicDictionaryReadOnlyFieldAsyncDelegate;
         
-        private System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfNonPublicHashtablePropertyAsyncDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfNonPublicIDictionaryPropertyAsyncDelegate;
         
-        private System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfNonPublicHashtableFieldAsyncDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfNonPublicIDictionaryFieldAsyncDelegate;
         
-        private System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfNonPublicHashtableReadOnlyPropertyAsyncDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfNonPublicIDictionaryReadOnlyPropertyAsyncDelegate;
         
-        private System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfNonPublicHashtableReadOnlyFieldAsyncDelegate;
+        private System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfNonPublicIDictionaryReadOnlyFieldAsyncDelegate;
         
         private System.Collections.Generic.IList<System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationListAsync;
         
@@ -211,23 +211,23 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicDictionaryReadOnlyFieldDelegate;
         
-        private System.Reflection.MethodBase _methodBaseAnnotatedClass_set_NonPublicHashtableProperty10;
+        private System.Reflection.MethodBase _methodBaseAnnotatedClass_set_NonPublicIDictionaryProperty10;
         
-        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable> this_SetUnpackedValueOfNonPublicHashtablePropertyDelegate;
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.IDictionary> this_SetUnpackedValueOfNonPublicIDictionaryPropertyDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicHashtablePropertyDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicIDictionaryPropertyDelegate;
         
-        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable> this_SetUnpackedValueOfNonPublicHashtableFieldDelegate;
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.IDictionary> this_SetUnpackedValueOfNonPublicIDictionaryFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicHashtableFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicIDictionaryFieldDelegate;
         
-        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable> this_SetUnpackedValueOfNonPublicHashtableReadOnlyPropertyDelegate;
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.IDictionary> this_SetUnpackedValueOfNonPublicIDictionaryReadOnlyPropertyDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicHashtableReadOnlyPropertyDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicIDictionaryReadOnlyPropertyDelegate;
         
-        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable> this_SetUnpackedValueOfNonPublicHashtableReadOnlyFieldDelegate;
+        private System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.IDictionary> this_SetUnpackedValueOfNonPublicIDictionaryReadOnlyFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicHashtableReadOnlyFieldDelegate;
+        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int> this_UnpackValueOfNonPublicIDictionaryReadOnlyFieldDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -269,13 +269,13 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfNonPublicDictionaryReadOnlyFieldAsyncDelegate;
         
-        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfNonPublicHashtablePropertyAsyncDelegate;
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfNonPublicIDictionaryPropertyAsyncDelegate;
         
-        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfNonPublicHashtableFieldAsyncDelegate;
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfNonPublicIDictionaryFieldAsyncDelegate;
         
-        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfNonPublicHashtableReadOnlyPropertyAsyncDelegate;
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfNonPublicIDictionaryReadOnlyPropertyAsyncDelegate;
         
-        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfNonPublicHashtableReadOnlyFieldAsyncDelegate;
+        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfNonPublicIDictionaryReadOnlyFieldAsyncDelegate;
         
         private System.Collections.Generic.IList<System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationListAsync;
         
@@ -294,7 +294,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._serializer2 = context.GetSerializer<System.Collections.Generic.Dictionary<string, int>>(schema2);
             MsgPack.Serialization.PolymorphismSchema schema3 = default(MsgPack.Serialization.PolymorphismSchema);
             schema3 = null;
-            this._serializer3 = context.GetSerializer<System.Collections.Hashtable>(schema3);
+            this._serializer3 = context.GetSerializer<System.Collections.IDictionary>(schema3);
             this._fieldAnnotatedClass_NonPublicField0 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicField", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
             this._fieldAnnotatedClass_NonSerializedNonPublicField1 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonSerializedNonPublicField", (System.Reflection.BindingFlags.Instance 
@@ -307,9 +307,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
             this._fieldAnnotatedClass_NonPublicDictionaryReadOnlyField5 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicDictionaryReadOnlyField", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
-            this._fieldAnnotatedClass_NonPublicHashtableField6 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicHashtableField", (System.Reflection.BindingFlags.Instance 
+            this._fieldAnnotatedClass_NonPublicIDictionaryField6 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicIDictionaryField", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
-            this._fieldAnnotatedClass_NonPublicHashtableReadOnlyField7 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicHashtableReadOnlyField", (System.Reflection.BindingFlags.Instance 
+            this._fieldAnnotatedClass_NonPublicIDictionaryReadOnlyField7 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicIDictionaryReadOnlyField", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
             this._methodBaseAnnotatedClass_get_NonPublicProperty0 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicProperty", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
@@ -321,9 +321,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
             this._methodBaseAnnotatedClass_get_NonPublicDictionaryReadOnlyProperty4 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicDictionaryReadOnlyProperty", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
-            this._methodBaseAnnotatedClass_get_NonPublicHashtableProperty5 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicHashtableProperty", (System.Reflection.BindingFlags.Instance 
+            this._methodBaseAnnotatedClass_get_NonPublicIDictionaryProperty5 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicIDictionaryProperty", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
-            this._methodBaseAnnotatedClass_get_NonPublicHashtableReadOnlyProperty6 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicHashtableReadOnlyProperty", (System.Reflection.BindingFlags.Instance 
+            this._methodBaseAnnotatedClass_get_NonPublicIDictionaryReadOnlyProperty6 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicIDictionaryReadOnlyProperty", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
             this._methodBaseAnnotatedClass_set_NonPublicProperty7 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("set_NonPublicProperty", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
@@ -334,9 +334,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._methodBaseAnnotatedClass_set_NonPublicDictionaryProperty9 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("set_NonPublicDictionaryProperty", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
                         typeof(System.Collections.Generic.Dictionary<string, int>)}, null);
-            this._methodBaseAnnotatedClass_set_NonPublicHashtableProperty10 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("set_NonPublicHashtableProperty", (System.Reflection.BindingFlags.Instance 
+            this._methodBaseAnnotatedClass_set_NonPublicIDictionaryProperty10 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("set_NonPublicIDictionaryProperty", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
-                        typeof(System.Collections.Hashtable)}, null);
+                        typeof(System.Collections.IDictionary)}, null);
             System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>[]);
             packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>[22];
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfAlias);
@@ -357,10 +357,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationList[15] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryField);
             packOperationList[16] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryReadOnlyProperty);
             packOperationList[17] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryReadOnlyField);
-            packOperationList[18] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableProperty);
-            packOperationList[19] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableField);
-            packOperationList[20] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableReadOnlyProperty);
-            packOperationList[21] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableReadOnlyField);
+            packOperationList[18] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicIDictionaryProperty);
+            packOperationList[19] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicIDictionaryField);
+            packOperationList[20] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicIDictionaryReadOnlyProperty);
+            packOperationList[21] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicIDictionaryReadOnlyField);
             this._packOperationList = packOperationList;
             System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] packOperationListAsync = default(System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
             packOperationListAsync = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>[22];
@@ -382,10 +382,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationListAsync[15] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicDictionaryFieldAsync);
             packOperationListAsync[16] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicDictionaryReadOnlyPropertyAsync);
             packOperationListAsync[17] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicDictionaryReadOnlyFieldAsync);
-            packOperationListAsync[18] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicHashtablePropertyAsync);
-            packOperationListAsync[19] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicHashtableFieldAsync);
-            packOperationListAsync[20] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicHashtableReadOnlyPropertyAsync);
-            packOperationListAsync[21] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicHashtableReadOnlyFieldAsync);
+            packOperationListAsync[18] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicIDictionaryPropertyAsync);
+            packOperationListAsync[19] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicIDictionaryFieldAsync);
+            packOperationListAsync[20] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicIDictionaryReadOnlyPropertyAsync);
+            packOperationListAsync[21] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicIDictionaryReadOnlyFieldAsync);
             this._packOperationListAsync = packOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>> packOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>>);
             packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>>(19);
@@ -404,10 +404,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationTable["NonPublicDictionaryField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryField);
             packOperationTable["NonPublicDictionaryReadOnlyProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryReadOnlyProperty);
             packOperationTable["NonPublicDictionaryReadOnlyField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryReadOnlyField);
-            packOperationTable["NonPublicHashtableProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableProperty);
-            packOperationTable["NonPublicHashtableField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableField);
-            packOperationTable["NonPublicHashtableReadOnlyProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableReadOnlyProperty);
-            packOperationTable["NonPublicHashtableReadOnlyField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableReadOnlyField);
+            packOperationTable["NonPublicIDictionaryProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicIDictionaryProperty);
+            packOperationTable["NonPublicIDictionaryField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicIDictionaryField);
+            packOperationTable["NonPublicIDictionaryReadOnlyProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicIDictionaryReadOnlyProperty);
+            packOperationTable["NonPublicIDictionaryReadOnlyField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicIDictionaryReadOnlyField);
             this._packOperationTable = packOperationTable;
             System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>> packOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
             packOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(19);
@@ -426,10 +426,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationTableAsync["NonPublicDictionaryField"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicDictionaryFieldAsync);
             packOperationTableAsync["NonPublicDictionaryReadOnlyProperty"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicDictionaryReadOnlyPropertyAsync);
             packOperationTableAsync["NonPublicDictionaryReadOnlyField"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicDictionaryReadOnlyFieldAsync);
-            packOperationTableAsync["NonPublicHashtableProperty"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicHashtablePropertyAsync);
-            packOperationTableAsync["NonPublicHashtableField"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicHashtableFieldAsync);
-            packOperationTableAsync["NonPublicHashtableReadOnlyProperty"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicHashtableReadOnlyPropertyAsync);
-            packOperationTableAsync["NonPublicHashtableReadOnlyField"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicHashtableReadOnlyFieldAsync);
+            packOperationTableAsync["NonPublicIDictionaryProperty"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicIDictionaryPropertyAsync);
+            packOperationTableAsync["NonPublicIDictionaryField"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicIDictionaryFieldAsync);
+            packOperationTableAsync["NonPublicIDictionaryReadOnlyProperty"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicIDictionaryReadOnlyPropertyAsync);
+            packOperationTableAsync["NonPublicIDictionaryReadOnlyField"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicIDictionaryReadOnlyFieldAsync);
             this._packOperationTableAsync = packOperationTableAsync;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>[22];
@@ -451,10 +451,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             unpackOperationList[15] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryField);
             unpackOperationList[16] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryReadOnlyProperty);
             unpackOperationList[17] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryReadOnlyField);
-            unpackOperationList[18] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableProperty);
-            unpackOperationList[19] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableField);
-            unpackOperationList[20] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableReadOnlyProperty);
-            unpackOperationList[21] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableReadOnlyField);
+            unpackOperationList[18] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicIDictionaryProperty);
+            unpackOperationList[19] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicIDictionaryField);
+            unpackOperationList[20] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicIDictionaryReadOnlyProperty);
+            unpackOperationList[21] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicIDictionaryReadOnlyField);
             this._unpackOperationList = unpackOperationList;
             System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] unpackOperationListAsync = default(System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
             unpackOperationListAsync = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[22];
@@ -476,10 +476,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             unpackOperationListAsync[15] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicDictionaryFieldAsync);
             unpackOperationListAsync[16] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicDictionaryReadOnlyPropertyAsync);
             unpackOperationListAsync[17] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicDictionaryReadOnlyFieldAsync);
-            unpackOperationListAsync[18] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicHashtablePropertyAsync);
-            unpackOperationListAsync[19] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicHashtableFieldAsync);
-            unpackOperationListAsync[20] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicHashtableReadOnlyPropertyAsync);
-            unpackOperationListAsync[21] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicHashtableReadOnlyFieldAsync);
+            unpackOperationListAsync[18] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicIDictionaryPropertyAsync);
+            unpackOperationListAsync[19] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicIDictionaryFieldAsync);
+            unpackOperationListAsync[20] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicIDictionaryReadOnlyPropertyAsync);
+            unpackOperationListAsync[21] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicIDictionaryReadOnlyFieldAsync);
             this._unpackOperationListAsync = unpackOperationListAsync;
             System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>> unpackOperationTable = default(System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>>);
             unpackOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>>(19);
@@ -498,10 +498,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             unpackOperationTable["NonPublicDictionaryField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryField);
             unpackOperationTable["NonPublicDictionaryReadOnlyProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryReadOnlyProperty);
             unpackOperationTable["NonPublicDictionaryReadOnlyField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryReadOnlyField);
-            unpackOperationTable["NonPublicHashtableProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableProperty);
-            unpackOperationTable["NonPublicHashtableField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableField);
-            unpackOperationTable["NonPublicHashtableReadOnlyProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableReadOnlyProperty);
-            unpackOperationTable["NonPublicHashtableReadOnlyField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableReadOnlyField);
+            unpackOperationTable["NonPublicIDictionaryProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicIDictionaryProperty);
+            unpackOperationTable["NonPublicIDictionaryField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicIDictionaryField);
+            unpackOperationTable["NonPublicIDictionaryReadOnlyProperty"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicIDictionaryReadOnlyProperty);
+            unpackOperationTable["NonPublicIDictionaryReadOnlyField"] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicIDictionaryReadOnlyField);
             this._unpackOperationTable = unpackOperationTable;
             System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> unpackOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
             unpackOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(19);
@@ -520,10 +520,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             unpackOperationTableAsync["NonPublicDictionaryField"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicDictionaryFieldAsync);
             unpackOperationTableAsync["NonPublicDictionaryReadOnlyProperty"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicDictionaryReadOnlyPropertyAsync);
             unpackOperationTableAsync["NonPublicDictionaryReadOnlyField"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicDictionaryReadOnlyFieldAsync);
-            unpackOperationTableAsync["NonPublicHashtableProperty"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicHashtablePropertyAsync);
-            unpackOperationTableAsync["NonPublicHashtableField"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicHashtableFieldAsync);
-            unpackOperationTableAsync["NonPublicHashtableReadOnlyProperty"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicHashtableReadOnlyPropertyAsync);
-            unpackOperationTableAsync["NonPublicHashtableReadOnlyField"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicHashtableReadOnlyFieldAsync);
+            unpackOperationTableAsync["NonPublicIDictionaryProperty"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicIDictionaryPropertyAsync);
+            unpackOperationTableAsync["NonPublicIDictionaryField"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicIDictionaryFieldAsync);
+            unpackOperationTableAsync["NonPublicIDictionaryReadOnlyProperty"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicIDictionaryReadOnlyPropertyAsync);
+            unpackOperationTableAsync["NonPublicIDictionaryReadOnlyField"] = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicIDictionaryReadOnlyFieldAsync);
             this._unpackOperationTableAsync = unpackOperationTableAsync;
             this._memberNames = new string[] {
                     "Alias",
@@ -544,10 +544,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                     "NonPublicDictionaryField",
                     "NonPublicDictionaryReadOnlyProperty",
                     "NonPublicDictionaryReadOnlyField",
-                    "NonPublicHashtableProperty",
-                    "NonPublicHashtableField",
-                    "NonPublicHashtableReadOnlyProperty",
-                    "NonPublicHashtableReadOnlyField"};
+                    "NonPublicIDictionaryProperty",
+                    "NonPublicIDictionaryField",
+                    "NonPublicIDictionaryReadOnlyProperty",
+                    "NonPublicIDictionaryReadOnlyField"};
             this.this_PackValueOfAliasDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfAlias);
             this.this_PackValueOfPublicFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfPublicField);
             this.this_PackMemberPlaceHolderDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackMemberPlaceHolder);
@@ -564,10 +564,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this.this_PackValueOfNonPublicDictionaryFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryField);
             this.this_PackValueOfNonPublicDictionaryReadOnlyPropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryReadOnlyProperty);
             this.this_PackValueOfNonPublicDictionaryReadOnlyFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicDictionaryReadOnlyField);
-            this.this_PackValueOfNonPublicHashtablePropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableProperty);
-            this.this_PackValueOfNonPublicHashtableFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableField);
-            this.this_PackValueOfNonPublicHashtableReadOnlyPropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableReadOnlyProperty);
-            this.this_PackValueOfNonPublicHashtableReadOnlyFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicHashtableReadOnlyField);
+            this.this_PackValueOfNonPublicIDictionaryPropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicIDictionaryProperty);
+            this.this_PackValueOfNonPublicIDictionaryFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicIDictionaryField);
+            this.this_PackValueOfNonPublicIDictionaryReadOnlyPropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicIDictionaryReadOnlyProperty);
+            this.this_PackValueOfNonPublicIDictionaryReadOnlyFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfNonPublicIDictionaryReadOnlyField);
             this.this_PackValueOfAliasAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfAliasAsync);
             this.this_PackValueOfPublicFieldAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfPublicFieldAsync);
             this.this_PackMemberPlaceHolderAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackMemberPlaceHolderAsync);
@@ -584,10 +584,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this.this_PackValueOfNonPublicDictionaryFieldAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicDictionaryFieldAsync);
             this.this_PackValueOfNonPublicDictionaryReadOnlyPropertyAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicDictionaryReadOnlyPropertyAsync);
             this.this_PackValueOfNonPublicDictionaryReadOnlyFieldAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicDictionaryReadOnlyFieldAsync);
-            this.this_PackValueOfNonPublicHashtablePropertyAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicHashtablePropertyAsync);
-            this.this_PackValueOfNonPublicHashtableFieldAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicHashtableFieldAsync);
-            this.this_PackValueOfNonPublicHashtableReadOnlyPropertyAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicHashtableReadOnlyPropertyAsync);
-            this.this_PackValueOfNonPublicHashtableReadOnlyFieldAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicHashtableReadOnlyFieldAsync);
+            this.this_PackValueOfNonPublicIDictionaryPropertyAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicIDictionaryPropertyAsync);
+            this.this_PackValueOfNonPublicIDictionaryFieldAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicIDictionaryFieldAsync);
+            this.this_PackValueOfNonPublicIDictionaryReadOnlyPropertyAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicIDictionaryReadOnlyPropertyAsync);
+            this.this_PackValueOfNonPublicIDictionaryReadOnlyFieldAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfNonPublicIDictionaryReadOnlyFieldAsync);
             this.this_SetUnpackedValueOfPublicPropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, int>(this.SetUnpackedValueOfPublicProperty);
             this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, int>(MsgPack.Serialization.UnpackHelpers.UnpackInt32Value);
             this.this_UnpackValueOfAliasDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfAlias);
@@ -620,14 +620,14 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this.this_UnpackValueOfNonPublicDictionaryReadOnlyPropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryReadOnlyProperty);
             this.this_SetUnpackedValueOfNonPublicDictionaryReadOnlyFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Generic.Dictionary<string, int>>(this.SetUnpackedValueOfNonPublicDictionaryReadOnlyField);
             this.this_UnpackValueOfNonPublicDictionaryReadOnlyFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicDictionaryReadOnlyField);
-            this.this_SetUnpackedValueOfNonPublicHashtablePropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable>(this.SetUnpackedValueOfNonPublicHashtableProperty);
-            this.this_UnpackValueOfNonPublicHashtablePropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableProperty);
-            this.this_SetUnpackedValueOfNonPublicHashtableFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable>(this.SetUnpackedValueOfNonPublicHashtableField);
-            this.this_UnpackValueOfNonPublicHashtableFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableField);
-            this.this_SetUnpackedValueOfNonPublicHashtableReadOnlyPropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable>(this.SetUnpackedValueOfNonPublicHashtableReadOnlyProperty);
-            this.this_UnpackValueOfNonPublicHashtableReadOnlyPropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableReadOnlyProperty);
-            this.this_SetUnpackedValueOfNonPublicHashtableReadOnlyFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.Hashtable>(this.SetUnpackedValueOfNonPublicHashtableReadOnlyField);
-            this.this_UnpackValueOfNonPublicHashtableReadOnlyFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicHashtableReadOnlyField);
+            this.this_SetUnpackedValueOfNonPublicIDictionaryPropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.IDictionary>(this.SetUnpackedValueOfNonPublicIDictionaryProperty);
+            this.this_UnpackValueOfNonPublicIDictionaryPropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicIDictionaryProperty);
+            this.this_SetUnpackedValueOfNonPublicIDictionaryFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.IDictionary>(this.SetUnpackedValueOfNonPublicIDictionaryField);
+            this.this_UnpackValueOfNonPublicIDictionaryFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicIDictionaryField);
+            this.this_SetUnpackedValueOfNonPublicIDictionaryReadOnlyPropertyDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.IDictionary>(this.SetUnpackedValueOfNonPublicIDictionaryReadOnlyProperty);
+            this.this_UnpackValueOfNonPublicIDictionaryReadOnlyPropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicIDictionaryReadOnlyProperty);
+            this.this_SetUnpackedValueOfNonPublicIDictionaryReadOnlyFieldDelegate = new System.Action<MsgPack.Serialization.AnnotatedClass, System.Collections.IDictionary>(this.SetUnpackedValueOfNonPublicIDictionaryReadOnlyField);
+            this.this_UnpackValueOfNonPublicIDictionaryReadOnlyFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int>(this.UnpackValueOfNonPublicIDictionaryReadOnlyField);
             this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<int>>(MsgPack.Serialization.UnpackHelpers.UnpackInt32ValueAsync);
             this.this_UnpackValueOfAliasAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfAliasAsync);
             this.this_UnpackValueOfPublicFieldAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfPublicFieldAsync);
@@ -645,10 +645,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this.this_UnpackValueOfNonPublicDictionaryFieldAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicDictionaryFieldAsync);
             this.this_UnpackValueOfNonPublicDictionaryReadOnlyPropertyAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicDictionaryReadOnlyPropertyAsync);
             this.this_UnpackValueOfNonPublicDictionaryReadOnlyFieldAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicDictionaryReadOnlyFieldAsync);
-            this.this_UnpackValueOfNonPublicHashtablePropertyAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicHashtablePropertyAsync);
-            this.this_UnpackValueOfNonPublicHashtableFieldAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicHashtableFieldAsync);
-            this.this_UnpackValueOfNonPublicHashtableReadOnlyPropertyAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicHashtableReadOnlyPropertyAsync);
-            this.this_UnpackValueOfNonPublicHashtableReadOnlyFieldAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicHashtableReadOnlyFieldAsync);
+            this.this_UnpackValueOfNonPublicIDictionaryPropertyAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicIDictionaryPropertyAsync);
+            this.this_UnpackValueOfNonPublicIDictionaryFieldAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicIDictionaryFieldAsync);
+            this.this_UnpackValueOfNonPublicIDictionaryReadOnlyPropertyAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicIDictionaryReadOnlyPropertyAsync);
+            this.this_UnpackValueOfNonPublicIDictionaryReadOnlyFieldAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AnnotatedClass, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfNonPublicIDictionaryReadOnlyFieldAsync);
         }
         
         private void PackValueOfAlias(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
@@ -715,20 +715,20 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._serializer2.PackTo(packer, ((System.Collections.Generic.Dictionary<string, int>)(this._fieldAnnotatedClass_NonPublicDictionaryReadOnlyField5.GetValue(objectTree))));
         }
         
-        private void PackValueOfNonPublicHashtableProperty(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
-            this._serializer3.PackTo(packer, ((System.Collections.Hashtable)(this._methodBaseAnnotatedClass_get_NonPublicHashtableProperty5.Invoke(objectTree, null))));
+        private void PackValueOfNonPublicIDictionaryProperty(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer3.PackTo(packer, ((System.Collections.IDictionary)(this._methodBaseAnnotatedClass_get_NonPublicIDictionaryProperty5.Invoke(objectTree, null))));
         }
         
-        private void PackValueOfNonPublicHashtableField(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
-            this._serializer3.PackTo(packer, ((System.Collections.Hashtable)(this._fieldAnnotatedClass_NonPublicHashtableField6.GetValue(objectTree))));
+        private void PackValueOfNonPublicIDictionaryField(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer3.PackTo(packer, ((System.Collections.IDictionary)(this._fieldAnnotatedClass_NonPublicIDictionaryField6.GetValue(objectTree))));
         }
         
-        private void PackValueOfNonPublicHashtableReadOnlyProperty(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
-            this._serializer3.PackTo(packer, ((System.Collections.Hashtable)(this._methodBaseAnnotatedClass_get_NonPublicHashtableReadOnlyProperty6.Invoke(objectTree, null))));
+        private void PackValueOfNonPublicIDictionaryReadOnlyProperty(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer3.PackTo(packer, ((System.Collections.IDictionary)(this._methodBaseAnnotatedClass_get_NonPublicIDictionaryReadOnlyProperty6.Invoke(objectTree, null))));
         }
         
-        private void PackValueOfNonPublicHashtableReadOnlyField(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
-            this._serializer3.PackTo(packer, ((System.Collections.Hashtable)(this._fieldAnnotatedClass_NonPublicHashtableReadOnlyField7.GetValue(objectTree))));
+        private void PackValueOfNonPublicIDictionaryReadOnlyField(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
+            this._serializer3.PackTo(packer, ((System.Collections.IDictionary)(this._fieldAnnotatedClass_NonPublicIDictionaryReadOnlyField7.GetValue(objectTree))));
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
@@ -804,20 +804,20 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             return this._serializer2.PackToAsync(packer, ((System.Collections.Generic.Dictionary<string, int>)(this._fieldAnnotatedClass_NonPublicDictionaryReadOnlyField5.GetValue(objectTree))), cancellationToken);
         }
         
-        private System.Threading.Tasks.Task PackValueOfNonPublicHashtablePropertyAsync(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree, System.Threading.CancellationToken cancellationToken) {
-            return this._serializer3.PackToAsync(packer, ((System.Collections.Hashtable)(this._methodBaseAnnotatedClass_get_NonPublicHashtableProperty5.Invoke(objectTree, null))), cancellationToken);
+        private System.Threading.Tasks.Task PackValueOfNonPublicIDictionaryPropertyAsync(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer3.PackToAsync(packer, ((System.Collections.IDictionary)(this._methodBaseAnnotatedClass_get_NonPublicIDictionaryProperty5.Invoke(objectTree, null))), cancellationToken);
         }
         
-        private System.Threading.Tasks.Task PackValueOfNonPublicHashtableFieldAsync(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree, System.Threading.CancellationToken cancellationToken) {
-            return this._serializer3.PackToAsync(packer, ((System.Collections.Hashtable)(this._fieldAnnotatedClass_NonPublicHashtableField6.GetValue(objectTree))), cancellationToken);
+        private System.Threading.Tasks.Task PackValueOfNonPublicIDictionaryFieldAsync(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer3.PackToAsync(packer, ((System.Collections.IDictionary)(this._fieldAnnotatedClass_NonPublicIDictionaryField6.GetValue(objectTree))), cancellationToken);
         }
         
-        private System.Threading.Tasks.Task PackValueOfNonPublicHashtableReadOnlyPropertyAsync(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree, System.Threading.CancellationToken cancellationToken) {
-            return this._serializer3.PackToAsync(packer, ((System.Collections.Hashtable)(this._methodBaseAnnotatedClass_get_NonPublicHashtableReadOnlyProperty6.Invoke(objectTree, null))), cancellationToken);
+        private System.Threading.Tasks.Task PackValueOfNonPublicIDictionaryReadOnlyPropertyAsync(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer3.PackToAsync(packer, ((System.Collections.IDictionary)(this._methodBaseAnnotatedClass_get_NonPublicIDictionaryReadOnlyProperty6.Invoke(objectTree, null))), cancellationToken);
         }
         
-        private System.Threading.Tasks.Task PackValueOfNonPublicHashtableReadOnlyFieldAsync(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree, System.Threading.CancellationToken cancellationToken) {
-            return this._serializer3.PackToAsync(packer, ((System.Collections.Hashtable)(this._fieldAnnotatedClass_NonPublicHashtableReadOnlyField7.GetValue(objectTree))), cancellationToken);
+        private System.Threading.Tasks.Task PackValueOfNonPublicIDictionaryReadOnlyFieldAsync(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree, System.Threading.CancellationToken cancellationToken) {
+            return this._serializer3.PackToAsync(packer, ((System.Collections.IDictionary)(this._fieldAnnotatedClass_NonPublicIDictionaryReadOnlyField7.GetValue(objectTree))), cancellationToken);
         }
         
         protected internal override System.Threading.Tasks.Task PackToAsyncCore(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree, System.Threading.CancellationToken cancellationToken) {
@@ -1102,11 +1102,11 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<string, int>), "NonPublicDictionaryReadOnlyField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicDictionaryReadOnlyFieldDelegate);
         }
         
-        private void SetUnpackedValueOfNonPublicHashtableProperty(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Hashtable unpackedValue) {
-            System.Collections.Hashtable existent = default(System.Collections.Hashtable);
-            existent = ((System.Collections.Hashtable)(this._methodBaseAnnotatedClass_get_NonPublicHashtableProperty5.Invoke(unpackingContext, null)));
+        private void SetUnpackedValueOfNonPublicIDictionaryProperty(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.IDictionary unpackedValue) {
+            System.Collections.IDictionary existent = default(System.Collections.IDictionary);
+            existent = ((System.Collections.IDictionary)(this._methodBaseAnnotatedClass_get_NonPublicIDictionaryProperty5.Invoke(unpackingContext, null)));
             if ((existent == null)) {
-                this._methodBaseAnnotatedClass_set_NonPublicHashtableProperty10.Invoke(unpackingContext, new object[] {
+                this._methodBaseAnnotatedClass_set_NonPublicIDictionaryProperty10.Invoke(unpackingContext, new object[] {
                             unpackedValue});
             }
             else {
@@ -1121,15 +1121,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
         }
         
-        private void UnpackValueOfNonPublicHashtableProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Hashtable), "NonPublicHashtableProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicHashtablePropertyDelegate);
+        private void UnpackValueOfNonPublicIDictionaryProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.IDictionary), "NonPublicIDictionaryProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicIDictionaryPropertyDelegate);
         }
         
-        private void SetUnpackedValueOfNonPublicHashtableField(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Hashtable unpackedValue) {
-            System.Collections.Hashtable existent = default(System.Collections.Hashtable);
-            existent = ((System.Collections.Hashtable)(this._fieldAnnotatedClass_NonPublicHashtableField6.GetValue(unpackingContext)));
+        private void SetUnpackedValueOfNonPublicIDictionaryField(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.IDictionary unpackedValue) {
+            System.Collections.IDictionary existent = default(System.Collections.IDictionary);
+            existent = ((System.Collections.IDictionary)(this._fieldAnnotatedClass_NonPublicIDictionaryField6.GetValue(unpackingContext)));
             if ((existent == null)) {
-                this._fieldAnnotatedClass_NonPublicHashtableField6.SetValue(unpackingContext, unpackedValue);
+                this._fieldAnnotatedClass_NonPublicIDictionaryField6.SetValue(unpackingContext, unpackedValue);
             }
             else {
                 System.Collections.IDictionaryEnumerator enumerator = unpackedValue.GetEnumerator();
@@ -1143,13 +1143,13 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
         }
         
-        private void UnpackValueOfNonPublicHashtableField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Hashtable), "NonPublicHashtableField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicHashtableFieldDelegate);
+        private void UnpackValueOfNonPublicIDictionaryField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.IDictionary), "NonPublicIDictionaryField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicIDictionaryFieldDelegate);
         }
         
-        private void SetUnpackedValueOfNonPublicHashtableReadOnlyProperty(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Hashtable unpackedValue) {
-            System.Collections.Hashtable existent = default(System.Collections.Hashtable);
-            existent = ((System.Collections.Hashtable)(this._methodBaseAnnotatedClass_get_NonPublicHashtableReadOnlyProperty6.Invoke(unpackingContext, null)));
+        private void SetUnpackedValueOfNonPublicIDictionaryReadOnlyProperty(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.IDictionary unpackedValue) {
+            System.Collections.IDictionary existent = default(System.Collections.IDictionary);
+            existent = ((System.Collections.IDictionary)(this._methodBaseAnnotatedClass_get_NonPublicIDictionaryReadOnlyProperty6.Invoke(unpackingContext, null)));
             System.Collections.IDictionaryEnumerator enumerator = unpackedValue.GetEnumerator();
             System.Collections.DictionaryEntry current;
             for (
@@ -1160,13 +1160,13 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
         }
         
-        private void UnpackValueOfNonPublicHashtableReadOnlyProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Hashtable), "NonPublicHashtableReadOnlyProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicHashtableReadOnlyPropertyDelegate);
+        private void UnpackValueOfNonPublicIDictionaryReadOnlyProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.IDictionary), "NonPublicIDictionaryReadOnlyProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicIDictionaryReadOnlyPropertyDelegate);
         }
         
-        private void SetUnpackedValueOfNonPublicHashtableReadOnlyField(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Hashtable unpackedValue) {
-            System.Collections.Hashtable existent = default(System.Collections.Hashtable);
-            existent = ((System.Collections.Hashtable)(this._fieldAnnotatedClass_NonPublicHashtableReadOnlyField7.GetValue(unpackingContext)));
+        private void SetUnpackedValueOfNonPublicIDictionaryReadOnlyField(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.IDictionary unpackedValue) {
+            System.Collections.IDictionary existent = default(System.Collections.IDictionary);
+            existent = ((System.Collections.IDictionary)(this._fieldAnnotatedClass_NonPublicIDictionaryReadOnlyField7.GetValue(unpackingContext)));
             System.Collections.IDictionaryEnumerator enumerator = unpackedValue.GetEnumerator();
             System.Collections.DictionaryEntry current;
             for (
@@ -1177,8 +1177,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
         }
         
-        private void UnpackValueOfNonPublicHashtableReadOnlyField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Hashtable), "NonPublicHashtableReadOnlyField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicHashtableReadOnlyFieldDelegate);
+        private void UnpackValueOfNonPublicIDictionaryReadOnlyField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.IDictionary), "NonPublicIDictionaryReadOnlyField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicIDictionaryReadOnlyFieldDelegate);
         }
         
         protected internal override MsgPack.Serialization.AnnotatedClass UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -1256,20 +1256,20 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<string, int>), "NonPublicDictionaryReadOnlyField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicDictionaryReadOnlyFieldDelegate, cancellationToken);
         }
         
-        private System.Threading.Tasks.Task UnpackValueOfNonPublicHashtablePropertyAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Hashtable), "NonPublicHashtableProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicHashtablePropertyDelegate, cancellationToken);
+        private System.Threading.Tasks.Task UnpackValueOfNonPublicIDictionaryPropertyAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.IDictionary), "NonPublicIDictionaryProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicIDictionaryPropertyDelegate, cancellationToken);
         }
         
-        private System.Threading.Tasks.Task UnpackValueOfNonPublicHashtableFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Hashtable), "NonPublicHashtableField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicHashtableFieldDelegate, cancellationToken);
+        private System.Threading.Tasks.Task UnpackValueOfNonPublicIDictionaryFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.IDictionary), "NonPublicIDictionaryField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicIDictionaryFieldDelegate, cancellationToken);
         }
         
-        private System.Threading.Tasks.Task UnpackValueOfNonPublicHashtableReadOnlyPropertyAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Hashtable), "NonPublicHashtableReadOnlyProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicHashtableReadOnlyPropertyDelegate, cancellationToken);
+        private System.Threading.Tasks.Task UnpackValueOfNonPublicIDictionaryReadOnlyPropertyAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.IDictionary), "NonPublicIDictionaryReadOnlyProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicIDictionaryReadOnlyPropertyDelegate, cancellationToken);
         }
         
-        private System.Threading.Tasks.Task UnpackValueOfNonPublicHashtableReadOnlyFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Hashtable), "NonPublicHashtableReadOnlyField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicHashtableReadOnlyFieldDelegate, cancellationToken);
+        private System.Threading.Tasks.Task UnpackValueOfNonPublicIDictionaryReadOnlyFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.IDictionary), "NonPublicIDictionaryReadOnlyField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNonPublicIDictionaryReadOnlyFieldDelegate, cancellationToken);
         }
         
         protected internal override System.Threading.Tasks.Task<MsgPack.Serialization.AnnotatedClass> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {
