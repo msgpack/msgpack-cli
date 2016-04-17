@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,11 +27,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 #if !UNITY
-#if CORE_CLR
-using Contract = MsgPack.MPContract;
-#else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
 #endif // !UNITY
 using System.Globalization;
 using System.Linq;
@@ -774,7 +770,7 @@ namespace MsgPack.Serialization
 
 		private static bool FilterCollectionType( Type type, object filterCriteria )
 		{
-#if !NETFX_CORE
+#if !NETSTD_11 && !NETSTD_13
 #if !UNITY
 			Contract.Assert( type.GetIsInterface(), "type.IsInterface" );
 #endif // !UNITY
@@ -783,7 +779,7 @@ namespace MsgPack.Serialization
 			var typeInfo = type.GetTypeInfo();
 			Contract.Assert( typeInfo.IsInterface );
 			return typeInfo.Assembly.Equals( typeof( Array ).GetTypeInfo().Assembly ) && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
-#endif // !NETFX_CORE
+#endif // !NETSTD_11 && !NETSTD_13
 		}
 
 		private static bool IsIEnumeratorT( Type @interface )
@@ -809,11 +805,11 @@ namespace MsgPack.Serialization
 			FieldInfo asField;
 			if ( ( asProperty = source as PropertyInfo ) != null )
 			{
-#if !NETFX_CORE
+#if !NETSTD_11 && !NETSTD_13
 				return asProperty.GetGetMethod() != null;
 #else
 				return ( asProperty.GetMethod != null && asProperty.GetMethod.IsPublic );
-#endif
+#endif // !NETSTD_11 && !NETSTD_13
 			}
 			else if ( ( asField = source as FieldInfo ) != null )
 			{
@@ -831,11 +827,11 @@ namespace MsgPack.Serialization
 			FieldInfo asField;
 			if ( ( asProperty = source as PropertyInfo ) != null )
 			{
-#if !NETFX_CORE
+#if !NETSTD_11 && !NETSTD_13
 				return asProperty.GetSetMethod() != null;
 #else
 				return ( asProperty.SetMethod != null && asProperty.SetMethod.IsPublic );
-#endif
+#endif // !NETSTD_11 && !NETSTD_13
 			}
 			else if ( ( asField = source as FieldInfo ) != null )
 			{
@@ -852,17 +848,17 @@ namespace MsgPack.Serialization
 			PropertyInfo asProperty;
 			FieldInfo asField;
 			MethodBase asMethod;
-#if !NETFX_CORE && !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 			Type asType;
-#endif // !NETFX_CORE && !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 			if ( ( asProperty = source as PropertyInfo ) != null )
 			{
-#if !NETFX_CORE
+#if !NETSTD_11 && !NETSTD_13
 				return asProperty.GetAccessors( true ).Where( a => a.ReturnType != typeof( void ) ).All( a => a.IsPublic );
 #else
 				return
 					( asProperty.GetMethod == null || asProperty.GetMethod.IsPublic );
-#endif
+#endif // !NETSTD_11 && !NETSTD_13
 			}
 			else if ( ( asField = source as FieldInfo ) != null )
 			{
@@ -872,12 +868,12 @@ namespace MsgPack.Serialization
 			{
 				return asMethod.IsPublic;
 			}
-#if !NETFX_CORE && !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 			else if ( ( asType = source as Type ) != null )
 			{
 				return asType.IsPublic;
 			}
-#endif // !NETFX_CORE && !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 			else
 			{
 				throw new NotSupportedException( source.GetType() + " is not supported." );

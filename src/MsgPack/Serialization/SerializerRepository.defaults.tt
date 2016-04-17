@@ -70,11 +70,13 @@ var excludes =
 		typeof( System.IO.WaitForChangedResult ),
 		typeof( System.Net.Sockets.IPPacketInformation ),
 		typeof( System.Net.Sockets.SocketInformation ),
+		typeof( System.Net.Sockets.UdpReceiveResult ),
 		typeof( System.Reflection.CustomAttributeNamedArgument ),
 		typeof( System.Reflection.CustomAttributeTypedArgument ),
 		typeof( System.Reflection.InterfaceMapping ),
 		typeof( System.Reflection.ParameterModifier ),
 		typeof( System.Reflection.Emit.EventToken ),
+		typeof( System.Reflection.Emit.ExceptionHandler ),
 		typeof( System.Reflection.Emit.FieldToken ),
 		typeof( System.Reflection.Emit.Label ),
 		typeof( System.Reflection.Emit.MethodToken ),
@@ -84,6 +86,14 @@ var excludes =
 		typeof( System.Reflection.Emit.SignatureToken ),
 		typeof( System.Reflection.Emit.StringToken ),
 		typeof( System.Reflection.Emit.TypeToken ),
+		typeof( System.Runtime.CompilerServices.AsyncTaskMethodBuilder ),
+		typeof( System.Runtime.CompilerServices.AsyncTaskMethodBuilder<> ),
+		typeof( System.Runtime.CompilerServices.AsyncVoidMethodBuilder ),
+		typeof( System.Runtime.CompilerServices.ConfiguredTaskAwaitable ),
+		typeof( System.Runtime.CompilerServices.ConfiguredTaskAwaitable<> ),
+		typeof( System.Runtime.CompilerServices.TaskAwaiter ),
+		typeof( System.Runtime.CompilerServices.TaskAwaiter<> ),
+		typeof( System.Runtime.CompilerServices.YieldAwaitable ),
 		typeof( System.Runtime.InteropServices.ArrayWithOffset ),
 		typeof( System.Runtime.InteropServices.GCHandle ),
 		typeof( System.Runtime.InteropServices.HandleRef ),
@@ -106,6 +116,7 @@ var excludes =
 		typeof( System.Runtime.InteropServices.ComTypes.TYPEDESC ),
 		typeof( System.Runtime.InteropServices.ComTypes.TYPELIBATTR ),
 		typeof( System.Runtime.InteropServices.ComTypes.VARDESC ),
+		typeof( System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken ),
 		typeof( System.Runtime.Serialization.SerializationEntry ),
 		typeof( System.Runtime.Serialization.StreamingContext ),
 		typeof( System.Security.Cryptography.CngProperty ),
@@ -125,22 +136,6 @@ var excludes =
 		typeof( System.Diagnostics.Tracing.EventSourceOptions ),
 		typeof( System.Threading.AsyncLocalValueChangedArgs<> ),
 	};
-var winRTExcludes =
-	new HashSet<string>()
-	{
-		"System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken",
-		"System.Runtime.CompilerServices.AsyncVoidMethodBuilder",
-		"System.Runtime.CompilerServices.AsyncTaskMethodBuilder",
-		"System.Runtime.CompilerServices.AsyncVoidMethodBuilder",
-		"System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1",
-		"System.Runtime.CompilerServices.TaskAwaiter",
-		"System.Runtime.CompilerServices.TaskAwaiter`1",
-		"System.Runtime.CompilerServices.ConfiguredTaskAwaitable",
-		"System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1",
-		"System.Runtime.CompilerServices.YieldAwaitable",
-		"System.Reflection.Emit.ExceptionHandler",
-		"System.Net.Sockets.UdpReceiveResult",
-	};
 var structTypes = 
 	typeof( object ).Assembly.GetTypes()
 	.Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
@@ -151,7 +146,6 @@ var structTypes =
 	).Concat(
 		typeof( BigInteger ).Assembly.GetTypes().Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
 	).Except( excludes )
-	.Where( t => !winRTExcludes.Contains( t.FullName ) )
 	.ToArray();
 var classTypes =
 	new[]
@@ -201,16 +195,14 @@ var notInSLs =
 		typeof( System.Collections.Specialized.NameValueCollection ),
 		typeof( System.Runtime.InteropServices.ComTypes.FILETIME ),
 	};
-var inWinRTs =
+var notInNetStandard1_1 =
 	new HashSet<Type>()
 	{
-		typeof( System.Runtime.InteropServices.ComTypes.FILETIME ),
-	};
-var notInWPs =
-	new HashSet<Type>()
-	{
-		typeof( System.Numerics.BigInteger ),
-		typeof( System.Numerics.Complex ),
+		typeof( System.Collections.Stack ),
+		typeof( System.Collections.Queue ),
+		typeof( System.Collections.Specialized.BitVector32 ),
+		typeof( System.Collections.Specialized.NameValueCollection ),
+		typeof( System.Security.Cryptography.HashAlgorithmName ),
 	};
 var notInUnities =
 	new HashSet<Type>
@@ -311,27 +303,18 @@ foreach( Type type in structTypes )
 		continue;
 	}
 	
-	if( notInWPs.Contains( type ) )
+	if( notInNetStandard1_1.Contains( type ) )
 	{
 #>
-#if !WINDOWS_PHONE
+#if !NETSTD_11
 <#
 	}
 
 	if( notInSLs.Contains( type ) )
 	{
-		if(inWinRTs.Contains( type ) )
-		{
 #>
 #if !SILVERLIGHT
 <#
-		}
-		else
-		{
-#>
-#if !SILVERLIGHT && !NETFX_CORE
-<#
-		}
 	}
 
 	if( notInNet45s.Contains( type ) )
@@ -380,52 +363,33 @@ foreach( Type type in structTypes )
 	}
 
 	if( notInSLs.Contains( type ) )
-	{
-		if(inWinRTs.Contains( type ) )
-		{
-#>
+	{#>
 #endif // !SILVERLIGHT
 <#
-		}
-		else
-		{
-#>
-#endif // !SILVERLIGHT && !NETFX_CORE
-<#
-		}
 	}
 
-	if( notInWPs.Contains( type ) )
+	if( notInNetStandard1_1.Contains( type ) )
 	{
 #>
-#endif // !WINDOWS_PHONE
+#endif // !NETSTD_11
 <#
 	}
 }
 
 foreach( Type type in classTypes )
 {
-	if( notInWPs.Contains( type ) )
+	if( notInNetStandard1_1.Contains( type ) )
 	{
 #>
-#if !WINDOWS_PHONE
+#if !NETSTD_11
 <#
 	}
 
 	if( notInSLs.Contains( type ) )
 	{
-		if(inWinRTs.Contains( type ) )
-		{
 #>
 #if !SILVERLIGHT
 <#
-		}
-		else
-		{
-#>
-#if !SILVERLIGHT && !NETFX_CORE
-<#
-		}
 	}
 
 	if( notInNet45s.Contains( type ) )
@@ -499,24 +463,15 @@ foreach( Type type in classTypes )
 
 	if( notInSLs.Contains( type ) )
 	{
-		if(inWinRTs.Contains( type ) )
-		{
 #>
 #endif // !SILVERLIGHT
 <#
-		}
-		else
-		{
-#>
-#endif // !SILVERLIGHT && !NETFX_CORE
-<#
-		}
 	}
 
-	if( notInWPs.Contains( type ) )
+	if( notInNetStandard1_1.Contains( type ) )
 	{
 #>
-#endif // !WINDOWS_PHONE
+#endif // !NETSTD_11
 <#
 	}
 }

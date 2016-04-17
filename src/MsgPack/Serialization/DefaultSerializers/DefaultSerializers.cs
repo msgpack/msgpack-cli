@@ -834,7 +834,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	}
 
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT
+#if !NETSTD_11
 #if !UNITY || MSGPACK_UNITY_FULL
 	internal sealed class System_Collections_Specialized_BitVector32MessagePackSerializer : MessagePackSerializer< System.Collections.Specialized.BitVector32 >
 	{
@@ -890,10 +891,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // FEATURE_TAP
 
 	}
-#endif // !SILVERLIGHT && !NETFX_CORE
+#endif // !NETSTD_11
+#endif // !SILVERLIGHT
 #endif // !UNITY || MSGPACK_UNITY_FULL
 
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
 #if !UNITY || MSGPACK_UNITY_FULL
 	internal sealed class System_Numerics_BigIntegerMessagePackSerializer : MessagePackSerializer< System.Numerics.BigInteger >
 	{
@@ -950,7 +951,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // FEATURE_TAP
 
 	}
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
 #endif // !UNITY || MSGPACK_UNITY_FULL
 	// ReSharper restore RedundantCast
 	// ReSharper restore RedundantNameQualifier

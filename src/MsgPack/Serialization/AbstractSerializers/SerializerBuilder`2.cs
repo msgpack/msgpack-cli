@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,11 +19,7 @@
 #endregion -- License Terms --
 
 using System;
-#if CORE_CLR
-using Contract = MsgPack.MPContract;
-#else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
 
 using MsgPack.Serialization.CollectionSerializers;
 
@@ -35,9 +31,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 	/// <typeparam name="TContext">The type of the context which holds global information for generating serializer.</typeparam>
 	/// <typeparam name="TConstruct">The type of the construct which abstracts code constructs.</typeparam>
 	internal abstract partial class SerializerBuilder<TContext, TConstruct> :
-#if !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		ISerializerCodeGenerator,
-#endif
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		ISerializerBuilder
 		where TContext : SerializerGenerationContext<TConstruct>
 		where TConstruct : class, ICodeConstruct
@@ -317,7 +313,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		);
 
 
-#if !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		/// <summary>
 		///		Builds the serializer code using specified code generation context.
 		/// </summary>
@@ -358,7 +354,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			throw new NotSupportedException();
 		}
-#endif // !NETFX_CORE && !SILVERLIGHT && !CORE_CLR
+
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+
 		internal class SerializerBuilderNilImplicationHandler :
 			NilImplicationHandler<TConstruct, TConstruct, SerializerBuilderOnPackingParameter, SerializerBuilderOnUnpacedParameter>
 		{

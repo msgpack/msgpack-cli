@@ -42,15 +42,15 @@ using System.Linq.Expressions;
 #if !XAMIOS && !XAMDROID && !UNITY
 using MsgPack.Serialization.AbstractSerializers;
 #if !NETFX_CORE && !WINDOWS_PHONE && !SILVERLIGHT
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.CodeDomSerializers;
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
 #endif // NETFX_CORE && !WINDOWS_PHONE && !SILVERLIGHT
 #endif // !!XAMIOS && !XAMDROID && !UNITY
-#if !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
+#if FEATURE_ET
 using MsgPack.Serialization.ExpressionSerializers;
-#endif // !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
+#endif // FEATURE_ET
 
 namespace MsgPack.Serialization
 {
@@ -242,41 +242,14 @@ namespace MsgPack.Serialization
 				ValidateType( typeof( T ) );
 			}
 
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT
 			ISerializerBuilder builder;
-#endif // !XAMIOS && !XAMDROID && !UNITY
-#if NETFX_CORE || WINDOWS_PHONE || SILVERLIGHT
-			builder = new ExpressionTreeSerializerBuilder( typeof( T ), collectionTraits );
-#else
-#if !XAMIOS && !XAMDROID && !UNITY
 			switch ( context.SerializerOptions.EmitterFlavor )
 			{
-				case EmitterFlavor.ReflectionBased:
+#if !NETSTD_11 && !NETSTD_13
+				case EmitterFlavor.CodeDomBased:
 				{
-#endif // !XAMIOS && !XAMDROID && !UNITY
-					return
-						DefaultSerializers.GenericSerializer.TryCreateAbstractCollectionSerializer( context, typeof( T ), concreteType, schema ) as MessagePackSerializer<T>
-						?? CreateReflectionInternal<T>( context, concreteType ?? typeof( T ), schema );
-#if !XAMIOS && !XAMDROID && !UNITY
-				}
-#if !WINDOWS_PHONE && !NETFX_35
-				case EmitterFlavor.ExpressionBased:
-				{
-					builder = new ExpressionTreeSerializerBuilder( typeof( T ), collectionTraits );
-					break;
-				}
-#endif // if !WINDOWS_PHONE && !NETFX_35
-				case EmitterFlavor.FieldBased:
-				{
-					builder = new AssemblyBuilderSerializerBuilder( typeof( T ), collectionTraits );
-					break;
-				}
-				default:
-				{
-#if !NETFX_35
-#if !CORE_CLR
 					if ( !SerializerDebugging.OnTheFlyCodeDomEnabled )
-#endif // !CORE_CLR
 					{
 						throw new NotSupportedException(
 							String.Format(
@@ -286,18 +259,39 @@ namespace MsgPack.Serialization
 							)
 						);
 					}
-#endif // if !NETFX_35
-#if !CORE_CLR
+
 					builder = new CodeDomSerializerBuilder( typeof( T ), collectionTraits );
 					break;
-#endif // !CORE_CLR
+				}
+#endif // !!NETSTD_11 && !NETSTD_13
+#if FEATURE_ET
+				case EmitterFlavor.ExpressionBased:
+				{
+					builder = new ExpressionTreeSerializerBuilder( typeof( T ), collectionTraits );
+					break;
+				}
+#endif // if FEATURE_ET
+#if !WINDOWS_PHONE
+				case EmitterFlavor.FieldBased:
+				{
+					builder = new AssemblyBuilderSerializerBuilder( typeof( T ), collectionTraits );
+					break;
+				}
+#endif // !WINDOWS_PHONE
+				default: // EmitterFlavor.ReflectionBased
+				{
+#endif // !AOT
+					return
+						DefaultSerializers.GenericSerializer.TryCreateAbstractCollectionSerializer( context, typeof( T ), concreteType, schema ) as MessagePackSerializer<T>
+						?? CreateReflectionInternal<T>( context, concreteType ?? typeof( T ), schema );
+#if !AOT
 				}
 			}
-#endif // !XAMIOS && !XAMDROID && !UNITY
-#endif // NETFX_CORE else
-#if !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT
+
+#if !AOT
 			return ( MessagePackSerializer<T> ) builder.BuildSerializerInstance( context, concreteType, schema == null ? null : schema.FilterSelf() );
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT
 		}
 
 #if !XAMIOS && !XAMDROID && !UNITY
@@ -362,11 +356,11 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer>() != null );
 #endif // !UNITY
 
-#if XAMIOS || XAMDROID || UNITY
+#if AOT
 			return CreateInternal( context, targetType, null );
 #else
 			// MPS.Create should always return new instance, and creator delegate should be cached for performance.
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 			var factory =
 				_creatorCache.GetOrAdd(
 					targetType,
@@ -411,9 +405,9 @@ namespace MsgPack.Serialization
 							Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type )
 						) as Func<SerializationContext, MessagePackSerializer>
 				);
-#endif // NETFX_CORE
+#endif // NETSTD_11 || NETSTD_13
 			return factory( context );
-#endif // XAMIOS || XAMDROID || UNITY else
+#endif // AOT
 		}
 
 		/// <summary>
@@ -540,7 +534,7 @@ namespace MsgPack.Serialization
 			return context.GetSerializer( targetType, providerParameter );
 		}
 
-#if XAMIOS || XAMDROID || UNITY
+#if AOT
 		private static readonly System.Reflection.MethodInfo CreateInternal_2 = 
 			typeof( MessagePackSerializer ).GetMethod( 
 				"CreateInternal", 
@@ -552,7 +546,7 @@ namespace MsgPack.Serialization
 
 		internal static MessagePackSerializer CreateInternal( SerializationContext context, Type targetType, PolymorphismSchema schema )
 		{
-#if UNITY_ANDROID || UNITY
+#if UNITY
 			return
 				(
 					Delegate.CreateDelegate( 
@@ -564,9 +558,9 @@ namespace MsgPack.Serialization
 			return 
 				( CreateInternal_2.MakeGenericMethod( targetType ).CreateDelegate( typeof( Func<SerializationContext, PolymorphismSchema, object> ) ) 
 				as Func<SerializationContext, PolymorphismSchema, object> )( context, schema ) as MessagePackSerializer;
-#endif
+#endif // UNITY
 		}
-#endif // XAMIOS || XAMDROID || UNITY
+#endif // AOT
 
 		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context, Type concreteType, PolymorphismSchema schema )
 		{

@@ -20,11 +20,7 @@
 
 using System;
 using System.Collections.Generic;
-#if CORE_CLR
-using Contract = MsgPack.MPContract;
-#else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -189,11 +185,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			var underyingType = Enum.GetUnderlyingType( type.ResolveRuntimeType() );
 
-#if !CORE_CLR
+#if !NETSTD_11
 			switch ( Type.GetTypeCode( underyingType ) )
 #else
-			switch ( WinRTCompatibility.GetTypeCode( underyingType ) )
-#endif // CORE_CLR
+			switch ( NetStandardCompatibility.GetTypeCode( underyingType ) )
+#endif // !NETSTD_11
 			{
 				case TypeCode.Byte:
 				{
@@ -372,7 +368,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override ILConstruct EmitGreaterThanExpression( AssemblyBuilderEmittingContext context, ILConstruct left, ILConstruct right )
 		{
 #if DEBUG && !CORE_CLR
-			Contract.Assert( left.ContextType.ResolveRuntimeType().IsPrimitive && left.ContextType.ResolveRuntimeType() != typeof( string ) );
+			Contract.Assert( left.ContextType.ResolveRuntimeType().GetIsPrimitive() && left.ContextType.ResolveRuntimeType() != typeof( string ) );
 #endif // DEBUG && !CORE_CLR
 			var greaterThan = left.ContextType.ResolveRuntimeType().GetMethod( "op_GreaterThan" );
 			return
@@ -415,7 +411,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override ILConstruct EmitLessThanExpression( AssemblyBuilderEmittingContext context, ILConstruct left, ILConstruct right )
 		{
 #if DEBUG && !CORE_CLR
-			Contract.Assert( left.ContextType.ResolveRuntimeType().IsPrimitive && left.ContextType.ResolveRuntimeType() != typeof( string ) );
+			Contract.Assert( left.ContextType.ResolveRuntimeType().GetIsPrimitive() && left.ContextType.ResolveRuntimeType() != typeof( string ) );
 #endif // DEBUG && !CORE_CLR
 			var lessThan = left.ContextType.ResolveRuntimeType().GetMethod( "op_LessThan" );
 			return
@@ -1094,7 +1090,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-#if !SILVERLIGHT && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+
 		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema )
 		{
 			var asAssemblyBuilderCodeGenerationContext = context as AssemblyBuilderCodeGenerationContext;
@@ -1127,7 +1124,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 				emittingContext.Emitter.CreateEnumConstructor( this.TargetType );
 			}
 		}
-#endif // !SILVERLIGHT && !CORE_CLR
+
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 
 		protected override ILConstruct EmitNewPrivateMethodDelegateExpression( AssemblyBuilderEmittingContext context, MethodDefinition method )
 		{

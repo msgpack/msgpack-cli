@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,11 +20,7 @@
 
 using System;
 using System.Collections.Generic;
-#if CORE_CLR
-using Contract = MsgPack.MPContract;
-#else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -60,9 +56,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Contract.Requires( specification != null );
 			Contract.Requires( baseClass != null );
 
-#if !CORE_CLR
 			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, "Create {0}", specification.SerializerTypeFullName );
-#endif // !CORE_CLR
+
 			this._methodTable = new Dictionary<string, MethodBuilder>();
 			this._fieldTable = new Dictionary<string, FieldBuilder>();
 			this._specification = specification;
@@ -79,12 +74,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 #endif // DEBUG
 			this._isDebuggable = isDebuggable;
 
-#if !NETFX_35 && !CORE_CLR
+#if !NETFX_35 && !NETSTD_11 && !NETSTD_13
 			if ( isDebuggable && SerializerDebugging.DumpEnabled )
 			{
 				SerializerDebugging.PrepareDump( host.Assembly as AssemblyBuilder );
 			}
-#endif // !NETFX_35 && !CORE_CLR
+#endif // !NETFX_35 && !NETSTD_11 && !NETSTD_13
 		}
 
 		#region -- Field --
@@ -165,9 +160,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			if ( isOverride )
 			{
 				var baseMethod =
-					this._typeBuilder.BaseType.GetMethod(
-						methodName,
-						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+					this._typeBuilder.BaseType.GetRuntimeMethod(
+						methodName
 					);
 				builder =
 					this._typeBuilder.DefineMethod(

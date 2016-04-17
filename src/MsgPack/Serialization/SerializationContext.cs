@@ -32,15 +32,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
 #if !UNITY
-#if CORE_CLR
-using Contract = MsgPack.MPContract;
-#else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
 #endif // !UNITY
-#if UNITY || NETFX_CORE
+#if UNITY || NETSTD_11 || NETSTD_13
 using System.Linq;
-#endif // UNITY || NETFX_CORE
+#endif // UNITY || NETSTD_11 || NETSTD_13
 #if UNITY || XAMIOS || XAMDROID || NETFX_CORE
 using System.Reflection;
 #endif // UNITY || XAMIOS || XAMDROID || NETFX_CORE
@@ -931,7 +927,7 @@ namespace MsgPack.Serialization
 #endif // SILVERLIGHT || NETFX_35 || UNITY
 				if ( !this._cache.TryGetValue( targetType.TypeHandle, out func ) || func == null )
 				{
-#if !NETFX_CORE && !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 					func =
 						Delegate.CreateDelegate(
 							typeof( Func<SerializationContext, object, MessagePackSerializer> ),
@@ -942,7 +938,7 @@ namespace MsgPack.Serialization
 						typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" ).CreateDelegate(
 							typeof( Func<SerializationContext, object, MessagePackSerializer> )
 						) as Func<SerializationContext, object, MessagePackSerializer>;
-#endif // !NETFX_CORE
+#endif // !NETSTD_11 && !NETSTD_13
 #if DEBUG && !UNITY
 					Contract.Assert( func != null, "func != null" );
 #endif // if DEBUG && !UNITY
@@ -960,20 +956,20 @@ namespace MsgPack.Serialization
 		private static class SerializerGetter<T>
 		{
 			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
-#if !NETFX_CORE && !CORE_CLR
- Delegate.CreateDelegate(
+#if !NETSTD_11 && !NETSTD_13
+			Delegate.CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> ),
 #if XAMIOS || XAMDROID
 					GetSerializer1Method.MakeGenericMethod( typeof( T ) )
 #else
- Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) )
+					Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) )
 #endif // XAMIOS || XAMDROID
- ) as Func<SerializationContext, object, MessagePackSerializer<T>>;
+				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
 #else
 				Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) ).CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> )
 				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
-#endif // if !NETFX_CORE
+#endif // !NETSTD_11 && !NETSTD_13
 
 			// ReSharper disable UnusedMember.Local
 			// This method is invoked via Reflection on SerializerGetter.Get().

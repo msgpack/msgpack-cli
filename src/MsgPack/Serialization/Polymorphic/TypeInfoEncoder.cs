@@ -354,15 +354,15 @@ namespace MsgPack.Serialization.Polymorphic
 					compressedTypeName.StartsWith( Elipsis, StringComparison.Ordinal )
 						? assemblySimpleName + compressedTypeName
 						: compressedTypeName
-#if !NETFX_CORE && !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 					, throwOnError: true
-#endif // !NETFX_CORE
+#endif // !NETSTD_11 && !NETSTD_13
 				);
 		}
 
 		private static AssemblyName BuildAssemblyName( string assemblySimpleName, byte[] version, string culture, byte[] publicKeyToken )
 		{
-#if !NETFX_CORE && !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 			var assemblyName =
 				new AssemblyName
 				{
@@ -377,11 +377,11 @@ namespace MsgPack.Serialization.Polymorphic
 					CultureInfo =
 						String.IsNullOrEmpty( culture )
 							? null
-#if !WINDOWS_PHONE && !SILVERLIGHT
+#if !SILVERLIGHT
 							: CultureInfo.GetCultureInfo( culture ),
 #else
 							: new CultureInfo( culture ),
-#endif //  !WINDOWS_PHONE
+#endif //  !SILVERLIGHT
 				};
 			assemblyName.SetPublicKeyToken( publicKeyToken );
 			return assemblyName;
@@ -402,7 +402,7 @@ namespace MsgPack.Serialization.Polymorphic
 						( publicKeyToken == null || publicKeyToken.Length == 0 ) ? "null" : Binary.ToHexString( publicKeyToken, false )
 					)
 				);
-#endif // !NETFX_CORE && !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 		}
 
 #if FEATURE_TAP

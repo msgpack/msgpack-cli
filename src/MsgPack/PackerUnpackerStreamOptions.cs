@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace MsgPack
@@ -28,6 +29,15 @@ namespace MsgPack
 	/// </summary>
 	public sealed class PackerUnpackerStreamOptions
 	{
+		private static readonly HashSet<string> _knownMemoryOrBufferingStreams =
+			new HashSet<string>()
+			{
+				"System.IO.MemoryStream",
+				"System.IO.UnmanagedMemoryStream",
+				"System.IO.BufferedStream",
+				"System.IO.FileStream"
+			};
+
 		internal static readonly PackerUnpackerStreamOptions SingletonOwnsStream =
 			new PackerUnpackerStreamOptions { OwnsStream = true };
 
@@ -105,11 +115,7 @@ namespace MsgPack
 			}
 
 #if !SILVERLIGHT
-			if ( ( stream is BufferedStream ) || ( stream is MemoryStream )
-#if !NETFX_CORE && !CORE_CLR
-				|| ( stream is UnmanagedMemoryStream ) || ( stream is FileStream ) 
-#endif // !NETFX_CORE && !CORE_CLR
-			)
+			if ( stream == null || _knownMemoryOrBufferingStreams.Contains( stream.GetType().FullName ) )
 			{
 				// They have in-memory based synchronous read/write optimization.
 				return stream;

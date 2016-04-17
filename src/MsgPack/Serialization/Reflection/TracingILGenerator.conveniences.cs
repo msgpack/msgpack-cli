@@ -2,7 +2,7 @@
 //
 // NLiblet
 //
-// Copyright (C) 2011-2015 FUJIWARA, Yusuke
+// Copyright (C) 2011-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,11 +19,7 @@
 #endregion -- License Terms --
 
 using System;
-#if CORE_CLR
-using Contract = MsgPack.MPContract;
-#else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
 using System.Globalization;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -94,7 +90,7 @@ namespace MsgPack.Serialization.Reflection
 		}
 
 #if DEBUG
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 		private static readonly PropertyInfo _cultureInfo_CurrentCulture = typeof( CultureInfo ).GetProperty( "CurrentCulture" );
 		private static readonly PropertyInfo _cultureInfo_InvariantCulture = typeof( CultureInfo ).GetProperty( "InvariantCulture" );
 
@@ -184,7 +180,7 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( Contract.ForAll( argumentLoadingEmitters, item => item != null ) );
 
 			this.EmitCurrentCulture();
-			this.EmitGetProperty( resource.GetProperty( resourceKey, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static ) );
+			this.EmitGetProperty( resource.GetRuntimeProperty( resourceKey ) );
 			this.EmitStringFormatArgumentAndCall( temporaryLocalArrayIndex, argumentLoadingEmitters );
 		}
 
@@ -246,11 +242,11 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( Contract.ForAll( argumentLoadingEmitters, item => item != null ) );
 
 			this.EmitInvariantCulture();
-			this.EmitGetProperty( resource.GetProperty( resourceKey, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static ) );
+			this.EmitGetProperty( resource.GetRuntimeProperty( resourceKey ) );
 			this.EmitStringFormatArgumentAndCall( temporaryLocalArrayIndex, argumentLoadingEmitters );
 		}
 
-		private static readonly MethodInfo _string_Format = typeof( String ).GetMethod( "Format", BindingFlags.Public | BindingFlags.Static, null, new Type[] { typeof( IFormatProvider ), typeof( string ), typeof( object[] ) }, null );
+		private static readonly MethodInfo _string_Format = typeof( String ).GetRuntimeMethod( "Format", new [] { typeof( IFormatProvider ), typeof( string ), typeof( object[] ) } );
 
 		private void EmitStringFormatArgumentAndCall( int temporaryLocalArrayIndex, Action<TracingILGenerator>[] argumentEmitters )
 		{
@@ -258,7 +254,7 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitAnyLdloc( temporaryLocalArrayIndex );
 			this.EmitCall( _string_Format );
 		}
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 #endif // DEBUG
 
 		/// <summary>
@@ -551,7 +547,7 @@ namespace MsgPack.Serialization.Reflection
 		}
 
 #if DEBUG
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 		/// <summary>
 		///		Emit array initialization code with initializer.
 		///		Post condition is evaluation stack will no be modified as previous state. 
@@ -627,7 +623,7 @@ namespace MsgPack.Serialization.Reflection
 				this.EmitAnyStelem( elementType, null, i, elementLoadingEmitters[ i ] );
 			}
 		}
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 #endif // DEBUG
 
 		private void EmitNewarrCore( Type elementType, long length )
@@ -691,11 +687,11 @@ namespace MsgPack.Serialization.Reflection
 				return;
 			}
 
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 			switch ( Type.GetTypeCode( elementType ) )
 #else
-			switch ( WinRTCompatibility.GetTypeCode( elementType ) )
-#endif // !CORE_CLR
+			switch ( NetStandardCompatibility.GetTypeCode( elementType ) )
+#endif // !NETSTD_11 && !NETSTD_13
 			{
 				case TypeCode.Boolean:
 				case TypeCode.SByte:
@@ -824,11 +820,11 @@ namespace MsgPack.Serialization.Reflection
 				return;
 			}
 
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 			switch ( Type.GetTypeCode( elementType ) )
 #else
-			switch ( WinRTCompatibility.GetTypeCode( elementType ) )
-#endif // !CORE_CLR
+			switch ( NetStandardCompatibility.GetTypeCode( elementType ) )
+#endif // !NETSTD_11 && !NETSTD_13
 			{
 				case TypeCode.Boolean:
 				case TypeCode.SByte:

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ namespace MsgPack.Serialization
 
 		public EnumMemberSerializationMethod GetEnumMemberSerializationMethod()
 		{
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 			var messagePackEnumMemberAttribute = 
 				this.Member.GetCustomAttribute<MessagePackEnumMemberAttribute>();
 			if ( messagePackEnumMemberAttribute != null)
@@ -82,7 +82,7 @@ namespace MsgPack.Serialization
 				return
 					// ReSharper disable once PossibleNullReferenceException
 					( messagePackEnumMemberAttributes[ 0 ] as MessagePackEnumMemberAttribute ).SerializationMethod;
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
 			}
 
 			return EnumMemberSerializationMethod.Default;
@@ -90,7 +90,7 @@ namespace MsgPack.Serialization
 
 		public DateTimeMemberConversionMethod GetDateTimeMemberConversionMethod()
 		{
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 			var messagePackDateTimeMemberAttribute = 
 				this.Member.GetCustomAttribute<MessagePackDateTimeMemberAttribute>();
 			if ( messagePackDateTimeMemberAttribute != null)
@@ -104,7 +104,7 @@ namespace MsgPack.Serialization
 				return
 					// ReSharper disable once PossibleNullReferenceException
 					( messagePackDateTimeMemberAttribute[ 0 ] as MessagePackDateTimeMemberAttribute ).DateTimeConversionMethod;
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
 			}
 
 			return DateTimeMemberConversionMethod.Default;

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,18 +19,18 @@
 #endregion -- License Terms --
 
 using System;
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 using System.Runtime.Serialization;
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 
 namespace MsgPack
 {
 	/// <summary>
 	///		Represents unpacking error when message type is unknown or unavailable.
 	/// </summary>
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 	[Serializable]
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 	public class MessageTypeException : Exception
 	{
 		/// <summary>
@@ -53,7 +53,7 @@ namespace MsgPack
 		/// </param>
 		public MessageTypeException( string message, Exception inner ) : base( message ?? "Invalid message type.", inner ) { }
 
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with serialized data.
 		/// </summary>
@@ -69,6 +69,6 @@ namespace MsgPack
 		///		The class name is <c>null</c> or <see cref="P:HResult"/> is zero (0).
 		///	</exception>
 		protected MessageTypeException( SerializationInfo info, StreamingContext context ) : base( info, context ) { }
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 	}
 }

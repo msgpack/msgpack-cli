@@ -28,11 +28,7 @@
 using System;
 using System.Collections.Generic;
 #if !UNITY
-#if CORE_CLR
-using Contract = MsgPack.MPContract;
-#else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
 #endif // !UNITY
 using System.Globalization;
 using System.Linq;
@@ -124,7 +120,7 @@ namespace MsgPack.Serialization
 #if DEBUG && !UNITY
 			Contract.Assert( type != null, "type != null" );
 #endif // DEBUG && !UNITY
-#if !NETFX_CORE && !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 			var members =
 				type.FindMembers(
 					MemberTypes.Field | MemberTypes.Property,
@@ -137,7 +133,7 @@ namespace MsgPack.Serialization
 				type.GetRuntimeFields().Where( f => !f.IsStatic ).OfType<MemberInfo>()
 					.Concat( type.GetRuntimeProperties().Where( p => p.GetMethod != null && !p.GetMethod.IsStatic ) )
 					.ToArray();
-#endif
+#endif // !NETSTD_11 && !NETSTD_13
 			var filtered = members.Where( item => item.IsDefined( typeof( MessagePackMemberAttribute ) ) ).ToArray();
 
 			if ( filtered.Length > 0 )
@@ -342,11 +338,11 @@ namespace MsgPack.Serialization
 					return false;
 				}
 
-#if !NETFX_CORE
+#if !NETSTD_11 && !NETSTD_13
 				if ( asProperty.GetSetMethod( true ) != null )
 #else
 				if ( asProperty.SetMethod != null )
-#endif
+#endif // !NETSTD_11 && !NETSTD_13
 				{
 					return true;
 				}
@@ -539,11 +535,11 @@ namespace MsgPack.Serialization
 		}
 #endif // !NETFX_35
 
-#if !NETFX_CORE && !SILVERLIGHT
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		public static bool BuiltInSerializerExists( ISerializerGeneratorConfiguration configuration, Type type, CollectionTraits traits )
 		{
 			return GenericSerializer.IsSupported( type, traits, configuration.PreferReflectionBasedSerializer ) || SerializerRepository.InternalDefault.Contains( type );
 		}
-#endif // !NETFX_CORE && !SILVERLIGHT
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 	}
 }

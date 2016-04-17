@@ -20,11 +20,7 @@
 
 using System;
 using System.Diagnostics;
-#if CORE_CLR
-using Contract = MsgPack.MPContract;
-#else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Security;
@@ -48,11 +44,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///	</returns>
 		public static SerializationMethodGeneratorManager Get()
 		{
-#if !SILVERLIGHT && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 			return Get( SerializerDebugging.DumpEnabled ? SerializationMethodGeneratorOption.CanDump : SerializationMethodGeneratorOption.Fast );
 #else
 			return Get( SerializationMethodGeneratorOption.Fast );
-#endif // !SILVERLIGHT && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		}
 
 		/// <summary>
@@ -67,16 +63,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			switch ( option )
 			{
-#if !SILVERLIGHT && !CORE_CLR
+#if !SILVERLIGHT
+#if !NETSTD_11 && !NETSTD_13
 				case SerializationMethodGeneratorOption.CanDump:
 				{
 					return CanDump;
 				}
+#endif // !NETSTD_11 && !NETSTD_13
 				case SerializationMethodGeneratorOption.CanCollect:
 				{
 					return CanCollect;
 				}
-#endif // !SILVERLIGHT && !CORE_CLR
+#endif // !SILVERLIGHT
 				default:
 				{
 					return Fast;
@@ -90,7 +88,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		private static int _assemblySequence = -1;
 
-#if !SILVERLIGHT && !CORE_CLR
+#if !SILVERLIGHT
 
 		private static SerializationMethodGeneratorManager _canCollect = new SerializationMethodGeneratorManager( false, true, null );
 
@@ -102,6 +100,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			get { return _canCollect; }
 		}
 
+#if !NETSTD_11 && !NETSTD_13
 		private static SerializationMethodGeneratorManager _canDump = new SerializationMethodGeneratorManager( true, false, null );
 
 		/// <summary>
@@ -112,7 +111,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			get { return _canDump; }
 		}
 
-#endif // !SILVERLIGHT && !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT
 
 		private static SerializationMethodGeneratorManager _fast = new SerializationMethodGeneratorManager( false, false, null );
 
@@ -126,19 +126,19 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		internal static void Refresh()
 		{
-#if !SILVERLIGHT && !CORE_CLR
+#if !SILVERLIGHT
 			_canCollect = new SerializationMethodGeneratorManager( false, true, null );
+#if !NETSTD_11 && !NETSTD_13
 			_canDump = new SerializationMethodGeneratorManager( true, false, null );
-#endif // !SILVERLIGHT && !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT
 			_fast = new SerializationMethodGeneratorManager( false, false, null );
 		}
 
-#if !WINDOWS_PHONE
 		// ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
 		private readonly AssemblyBuilder _assembly;
 		private readonly ModuleBuilder _module;
 		private readonly bool _isDebuggable;
-#endif
 
 #if NETFX_35
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "isCollectable", Justification = "Used in other platforms" )]
@@ -154,18 +154,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 			if ( assemblyBuilder != null )
 			{
 				assemblyName =
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 					assemblyBuilder.GetName( false ).Name;
 #else
 					assemblyBuilder.GetName().Name;
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 				this._assembly = assemblyBuilder;
 			}
 			else
 			{
 				assemblyName = typeof( SerializationMethodGeneratorManager ).Namespace + ".GeneratedSerealizers" + Interlocked.Increment( ref _assemblySequence );
 				var dedicatedAssemblyBuilder =
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 					AppDomain.CurrentDomain.DefineDynamicAssembly(
 						new AssemblyName( assemblyName ),
 						isDebuggable
@@ -181,13 +181,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 						new AssemblyName( assemblyName ),
 						isCollectable ? AssemblyBuilderAccess.RunAndCollect : AssemblyBuilderAccess.Run
 					);
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 
 				SetUpAssemblyBuilderAttributes( dedicatedAssemblyBuilder, isDebuggable );
 				this._assembly = dedicatedAssemblyBuilder;
 			}
 
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 			if ( isDebuggable )
 			{
 				this._module = this._assembly.DefineDynamicModule( assemblyName, assemblyName + ".dll", true );
@@ -198,7 +198,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 #else
 			this._module = this._assembly.DefineDynamicModule( assemblyName );
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 		}
 
 		internal static void SetUpAssemblyBuilderAttributes( AssemblyBuilder dedicatedAssemblyBuilder, bool isDebuggable )
@@ -225,7 +225,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					new object[] { 8 }
 				)
 			);
-#if !NETFX_35 && !CORE_CLR
+#if !NETFX_35 && !NETSTD_11 && !NETSTD_13
 			dedicatedAssemblyBuilder.SetCustomAttribute(
 				new CustomAttributeBuilder(
 					// ReSharper disable once AssignNullToNotNullAttribute
@@ -235,7 +235,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					new object[] { true }
 				)
 			);
-#endif // !NETFX_35 && !CORE_CLR
+#endif // !NETFX_35 && !NETSTD_11 && !NETSTD_13
 		}
 
 		/// <summary>

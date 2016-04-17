@@ -173,11 +173,10 @@ var notInSLs =
 		typeof( System.Collections.Specialized.BitVector32 ),
 	};
 
-var notInWPs =
+var notInNetStandard1_1 =
 	new HashSet<Type>()
 	{
-		typeof( System.Numerics.BigInteger ),
-		typeof( System.Numerics.Complex ),
+		typeof( System.Collections.Specialized.BitVector32 ),
 	};
 
 #>
@@ -244,14 +243,14 @@ foreach( Type type in types )
 	if ( notInSLs.Contains( type ) )
 	{
 #>
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT
 <#
 	}
 	
-	if ( notInWPs.Contains( type ) )
+	if ( notInNetStandard1_1.Contains( type ) )
 	{
 #>
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !NETSTD_11
 <#
 	}
 
@@ -493,17 +492,17 @@ foreach( var ctor in ctors )
 
 	}
 <#
-	if ( notInWPs.Contains( type ) )
+	if ( notInNetStandard1_1.Contains( type ) )
 	{
 #>
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !NETSTD_11
 <#
 	}
 
 	if ( notInSLs.Contains( type ) )
 	{
 #>
-#endif // !SILVERLIGHT && !NETFX_CORE
+#endif // !SILVERLIGHT
 <#
 	}
 

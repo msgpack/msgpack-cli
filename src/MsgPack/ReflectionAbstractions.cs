@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,11 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 #if !UNITY
-#if CORE_CLR
-using Contract = MsgPack.MPContract;
-#else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
 #endif // !UNITY
 using System.Linq;
 using System.Reflection;
@@ -45,122 +41,131 @@ namespace MsgPack
 
 		public static bool GetIsValueType( this Type source )
 		{
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 			return source.GetTypeInfo().IsValueType;
 #else
 			return source.IsValueType;
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
 		}
 
 		public static bool GetIsEnum( this Type source )
 		{
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 			return source.GetTypeInfo().IsEnum;
 #else
 			return source.IsEnum;
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
 		}
 
 		public static bool GetIsInterface( this Type source )
 		{
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 			return source.GetTypeInfo().IsInterface;
 #else
 			return source.IsInterface;
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
 		}
 
 		public static bool GetIsAbstract( this Type source )
 		{
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 			return source.GetTypeInfo().IsAbstract;
 #else
 			return source.IsAbstract;
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
 		}
 
 		public static bool GetIsGenericType( this Type source )
 		{
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 			return source.GetTypeInfo().IsGenericType;
 #else
 			return source.IsGenericType;
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
 		}
 
 		public static bool GetIsGenericTypeDefinition( this Type source )
 		{
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 			return source.GetTypeInfo().IsGenericTypeDefinition;
 #else
 			return source.IsGenericTypeDefinition;
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
 		}
 
 #if DEBUG
 		public static bool GetContainsGenericParameters( this Type source )
 		{
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 			return source.GetTypeInfo().ContainsGenericParameters;
 #else
 			return source.ContainsGenericParameters;
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
 		}
 #endif // DEBUG
 
 		public static Assembly GetAssembly( this Type source )
 		{
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 			return source.GetTypeInfo().Assembly;
 #else
 			return source.Assembly;
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
 		}
 
 		public static bool GetIsVisible( this Type source )
 		{
-#if !NETFX_CORE && !CORE_CLR
-			return source.IsVisible;
-#else
+#if NETSTD_11 || NETSTD_13
 			return source.GetTypeInfo().IsVisible;
-#endif // !NETFX_CORE && !CORE_CLR
+#else
+			return source.IsVisible;
+#endif // NETSTD_11 || NETSTD_13
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Wrong detection" )]
 		public static bool GetIsPublic( this Type source )
 		{
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 			return source.GetTypeInfo().IsPublic;
 #else
 			return source.IsPublic;
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
+		}
+
+		public static bool GetIsPrimitive( this Type source )
+		{
+#if NETSTD_11 || NETSTD_13
+			return source.GetTypeInfo().IsPrimitive;
+#else
+			return source.IsPrimitive;
+#endif // NETSTD_11 || NETSTD_13
 		}
 
 		public static Type GetBaseType( this Type source )
 		{
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 			return source.GetTypeInfo().BaseType;
 #else
 			return source.BaseType;
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
 		}
 		public static MethodBase GetDeclaringMethod( this Type source )
 		{
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 			return source.GetTypeInfo().DeclaringMethod;
 #else
 			return source.DeclaringMethod;
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
 		}
 
 
 		public static Type[] GetGenericTypeParameters( this Type source )
 		{
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 			return source.GetTypeInfo().GenericTypeParameters;
 #else
 			return source.GetGenericArguments().Where( t => t.IsGenericParameter ).ToArray();
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
 		}
 
 		public static MethodInfo GetRuntimeMethod( this Type source, string name )
@@ -183,7 +188,7 @@ namespace MsgPack
 			}
 		}
 
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 		public static MethodInfo GetRuntimeMethod( this Type source, string name, Type[] parameters )
 		{
 			return
@@ -213,7 +218,16 @@ namespace MsgPack
 					BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic
 				);
 		}
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
+
+		public static ConstructorInfo GetRuntimeConstructor( this Type source, Type[] parameters )
+		{
+#if NETSTD_11 || NETSTD_13
+			return source.GetTypeInfo().DeclaredConstructors.SingleOrDefault( c => c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameters ) );
+#else
+			return source.GetConstructor( BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, parameters, null );
+#endif // NETSTD_11 || NETSTD_13
+		}
 
 #if NETFX_35 || NETFX_40 || SILVERLIGHT
 		public static Delegate CreateDelegate( this MethodInfo source, Type delegateType )
@@ -228,7 +242,7 @@ namespace MsgPack
 
 #endif // NETFX_35 || NETFX_40 || SILVERLIGHT
 
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 		public static MethodInfo GetMethod( this Type source, string name )
 		{
 			return source.GetRuntimeMethods().SingleOrDefault( m => m.Name == name && m.DeclaringType == source );
@@ -330,9 +344,7 @@ namespace MsgPack
 
 		public static InterfaceMapping GetInterfaceMap( this Type source, Type interfaceType )
 		{
-#if CORE_CLR
 #warning CoreCLR does not implement InterfaceMap yet. See https://github.com/dotnet/corefx/issues/5381
-#endif // CORE_CLR
 			return source.GetTypeInfo().GetRuntimeInterfaceMap( interfaceType );
 		}
 
@@ -386,7 +398,7 @@ namespace MsgPack
 			return source.GetType();
 		}
 #endif // !SILVERLIGHT
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
 
 		public static string GetCultureName( this AssemblyName source )
 		{
@@ -409,12 +421,12 @@ namespace MsgPack
 		}
 #endif // NETFX_35 || UNITY
 
-#if NETFX_CORE || CORE_CLR
+#if NETSTD_11 || NETSTD_13
 		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this ParameterInfo source )
 		{
 			return source.CustomAttributes;
 		}
-#endif // NETFX_CORE || CORE_CLR
+#endif // NETSTD_11 || NETSTD_13
 
 #if SILVERLIGHT
 		public static IEnumerable<Attribute> GetCustomAttributesData( this MemberInfo source )

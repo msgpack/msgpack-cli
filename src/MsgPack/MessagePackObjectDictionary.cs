@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -47,9 +47,9 @@ namespace MsgPack
 	///		Additionally, this dictionary implements 'freezing' feature. 
 	///		For details, see <see cref="IsFrozen"/>, <see cref="Freeze"/>, and <see cref="AsFrozen"/>.
 	/// </remarks>
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 	[Serializable]
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 	[DebuggerTypeProxy( typeof( DictionaryDebuggerProxy<,> ) )]
 	public partial class MessagePackObjectDictionary :
 		IDictionary<MessagePackObject, MessagePackObject>, IDictionary
@@ -509,11 +509,11 @@ namespace MsgPack
 				return new MessagePackObject( asMessagePackString );
 			}
 
-#if NETFX_CORE || CORE_CLR
-			switch ( WinRTCompatibility.GetTypeCode( value.GetType() ) )
+#if NETSTD_11
+			switch ( NetStandardCompatibility.GetTypeCode( value.GetType() ) )
 #else
 			switch ( Type.GetTypeCode( value.GetType() ) )
-#endif // NETFX_CORE
+#endif // NETSTD_11
 			{
 				case TypeCode.Boolean:
 				{

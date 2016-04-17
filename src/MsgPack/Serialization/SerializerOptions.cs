@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2012-2015 FUJIWARA, Yusuke
+// Copyright (C) 2012-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,11 +25,7 @@
 using System;
 using System.Threading;
 #if !UNITY
-#if CORE_CLR
-using Contract = MsgPack.MPContract;
-#else
 using System.Diagnostics.Contracts;
-#endif
 #endif // !UNITY
 
 namespace MsgPack.Serialization
@@ -39,9 +35,9 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed class SerializerOptions
 	{
-#if XAMIOS || XAMDROID || UNITY_IPHONE || UNITY_ANDROID
+#if AOT
 		private int _emitterFlavor = ( int )EmitterFlavor.ReflectionBased;
-#elif !NETFX_CORE
+#elif !WINDOWS_PHONE
 		private int _emitterFlavor = ( int )EmitterFlavor.FieldBased;
 #else
 		private int _emitterFlavor = ( int )EmitterFlavor.ExpressionBased;
@@ -62,7 +58,7 @@ namespace MsgPack.Serialization
 			set { Volatile.Write( ref this._emitterFlavor, ( int )value ); }
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT
 
 		private int _generatorOption;
 
@@ -86,10 +82,12 @@ namespace MsgPack.Serialization
 				switch ( value )
 				{
 					case SerializationMethodGeneratorOption.Fast:
-#if !SILVERLIGHT && !CORE_CLR
+#if !SILVERLIGHT
 					case SerializationMethodGeneratorOption.CanCollect:
+#if !NETSTD_11 && !NETSTD_13
 					case SerializationMethodGeneratorOption.CanDump:
-#endif // !SILVERLIGHT && !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT
 					{
 						break;
 					}
@@ -136,7 +134,7 @@ namespace MsgPack.Serialization
 #endif // NETFX_35 || UNITY || SILVERLIGHT
 			}
 		}
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT
 
 #if FEATURE_TAP
 
@@ -164,9 +162,9 @@ namespace MsgPack.Serialization
 #if FEATURE_TAP
 			this.WithAsync = true;
 #endif // FEATURE_TAP
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT
 			this.GeneratorOption = SerializationMethodGeneratorOption.Fast;
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT
 		}
 	}
 }

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2015 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,11 +19,7 @@
 #endregion -- License Terms --
 
 using System;
-#if CORE_CLR
-using Contract = MsgPack.MPContract;
-#else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -50,9 +46,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public SerializerEmitter( SerializationContext context, ModuleBuilder host, SerializerSpecification specification, bool isDebuggable )
 			: this( host, specification, typeof( EnumMessagePackSerializer<> ).MakeGenericType( specification.TargetType ), isDebuggable )
 		{
-#if !CORE_CLR
 			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, "Create {0}", specification.SerializerTypeFullName );
-#endif // !CORE_CLR
 
 			this._defaultEnumSerializationMethod = context.EnumSerializationMethod;
 		}
@@ -90,12 +84,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 				ContextConstructorParameterTypes,
 				( _, il ) => this.EmitDefaultEnumConstructor( methodConstructor, il )
 			);
-
-#if !CORE_CLR
-			var ctor = this._typeBuilder.CreateType().GetConstructor( ContextAndEnumSerializationMethodConstructorParameterTypes );
+			var ctor = 
+				this._typeBuilder
+#if !NETSTD_11 && !NETSTD_13
+				.CreateType()
 #else
-			var ctor = this._typeBuilder.CreateTypeInfo().GetConstructor( ContextAndEnumSerializationMethodConstructorParameterTypes );
-#endif // !CORE_CLR
+				.CreateTypeInfo().AsType()
+#endif // !NETSTD_11 && !NETSTD_13
+				.GetRuntimeConstructor( ContextAndEnumSerializationMethodConstructorParameterTypes );
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 			var methodParameter = Expression.Parameter( typeof( EnumSerializationMethod ), "method" );
 #if DEBUG
@@ -145,13 +141,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			il.EmitLdarg_2();
 
 			il.EmitCallConstructor(
-#if !CORE_CLR
-				baseType.GetConstructor(
-					BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, ContextAndEnumSerializationMethodConstructorParameterTypes, null
-				)
-#else
-				baseType.GetConstructor( ContextAndEnumSerializationMethodConstructorParameterTypes )
-#endif
+				baseType.GetRuntimeConstructor( ContextAndEnumSerializationMethodConstructorParameterTypes )
 			);
 
 			il.EmitRet();

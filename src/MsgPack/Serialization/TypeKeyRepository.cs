@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,11 +25,7 @@
 using System;
 using System.Collections.Generic;
 #if !UNITY
-#if CORE_CLR
-using Contract = MsgPack.MPContract;
-#else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
 #endif // !UNITY
 #if NETFX_CORE
 using System.Reflection;
@@ -84,14 +80,14 @@ namespace MsgPack.Serialization
 		private Dictionary<RuntimeTypeHandle, object> GetClonedTable()
 		{
 			bool holdsReadLock = false;
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 			RuntimeHelpers.PrepareConstrainedRegions();
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 			try
 			{
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 				RuntimeHelpers.PrepareConstrainedRegions();
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 				try { }
 				finally
 				{
@@ -123,14 +119,14 @@ namespace MsgPack.Serialization
 		private bool GetCore( Type type, out object matched, out object genericDefinitionMatched )
 		{
 			bool holdsReadLock = false;
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 			RuntimeHelpers.PrepareConstrainedRegions();
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 			try
 			{
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 				RuntimeHelpers.PrepareConstrainedRegions();
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 				try { }
 				finally
 				{
@@ -190,14 +186,14 @@ namespace MsgPack.Serialization
 			if ( allowOverwrite || !this.ContainsType( key, nullableType ) )
 			{
 				bool holdsWriteLock = false;
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 				RuntimeHelpers.PrepareConstrainedRegions();
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 				try
 				{
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 					RuntimeHelpers.PrepareConstrainedRegions();
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 					try { }
 					finally
 					{
@@ -257,14 +253,14 @@ namespace MsgPack.Serialization
 			if ( this._table.ContainsKey( key.TypeHandle ) )
 			{
 				bool holdsWriteLock = false;
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 				RuntimeHelpers.PrepareConstrainedRegions();
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 				try
 				{
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 					RuntimeHelpers.PrepareConstrainedRegions();
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 					try { }
 					finally
 					{
@@ -291,14 +287,14 @@ namespace MsgPack.Serialization
 		internal bool Contains( Type type )
 		{
 			bool holdsReadLock = false;
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 			RuntimeHelpers.PrepareConstrainedRegions();
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 			try
 			{
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 				RuntimeHelpers.PrepareConstrainedRegions();
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 				try { }
 				finally
 				{

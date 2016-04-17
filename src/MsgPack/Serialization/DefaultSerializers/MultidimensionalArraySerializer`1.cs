@@ -81,7 +81,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes", Justification = "Avoided via ownsStream: false" )]
 		private void PackArrayCore( Packer packer, Array array )
 		{
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 			var longLength = array.LongLength;
 			if ( longLength > Int32.MaxValue )
 			{
@@ -91,7 +91,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			var totalLength = unchecked( ( int )longLength );
 #else
 			var totalLength = array.Length;
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 			int[] lowerBounds, lengths;
 			GetArrayMetadata( array, out lengths, out lowerBounds );
 
@@ -324,7 +324,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes", Justification = "Avoided via ownsStream: false" )]
 		private async Task PackArrayAsyncCore( Packer packer, Array array, CancellationToken cancellationToken )
 		{
-#if !NETFX_CORE && !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 			var longLength = array.LongLength;
 			if ( longLength > Int32.MaxValue )
 			{
@@ -334,7 +334,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			var totalLength = unchecked( ( int )longLength );
 #else
 			var totalLength = array.Length;
-#endif // !NETFX_CORE && !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 			int[] lowerBounds, lengths;
 			GetArrayMetadata( array, out lengths, out lowerBounds );
 

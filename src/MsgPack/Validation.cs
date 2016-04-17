@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,11 +24,7 @@
 
 using System;
 #if !UNITY
-#if CORE_CLR
-using Contract = MsgPack.MPContract;
-#else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
 #endif // !UNITY
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -66,9 +62,9 @@ namespace MsgPack
 		private static readonly Regex NamespacePattern =
 			new Regex(
 				"^(" + UnicodeTr15Annex7Idneifier + @")(\." + UnicodeTr15Annex7Idneifier + ")*$",
-#if !SILVERLIGHT && !NETFX_CORE && !UNITY && !CORE_CLR
+#if !SILVERLIGHT && !UNITY && !NETSTD_11 && !NETSTD_13
 				RegexOptions.Compiled |
-#endif // !SILVERLIGHT && !NETFX_CORE && !UNITY && !CORE_CLR
+#endif // !SILVERLIGHT && !UNITY && !NETSTD_11 && !NETSTD_13
 				RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Singleline
 			);
 

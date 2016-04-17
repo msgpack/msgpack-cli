@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -45,9 +45,9 @@ namespace MsgPack
 	/// <summary>
 	///		Encapselates <see cref="String"/> and its serialized UTF-8 bytes.
 	/// </summary>
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 	[Serializable]
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 #if !NETFX_35 && !UNITY
 	[SecuritySafeCritical]
 #endif // !NETFX_35 && !UNITY
@@ -342,9 +342,9 @@ namespace MsgPack
 		}
 #endif // if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
 
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		[Serializable]
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		private enum BinaryType
 		{
 			Unknwon = 0,

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,18 +19,18 @@
 #endregion -- License Terms --
 
 using System;
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 using System.Runtime.Serialization;
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 
 namespace MsgPack
 {
 	/// <summary>
 	///		Exception occurs when serialized stream contains structures or features which will never be supported by MsgPack/CLI implementation.
 	/// </summary>
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 	[Serializable]
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 	public sealed class MessageNotSupportedException : Exception
 	{
 		/// <summary>
@@ -53,7 +53,7 @@ namespace MsgPack
 		/// </param>
 		public MessageNotSupportedException( string message, Exception inner ) : base( message ?? "Specified object is not supported.", inner ) { }
 
-#if !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageNotSupportedException"/> class with serialized data.
 		/// </summary>
@@ -70,6 +70,6 @@ namespace MsgPack
 		///	</exception>
 		private MessageNotSupportedException( SerializationInfo info, StreamingContext context )
 			: base( info, context ) { }
-#endif // !SILVERLIGHT && !NETFX_CORE && !CORE_CLR
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 	}
 }

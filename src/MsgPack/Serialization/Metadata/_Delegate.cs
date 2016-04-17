@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@ namespace MsgPack.Serialization.Metadata
 {
 	internal static class _Delegate
 	{
-#if !NETFX_CORE && !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 		public static readonly MethodInfo CreateDelegate3 =
 			FromExpression.ToMethod( ( Type type, object firstArgument, MethodInfo method ) => Delegate.CreateDelegate( type, firstArgument, method ) );
-#endif // !NETFX_CORE && !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 	}
 }

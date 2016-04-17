@@ -151,7 +151,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			this._runtimeMethod = runtimeMethod;
 			this.ReturnType = runtimeMethod.ReturnType;
 			this.ParameterTypes = parameterTypes.ToArray();
-			if ( runtimeMethod.Name.Contains( '.' ) && !runtimeMethod.GetIsPublic() )
+			if ( runtimeMethod.Name.Contains( "." ) && !runtimeMethod.GetIsPublic() )
 			{
 				// should be explicit interface impl.
 				this.Interface = @interface;

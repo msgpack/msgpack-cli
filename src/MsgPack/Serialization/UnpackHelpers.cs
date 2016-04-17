@@ -975,9 +975,9 @@ namespace MsgPack.Serialization
 		[Conditional( "TRACING" )]
 		private static void TraceCore( string format, params object[] args )
 		{
-#if !UNITY && !SILVERLIGHT && !NETFX_CORE && !XAMIOS && !XAMDROID && !CORE_CLR
+#if !UNITY && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 			Tracer.Tracing.TraceEvent( Tracer.EventType.Trace, Tracer.EventId.Trace, format, args );
-#endif // !UNITY && !SILVERLIGHT && !NETFX_CORE && !XAMIOS && !XAMDROID && !CORE_CLR
+#endif // !UNITY && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		}
 
 		private sealed class UnpackerTraceContext

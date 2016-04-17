@@ -18,33 +18,38 @@
   },
   "compile": [
     "../../../MsgPack/**/*.cs",
-    "../../../CommonAssemblyInfo.cs"
+    "../../../CommonAssemblyInfo.cs",
+    "../../BufferedStream.cs",
+    "../../NetStandardCompatibility.cs"
   ],
   "compileExclude": [
     "../../../MsgPack/Serialization/ExpressionSerializers/**/*.*",
     "../../../MsgPack/Properties/AssemblyInfo.cs",
+    "../../../MsgPack/Serialization/AbstractSerializers/ISerializerCodeGenerationContext.cs",
+    "../../../MsgPack/Serialization/AbstractSerializers/ISerializerCodeGenerator.cs",
     "../../../MsgPack/Serialization/CodeDomSerializers/**/*.*",
     "../../../MsgPack/Serialization/DefaultSerializers/System_Collections_Queue*",
     "../../../MsgPack/Serialization/DefaultSerializers/System_Collections_Stack*",
     "../../../MsgPack/Serialization/DefaultSerializers/System_Collections_Specialized_*",
-    "../../../MsgPack/Serialization/DefaultSerializers/FileTimeMessagePackSerializerProvider.cs",
-    "../../../MsgPack/Serialization/DefaultSerializers/NativeFileTimeMessagePackSerializer.cs",
-    "../../../MsgPack/Serialization/DefaultSerializers/UnixEpocFileTimeMessagePackSerializer.cs",
-    "../../../MsgPack/Serialization/DefaultSerializers/SimdTypeSerializers.cs",
     "../../../MsgPack/Serialization/DefaultSerializers/System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs",
-    "../../../MsgPack/Serialization/Tracer.cs",
-    "../../../MsgPack/Serialization/MPContracts.cs"
+    "../../../MsgPack/Serialization/EmittingSerializers/AssemblyBuilderCodeGenerationContext.cs",
+    "../../../MsgPack/Serialization/SerializerAssemblyGenerationConfiguration.cs",
+    "../../../MsgPack/Serialization/SerializerCodeGenerationConfiguration.cs",
+    "../../../MsgPack/Serialization/SerializerGenerator.cs",
+    "../../../MsgPack/Serialization/SerializerCodeGenerationContext.cs",
+    "../../../MsgPack/Serialization/SerializerCodeGenerationResult.cs"
   ],
   "frameworks": {
     "netstandard1.1": {
       "compilationOptions": {
-        "define": [ "NETSTD_11", "CORE_CLR" ]
+        "define": [ "NETSTD_11" ]
       },
       "dependencies": {
         "NETStandard.Library": "(1.5.0-rc3-24015-*,]",
         "System.Data.Common": "(4.0.1-rc3-24015-*,]",
         "System.Diagnostics.Contracts": "(4.0.1-rc3-24015-*,]",
         "System.Linq.Expressions": "(4.0.11-rc3-24015-*,]",
+        "System.Numerics.Vectors": "(4.1.1-rc3-24015-*,]",
         "System.Reflection.Emit": "(4.0.1-rc3-24015-*,]",
         "System.Runtime.Numerics": "(4.0.1-rc3-24015-*,]",
         "System.Runtime.Serialization.Primitives": "(4.1.1-rc3-24015-*,]"

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,6 +20,9 @@
 
 using System;
 using System.Diagnostics;
+#if NETSTD_11
+using System.Globalization;
+#endif // NETSTD_11
 
 namespace MsgPack.Serialization
 {
@@ -50,4 +53,37 @@ namespace MsgPack.Serialization
 			public const TraceEventType UnsupportedType = TraceEventType.Information;
 		}
 	}
+
+#if NETSTD_11
+	internal enum TraceEventType
+	{
+		Critical = 1,
+		Error = 2,
+		Information = 8,
+		Verbose = 16,
+		Warning = 4,
+	}
+
+	internal class TraceSource
+	{
+		private readonly string _name;
+
+		public TraceSource( string name )
+		{
+			this._name = name;
+		}
+
+		[Conditional( "TRACE" )]
+		public void TraceEvent( TraceEventType eventType, int id, string format, params object[] args )
+		{
+			Debug.WriteLine( String.Format( CultureInfo.InvariantCulture, "{0} {1}: {2} : {3}", this._name, eventType, id, String.Format( CultureInfo.InvariantCulture, format, args ) ) );
+		}
+
+		[Conditional( "TRACE" )]
+		public void TraceData( TraceEventType eventType, int id, object data )
+		{
+			Debug.WriteLine( String.Format( CultureInfo.InvariantCulture, "{0} {1}: {2} : {3}", this._name, eventType, id, data ) );
+		}
+	}
+#endif // NETSTD_11
 }

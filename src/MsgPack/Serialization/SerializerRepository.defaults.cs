@@ -97,21 +97,23 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( System.UInt16 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UInt16MessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( System.UInt32 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UInt32MessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( System.UInt64 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UInt64MessagePackSerializer( ownerContext ) );
+#if !NETSTD_11
 #if !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT && !NETFX_CORE && !XAMIOS && !XAMDROID
 			dictionary.Add( typeof( System.Security.Cryptography.HashAlgorithmName ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer( ownerContext ) );
 #endif // !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT && !NETFX_CORE && !XAMIOS && !XAMDROID
-#if !SILVERLIGHT && !NETFX_CORE
+#endif // !NETSTD_11
+#if !NETSTD_11
+#if !SILVERLIGHT
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Collections.Specialized.BitVector32 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_Specialized_BitVector32MessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
-#endif // !SILVERLIGHT && !NETFX_CORE
-#if !WINDOWS_PHONE
+#endif // !SILVERLIGHT
+#endif // !NETSTD_11
 #if !NETFX_35 && !UNITY
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Numerics.BigInteger ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_BigIntegerMessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #endif // !NETFX_35 && !UNITY
-#endif // !WINDOWS_PHONE
 #if !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT && !NETFX_CORE && !XAMIOS && !XAMDROID
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Numerics.Matrix3x2 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_Matrix3x2MessagePackSerializer( ownerContext ) );
@@ -152,12 +154,16 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 			dictionary.Add( typeof( System.Globalization.CultureInfo ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Globalization_CultureInfoMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( System.Collections.DictionaryEntry ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_DictionaryEntryMessagePackSerializer( ownerContext ) );
-#if !SILVERLIGHT && !NETFX_CORE
+#if !NETSTD_11
+#if !SILVERLIGHT
 			dictionary.Add( typeof( System.Collections.Stack ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_StackMessagePackSerializer( ownerContext ) );
-#endif // !SILVERLIGHT && !NETFX_CORE
-#if !SILVERLIGHT && !NETFX_CORE
+#endif // !SILVERLIGHT
+#endif // !NETSTD_11
+#if !NETSTD_11
+#if !SILVERLIGHT
 			dictionary.Add( typeof( System.Collections.Queue ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_QueueMessagePackSerializer( ownerContext ) );
-#endif // !SILVERLIGHT && !NETFX_CORE
+#endif // !SILVERLIGHT
+#endif // !NETSTD_11
 #if !UNITY
 			dictionary.Add( typeof( System.Collections.Generic.KeyValuePair<,> ).TypeHandle, typeof( System_Collections_Generic_KeyValuePair_2MessagePackSerializer<, > ) );
 #endif // !UNITY
@@ -167,22 +173,22 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Collections.Generic.Queue<> ).TypeHandle, typeof( System_Collections_Generic_Queue_1MessagePackSerializer<> ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
-#if !WINDOWS_PHONE
 #if !NETFX_35 && !UNITY
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Numerics.Complex ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_ComplexMessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #endif // !NETFX_35 && !UNITY
-#endif // !WINDOWS_PHONE
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Uri ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UriMessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Version ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_VersionMessagePackSerializer( ownerContext ) );
-#if !SILVERLIGHT && !NETFX_CORE
+#if !NETSTD_11
+#if !SILVERLIGHT
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Collections.Specialized.NameValueCollection ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_Specialized_NameValueCollectionMessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
-#endif // !SILVERLIGHT && !NETFX_CORE
+#endif // !SILVERLIGHT
+#endif // !NETSTD_11
 			return dictionary;
 		}
 	}

@@ -2,7 +2,7 @@
 //
 // NLiblet
 //
-// Copyright (C) 2011-2015 FUJIWARA, Yusuke
+// Copyright (C) 2011-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -189,7 +189,6 @@ namespace MsgPack.Serialization.Reflection
 		private readonly bool _isDebuggable;
 
 #if DEBUG
-#if !WINDOWS_PHONE
 		/// <summary>
 		///		Initializes a new instance of the <see cref="TracingILGenerator"/> class.
 		/// </summary>
@@ -200,10 +199,9 @@ namespace MsgPack.Serialization.Reflection
 		{
 			Contract.Assert( methodBuilder != null );
 		}
-#endif
 #endif // DEBUG
 
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TracingILGenerator"/> class.
 		/// </summary>
@@ -214,10 +212,10 @@ namespace MsgPack.Serialization.Reflection
 		{
 			Contract.Assert( dynamicMethod != null );
 		}
-#endif // !CORECLR
+#endif // !NETSTD_11 && !NETSTD_13
 
 		// TODO: NLIblet
-#if !WINDOWS_PHONE
+
 		/// <summary>
 		///		Initializes a new instance of the <see cref="TracingILGenerator"/> class.
 		/// </summary>
@@ -241,8 +239,6 @@ namespace MsgPack.Serialization.Reflection
 		{
 			Contract.Assert( constructorBuilder != null );
 		}
-
-#endif
 
 		// TODO: NLiblet
 		private TracingILGenerator( ILGenerator underlying, bool isInDynamicMethod, TextWriter traceWriter, bool isDebuggable )
@@ -364,7 +360,7 @@ namespace MsgPack.Serialization.Reflection
 			var result = this._underlying.DeclareLocal( localType );
 			this._localDeclarations.Add( result, name );
 			// TODO: NLiblet
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 			if ( !this._isInDynamicMethod && this._isDebuggable )
 			{
 				try
@@ -376,7 +372,7 @@ namespace MsgPack.Serialization.Reflection
 					this._isInDynamicMethod = true;
 				}
 			}
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 			return result;
 		}
 
@@ -386,7 +382,7 @@ namespace MsgPack.Serialization.Reflection
 			var result = this._underlying.DeclareLocal( localType, pinned );
 			this._localDeclarations.Add( result, name );
 			// TODO: NLiblet
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 			if ( !this._isInDynamicMethod && this._isDebuggable )
 			{
 				try
@@ -398,7 +394,7 @@ namespace MsgPack.Serialization.Reflection
 					this._isInDynamicMethod = true;
 				}
 			}
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 			return result;
 		}
 #endif // DEBUG
@@ -483,9 +479,9 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( firstCatchBlock != null );
 			Contract.Assert( firstCatchBlock.Item1 != null && firstCatchBlock.Item2 != null );
 			Contract.Assert( remainingCatchBlockEmitters != null );
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 			Contract.Assert( Contract.ForAll( remainingCatchBlockEmitters, item => item != null && item.Item1 != null && item.Item2 != null ) );
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 
 			this.EmitExceptionBlockCore( tryBlockEmitter, firstCatchBlock, remainingCatchBlockEmitters, null );
 		}
@@ -524,9 +520,9 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( tryBlockEmitter != null );
 			Contract.Assert( finallyBlockEmitter != null );
 			Contract.Assert( catchBlockEmitters != null );
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 			Contract.Assert( Contract.ForAll( catchBlockEmitters, item => item != null && item.Item1 != null && item.Item2 != null ) );
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 
 			this.EmitExceptionBlockCore( tryBlockEmitter, null, catchBlockEmitters, finallyBlockEmitter );
 		}
@@ -708,7 +704,7 @@ namespace MsgPack.Serialization.Reflection
 		#region -- Calli --
 
 #if DEBUG
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 		/// <summary>
 		///		Emit 'calli' instruction for indirect unmanaged function call.
 		/// </summary>
@@ -755,7 +751,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.EmitCalli( OpCodes.Calli, managedCallingConventions, returnType, requiredParameterTypes, optionalParameterTypes );
 		}
 
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 #endif // DEBUG
 		#endregion
 #endif // !SILVERLIGHT
@@ -811,7 +807,7 @@ namespace MsgPack.Serialization.Reflection
 		#region -- Tail. --
 
 #if DEBUG
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 		///	<summary>
 		///		Emit 'call' instruction with specified arguments as tail call.
 		///	</summary>
@@ -913,7 +909,7 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitRet();
 		}
 #endif // SILVERLIGHT
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 #endif // DEBUG
 
 		#endregion
@@ -1072,7 +1068,7 @@ namespace MsgPack.Serialization.Reflection
 			// TODO: NLiblet
 #if !SILVERLIGHT
 			var asFieldBuilder = field as FieldBuilder;
-#if !CORE_CLR
+#if !NETSTD_11 && !NETSTD_13
 			if ( asFieldBuilder == null )
 			{
 				var modreqs = field.GetRequiredCustomModifiers();
@@ -1101,7 +1097,7 @@ namespace MsgPack.Serialization.Reflection
 					this._trace.Write( ") " );
 				}
 			}
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 #endif // !SILVERLIGHT
 
 #if !SILVERLIGHT
@@ -1404,36 +1400,38 @@ namespace MsgPack.Serialization.Reflection
 
 		private void TraceOperandToken( Type target )
 		{
-#if !CORE_CLR
 			this.TraceType( target );
+#if !NETSTD_11 && !NETSTD_13
 			this.TraceOperandTokenValue( target.MetadataToken );
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 		}
 
 		private void TraceOperandToken( FieldInfo target )
 		{
-#if !CORE_CLR
 			this._trace.Write( "field " );
 			this.TraceField( target );
+#if !NETSTD_11 && !NETSTD_13
 			this.TraceOperandTokenValue( target.MetadataToken );
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 		}
 
 		private void TraceOperandToken( MethodBase target )
 		{
-#if !CORE_CLR
 			this._trace.Write( "method " );
 			this.TraceMethod( target );
+#if !NETSTD_11 && !NETSTD_13
 			this.TraceOperandTokenValue( target.MetadataToken );
-#endif // !CORE_CLR
+#endif // !NETSTD_11 && !NETSTD_13
 		}
 
+#if !NETSTD_11 && !NETSTD_13
 		private void TraceOperandTokenValue( int value )
 		{
 			this._trace.Write( "<" );
 			this._trace.Write( value.ToString( "x8", CultureInfo.InvariantCulture ) );
 			this._trace.Write( ">" );
 		}
+#endif // !NETSTD_11 && !NETSTD_13
 
 		private void TraceStart()
 		{
