@@ -120,8 +120,14 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayFieldBasedCustomCollectionSerializersTest.cs">
+      <Link>Serialization\ArrayFieldBasedCustomCollectionSerializersTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayReflectionBaedCustomCollectionSerializersTest.cs">
       <Link>Serialization\ArrayReflectionBaedCustomCollectionSerializersTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapFieldBasedCustomCollectionSerializersTest.cs">
+      <Link>Serialization\MapFieldBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapReflectionBasedCustomCollectionSerializersTest.cs">
       <Link>Serialization\MapReflectionBasedCustomCollectionSerializersTest.cs</Link>

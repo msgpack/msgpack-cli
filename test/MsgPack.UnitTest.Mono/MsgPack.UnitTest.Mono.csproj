@@ -1568,12 +1568,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\AppendableReadOnlyCollections.cs">
       <Link>Serialization\AppendableReadOnlyCollections.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs">
-      <Link>Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayExpressionBasedEnumSerializationTest.cs">
-      <Link>Serialization\ArrayExpressionBasedEnumSerializationTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs</Link>
     </Compile>
@@ -1637,9 +1631,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\EnumSerializationTest.EnumDefinitions.cs">
       <Link>Serialization\EnumSerializationTest.EnumDefinitions.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ExpressionBasedNilImplicationTest.cs">
-      <Link>Serialization\ExpressionBasedNilImplicationTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\FieldBasedNilImplicationTest.cs">
       <Link>Serialization\FieldBasedNilImplicationTest.cs</Link>
     </Compile>
@@ -1654,12 +1645,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable`1.cs">
       <Link>Serialization\IVerifiable`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs">
-      <Link>Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MapExpressionBasedEnumSerializationTest.cs">
-      <Link>Serialization\MapExpressionBasedEnumSerializationTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs</Link>

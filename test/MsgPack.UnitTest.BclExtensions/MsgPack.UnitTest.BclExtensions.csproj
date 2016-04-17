@@ -83,8 +83,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Serialization\ArrayReflectionBaedCustomCollectionSerializersTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayReflectionBaedCustomCollectionSerializersTest.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\MapCodeDomBasedCustomCollectionSerializersTest.cs">
       <DependentUpon>MapCodeDomBasedCustomCollectionSerializersTest.tt</DependentUpon>
@@ -96,8 +98,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Serialization\MapReflectionBasedCustomCollectionSerializersTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>MapReflectionBasedCustomCollectionSerializersTest.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +138,16 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Serialization\ArrayReflectionBaedCustomCollectionSerializersTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArrayReflectionBaedCustomCollectionSerializersTest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\MapReflectionBasedCustomCollectionSerializersTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MapReflectionBasedCustomCollectionSerializersTest.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
