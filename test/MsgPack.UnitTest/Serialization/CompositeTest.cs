@@ -43,10 +43,10 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
+#if !SILVERLIGHT
 	[TestFixture]
 	public class CompositeTest
 	{
-#if !SILVERLIGHT
 #if !NETSTD_11 && !NETSTD_13
 
 		[SetUp]

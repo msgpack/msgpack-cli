@@ -173,6 +173,12 @@ var notInSLs =
 		typeof( System.Collections.Specialized.BitVector32 ),
 	};
 
+var notInWP8SLs =
+	new HashSet<Type>()
+	{
+		typeof( System.Numerics.BigInteger ),
+	};
+
 var notInNetStandard1_1 =
 	new HashSet<Type>()
 	{
@@ -257,6 +263,13 @@ foreach( Type type in types )
 	{
 #>
 #if !NETSTD_11
+<#
+	}
+
+	if ( notInWP8SLs.Contains( type ) )
+	{
+#>
+#if !WINDOWS_PHONE
 <#
 	}
 
@@ -509,6 +522,13 @@ foreach( var ctor in ctors )
 	{
 #>
 #endif // !NETFX_35 && !UNITY
+<#
+	}
+
+	if ( notInWP8SLs.Contains( type ) )
+	{
+#>
+#endif // !WINDOWS_PHONE
 <#
 	}
 

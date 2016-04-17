@@ -98,7 +98,7 @@ namespace MsgPack.Serialization
 			set { _avoidsGenericSerializer = value; }
 		}
 
-#if !AOT
+#if !AOT && !SILVERLIGHT
 		[ThreadStatic]
 		private static StringWriter _ilTraceWriter;
 
@@ -159,7 +159,7 @@ namespace MsgPack.Serialization
 			_ilTraceWriter.GetStringBuilder().Length = 0;
 		}
 
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !NETSTD_11 && !NETSTD_13
 		[ThreadStatic]
 		private static AssemblyBuilder _assemblyBuilder;
 
@@ -195,10 +195,7 @@ namespace MsgPack.Serialization
 			_moduleBuilder =
 				_assemblyBuilder.DefineDynamicModule( "ExpressionTreeSerializerLogics", "ExpressionTreeSerializerLogics.dll", true );
 		}
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
-		// TODO: Cleanup %Temp% to delete temp assemblies generated for on the fly code DOM.
 
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		[ThreadStatic]
 		private static IList<string> _runtimeAssemblies;
 
@@ -226,35 +223,35 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
-#if SILVERLIGHT || NETSTD_11 || NETSTD_13
+#endif // !SILVERLIGHT
+#if NETSTD_11 || NETSTD_13
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "pathToAssembly", Justification = "For API compatibility" )]
-#endif // SILVERLIGHT || NETSTD_11 || NETSTD_13
+#endif // NETSTD_11 || NETSTD_13
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void AddRuntimeAssembly( string pathToAssembly )
 		{
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !NETSTD_11 && !NETSTD_13
 			EnsureDependentAssembliesListsInitialized();
 			_runtimeAssemblies.Add( pathToAssembly );
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !NETSTD_11 && !NETSTD_13
 		}
 
-#if SILVERLIGHT || NETSTD_11 || NETSTD_13
+#if NETSTD_11 || NETSTD_13
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "pathToAssembly", Justification = "For API compatibility" )]
-#endif // SILVERLIGHT || NETSTD_11 || NETSTD_13
+#endif // NETSTD_11 || NETSTD_13
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void AddCompiledCodeDomAssembly( string pathToAssembly )
 		{
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !NETSTD_11 && !NETSTD_13
 			EnsureDependentAssembliesListsInitialized();
 			_compiledCodeDomSerializerAssemblies.Add( pathToAssembly );
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !NETSTD_11 && !NETSTD_13
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void ResetDependentAssemblies()
 		{
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !NETSTD_11 && !NETSTD_13
 			EnsureDependentAssembliesListsInitialized();
 
 #if !NETFX_35
@@ -264,10 +261,10 @@ namespace MsgPack.Serialization
 #endif // !NETFX_35
 			_compiledCodeDomSerializerAssemblies.Clear();
 			ResetRuntimeAssemblies();
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !NETSTD_11 && !NETSTD_13
 		}
 
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !NETSTD_11 && !NETSTD_13
 		private static int _wasDeleted;
 		private const string HistoryFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";
 
@@ -331,7 +328,7 @@ namespace MsgPack.Serialization
 #endif // NETFX_35
 			_runtimeAssemblies.Add( typeof( SerializerDebugging ).Assembly.Location );
 		}
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !NETSTD_11 && !NETSTD_13
 
 		[ThreadStatic]
 		private static bool _onTheFlyCodeDomEnabled;
@@ -343,7 +340,7 @@ namespace MsgPack.Serialization
 			set { _onTheFlyCodeDomEnabled = value; }
 		}
 
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !NETSTD_11 && !NETSTD_13
 		/// <summary>
 		///		Creates the new type builder for the serializer.
 		/// </summary>
@@ -374,7 +371,7 @@ namespace MsgPack.Serialization
 			}
 #endif // !NETFX_35
 		}
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !NETSTD_11 && !NETSTD_13
 
 		/// <summary>
 		///		Resets debugging states.
@@ -382,7 +379,6 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void Reset()
 		{
-#if !SILVERLIGHT
 #if !NETSTD_11 && !NETSTD_13
 			_assemblyBuilder = null;
 			_moduleBuilder = null;
@@ -396,10 +392,9 @@ namespace MsgPack.Serialization
 			}
 
 			_traceEnabled = false;
-#endif // !SILVERLIGHT
 			ResetDependentAssemblies();
 		}
-#endif // !AOT
+#endif // !AOT && !SILVERLIGHT
 
 #if DEBUG && FEATURE_TAP
 

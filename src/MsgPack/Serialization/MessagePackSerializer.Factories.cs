@@ -206,7 +206,7 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 #endif // !AOT
 
-#if DEBUG && !AOT
+#if DEBUG && !AOT && !SILVERLIGHT
 			SerializerDebugging.TraceEvent(
 				"SerializationContext::CreateInternal<{0}>(@{1}, {2})",
 				typeof( T ),
@@ -214,7 +214,7 @@ namespace MsgPack.Serialization
 				schema == null ? "null" : schema.DebugString
 			);
 
-#endif // DEBUG && !AOT
+#endif // DEBUG && !AOT && !SILVERLIGHT
 			Type concreteType = null;
 			CollectionTraits collectionTraits = typeof( T ).GetCollectionTraits();
 
@@ -240,7 +240,9 @@ namespace MsgPack.Serialization
 			}
 
 #if !AOT
+#if !SILVERLIGHT
 			ISerializerBuilder builder;
+#endif // !SILVERLIGHT
 			switch ( context.SerializerOptions.EmitterFlavor )
 			{
 #if !SILVERLIGHT
@@ -279,7 +281,7 @@ namespace MsgPack.Serialization
 			}
 #endif // !AOT
 
-#if !AOT
+#if !AOT && !SILVERLIGHT
 			return ( MessagePackSerializer<T> ) builder.BuildSerializerInstance( context, concreteType, schema == null ? null : schema.FilterSelf() );
 #endif // !AOT
 		}

@@ -186,6 +186,12 @@ var notInNet35s =
 		typeof( System.Numerics.BigInteger ),
 		typeof( System.Numerics.Complex ),
 	};
+var notInWP8SLs =
+	new HashSet<Type>()
+	{
+		typeof( System.Numerics.BigInteger ),
+		typeof( System.Numerics.Complex ),
+	};
 var notInSLs =
 	new HashSet<Type>()
 	{
@@ -324,6 +330,13 @@ foreach( Type type in structTypes )
 <#
 	}
 
+	if( notInWP8SLs.Contains( type ) )
+	{
+#>
+#if !WINDOWS_PHONE
+<#
+	}
+
 	if( notInNet35s.Contains( type ) )
 	{
 #>
@@ -352,6 +365,13 @@ foreach( Type type in structTypes )
 	{
 #>
 #endif // !NETFX_35 && !UNITY
+<#
+	}
+
+	if( notInWP8SLs.Contains( type ) )
+	{
+#>
+#endif // !WINDOWS_PHONE
 <#
 	}
 
@@ -396,6 +416,13 @@ foreach( Type type in classTypes )
 	{
 #>
 #if !NETFX_40 && !NETFX_45
+<#
+	}
+
+	if( notInWP8SLs.Contains( type ) )
+	{
+#>
+#if !WINDOWS_PHONE
 <#
 	}
 
@@ -451,6 +478,13 @@ foreach( Type type in classTypes )
 	{
 #>
 #endif // !NETFX_35 && !UNITY
+<#
+	}
+
+	if( notInWP8SLs.Contains( type ) )
+	{
+#>
+#endif // !WINDOWS_PHONE
 <#
 	}
 

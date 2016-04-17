@@ -895,6 +895,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // !SILVERLIGHT
 #endif // !UNITY || MSGPACK_UNITY_FULL
 
+#if !WINDOWS_PHONE
 #if !NETFX_35 && !UNITY
 #if !UNITY || MSGPACK_UNITY_FULL
 	internal sealed class System_Numerics_BigIntegerMessagePackSerializer : MessagePackSerializer< System.Numerics.BigInteger >
@@ -953,6 +954,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	}
 #endif // !NETFX_35 && !UNITY
+#endif // !WINDOWS_PHONE
 #endif // !UNITY || MSGPACK_UNITY_FULL
 	// ReSharper restore RedundantCast
 	// ReSharper restore RedundantNameQualifier

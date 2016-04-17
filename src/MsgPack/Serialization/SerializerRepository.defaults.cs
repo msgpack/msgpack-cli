@@ -109,11 +109,13 @@ namespace MsgPack.Serialization
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #endif // !SILVERLIGHT
 #endif // !NETSTD_11
+#if !WINDOWS_PHONE
 #if !NETFX_35 && !UNITY
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Numerics.BigInteger ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_BigIntegerMessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #endif // !NETFX_35 && !UNITY
+#endif // !WINDOWS_PHONE
 #if !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT && !NETFX_CORE && !XAMIOS && !XAMDROID
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Numerics.Matrix3x2 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_Matrix3x2MessagePackSerializer( ownerContext ) );
@@ -173,11 +175,13 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Collections.Generic.Queue<> ).TypeHandle, typeof( System_Collections_Generic_Queue_1MessagePackSerializer<> ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
+#if !WINDOWS_PHONE
 #if !NETFX_35 && !UNITY
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Numerics.Complex ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_ComplexMessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #endif // !NETFX_35 && !UNITY
+#endif // !WINDOWS_PHONE
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Uri ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UriMessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
