@@ -83,8 +83,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Serialization\ArrayExpressionBasedCustomCollectionSerializersTest.cs">
-      <DependentUpon>ArrayExpressionBasedCustomCollectionSerializersTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -93,13 +91,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Serialization\MapExpressionBasedCustomCollectionSerializersTest.cs">
-      <DependentUpon>MapExpressionBasedCustomCollectionSerializersTest.tt</DependentUpon>
+    <Compile Include="Serialization\MapFieldBasedCustomCollectionSerializersTest.cs">
+      <DependentUpon>MapFieldBasedCustomCollectionSerializersTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Serialization\MapFieldBasedCustomCollectionSerializersTest.cs">
-      <DependentUpon>MapFieldBasedCustomCollectionSerializersTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -126,17 +122,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArrayFieldBasedCustomCollectionSerializersTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\ArrayExpressionBasedCustomCollectionSerializersTest.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ArrayExpressionBasedCustomCollectionSerializersTest.cs</LastGenOutput>
-    </None>
     <None Include="Serialization\MapCodeDomBasedCustomCollectionSerializersTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MapCodeDomBasedCustomCollectionSerializersTest.cs</LastGenOutput>
-    </None>
-    <None Include="Serialization\MapExpressionBasedCustomCollectionSerializersTest.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MapExpressionBasedCustomCollectionSerializersTest.cs</LastGenOutput>
     </None>
     <None Include="Serialization\MapFieldBasedCustomCollectionSerializersTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

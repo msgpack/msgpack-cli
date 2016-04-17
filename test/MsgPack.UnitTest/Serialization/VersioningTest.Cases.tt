@@ -13,7 +13,7 @@
 <#@ import namespace="System.Runtime.InteropServices.ComTypes" #>
 <#@ import namespace="System.Text" #>
 <#
-var __flavors = new []{ "Field", "Context", "Expression" };
+var flavors = new []{ "Field", "Context", "Expression" };
 
 var __fields =
 	new Tuple<Object, string, string, bool>[]
@@ -98,7 +98,7 @@ var __fields =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -133,71 +133,81 @@ namespace MsgPack.Serialization
 	partial class VersioningTest
 	{
 <#
-foreach( var __method in new []{ "Array", "Map" } )
+foreach( var method in new []{ "Array", "Map" } )
 {
-	foreach( var __flavor in new [] { "Field", "Expression", "CodeDom" } )
+	foreach( var flavor in new [] { "Field", "Reflection", "CodeDom" } )
 	{
-		if ( __flavor == "Expression" )
+		switch ( flavor )
 		{
+			case "Field":
+			{
 #>
-#if !NETFX_35
+#if !AOT
 <#
-		}
-		else
-		{
+				break;
+			}
+			case "CodeDom":
+			{
 #>
-#if !NETFX_CORE
+#if !NETSTD_11 && !NETSTD_13
 <#
+				break;
+			}
 		}
-#>
-
-		[Test]
-		public void TestExtraField_NotExtensible_<#= __method #>_<#= __flavor #>Based_Classic_Fail()
-		{
-			TestExtraFieldCore( SerializationMethod.<#= __method #>, EmitterFlavor.<#= __flavor #>Based, PackerCompatibilityOptions.Classic );
-		}
-
-		[Test]
-		public void TestExtraField_NotExtensible_<#= __method #>_<#= __flavor #>Based_None_Fail()
-		{
-			TestExtraFieldCore( SerializationMethod.<#= __method #>, EmitterFlavor.<#= __flavor #>Based, PackerCompatibilityOptions.None );
-		}
-
-		[Test]
-		public void TestMissingField_<#= __method #>_<#= __flavor #>Based_MissingIsTreatedAsNil()
-		{
-			TestMissingFieldCore( SerializationMethod.<#= __method #>, EmitterFlavor.<#= __flavor #>Based );
-		}
-
-		[Test]
-		public void TestFieldInvalidType_<#= __method #>_<#= __flavor #>Based_Fail()
-		{
-			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.<#= __method #>, EmitterFlavor.<#= __flavor #>Based ) );
-		}
-<#
-		if ( __method == "Map" )
-		{
 #>
 
 		[Test]
-		public void TestFieldModified_<#= __method #>_<#= __flavor #>Based_ExtraIsStoredAsExtensionData_MissingIsTreatedAsNil()
+		public void TestExtraField_NotExtensible_<#= method #>_<#= flavor #>Based_Classic_Fail()
 		{
-			TestFieldSwappedCore( EmitterFlavor.<#= __flavor #>Based );
+			TestExtraFieldCore( SerializationMethod.<#= method #>, EmitterFlavor.<#= flavor #>Based, PackerCompatibilityOptions.Classic );
+		}
+
+		[Test]
+		public void TestExtraField_NotExtensible_<#= method #>_<#= flavor #>Based_None_Fail()
+		{
+			TestExtraFieldCore( SerializationMethod.<#= method #>, EmitterFlavor.<#= flavor #>Based, PackerCompatibilityOptions.None );
+		}
+
+		[Test]
+		public void TestMissingField_<#= method #>_<#= flavor #>Based_MissingIsTreatedAsNil()
+		{
+			TestMissingFieldCore( SerializationMethod.<#= method #>, EmitterFlavor.<#= flavor #>Based );
+		}
+
+		[Test]
+		public void TestFieldInvalidType_<#= method #>_<#= flavor #>Based_Fail()
+		{
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.<#= method #>, EmitterFlavor.<#= flavor #>Based ) );
+		}
+<#
+		if ( method == "Map" )
+		{
+#>
+
+		[Test]
+		public void TestFieldModified_<#= method #>_<#= flavor #>Based_ExtraIsStoredAsExtensionData_MissingIsTreatedAsNil()
+		{
+			TestFieldSwappedCore( EmitterFlavor.<#= flavor #>Based );
 		}
 <#
 		}
 
-		if ( __flavor == "Expression" )
+		switch ( flavor )
 		{
+			case "Field":
+			{
 #>
-#endif // !NETFX_35
+#endif // !AOT
 <#
-		}
-		else
-		{
+				break;
+			}
+			case "CodeDom":
+			{
 #>
-#endif // !NETFX_CORE
+#endif // !NETSTD_11 && !NETSTD_13
 <#
+				break;
+			}
 		}
 	}
 }

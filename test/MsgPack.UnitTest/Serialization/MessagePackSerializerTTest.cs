@@ -27,10 +27,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using MsgPack.Serialization.DefaultSerializers;
 #if !XAMIOS && !XAMDROID && !UNITY
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE && !WINDOWS_PHONE
 using MsgPack.Serialization.EmittingSerializers;
-#else
-using MsgPack.Serialization.ExpressionSerializers;
 #endif // !NETFX_CORE && !WINDOWS_PHONE
 #endif // !XAMIOS && !XAMDROID && !UNITY
 #if !MSTEST
@@ -53,13 +51,13 @@ namespace MsgPack.Serialization
 		{
 #if XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE
 			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions ).GetSerializer<T>();
-#elif !NETFX_CORE && !SILVERLIGHT
+#elif !NETFX_CORE && !WINDOWS_PHONE
 			var context = new SerializationContext();
 			context.SerializerOptions.EmitterFlavor = EmitterFlavor.FieldBased;
 			return context.GetSerializer<T>();
 #else
 			var context = new SerializationContext();
-			context.SerializerOptions.EmitterFlavor = EmitterFlavor.ExpressionBased;
+			context.SerializerOptions.EmitterFlavor = EmitterFlavor.ReflectionBased;
 			return context.GetSerializer<T>();
 #endif
 		}

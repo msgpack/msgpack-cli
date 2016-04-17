@@ -41,15 +41,12 @@ using System.Linq.Expressions;
 #endif
 #if !AOT
 using MsgPack.Serialization.AbstractSerializers;
-#if !WINDOWS_PHONE && !SILVERLIGHT
+#if !SILVERLIGHT
 #if !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.CodeDomSerializers;
 #endif // !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !WINDOWS_PHONE && !SILVERLIGHT
-#if FEATURE_ET
-using MsgPack.Serialization.ExpressionSerializers;
-#endif // FEATURE_ET
+#endif // !SILVERLIGHT
 #endif // !AOT
 
 namespace MsgPack.Serialization
@@ -246,6 +243,7 @@ namespace MsgPack.Serialization
 			ISerializerBuilder builder;
 			switch ( context.SerializerOptions.EmitterFlavor )
 			{
+#if !SILVERLIGHT
 #if !NETSTD_11 && !NETSTD_13
 				case EmitterFlavor.CodeDomBased:
 				{
@@ -264,20 +262,12 @@ namespace MsgPack.Serialization
 					break;
 				}
 #endif // !!NETSTD_11 && !NETSTD_13
-#if FEATURE_ET
-				case EmitterFlavor.ExpressionBased:
-				{
-					builder = new ExpressionTreeSerializerBuilder( typeof( T ), collectionTraits );
-					break;
-				}
-#endif // if FEATURE_ET
-#if !WINDOWS_PHONE
 				case EmitterFlavor.FieldBased:
 				{
 					builder = new AssemblyBuilderSerializerBuilder( typeof( T ), collectionTraits );
 					break;
 				}
-#endif // !WINDOWS_PHONE
+#endif // !SILVERLIGHT
 				default: // EmitterFlavor.ReflectionBased
 				{
 #endif // !AOT

@@ -565,54 +565,6 @@
     <Compile Include="..\MsgPack\Serialization\EnumSerializationMethod.cs">
       <Link>Serialization\EnumSerializationMethod.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackCollectionMessagePackSerializer`2.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionCallbackCollectionMessagePackSerializer`2.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackDictionaryMessagePackSerializer`3.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionCallbackDictionaryMessagePackSerializer`3.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackEnumerableMessagePackSerializer`2.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionCallbackEnumerableMessagePackSerializer`2.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackEnumMessagePackSerializer`1.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionCallbackEnumMessagePackSerializer`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackMessagePackSerializer`1.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionCallbackMessagePackSerializer`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackNonGenericCollectionMessagePackSerializer`1.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionCallbackNonGenericCollectionMessagePackSerializer`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackNonGenericDictionaryMessagePackSerializer`1.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionCallbackNonGenericDictionaryMessagePackSerializer`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackNonGenericEnumerableMessagePackSerializer`1.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionCallbackNonGenericEnumerableMessagePackSerializer`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackNonGenericListMessagePackSerializer`1.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionCallbackNonGenericListMessagePackSerializer`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyCollectionMessagePackSerializer`2.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyCollectionMessagePackSerializer`2.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyDictionaryMessagePackSerializer`3.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyDictionaryMessagePackSerializer`3.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionConstruct.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionConstruct.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionDumper.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionDumper.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionTreeContext.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionTreeContext.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilder.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilder.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilderHelpers.cs">
-      <Link>Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilderHelpers.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\ExtTypeCodeMapping.cs">
       <Link>Serialization\ExtTypeCodeMapping.cs</Link>
     </Compile>

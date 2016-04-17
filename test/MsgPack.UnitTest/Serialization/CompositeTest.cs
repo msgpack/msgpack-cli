@@ -18,18 +18,19 @@
 //
 #endregion -- License Terms --
 
+#define NETFX_CORE
+
 using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using MsgPack.Serialization.AbstractSerializers;
-#if !NETFX_CORE && !WINDOWS_PHONE
+#if !SILVERLIGHT
+#if !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.CodeDomSerializers;
+#endif // !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
-#endif // if !NETFX_CORE && !WINDOWS_PHONE
-#if !NETFX_35
-using MsgPack.Serialization.ExpressionSerializers;
-#endif // if !NETFX_35
+#endif // !SILVERLIGHT
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -45,7 +46,8 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class CompositeTest
 	{
-#if !NETFX_CORE && !WINDOWS_PHONE
+#if !SILVERLIGHT
+#if !NETSTD_11 && !NETSTD_13
 
 		[SetUp]
 		public void SetUp()
@@ -83,6 +85,8 @@ namespace MsgPack.Serialization
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
 
+#endif // NETSTD_11 && !NETSTD_13
+
 		[Test]
 		public void TestArrayFieldBased()
 		{
@@ -94,35 +98,22 @@ namespace MsgPack.Serialization
 		{
 			TestCore( EmitterFlavor.FieldBased, SerializationMethod.Map, new AssemblyBuilderSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits() ) );
 		}
-		
+
+#if !NETSTD_11 && !NETSTD_13
+
 		[Test]
 		public void TestArrayCodeDomBased()
 		{
 			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Array, new CodeDomSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits() ) );
 		}
-#endif // !NETFX_CORE && !WINDOWS_PHONE
 
-#if !NETFX_35
-		[Test]
-		public void TestArrayExpressionBased()
-		{
-			TestCore( EmitterFlavor.ExpressionBased, SerializationMethod.Array, new ExpressionTreeSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits() ) );
-		}
-
-		[Test]
-		public void TestMapExpressionBased()
-		{
-			TestCore( EmitterFlavor.ExpressionBased, SerializationMethod.Map, new ExpressionTreeSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits() ) );
-		}
-
-#if !NETFX_CORE && !WINDOWS_PHONE
 		[Test]
 		public void TestMapCodeDomBased()
 		{
 			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Map, new CodeDomSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits() ) );
 		}
-#endif // !NETFX_CORE && !WINDOWS_PHONE
-#endif // !NETFX_35
+
+#endif // !NETSTD_11 && !NETSTD_13
 
 		private static void TestCore( EmitterFlavor emittingFlavor, SerializationMethod serializationMethod, ISerializerBuilder generator )
 		{
@@ -143,12 +134,12 @@ namespace MsgPack.Serialization
 			var context =
 					new SerializationContext
 					{
-						SerializationMethod = serializationMethod, 
-#if SILVERLIGHT
-						GeneratorOption = SerializationMethodGeneratorOption.Fast
+						SerializationMethod = serializationMethod,
+#if NETSTD_11 || NETSTD_13
+						GeneratorOption = SerializationMethodGeneratorOption.CanCollect
 #else
 						GeneratorOption = SerializationMethodGeneratorOption.CanDump
-#endif
+#endif //  NETSTD_11 || NETSTD_13
 					};
 			context.SerializerOptions.EmitterFlavor = emittingFlavor;
 
@@ -180,6 +171,7 @@ namespace MsgPack.Serialization
 			}
 		}
 	}
+#endif // !SILVERLIGHT
 
 	public abstract class FileSystemItem
 	{

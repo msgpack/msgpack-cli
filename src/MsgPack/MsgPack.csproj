@@ -255,16 +255,6 @@
     <Compile Include="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
     <Compile Include="Serialization\EmittingSerializers\ILMethodConctext.cs" />
     <Compile Include="Serialization\EmittingSerializers\SerializerEmitter.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackCollectionMessagePackSerializer`2.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackDictionaryMessagePackSerializer`3.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackEnumerableMessagePackSerializer`2.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackNonGenericCollectionMessagePackSerializer`1.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackNonGenericDictionaryMessagePackSerializer`1.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackNonGenericEnumerableMessagePackSerializer`1.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackNonGenericListMessagePackSerializer`1.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyCollectionMessagePackSerializer`2.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackReadOnlyDictionaryMessagePackSerializer`3.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilderHelpers.cs" />
     <Compile Include="Serialization\INilImplicationHandlerOnUnpackedParameter.cs" />
     <Compile Include="Serialization\INilImplicationHandlerParameter.cs" />
     <Compile Include="Serialization\ISupportMessagePackSerializerCapability.cs" />
@@ -347,7 +337,6 @@
     <Compile Include="Serialization\EnumMessagePackSerializerProvider.cs" />
     <Compile Include="Serialization\EnumSerializationMethod.cs" />
     <Compile Include="Serialization\EnumMessagePackSerializer`1.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackEnumMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\ICustomizableEnumSerializer.cs" />
     <Compile Include="Serialization\ISerializerGeneratorConfiguration.cs" />
     <Compile Include="Serialization\MessagePackEnumAttribute.cs" />
@@ -394,11 +383,6 @@
     <Compile Include="Serialization\EmittingSerializers\StoreVariableILConstruct.cs" />
     <Compile Include="Serialization\EmittingSerializers\UnaryOperatorILConstruct.cs" />
     <Compile Include="Serialization\EmittingSerializers\VariableILConstruct.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackMessagePackSerializer`1.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionConstruct.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionDumper.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionTreeContext.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilder.cs" />
     <Compile Include="Serialization\IMessagePackSerializer.cs" />
     <Compile Include="Serialization\IMessagePackSingleObjectSerializer.cs" />
     <Compile Include="Serialization\Metadata\_CultureInfo.cs" />

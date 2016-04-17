@@ -35,12 +35,10 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed class SerializerOptions
 	{
-#if AOT
+#if AOT || SILVERLIGHT
 		private int _emitterFlavor = ( int )EmitterFlavor.ReflectionBased;
-#elif !WINDOWS_PHONE
-		private int _emitterFlavor = ( int )EmitterFlavor.FieldBased;
 #else
-		private int _emitterFlavor = ( int )EmitterFlavor.ExpressionBased;
+		private int _emitterFlavor = ( int )EmitterFlavor.FieldBased;
 #endif
 
 		/// <summary>

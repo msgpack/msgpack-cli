@@ -28,7 +28,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;MSTEST</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;NETSTD_11;MSTEST</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -120,11 +120,11 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayExpressionBasedCustomCollectionSerializersTest.cs">
-      <Link>Serialization\ArrayExpressionBasedCustomCollectionSerializersTest.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayReflectionBaedCustomCollectionSerializersTest.cs">
+      <Link>Serialization\ArrayReflectionBaedCustomCollectionSerializersTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapExpressionBasedCustomCollectionSerializersTest.cs">
-      <Link>Serialization\MapExpressionBasedCustomCollectionSerializersTest.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapReflectionBasedCustomCollectionSerializersTest.cs">
+      <Link>Serialization\MapReflectionBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -155,10 +155,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MsgPack.WinRT.Portable\MsgPack.WinRT.Portable.csproj">
-      <Project>{e2817364-f217-465f-be3b-a5f85e2f8667}</Project>
-      <Name>MsgPack.WinRT.Portable</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MsgPack.NUnitPortable\MsgPack.NUnitPortable.csproj">
       <Project>{fc521316-ebcd-4ef1-8235-c976b2a31eb0}</Project>
       <Name>MsgPack.NUnitPortable</Name>

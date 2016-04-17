@@ -48,9 +48,6 @@ using System.Threading.Tasks;
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
 #endif // !NETFX_CORE && !WINDOWS_PHONE && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
-#if !NETFX_35 && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
-using MsgPack.Serialization.ExpressionSerializers;
-#endif // !NETFX_35 && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
 #if !MSTEST
 using NUnit.Framework;
 #else
