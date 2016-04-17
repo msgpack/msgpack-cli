@@ -509,11 +509,11 @@ namespace MsgPack
 				return new MessagePackObject( asMessagePackString );
 			}
 
-#if NETSTD_11
+#if NETSTD_11 || NETSTD_13
 			switch ( NetStandardCompatibility.GetTypeCode( value.GetType() ) )
 #else
 			switch ( Type.GetTypeCode( value.GetType() ) )
-#endif // NETSTD_11
+#endif // NETSTD_11 || NETSTD_13
 			{
 				case TypeCode.Boolean:
 				{

@@ -185,11 +185,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			var underyingType = Enum.GetUnderlyingType( type.ResolveRuntimeType() );
 
-#if !NETSTD_11
+#if !NETSTD_11 && !NETSTD_13
 			switch ( Type.GetTypeCode( underyingType ) )
 #else
 			switch ( NetStandardCompatibility.GetTypeCode( underyingType ) )
-#endif // !NETSTD_11
+#endif // !NETSTD_11 && !NETSTD_13
 			{
 				case TypeCode.Byte:
 				{

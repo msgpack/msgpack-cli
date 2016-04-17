@@ -39,18 +39,18 @@ using System.Diagnostics.Contracts;
 #if NETFX_CORE || WINDOWS_PHONE
 using System.Linq.Expressions;
 #endif
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT
 using MsgPack.Serialization.AbstractSerializers;
-#if !NETFX_CORE && !WINDOWS_PHONE && !SILVERLIGHT
+#if !WINDOWS_PHONE && !SILVERLIGHT
 #if !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.CodeDomSerializers;
 #endif // !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
-#endif // NETFX_CORE && !WINDOWS_PHONE && !SILVERLIGHT
-#endif // !!XAMIOS && !XAMDROID && !UNITY
+#endif // !WINDOWS_PHONE && !SILVERLIGHT
 #if FEATURE_ET
 using MsgPack.Serialization.ExpressionSerializers;
 #endif // FEATURE_ET
+#endif // !AOT
 
 namespace MsgPack.Serialization
 {
@@ -205,11 +205,11 @@ namespace MsgPack.Serialization
 		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context, PolymorphismSchema schema )
 		{
 
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT
 
-#if DEBUG && !UNITY && !XAMDROID && !XAMIOS
+#if DEBUG && !AOT
 			SerializerDebugging.TraceEvent(
 				"SerializationContext::CreateInternal<{0}>(@{1}, {2})",
 				typeof( T ),
@@ -217,7 +217,7 @@ namespace MsgPack.Serialization
 				schema == null ? "null" : schema.DebugString
 			);
 
-#endif // DEBUG && !UNITY && !XAMDROID && !XAMIOS
+#endif // DEBUG && !AOT
 			Type concreteType = null;
 			CollectionTraits collectionTraits = typeof( T ).GetCollectionTraits();
 
@@ -536,12 +536,9 @@ namespace MsgPack.Serialization
 
 #if AOT
 		private static readonly System.Reflection.MethodInfo CreateInternal_2 = 
-			typeof( MessagePackSerializer ).GetMethod( 
+			typeof( MessagePackSerializer ).GetRuntimeMethod( 
 				"CreateInternal", 
-				System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic,
-				null,
-				new []{ typeof( SerializationContext ), typeof( PolymorphismSchema ) },
-				null
+				new []{ typeof( SerializationContext ), typeof( PolymorphismSchema ) }
 			);
 
 		internal static MessagePackSerializer CreateInternal( SerializationContext context, Type targetType, PolymorphismSchema schema )

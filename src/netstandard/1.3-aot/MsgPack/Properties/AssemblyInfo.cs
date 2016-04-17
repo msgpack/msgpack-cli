@@ -1,4 +1,4 @@
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -21,8 +21,8 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: AssemblyTitle( "MessagePack for .NET Platform Standard 1.3 for non AOT" )]
-[assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library for .NET Platform Standard 1.3 including UWP and Xamarin without AOT." )]
+[assembly: AssemblyTitle( "MessagePack for .NET Platform Standard 1.3 for AOT" )]
+[assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library for .NET Platform Standard 1.3 including UWP and Xamarin with AOT." )]
 
 [assembly: AssemblyFileVersion( "0.7.2259.1047" )]
 

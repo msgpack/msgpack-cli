@@ -37,9 +37,9 @@ using System.Diagnostics.Contracts;
 #if UNITY || NETSTD_11 || NETSTD_13
 using System.Linq;
 #endif // UNITY || NETSTD_11 || NETSTD_13
-#if UNITY || XAMIOS || XAMDROID || NETFX_CORE
+#if AOT
 using System.Reflection;
-#endif // UNITY || XAMIOS || XAMDROID || NETFX_CORE
+#endif // AOT
 using System.Threading;
 
 using MsgPack.Serialization.DefaultSerializers;
@@ -58,10 +58,10 @@ namespace MsgPack.Serialization
 		private static readonly object DefaultContextSyncRoot = new object();
 #endif // UNITY
 
-#if UNITY || XAMIOS || XAMDROID
+#if AOT
 		private static readonly MethodInfo GetSerializer1Method =
-			typeof( SerializationContext ).GetMethod( "GetSerializer", new[] { typeof( object ) } );
-#endif // UNITY || XAMIOS || XAMDROID
+			typeof( SerializationContext ).GetRuntimeMethod( "GetSerializer", new[] { typeof( object ) } );
+#endif // AOT
 
 
 		// Set SerializerRepository null because it requires SerializationContext, so re-init in constructor.
@@ -267,7 +267,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !AOT
 
 		/// <summary>
 		///		Gets or sets the <see cref="SerializationMethodGeneratorOption"/> to control code generation.
@@ -276,24 +276,14 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		The <see cref="SerializationMethodGeneratorOption"/>.
 		/// </value>
-#if XAMDROID || UNITY
-		[Obsolete( "This option will be and have never been available.")]
-#endif // XAMDROID || UNITY
-#if !UNITY || MSGPACK_UNITY_FULL
-		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif //!UNITY || MSGPACK_UNITY_FULL
 		public SerializationMethodGeneratorOption GeneratorOption
 		{
-#if XAMDROID || UNITY
-			get;
-			set;
-#else
+
 			get { return this._serializerGeneratorOptions.GeneratorOption; }
 			set { this._serializerGeneratorOptions.GeneratorOption = value; }
-#endif // XAMDROID || UNITY
 		}
 
-#endif // !XAMIOS && !UNITY_IPHONE
+#endif // !AOT
 
 		private readonly DefaultConcreteTypeRepository _defaultCollectionTypes;
 
@@ -308,7 +298,7 @@ namespace MsgPack.Serialization
 			get { return this._defaultCollectionTypes; }
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT
 
 		/// <summary>
 		///		Gets or sets a value indicating whether runtime generation is disabled or not.
@@ -323,7 +313,7 @@ namespace MsgPack.Serialization
 			set { this._serializerGeneratorOptions.IsRuntimeGenerationDisabled = value; }
 		}
 
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT
 
 		private int _defaultDateTimeConversionMethod;
 
@@ -664,23 +654,23 @@ namespace MsgPack.Serialization
 
 						if ( serializer == null )
 						{
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT
 							if ( this._serializerGeneratorOptions.IsRuntimeGenerationDisabled )
 							{
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // AOT
 								// On debugging, or AOT only envs, use reflection based aproach.
 								serializer =
 									this.GetSerializerWithoutGeneration<T>( schema )
 									?? this.OnResolveSerializer<T>( schema )
 									?? MessagePackSerializer.CreateReflectionInternal<T>( this, this.EnsureConcreteTypeRegistered( typeof( T ) ), schema );
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT
 							}
 							else
 							{
 								// This thread creating new type serializer.
 								serializer = this.OnResolveSerializer<T>( schema ) ?? MessagePackSerializer.CreateInternal<T>( this, schema );
 							}
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT
 						}
 					}
 					else
@@ -959,14 +949,15 @@ namespace MsgPack.Serialization
 #if !NETSTD_11 && !NETSTD_13
 			Delegate.CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> ),
-#if XAMIOS || XAMDROID
-					GetSerializer1Method.MakeGenericMethod( typeof( T ) )
-#else
 					Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) )
-#endif // XAMIOS || XAMDROID
 				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
 #else
-				Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) ).CreateDelegate(
+#if !AOT
+				Metadata._SerializationContext.GetSerializer1_Parameter_Method
+#else
+				GetSerializer1Method
+#endif // !AOT
+				.MakeGenericMethod( typeof( T ) ).CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> )
 				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
 #endif // !NETSTD_11 && !NETSTD_13

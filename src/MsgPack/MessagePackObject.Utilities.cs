@@ -927,11 +927,11 @@ namespace MsgPack
 			}
 
 			// Lifting support.
-#if NETSTD_11
+#if NETSTD_11 || NETSTD_13
 			switch ( NetStandardCompatibility.GetTypeCode( type ) )
 #else
 			switch ( Type.GetTypeCode( type ) )
-#endif // NETSTD_11
+#endif // NETSTD_11 || NETSTD_13
 			{
 				case TypeCode.SByte:
 				{
