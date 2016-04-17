@@ -218,6 +218,16 @@ namespace MsgPack
 					BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic
 				);
 		}
+
+		public static PropertyInfo GetRuntimeProperty( this Type source, string name )
+		{
+			return
+				source.GetProperty(
+					name,
+					BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic
+				);
+		}
+
 #endif // NETSTD_11 || NETSTD_13
 
 		public static ConstructorInfo GetRuntimeConstructor( this Type source, Type[] parameters )

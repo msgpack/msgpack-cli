@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;UNITY_IPHONE;MSGPACK_UNITY_FULL;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNITY_IPHONE;MSGPACK_UNITY_FULL;AOT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\MsgPack.XML</DocumentationFile>
@@ -27,18 +27,26 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\MsgPack-CLI\unity3d-full\</OutputPath>
-    <DefineConstants>TRACE;UNITY_IPHONE;MSGPACK_UNITY_FULL</DefineConstants>
+    <DefineConstants>TRACE;UNITY_IPHONE;MSGPACK_UNITY_FULL;AOT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\MsgPack-CLI\unity3d-full\MsgPack.XML</DocumentationFile>
     <NoWarn>3001,3002</NoWarn>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
+    <OutputPath>bin\CodeAnalysis\</OutputPath>
+    <DefineConstants>TRACE;UNITY_IPHONE;MSGPACK_UNITY_FULL;AOT;CODE_ANALYSIS</DefineConstants>
+    <DocumentationFile>..\..\MsgPack-CLI\unity3d-full\MsgPack.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>3001,3002</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MPContract.cs">
-      <Link>MPContract.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.Net35\Volatile.cs">
       <Link>Volatile.cs</Link>
@@ -696,6 +704,9 @@
     </Compile>
     <Compile Include="..\MsgPack\UnpackingStreamReader.cs">
       <Link>UnpackingStreamReader.cs</Link>
+    </Compile>
+    <Compile Include="..\netstandard\MPContract.cs">
+      <Link>MPContract.cs</Link>
     </Compile>
     <Compile Include="CorLibOnlyHelper.cs">
       <AutoGen>True</AutoGen>

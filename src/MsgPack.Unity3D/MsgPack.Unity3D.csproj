@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;UNITY_IPHONE;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNITY_IPHONE;AOT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\MsgPack.XML</DocumentationFile>
@@ -30,7 +30,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\MsgPack-CLI\unity3d\</OutputPath>
-    <DefineConstants>TRACE;UNITY_IPHONE;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>TRACE;UNITY_IPHONE;AOT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\MsgPack-CLI\unity3d\MsgPack.XML</DocumentationFile>
@@ -39,7 +39,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
-    <DefineConstants>TRACE;UNITY_IPHONE;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>TRACE;UNITY_IPHONE;AOT;CODE_ANALYSIS</DefineConstants>
     <DocumentationFile>..\..\bin\unity3d\MsgPack.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>3001,3002</NoWarn>
@@ -51,9 +51,6 @@
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MPContract.cs">
-      <Link>MPContract.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.Net35\Volatile.cs">
       <Link>Volatile.cs</Link>
@@ -717,6 +714,9 @@
     </Compile>
     <Compile Include="..\MsgPack\UnpackingStreamReader.cs">
       <Link>UnpackingStreamReader.cs</Link>
+    </Compile>
+    <Compile Include="..\netstandard\MPContract.cs">
+      <Link>MPContract.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

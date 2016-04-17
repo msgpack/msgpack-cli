@@ -179,6 +179,12 @@ var notInNetStandard1_1 =
 		typeof( System.Collections.Specialized.BitVector32 ),
 	};
 
+var notInNetFX35 =
+	new HashSet<Type>()
+	{
+		typeof( System.Numerics.BigInteger ),
+	};
+
 #>
 #region -- License Terms --
 //
@@ -251,6 +257,13 @@ foreach( Type type in types )
 	{
 #>
 #if !NETSTD_11
+<#
+	}
+
+	if ( notInNetFX35.Contains( type ) )
+	{
+#>
+#if !NETFX_35 && !UNITY
 <#
 	}
 
@@ -492,6 +505,13 @@ foreach( var ctor in ctors )
 
 	}
 <#
+	if ( notInNetFX35.Contains( type ) )
+	{
+#>
+#endif // !NETFX_35 && !UNITY
+<#
+	}
+
 	if ( notInNetStandard1_1.Contains( type ) )
 	{
 #>
