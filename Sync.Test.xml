@@ -44,7 +44,7 @@
     <Exclude Path="Serialization\MessagePackMemberAttributeTest.cs" />
   </Project>
 
-  <Project Name="MsgPack.UnitTest.Xamarin.Android" Base="MsgPack.UnitTest">
+  <Project Name="MsgPack.UnitTest.Xamarin.Android" Base="MsgPack.UnitTest.Xamarin.iOS">
     <Preserve Path="Properties\AndroidManifest.xml" />
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve Path="Resources\*" />
@@ -53,22 +53,37 @@
     <Preserve File="*.json" />
     <Preserve File="*.mpac" />
     <Preserve File="*.snk" />
-    <Exclude File="*.ps1" />
-    <Exclude File="*.tt" />
-    <Exclude File="*.ttinclude" />
-    <Exclude File="_SetUpFixture.cs" />
-    <Exclude File="ReadMe.txt" />
-    <Exclude Path="Serialization\PreGeneratedSerializerGenerator.cs" />
-    <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
-    <Exclude Path="TestSuite.cs" />
-    <Exclude Path="Serialization\CompositeTest.cs" />
-    <!-- Generator related -->
-    <Exclude File="*ContextBased*.cs" />
-    <Exclude File="*ExpressionBased*.cs" />
-    <Exclude File="*FieldBased*.cs" />
-    <Exclude Path="Serialization\FromExpressionTest.cs" />
-    <Exclude Path="Serialization\MessagePackMemberAndDataMemberMixedTarget.cs" />
-    <Exclude Path="Serialization\MessagePackMemberAttributeTest.cs" />
+    <Exclude File="*.plist" />
+    <Exclude Path="Main.cs" />
+    <Exclude Path="UnitTestAppDelegate.cs" />
+  </Project>
+
+  <Project Name="MsgPack.UnitTest.Uwp" Base="MsgPack.UnitTest.Xamarin.iOS">
+    <Preserve File="*.config" />
+    <Preserve File="*.json" />
+    <Preserve File="*.mpac" />
+    <Preserve File="*.snk" />
+    <Preserve File="*.pfx" />
+    <Preserve File="*.xaml" />
+    <Preserve File="*.xaml.cs" />
+    <Preserve File="*.appxmanifest" />
+    <Exclude File="*.plist" />
+    <Exclude Path="Main.cs" />
+    <Exclude Path="UnitTestAppDelegate.cs" />
+  </Project>
+
+  <Project Name="MsgPack.UnitTest.Uwp.Aot" Base="MsgPack.UnitTest.Uwp">
+    <Preserve File="*.config" />
+    <Preserve File="*.json" />
+    <Preserve File="*.mpac" />
+    <Preserve File="*.snk" />
+    <Preserve File="*.pfx" />
+    <Preserve File="*.xaml" />
+    <Preserve File="*.xaml.cs" />
+    <Preserve File="*.appxmanifest" />
+    <Exclude File="*.plist" />
+    <Exclude Path="Main.cs" />
+    <Exclude Path="UnitTestAppDelegate.cs" />
   </Project>
 
   <Project Name="MsgPack.UnitTest.Net35" Base="MsgPack.UnitTest">
@@ -155,15 +170,19 @@
     <Exclude Path="gen\array\*" />
     <Exclude Path="gen\map\*" />
     <Exclude Path="Serialization\PreGenerated*" />
+    <!--
     <Exclude Path="Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\ArrayFieldBasedEnumSerializationTest.cs" />
+    -->
     <Exclude Path="Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\ArrayContextBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\ArrayGenerationBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\CodeDomBasedNilImplicationTest.cs" />
     <Exclude Path="Serialization\ContextBasedNilImplicationTest.cs" />
+    <!--
     <Exclude Path="Serialization\FieldBasedNilImplicationTest.cs" />
+    -->
     <Exclude Path="Serialization\GenerationBasedNilImplicationTest.cs" />
     <Exclude Path="Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\MapFieldBasedEnumSerializationTest.cs" />
@@ -181,10 +200,14 @@
     <Preserve File="*.pfx" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
+    <!--
     <Exclude Path="Serialization\ArrayFieldBasedCustomCollectionSerializersTest.cs" />
+    -->
     <Exclude Path="Serialization\ArrayContextBasedCustomCollectionSerializersTest.cs" />
     <Exclude Path="Serialization\ArrayCodeDomBasedCustomCollectionSerializersTest.cs" />
+    <!--
     <Exclude Path="Serialization\MapFieldBasedCustomCollectionSerializersTest.cs" />
+    -->
     <Exclude Path="Serialization\MapContextBasedCustomCollectionSerializersTest.cs" />
     <Exclude Path="Serialization\MapCodeDomBasedCustomCollectionSerializersTest.cs" />
   </Project>

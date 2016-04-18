@@ -449,6 +449,10 @@
     <Content Include="Assets\WideLogo.scale-240.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\netstandard\build\NetStandardProjectBuilder.csproj">
+      <Project>{a1b322fc-aa39-4894-afa8-ab427a3fba09}</Project>
+      <Name>NetStandardProjectBuilder</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MsgPack.NUnitPortable\MsgPack.NUnitPortable.csproj">
       <Project>{fc521316-ebcd-4ef1-8235-c976b2a31eb0}</Project>
       <Name>MsgPack.NUnitPortable</Name>
@@ -456,6 +460,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MsgPack, Version=0.7.0.0, Culture=neutral, PublicKeyToken=a2625990d5dc0167, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\src\netstandard\1.1\MsgPack\bin\Debug\netstandard1.1\MsgPack.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

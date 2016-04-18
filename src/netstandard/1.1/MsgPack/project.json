@@ -33,6 +33,7 @@
     "../../../MsgPack/Serialization/DefaultSerializers/System_Collections_Specialized_*",
     "../../../MsgPack/Serialization/DefaultSerializers/System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs",
     "../../../MsgPack/Serialization/EmittingSerializers/AssemblyBuilderCodeGenerationContext.cs",
+    "../../../MsgPack/Serialization/ISerializerGeneratorConfiguration.cs",
     "../../../MsgPack/Serialization/SerializerAssemblyGenerationConfiguration.cs",
     "../../../MsgPack/Serialization/SerializerCodeGenerationConfiguration.cs",
     "../../../MsgPack/Serialization/SerializerGenerator.cs",

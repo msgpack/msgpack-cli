@@ -1,0 +1,57 @@
+﻿{
+  "compilationOptions": {
+    "keyFile": "../../../MsgPack.snk"
+  },
+  "configurations": {
+    "Debug": {
+      "compilationOptions": {
+        "define": [ "DEBUG", "TRACE", "FEATURE_TAP", "AOT" ],
+        "optimize": false
+      }
+    },
+    "Release": {
+      "compilationOptions": {
+        "define": [ "TRACE", "FEATURE_TAP", "AOT" ],
+        "optimize": true
+      }
+    }
+  },
+  "compile": [
+    "../MsgPack/**/*.cs",
+    "../CommonAssemblyInfo.cs",
+    "../netstandard/BufferedStream.cs",
+    "../netstandard/NetStandardCompatibility.cs"
+  ],
+  "compileExclude": [
+    "../MsgPack/Serialization/ExpressionSerializers/**/*.*",
+    "../MsgPack/Properties/AssemblyInfo.cs",
+    "../MsgPack/Serialization/AbstractSerializers/**/*.*",
+    "../MsgPack/Serialization/CodeDomSerializers/**/*.*",
+    "../MsgPack/Serialization/EmittingSerializers/**/*.*",
+    "../MsgPack/Serialization/Metadata/**/*.*",
+    "../MsgPack/Serialization/Reflection/**/TracingILGenerator*.cs",
+    "../MsgPack/Serialization/ISerializerGeneratorConfiguration.cs",
+    "../MsgPack/Serialization/SerializerGenerator.cs",
+    "../MsgPack/Serialization/SerializationDebugging.cs",
+    "../MsgPack/Serialization/SerializerAssemblyGenerationConfiguration.cs",
+    "../MsgPack/Serialization/SerializerGenerator.cs",
+    "../MsgPack/Serialization/SerializerCodeGenerationConfiguration.cs",
+    "../MsgPack/Serialization/SerializerCodeGenerationContext.cs",
+    "../MsgPack/Serialization/SerializerCodeGenerationResult.cs",
+    "../MsgPack/Serialization/Tracer.cs"
+  ],
+  "dependencies": {
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0"
+  },
+  "frameworks": {
+    "uap10.0": { }
+  },
+  "runtimes": {
+    "win10-arm": { },
+    "win10-arm-aot": { },
+    "win10-x86": { },
+    "win10-x86-aot": { },
+    "win10-x64": { },
+    "win10-x64-aot": { }
+  }
+}

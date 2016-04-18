@@ -32,6 +32,7 @@
     <Exclude Path="TupleItems.cs" />
   </Project>
 
+  <!-- TOOD: should be project.json -->
   <Project Name="MsgPack.Net45" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
@@ -40,40 +41,64 @@
     <Exclude File="*.ttinclude" />
   </Project>
 
-  <!-- No MsgPack.CoreClr - project.json should be maintained manually... -->
-
-  <Project Name="MsgPack.Xamarin.iOS" Base="MsgPack">
+  <!-- TOOD: should be project.json -->
+  <Project Name="MsgPack.Uwp" Base="MsgPack.Xamarin.iOS">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve Path="BufferedStream.cs" />
+    <Exclude Path="Serialization\ExpressionSerializers\*" />
     <Exclude Path="Serialization\AbstractSerializers\*" />
     <Exclude Path="Serialization\CodeDomSerializers\*" />
-    <Exclude Path="Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Exclude Path="Serialization\EmittingSerializers\*" />
-    <Exclude Path="Serialization\ExpressionSerializers\*" />
     <Exclude Path="Serialization\Metadata\*" />
     <Exclude Path="Serialization\Reflection\TracingILGenerator.*" />
-    <Exclude Path="Serialization\AutoMessagePackSerializer`1.cs" />
     <Exclude Path="Serialization\CallbackEnumMessagePackSerializer.cs" />
     <Exclude Path="Serialization\CallbackMessagePackSerializer`1.cs" />
     <Exclude Path="Serialization\DefaultSerializerNameResolver.cs" />
     <Exclude Path="Serialization\FromExpression.cs" />
     <Exclude Path="Serialization\FromExpression.*.cs" />
+    <Exclude Path="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
     <Exclude Path="Serialization\SerializerCodeGenerationConfiguration.cs" />
+    <Exclude Path="Serialization\SerializerCodeGenerationContext.cs" />
     <Exclude Path="Serialization\SerializerCodeGenerationResult.cs" />
     <Exclude Path="Serialization\SerializerGenerator.cs" />
     <Exclude Path="Serialization\Tracer.cs" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
+  </Project>
+
+  <!-- TOOD: should be project.json -->
+  <Project Name="MsgPack.Xamarin.iOS" Base="MsgPack.Uwp">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <!--
+    <Exclude Path="Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
+    -->
     <Exclude File="*.snk" />
   </Project>
 
-  <Project Name="MsgPack.Xamarin.Android" Base="MsgPack.Xamarin.iOS">
+   <!-- TOOD: should be project.json -->
+ <Project Name="MsgPack.Xamarin.Android" Base="MsgPack.Xamarin.iOS">
     <Preserve Path="Properties\AssemblyInfo.cs" />
   </Project>
 
+  <Project Name="MsgPack.Unity.Il2cpp.Full" Base="MsgPack.Xamarin.iOS">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+  </Project>
+
+  <Project Name="MsgPack.Unity.Il2cpp" Base="MsgPack.Unity.Il2cpp.Full">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs" />
+    <!-- TODO: Move to here -->
+    <Preserve Path="CorLibOnlyHelper.cs" />
+  </Project>
+
+  <!-- TOOD: should be replaced with *.Il2cpp.Full -->
   <Project Name="MsgPack.Unity3D.Full" Base="MsgPack.Xamarin.iOS">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve Path="Serialization\AotHelper*.tt" />
@@ -98,6 +123,7 @@
     <Exclude Path="Validation.cs" />
   </Project>
 
+  <!-- TOOD: should be replaced with *.Il2cpp -->
   <Project Name="MsgPack.Unity3D" Base="MsgPack.Unity3D.Full">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude Path="Serialization\AotHelper*.tt" />
@@ -108,6 +134,8 @@
     <Exclude Path="CorLibOnlyHelper*.tt" />
   </Project>
 
+<!--
+  Now use netstandard 1.1
   <Project Name="MsgPack.WinRT.Portable" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.tt" />
@@ -140,6 +168,8 @@
     <Exclude Path="UnsafeNativeMethods.cs" />
     <Exclude Path="Validation.cs" />
   </Project>
+-->
+
   <Project Name="MsgPack.Silverlight.5" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.tt" />
@@ -183,9 +213,11 @@
     <Preserve Path="Volatile.cs" />
   </Project>
 
-  <Project Name="MsgPack.Silverlight.WindowsPhone" Base="MsgPack.WinRT.Portable">
+  <Project Name="MsgPack.Silverlight.WindowsPhone" Base="MsgPack.Uwp">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+<!--
     <Preserve Path="Serialization\DefaultSerializers\System_DBNullMessagePackSerializer.cs" />
+-->
     <Exclude Path="Serialization\Reflection\ReflectionHelpers.cs" />
     <Exclude Path="BufferedStream.cs" />
     <Exclude Path="WinRTCompatibility.cs" />

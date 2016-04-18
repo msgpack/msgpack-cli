@@ -29,6 +29,7 @@
     "../../../MsgPack/Serialization/AbstractSerializers/ISerializerCodeGenerator.cs",
     "../../../MsgPack/Serialization/CodeDomSerializers/**/*.*",
     "../../../MsgPack/Serialization/EmittingSerializers/AssemblyBuilderCodeGenerationContext.cs",
+    "../../../MsgPack/Serialization/ISerializerGeneratorConfiguration.cs",
     "../../../MsgPack/Serialization/SerializerAssemblyGenerationConfiguration.cs",
     "../../../MsgPack/Serialization/SerializerGenerator.cs",
     "../../../MsgPack/Serialization/SerializerCodeGenerationConfiguration.cs",
