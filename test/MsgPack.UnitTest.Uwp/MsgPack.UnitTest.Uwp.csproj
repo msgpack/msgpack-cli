@@ -103,6 +103,9 @@
       <Link>cases_compact.mpac</Link>
     </None>
     <None Include="project.json" />
+    <None Include="MsgPack.UnitTest.Uwp_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
     <SDKReference Include="MSTestFramework.Universal, Version=$(UnitTestPlatformVersion)" />
     <SDKReference Include="TestPlatform.Universal, Version=$(UnitTestPlatformVersion)" />
   </ItemGroup>
@@ -122,7 +125,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="MsgPack.UnitTest.Uwp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\UnitTestApp.rd.xml" />
