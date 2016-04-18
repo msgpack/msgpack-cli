@@ -18,7 +18,7 @@
   </Project>
 
   <Project Name="MsgPack.UnitTest.Xamarin.iOS" Base="MsgPack.UnitTest">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve Path="Properties\*" />
     <Preserve File="*.config" />
     <Preserve File="*.json" />
     <Preserve File="*.mpac" />
@@ -45,8 +45,7 @@
   </Project>
 
   <Project Name="MsgPack.UnitTest.Xamarin.Android" Base="MsgPack.UnitTest.Xamarin.iOS">
-    <Preserve Path="Properties\AndroidManifest.xml" />
-    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve Path="Properties\*" />
     <Preserve Path="Resources\*" />
     <Preserve Path="MainActivity.cs" />
     <Preserve File="*.config" />
@@ -59,6 +58,7 @@
   </Project>
 
   <Project Name="MsgPack.UnitTest.Uwp" Base="MsgPack.UnitTest.Xamarin.iOS">
+    <Preserve Path="Properties\*" />
     <Preserve File="*.config" />
     <Preserve File="*.json" />
     <Preserve File="*.mpac" />
@@ -73,6 +73,7 @@
   </Project>
 
   <Project Name="MsgPack.UnitTest.Uwp.Aot" Base="MsgPack.UnitTest.Uwp">
+    <Preserve Path="Properties\*" />
     <Preserve File="*.config" />
     <Preserve File="*.json" />
     <Preserve File="*.mpac" />

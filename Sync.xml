@@ -42,9 +42,10 @@
   </Project>
 
   <!-- TOOD: should be project.json -->
-  <Project Name="MsgPack.Uwp" Base="MsgPack.Xamarin.iOS">
+  <Project Name="MsgPack.Uwp" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve Path="BufferedStream.cs" />
+    <Preserve Path="project.json" />
     <Exclude Path="Serialization\ExpressionSerializers\*" />
     <Exclude Path="Serialization\AbstractSerializers\*" />
     <Exclude Path="Serialization\CodeDomSerializers\*" />
@@ -56,6 +57,7 @@
     <Exclude Path="Serialization\DefaultSerializerNameResolver.cs" />
     <Exclude Path="Serialization\FromExpression.cs" />
     <Exclude Path="Serialization\FromExpression.*.cs" />
+    <Exclude Path="Serialization\ISerializerGeneratorConfiguration.cs" />
     <Exclude Path="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
     <Exclude Path="Serialization\SerializerCodeGenerationConfiguration.cs" />
     <Exclude Path="Serialization\SerializerCodeGenerationContext.cs" />
@@ -69,14 +71,13 @@
   <!-- TOOD: should be project.json -->
   <Project Name="MsgPack.Xamarin.iOS" Base="MsgPack.Uwp">
     <Preserve Path="Properties\AssemblyInfo.cs" />
-    <!--
     <Exclude Path="Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs" />
     <Exclude Path="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
     <Exclude Path="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
     <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
-    -->
     <Exclude File="*.snk" />
+    <Exclude Path="project.json" />
   </Project>
 
    <!-- TOOD: should be project.json -->
@@ -86,6 +87,13 @@
 
   <Project Name="MsgPack.Unity.Il2cpp.Full" Base="MsgPack.Xamarin.iOS">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude Path="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
+    <Exclude Path="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyCollectionMessagePackSerializer`2.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyDictionaryMessagePackSerializer`3.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
   </Project>
 
   <Project Name="MsgPack.Unity.Il2cpp" Base="MsgPack.Unity.Il2cpp.Full">
@@ -215,6 +223,7 @@
 
   <Project Name="MsgPack.Silverlight.WindowsPhone" Base="MsgPack.Uwp">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude Path="project.json" />
 <!--
     <Preserve Path="Serialization\DefaultSerializers\System_DBNullMessagePackSerializer.cs" />
 -->
