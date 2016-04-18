@@ -441,9 +441,6 @@
     <Compile Include="..\MsgPack\Serialization\INilImplicationHandlerParameter.cs">
       <Link>Serialization\INilImplicationHandlerParameter.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\ISerializerGeneratorConfiguration.cs">
-      <Link>Serialization\ISerializerGeneratorConfiguration.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\ISupportMessagePackSerializerCapability.cs">
       <Link>Serialization\ISupportMessagePackSerializerCapability.cs</Link>
     </Compile>
@@ -608,9 +605,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializationTarget.cs">
       <Link>Serialization\SerializationTarget.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\SerializerAssemblyGenerationConfiguration.cs">
-      <Link>Serialization\SerializerAssemblyGenerationConfiguration.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerCapabilities.cs">
       <Link>Serialization\SerializerCapabilities.cs</Link>
