@@ -280,7 +280,7 @@ namespace MsgPack.Serialization
 			Assert.That( unpackedList[ 3 ] == 909 );
 		}
 
-#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY
+#if !SILVERLIGHT && !AOT && !UNITY
 		[Test]
 		public void Issue145()
 		{
@@ -342,6 +342,6 @@ namespace MsgPack.Serialization
 				this.Items = items;
 			}
 		}
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY
+#endif // !SILVERLIGHT && !AOT && !UNITY
 	}
 }

@@ -19,14 +19,14 @@
 #endregion -- License Terms --
 
 using System;
-#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#if !NETFX_CORE && !WINDOWS_PHONE && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
 using System.Diagnostics;
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
 using System.IO;
 
-#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#if !NETFX_CORE && !WINDOWS_PHONE && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
 
 #if !MSTEST
 using NUnit.Framework;
@@ -44,7 +44,7 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public partial class VersioningTest
 	{
-#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#if !NETFX_CORE && !WINDOWS_PHONE && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
 		[SetUp]
 		public void SetUp()
 		{
@@ -88,7 +88,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
 
 		private static MessagePackSerializer<T> CreateSerializer<T>( EmitterFlavor flavor )
 		{

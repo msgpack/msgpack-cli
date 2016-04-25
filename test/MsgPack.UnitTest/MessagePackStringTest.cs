@@ -136,7 +136,7 @@ namespace MsgPack
 			Assert.AreEqual( String.Empty, target.ToString() );
 		}
 
-#if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
+#if !UNITY && !SILVERLIGHT
 		[Test]
 		public void TestEqualsFullTrust()
 		{
@@ -154,9 +154,9 @@ namespace MsgPack
 			Console.WriteLine( "Large(100,000 chars) : {0:#,0.0} usec", result.Item4 );
 		}
 
-#endif // !UNITY && !WINDOWS_PHONE && !NETFX_CORE
+#endif // !UNITY && !SILVERLIGHT
 
-#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY
+#if !SILVERLIGHT && !AOT && !UNITY
 		private static StrongName GetStrongName( Type type )
 		{
 			var assemblyName = type.Assembly.GetName();
@@ -238,7 +238,7 @@ namespace MsgPack
 			AppDomain.CurrentDomain.SetData( "TestEqualsWorker.Performance", result );
 			AppDomain.CurrentDomain.SetData( "MessagePackString.IsFastEqualsDisabled", MessagePackString.IsFastEqualsDisabled );
 		}
-#endif // if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY
+#endif // !SILVERLIGHT && !AOT && !UNITY
 
 		private static Tuple<double, double, double, double> TestEqualsCore()
 		{

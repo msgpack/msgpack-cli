@@ -53,9 +53,9 @@ namespace MsgPack.Serialization
 #endif // !UNITY || MSGPACK_UNITY_FULL
 	public static class SerializationExceptions
 	{
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT && !UNITY
 		internal static readonly MethodInfo ThrowValueTypeCannotBeNull3Method = FromExpression.ToMethod( ( string name, Type memberType, Type declaringType ) => ThrowValueTypeCannotBeNull( name, memberType, declaringType ) );
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT && !UNITY
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -159,14 +159,14 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize member '{1}' of type '{0}'.", type, memberName ), inner );
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT && !UNITY
 		// ReSharper disable InconsistentNaming
 		/// <summary>
 		///		<see cref="ThrowMissingItem(int,string,Unpacker)"/>
 		/// </summary>
 		internal static readonly MethodInfo ThrowMissingItemMethod = FromExpression.ToMethod( ( int index, string name, Unpacker unpacker ) => ThrowMissingItem( index, name, unpacker ) );
 		// ReSharper restore InconsistentNaming
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT && !UNITY
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -449,10 +449,10 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have appropriate Add method.", type ) );
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT && !UNITY
 		internal static readonly MethodInfo ThrowIsNotArrayHeaderMethod =
 			FromExpression.ToMethod( ( Unpacker unpacker ) => ThrowIsNotArrayHeader( unpacker ) );
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT && !UNITY
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -498,10 +498,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT && !UNITY
 		internal static readonly MethodInfo ThrowIsNotMapHeaderMethod =
 			FromExpression.ToMethod( ( Unpacker unpacker ) => ThrowIsNotMapHeader( unpacker ) );
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT && !UNITY
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -567,7 +567,7 @@ namespace MsgPack.Serialization
 			return new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported because '{0}' cannot be instanciated.", type ) );
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT && !UNITY
 		/// <summary>
 		///		<see cref="ThrowTupleCardinarityIsNotMatch(int,long,Unpacker)"/>
 		/// </summary>
@@ -576,7 +576,7 @@ namespace MsgPack.Serialization
 				( int expectedTupleCardinality, long actualArrayLength, Unpacker unpacker ) =>
 					ThrowTupleCardinarityIsNotMatch( expectedTupleCardinality, actualArrayLength, unpacker )
 			);
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT && !UNITY
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -697,11 +697,11 @@ namespace MsgPack.Serialization
 			throw NewIsTooLargeCollection();
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT && !UNITY
 		[Obsolete( "Use ThrowNullIsProhibitedMethod" )]
 		internal static readonly MethodInfo NewNullIsProhibitedMethod = FromExpression.ToMethod( ( string memberName ) => NewNullIsProhibited( memberName ) );
 		internal static readonly MethodInfo ThrowNullIsProhibitedMethod = FromExpression.ToMethod( ( string memberName ) => ThrowNullIsProhibited( memberName ) );
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT && !UNITY
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>

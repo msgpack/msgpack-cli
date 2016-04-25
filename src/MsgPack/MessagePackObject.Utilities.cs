@@ -927,7 +927,7 @@ namespace MsgPack
 			}
 
 			// Lifting support.
-#if NETSTD_11 || NETSTD_13
+#if ( NETSTD_11 || NETSTD_13 ) && !XAMARIN
 			switch ( NetStandardCompatibility.GetTypeCode( type ) )
 #else
 			switch ( Type.GetTypeCode( type ) )

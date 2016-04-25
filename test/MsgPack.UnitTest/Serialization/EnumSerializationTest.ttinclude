@@ -98,9 +98,9 @@ using System.Threading.Tasks;
 	if ( !forIos )
 	{
 #>
-#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#if !SILVERLIGHT && !AOT && !UNITY
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !SILVERLIGHT && !AOT && !UNITY
 <#+
 	}
 #>
@@ -149,7 +149,7 @@ namespace MsgPack.Serialization
 			get { return <#= canDump.ToString().ToLowerInvariant() #>; }
 		}
 
-#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#if !SILVERLIGHT && !AOT && !UNITY
 		[SetUp]
 		public void SetUp()
 		{
@@ -202,7 +202,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !SILVERLIGHT && !AOT && !UNITY
 <#+
 	} // if !forIos
 #>
@@ -478,7 +478,7 @@ private void CreateEnumTest( Type underlyingType, bool useBuilder, bool canBeFla
 	if ( useBuilder )
 	{
 #>
-#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !UNITY_IPHONE && !XAMDROID && !UNITY_ANDDROID
+#if !SILVERLIGHT && !AOT && !UNITY
 <#+
 	}
 #>
@@ -604,7 +604,7 @@ private void CreateEnumTest( Type underlyingType, bool useBuilder, bool canBeFla
 	if ( useBuilder )
 	{
 #>
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !UNITY_IPHONE && !XAMDROID && !UNITY_ANDDROID
+#endif // !SILVERLIGHT && !AOT && !UNITY
 <#+
 	}
 }

@@ -105,7 +105,7 @@ namespace MsgPack.Serialization
 				context.Serializers.Register( entry.Key, entry.Value, null, null, SerializerRegistrationOptions.None );
 			}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !AOT && !UNITY
 			context.SerializerOptions.IsRuntimeGenerationDisabled = true;
 #endif
 			return context;

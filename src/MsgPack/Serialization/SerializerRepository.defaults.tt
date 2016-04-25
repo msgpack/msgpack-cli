@@ -180,6 +180,18 @@ var notInNet45s =
 		typeof( System.Numerics.Quaternion ),
 		typeof( System.Security.Cryptography.HashAlgorithmName ),
 	};
+var notInXamarin =
+	new HashSet<Type>()
+	{
+		typeof( System.Numerics.Vector2 ),
+		typeof( System.Numerics.Vector3 ),
+		typeof( System.Numerics.Vector4 ),
+		typeof( System.Numerics.Matrix3x2 ),
+		typeof( System.Numerics.Matrix4x4 ),
+		typeof( System.Numerics.Plane ),
+		typeof( System.Numerics.Quaternion ),
+		typeof( System.Security.Cryptography.HashAlgorithmName ),
+	};
 var notInNet35s =
 	new HashSet<Type>()
 	{
@@ -285,15 +297,15 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( Byte[] ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= typeof( Byte ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>ArrayMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( DateTime ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeMessagePackSerializerProvider( ownerContext, false ) );
 			dictionary.Add( typeof( DateTimeOffset ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeOffsetMessagePackSerializerProvider( ownerContext, false ) );
-#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY
 			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.FileTimeMessagePackSerializerProvider( ownerContext, false ) );
-#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY
 			// DateTime, DateTimeOffset, and FILETIME must have nullable providers.
 			dictionary.Add( typeof( DateTime? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeMessagePackSerializerProvider( ownerContext, true ) );
 			dictionary.Add( typeof( DateTimeOffset? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeOffsetMessagePackSerializerProvider( ownerContext, true ) );
-#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY
 			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.FileTimeMessagePackSerializerProvider( ownerContext, true ) );
-#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY
 #if UNITY
 			dictionary.Add( typeof( System.Collections.Generic.KeyValuePair<,> ).TypeHandle, typeof( System_Collections_Generic_KeyValuePair_2MessagePackSerializer ) );
 			dictionary.Add( typeof( System.ArraySegment<> ).TypeHandle, typeof( System_ArraySegment_1MessagePackSerializer ) );
@@ -326,7 +338,14 @@ foreach( Type type in structTypes )
 	if( notInNet45s.Contains( type ) )
 	{
 #>
-#if !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT && !NETFX_CORE && !XAMIOS && !XAMDROID
+#if !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
+<#
+	}
+
+	if( notInXamarin.Contains( type ) )
+	{
+#>
+#if !XAMARIN
 <#
 	}
 
@@ -375,10 +394,17 @@ foreach( Type type in structTypes )
 <#
 	}
 
+	if( notInXamarin.Contains( type ) )
+	{
+#>
+#endif // !XAMARIN
+<#
+	}
+
 	if( notInNet45s.Contains( type ) )
 	{
 #>
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT && !NETFX_CORE && !XAMIOS && !XAMDROID
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
 <#
 	}
 

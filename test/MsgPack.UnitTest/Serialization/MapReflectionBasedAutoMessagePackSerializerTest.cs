@@ -44,10 +44,10 @@ using System.Text;
 #if FEATURE_TAP
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
-#if !NETFX_CORE && !WINDOWS_PHONE && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
+#if !SILVERLIGHT && !AOT && !UNITY
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
+#endif // !SILVERLIGHT && !AOT && !UNITY
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -97,7 +97,7 @@ namespace MsgPack.Serialization
 			get { return false; }
 		}
 
-#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#if !SILVERLIGHT && !AOT && !UNITY
 		[SetUp]
 		public void SetUp()
 		{
@@ -141,7 +141,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !SILVERLIGHT && !AOT && !UNITY
 
 		private void DoKnownCollectionTest<T>( SerializationContext context )
 			where T : new()

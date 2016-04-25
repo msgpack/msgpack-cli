@@ -24,9 +24,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#if !SILVERLIGHT && !AOT && !UNITY
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !SILVERLIGHT && !AOT && !UNITY
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -53,7 +53,7 @@ namespace MsgPack.Serialization
 		{
 			return MessagePackSerializer.CreateInternal<T>( context, PolymorphismSchema.Default );
 		}
-#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#if !SILVERLIGHT && !AOT && !UNITY
 
 #if MSTEST
 		[Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestInitialize]
@@ -102,7 +102,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !SILVERLIGHT && !AOT && !UNITY
 
 		// ------ Creation ------
 

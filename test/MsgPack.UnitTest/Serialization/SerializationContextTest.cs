@@ -206,9 +206,9 @@ namespace MsgPack.Serialization
 			Assert.That( SerializationContext.Default, Is.Not.Null );
 			Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
 			Assert.That( SerializationContext.Default.EnumSerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
-#if !XAMIOS && !UNITY
+#if !AOT && !UNITY
 			Assert.That( SerializationContext.Default.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
-#endif // !XAMIOS && !UNITY
+#endif // !AOT && !UNITY
 			Assert.That( SerializationContext.Default.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
 		}
 
@@ -219,9 +219,9 @@ namespace MsgPack.Serialization
 			Assert.That( context, Is.Not.Null );
 			Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.UnixEpoc ) );
 			Assert.That( context.EnumSerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
-#if !XAMIOS && !UNITY
+#if !AOT && !UNITY
 			Assert.That( context.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
-#endif // !XAMIOS && !UNITY
+#endif // !AOT && !UNITY
 			Assert.That( context.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
 		}
 
@@ -239,18 +239,18 @@ namespace MsgPack.Serialization
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
 				Assert.That( result.EnumSerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
-#if !XAMIOS && !UNITY
+#if !AOT && !UNITY
 				Assert.That( result.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
-#endif // !XAMIOS && !UNITY
+#endif // !AOT && !UNITY
 				Assert.That( result.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
 
 				// default is now classic
 				Assert.That( SerializationContext.Default, Is.Not.Null );
 				Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.UnixEpoc ) );
 				Assert.That( SerializationContext.Default.EnumSerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
-#if !XAMIOS && !UNITY
+#if !AOT && !UNITY
 				Assert.That( SerializationContext.Default.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
-#endif // !XAMIOS && !UNITY
+#endif // !AOT && !UNITY
 				Assert.That( SerializationContext.Default.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
 			}
 			finally
@@ -261,9 +261,9 @@ namespace MsgPack.Serialization
 			// Verify restore
 			Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
 			Assert.That( SerializationContext.Default.EnumSerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
-#if !XAMIOS && !UNITY
+#if !AOT && !UNITY
 			Assert.That( SerializationContext.Default.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
-#endif // !XAMIOS && !UNITY
+#endif // !AOT && !UNITY
 			Assert.That( SerializationContext.Default.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
 		}
 

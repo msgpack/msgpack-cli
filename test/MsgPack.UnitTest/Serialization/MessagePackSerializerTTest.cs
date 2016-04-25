@@ -26,11 +26,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using MsgPack.Serialization.DefaultSerializers;
-#if !XAMIOS && !XAMDROID && !UNITY
-#if !NETFX_CORE && !WINDOWS_PHONE
+#if !AOT && !UNITY && !SILVERLIGHT
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !NETFX_CORE && !WINDOWS_PHONE
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT && !UNITY && !SILVERLIGHT
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -49,9 +47,9 @@ namespace MsgPack.Serialization
 	{
 		private static MessagePackSerializer<T> CreateTarget<T>()
 		{
-#if XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE
+#if AOT || UNITY
 			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions ).GetSerializer<T>();
-#elif !NETFX_CORE && !WINDOWS_PHONE
+#elif !SILVERLIGHT
 			var context = new SerializationContext();
 			context.SerializerOptions.EmitterFlavor = EmitterFlavor.FieldBased;
 			return context.GetSerializer<T>();

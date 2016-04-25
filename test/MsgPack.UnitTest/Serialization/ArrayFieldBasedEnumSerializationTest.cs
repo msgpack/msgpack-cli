@@ -28,9 +28,9 @@ using System.Threading;
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
 
-#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#if !SILVERLIGHT && !AOT && !UNITY
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !SILVERLIGHT && !AOT && !UNITY
 
 #if !MSTEST
 using NUnit.Framework;
@@ -59,7 +59,7 @@ namespace MsgPack.Serialization
 			get { return true; }
 		}
 
-#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#if !SILVERLIGHT && !AOT && !UNITY
 		[SetUp]
 		public void SetUp()
 		{
@@ -103,7 +103,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !SILVERLIGHT && !AOT && !UNITY
 		private static void TestEnumForByNameCore<T>( Stream stream, T value, T deserialized, string property )
 		{
 				if ( property == null )

@@ -509,7 +509,7 @@ namespace MsgPack
 				return new MessagePackObject( asMessagePackString );
 			}
 
-#if NETSTD_11 || NETSTD_13
+#if ( NETSTD_11 || NETSTD_13 ) && !XAMARIN
 			switch ( NetStandardCompatibility.GetTypeCode( value.GetType() ) )
 #else
 			switch ( Type.GetTypeCode( value.GetType() ) )

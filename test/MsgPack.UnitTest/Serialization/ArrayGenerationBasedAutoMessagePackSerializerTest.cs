@@ -44,10 +44,10 @@ using System.Text;
 #if FEATURE_TAP
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
-#if !NETFX_CORE && !WINDOWS_PHONE && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
+#if !SILVERLIGHT && !AOT && !UNITY
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
+#endif // !SILVERLIGHT && !AOT && !UNITY
 #if !MSTEST
 using NUnit.Framework;
 #else
