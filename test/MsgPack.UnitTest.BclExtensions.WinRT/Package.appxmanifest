@@ -3,7 +3,7 @@
   <Identity Name="9775e3cb-f869-4754-b13a-963a63ea417a" Publisher="CN=MsgPack.Cli.UnitTest" Version="1.1.0.0" />
   <Properties>
     <DisplayName>MsgPack.UnitTest.BclExtensions.WinRT</DisplayName>
-    <PublisherDisplayName>Yusuke</PublisherDisplayName>
+    <PublisherDisplayName>MsgPack.Cli.UnitTest</PublisherDisplayName>
     <Logo>Images\UnitTestStoreLogo.png</Logo>
     <Description>MsgPack.UnitTest.WinRT.BclExtensions</Description>
   </Properties>

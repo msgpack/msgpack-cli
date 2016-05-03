@@ -3,7 +3,7 @@
   <Identity Name="164A8EB3-4366-4F75-9AEC-5D975A42822A" Publisher="CN=MsgPack.Cli.UnitTest" Version="1.1.0.0" />
   <Properties>
     <DisplayName>MsgPack.UnitTest.WinRT</DisplayName>
-    <PublisherDisplayName>Yusuke</PublisherDisplayName>
+    <PublisherDisplayName>MsgPack.Cli.UnitTest</PublisherDisplayName>
     <Logo>Images\UnitTestStoreLogo.png</Logo>
     <Description>MsgPack.UnitTest.WinRT</Description>
   </Properties>

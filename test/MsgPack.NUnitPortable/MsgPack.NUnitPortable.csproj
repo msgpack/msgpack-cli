@@ -98,6 +98,7 @@
     <Compile Include="NUnit\Framework\TextMessageWriter.cs" />
     <Compile Include="TestingPlatform.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeoutAttribute.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
