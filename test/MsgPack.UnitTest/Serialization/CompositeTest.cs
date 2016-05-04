@@ -24,8 +24,8 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using MsgPack.Serialization.AbstractSerializers;
 #if !SILVERLIGHT
+using MsgPack.Serialization.AbstractSerializers;
 #if !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.CodeDomSerializers;
 #endif // !NETSTD_11 && !NETSTD_13

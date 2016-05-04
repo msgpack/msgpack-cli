@@ -59,7 +59,7 @@ namespace MsgPack.Serialization
 			get { return false; }
 		}
 
-#if !SILVERLIGHT && !AOT && !UNITY
+#if !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 		[SetUp]
 		public void SetUp()
 		{
@@ -103,7 +103,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
-#endif // !SILVERLIGHT && !AOT && !UNITY
+#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 		private static void TestEnumForByNameCore<T>( Stream stream, T value, T deserialized, string property )
 		{
 				if ( property == null )

@@ -21,6 +21,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+#if NETFX_35
+using Debug = System.Console; // For missing Debug.WriteLine(String, params Object[])
+#endif // NETFX_35
 using System.IO;
 using System.Text;
 #if !MSTEST
@@ -52,7 +55,7 @@ namespace MsgPack
 				TestByte( rand.NextByte() );
 			}
 			sw.Stop();
-			Console.WriteLine( "Byte: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
+			Debug.WriteLine( "Byte: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
 		}
 
 		private static void TestByte( Byte value )
@@ -78,7 +81,7 @@ namespace MsgPack
 				TestSByte( rand.NextSByte() );
 			}
 			sw.Stop();
-			Console.WriteLine( "SByte: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
+			Debug.WriteLine( "SByte: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
 		}
 
 		private static void TestSByte( SByte value )
@@ -104,7 +107,7 @@ namespace MsgPack
 				TestInt16( rand.NextInt16() );
 			}
 			sw.Stop();
-			Console.WriteLine( "Int16: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
+			Debug.WriteLine( "Int16: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
 		}
 
 		private static void TestInt16( Int16 value )
@@ -129,7 +132,7 @@ namespace MsgPack
 				TestUInt16( rand.NextUInt16() );
 			}
 			sw.Stop();
-			Console.WriteLine( "UInt16: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
+			Debug.WriteLine( "UInt16: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
 		}
 
 		private static void TestUInt16( UInt16 value )
@@ -155,7 +158,7 @@ namespace MsgPack
 				TestInt32( rand.NextInt32() );
 			}
 			sw.Stop();
-			Console.WriteLine( "Int32: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
+			Debug.WriteLine( "Int32: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
 		}
 
 		private static void TestInt32( Int32 value )
@@ -180,7 +183,7 @@ namespace MsgPack
 				TestUInt32( rand.NextUInt32() );
 			}
 			sw.Stop();
-			Console.WriteLine( "UInt32: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
+			Debug.WriteLine( "UInt32: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
 		}
 
 		private static void TestUInt32( UInt32 value )
@@ -206,7 +209,7 @@ namespace MsgPack
 				TestInt64( rand.NextInt64() );
 			}
 			sw.Stop();
-			Console.WriteLine( "Int64: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
+			Debug.WriteLine( "Int64: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
 		}
 
 		private static void TestInt64( Int64 value )
@@ -231,7 +234,7 @@ namespace MsgPack
 				TestUInt64( rand.NextUInt64() );
 			}
 			sw.Stop();
-			Console.WriteLine( "UInt64: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
+			Debug.WriteLine( "UInt64: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
 		}
 
 		private static void TestUInt64( UInt64 value )
@@ -261,7 +264,7 @@ namespace MsgPack
 				TestSingle( rand.NextSingle() );
 			}
 			sw.Stop();
-			Console.WriteLine( "Single: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
+			Debug.WriteLine( "Single: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
 		}
 
 		private static void TestSingle( Single value )
@@ -291,7 +294,7 @@ namespace MsgPack
 				TestDouble( rand.NextDouble() );
 			}
 			sw.Stop();
-			Console.WriteLine( "Double: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
+			Debug.WriteLine( "Double: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
 		}
 
 		private static void TestDouble( Double value )

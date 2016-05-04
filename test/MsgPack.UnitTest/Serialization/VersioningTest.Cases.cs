@@ -36,7 +36,7 @@ namespace MsgPack.Serialization
 {
 	partial class VersioningTest
 	{
-#if !AOT
+#if !AOT && !SILVERLIGHT
 
 		[Test]
 		public void TestExtraField_NotExtensible_Array_FieldBased_Classic_Fail()
@@ -61,7 +61,7 @@ namespace MsgPack.Serialization
 		{
 			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.FieldBased ) );
 		}
-#endif // !AOT
+#endif // !AOT && !SILVERLIGHT
 
 		[Test]
 		public void TestExtraField_NotExtensible_Array_ReflectionBased_Classic_Fail()
@@ -86,7 +86,7 @@ namespace MsgPack.Serialization
 		{
 			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.ReflectionBased ) );
 		}
-#if !NETSTD_11 && !NETSTD_13 && !XAMARIN
+#if !NETSTD_11 && !NETSTD_13 && !XAMARIN && !SILVERLIGHT
 
 		[Test]
 		public void TestExtraField_NotExtensible_Array_CodeDomBased_Classic_Fail()
@@ -111,8 +111,8 @@ namespace MsgPack.Serialization
 		{
 			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.CodeDomBased ) );
 		}
-#endif // !NETSTD_11 && !NETSTD_13 && !XAMARIN
-#if !AOT
+#endif // !NETSTD_11 && !NETSTD_13 && !XAMARIN && !SILVERLIGHT
+#if !AOT && !SILVERLIGHT
 
 		[Test]
 		public void TestExtraField_NotExtensible_Map_FieldBased_Classic_Fail()
@@ -143,7 +143,7 @@ namespace MsgPack.Serialization
 		{
 			TestFieldSwappedCore( EmitterFlavor.FieldBased );
 		}
-#endif // !AOT
+#endif // !AOT && !SILVERLIGHT
 
 		[Test]
 		public void TestExtraField_NotExtensible_Map_ReflectionBased_Classic_Fail()
@@ -174,7 +174,7 @@ namespace MsgPack.Serialization
 		{
 			TestFieldSwappedCore( EmitterFlavor.ReflectionBased );
 		}
-#if !NETSTD_11 && !NETSTD_13 && !AOT && !UNITY
+#if !NETSTD_11 && !NETSTD_13 && !AOT && !UNITY && !SILVERLIGHT
 
 		[Test]
 		public void TestExtraField_NotExtensible_Map_CodeDomBased_Classic_Fail()
@@ -205,7 +205,7 @@ namespace MsgPack.Serialization
 		{
 			TestFieldSwappedCore( EmitterFlavor.CodeDomBased );
 		}
-#endif // !NETSTD_11 && !NETSTD_13 && !AOT && !UNITY
+#endif // !NETSTD_11 && !NETSTD_13 && !AOT && !UNITY && !SILVERLIGHT
 	}
 
 }

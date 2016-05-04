@@ -50,44 +50,11 @@ namespace MsgPack.Serialization
 		}
 
 #pragma warning disable 618
-		[Test]
-		[Ignore] // Deprecated, it should be alias of Get
-		public void TestCreate1_WithoutContext_NewInstance()
-		{
-			var first = MessagePackSerializer.Create<Image>();
-			Assert.That( first, Is.Not.Null );
-			var second = MessagePackSerializer.Create<Image>();
-			Assert.That( second, Is.Not.Null );
-			Assert.That( first, Is.Not.SameAs( second ) );
-		}
-
-		[Test]
-		[Ignore] // Deprecated, it should be alias of Get
-		public void TestCreate1_WithContext_NewInstance()
-		{
-			var context = new SerializationContext();
-			var first = MessagePackSerializer.Create<Image>( context );
-			Assert.That( first, Is.Not.Null );
-			var second = MessagePackSerializer.Create<Image>( context );
-			Assert.That( second, Is.Not.Null );
-			Assert.That( first, Is.Not.SameAs( second ) );
-		}
 
 		[Test]
 		public void TestCreate1_WithContext_Null_Fail()
 		{
 			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Create<Image>( null ) );
-		}
-
-		[Test]
-		[Ignore] // Deprecated, it should be alias of Get
-		public void TestCreate_WithoutContext_NewInstance()
-		{
-			var first = MessagePackSerializer.Create( typeof( Image ) );
-			Assert.That( first, Is.Not.Null );
-			var second = MessagePackSerializer.Create( typeof( Image ) );
-			Assert.That( second, Is.Not.Null );
-			Assert.That( first, Is.Not.SameAs( second ) );
 		}
 
 		[Test]
@@ -100,18 +67,6 @@ namespace MsgPack.Serialization
 #if !UNITY
 			Assert.That( first.GetType(), Is.EqualTo( second.GetType() ) );
 #endif // !UNITY
-		}
-
-		[Test]
-		[Ignore] // Deprecated, it should be alias of Get
-		public void TestCreate_WithContext_NewInstance()
-		{
-			var context = new SerializationContext();
-			var first = MessagePackSerializer.Create( typeof( Image ), context );
-			Assert.That( first, Is.Not.Null );
-			var second = MessagePackSerializer.Create( typeof( Image ), context );
-			Assert.That( second, Is.Not.Null );
-			Assert.That( first, Is.Not.SameAs( second ) );
 		}
 
 		[Test]

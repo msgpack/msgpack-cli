@@ -24,7 +24,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE;AOT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -34,7 +34,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\windowsphone8\</OutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE;AOT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -85,7 +85,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE;AOT;CODE_ANALYSIS</DefineConstants>
     <DocumentationFile>..\..\bin\windowsphone8\MsgPack.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <NoStdLib>true</NoStdLib>
@@ -421,9 +421,6 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NullableMessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\NullableMessagePackSerializer`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\SimdTypeSerializers.cs">
-      <Link>Serialization\DefaultSerializers\SimdTypeSerializers.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_ArraySegment_1MessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\System_ArraySegment_1MessagePackSerializer`1.cs</Link>
     </Compile>
@@ -454,29 +451,14 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_QueueMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\System_Collections_QueueMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_StackMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\System_Collections_StackMessagePackSerializer.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_DBNullMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_DBNullMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Globalization_CultureInfoMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_Globalization_CultureInfoMessagePackSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_ObjectMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_ObjectMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_StringMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_StringMessagePackSerializer.cs</Link>

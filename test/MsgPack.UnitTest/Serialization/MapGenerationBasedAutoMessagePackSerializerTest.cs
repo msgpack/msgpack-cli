@@ -45,7 +45,9 @@ using System.Text;
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
 #if !SILVERLIGHT && !AOT && !UNITY
+#if !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.CodeDomSerializers;
+#endif // !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
 #endif // !SILVERLIGHT && !AOT && !UNITY
 #if !MSTEST

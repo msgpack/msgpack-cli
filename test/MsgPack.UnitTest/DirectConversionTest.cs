@@ -21,6 +21,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+#if NETFX_35
+using Debug = System.Console; // For missing Debug.WriteLine(String, params Object[])
+#endif // NETFX_35
 using System.IO;
 using System.Text;
 #if !MSTEST
@@ -116,7 +119,7 @@ namespace MsgPack
 				TestString( sb.ToString() );
 			}
 			sw.Stop();
-			Console.WriteLine( "Small String ({1:#.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
+			Debug.WriteLine( "Small String ({1:#.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
 			sw.Reset();
 			sw.Start();
 
@@ -134,7 +137,7 @@ namespace MsgPack
 				TestString( sb.ToString() );
 			}
 			sw.Stop();
-			Console.WriteLine( "Medium String ({1:#.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
+			Debug.WriteLine( "Medium String ({1:#.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
 			sw.Reset();
 #if !SKIP_LARGE_TEST && !NETFX_35
 			sw.Start();
@@ -153,7 +156,7 @@ namespace MsgPack
 				TestString( sb.ToString() );
 			}
 			sw.Stop();
-			Console.WriteLine( "Large String ({1:#.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 10.0, avg );
+			Debug.WriteLine( "Large String ({1:#.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 10.0, avg );
 			sw.Reset();
 #endif
 
@@ -178,7 +181,7 @@ namespace MsgPack
 				TestString( sb.ToString() );
 			}
 			sw.Stop();
-			Console.WriteLine( "Medium String ({1:#.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
+			Debug.WriteLine( "Medium String ({1:#.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
 		}
 
 		private static void TestString( String value )

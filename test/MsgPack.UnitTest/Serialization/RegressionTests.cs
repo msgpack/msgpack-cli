@@ -280,7 +280,7 @@ namespace MsgPack.Serialization
 			Assert.That( unpackedList[ 3 ] == 909 );
 		}
 
-#if !SILVERLIGHT && !AOT && !UNITY
+#if !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 		[Test]
 		public void Issue145()
 		{
@@ -342,6 +342,6 @@ namespace MsgPack.Serialization
 				this.Items = items;
 			}
 		}
-#endif // !SILVERLIGHT && !AOT && !UNITY
+#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 	}
 }

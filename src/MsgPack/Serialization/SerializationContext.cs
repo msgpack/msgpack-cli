@@ -946,7 +946,7 @@ namespace MsgPack.Serialization
 		private static class SerializerGetter<T>
 		{
 			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTD_11 && !NETSTD_13 && !WINDOWS_PHONE
 			Delegate.CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> ),
 					Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) )

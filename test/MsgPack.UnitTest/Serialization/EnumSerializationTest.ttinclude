@@ -149,7 +149,7 @@ namespace MsgPack.Serialization
 			get { return <#= canDump.ToString().ToLowerInvariant() #>; }
 		}
 
-#if !SILVERLIGHT && !AOT && !UNITY
+#if !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 		[SetUp]
 		public void SetUp()
 		{
@@ -202,7 +202,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
-#endif // !SILVERLIGHT && !AOT && !UNITY
+#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 <#+
 	} // if !forIos
 #>

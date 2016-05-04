@@ -180,7 +180,7 @@ var notInNet45s =
 		typeof( System.Numerics.Quaternion ),
 		typeof( System.Security.Cryptography.HashAlgorithmName ),
 	};
-var notInXamarin =
+var notInNetStandard1_3 = // Not in UWP and Xamarin, so effectively not in netstd 1.3...
 	new HashSet<Type>()
 	{
 		typeof( System.Numerics.Vector2 ),
@@ -342,10 +342,10 @@ foreach( Type type in structTypes )
 <#
 	}
 
-	if( notInXamarin.Contains( type ) )
+	if( notInNetStandard1_3.Contains( type ) )
 	{
 #>
-#if !XAMARIN
+#if !NETSTD_13
 <#
 	}
 
@@ -394,10 +394,10 @@ foreach( Type type in structTypes )
 <#
 	}
 
-	if( notInXamarin.Contains( type ) )
+	if( notInNetStandard1_3.Contains( type ) )
 	{
 #>
-#endif // !XAMARIN
+#endif // !NETSTD_13
 <#
 	}
 

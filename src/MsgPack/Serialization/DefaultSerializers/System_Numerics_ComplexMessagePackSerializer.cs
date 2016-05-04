@@ -22,7 +22,7 @@
 #define UNITY
 #endif
 
-#if !UNITY && !WINDOWS_PHONE
+#if !UNITY
 using System;
 using System.Numerics;
 #if FEATURE_TAP
@@ -94,4 +94,4 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	}
 }
-#endif // !UNITY && !WINDOWS_PHONE
+#endif // !UNITY

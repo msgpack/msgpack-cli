@@ -53,7 +53,7 @@ namespace MsgPack.Serialization
 		{
 			return MessagePackSerializer.CreateInternal<T>( context, PolymorphismSchema.Default );
 		}
-#if !SILVERLIGHT && !AOT && !UNITY
+#if !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 
 #if MSTEST
 		[Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestInitialize]
@@ -102,7 +102,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
-#endif // !SILVERLIGHT && !AOT && !UNITY
+#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 
 		// ------ Creation ------
 

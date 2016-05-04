@@ -37,10 +37,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-<#+
-	if ( !forIos )
-	{
-#>
 #if !SILVERLIGHT && !AOT && !UNITY
 using MsgPack.Serialization.EmittingSerializers;
 #endif // !SILVERLIGHT && !AOT && !UNITY
@@ -53,15 +49,6 @@ using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
 #endif
-<#+
-	}
-	else
-	{
-#>
-using NUnit.Framework;
-<#+
-	}
-#>
 
 namespace MsgPack.Serialization
 {
@@ -109,7 +96,7 @@ namespace MsgPack.Serialization
 	if ( !forIos )
 	{
 #>
-#if !SILVERLIGHT && !AOT && !UNITY
+#if !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 
 #if MSTEST
 		[Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestInitialize]
@@ -158,7 +145,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
-#endif // !SILVERLIGHT && !AOT && !UNITY
+#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 <#+
 	} // if !forIos
 #>

@@ -144,9 +144,9 @@ namespace MsgPack
 			this.TestMessageConstructor_WithNull_SetToDefaultMessage();
 			this.TestInnerExceptionConstructor_WithMessageAndInnerException_SetToMessageAndInnerException();
 			this.TestInnerExceptionConstructor_Null_SetToDefaultMessageAndNullInnerException();
-#if !SILVERLIGHT && !AOT && !UNITY
+#if !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 			this.TestSerialization();
-#endif // !SILVERLIGHT && !AOT && !UNITY
+#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 		}
 
 		private void TestDefaultConstructor()
@@ -217,7 +217,7 @@ namespace MsgPack
 			}
 		}
 
-#if !SILVERLIGHT && !AOT && !UNITY
+#if !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 		private void TestSerialization()
 		{
 			Assert.That( typeof( T ), Is.BinarySerializable );
@@ -324,6 +324,6 @@ namespace MsgPack
 			var assemblyName = type.Assembly.GetName();
 			return new StrongName( new StrongNamePublicKeyBlob( assemblyName.GetPublicKey() ), assemblyName.Name, assemblyName.Version );
 		}
-#endif // !SILVERLIGHT && !AOT && !UNITY
+#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 	}
 }

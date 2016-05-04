@@ -20,6 +20,9 @@
 
 using System;
 using System.Diagnostics;
+#if NETFX_35
+using Debug = System.Console; // For missing Debug.WriteLine(String, params Object[])
+#endif // NETFX_35
 using System.Security;
 #if !NETFX_CORE && !WINDOWS_PHONE
 using System.Security.Permissions;
@@ -136,27 +139,27 @@ namespace MsgPack
 			Assert.AreEqual( String.Empty, target.ToString() );
 		}
 
-#if !UNITY && !SILVERLIGHT
+#if !UNITY && !SILVERLIGHT && !AOT
 		[Test]
 		public void TestEqualsFullTrust()
 		{
 			var result = TestEqualsCore();
 			Assert.That( MessagePackString.IsFastEqualsDisabled, Is.False );
-			Console.WriteLine( "TestEqualsFullTrust" );
+			Debug.WriteLine( "TestEqualsFullTrust" );
 			ShowResult( result );
 		}
 
 		private void ShowResult( Tuple<double, double, double, double> result )
 		{
-			Console.WriteLine( "Tiny(few bytes)      : {0:#,0.0} usec", result.Item1 );
-			Console.WriteLine( "Small(16 chars)      : {0:#,0.0} usec", result.Item2 );
-			Console.WriteLine( "Medium(1,000 chars)  : {0:#,0.0} usec", result.Item3 );
-			Console.WriteLine( "Large(100,000 chars) : {0:#,0.0} usec", result.Item4 );
+			Debug.WriteLine( "Tiny(few bytes)      : {0:#,0.0} usec", result.Item1 );
+			Debug.WriteLine( "Small(16 chars)      : {0:#,0.0} usec", result.Item2 );
+			Debug.WriteLine( "Medium(1,000 chars)  : {0:#,0.0} usec", result.Item3 );
+			Debug.WriteLine( "Large(100,000 chars) : {0:#,0.0} usec", result.Item4 );
 		}
 
-#endif // !UNITY && !SILVERLIGHT
+#endif // !UNITY && !SILVERLIGHT && !AOT
 
-#if !SILVERLIGHT && !AOT && !UNITY
+#if !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 		private static StrongName GetStrongName( Type type )
 		{
 			var assemblyName = type.Assembly.GetName();
@@ -238,7 +241,7 @@ namespace MsgPack
 			AppDomain.CurrentDomain.SetData( "TestEqualsWorker.Performance", result );
 			AppDomain.CurrentDomain.SetData( "MessagePackString.IsFastEqualsDisabled", MessagePackString.IsFastEqualsDisabled );
 		}
-#endif // !SILVERLIGHT && !AOT && !UNITY
+#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 
 		private static Tuple<double, double, double, double> TestEqualsCore()
 		{

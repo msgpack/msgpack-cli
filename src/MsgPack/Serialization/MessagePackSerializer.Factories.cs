@@ -39,15 +39,13 @@ using System.Diagnostics.Contracts;
 #if NETFX_CORE || WINDOWS_PHONE
 using System.Linq.Expressions;
 #endif
-#if !AOT
+#if !AOT && !SILVERLIGHT
 using MsgPack.Serialization.AbstractSerializers;
-#if !SILVERLIGHT
 #if !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.CodeDomSerializers;
 #endif // !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT
-#endif // !AOT
+#endif // !AOT && !SILVERLIGHT
 
 namespace MsgPack.Serialization
 {

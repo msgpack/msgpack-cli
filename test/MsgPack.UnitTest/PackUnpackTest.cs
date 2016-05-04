@@ -133,8 +133,12 @@ namespace MsgPack
 		[Test]
 		[Timeout( 3000000 )]
 #if !HEAVY_TEST
+#if MSTEST
 		[Ignore]
-#endif
+#else
+		[Ignore( "Too heavy to run continuously" )]
+#endif // MSTEST
+#endif // !HEAVY_TEST
 		public void TestStringMedium()
 		{
 			var sw = Stopwatch.StartNew();
@@ -161,8 +165,12 @@ namespace MsgPack
 		[Test]
 		[Timeout( 3000000 )]
 #if !HEAVY_TEST
+#if MSTEST
 		[Ignore]
-#endif
+#else
+		[Ignore( "Too heavy to run continuously" )]
+#endif // MSTEST
+#endif // !HEAVY_TEST
 		public void TestStringLarge()
 		{
 			var sw = Stopwatch.StartNew();

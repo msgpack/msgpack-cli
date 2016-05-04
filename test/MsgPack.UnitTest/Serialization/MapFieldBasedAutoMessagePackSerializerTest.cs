@@ -45,7 +45,9 @@ using System.Text;
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
 #if !SILVERLIGHT && !AOT && !UNITY
+#if !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.CodeDomSerializers;
+#endif // !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
 #endif // !SILVERLIGHT && !AOT && !UNITY
 #if !MSTEST
@@ -97,7 +99,7 @@ namespace MsgPack.Serialization
 			get { return true; }
 		}
 
-#if !SILVERLIGHT && !AOT && !UNITY
+#if !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 		[SetUp]
 		public void SetUp()
 		{
@@ -141,7 +143,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
-#endif // !SILVERLIGHT && !AOT && !UNITY
+#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
 
 		private void DoKnownCollectionTest<T>( SerializationContext context )
 			where T : new()
