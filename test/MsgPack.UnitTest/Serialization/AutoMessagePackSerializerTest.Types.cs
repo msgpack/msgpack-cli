@@ -1449,6 +1449,7 @@ namespace MsgPack.Serialization
 #endif // FEATURE_TAP
 	}
 
+#pragma warning disable 0114
 	public class PackableEnumerable : EnumerableBase<int>
 	, IPackable
 #if FEATURE_TAP
@@ -2740,6 +2741,7 @@ namespace MsgPack.Serialization
 #endif // FEATURE_TAP
 	}
 
+#pragma warning restore 0114
 
 		#region -- Polymorphism --
 		#region ---- KnownType ----
