@@ -1068,7 +1068,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			DefaultSerializerNameResolver.ResolveTypeName(
 				true,
 				this.TargetType,
-				this.GetType().Namespace,
+				this.GetType().Namespace + ".Generated",
 				out serializerTypeName,
 				out serializerTypeNamespace 
 			);

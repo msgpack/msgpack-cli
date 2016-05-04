@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 //    limitations under the License.
 //
 #endregion -- License Terms --
+
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -1354,6 +1355,116 @@ namespace MsgPack.Serialization
 			}
 		}
 		#endregion -- Issue 121 --
+
+		#region -- Issue 138 --
+
+
+		[Test]
+		public void TestGenerateSerializerCodeAssembly_WithoutNamespace_Default()
+		{
+			TestGenerateSerializerCodeAssemblyCore( null );
+		}
+
+		[Test]
+		public void TestGenerateSerializerCodeAssembly_WithNamespace_Used()
+		{
+			TestGenerateSerializerCodeAssemblyCore( "TestNamespace" );
+		}
+
+		[Test]
+		public void TestGenerateSerializerCodeAssembly_WithGlobalNameSpace_Used()
+		{
+			TestGenerateSerializerCodeAssemblyCore( String.Empty );
+		}
+
+		private static void TestGenerateSerializerCodeAssemblyCore( string @namespace )
+		{
+			var configuration = new SerializerAssemblyGenerationConfiguration { IsRecursive = false, Namespace = @namespace, AssemblyName = new AssemblyName( MethodBase.GetCurrentMethod().Name ) };
+			var results =
+				SerializerGenerator.GenerateSerializerCodeAssembly(
+					configuration,
+					typeof( GeneratorTestObject ),
+					typeof( AnotherGeneratorTestObject )
+				).ToArray();
+			try
+			{
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+				Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestObject ) ), Is.False );
+
+				Assert.That( results.Length, Is.EqualTo( 2 ) );
+
+				var one = results.SingleOrDefault( r => r.TargetType == typeof( GeneratorTestObject ) );
+				Assert.That( one, Is.Not.Null, String.Join( ", ", results.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That(
+					one.FilePath,
+					Is.EqualTo(
+						Path.GetFullPath(
+							String.Concat(
+								".",
+								Path.DirectorySeparatorChar.ToString(),
+								configuration.AssemblyName.Name,
+								".dll"
+							)
+						)
+					)
+				);
+				Assert.That(
+					one.SerializerTypeName,
+					Is.EqualTo( "MsgPack_Serialization_GeneratorTestObjectSerializer" )
+				);
+				Assert.That(
+					one.SerializerTypeNamespace,
+					Is.EqualTo( configuration.Namespace )
+				);
+				Assert.That(
+					one.SerializerTypeFullName,
+					Is.EqualTo(
+						( configuration.Namespace.Length > 0 ? configuration.Namespace + "." : String.Empty ) +
+						"MsgPack_Serialization_GeneratorTestObjectSerializer"
+					)
+				);
+
+				var another = results.SingleOrDefault( r => r.TargetType == typeof( AnotherGeneratorTestObject ) );
+				Assert.That( another, Is.Not.Null, String.Join( ", ", results.Select( r => r.TargetType.FullName ).ToArray() ) );
+				Assert.That(
+					another.FilePath,
+					Is.EqualTo(
+						Path.GetFullPath(
+							String.Concat(
+								".",
+								Path.DirectorySeparatorChar.ToString(),
+								configuration.AssemblyName.Name,
+								".dll"
+							)
+						)
+					)
+				);
+				Assert.That(
+					another.SerializerTypeName,
+					Is.EqualTo( "MsgPack_Serialization_AnotherGeneratorTestObjectSerializer" )
+				);
+				Assert.That(
+					another.SerializerTypeNamespace,
+					Is.EqualTo( configuration.Namespace )
+				);
+				Assert.That(
+					another.SerializerTypeFullName,
+					Is.EqualTo(
+						( configuration.Namespace.Length > 0 ? configuration.Namespace + "." : String.Empty ) +
+						"MsgPack_Serialization_AnotherGeneratorTestObjectSerializer"
+					)
+				);
+			}
+			finally
+			{
+				foreach ( var result in results )
+				{
+					File.Delete( result.FilePath );
+				}
+			}
+		}
+		#endregion -- Issue 138 --
 
 		private static void TestOnWorkerAppDomain( string geneartedAssemblyFilePath, PackerCompatibilityOptions packerCompatibilityOptions, SerializationMethod method, byte[] bytesValue, byte[] expectedPackedValue, TestType testType )
 		{

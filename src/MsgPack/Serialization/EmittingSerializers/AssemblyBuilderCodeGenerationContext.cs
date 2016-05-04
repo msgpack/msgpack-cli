@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private readonly SerializationMethodGeneratorManager _generatorManager;
 		private readonly AssemblyBuilder _assemblyBuilder;
 		private readonly string _directory;
+		private readonly string _namespace;
 		private readonly List<SerializerSpecification> _generatedSerializers;
 
 		public AssemblyBuilderCodeGenerationContext( SerializationContext context, AssemblyBuilder assemblyBuilder, SerializerAssemblyGenerationConfiguration configuration )
@@ -53,6 +54,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			SerializationMethodGeneratorManager.SetUpAssemblyBuilderAttributes( assemblyBuilder, false );
 			this._generatorManager = SerializationMethodGeneratorManager.Get( assemblyBuilder );
 			this._directory = configuration.OutputDirectory;
+			this._namespace = configuration.Namespace;
 			this._generatedSerializers = new List<SerializerSpecification>();
 		}
 
@@ -69,9 +71,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			DefaultSerializerNameResolver.ResolveTypeName(
 				this._assemblyBuilder == null,
 				targetType,
-				typeof( AssemblyBuilderCodeGenerationContext ).Namespace,
+				this._namespace,
 				out serializerTypeName,
-				out serializerTypeNamespace 
+				out serializerTypeNamespace
 			);
 			var spec =
 				new SerializerSpecification(
