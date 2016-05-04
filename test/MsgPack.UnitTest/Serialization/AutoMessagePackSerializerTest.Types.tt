@@ -14,9 +14,9 @@
 <#@ import namespace="System.Text" #>
 <#
 	// TODO -> ComplexTypeGenerated.tt
-var __flavors = new []{ "Field", "Context", "Expression" };
+var flavors = new []{ "Field", "Context", "Expression" };
 
-var __fields =
+var fields =
 	new Tuple<Object, string, string, bool>[]
 	{
 		new Tuple<Object, string, string, bool>( typeof( Object ), "NullField", "null", true ),
@@ -98,14 +98,14 @@ var __fields =
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.AddOnlyCollection`1", new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 	};
 
-var __desktopOnly =
+var desktopOnly =
 	new HashSet<Type>()
 	{
 		typeof( ArrayList ),
 		typeof( Hashtable )
 	};
 
-var __notInSLWP =
+var notInSLWP =
 	new HashSet<String>()
 	{
 		ToTypeName( typeof( KeyValuePair<string, Complex> ) ),
@@ -114,7 +114,7 @@ var __notInSLWP =
 	};
 
 
-var __notInNet35 =
+var notInNet35 =
 	new HashSet<String>()
 	{
 		ToTypeName( new Tuple<String, String[]>( typeof( ObservableCollection<> ).FullName, new [] { "MsgPack.MessagePackObject" } ) ),
@@ -208,27 +208,27 @@ namespace MsgPack.Serialization
 	public sealed class ComplexTypeGenerated : IVerifiable<ComplexTypeGenerated>
 	{
 <#
-foreach( Tuple<Object, string, string, bool> __item in __fields )
+foreach( Tuple<Object, string, string, bool> item in fields )
 {
-	String __typeName;
-	if( __item.Item1 is Type )
+	String typeName;
+	if( item.Item1 is Type )
 	{
-		__typeName = ToTypeName( __item.Item1 as Type );
+		typeName = ToTypeName( item.Item1 as Type );
 	}
 	else
 	{
-		__typeName = ToTypeName( __item.Item1 as Tuple<String, String[]> );
+		typeName = ToTypeName( item.Item1 as Tuple<String, String[]> );
 	}
-	var __asType = __item.Item1 as Type;
-	if( __asType != null && __desktopOnly.Contains( __asType ) )
+	var asType = item.Item1 as Type;
+	if( asType != null && desktopOnly.Contains( asType ) )
 	{
 #>
 #if !SILVERLIGHT && !NETSTD_11
 <#
 	}
-	else if( __notInNet35.Contains( __typeName ) )
+	else if( notInNet35.Contains( typeName ) )
 	{
-		if(__notInSLWP.Contains( __typeName ) )
+		if(notInSLWP.Contains( typeName ) )
 		{
 #>
 #if !NETFX_35 && !WINDOWS_PHONE
@@ -242,30 +242,30 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 		}
 	}
 #>
-		private <#= __typeName #> _<#= ToFieldName( __item ) #><#= __item.Item4 ? String.Empty : " = " + GetSimpleInitializer( __item ) #>;
+		private <#= typeName #> _<#= ToFieldName( item ) #><#= item.Item4 ? String.Empty : " = " + GetSimpleInitializer( item ) #>;
 		
-		public <#= __typeName #> <#= ToFieldName( __item ) #>
+		public <#= typeName #> <#= ToFieldName( item ) #>
 		{
-			get { return this._<#= ToFieldName( __item ) #>; }
+			get { return this._<#= ToFieldName( item ) #>; }
 <#
-	if( __item.Item4 )
+	if( item.Item4 )
 	{
 #>
-			set { this._<#= ToFieldName( __item ) #> = value; }
+			set { this._<#= ToFieldName( item ) #> = value; }
 <#
 	}
 #>
 		}
 <#
-	if( __asType != null && __desktopOnly.Contains( __asType ) )
+	if( asType != null && desktopOnly.Contains( asType ) )
 	{
 #>
 #endif // !SILVERLIGHT && !NETSTD_11
 <#
 	}
-	else if( __notInNet35.Contains( __typeName ) )
+	else if( notInNet35.Contains( typeName ) )
 	{
-		if(__notInSLWP.Contains( __typeName ) )
+		if(notInSLWP.Contains( typeName ) )
 		{
 #>
 #endif // !NETFX_35 && !WINDOWS_PHONE
@@ -284,27 +284,27 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 		public ComplexTypeGenerated Initialize()
 		{
 <#
-foreach( Tuple<Object, string, string, bool> __item in __fields )
+foreach( Tuple<Object, string, string, bool> item in fields )
 {
-	String __typeName;
-	if( __item.Item1 is Type )
+	String typeName;
+	if( item.Item1 is Type )
 	{
-		__typeName = ToTypeName( __item.Item1 as Type );
+		typeName = ToTypeName( item.Item1 as Type );
 	}
 	else
 	{
-		__typeName = ToTypeName( __item.Item1 as Tuple<String, String[]> );
+		typeName = ToTypeName( item.Item1 as Tuple<String, String[]> );
 	}
-	var __asType = __item.Item1 as Type;
-	if( __asType != null && __desktopOnly.Contains( __asType ) )
+	var asType = item.Item1 as Type;
+	if( asType != null && desktopOnly.Contains( asType ) )
 	{
 #>
 #if !NETFX_CORE && !SILVERLIGHT
 <#
 	}
-	else if( __notInNet35.Contains( __typeName ) )
+	else if( notInNet35.Contains( typeName ) )
 	{
-		if(__notInSLWP.Contains( __typeName ) )
+		if(notInSLWP.Contains( typeName ) )
 		{
 #>
 #if !NETFX_35 && !WINDOWS_PHONE
@@ -318,17 +318,17 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 		}
 	}
 #>
-			this._<#= ToFieldName( __item ) #> = <#= __item.Item3 #>;
+			this._<#= ToFieldName( item ) #> = <#= item.Item3 #>;
 <#
-	if( __asType != null && __desktopOnly.Contains( __asType ) )
+	if( asType != null && desktopOnly.Contains( asType ) )
 	{
 #>
 #endif // !NETFX_CORE && !SILVERLIGHT
 <#
 	}
-	else if( __notInNet35.Contains( __typeName ) )
+	else if( notInNet35.Contains( typeName ) )
 	{
-		if(__notInSLWP.Contains( __typeName ) )
+		if(notInSLWP.Contains( typeName ) )
 		{
 #>
 #endif // !NETFX_35 && !WINDOWS_PHONE
@@ -355,27 +355,27 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 		public void Verify( ComplexTypeGenerated expected )
 		{
 <#
-foreach( Tuple<Object, string, string, bool> __item in __fields )
+foreach( Tuple<Object, string, string, bool> item in fields )
 {
-	String __typeName;
-	if( __item.Item1 is Type )
+	String typeName;
+	if( item.Item1 is Type )
 	{
-		__typeName = ToTypeName( __item.Item1 as Type );
+		typeName = ToTypeName( item.Item1 as Type );
 	}
 	else
 	{
-		__typeName = ToTypeName( __item.Item1 as Tuple<String, String[]> );
+		typeName = ToTypeName( item.Item1 as Tuple<String, String[]> );
 	}
-	var __asType = __item.Item1 as Type;
-	if( __asType != null && __desktopOnly.Contains( __asType ) )
+	var asType = item.Item1 as Type;
+	if( asType != null && desktopOnly.Contains( asType ) )
 	{
 #>
 #if !NETFX_CORE && !SILVERLIGHT
 <#
 	}
-	else if( __notInNet35.Contains( __typeName ) )
+	else if( notInNet35.Contains( typeName ) )
 	{
-		if(__notInSLWP.Contains( __typeName ) )
+		if(notInSLWP.Contains( typeName ) )
 		{
 #>
 #if !NETFX_35 && !WINDOWS_PHONE
@@ -389,17 +389,17 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 		}
 	}
 #>
-			AutoMessagePackSerializerTest.Verify( expected._<#= ToFieldName( __item ) #>, this._<#= ToFieldName( __item ) #> );
+			AutoMessagePackSerializerTest.Verify( expected._<#= ToFieldName( item ) #>, this._<#= ToFieldName( item ) #> );
 <#
-	if( __asType != null && __desktopOnly.Contains( __asType ) )
+	if( asType != null && desktopOnly.Contains( asType ) )
 	{
 #>
 #endif // !NETFX_CORE && !SILVERLIGHT
 <#
 	}
-	else if( __notInNet35.Contains( __typeName ) )
+	else if( notInNet35.Contains( typeName ) )
 	{
-		if(__notInSLWP.Contains( __typeName ) )
+		if(notInSLWP.Contains( typeName ) )
 		{
 #>
 #endif // !NETFX_35 && !WINDOWS_PHONE

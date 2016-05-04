@@ -9,7 +9,7 @@
 <#@ import namespace="System.Globalization" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Collections" #>
-<#@ import namespace="System.Collections.Generic" #> 
+<#@ import namespace="System.Collections.Generic" #>
 <#
 Geneate( "Array", "CodeDomBased", "CodeDomSerializerBuilder", true );
 #>
