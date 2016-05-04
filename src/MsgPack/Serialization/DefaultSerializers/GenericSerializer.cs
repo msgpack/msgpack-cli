@@ -76,7 +76,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if !UNITY
 					return CreateListSerializer( context, targetType.GetGenericArguments()[ 0 ], schema );
 #else
-					return CreateListSerializer( context, targetType, targetType.GetCollectionTraits(), schema );
+					return CreateListSerializer( context, targetType, targetType.GetCollectionTraits( CollectionTraitOptions.WithAddMethod ), schema );
 #endif // !UNITY
 				}
 
@@ -86,7 +86,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if !UNITY
 					return CreateDictionarySerializer( context, genericTypeArguments[ 0 ], genericTypeArguments[ 1 ], schema );
 #else
-					return CreateDictionarySerializer( context, targetType, targetType.GetCollectionTraits(), genericTypeArguments[ 0 ], genericTypeArguments[ 1 ], schema );
+					return CreateDictionarySerializer( context, targetType, targetType.GetCollectionTraits( CollectionTraitOptions.WithAddMethod ), genericTypeArguments[ 0 ], genericTypeArguments[ 1 ], schema );
 #endif // !UNITY
 				}
 			}
@@ -311,7 +311,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					abstractType,
 					concreteType,
 					schema,
-					abstractType.GetCollectionTraits()
+					abstractType.GetCollectionTraits( CollectionTraitOptions.None )
 				);
 		}
 

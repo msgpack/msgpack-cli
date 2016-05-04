@@ -450,7 +450,7 @@ namespace MsgPack.Serialization
 				{
 					realTargetTypes =
 						targetTypes
-						.Where( t => !SerializationTarget.BuiltInSerializerExists( configuration, t, t.GetCollectionTraits() ) );
+						.Where( t => !SerializationTarget.BuiltInSerializerExists( configuration, t, t.GetCollectionTraits( CollectionTraitOptions.None ) ) );
 				}
 
 				var generationContext = this.CreateGenerationContext( context, configuration );
@@ -476,7 +476,7 @@ namespace MsgPack.Serialization
 
 			private static IEnumerable<Type> ExtractElementTypes( SerializationContext context, ISerializerGeneratorConfiguration configuration, Type type )
 			{
-				if ( !SerializationTarget.BuiltInSerializerExists( configuration, type, type.GetCollectionTraits() ) )
+				if ( !SerializationTarget.BuiltInSerializerExists( configuration, type, type.GetCollectionTraits( CollectionTraitOptions.None ) ) )
 				{
 					yield return type;
 
@@ -497,7 +497,7 @@ namespace MsgPack.Serialization
 				if ( type.IsArray )
 				{
 					var elementType = type.GetElementType();
-					if ( !SerializationTarget.BuiltInSerializerExists( configuration, elementType, elementType.GetCollectionTraits() ) )
+					if ( !SerializationTarget.BuiltInSerializerExists( configuration, elementType, elementType.GetCollectionTraits( CollectionTraitOptions.None ) ) )
 					{
 						foreach ( var descendant in ExtractElementTypes( context, configuration, elementType ) )
 						{
@@ -557,7 +557,7 @@ namespace MsgPack.Serialization
 
 			protected override Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory()
 			{
-				return type => new AssemblyBuilderSerializerBuilder( type, type.GetCollectionTraits() );
+				return type => new AssemblyBuilderSerializerBuilder( type, type.GetCollectionTraits( CollectionTraitOptions.Full ) );
 			}
 		}
 
@@ -577,7 +577,7 @@ namespace MsgPack.Serialization
 
 			protected override Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory()
 			{
-				return type => new CodeDomSerializerBuilder( type, type.GetCollectionTraits() );
+				return type => new CodeDomSerializerBuilder( type, type.GetCollectionTraits( CollectionTraitOptions.Full ) );
 			}
 		}
 	}

@@ -307,6 +307,9 @@
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs">
       <Link>Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionTraitOptions.cs">
+      <Link>Serialization\CollectionTraitOptions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionTraits.cs">
       <Link>Serialization\CollectionTraits.cs</Link>
     </Compile>

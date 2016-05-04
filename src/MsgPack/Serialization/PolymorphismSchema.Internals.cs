@@ -227,7 +227,7 @@ namespace MsgPack.Serialization
 
 			var table = TypeTable.Create( member.Member );
 
-			var traits = member.Member.GetMemberValueType().GetCollectionTraits();
+			var traits = member.Member.GetMemberValueType().GetCollectionTraits( CollectionTraitOptions.None );
 			switch ( traits.CollectionType )
 			{
 				case CollectionKind.Array:

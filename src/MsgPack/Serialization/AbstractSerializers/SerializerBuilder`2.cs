@@ -162,7 +162,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 #if DEBUG
 			Contract.Assert( targetType != null, "targetType != null" );
-			Contract.Assert( collectionTraits != null, "collectionTraits != null" );
 #endif // DEBUG
 
 			this.TargetType = targetType;

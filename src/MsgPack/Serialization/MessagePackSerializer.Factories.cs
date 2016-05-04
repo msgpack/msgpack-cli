@@ -214,7 +214,12 @@ namespace MsgPack.Serialization
 
 #endif // DEBUG && !AOT && !SILVERLIGHT
 			Type concreteType = null;
-			CollectionTraits collectionTraits = typeof( T ).GetCollectionTraits();
+			CollectionTraits collectionTraits =
+#if AOT
+				typeof( T ).GetCollectionTraits( CollectionTraitOptions.None );
+#else
+				typeof( T ).GetCollectionTraits( CollectionTraitOptions.Full );
+#endif // AOT
 
 			if ( typeof( T ).GetIsAbstract() || typeof( T ).GetIsInterface() )
 			{
@@ -567,7 +572,12 @@ namespace MsgPack.Serialization
 			}
 
 			ValidateType( typeof( T ) );
-			var traits = typeof( T ).GetCollectionTraits();
+			var traits = 
+#if !UNITY
+				typeof( T ).GetCollectionTraits( CollectionTraitOptions.WithAddMethod );
+#else
+				typeof( T ).GetCollectionTraits( CollectionTraitOptions.WithAddMethod | CollectionTraitOptions.WithCountPropertyGetter );
+#endif
 			switch ( traits.CollectionType )
 			{
 				case CollectionKind.Array:

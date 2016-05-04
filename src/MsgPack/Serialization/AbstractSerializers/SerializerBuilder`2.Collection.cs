@@ -104,7 +104,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context, 
 						this.CollectionTraits.AddMethod != null
 						? this.CollectionTraits // For declared collection.
-						: ( concreteType ?? this.TargetType ).GetCollectionTraits() // For concrete collection.
+						: ( concreteType ?? this.TargetType ).GetCollectionTraits( CollectionTraitOptions.Full ) // For concrete collection.
 					);
 				}
 			}
@@ -294,7 +294,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			if ( this.CollectionTraits.CollectionType == CollectionKind.Array && this.CollectionTraits.AddMethod == null )
 			{
 				// Try to use concrete collection's Add.
-				var traitsOfTheCollection = instanceType.GetCollectionTraits();
+				var traitsOfTheCollection = instanceType.GetCollectionTraits( CollectionTraitOptions.Full );
 
 				bulk =
 					this.MakeNullLiteral(

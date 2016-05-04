@@ -363,7 +363,7 @@ namespace MsgPack.Serialization
 				return true;
 			}
 
-			var traits = returnType.GetCollectionTraits();
+			var traits = returnType.GetCollectionTraits( CollectionTraitOptions.WithAddMethod );
 			switch ( traits.CollectionType )
 			{
 				case CollectionKind.Array:
@@ -535,11 +535,11 @@ namespace MsgPack.Serialization
 		}
 #endif // !NETFX_35
 
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13 && !AOT
 		public static bool BuiltInSerializerExists( ISerializerGeneratorConfiguration configuration, Type type, CollectionTraits traits )
 		{
 			return GenericSerializer.IsSupported( type, traits, configuration.PreferReflectionBasedSerializer ) || SerializerRepository.InternalDefault.Contains( type );
 		}
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13 && !AOT
 	}
 }

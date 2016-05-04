@@ -107,7 +107,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this.IndexOfItem = ILConstruct.Argument( 3, typeof( int ), "indexOfItem" );
 			this.ItemsCount = ILConstruct.Argument( 4, typeof( int ), "itemsCount" );
 			this.UnpackToTarget = ILConstruct.Argument( 2, targetType, "collection" );
-			var traits = targetType.GetCollectionTraits();
+			var traits = targetType.GetCollectionTraits( CollectionTraitOptions.Full );
 			if ( traits.ElementType != null )
 			{
 				this.CollectionToBeAdded = ILConstruct.Argument( 1, targetType, "collection" );

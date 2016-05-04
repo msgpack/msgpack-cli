@@ -61,12 +61,13 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		public ReflectionEnumerableMessagePackSerializer(
 			SerializationContext ownerContext,
 			Type targetType,
+			CollectionTraits collectionTraits,
 			PolymorphismSchema itemsSchema 
 		)
 			: base( ownerContext, itemsSchema )
 		{
 			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TCollection, TItem>( targetType );
-			this._addItem = ReflectionSerializerHelper.GetAddItem<TCollection, TItem>( targetType );
+			this._addItem = ReflectionSerializerHelper.GetAddItem<TCollection, TItem>( targetType, collectionTraits );
 			this._isPackable = typeof( IPackable ).IsAssignableFrom( targetType ?? typeof( TCollection ) );
 			this._isUnpackable = typeof( IUnpackable ).IsAssignableFrom( targetType ?? typeof( TCollection ) );
 #if FEATURE_TAP
@@ -85,7 +86,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			: base( ownerContext, abstractType, traits, itemsSchema )
 		{
 			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory( abstractType, concreteType, traits.ElementType );
-			this._addItem = ReflectionSerializerHelper.GetAddItem( concreteType );
+			this._addItem = ReflectionSerializerHelper.GetAddItem( concreteType, traits );
 			this._isPackable = typeof( IPackable ).IsAssignableFrom( concreteType ?? abstractType );
 			this._isUnpackable = typeof( IUnpackable ).IsAssignableFrom( concreteType ?? abstractType );
 		}

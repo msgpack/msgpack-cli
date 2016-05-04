@@ -267,7 +267,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			this.IndexOfItem = CodeDomConstruct.Parameter( typeof( int ), "indexOfItem" );
 			this.ItemsCount = CodeDomConstruct.Parameter( typeof( int ), "itemsCount" );
 			this.UnpackToTarget = CodeDomConstruct.Parameter( targetType, "collection" );
-			var traits = targetType.GetCollectionTraits();
+			var traits = targetType.GetCollectionTraits( CollectionTraitOptions.Full );
 			if ( traits.ElementType != null )
 			{
 				this.CollectionToBeAdded = CodeDomConstruct.Parameter( targetType, "collection" );

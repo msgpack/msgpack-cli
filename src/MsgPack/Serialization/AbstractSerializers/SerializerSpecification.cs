@@ -41,7 +41,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 #if DEBUG
 			Contract.Assert( targetType != null, "targetType != null" );
-			Contract.Assert( targetCollectionTraits != null, "targetCollectionTraits != null" );
 			Contract.Assert( serializerTypeName != null, "serializerTypeName != null" );
 			Contract.Assert( serializerTypeNamespace != null, "serializerTypeNamespace != null" );
 #endif // DEBUG 

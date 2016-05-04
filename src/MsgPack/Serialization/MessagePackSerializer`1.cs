@@ -147,7 +147,7 @@ namespace MsgPack.Serialization
 		private static SerializerCapabilities InferCapatibity()
 		{
 			var result = SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom;
-			var traits = typeof( T ).GetCollectionTraits();
+			var traits = typeof( T ).GetCollectionTraits( CollectionTraitOptions.WithAddMethod);
 			if ( traits.AddMethod != null )
 			{
 				result |= SerializerCapabilities.UnpackTo;

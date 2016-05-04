@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,19 +27,11 @@ using System.Reflection;
 
 namespace MsgPack.Serialization
 {
-	internal sealed class CollectionTraits
+	internal struct CollectionTraits
 	{
 		public static readonly CollectionTraits NotCollection = new CollectionTraits( CollectionDetailedKind.NotCollection, null, null, null, null );
 		public static readonly CollectionTraits Unserializable = new CollectionTraits( CollectionDetailedKind.Unserializable, null, null, null, null );
 
-#if UNITY
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields" )]
-#endif // UNITY
-		public readonly MethodInfo GetEnumeratorMethod;
-		public readonly MethodInfo AddMethod;
-#if UNITY
-		public readonly MethodInfo CountPropertyGetter;
-#endif // UNITY
 		public readonly Type ElementType;
 
 		public readonly CollectionDetailedKind DetailedCollectionType;
@@ -91,17 +83,17 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		// ReSharper disable once UnusedParameter.Local
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "countPropertyGetter", Justification = "To avoid complex #if storm for Unity in caller." )]
-		public CollectionTraits( CollectionDetailedKind type, MethodInfo addMethod, MethodInfo countPropertyGetter, MethodInfo getEnumeratorMethod, Type elementType )
+		public readonly MethodInfo GetEnumeratorMethod;
+		public readonly MethodInfo AddMethod;
+		public readonly MethodInfo CountPropertyGetter;
+
+		public CollectionTraits( CollectionDetailedKind type, Type elementType, MethodInfo getEnumeratorMethod, MethodInfo addMethod, MethodInfo countPropertyGetter )
 		{
 			this.DetailedCollectionType = type;
+			this.ElementType = elementType;
 			this.GetEnumeratorMethod = getEnumeratorMethod;
 			this.AddMethod = addMethod;
-#if UNITY
 			this.CountPropertyGetter = countPropertyGetter;
-#endif // UNITY
-			this.ElementType = elementType;
 		}
 	}
 }

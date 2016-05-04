@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -21,6 +21,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if DEBUG
+using System.Diagnostics.Contracts;
+#endif // DEBUG
 using System.Reflection;
 
 namespace MsgPack.Serialization.Metadata
@@ -33,6 +36,9 @@ namespace MsgPack.Serialization.Metadata
 
 		public static PropertyInfo FindEnumeratorCurrentProperty( Type enumeratorType, CollectionTraits traits )
 		{
+#if DEBUG
+			Contract.Assert( traits.GetEnumeratorMethod != null );
+#endif // DEBUG
 			PropertyInfo currentProperty = traits.GetEnumeratorMethod.ReturnType.GetProperty( "Current" );
 
 			if ( currentProperty == null )

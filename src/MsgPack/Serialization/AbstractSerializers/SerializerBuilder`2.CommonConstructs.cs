@@ -905,7 +905,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 
 				getCollection = this.EmitGetField( context, instance, asField, !asField.GetHasPublicGetter() );
-				traits = asField.FieldType.GetCollectionTraits();
+				traits = asField.FieldType.GetCollectionTraits( CollectionTraitOptions.Full );
 			}
 			else
 			{
@@ -920,7 +920,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 
 				getCollection = this.EmitGetProperty( context, instance, asProperty, !asProperty.GetHasPublicGetter() );
-				traits = asProperty.PropertyType.GetCollectionTraits();
+				traits = asProperty.PropertyType.GetCollectionTraits( CollectionTraitOptions.Full );
 			}
 
 			var existent = this.DeclareLocal( context, member.GetMemberValueType(), "existent" );

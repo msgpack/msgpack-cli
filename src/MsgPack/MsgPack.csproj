@@ -214,6 +214,7 @@
     <Compile Include="Serialization\CollectionSerializers\ICollectionInstanceFactory.cs" />
     <Compile Include="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
+    <Compile Include="Serialization\CollectionTraitOptions.cs" />
     <Compile Include="Serialization\DateTimeConversionMethod.cs" />
     <Compile Include="Serialization\DateTimeMemberConversionMethod.cs" />
     <Compile Include="Serialization\DateTimeMessagePackSerializerHelpers.cs" />
