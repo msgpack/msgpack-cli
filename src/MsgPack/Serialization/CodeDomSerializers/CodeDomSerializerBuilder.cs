@@ -1448,28 +1448,11 @@ namespace MsgPack.Serialization.CodeDomSerializers
 								new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), cachedFieldInfo.Value.StorageFieldName ),
 								new CodeMethodInvokeExpression(
 									new CodeMethodReferenceExpression(
-										new CodeTypeOfExpression( fieldInfo.DeclaringType ),
+										new CodeTypeReferenceExpression( typeof( ReflectionHelpers ) ),
 										"GetField"
 									),
-									new CodePrimitiveExpression( fieldInfo.Name ),
-									new CodeBinaryOperatorExpression(
-										new CodeFieldReferenceExpression(
-											new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
-											"Instance"
-										),
-										CodeBinaryOperatorType.BitwiseOr,
-										new CodeBinaryOperatorExpression(
-											new CodeFieldReferenceExpression(
-												new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
-												"Public"
-											),
-											CodeBinaryOperatorType.BitwiseOr,
-											new CodeFieldReferenceExpression(
-												new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
-												"NonPublic"
-											)
-										)
-									)
+									new CodeTypeOfExpression( fieldInfo.DeclaringType ),
+									new CodePrimitiveExpression( fieldInfo.Name )
 								)
 							)
 						);
@@ -1484,36 +1467,17 @@ namespace MsgPack.Serialization.CodeDomSerializers
 								new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), cachedMethodBase.Value.StorageFieldName ),
 								new CodeMethodInvokeExpression(
 									new CodeMethodReferenceExpression(
-										// ReSharper disable once AssignNullToNotNullAttribute
-										new CodeTypeOfExpression( methodBase.DeclaringType ),
+										new CodeTypeReferenceExpression( typeof( ReflectionHelpers ) ), 
 										"GetMethod"
 									),
+									// ReSharper disable once AssignNullToNotNullAttribute
+									new CodeTypeOfExpression( methodBase.DeclaringType ),
 									new CodePrimitiveExpression( methodBase.Name ),
-									new CodeBinaryOperatorExpression(
-										new CodeFieldReferenceExpression(
-											new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
-											"Instance"
-										),
-										CodeBinaryOperatorType.BitwiseOr,
-										new CodeBinaryOperatorExpression(
-											new CodeFieldReferenceExpression(
-												new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
-												"Public"
-											),
-											CodeBinaryOperatorType.BitwiseOr,
-											new CodeFieldReferenceExpression(
-												new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
-												"NonPublic"
-											)
-										)
-									),
-									new CodePrimitiveExpression( null ),
 									new CodeArrayCreateExpression(
 										typeof( Type ),
 										// ReSharper disable once CoVariantArrayConversion
 										methodBase.GetParameters().Select( pi => new CodeTypeOfExpression( pi.ParameterType ) ).ToArray()
-									),
-									new CodePrimitiveExpression( null )
+									)
 								)
 							)
 						);

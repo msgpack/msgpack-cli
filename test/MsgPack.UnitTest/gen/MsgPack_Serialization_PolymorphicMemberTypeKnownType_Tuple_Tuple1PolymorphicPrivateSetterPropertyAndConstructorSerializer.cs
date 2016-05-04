@@ -61,9 +61,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             tupleItemsSchema0[0] = tupleItemSchema0;
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicTuple(typeof(System.Tuple<MsgPack.Serialization.FileSystemEntry>), tupleItemsSchema0);
             this._serializer0 = context.GetSerializer<System.Tuple<MsgPack.Serialization.FileSystemEntry>>(schema0);
-            this._methodBasePolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor_set_Tuple1Polymorphic0 = typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor).GetMethod("set_Tuple1Polymorphic", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
-                        typeof(System.Tuple<MsgPack.Serialization.FileSystemEntry>)}, null);
+            this._methodBasePolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor_set_Tuple1Polymorphic0 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor), "set_Tuple1Polymorphic", new System.Type[] {
+                        typeof(System.Tuple<MsgPack.Serialization.FileSystemEntry>)});
             System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor>[]);
             packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor>[1];
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor>(this.PackValueOfTuple1Polymorphic);

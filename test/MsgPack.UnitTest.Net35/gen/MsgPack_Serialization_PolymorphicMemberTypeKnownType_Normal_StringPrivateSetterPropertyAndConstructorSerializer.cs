@@ -42,9 +42,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             schema0 = null;
             this._serializer0 = context.GetSerializer<string>(schema0);
-            this._methodBasePolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor_set_String0 = typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor).GetMethod("set_String", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
-                        typeof(string)}, null);
+            this._methodBasePolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor_set_String0 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor), "set_String", new System.Type[] {
+                        typeof(string)});
             System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor>[]);
             packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor>[1];
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor>(this.PackValueOfString);

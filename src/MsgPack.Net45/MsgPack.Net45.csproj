@@ -802,6 +802,9 @@
     <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs">
       <Link>Serialization\ReflectionExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionHelpers.cs">
+      <Link>Serialization\ReflectionHelpers.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionCollectionMessagePackSerializer`2.cs">
       <Link>Serialization\ReflectionSerializers\ReflectionCollectionMessagePackSerializer`2.cs</Link>
     </Compile>

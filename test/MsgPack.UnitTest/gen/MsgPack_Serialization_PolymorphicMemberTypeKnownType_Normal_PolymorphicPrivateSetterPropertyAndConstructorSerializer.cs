@@ -56,9 +56,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             typeMap0.Add("0", typeof(MsgPack.Serialization.FileEntry));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), typeMap0);
             this._serializer0 = context.GetSerializer<MsgPack.Serialization.FileSystemEntry>(schema0);
-            this._methodBasePolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor_set_Polymorphic0 = typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor).GetMethod("set_Polymorphic", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
-                        typeof(MsgPack.Serialization.FileSystemEntry)}, null);
+            this._methodBasePolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor_set_Polymorphic0 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor), "set_Polymorphic", new System.Type[] {
+                        typeof(MsgPack.Serialization.FileSystemEntry)});
             System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor>[]);
             packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor>[1];
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor>(this.PackValueOfPolymorphic);

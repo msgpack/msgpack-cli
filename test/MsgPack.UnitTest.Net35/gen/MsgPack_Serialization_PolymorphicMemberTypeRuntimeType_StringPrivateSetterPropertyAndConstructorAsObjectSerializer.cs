@@ -40,9 +40,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             schema0 = null;
             this._serializer0 = context.GetSerializer<object>(schema0);
-            this._methodBasePolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject_set_String0 = typeof(MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject).GetMethod("set_String", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
-                        typeof(object)}, null);
+            this._methodBasePolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject_set_String0 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject), "set_String", new System.Type[] {
+                        typeof(object)});
             System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject>[]);
             packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject>[1];
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject>(this.PackValueOfString);

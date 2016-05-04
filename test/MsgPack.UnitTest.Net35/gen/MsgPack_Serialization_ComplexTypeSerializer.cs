@@ -84,9 +84,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.PolymorphismSchema schema3 = default(MsgPack.Serialization.PolymorphismSchema);
             schema3 = null;
             this._serializer4 = context.GetSerializer<System.Collections.Generic.List<int>>(schema3);
-            this._methodBaseComplexType_set_Points0 = typeof(MsgPack.Serialization.ComplexType).GetMethod("set_Points", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
-                        typeof(System.Collections.Generic.List<int>)}, null);
+            this._methodBaseComplexType_set_Points0 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.ComplexType), "set_Points", new System.Type[] {
+                        typeof(System.Collections.Generic.List<int>)});
             System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>[]);
             packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>[5];
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexType>(this.PackValueOfSource);

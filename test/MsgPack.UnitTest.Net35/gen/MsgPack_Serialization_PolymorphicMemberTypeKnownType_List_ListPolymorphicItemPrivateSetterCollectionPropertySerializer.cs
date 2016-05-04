@@ -46,9 +46,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             itemsSchema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), itemsSchemaTypeMap0);
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForContextSpecifiedCollection(typeof(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>), itemsSchema0);
             this._serializer0 = context.GetSerializer<System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>>(schema0);
-            this._methodBasePolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionProperty_set_ListPolymorphicItem0 = typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionProperty).GetMethod("set_ListPolymorphicItem", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
-                        typeof(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>)}, null);
+            this._methodBasePolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionProperty_set_ListPolymorphicItem0 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionProperty), "set_ListPolymorphicItem", new System.Type[] {
+                        typeof(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>)});
             System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionProperty>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionProperty>[]);
             packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionProperty>[1];
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionProperty>(this.PackValueOfListPolymorphicItem);

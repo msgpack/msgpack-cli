@@ -228,6 +228,15 @@ namespace MsgPack
 				);
 		}
 
+		public static FieldInfo GetRuntimeField( this Type source, string name )
+		{
+			return
+				source.GetField(
+					name,
+					BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic
+				);
+		}
+
 #endif // NETSTD_11 || NETSTD_13
 
 		public static ConstructorInfo GetRuntimeConstructor( this Type source, Type[] parameters )

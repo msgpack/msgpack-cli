@@ -46,9 +46,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             itemsSchema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(object), itemsSchemaTypeMap0);
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForContextSpecifiedCollection(typeof(System.Collections.Generic.IList<object>), itemsSchema0);
             this._serializer0 = context.GetSerializer<System.Collections.Generic.IList<object>>(schema0);
-            this._methodBasePolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty_set_ListObjectItem0 = typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty).GetMethod("set_ListObjectItem", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
-                        typeof(System.Collections.Generic.IList<object>)}, null);
+            this._methodBasePolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty_set_ListObjectItem0 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty), "set_ListObjectItem", new System.Type[] {
+                        typeof(System.Collections.Generic.IList<object>)});
             System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty>[]);
             packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty>[1];
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty>(this.PackValueOfListObjectItem);

@@ -295,48 +295,29 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.PolymorphismSchema schema3 = default(MsgPack.Serialization.PolymorphismSchema);
             schema3 = null;
             this._serializer3 = context.GetSerializer<System.Collections.IDictionary>(schema3);
-            this._fieldAnnotatedClass_NonPublicField0 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicField", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
-            this._fieldAnnotatedClass_NonSerializedNonPublicField1 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonSerializedNonPublicField", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
-            this._fieldAnnotatedClass_NonPublicCollectionField2 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicCollectionField", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
-            this._fieldAnnotatedClass_NonPublicCollectionReadOnlyField3 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicCollectionReadOnlyField", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
-            this._fieldAnnotatedClass_NonPublicDictionaryField4 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicDictionaryField", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
-            this._fieldAnnotatedClass_NonPublicDictionaryReadOnlyField5 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicDictionaryReadOnlyField", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
-            this._fieldAnnotatedClass_NonPublicIDictionaryField6 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicIDictionaryField", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
-            this._fieldAnnotatedClass_NonPublicIDictionaryReadOnlyField7 = typeof(MsgPack.Serialization.AnnotatedClass).GetField("NonPublicIDictionaryReadOnlyField", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
-            this._methodBaseAnnotatedClass_get_NonPublicProperty0 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicProperty", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
-            this._methodBaseAnnotatedClass_get_NonPublicCollectionProperty1 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicCollectionProperty", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
-            this._methodBaseAnnotatedClass_get_NonPublicCollectionReadOnlyProperty2 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicCollectionReadOnlyProperty", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
-            this._methodBaseAnnotatedClass_get_NonPublicDictionaryProperty3 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicDictionaryProperty", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
-            this._methodBaseAnnotatedClass_get_NonPublicDictionaryReadOnlyProperty4 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicDictionaryReadOnlyProperty", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
-            this._methodBaseAnnotatedClass_get_NonPublicIDictionaryProperty5 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicIDictionaryProperty", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
-            this._methodBaseAnnotatedClass_get_NonPublicIDictionaryReadOnlyProperty6 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("get_NonPublicIDictionaryReadOnlyProperty", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
-            this._methodBaseAnnotatedClass_set_NonPublicProperty7 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("set_NonPublicProperty", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
-                        typeof(int)}, null);
-            this._methodBaseAnnotatedClass_set_NonPublicCollectionProperty8 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("set_NonPublicCollectionProperty", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
-                        typeof(System.Collections.Generic.List<int>)}, null);
-            this._methodBaseAnnotatedClass_set_NonPublicDictionaryProperty9 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("set_NonPublicDictionaryProperty", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
-                        typeof(System.Collections.Generic.Dictionary<string, int>)}, null);
-            this._methodBaseAnnotatedClass_set_NonPublicIDictionaryProperty10 = typeof(MsgPack.Serialization.AnnotatedClass).GetMethod("set_NonPublicIDictionaryProperty", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
-                        typeof(System.Collections.IDictionary)}, null);
+            this._fieldAnnotatedClass_NonPublicField0 = MsgPack.Serialization.ReflectionHelpers.GetField(typeof(MsgPack.Serialization.AnnotatedClass), "NonPublicField");
+            this._fieldAnnotatedClass_NonSerializedNonPublicField1 = MsgPack.Serialization.ReflectionHelpers.GetField(typeof(MsgPack.Serialization.AnnotatedClass), "NonSerializedNonPublicField");
+            this._fieldAnnotatedClass_NonPublicCollectionField2 = MsgPack.Serialization.ReflectionHelpers.GetField(typeof(MsgPack.Serialization.AnnotatedClass), "NonPublicCollectionField");
+            this._fieldAnnotatedClass_NonPublicCollectionReadOnlyField3 = MsgPack.Serialization.ReflectionHelpers.GetField(typeof(MsgPack.Serialization.AnnotatedClass), "NonPublicCollectionReadOnlyField");
+            this._fieldAnnotatedClass_NonPublicDictionaryField4 = MsgPack.Serialization.ReflectionHelpers.GetField(typeof(MsgPack.Serialization.AnnotatedClass), "NonPublicDictionaryField");
+            this._fieldAnnotatedClass_NonPublicDictionaryReadOnlyField5 = MsgPack.Serialization.ReflectionHelpers.GetField(typeof(MsgPack.Serialization.AnnotatedClass), "NonPublicDictionaryReadOnlyField");
+            this._fieldAnnotatedClass_NonPublicIDictionaryField6 = MsgPack.Serialization.ReflectionHelpers.GetField(typeof(MsgPack.Serialization.AnnotatedClass), "NonPublicIDictionaryField");
+            this._fieldAnnotatedClass_NonPublicIDictionaryReadOnlyField7 = MsgPack.Serialization.ReflectionHelpers.GetField(typeof(MsgPack.Serialization.AnnotatedClass), "NonPublicIDictionaryReadOnlyField");
+            this._methodBaseAnnotatedClass_get_NonPublicProperty0 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.AnnotatedClass), "get_NonPublicProperty", new System.Type[0]);
+            this._methodBaseAnnotatedClass_get_NonPublicCollectionProperty1 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.AnnotatedClass), "get_NonPublicCollectionProperty", new System.Type[0]);
+            this._methodBaseAnnotatedClass_get_NonPublicCollectionReadOnlyProperty2 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.AnnotatedClass), "get_NonPublicCollectionReadOnlyProperty", new System.Type[0]);
+            this._methodBaseAnnotatedClass_get_NonPublicDictionaryProperty3 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.AnnotatedClass), "get_NonPublicDictionaryProperty", new System.Type[0]);
+            this._methodBaseAnnotatedClass_get_NonPublicDictionaryReadOnlyProperty4 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.AnnotatedClass), "get_NonPublicDictionaryReadOnlyProperty", new System.Type[0]);
+            this._methodBaseAnnotatedClass_get_NonPublicIDictionaryProperty5 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.AnnotatedClass), "get_NonPublicIDictionaryProperty", new System.Type[0]);
+            this._methodBaseAnnotatedClass_get_NonPublicIDictionaryReadOnlyProperty6 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.AnnotatedClass), "get_NonPublicIDictionaryReadOnlyProperty", new System.Type[0]);
+            this._methodBaseAnnotatedClass_set_NonPublicProperty7 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.AnnotatedClass), "set_NonPublicProperty", new System.Type[] {
+                        typeof(int)});
+            this._methodBaseAnnotatedClass_set_NonPublicCollectionProperty8 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.AnnotatedClass), "set_NonPublicCollectionProperty", new System.Type[] {
+                        typeof(System.Collections.Generic.List<int>)});
+            this._methodBaseAnnotatedClass_set_NonPublicDictionaryProperty9 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.AnnotatedClass), "set_NonPublicDictionaryProperty", new System.Type[] {
+                        typeof(System.Collections.Generic.Dictionary<string, int>)});
+            this._methodBaseAnnotatedClass_set_NonPublicIDictionaryProperty10 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.AnnotatedClass), "set_NonPublicIDictionaryProperty", new System.Type[] {
+                        typeof(System.Collections.IDictionary)});
             System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>[]);
             packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>[22];
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AnnotatedClass>(this.PackValueOfAlias);

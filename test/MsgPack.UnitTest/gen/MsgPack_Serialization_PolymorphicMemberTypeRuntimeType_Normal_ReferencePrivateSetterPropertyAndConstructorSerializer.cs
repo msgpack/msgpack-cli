@@ -52,9 +52,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             schema0 = null;
             this._serializer0 = context.GetSerializer<System.Version>(schema0);
-            this._methodBasePolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor_set_Reference0 = typeof(MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor).GetMethod("set_Reference", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
-                        typeof(System.Version)}, null);
+            this._methodBasePolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor_set_Reference0 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor), "set_Reference", new System.Type[] {
+                        typeof(System.Version)});
             System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor>[]);
             packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor>[1];
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor>(this.PackValueOfReference);

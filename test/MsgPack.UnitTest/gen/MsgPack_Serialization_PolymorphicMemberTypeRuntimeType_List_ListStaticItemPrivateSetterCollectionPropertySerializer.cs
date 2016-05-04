@@ -52,9 +52,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             schema0 = null;
             this._serializer0 = context.GetSerializer<System.Collections.Generic.IList<string>>(schema0);
-            this._methodBasePolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty_set_ListStaticItem0 = typeof(MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty).GetMethod("set_ListStaticItem", (System.Reflection.BindingFlags.Instance 
-                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[] {
-                        typeof(System.Collections.Generic.IList<string>)}, null);
+            this._methodBasePolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty_set_ListStaticItem0 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty), "set_ListStaticItem", new System.Type[] {
+                        typeof(System.Collections.Generic.IList<string>)});
             System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty>[]);
             packOperationList = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty>[1];
             packOperationList[0] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty>(this.PackValueOfListStaticItem);

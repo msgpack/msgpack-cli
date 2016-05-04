@@ -291,6 +291,7 @@
     <Compile Include="Serialization\PolymorphismSchemaChildrenType.cs" />
     <Compile Include="Serialization\PolymorphismTarget.cs" />
     <Compile Include="Serialization\PolymorphismType.cs" />
+    <Compile Include="Serialization\ReflectionHelpers.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionEnumerableMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionCollectionMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionDictionaryMessagePackSerializer`3.cs" />
