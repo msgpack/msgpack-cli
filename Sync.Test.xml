@@ -64,9 +64,11 @@
     <Preserve File="*.mpac" />
     <Preserve File="*.snk" />
     <Preserve File="*.pfx" />
+    <Preserve File="*.png" />
     <Preserve File="*.xaml" />
     <Preserve File="*.xaml.cs" />
     <Preserve File="*.appxmanifest" />
+    <Preserve Path="TimeoutAttribute.cs" />
     <Exclude File="*.plist" />
     <Exclude Path="Main.cs" />
     <Exclude Path="UnitTestAppDelegate.cs" />
@@ -79,12 +81,10 @@
     <Preserve File="*.mpac" />
     <Preserve File="*.snk" />
     <Preserve File="*.pfx" />
+    <Preserve File="*.png" />
     <Preserve File="*.xaml" />
     <Preserve File="*.xaml.cs" />
     <Preserve File="*.appxmanifest" />
-    <Exclude File="*.plist" />
-    <Exclude Path="Main.cs" />
-    <Exclude Path="UnitTestAppDelegate.cs" />
   </Project>
 
   <Project Name="MsgPack.UnitTest.Net35" Base="MsgPack.UnitTest">
@@ -157,6 +157,11 @@
     <Preserve Path="Resources\*" />
   </Project>
 
+  <Project Name="MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop" Base="MsgPack.UnitTest.Unity3D">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve Path="Resources\*" />
+  </Project>
+
   <Project Name="MsgPack.UnitTest.WinRT" Base="MsgPack.UnitTest">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve File="*.config" />
@@ -171,19 +176,15 @@
     <Exclude Path="gen\array\*" />
     <Exclude Path="gen\map\*" />
     <Exclude Path="Serialization\PreGenerated*" />
-    <!--
     <Exclude Path="Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\ArrayFieldBasedEnumSerializationTest.cs" />
-    -->
     <Exclude Path="Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\ArrayContextBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\ArrayGenerationBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\CodeDomBasedNilImplicationTest.cs" />
     <Exclude Path="Serialization\ContextBasedNilImplicationTest.cs" />
-    <!--
     <Exclude Path="Serialization\FieldBasedNilImplicationTest.cs" />
-    -->
     <Exclude Path="Serialization\GenerationBasedNilImplicationTest.cs" />
     <Exclude Path="Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\MapFieldBasedEnumSerializationTest.cs" />
@@ -191,6 +192,7 @@
     <Exclude Path="Serialization\MapContextBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\MapGenerationBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\MapGenerationBasedEnumSerializationTest.cs" />
+    <Exclude Path="Serialization\FromExpressionTest.cs" />
     <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
   </Project>
 
@@ -201,14 +203,10 @@
     <Preserve File="*.pfx" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
-    <!--
     <Exclude Path="Serialization\ArrayFieldBasedCustomCollectionSerializersTest.cs" />
-    -->
     <Exclude Path="Serialization\ArrayContextBasedCustomCollectionSerializersTest.cs" />
     <Exclude Path="Serialization\ArrayCodeDomBasedCustomCollectionSerializersTest.cs" />
-    <!--
     <Exclude Path="Serialization\MapFieldBasedCustomCollectionSerializersTest.cs" />
-    -->
     <Exclude Path="Serialization\MapContextBasedCustomCollectionSerializersTest.cs" />
     <Exclude Path="Serialization\MapCodeDomBasedCustomCollectionSerializersTest.cs" />
   </Project>
