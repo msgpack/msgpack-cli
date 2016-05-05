@@ -30,7 +30,5 @@ using System.Security;
 [assembly: AllowPartiallyTrustedCallers]
 
 #if DEBUG || PERFORMANCE_TEST
-[assembly: InternalsVisibleTo( "MsgPack.UnitTest.Unity3D" )]
-[assembly: InternalsVisibleTo( "MsgPack.UnitTest.Unity3D.Desktop" )]
-
+[assembly: InternalsVisibleTo( "MsgPack.UnitTest" )]
 #endif

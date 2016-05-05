@@ -109,32 +109,33 @@ private void GenerateTestDriver( IEnumerable<TestClass> testClasses )
 			friendlyName = friendlyName.Substring( lastDot + 1 );
 		}
 #>
-			var testClass = 
-				new TestClass( 
-					"<#= friendlyName #>", 
-					() => new <#= testClass.TypeFullName #>(), 
-					<#= testClass.TestMethods.Count #>,
-					( testClassInstance, testFixtureInstance ) =>
-					{
-						var instance = ( ( <#= testClass.TypeFullName #> )testFixtureInstance );
+			{
+				var testClass = 
+					new TestClass( 
+						"<#= friendlyName #>", 
+						() => new <#= testClass.TypeFullName #>(), 
+						<#= testClass.TestMethods.Count #>,
+						( testClassInstance, testFixtureInstance ) =>
+						{
+							var instance = ( ( <#= testClass.TypeFullName #> )testFixtureInstance );
 <#+
 		GenerateActionAssignmentIfNotEmpty( testClass.TestSetup, "testClassInstance.TestSetup", "instance.{0}" );
 		GenerateActionAssignmentIfNotEmpty( testClass.TestCleanup, "testClassInstance.TestCleanup", "instance.{0}" );
 		foreach ( var method in testClass.TestMethods )
 		{
 #>
-						testClassInstance.TestMethods.Add( new TestMethod( "<#= method.Name #>", new Action( instance.<#= method.Name #> ) ) );
+							testClassInstance.TestMethods.Add( new TestMethod( "<#= method.Name #>", new Action( instance.<#= method.Name #> ) ) );
 <#+
 		}
 #>
-					}
-				 );
+						}
+					 );
 <#+
 		GenerateActionAssignmentIfNotEmpty( testClass.FixtureSetup, "testClass.FixtureSetup", testClass.TypeFullName + ".{0}" );
 		GenerateActionAssignmentIfNotEmpty( testClass.FixtureCleanup, "testClass.FixtureCleanup", testClass.TypeFullName + ".{0}" );
 #>
 				testClasses.Add( testClass );
-
+			}
 <#+
 	} // foreach ( testClasses )
 
