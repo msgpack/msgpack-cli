@@ -13,6 +13,7 @@ private const string TestDriverTestListProperty = "TestClasses";
 /// <param name="testClasses">A collection of test classes.</param>
 private void GenerateTestDriver( IEnumerable<TestClass> testClasses )
 {
+	var testClassList = ( testClasses ?? Enumerable.Empty<TestClass>() ).ToArray();
 #>
 	public partial class TestClass
 	{
@@ -97,38 +98,24 @@ private void GenerateTestDriver( IEnumerable<TestClass> testClasses )
 		private static void InitializeTestClasses( IList<TestClass> testClasses )
 		{
 <#+
-	int testClassCount = 0;
-
-	foreach ( var testClass in testClasses ?? Enumerable.Empty<TestClass>() )
+	foreach ( var testClass in testClassList )
 	{
-		testClassCount++;
 		var friendlyName = testClass.TypeFullName;
 		var lastDot = friendlyName.LastIndexOf( "." );
 		if ( lastDot >= 0 && friendlyName.Length > lastDot + 2 )
 		{
 			friendlyName = friendlyName.Substring( lastDot + 1 );
 		}
+
+		var initializerName = GetInitializerClassName( testClass.TypeFullName );
 #>
 			{
 				var testClass = 
 					new TestClass( 
 						"<#= friendlyName #>", 
-						() => new <#= testClass.TypeFullName #>(), 
+						<#= initializerName #>.CreateInstance, 
 						<#= testClass.TestMethods.Count #>,
-						( testClassInstance, testFixtureInstance ) =>
-						{
-							var instance = ( ( <#= testClass.TypeFullName #> )testFixtureInstance );
-<#+
-		GenerateActionAssignmentIfNotEmpty( testClass.TestSetup, "testClassInstance.TestSetup", "instance.{0}" );
-		GenerateActionAssignmentIfNotEmpty( testClass.TestCleanup, "testClassInstance.TestCleanup", "instance.{0}" );
-		foreach ( var method in testClass.TestMethods )
-		{
-#>
-							testClassInstance.TestMethods.Add( new TestMethod( "<#= method.Name #>", new Action( instance.<#= method.Name #> ) ) );
-<#+
-		}
-#>
-						}
+						<#= initializerName #>.InitializeInstance
 					 );
 <#+
 		GenerateActionAssignmentIfNotEmpty( testClass.FixtureSetup, "testClass.FixtureSetup", testClass.TypeFullName + ".{0}" );
@@ -136,6 +123,7 @@ private void GenerateTestDriver( IEnumerable<TestClass> testClasses )
 #>
 				testClasses.Add( testClass );
 			}
+
 <#+
 	} // foreach ( testClasses )
 
@@ -144,12 +132,42 @@ private void GenerateTestDriver( IEnumerable<TestClass> testClasses )
 
 		private static IList<TestClass> NewTestClasses()
 		{
-			return new List<TestClass>( <#= testClassCount #> );
+			return new List<TestClass>( <#= testClassList.Length #> );
 		}
 
 	} // partial class TestDriver
 <#+
-}
+
+	// To avoid UNetWeaver error, avoid lamdas as possible.
+	foreach ( var testClass in testClassList )
+	{
+#>
+	internal static class <#= GetInitializerClassName( testClass.TypeFullName ) #>
+	{
+		public static object CreateInstance()
+		{
+			return new <#= testClass.TypeFullName #>();
+		}
+
+		public static void InitializeInstance( TestClassInstance testClassInstance, object testFixtureInstance )
+		{
+			var instance = ( ( <#= testClass.TypeFullName #> )testFixtureInstance );
+<#+
+		GenerateActionAssignmentIfNotEmpty( testClass.TestSetup, "testClassInstance.TestSetup", "instance.{0}" );
+		GenerateActionAssignmentIfNotEmpty( testClass.TestCleanup, "testClassInstance.TestCleanup", "instance.{0}" );
+		foreach ( var method in testClass.TestMethods )
+		{
+#>
+			testClassInstance.TestMethods.Add( new TestMethod( "<#= method.Name #>", new Action( instance.<#= method.Name #> ) ) );
+<#+
+		}
+#>
+		}
+	} 
+
+<#+
+	}
+} // GenerateTestDriver
 
 private void GenerateActionAssignmentIfNotEmpty( string value, string target, string expressionTemplate )
 {
@@ -159,6 +177,11 @@ private void GenerateActionAssignmentIfNotEmpty( string value, string target, st
 <#= target #> = new Action( <#= String.Format( CultureInfo.InvariantCulture, expressionTemplate, value ) #> );
 <#+
 	}
+}
+
+private static string GetInitializerClassName( string typeFullName )
+{
+	return typeFullName.Replace( '.', '_' ) + "Initializer";
 }
 
 private class TestClass
