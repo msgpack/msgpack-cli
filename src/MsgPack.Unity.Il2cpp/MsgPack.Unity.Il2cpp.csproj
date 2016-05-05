@@ -33,6 +33,9 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.Net35\Volatile.cs">
+      <Link>Volatile.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\AsyncReadResult.cs">
       <Link>AsyncReadResult.cs</Link>
     </Compile>
@@ -677,9 +680,6 @@
     </Compile>
     <Compile Include="..\MsgPack\UnsafeNativeMethods.cs">
       <Link>UnsafeNativeMethods.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Validation.cs">
-      <Link>Validation.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

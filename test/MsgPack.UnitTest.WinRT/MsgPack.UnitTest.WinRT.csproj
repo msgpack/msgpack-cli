@@ -241,12 +241,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\AppendableReadOnlyCollections.cs">
       <Link>Serialization\AppendableReadOnlyCollections.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs">
-      <Link>Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayFieldBasedEnumSerializationTest.cs">
-      <Link>Serialization\ArrayFieldBasedEnumSerializationTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs</Link>
     </Compile>
@@ -297,12 +291,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\EnumSerializationTest.EnumDefinitions.cs">
       <Link>Serialization\EnumSerializationTest.EnumDefinitions.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\FieldBasedNilImplicationTest.cs">
-      <Link>Serialization\FieldBasedNilImplicationTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\FromExpressionTest.cs">
-      <Link>Serialization\FromExpressionTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable.cs">
       <Link>Serialization\IVerifiable.cs</Link>
