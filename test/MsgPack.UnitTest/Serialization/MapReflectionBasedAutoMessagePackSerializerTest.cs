@@ -6870,6 +6870,8 @@ namespace MsgPack.Serialization
 
 		#region ------ KnownType.NormalTypes ------
 
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty_Success()
@@ -6891,6 +6893,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject_AsMpo()
@@ -6910,6 +6917,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -6932,6 +6944,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject_AsMpo()
@@ -6951,6 +6968,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -6973,6 +6995,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ReferenceGetOnlyPropertyAndConstructorAsObject_AsMpo()
@@ -6992,6 +7019,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7014,6 +7046,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ReferencePrivateSetterPropertyAndConstructorAsObject_AsMpo()
@@ -7033,6 +7070,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7055,6 +7097,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject_AsMpo()
@@ -7074,6 +7121,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7096,6 +7148,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject_AsMpo()
@@ -7115,6 +7172,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7137,6 +7199,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject_AsMpo()
@@ -7156,6 +7223,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7178,6 +7250,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ValueGetOnlyPropertyAndConstructorAsObject_AsMpo()
@@ -7197,6 +7274,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7219,6 +7301,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ValuePrivateSetterPropertyAndConstructorAsObject_AsMpo()
@@ -7238,6 +7325,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7260,6 +7352,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ValueReadOnlyFieldAndConstructorAsObject_AsMpo()
@@ -7279,6 +7376,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7301,6 +7403,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject_AsMpo()
@@ -7320,6 +7427,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7342,6 +7454,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject_AsMpo()
@@ -7361,6 +7478,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7383,6 +7505,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PrimitiveGetOnlyPropertyAndConstructorAsObject_AsMpo()
@@ -7402,6 +7529,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7424,6 +7556,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PrimitivePrivateSetterPropertyAndConstructorAsObject_AsMpo()
@@ -7443,6 +7580,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7465,6 +7607,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PrimitiveReadOnlyFieldAndConstructorAsObject_AsMpo()
@@ -7484,6 +7631,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7506,6 +7658,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject_AsMpo()
@@ -7525,6 +7682,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7547,6 +7709,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject_AsMpo()
@@ -7566,6 +7733,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7588,6 +7760,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_StringGetOnlyPropertyAndConstructorAsObject_AsMpo()
@@ -7607,6 +7784,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7629,6 +7811,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject_AsMpo()
@@ -7648,6 +7835,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7670,6 +7862,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_StringReadOnlyFieldAndConstructorAsObject_AsMpo()
@@ -7689,6 +7886,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7711,6 +7913,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject_Success()
@@ -7731,6 +7938,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7753,6 +7965,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject_Success()
@@ -7773,6 +7990,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7795,6 +8017,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject_Success()
@@ -7815,6 +8042,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7837,6 +8069,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObject_Success()
@@ -7857,6 +8094,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7879,6 +8121,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObject_Success()
@@ -7899,9 +8146,14 @@ namespace MsgPack.Serialization
 				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
 		#endregion ------ KnownType.NormalTypes ------
 
 		#region ------ KnownType.CollectionTypes ------
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7924,6 +8176,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteField_Success()
@@ -7944,6 +8201,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7966,6 +8228,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListStaticItemPrivateSetterCollectionProperty_Success()
@@ -7986,6 +8253,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8008,6 +8280,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteProperty_Success()
@@ -8028,6 +8305,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8050,6 +8332,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItemGetOnlyCollectionProperty_Success()
@@ -8070,6 +8357,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8092,6 +8384,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField_Success()
@@ -8112,6 +8409,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8134,6 +8436,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteField_Success()
@@ -8154,6 +8461,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListObjectItem, Is.InstanceOf( target.ListObjectItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8176,6 +8488,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty_Success()
@@ -8196,6 +8513,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListObjectItem, Is.InstanceOf( target.ListObjectItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8218,6 +8540,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteProperty_Success()
@@ -8238,6 +8565,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8260,6 +8592,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItselfGetOnlyCollectionProperty_Success()
@@ -8280,6 +8617,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8302,6 +8644,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField_Success()
@@ -8322,6 +8669,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8344,6 +8696,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteField_Success()
@@ -8365,6 +8722,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItselfGetOnlyCollectionProperty_Fail()
@@ -8373,6 +8735,11 @@ namespace MsgPack.Serialization
 			var target = PolymorphicMemberTypeKnownType_List_ListObjectItselfGetOnlyCollectionProperty.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfGetOnlyCollectionProperty>() );
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8395,6 +8762,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItselfReadOnlyCollectionField_Fail()
@@ -8403,9 +8775,14 @@ namespace MsgPack.Serialization
 			var target = PolymorphicMemberTypeKnownType_List_ListObjectItselfReadOnlyCollectionField.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfReadOnlyCollectionField>() );
 		}
+
+#endif // !UNITY2
+
 		#endregion ------ KnownType.CollectionTypes ------
 
 		#region ------ KnownType.DictionaryTypes ------
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8428,6 +8805,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteField_Success()
@@ -8448,6 +8830,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictStaticKeyAndStaticItem, Is.InstanceOf( target.DictStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8470,6 +8857,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty_Success()
@@ -8490,6 +8882,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictStaticKeyAndStaticItem, Is.InstanceOf( target.DictStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8512,6 +8909,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty_Success()
@@ -8532,6 +8934,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8554,6 +8961,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty_Success()
@@ -8574,6 +8986,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8596,6 +9013,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField_Success()
@@ -8616,6 +9038,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8638,6 +9065,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteField_Success()
@@ -8658,6 +9090,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictObjectKeyAndStaticItem, Is.InstanceOf( target.DictObjectKeyAndStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8680,6 +9117,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty_Success()
@@ -8700,6 +9142,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictObjectKeyAndStaticItem, Is.InstanceOf( target.DictObjectKeyAndStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8722,6 +9169,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty_Success()
@@ -8742,6 +9194,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8764,6 +9221,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty_Success()
@@ -8784,6 +9246,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8806,6 +9273,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField_Success()
@@ -8826,6 +9298,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8848,6 +9325,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteField_Success()
@@ -8868,6 +9350,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictStaticKeyAndObjectItem, Is.InstanceOf( target.DictStaticKeyAndObjectItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8890,6 +9377,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty_Success()
@@ -8910,6 +9402,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictStaticKeyAndObjectItem, Is.InstanceOf( target.DictStaticKeyAndObjectItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8932,6 +9429,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteProperty_Success()
@@ -8952,6 +9454,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8974,6 +9481,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty_Success()
@@ -8994,6 +9506,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9016,6 +9533,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField_Success()
@@ -9036,6 +9558,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9058,6 +9585,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField_Success()
@@ -9078,6 +9610,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictObjectKeyAndItem, Is.InstanceOf( target.DictObjectKeyAndItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9100,6 +9637,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty_Success()
@@ -9120,6 +9662,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictObjectKeyAndItem, Is.InstanceOf( target.DictObjectKeyAndItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9142,6 +9689,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteProperty_Success()
@@ -9162,6 +9714,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9184,6 +9741,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty_Success()
@@ -9204,6 +9766,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9226,6 +9793,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField_Success()
@@ -9246,6 +9818,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9268,6 +9845,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteField_Success()
@@ -9289,6 +9871,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectItselfGetOnlyCollectionProperty_Fail()
@@ -9297,6 +9884,11 @@ namespace MsgPack.Serialization
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectItselfGetOnlyCollectionProperty.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfGetOnlyCollectionProperty>() );
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9319,6 +9911,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadOnlyCollectionField_Fail()
@@ -9327,10 +9924,15 @@ namespace MsgPack.Serialization
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadOnlyCollectionField.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadOnlyCollectionField>() );
 		}
+
+#endif // !UNITY2
+
 		#endregion ------ KnownType.DictionaryTypes ------
 
 #if !NETFX_35 && !UNITY
 		#region ------ KnownType.TupleTypes ------
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9353,6 +9955,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField_Success()
@@ -9373,6 +9980,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9395,6 +10007,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor_Success()
@@ -9415,6 +10032,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9437,6 +10059,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty_Success()
@@ -9457,6 +10084,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9479,6 +10111,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor_Success()
@@ -9499,6 +10136,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9521,6 +10163,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor_Success()
@@ -9541,6 +10188,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9563,6 +10215,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteField_Success()
@@ -9583,6 +10240,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1ObjectItem, Is.InstanceOf( target.Tuple1ObjectItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9605,6 +10267,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor_Success()
@@ -9625,6 +10292,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1ObjectItem, Is.InstanceOf( target.Tuple1ObjectItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9647,6 +10319,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteProperty_Success()
@@ -9667,6 +10344,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9689,6 +10371,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor_Success()
@@ -9709,6 +10396,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9731,6 +10423,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor_Success()
@@ -9751,6 +10448,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9773,6 +10475,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField_Success()
@@ -9793,6 +10500,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9815,6 +10527,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor_Success()
@@ -9835,6 +10552,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9857,6 +10579,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty_Success()
@@ -9877,6 +10604,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9899,6 +10631,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor_Success()
@@ -9919,6 +10656,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9941,6 +10683,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor_Success()
@@ -9961,6 +10708,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9983,6 +10735,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField_Success()
@@ -10003,6 +10760,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10025,6 +10787,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor_Success()
@@ -10045,6 +10812,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10067,6 +10839,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteProperty_Success()
@@ -10087,6 +10864,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10109,6 +10891,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor_Success()
@@ -10129,6 +10916,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10151,6 +10943,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor_Success()
@@ -10171,6 +10968,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10193,6 +10995,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField_Success()
@@ -10213,6 +11020,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10235,6 +11047,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor_Success()
@@ -10255,6 +11072,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10277,6 +11099,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty_Success()
@@ -10297,6 +11124,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10319,6 +11151,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor_Success()
@@ -10339,6 +11176,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10361,6 +11203,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor_Success()
@@ -10381,6 +11228,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10403,6 +11255,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField_Success()
@@ -10423,6 +11280,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10445,6 +11307,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor_Success()
@@ -10465,6 +11332,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10487,6 +11359,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty_Success()
@@ -10507,6 +11384,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10529,6 +11411,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor_Success()
@@ -10549,6 +11436,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10571,6 +11463,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor_Success()
@@ -10591,6 +11488,9 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
 		#endregion ------ KnownType.TupleTypes ------
 #endif // #if !NETFX_35 && !UNITY
 
@@ -10598,6 +11498,8 @@ namespace MsgPack.Serialization
 		#region ---- RuntimeType ----
 
 		#region ------ RuntimeType.NormalTypes ------
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10620,6 +11522,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject_AsMpo()
@@ -10639,6 +11546,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10661,6 +11573,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject_AsMpo()
@@ -10680,6 +11597,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10702,6 +11624,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ReferenceGetOnlyPropertyAndConstructorAsObject_AsMpo()
@@ -10721,6 +11648,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10743,6 +11675,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ReferencePrivateSetterPropertyAndConstructorAsObject_AsMpo()
@@ -10762,6 +11699,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10784,6 +11726,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ReferenceReadOnlyFieldAndConstructorAsObject_AsMpo()
@@ -10803,6 +11750,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Reference, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10825,6 +11777,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject_AsMpo()
@@ -10844,6 +11801,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10866,6 +11828,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject_AsMpo()
@@ -10885,6 +11852,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10907,6 +11879,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ValueGetOnlyPropertyAndConstructorAsObject_AsMpo()
@@ -10926,6 +11903,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10948,6 +11930,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ValuePrivateSetterPropertyAndConstructorAsObject_AsMpo()
@@ -10967,6 +11954,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10989,6 +11981,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ValueReadOnlyFieldAndConstructorAsObject_AsMpo()
@@ -11008,6 +12005,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11030,6 +12032,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject_AsMpo()
@@ -11049,6 +12056,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11071,6 +12083,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject_AsMpo()
@@ -11090,6 +12107,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11112,6 +12134,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PrimitiveGetOnlyPropertyAndConstructorAsObject_AsMpo()
@@ -11131,6 +12158,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11153,6 +12185,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PrimitivePrivateSetterPropertyAndConstructorAsObject_AsMpo()
@@ -11172,6 +12209,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11194,6 +12236,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PrimitiveReadOnlyFieldAndConstructorAsObject_AsMpo()
@@ -11213,6 +12260,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Primitive, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11235,6 +12287,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject_AsMpo()
@@ -11254,6 +12311,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11276,6 +12338,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject_AsMpo()
@@ -11295,6 +12362,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11317,6 +12389,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_StringGetOnlyPropertyAndConstructorAsObject_AsMpo()
@@ -11336,6 +12413,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11358,6 +12440,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject_AsMpo()
@@ -11377,6 +12464,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11399,6 +12491,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_StringReadOnlyFieldAndConstructorAsObject_AsMpo()
@@ -11418,6 +12515,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.String, Is.InstanceOf( typeof( MessagePackObject ) ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11440,6 +12542,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject_Success()
@@ -11460,6 +12567,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11482,6 +12594,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject_Success()
@@ -11502,6 +12619,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11524,6 +12646,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicGetOnlyPropertyAndConstructorAsObject_Success()
@@ -11544,6 +12671,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11566,6 +12698,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObject_Success()
@@ -11586,6 +12723,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11608,6 +12750,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicReadOnlyFieldAndConstructorAsObject_Success()
@@ -11628,9 +12775,14 @@ namespace MsgPack.Serialization
 				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
 		#endregion ------ RuntimeType.NormalTypes ------
 
 		#region ------ RuntimeType.CollectionTypes ------
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11653,6 +12805,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteField_Success()
@@ -11673,6 +12830,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11695,6 +12857,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty_Success()
@@ -11715,6 +12882,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11737,6 +12909,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteProperty_Success()
@@ -11757,6 +12934,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11779,6 +12961,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemGetOnlyCollectionProperty_Success()
@@ -11799,6 +12986,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11821,6 +13013,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadOnlyCollectionField_Success()
@@ -11841,6 +13038,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11863,6 +13065,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteField_Success()
@@ -11883,6 +13090,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListObjectItem, Is.InstanceOf( target.ListObjectItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11905,6 +13117,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItemPrivateSetterCollectionProperty_Success()
@@ -11925,6 +13142,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListObjectItem, Is.InstanceOf( target.ListObjectItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11947,6 +13169,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteProperty_Success()
@@ -11967,6 +13194,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11989,6 +13221,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfGetOnlyCollectionProperty_Success()
@@ -12009,6 +13246,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12031,6 +13273,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadOnlyCollectionField_Success()
@@ -12051,6 +13298,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12073,6 +13325,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteField_Success()
@@ -12094,6 +13351,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItselfGetOnlyCollectionProperty_Fail()
@@ -12102,6 +13364,11 @@ namespace MsgPack.Serialization
 			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItselfGetOnlyCollectionProperty.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfGetOnlyCollectionProperty>() );
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12124,6 +13391,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadOnlyCollectionField_Fail()
@@ -12132,9 +13404,14 @@ namespace MsgPack.Serialization
 			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadOnlyCollectionField.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadOnlyCollectionField>() );
 		}
+
+#endif // !UNITY2
+
 		#endregion ------ RuntimeType.CollectionTypes ------
 
 		#region ------ RuntimeType.DictionaryTypes ------
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12157,6 +13434,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteField_Success()
@@ -12177,6 +13459,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictStaticKeyAndStaticItem, Is.InstanceOf( target.DictStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12199,6 +13486,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty_Success()
@@ -12219,6 +13511,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictStaticKeyAndStaticItem, Is.InstanceOf( target.DictStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12241,6 +13538,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty_Success()
@@ -12261,6 +13563,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12283,6 +13590,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty_Success()
@@ -12303,6 +13615,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12325,6 +13642,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField_Success()
@@ -12345,6 +13667,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictPolymorphicKeyAndStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12367,6 +13694,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteField_Success()
@@ -12387,6 +13719,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictObjectKeyAndStaticItem, Is.InstanceOf( target.DictObjectKeyAndStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12409,6 +13746,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty_Success()
@@ -12429,6 +13771,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictObjectKeyAndStaticItem, Is.InstanceOf( target.DictObjectKeyAndStaticItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12451,6 +13798,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty_Success()
@@ -12471,6 +13823,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12493,6 +13850,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty_Success()
@@ -12513,6 +13875,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12535,6 +13902,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField_Success()
@@ -12555,6 +13927,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictStaticKeyAndPolymorphicItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12577,6 +13954,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteField_Success()
@@ -12597,6 +13979,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictStaticKeyAndObjectItem, Is.InstanceOf( target.DictStaticKeyAndObjectItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12619,6 +14006,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty_Success()
@@ -12639,6 +14031,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictStaticKeyAndObjectItem, Is.InstanceOf( target.DictStaticKeyAndObjectItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12661,6 +14058,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteProperty_Success()
@@ -12681,6 +14083,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12703,6 +14110,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty_Success()
@@ -12723,6 +14135,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12745,6 +14162,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField_Success()
@@ -12765,6 +14187,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicKeyAndItem, Is.InstanceOf( target.DictPolymorphicKeyAndItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12787,6 +14214,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteField_Success()
@@ -12807,6 +14239,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictObjectKeyAndItem, Is.InstanceOf( target.DictObjectKeyAndItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12829,6 +14266,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty_Success()
@@ -12849,6 +14291,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictObjectKeyAndItem, Is.InstanceOf( target.DictObjectKeyAndItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12871,6 +14318,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteProperty_Success()
@@ -12891,6 +14343,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12913,6 +14370,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty_Success()
@@ -12933,6 +14395,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12955,6 +14422,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadOnlyCollectionField_Success()
@@ -12975,6 +14447,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictPolymorphicItself, Is.InstanceOf( target.DictPolymorphicItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12997,6 +14474,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteField_Success()
@@ -13018,6 +14500,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfGetOnlyCollectionProperty_Fail()
@@ -13026,6 +14513,11 @@ namespace MsgPack.Serialization
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfGetOnlyCollectionProperty.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfGetOnlyCollectionProperty>() );
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13048,6 +14540,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadOnlyCollectionField_Fail()
@@ -13056,10 +14553,15 @@ namespace MsgPack.Serialization
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadOnlyCollectionField.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadOnlyCollectionField>() );
 		}
+
+#endif // !UNITY2
+
 		#endregion ------ RuntimeType.DictionaryTypes ------
 
 #if !NETFX_35 && !UNITY
 		#region ------ RuntimeType.TupleTypes ------
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13082,6 +14584,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField_Success()
@@ -13102,6 +14609,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13124,6 +14636,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor_Success()
@@ -13144,6 +14661,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13166,6 +14688,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty_Success()
@@ -13186,6 +14713,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13208,6 +14740,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor_Success()
@@ -13228,6 +14765,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13250,6 +14792,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor_Success()
@@ -13270,6 +14817,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13292,6 +14844,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteField_Success()
@@ -13312,6 +14869,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1ObjectItem, Is.InstanceOf( target.Tuple1ObjectItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13334,6 +14896,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor_Success()
@@ -13354,6 +14921,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1ObjectItem, Is.InstanceOf( target.Tuple1ObjectItem.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13376,6 +14948,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteProperty_Success()
@@ -13396,6 +14973,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13418,6 +15000,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor_Success()
@@ -13438,6 +15025,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13460,6 +15052,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor_Success()
@@ -13480,6 +15077,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13502,6 +15104,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField_Success()
@@ -13522,6 +15129,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13544,6 +15156,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor_Success()
@@ -13564,6 +15181,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13586,6 +15208,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty_Success()
@@ -13606,6 +15233,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13628,6 +15260,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor_Success()
@@ -13648,6 +15285,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13670,6 +15312,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor_Success()
@@ -13690,6 +15337,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13712,6 +15364,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField_Success()
@@ -13732,6 +15389,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13754,6 +15416,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor_Success()
@@ -13774,6 +15441,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13796,6 +15468,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteProperty_Success()
@@ -13816,6 +15493,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13838,6 +15520,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor_Success()
@@ -13858,6 +15545,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13880,6 +15572,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor_Success()
@@ -13900,6 +15597,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7MidPolymorphic, Is.InstanceOf( target.Tuple7MidPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13922,6 +15624,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField_Success()
@@ -13942,6 +15649,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13964,6 +15676,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor_Success()
@@ -13984,6 +15701,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14006,6 +15728,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty_Success()
@@ -14026,6 +15753,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14048,6 +15780,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor_Success()
@@ -14068,6 +15805,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14090,6 +15832,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor_Success()
@@ -14110,6 +15857,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14132,6 +15884,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField_Success()
@@ -14152,6 +15909,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14174,6 +15936,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor_Success()
@@ -14194,6 +15961,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14216,6 +15988,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty_Success()
@@ -14236,6 +16013,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14258,6 +16040,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor_Success()
@@ -14278,6 +16065,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
+
+#if !UNITY2
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14300,6 +16092,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+
+
+#if !UNITY2
+
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor_Success()
@@ -14320,6 +16117,9 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
+
+#endif // !UNITY2
+
 		#endregion ------ RuntimeType.TupleTypes ------
 #endif // #if !NETFX_35 && !UNITY
 

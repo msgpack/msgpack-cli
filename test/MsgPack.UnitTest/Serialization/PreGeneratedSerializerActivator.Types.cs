@@ -135,6 +135,7 @@ namespace MsgPack.Serialization
 			result.Add( typeof( PlainClass ) );
 			result.Add( typeof( AnnotatedClass ) );
 			result.Add( typeof( DataMamberClass ) );
+#if !UNITY2
 			result.Add( typeof( PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty ) ); 
 			result.Add( typeof( PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject ) ); 
 			result.Add( typeof( PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField ) ); 
@@ -513,6 +514,27 @@ namespace MsgPack.Serialization
 #if !NETFX_35
 			result.Add( typeof( TupleAbstractType ) ); 
 #endif // !NETFX_35
+#else
+			result.Add( typeof( PolymorphicMemberTypeMixed ) ); 
+			result.Add( typeof( AbstractClassMemberKnownType ) ); 
+			result.Add( typeof( AbstractClassMemberRuntimeType ) ); 
+			result.Add( typeof( AbstractClassListItemKnownType ) ); 
+			result.Add( typeof( AbstractClassListItemRuntimeType ) ); 
+			result.Add( typeof( AbstractClassDictKeyKnownType ) ); 
+			result.Add( typeof( AbstractClassDictKeyRuntimeType ) ); 
+			result.Add( typeof( InterfaceMemberKnownType ) ); 
+			result.Add( typeof( InterfaceMemberRuntimeType ) ); 
+			result.Add( typeof( InterfaceListItemKnownType ) ); 
+			result.Add( typeof( InterfaceListItemRuntimeType ) ); 
+			result.Add( typeof( InterfaceDictKeyKnownType ) ); 
+			result.Add( typeof( InterfaceDictKeyRuntimeType ) ); 
+			result.Add( typeof( AbstractClassCollectionNoAttribute ) ); 
+			result.Add( typeof( AbstractClassCollectionKnownType ) ); 
+			result.Add( typeof( AbstractClassCollectionRuntimeType ) ); 
+			result.Add( typeof( InterfaceCollectionNoAttribute ) ); 
+			result.Add( typeof( InterfaceCollectionKnownType ) ); 
+			result.Add( typeof( InterfaceCollectionRuntimeType ) ); 
+#endif // !UNITY2
 			return result;
 		}
 	}

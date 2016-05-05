@@ -2747,6 +2747,7 @@ namespace MsgPack.Serialization
 		#region ---- KnownType ----
 
 		#region ------ KnownType.NormalTypes ------
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty
 		{
@@ -2774,6 +2775,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject
 		{
 			private object _Reference;
@@ -2800,6 +2804,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField
 		{
 			public  Version Reference;
@@ -2819,6 +2826,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField( new Version( 1, 2, 3, 4 ) );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject
 		{
@@ -2840,6 +2850,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Normal_ReferenceGetOnlyPropertyAndConstructor
 		{
 			private Version _Reference;
@@ -2856,6 +2869,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Normal_ReferenceGetOnlyPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_ReferenceGetOnlyPropertyAndConstructorAsObject
 		{
 			private object _Reference;
@@ -2871,6 +2887,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_ReferenceGetOnlyPropertyAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Normal_ReferencePrivateSetterPropertyAndConstructor
 		{
@@ -2889,6 +2908,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Normal_ReferencePrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_ReferencePrivateSetterPropertyAndConstructorAsObject
 		{
 			private object _Reference;
@@ -2906,6 +2928,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_ReferencePrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor
 		{
 			public readonly Version Reference;
@@ -2917,6 +2942,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject
 		{
 			public readonly object Reference;
@@ -2927,6 +2955,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty
 		{
@@ -2954,6 +2985,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject
 		{
 			private object _Value;
@@ -2980,6 +3014,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Normal_ValueReadWriteField
 		{
 			public  DateTime Value;
@@ -2999,6 +3036,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Normal_ValueReadWriteField( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject
 		{
@@ -3020,6 +3060,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor
 		{
 			private DateTime _Value;
@@ -3036,6 +3079,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_ValueGetOnlyPropertyAndConstructorAsObject
 		{
 			private object _Value;
@@ -3051,6 +3097,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_ValueGetOnlyPropertyAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor
 		{
@@ -3069,6 +3118,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_ValuePrivateSetterPropertyAndConstructorAsObject
 		{
 			private object _Value;
@@ -3086,6 +3138,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_ValuePrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Normal_ValueReadOnlyFieldAndConstructor
 		{
 			public readonly DateTime Value;
@@ -3097,6 +3152,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Normal_ValueReadOnlyFieldAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_ValueReadOnlyFieldAndConstructorAsObject
 		{
 			public readonly object Value;
@@ -3107,6 +3165,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_ValueReadOnlyFieldAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty
 		{
@@ -3134,6 +3195,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject
 		{
 			private object _Primitive;
@@ -3160,6 +3224,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField
 		{
 			public  int Primitive;
@@ -3179,6 +3246,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField( 123 );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject
 		{
@@ -3200,6 +3270,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Normal_PrimitiveGetOnlyPropertyAndConstructor
 		{
 			private int _Primitive;
@@ -3216,6 +3289,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Normal_PrimitiveGetOnlyPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_PrimitiveGetOnlyPropertyAndConstructorAsObject
 		{
 			private object _Primitive;
@@ -3231,6 +3307,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_PrimitiveGetOnlyPropertyAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Normal_PrimitivePrivateSetterPropertyAndConstructor
 		{
@@ -3249,6 +3328,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Normal_PrimitivePrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_PrimitivePrivateSetterPropertyAndConstructorAsObject
 		{
 			private object _Primitive;
@@ -3266,6 +3348,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_PrimitivePrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Normal_PrimitiveReadOnlyFieldAndConstructor
 		{
 			public readonly int Primitive;
@@ -3277,6 +3362,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Normal_PrimitiveReadOnlyFieldAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_PrimitiveReadOnlyFieldAndConstructorAsObject
 		{
 			public readonly object Primitive;
@@ -3287,6 +3375,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_PrimitiveReadOnlyFieldAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty
 		{
@@ -3314,6 +3405,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject
 		{
 			private object _String;
@@ -3340,6 +3434,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Normal_StringReadWriteField
 		{
 			public  string String;
@@ -3359,6 +3456,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Normal_StringReadWriteField( "ABC" );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject
 		{
@@ -3380,6 +3480,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Normal_StringGetOnlyPropertyAndConstructor
 		{
 			private string _String;
@@ -3396,6 +3499,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Normal_StringGetOnlyPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_StringGetOnlyPropertyAndConstructorAsObject
 		{
 			private object _String;
@@ -3411,6 +3517,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_StringGetOnlyPropertyAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor
 		{
@@ -3429,6 +3538,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject
 		{
 			private object _String;
@@ -3446,6 +3558,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Normal_StringReadOnlyFieldAndConstructor
 		{
 			public readonly string String;
@@ -3457,6 +3572,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Normal_StringReadOnlyFieldAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_StringReadOnlyFieldAndConstructorAsObject
 		{
 			public readonly object String;
@@ -3467,6 +3585,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_StringReadOnlyFieldAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty
 		{
@@ -3496,6 +3617,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject
 		{
 			private object _Polymorphic;
@@ -3524,6 +3648,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField
 		{
 			[MessagePackKnownType( "0", typeof( FileEntry ) )]
@@ -3545,6 +3672,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField( new FileEntry { Name = "file", Size = 1 } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject
 		{
@@ -3568,6 +3698,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Normal_PolymorphicGetOnlyPropertyAndConstructor
 		{
 			private FileSystemEntry _Polymorphic;
@@ -3586,6 +3719,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Normal_PolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
 			private object _Polymorphic;
@@ -3603,6 +3739,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -3623,6 +3762,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
 			private object _Polymorphic;
@@ -3642,6 +3784,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Normal_PolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackKnownType( "0", typeof( FileEntry ) )]
@@ -3655,6 +3800,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Normal_PolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObject
 		{
 			[MessagePackKnownType( "0", typeof( FileEntry ) )]
@@ -3667,9 +3815,12 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
 		#endregion ------ KnownType.NormalTypes ------
 
 		#region ------ KnownType.CollectionTypes ------
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteProperty
 		{
@@ -3697,6 +3848,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteField
 		{
 			public  IList<string> ListStaticItem;
@@ -3716,6 +3870,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteField( new List<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_List_ListStaticItemGetOnlyCollectionProperty
 		{
@@ -3741,6 +3898,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_List_ListStaticItemGetOnlyCollectionProperty( new List<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_List_ListStaticItemPrivateSetterCollectionProperty
 		{
@@ -3768,6 +3928,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_List_ListStaticItemReadOnlyCollectionField
 		{
 			public readonly IList<string> ListStaticItem;
@@ -3787,6 +3950,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_List_ListStaticItemReadOnlyCollectionField( new List<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteProperty
 		{
@@ -3816,6 +3982,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteField
 		{
 			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
@@ -3837,6 +4006,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteField( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_List_ListPolymorphicItemGetOnlyCollectionProperty
 		{
@@ -3864,6 +4036,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_List_ListPolymorphicItemGetOnlyCollectionProperty( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionProperty
 		{
@@ -3893,6 +4068,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField
 		{
 			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
@@ -3914,6 +4092,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteProperty
 		{
@@ -3943,6 +4124,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteField
 		{
 			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
@@ -3964,6 +4148,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteField( new List<object>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_List_ListObjectItemGetOnlyCollectionProperty
 		{
@@ -3991,6 +4178,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_List_ListObjectItemGetOnlyCollectionProperty( new List<object>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty
 		{
@@ -4020,6 +4210,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField
 		{
 			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
@@ -4041,6 +4234,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField( new List<object>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteProperty
 		{
@@ -4070,6 +4266,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteField
 		{
 			[MessagePackKnownType( "0", typeof( Collection<string> ) )]
@@ -4091,6 +4290,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteField( new Collection<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfGetOnlyCollectionProperty
 		{
@@ -4118,6 +4320,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfGetOnlyCollectionProperty( new Collection<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfPrivateSetterCollectionProperty
 		{
@@ -4147,6 +4352,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField
 		{
 			[MessagePackKnownType( "0", typeof( Collection<string> ) )]
@@ -4168,6 +4376,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField( new Collection<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty
 		{
@@ -4197,6 +4408,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteField
 		{
 			[MessagePackKnownType( "0", typeof( Collection<string> ) )]
@@ -4218,6 +4432,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteField( new Collection<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_List_ListObjectItselfGetOnlyCollectionProperty
 		{
@@ -4245,6 +4462,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_List_ListObjectItselfGetOnlyCollectionProperty( new Collection<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty
 		{
@@ -4274,6 +4494,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_List_ListObjectItselfReadOnlyCollectionField
 		{
 			[MessagePackKnownType( "0", typeof( Collection<string> ) )]
@@ -4295,9 +4518,12 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_List_ListObjectItselfReadOnlyCollectionField( new Collection<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
 		#endregion ------ KnownType.CollectionTypes ------
 
 		#region ------ KnownType.DictionaryTypes ------
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteProperty
 		{
@@ -4325,6 +4551,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteField
 		{
 			public  IDictionary<string, string> DictStaticKeyAndStaticItem;
@@ -4344,6 +4573,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty
 		{
@@ -4369,6 +4601,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty
 		{
@@ -4396,6 +4631,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField
 		{
 			public readonly IDictionary<string, string> DictStaticKeyAndStaticItem;
@@ -4415,6 +4653,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty
 		{
@@ -4444,6 +4685,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField
 		{
 			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
@@ -4465,6 +4709,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty
 		{
@@ -4492,6 +4739,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty
 		{
@@ -4521,6 +4771,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField
 		{
 			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
@@ -4542,6 +4795,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteProperty
 		{
@@ -4571,6 +4827,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteField
 		{
 			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
@@ -4592,6 +4851,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteField( new Dictionary<object, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty
 		{
@@ -4619,6 +4881,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty( new Dictionary<object, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty
 		{
@@ -4648,6 +4913,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField
 		{
 			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
@@ -4669,6 +4937,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField( new Dictionary<object, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty
 		{
@@ -4698,6 +4969,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField
 		{
 			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
@@ -4719,6 +4993,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty
 		{
@@ -4746,6 +5023,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty
 		{
@@ -4775,6 +5055,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField
 		{
 			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
@@ -4796,6 +5079,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteProperty
 		{
@@ -4825,6 +5111,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteField
 		{
 			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
@@ -4846,6 +5135,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteField( new Dictionary<string, object>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty
 		{
@@ -4873,6 +5165,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty( new Dictionary<string, object>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty
 		{
@@ -4902,6 +5197,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField
 		{
 			[MessagePackKnownCollectionItemType( "0", typeof( FileEntry ) )]
@@ -4923,6 +5221,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField( new Dictionary<string, object>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteProperty
 		{
@@ -4954,6 +5255,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteField
 		{
 			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
@@ -4977,6 +5281,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteField( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty
 		{
@@ -5006,6 +5313,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionProperty
 		{
@@ -5037,6 +5347,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField
 		{
 			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
@@ -5060,6 +5373,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteProperty
 		{
@@ -5091,6 +5407,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField
 		{
 			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
@@ -5114,6 +5433,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField( new Dictionary<object, object>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty
 		{
@@ -5143,6 +5465,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty( new Dictionary<object, object>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty
 		{
@@ -5174,6 +5499,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadOnlyCollectionField
 		{
 			[MessagePackKnownDictionaryKeyType( "0", typeof( FileEntry ) )]
@@ -5197,6 +5525,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadOnlyCollectionField( new Dictionary<object, object>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteProperty
 		{
@@ -5226,6 +5557,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteField
 		{
 			[MessagePackKnownType( "0", typeof( Dictionary<string, string> ) )]
@@ -5247,6 +5581,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty
 		{
@@ -5274,6 +5611,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfPrivateSetterCollectionProperty
 		{
@@ -5303,6 +5643,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField
 		{
 			[MessagePackKnownType( "0", typeof( Dictionary<string, string> ) )]
@@ -5324,6 +5667,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteProperty
 		{
@@ -5353,6 +5699,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteField
 		{
 			[MessagePackKnownType( "0", typeof( Dictionary<string, string> ) )]
@@ -5374,6 +5723,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectItselfGetOnlyCollectionProperty
 		{
@@ -5401,6 +5753,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictObjectItselfGetOnlyCollectionProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectItselfPrivateSetterCollectionProperty
 		{
@@ -5430,6 +5785,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadOnlyCollectionField
 		{
 			[MessagePackKnownType( "0", typeof( Dictionary<string, string> ) )]
@@ -5451,10 +5809,13 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadOnlyCollectionField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
 		#endregion ------ KnownType.DictionaryTypes ------
 
 #if !NETFX_35 && !UNITY
 		#region ------ KnownType.TupleTypes ------
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty
 		{
@@ -5482,6 +5843,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField
 		{
 			public  Tuple<string> Tuple1Static;
@@ -5502,6 +5866,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor
 		{
 			private Tuple<string> _Tuple1Static;
@@ -5517,6 +5884,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor
 		{
@@ -5535,6 +5905,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor
 		{
 			public readonly Tuple<string> Tuple1Static;
@@ -5545,6 +5918,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty
 		{
@@ -5574,6 +5950,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField
 		{
 			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
@@ -5596,6 +5975,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor
 		{
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
@@ -5613,6 +5995,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -5633,6 +6018,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
@@ -5645,6 +6033,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteProperty
 		{
@@ -5674,6 +6065,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteField
 		{
 			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
@@ -5696,6 +6090,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor
 		{
 			private Tuple<object> _Tuple1ObjectItem;
@@ -5713,6 +6110,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor
 		{
@@ -5733,6 +6133,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor
 		{
 			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
@@ -5745,6 +6148,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteProperty
 		{
@@ -5773,6 +6179,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteField
 		{
 			[MessagePackRuntimeType]
@@ -5794,6 +6203,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor
 		{
 			private object _Tuple1ObjectItself;
@@ -5810,6 +6222,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor
 		{
@@ -5829,6 +6244,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor
 		{
 			[MessagePackRuntimeType]
@@ -5840,6 +6258,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty
 		{
@@ -5867,6 +6288,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField
 		{
 			public  Tuple<string, string, string, string, string, string, string> Tuple7AllStatic;
@@ -5887,6 +6311,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor
 		{
 			private Tuple<string, string, string, string, string, string, string> _Tuple7AllStatic;
@@ -5902,6 +6329,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor
 		{
@@ -5920,6 +6350,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor
 		{
 			public readonly Tuple<string, string, string, string, string, string, string> Tuple7AllStatic;
@@ -5930,6 +6363,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty
 		{
@@ -5959,6 +6395,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField
 		{
 			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
@@ -5981,6 +6420,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor
 		{
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
@@ -5998,6 +6440,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -6018,6 +6463,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
@@ -6030,6 +6478,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty
 		{
@@ -6059,6 +6510,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField
 		{
 			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
@@ -6081,6 +6535,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor
 		{
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
@@ -6098,6 +6555,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -6118,6 +6578,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackKnownTupleItemType( 7, "0", typeof( FileEntry ) )]
@@ -6130,6 +6593,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteProperty
 		{
@@ -6159,6 +6625,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteField
 		{
 			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
@@ -6181,6 +6650,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor
 		{
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7MidPolymorphic;
@@ -6198,6 +6670,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -6218,6 +6693,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackKnownTupleItemType( 4, "0", typeof( FileEntry ) )]
@@ -6230,6 +6708,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty
 		{
@@ -6271,6 +6752,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField
 		{
 			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
@@ -6305,6 +6789,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor
 		{
 			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
@@ -6334,6 +6821,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -6366,6 +6856,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
@@ -6390,6 +6883,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty
 		{
@@ -6417,6 +6913,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField
 		{
 			public  Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic;
@@ -6437,6 +6936,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor
 		{
 			private Tuple<string, string, string, string, string, string, string, Tuple<string>> _Tuple8AllStatic;
@@ -6452,6 +6954,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor
 		{
@@ -6470,6 +6975,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor
 		{
 			public readonly Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic;
@@ -6480,6 +6988,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty
 		{
@@ -6509,6 +7020,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField
 		{
 			[MessagePackKnownTupleItemType( 8, "0", typeof( FileEntry ) )]
@@ -6531,6 +7045,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor
 		{
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
@@ -6548,6 +7065,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -6568,6 +7088,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackKnownTupleItemType( 8, "0", typeof( FileEntry ) )]
@@ -6580,6 +7103,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty
 		{
@@ -6623,6 +7149,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField
 		{
 			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
@@ -6659,6 +7188,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor
 		{
 			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
@@ -6690,6 +7222,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -6724,6 +7259,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackKnownTupleItemType( 1, "0", typeof( FileEntry ) )]
@@ -6750,6 +7288,8 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
 		#endregion ------ KnownType.TupleTypes ------
 #endif // #if !NETFX_35 && !UNITY
 
@@ -6757,6 +7297,7 @@ namespace MsgPack.Serialization
 		#region ---- RuntimeType ----
 
 		#region ------ RuntimeType.NormalTypes ------
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty
 		{
@@ -6784,6 +7325,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject
 		{
 			private object _Reference;
@@ -6810,6 +7354,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField
 		{
 			public  Version Reference;
@@ -6829,6 +7376,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField( new Version( 1, 2, 3, 4 ) );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject
 		{
@@ -6850,6 +7400,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Normal_ReferenceGetOnlyPropertyAndConstructor
 		{
 			private Version _Reference;
@@ -6866,6 +7419,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Normal_ReferenceGetOnlyPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_ReferenceGetOnlyPropertyAndConstructorAsObject
 		{
 			private object _Reference;
@@ -6881,6 +7437,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_ReferenceGetOnlyPropertyAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor
 		{
@@ -6899,6 +7458,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_ReferencePrivateSetterPropertyAndConstructorAsObject
 		{
 			private object _Reference;
@@ -6916,6 +7478,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_ReferencePrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadOnlyFieldAndConstructor
 		{
 			public readonly Version Reference;
@@ -6927,6 +7492,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadOnlyFieldAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_ReferenceReadOnlyFieldAndConstructorAsObject
 		{
 			public readonly object Reference;
@@ -6937,6 +7505,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_ReferenceReadOnlyFieldAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty
 		{
@@ -6964,6 +7535,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject
 		{
 			private object _Value;
@@ -6990,6 +7564,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField
 		{
 			public  DateTime Value;
@@ -7009,6 +7586,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject
 		{
@@ -7030,6 +7610,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Normal_ValueGetOnlyPropertyAndConstructor
 		{
 			private DateTime _Value;
@@ -7046,6 +7629,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Normal_ValueGetOnlyPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_ValueGetOnlyPropertyAndConstructorAsObject
 		{
 			private object _Value;
@@ -7061,6 +7647,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_ValueGetOnlyPropertyAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_ValuePrivateSetterPropertyAndConstructor
 		{
@@ -7079,6 +7668,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Normal_ValuePrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_ValuePrivateSetterPropertyAndConstructorAsObject
 		{
 			private object _Value;
@@ -7096,6 +7688,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_ValuePrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Normal_ValueReadOnlyFieldAndConstructor
 		{
 			public readonly DateTime Value;
@@ -7107,6 +7702,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Normal_ValueReadOnlyFieldAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_ValueReadOnlyFieldAndConstructorAsObject
 		{
 			public readonly object Value;
@@ -7117,6 +7715,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_ValueReadOnlyFieldAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty
 		{
@@ -7144,6 +7745,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject
 		{
 			private object _Primitive;
@@ -7170,6 +7774,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField
 		{
 			public  int Primitive;
@@ -7189,6 +7796,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField( 123 );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject
 		{
@@ -7210,6 +7820,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Normal_PrimitiveGetOnlyPropertyAndConstructor
 		{
 			private int _Primitive;
@@ -7226,6 +7839,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Normal_PrimitiveGetOnlyPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_PrimitiveGetOnlyPropertyAndConstructorAsObject
 		{
 			private object _Primitive;
@@ -7241,6 +7857,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_PrimitiveGetOnlyPropertyAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_PrimitivePrivateSetterPropertyAndConstructor
 		{
@@ -7259,6 +7878,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Normal_PrimitivePrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_PrimitivePrivateSetterPropertyAndConstructorAsObject
 		{
 			private object _Primitive;
@@ -7276,6 +7898,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_PrimitivePrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadOnlyFieldAndConstructor
 		{
 			public readonly int Primitive;
@@ -7287,6 +7912,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadOnlyFieldAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_PrimitiveReadOnlyFieldAndConstructorAsObject
 		{
 			public readonly object Primitive;
@@ -7297,6 +7925,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_PrimitiveReadOnlyFieldAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty
 		{
@@ -7324,6 +7955,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject
 		{
 			private object _String;
@@ -7350,6 +7984,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField
 		{
 			public  string String;
@@ -7369,6 +8006,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField( "ABC" );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject
 		{
@@ -7390,6 +8030,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor
 		{
 			private string _String;
@@ -7406,6 +8049,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_StringGetOnlyPropertyAndConstructorAsObject
 		{
 			private object _String;
@@ -7421,6 +8067,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_StringGetOnlyPropertyAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_StringPrivateSetterPropertyAndConstructor
 		{
@@ -7439,6 +8088,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Normal_StringPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject
 		{
 			private object _String;
@@ -7456,6 +8108,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Normal_StringReadOnlyFieldAndConstructor
 		{
 			public readonly string String;
@@ -7467,6 +8122,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Normal_StringReadOnlyFieldAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_StringReadOnlyFieldAndConstructorAsObject
 		{
 			public readonly object String;
@@ -7477,6 +8135,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_StringReadOnlyFieldAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty
 		{
@@ -7505,6 +8166,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject
 		{
 			private object _Polymorphic;
@@ -7532,6 +8196,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField
 		{
 			[MessagePackRuntimeType]
@@ -7552,6 +8219,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField( new FileEntry { Name = "file", Size = 1 } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject
 		{
@@ -7574,6 +8244,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Normal_PolymorphicGetOnlyPropertyAndConstructor
 		{
 			private FileSystemEntry _Polymorphic;
@@ -7591,6 +8264,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Normal_PolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_PolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
 			private object _Polymorphic;
@@ -7607,6 +8283,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_PolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_PolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -7626,6 +8305,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Normal_PolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
 			private object _Polymorphic;
@@ -7644,6 +8326,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackRuntimeType]
@@ -7656,6 +8341,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_PolymorphicReadOnlyFieldAndConstructorAsObject
 		{
 			[MessagePackRuntimeType]
@@ -7667,9 +8355,12 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_PolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
+
+#endif // !UNITY2
 		#endregion ------ RuntimeType.NormalTypes ------
 
 		#region ------ RuntimeType.CollectionTypes ------
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteProperty
 		{
@@ -7697,6 +8388,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteField
 		{
 			public  IList<string> ListStaticItem;
@@ -7716,6 +8410,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteField( new List<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_List_ListStaticItemGetOnlyCollectionProperty
 		{
@@ -7741,6 +8438,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_List_ListStaticItemGetOnlyCollectionProperty( new List<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty
 		{
@@ -7768,6 +8468,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadOnlyCollectionField
 		{
 			public readonly IList<string> ListStaticItem;
@@ -7787,6 +8490,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadOnlyCollectionField( new List<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteProperty
 		{
@@ -7815,6 +8521,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteField
 		{
 			[MessagePackRuntimeCollectionItemType]
@@ -7835,6 +8544,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteField( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemGetOnlyCollectionProperty
 		{
@@ -7861,6 +8573,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemGetOnlyCollectionProperty( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemPrivateSetterCollectionProperty
 		{
@@ -7889,6 +8604,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadOnlyCollectionField
 		{
 			[MessagePackRuntimeCollectionItemType]
@@ -7909,6 +8627,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadOnlyCollectionField( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteProperty
 		{
@@ -7937,6 +8658,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteField
 		{
 			[MessagePackRuntimeCollectionItemType]
@@ -7957,6 +8681,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteField( new List<object>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_List_ListObjectItemGetOnlyCollectionProperty
 		{
@@ -7983,6 +8710,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_List_ListObjectItemGetOnlyCollectionProperty( new List<object>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_List_ListObjectItemPrivateSetterCollectionProperty
 		{
@@ -8011,6 +8741,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadOnlyCollectionField
 		{
 			[MessagePackRuntimeCollectionItemType]
@@ -8031,6 +8764,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadOnlyCollectionField( new List<object>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteProperty
 		{
@@ -8059,6 +8795,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteField
 		{
 			[MessagePackRuntimeType]
@@ -8079,6 +8818,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteField( new Collection<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfGetOnlyCollectionProperty
 		{
@@ -8105,6 +8847,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfGetOnlyCollectionProperty( new Collection<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfPrivateSetterCollectionProperty
 		{
@@ -8133,6 +8878,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadOnlyCollectionField
 		{
 			[MessagePackRuntimeType]
@@ -8153,6 +8901,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadOnlyCollectionField( new Collection<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteProperty
 		{
@@ -8181,6 +8932,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteField
 		{
 			[MessagePackRuntimeType]
@@ -8201,6 +8955,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteField( new Collection<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_List_ListObjectItselfGetOnlyCollectionProperty
 		{
@@ -8227,6 +8984,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_List_ListObjectItselfGetOnlyCollectionProperty( new Collection<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty
 		{
@@ -8255,6 +9015,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadOnlyCollectionField
 		{
 			[MessagePackRuntimeType]
@@ -8275,9 +9038,12 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadOnlyCollectionField( new Collection<string>{ "A", "B" } );
 			}
 		}
+
+#endif // !UNITY2
 		#endregion ------ RuntimeType.CollectionTypes ------
 
 		#region ------ RuntimeType.DictionaryTypes ------
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteProperty
 		{
@@ -8305,6 +9071,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteField
 		{
 			public  IDictionary<string, string> DictStaticKeyAndStaticItem;
@@ -8324,6 +9093,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty
 		{
@@ -8349,6 +9121,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty
 		{
@@ -8376,6 +9151,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField
 		{
 			public readonly IDictionary<string, string> DictStaticKeyAndStaticItem;
@@ -8395,6 +9173,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty
 		{
@@ -8423,6 +9204,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField
 		{
 			[MessagePackRuntimeDictionaryKeyType]
@@ -8443,6 +9227,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty
 		{
@@ -8469,6 +9256,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty
 		{
@@ -8497,6 +9287,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField
 		{
 			[MessagePackRuntimeDictionaryKeyType]
@@ -8517,6 +9310,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteProperty
 		{
@@ -8545,6 +9341,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteField
 		{
 			[MessagePackRuntimeDictionaryKeyType]
@@ -8565,6 +9364,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteField( new Dictionary<object, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty
 		{
@@ -8591,6 +9393,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty( new Dictionary<object, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty
 		{
@@ -8619,6 +9424,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField
 		{
 			[MessagePackRuntimeDictionaryKeyType]
@@ -8639,6 +9447,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField( new Dictionary<object, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty
 		{
@@ -8667,6 +9478,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField
 		{
 			[MessagePackRuntimeCollectionItemType]
@@ -8687,6 +9501,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty
 		{
@@ -8713,6 +9530,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty
 		{
@@ -8741,6 +9561,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField
 		{
 			[MessagePackRuntimeCollectionItemType]
@@ -8761,6 +9584,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteProperty
 		{
@@ -8789,6 +9615,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteField
 		{
 			[MessagePackRuntimeCollectionItemType]
@@ -8809,6 +9638,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteField( new Dictionary<string, object>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty
 		{
@@ -8835,6 +9667,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty( new Dictionary<string, object>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty
 		{
@@ -8863,6 +9698,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField
 		{
 			[MessagePackRuntimeCollectionItemType]
@@ -8883,6 +9721,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField( new Dictionary<string, object>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteProperty
 		{
@@ -8912,6 +9753,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteField
 		{
 			[MessagePackRuntimeCollectionItemType]
@@ -8933,6 +9777,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteField( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty
 		{
@@ -8960,6 +9807,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionProperty
 		{
@@ -8989,6 +9839,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField
 		{
 			[MessagePackRuntimeCollectionItemType]
@@ -9010,6 +9863,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteProperty
 		{
@@ -9039,6 +9895,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteField
 		{
 			[MessagePackRuntimeCollectionItemType]
@@ -9060,6 +9919,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteField( new Dictionary<object, object>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty
 		{
@@ -9087,6 +9949,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty( new Dictionary<object, object>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty
 		{
@@ -9116,6 +9981,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadOnlyCollectionField
 		{
 			[MessagePackRuntimeCollectionItemType]
@@ -9137,6 +10005,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadOnlyCollectionField( new Dictionary<object, object>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteProperty
 		{
@@ -9165,6 +10036,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteField
 		{
 			[MessagePackRuntimeType]
@@ -9185,6 +10059,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty
 		{
@@ -9211,6 +10088,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfPrivateSetterCollectionProperty
 		{
@@ -9239,6 +10119,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadOnlyCollectionField
 		{
 			[MessagePackRuntimeType]
@@ -9259,6 +10142,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadOnlyCollectionField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty
 		{
@@ -9287,6 +10173,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteField
 		{
 			[MessagePackRuntimeType]
@@ -9307,6 +10196,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfGetOnlyCollectionProperty
 		{
@@ -9333,6 +10225,9 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfGetOnlyCollectionProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfPrivateSetterCollectionProperty
 		{
@@ -9361,6 +10256,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadOnlyCollectionField
 		{
 			[MessagePackRuntimeType]
@@ -9381,10 +10279,13 @@ namespace MsgPack.Serialization
 				return new PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadOnlyCollectionField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
+
+#endif // !UNITY2
 		#endregion ------ RuntimeType.DictionaryTypes ------
 
 #if !NETFX_35 && !UNITY
 		#region ------ RuntimeType.TupleTypes ------
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty
 		{
@@ -9412,6 +10313,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField
 		{
 			public  Tuple<string> Tuple1Static;
@@ -9432,6 +10336,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor
 		{
 			private Tuple<string> _Tuple1Static;
@@ -9447,6 +10354,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor
 		{
@@ -9465,6 +10375,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor
 		{
 			public readonly Tuple<string> Tuple1Static;
@@ -9475,6 +10388,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty
 		{
@@ -9503,6 +10419,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField
 		{
 			[MessagePackRuntimeTupleItemType( 1 )]
@@ -9524,6 +10443,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor
 		{
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
@@ -9540,6 +10462,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -9559,6 +10484,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackRuntimeTupleItemType( 1 )]
@@ -9570,6 +10498,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteProperty
 		{
@@ -9598,6 +10529,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteField
 		{
 			[MessagePackRuntimeTupleItemType( 1 )]
@@ -9619,6 +10553,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor
 		{
 			private Tuple<object> _Tuple1ObjectItem;
@@ -9635,6 +10572,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor
 		{
@@ -9654,6 +10594,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor
 		{
 			[MessagePackRuntimeTupleItemType( 1 )]
@@ -9665,6 +10608,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteProperty
 		{
@@ -9693,6 +10639,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteField
 		{
 			[MessagePackRuntimeType]
@@ -9714,6 +10663,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor
 		{
 			private object _Tuple1ObjectItself;
@@ -9730,6 +10682,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor
 		{
@@ -9749,6 +10704,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor
 		{
 			[MessagePackRuntimeType]
@@ -9760,6 +10718,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty
 		{
@@ -9787,6 +10748,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField
 		{
 			public  Tuple<string, string, string, string, string, string, string> Tuple7AllStatic;
@@ -9807,6 +10771,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor
 		{
 			private Tuple<string, string, string, string, string, string, string> _Tuple7AllStatic;
@@ -9822,6 +10789,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor
 		{
@@ -9840,6 +10810,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor
 		{
 			public readonly Tuple<string, string, string, string, string, string, string> Tuple7AllStatic;
@@ -9850,6 +10823,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty
 		{
@@ -9878,6 +10854,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField
 		{
 			[MessagePackRuntimeTupleItemType( 1 )]
@@ -9899,6 +10878,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor
 		{
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
@@ -9915,6 +10897,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -9934,6 +10919,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackRuntimeTupleItemType( 1 )]
@@ -9945,6 +10933,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty
 		{
@@ -9973,6 +10964,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField
 		{
 			[MessagePackRuntimeTupleItemType( 7 )]
@@ -9994,6 +10988,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor
 		{
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
@@ -10010,6 +11007,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -10029,6 +11029,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackRuntimeTupleItemType( 7 )]
@@ -10040,6 +11043,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteProperty
 		{
@@ -10068,6 +11074,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteField
 		{
 			[MessagePackRuntimeTupleItemType( 4 )]
@@ -10089,6 +11098,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor
 		{
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7MidPolymorphic;
@@ -10105,6 +11117,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -10124,6 +11139,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackRuntimeTupleItemType( 4 )]
@@ -10135,6 +11153,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty
 		{
@@ -10169,6 +11190,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField
 		{
 			[MessagePackRuntimeTupleItemType( 1 )]
@@ -10196,6 +11220,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor
 		{
 			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
@@ -10218,6 +11245,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -10243,6 +11273,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackRuntimeTupleItemType( 1 )]
@@ -10260,6 +11293,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty
 		{
@@ -10287,6 +11323,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField
 		{
 			public  Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic;
@@ -10307,6 +11346,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor
 		{
 			private Tuple<string, string, string, string, string, string, string, Tuple<string>> _Tuple8AllStatic;
@@ -10322,6 +11364,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor
 		{
@@ -10340,6 +11385,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor
 		{
 			public readonly Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic;
@@ -10350,6 +11398,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty
 		{
@@ -10378,6 +11429,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField
 		{
 			[MessagePackRuntimeTupleItemType( 8 )]
@@ -10399,6 +11453,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor
 		{
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
@@ -10415,6 +11472,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -10434,6 +11494,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackRuntimeTupleItemType( 8 )]
@@ -10445,6 +11508,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty
 		{
@@ -10480,6 +11546,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField
 		{
 			[MessagePackRuntimeTupleItemType( 1 )]
@@ -10508,6 +11577,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor
 		{
 			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
@@ -10531,6 +11603,9 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
+
+#endif // !UNITY2
+#if !UNITY2
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor
 		{
@@ -10557,6 +11632,9 @@ namespace MsgPack.Serialization
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
+#endif // !UNITY2
+#if !UNITY2
+
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor
 		{
 			[MessagePackRuntimeTupleItemType( 1 )]
@@ -10575,6 +11653,8 @@ namespace MsgPack.Serialization
 			}
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor() {}
 		}
+
+#endif // !UNITY2
 		#endregion ------ RuntimeType.TupleTypes ------
 #endif // #if !NETFX_35 && !UNITY
 
