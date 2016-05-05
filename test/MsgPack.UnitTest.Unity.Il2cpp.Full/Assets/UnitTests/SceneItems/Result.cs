@@ -30,7 +30,7 @@ namespace MsgPack
 
         protected override void Initialize()
         {
-            var image = this.GetComponent<Image>();
+            var image = this.GetComponent<UnityEngine.UI.Image>();
 
             Message = new ReactiveProperty<string>("");
             Message.SubscribeToText(text);
