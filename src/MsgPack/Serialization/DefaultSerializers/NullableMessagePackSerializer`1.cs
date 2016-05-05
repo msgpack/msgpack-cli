@@ -23,13 +23,13 @@
 #endif
 
 using System;
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -58,9 +58,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override void PackToCore( Packer packer, T? objectTree )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( objectTree != null, "objectTree != null" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 			// null was handled in PackTo() method.
 			this._valueSerializer.PackToCore( packer, objectTree.Value );
 		}
@@ -68,9 +68,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override T? UnpackFromCore( Unpacker unpacker )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( !unpacker.LastReadData.IsNil, "!unpacker.LastReadData.IsNil" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 			// nil was handled in UnpackFrom() method.
 			return this._valueSerializer.UnpackFromCore( unpacker );
 		}

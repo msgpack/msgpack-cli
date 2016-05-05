@@ -28,13 +28,13 @@ using System.Collections.Generic;
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -62,11 +62,11 @@ namespace MsgPack.Serialization
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		public static T UnpackComplexObject<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
 			Contract.Assert( unpacked >= 0 );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 			if ( !unpacker.Read() )
 			{
 				SerializationExceptions.ThrowMissingItem( unpacked, unpacker );
@@ -105,11 +105,11 @@ namespace MsgPack.Serialization
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		public static async Task<T> UnpackComplexObjectAsync<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
 			Contract.Assert( unpacked >= 0 );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 			if ( !( await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
 			{
 				SerializationExceptions.ThrowMissingItem( unpacked, unpacker );
@@ -146,11 +146,11 @@ namespace MsgPack.Serialization
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		public static T UnpackComplexObject<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked, string currentKey )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
 			Contract.Assert( unpacked >= 0 );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 			if ( !unpacker.Read() )
 			{
 				SerializationExceptions.ThrowMissingItem( unpacked, currentKey, unpacker );
@@ -190,11 +190,11 @@ namespace MsgPack.Serialization
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		public static async Task<T> UnpackComplexObjectAsync<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked, string currentKey, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
 			Contract.Assert( unpacked >= 0 );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 			if ( !( await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
 			{
 				SerializationExceptions.ThrowMissingItem( unpacked, currentKey, unpacker );
@@ -241,7 +241,7 @@ namespace MsgPack.Serialization
 		)
 			where TValue : struct
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
@@ -250,7 +250,7 @@ namespace MsgPack.Serialization
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
 			Contract.Assert( serializer != null || directRead != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			TValue? nullable;
 			if ( unpacked < itemsCount )
@@ -303,7 +303,7 @@ namespace MsgPack.Serialization
 		)
 			where TValue : struct
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
@@ -312,7 +312,7 @@ namespace MsgPack.Serialization
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
 			Contract.Assert( serializer != null || directRead != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			TValue? nullable;
 			if ( unpacked < itemsCount )
@@ -363,7 +363,7 @@ namespace MsgPack.Serialization
 		)
 			where TValue : class
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
@@ -372,7 +372,7 @@ namespace MsgPack.Serialization
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
 			Contract.Assert( serializer != null || directRead != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			TValue nullable;
 			if ( unpacked < itemsCount )
@@ -436,7 +436,7 @@ namespace MsgPack.Serialization
 		)
 			where TValue : class
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
@@ -445,7 +445,7 @@ namespace MsgPack.Serialization
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
 			Contract.Assert( serializer != null || directRead != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			TValue nullable;
 			if ( unpacked < itemsCount )
@@ -507,7 +507,7 @@ namespace MsgPack.Serialization
 		)
 			where TValue : struct
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
@@ -516,7 +516,7 @@ namespace MsgPack.Serialization
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
 			Contract.Assert( serializer != null || directRead != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			TValue? nullable;
 			if ( unpacked < itemsCount )
@@ -580,7 +580,7 @@ namespace MsgPack.Serialization
 		)
 			where TValue : struct
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
@@ -589,7 +589,7 @@ namespace MsgPack.Serialization
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
 			Contract.Assert( serializer != null || directRead != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			TValue? nullable;
 			if ( unpacked < itemsCount )
@@ -646,14 +646,14 @@ namespace MsgPack.Serialization
 			Action<TContext, MessagePackObject> setter
 		)
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
 			Contract.Assert( unpacked >= 0 );
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			MessagePackObject nullable;
 			if ( unpacked < itemsCount )
@@ -714,14 +714,14 @@ namespace MsgPack.Serialization
 			Action<TContext, MessagePackObject> setter, CancellationToken cancellationToken
 		)
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
 			Contract.Assert( unpacked >= 0 );
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			MessagePackObject nullable;
 			if ( unpacked < itemsCount )
@@ -780,14 +780,14 @@ namespace MsgPack.Serialization
 			Action<TContext, MessagePackObject> setter
 		)
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
 			Contract.Assert( unpacked >= 0 );
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			MessagePackObject nullable;
 			if ( unpacked < itemsCount )
@@ -848,14 +848,14 @@ namespace MsgPack.Serialization
 			Action<TContext, MessagePackObject> setter, CancellationToken cancellationToken
 		)
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
 			Contract.Assert( unpacked >= 0 );
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			MessagePackObject nullable;
 			if ( unpacked < itemsCount )
@@ -925,11 +925,11 @@ namespace MsgPack.Serialization
 			IList<Action<Unpacker, TContext, int, int>> operations
 		)
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( factory != null );
 			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			var count = GetItemsCount( unpacker );
 
@@ -992,11 +992,11 @@ namespace MsgPack.Serialization
 			IList<Func<Unpacker, TContext, int, int, CancellationToken, Task>> operations, CancellationToken cancellationToken
 		)
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( factory != null );
 			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			var count = GetItemsCount( unpacker );
 
@@ -1055,11 +1055,11 @@ namespace MsgPack.Serialization
 			IDictionary<string, Action<Unpacker, TContext, int, int>> operations
 		)
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( factory != null );
 			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			var count = GetItemsCount( unpacker );
 
@@ -1134,11 +1134,11 @@ namespace MsgPack.Serialization
 			IDictionary<string, Func<Unpacker, TContext, int, int, CancellationToken, Task>> operations, CancellationToken cancellationToken
 		)
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( factory != null );
 			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			var count = GetItemsCount( unpacker );
 
@@ -1228,9 +1228,9 @@ namespace MsgPack.Serialization
 					SerializationExceptions.ThrowArgumentException( "bulkOperation or eachOperation must not be null." );
 				}
 
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 				Contract.Assert( eachOperation != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 				for ( var i = 0; i < itemsCount; i++ )
 				{
@@ -1296,9 +1296,9 @@ namespace MsgPack.Serialization
 					SerializationExceptions.ThrowArgumentException( "bulkOperation or eachOperation must not be null." );
 				}
 
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 				Contract.Assert( eachOperation != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 				for ( var i = 0; i < itemsCount; i++ )
 				{

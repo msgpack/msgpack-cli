@@ -37,13 +37,13 @@ using System.Collections.Generic;
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -114,11 +114,11 @@ foreach ( var forMap in new [] { false, true } )
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		public static <#= AsyncT( isAsync ) #> UnpackComplexObject<#= MethodSuffix( isAsync ) #><T>( Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked<#= forMap ? ", string currentKey" : String.Empty #><#= CancellationTokenParameter( isAsync ) #> )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
 			Contract.Assert( unpacked >= 0 );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 <#
 		if ( !isAsync )
 		{
@@ -222,7 +222,7 @@ foreach ( var kind in new [] { TypeKind.Value, TypeKind.Reference, TypeKind.Null
 		)
 			where TValue : <#= kind == TypeKind.Reference ? "class" : "struct" #>
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
@@ -231,7 +231,7 @@ foreach ( var kind in new [] { TypeKind.Value, TypeKind.Reference, TypeKind.Null
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
 			Contract.Assert( serializer != null || directRead != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			<#= TValue( kind ) #> nullable;
 			if ( unpacked < itemsCount )
@@ -331,14 +331,14 @@ foreach ( var forMap in new [] { false, true } )
 			Action<TContext, MessagePackObject> setter<#= CancellationTokenParameter( isAsync ) #>
 		)
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
 			Contract.Assert( unpacked >= 0 );
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			MessagePackObject nullable;
 			if ( unpacked < itemsCount )
@@ -500,11 +500,11 @@ foreach ( var forMap in new [] { false, true } )
 			<#= OperationDelegateList( forMap, isAsync ) #> operations<#= CancellationTokenParameter( isAsync ) #>
 		)
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( factory != null );
 			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			var count = GetItemsCount( unpacker );
 
@@ -663,9 +663,9 @@ foreach ( var isAsync in new [] { false, true } )
 					SerializationExceptions.ThrowArgumentException( "bulkOperation or eachOperation must not be null." );
 				}
 
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 				Contract.Assert( eachOperation != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 				for ( var i = 0; i < itemsCount; i++ )
 				{

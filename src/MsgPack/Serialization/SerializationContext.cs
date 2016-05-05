@@ -31,9 +31,9 @@ using System.Collections.Concurrent;
 #else // !SILVERLIGHT && !NETFX_35 && !UNITY
 using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
-#if !UNITY
+#if !UNITY && !UNITY2
 using System.Diagnostics.Contracts;
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 #if UNITY || NETSTD_11 || NETSTD_13
 using System.Linq;
 #endif // UNITY || NETSTD_11 || NETSTD_13
@@ -124,9 +124,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.Ensures( Contract.Result<SerializerRepository>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 				return this._serializers;
 			}
@@ -145,9 +145,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.Ensures( Contract.Result<SerializerOptions>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 				return this._serializerGeneratorOptions;
 			}
@@ -165,9 +165,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.Ensures( Contract.Result<SerializationCompatibilityOptions>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 				return this._compatibilityOptions;
 			}
@@ -186,9 +186,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.Ensures( Enum.IsDefined( typeof( SerializationMethod ), Contract.Result<SerializationMethod>() ) );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 				return ( SerializationMethod )Volatile.Read( ref this._serializationMethod );
 			}
@@ -207,9 +207,9 @@ namespace MsgPack.Serialization
 					}
 				}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 				Volatile.Write( ref this._serializationMethod, ( int )value );
@@ -238,9 +238,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.Ensures( Enum.IsDefined( typeof( EnumSerializationMethod ), Contract.Result<EnumSerializationMethod>() ) );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 				return ( EnumSerializationMethod )Volatile.Read( ref this._enumSerializationMethod );
 			}
@@ -259,9 +259,9 @@ namespace MsgPack.Serialization
 					}
 				}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 				Volatile.Write( ref this._enumSerializationMethod, ( int )value );
 			}
@@ -347,9 +347,9 @@ namespace MsgPack.Serialization
 					}
 				}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 				Volatile.Write( ref this._defaultDateTimeConversionMethod, ( int )value );
 			}
 		}
@@ -600,9 +600,9 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public MessagePackSerializer<T> GetSerializer<T>( object providerParameter )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			var schema = providerParameter as PolymorphismSchema;
 			// Explicitly generated serializer should always used, so get it first.
@@ -685,17 +685,17 @@ namespace MsgPack.Serialization
 					var asEnumSerializer = serializer as ICustomizableEnumSerializer;
 					if ( asEnumSerializer != null )
 					{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 						Contract.Assert( typeof( T ).GetIsEnum(), typeof( T ) + " is not enum but generated serializer is ICustomizableEnumSerializer" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 						provider = new EnumMessagePackSerializerProvider( typeof( T ), asEnumSerializer );
 					}
 					else
 					{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 						Contract.Assert( !typeof( T ).GetIsEnum(), typeof( T ) + " is enum but generated serializer is not ICustomizableEnumSerializer : " + ( serializer == null ? "null" : serializer.GetType().FullName ) );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 						// Creates provider even if no schema -- the schema might be specified future for the type.
 						// It is OK to use polymorphic provider for value type.
@@ -789,12 +789,12 @@ namespace MsgPack.Serialization
 					{
 						var typedSerializer = serializer as MessagePackSerializer<T>;
 
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 						Contract.Assert(
 							typedSerializer != null,
 							serializer.GetType() + " : " + serializer.GetType().GetBaseType() + " is " + typeof( MessagePackSerializer<T> )
 						);
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 						provider = new PolymorphicSerializerProvider<T>( typedSerializer );
 					}
@@ -874,9 +874,9 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "targetType" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Ensures( Contract.Result<MessagePackSerializer>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return SerializerGetter.Instance.Get( this, targetType, providerParameter );
 		}
@@ -929,9 +929,9 @@ namespace MsgPack.Serialization
 							typeof( Func<SerializationContext, object, MessagePackSerializer> )
 						) as Func<SerializationContext, object, MessagePackSerializer>;
 #endif // !NETSTD_11 && !NETSTD_13
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 					Contract.Assert( func != null, "func != null" );
-#endif // if DEBUG && !UNITY
+#endif // if DEBUG && !UNITY && !UNITY2
 					this._cache[ targetType.TypeHandle ] = func;
 				}
 #if SILVERLIGHT || NETFX_35 || UNITY
@@ -946,7 +946,7 @@ namespace MsgPack.Serialization
 		private static class SerializerGetter<T>
 		{
 			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
-#if !NETSTD_11 && !NETSTD_13 && !WINDOWS_PHONE
+#if !NETSTD_11 && !NETSTD_13 && !WINDOWS_PHONE && !UNITY && !UNITY2
 			Delegate.CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> ),
 					Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) )

@@ -25,13 +25,13 @@
 #if !UNITY
 using System;
 using System.Collections.Generic;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Linq;
 
 
@@ -42,7 +42,9 @@ namespace MsgPack
 	/// </summary>
 	internal static class SetOperation
 	{
+#if !UNITY && !UNITY2
 		[Pure]
+#endif // !UNITY && !UNITY2
 #if NETFX_35
 		public static bool IsProperSubsetOf<T>( ICollection<T> set, IEnumerable<T> other )
 #else
@@ -50,9 +52,9 @@ namespace MsgPack
 #endif
 		{
 #region CONTRACT
-#if DEBUG
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( set != null, "set != null " );
-#endif // DEBUG
+#endif // DEBUG && !UNITY && !UNITY2
 
 			if ( other == null )
 			{
@@ -83,7 +85,9 @@ namespace MsgPack
 			return set.Count < otherCount;
 		}
 
+#if !UNITY && !UNITY2
 		[Pure]
+#endif // !UNITY && !UNITY2
 #if NETFX_35
 		public static bool IsSubsetOf<T>( ICollection<T> set, IEnumerable<T> other )
 #else
@@ -91,9 +95,9 @@ namespace MsgPack
 #endif
 		{
 #region CONTRACT
-#if DEBUG
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( set != null, "set != null" );
-#endif // DEBUG
+#endif // DEBUG && !UNITY && !UNITY2
 
 			if ( other == null )
 			{
@@ -116,7 +120,9 @@ namespace MsgPack
 			return IsSubsetOfCore( set, other, out checkedCount );
 		}
 
+#if !UNITY && !UNITY2
 		[Pure]
+#endif // !UNITY && !UNITY2
 #if NETFX_35
 		private static bool IsSubsetOfCore<T>( ICollection<T> set, IEnumerable<T> other, out int otherCount )
 #else
@@ -153,7 +159,9 @@ namespace MsgPack
 			return set.Count <= matchCount;
 		}
 
+#if !UNITY && !UNITY2
 		[Pure]
+#endif // !UNITY && !UNITY2
 #if NETFX_35
 		public static bool IsProperSupersetOf<T>( ICollection<T> set, IEnumerable<T> other )
 #else
@@ -161,9 +169,9 @@ namespace MsgPack
 #endif
 		{
 #region CONTRACT
-#if DEBUG
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( set != null, "set != null" );
-#endif // DEBUG
+#endif // DEBUG && !UNITY && !UNITY2
 
 			if ( other == null )
 			{
@@ -189,7 +197,9 @@ namespace MsgPack
 			return checkedCount < set.Count;
 		}
 
+#if !UNITY && !UNITY2
 		[Pure]
+#endif // !UNITY && !UNITY2
 #if NETFX_35
 		public static bool IsSupersetOf<T>( ICollection<T> set, IEnumerable<T> other )
 #else
@@ -197,9 +207,9 @@ namespace MsgPack
 #endif
 		{
 #region CONTRACT
-#if DEBUG
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( set != null, "set != null" );
-#endif // DEBUG
+#endif // DEBUG && !UNITY && !UNITY2
 
 			if ( other == null )
 			{
@@ -225,7 +235,9 @@ namespace MsgPack
 			return IsSupersetOfCore( set, other, out checkedCount );
 		}
 
+#if !UNITY && !UNITY2
 		[Pure]
+#endif // !UNITY && !UNITY2
 #if NETFX_35
 		private static bool IsSupersetOfCore<T>( ICollection<T> set, IEnumerable<T> other, out int otherCount )
 #else
@@ -260,7 +272,9 @@ namespace MsgPack
 			return true;
 		}
 
+#if !UNITY && !UNITY2
 		[Pure]
+#endif // !UNITY && !UNITY2
 #if NETFX_35
 		public static bool Overlaps<T>( ICollection<T> set, IEnumerable<T> other )
 #else
@@ -268,9 +282,9 @@ namespace MsgPack
 #endif
 		{
 #region CONTRACT
-#if DEBUG
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( set != null, "set != null" );
-#endif // DEBUG
+#endif // DEBUG && !UNITY && !UNITY2
 
 			if ( other == null )
 			{
@@ -286,7 +300,9 @@ namespace MsgPack
 			return other.Any( item => set.Contains( item ) );
 		}
 
+#if !UNITY && !UNITY2
 		[Pure]
+#endif // !UNITY && !UNITY2
 #if NETFX_35
 		public static bool SetEquals<T>( ICollection<T> set, IEnumerable<T> other )
 #else
@@ -294,9 +310,9 @@ namespace MsgPack
 #endif
 		{
 #region CONTRACT
-#if DEBUG
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( set != null, "set != null" );
-#endif // DEBUG
+#endif // DEBUG && !UNITY && !UNITY2
 
 			if ( other == null )
 			{

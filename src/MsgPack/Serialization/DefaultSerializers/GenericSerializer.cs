@@ -27,13 +27,13 @@ using System;
 using System.Collections;
 #endif // !UNITY
 using System.Collections.Generic;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -100,9 +100,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		private static MessagePackSerializer CreateArraySerializer( SerializationContext context, Type targetType, PolymorphismSchema itemsSchema )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( targetType.IsArray, "targetType.IsArray" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 			return ArraySerializer.Create( context, targetType, itemsSchema );
 		}
 

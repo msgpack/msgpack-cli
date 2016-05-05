@@ -33,9 +33,9 @@ using System.Collections.Concurrent;
 #else // !SILVERLIGHT && !NETFX_35 && !UNITY
 using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
-#if !UNITY
+#if !UNITY && !UNITY2
 using System.Diagnostics.Contracts;
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 #if NETFX_CORE || WINDOWS_PHONE
 using System.Linq.Expressions;
 #endif
@@ -61,9 +61,9 @@ namespace MsgPack.Serialization
 		[Obsolete( "Use Get<T>() instead." )]
 		public static MessagePackSerializer<T> Create<T>()
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return Create<T>( SerializationContext.Default );
 		}
@@ -347,9 +347,9 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Ensures( Contract.Result<MessagePackSerializer>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 #if AOT
 			return CreateInternal( context, targetType, null );

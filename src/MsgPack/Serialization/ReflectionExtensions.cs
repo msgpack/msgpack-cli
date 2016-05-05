@@ -26,9 +26,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-#if !UNITY
+#if !UNITY && !UNITY2
 using System.Diagnostics.Contracts;
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -160,9 +160,9 @@ namespace MsgPack.Serialization
 
 		public static CollectionTraits GetCollectionTraits( this Type source, CollectionTraitOptions options )
 		{
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( !source.GetContainsGenericParameters(), "!source.GetContainsGenericParameters()" );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 			/*
 			 * SPEC
 			 * If the object has single public method TEnumerator GetEnumerator() ( where TEnumerator implements IEnumerator<TItem>),
@@ -707,13 +707,13 @@ namespace MsgPack.Serialization
 
 			if ( index < 0 )
 			{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 #if !NETFX_35
 				Contract.Assert( false, interfaceType + "::" + name + "(" + String.Join<Type>( ", ", parameterTypes ) + ") is not found in " + targetType );
 #else
 				Contract.Assert( false, interfaceType + "::" + name + "(" + String.Join( ", ", parameterTypes.Select( t => t.ToString() ).ToArray() ) + ") is not found in " + targetType );
 #endif // !NETFX_35
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 				// ReSharper disable once HeuristicUnreachableCode
 				return null;
 			}
@@ -811,9 +811,9 @@ namespace MsgPack.Serialization
 		private static bool FilterCollectionType( Type type, object filterCriteria )
 		{
 #if !NETSTD_11 && !NETSTD_13
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Assert( type.GetIsInterface(), "type.IsInterface" );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 			return type.GetAssembly().Equals( typeof( Array ).GetAssembly() ) && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
 #else
 			var typeInfo = type.GetTypeInfo();

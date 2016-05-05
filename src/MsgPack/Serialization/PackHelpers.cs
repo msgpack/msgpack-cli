@@ -27,13 +27,13 @@ using System.Collections.Generic;
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif //!UNITY || MSGPACK_UNITY_FULL
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -84,10 +84,10 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "operations" );
 			}
 
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( packer != null );
 			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			packer.PackArrayHeader( operations.Count );
 			foreach ( var operation in operations )
@@ -181,10 +181,10 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "operations" );
 			}
 
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( packer != null );
 			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			packer.PackMapHeader( operations.Count );
 			foreach ( var operation in operations )

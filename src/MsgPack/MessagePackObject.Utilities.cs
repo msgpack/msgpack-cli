@@ -25,13 +25,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Globalization;
 using System.Linq;
 #if NETFX_CORE
@@ -345,9 +345,9 @@ namespace MsgPack
 				// ReSharper restore HeuristicUnreachableCode
 			}
 
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( false, String.Format( "Unknown handle type this:'{0}'(value: '{1}'), other:'{2}'(value: '{3}')", this._handleOrTypeCode.GetType(), this._handleOrTypeCode, other._handleOrTypeCode.GetType(), other._handleOrTypeCode ) );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 			return this._handleOrTypeCode.Equals( other._handleOrTypeCode );
 		}
 
@@ -465,9 +465,9 @@ namespace MsgPack
 
 		private static bool IntegerSingleEquals( MessagePackObject integer, MessagePackObject real )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( integer._handleOrTypeCode is ValueTypeCode, "integer._handleOrTypeCode is ValueTypeCode" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 			if ( ( integer._handleOrTypeCode as ValueTypeCode ).IsSigned )
 			{
 				// ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -482,9 +482,9 @@ namespace MsgPack
 
 		private static bool IntegerDoubleEquals( MessagePackObject integer, MessagePackObject real )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( integer._handleOrTypeCode is ValueTypeCode, "integer._handleOrTypeCode is ValueTypeCode" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 			if ( ( integer._handleOrTypeCode as ValueTypeCode ).IsSigned )
 			{
 				// ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -556,9 +556,9 @@ namespace MsgPack
 			}
 
 			{
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.Assert( false, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 				// ReSharper disable once HeuristicUnreachableCode
 				return 0;
 			}
@@ -726,9 +726,9 @@ namespace MsgPack
 			}
 
 			// may be string
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Assert( false, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 			// ReSharper disable HeuristicUnreachableCode
 			if ( isJson )
 			{
@@ -882,9 +882,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "type" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			if ( this._handleOrTypeCode == null )
@@ -1069,9 +1069,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "packer" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			if ( this._handleOrTypeCode == null )
@@ -1347,9 +1347,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "encoding" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			if ( this.IsNil )
@@ -1362,9 +1362,9 @@ namespace MsgPack
 			try
 			{
 				var asMessagePackString = this._handleOrTypeCode as MessagePackString;
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 				Contract.Assert( asMessagePackString != null, "asMessagePackString != null" );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 
 				if ( encoding is UTF8Encoding )
 				{
@@ -1398,9 +1398,9 @@ namespace MsgPack
 		public string AsStringUtf16()
 		{
 			VerifyUnderlyingType<byte[]>( this, null );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			if ( this.IsNil )
@@ -1411,9 +1411,9 @@ namespace MsgPack
 			try
 			{
 				MessagePackString asMessagePackString = this._handleOrTypeCode as MessagePackString;
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 				Contract.Assert( asMessagePackString != null, "asMessagePackString != null" );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 
 				if ( asMessagePackString.UnsafeGetString() != null )
 				{
@@ -1724,9 +1724,9 @@ namespace MsgPack
 				}
 				// ReSharper restore HeuristicUnreachableCode
 
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.Assert( false, "Unknwon type:" + this._handleOrTypeCode );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 				// ReSharper disable once HeuristicUnreachableCode
 				return null;
 			}
@@ -1780,9 +1780,9 @@ namespace MsgPack
 					}
 					default:
 					{
-#if !UNITY
+#if !UNITY && !UNITY2
 						Contract.Assert( false, "Unknwon type code:" + asType.TypeCode );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 						// ReSharper disable once HeuristicUnreachableCode
 						return null;
 					}

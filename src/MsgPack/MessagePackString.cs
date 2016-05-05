@@ -24,13 +24,13 @@
 
 using System;
 using System.Diagnostics;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Globalization;
 using System.Linq;
 using System.Security;
@@ -72,18 +72,18 @@ namespace MsgPack
 
 		public MessagePackString( string decoded )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Assert( decoded != null, "decoded != null" );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 			this._decoded = decoded;
 			this._type = BinaryType.String;
 		}
 
 		public MessagePackString( byte[] encoded, bool isBinary )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Assert( encoded != null, "encoded != null" );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 			this._encoded = encoded;
 			this._type = isBinary ? BinaryType.Blob : BinaryType.Unknwon;
 			if ( isBinary )
@@ -270,7 +270,7 @@ namespace MsgPack
 				return false;
 			}
 
-#if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
+#if !UNITY && !UNITY2 && !WINDOWS_PHONE && !NETFX_CORE
 			if ( _isFastEqualsDisabled == 0 )
 			{
 				try
@@ -286,7 +286,7 @@ namespace MsgPack
 					Interlocked.Exchange( ref _isFastEqualsDisabled, 1 );
 				}
 			}
-#endif // if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
+#endif // if !UNITY && !UNITY2 && !WINDOWS_PHONE && !NETFX_CORE
 
 			return SlowEquals( left._encoded, right._encoded );
 		}
@@ -304,7 +304,7 @@ namespace MsgPack
 			return true;
 		}
 
-#if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
+#if !UNITY && !UNITY2 && !WINDOWS_PHONE && !NETFX_CORE
 #if SILVERLIGHT
 		private static int _isFastEqualsDisabled =
 			System.Windows.Application.Current.HasElevatedPermissions ? 0 : 1;
@@ -340,7 +340,7 @@ namespace MsgPack
 
 			return result == 0;
 		}
-#endif // if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
+#endif // if !UNITY && !UNITY2 && !WINDOWS_PHONE && !NETFX_CORE
 
 #if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		[Serializable]

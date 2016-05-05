@@ -23,13 +23,13 @@
 #endif
 
 using System;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 namespace MsgPack.Serialization
 {
@@ -79,9 +79,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.Ensures( Enum.IsDefined( typeof( NilImplication ), Contract.Result<NilImplication>() ) );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 				return this._nilImplication;
 			}
@@ -101,9 +101,9 @@ namespace MsgPack.Serialization
 					}
 				}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 				this._nilImplication = value;

@@ -24,13 +24,13 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Globalization;
 using System.IO;
 #if FEATURE_TAP
@@ -308,9 +308,9 @@ namespace MsgPack
 				ThrowArgumentNullException( "value" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			// ReSharper disable once PossibleNullReferenceException
 			foreach ( var b in value )
@@ -369,9 +369,9 @@ namespace MsgPack
 				ThrowArgumentNullException( "value" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			// ReSharper disable once PossibleNullReferenceException
 			foreach ( var b in value )
@@ -435,9 +435,9 @@ namespace MsgPack
 		public Packer Pack( sbyte value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -489,9 +489,9 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackInt8( value );
 #pragma warning restore 168
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 		}
 
 #if FEATURE_TAP
@@ -583,9 +583,9 @@ namespace MsgPack
 		public Packer Pack( byte value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -631,9 +631,9 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackUInt8( value );
 #pragma warning restore 168
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 		}
 
 #if FEATURE_TAP
@@ -924,9 +924,9 @@ namespace MsgPack
 		public Packer PackNull()
 		{
 			this.VerifyNotDisposed();
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			this.PrivatePackNullCore();
 			return this;

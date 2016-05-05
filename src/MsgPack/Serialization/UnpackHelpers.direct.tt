@@ -36,13 +36,13 @@ using System;
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -142,11 +142,11 @@ foreach ( Type type in
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static <#= Async( type.Name, isAsync ) #> Unpack<#= type.Name #>Value<#= MethodSuffix( isAsync ) #>( Unpacker unpacker, Type objectType, String memberName<#= CancellationTokenParameter( isAsync ) #> )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -250,11 +250,11 @@ foreach ( Type type in
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static <#= Async( type.Name + "?", isAsync ) #> UnpackNullable<#= type.Name #>Value<#= MethodSuffix( isAsync ) #>( Unpacker unpacker, Type objectType, String memberName<#= CancellationTokenParameter( isAsync ) #> )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -369,11 +369,11 @@ foreach ( var isAsync in new [] { false, true } )
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static <#= Async( "string", isAsync ) #> UnpackStringValue<#= MethodSuffix( isAsync ) #>( Unpacker unpacker, Type objectType, String memberName<#= CancellationTokenParameter( isAsync ) #> )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -467,11 +467,11 @@ foreach ( var isAsync in new [] { false, true } )
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static <#= Async( "byte[]", isAsync ) #> UnpackBinaryValue<#= MethodSuffix( isAsync ) #>( Unpacker unpacker, Type objectType, String memberName<#= CancellationTokenParameter( isAsync ) #> )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );

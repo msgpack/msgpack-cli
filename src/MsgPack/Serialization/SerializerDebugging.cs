@@ -27,9 +27,9 @@ using System;
 using System.Collections.Concurrent;
 #endif // !NETFX_35 && !UNITY && !WINDOWS_PHONE
 using System.Collections.Generic;
-#if !UNITY
+#if !UNITY && !UNITY2
 using System.Diagnostics.Contracts;
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Globalization;
 using System.IO;
 using System.Linq;

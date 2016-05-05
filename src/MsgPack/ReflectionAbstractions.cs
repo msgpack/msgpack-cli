@@ -25,9 +25,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-#if !UNITY
+#if !UNITY && !UNITY2
 using System.Diagnostics.Contracts;
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Linq;
 using System.Reflection;
 

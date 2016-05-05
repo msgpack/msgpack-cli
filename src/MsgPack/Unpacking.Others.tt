@@ -70,13 +70,13 @@ var __methods = new []
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.IO;
 
 namespace MsgPack
@@ -201,9 +201,9 @@ foreach( var __method in __methods )
 		public static UnpackingResult<#= "<" + __method.Item2 + ">" #> Unpack<#= __method.Item1 #>( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -255,9 +255,9 @@ foreach( var __method in __methods )
 		public static <#= __method.Item2 #> Unpack<#= __method.Item1 #>( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return Unpack<#= __method.Item1 #>Core( source );
 		}

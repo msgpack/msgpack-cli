@@ -25,13 +25,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 namespace MsgPack
 {
@@ -87,9 +87,9 @@ namespace MsgPack
 
 				internal Enumerator( MessagePackObjectDictionary dictionary )
 				{
-#if !UNITY
+#if !UNITY && !UNITY2
 					Contract.Assert( dictionary != null, "dictionary != null" );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 					this._underlying = dictionary.GetEnumerator();
 				}

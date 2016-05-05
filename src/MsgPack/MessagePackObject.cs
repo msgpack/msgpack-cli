@@ -23,13 +23,13 @@
 #endif
 
 using System;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Runtime.InteropServices;
 
 namespace MsgPack
@@ -801,9 +801,9 @@ namespace MsgPack
 			}
 
 			var asString = this._handleOrTypeCode as MessagePackString;
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Assert( asString != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 			return asString.GetString();
 		}
 
@@ -822,9 +822,9 @@ namespace MsgPack
 			}
 
 			var asString = this._handleOrTypeCode as MessagePackString;
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Assert( asString != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 			return asString.GetBytes();
 		}
 
@@ -1650,9 +1650,9 @@ namespace MsgPack
 			}
 
 			var asString = value._handleOrTypeCode as MessagePackString;
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Assert( asString != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 			return asString.GetString();
 		}
 
@@ -1672,9 +1672,9 @@ namespace MsgPack
 			}
 
 			var asString = value._handleOrTypeCode as MessagePackString;
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Assert( asString != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 			return asString.GetBytes();
 		}
 

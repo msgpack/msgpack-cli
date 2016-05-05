@@ -27,13 +27,13 @@
 #endif // !NETFX_40 && !NETFX_35 && !UNITY && !SILVERLIGHT
 using System;
 using System.Collections.Generic;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Globalization;
 using System.Linq;
 #if NETFX_45
@@ -183,13 +183,13 @@ namespace MsgPack.Serialization
 			Contract.Assert( Monitor.IsEntered( this._syncRoot ) );
 #endif // DEBUG && NETFX_45
 			var shouldBeTrue = this._types.Remove( typeCode );
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( shouldBeTrue );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 			shouldBeTrue = this._index.Remove( name );
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( shouldBeTrue );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 		}
 
 		/// <summary>

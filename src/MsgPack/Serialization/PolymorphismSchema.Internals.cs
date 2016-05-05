@@ -22,13 +22,13 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITYusing System.Globalization;
+#endif // !UNITY && !UNITY2
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -462,14 +462,14 @@ namespace MsgPack.Serialization
 					}
 				}
 
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 				Contract.Assert( attribute is IPolymorphicRuntimeTypeAttribute, attribute + " is IPolymorphicRuntimeTypeAttribute" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 				if ( this._useTypeEmbedding )
 				{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 					Contract.Assert( attribute.Target == PolymorphismTarget.TupleItem, attribute.Target + " == PolymorphismTarget.TupleItem" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 					throw new SerializationException(
 						String.Format(
 							CultureInfo.CurrentCulture,

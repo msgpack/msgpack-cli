@@ -23,13 +23,13 @@
 #endif
 
 using System;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -66,9 +66,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.Ensures( !String.IsNullOrEmpty( Contract.Result<string>() ) );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 				return this._name;
 			}
@@ -86,9 +86,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.Ensures( Contract.Result<int>() >= -1 );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 				return this._id;
 			}
@@ -122,9 +122,9 @@ namespace MsgPack.Serialization
 		/// <param name="member">The target member.</param>
 		public DataMemberContract( MemberInfo member )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( member != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			this._name = member.Name;
 			this._nilImplication = NilImplication.MemberDefault;
@@ -140,9 +140,9 @@ namespace MsgPack.Serialization
 		/// <param name="id">The ID of the member. This value cannot be negative and must be unique in the type.</param>
 		public DataMemberContract( MemberInfo member, string name, NilImplication nilImplication, int? id )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( member != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			if ( id < 0 )
 			{
@@ -161,10 +161,10 @@ namespace MsgPack.Serialization
 		/// <param name="attribute">The MessagePack member attribute.</param>
 		public DataMemberContract( MemberInfo member, MessagePackMemberAttribute attribute )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( member != null );
 			Contract.Requires( attribute != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			if ( attribute.Id < 0 )
 			{

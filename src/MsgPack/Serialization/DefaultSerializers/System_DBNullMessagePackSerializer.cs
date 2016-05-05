@@ -23,13 +23,13 @@
 #endif
 
 using System;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Runtime.Serialization;
 #if FEATURE_TAP
 using System.Threading;
@@ -52,9 +52,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal override DBNull UnpackFromCore( Unpacker unpacker )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( !unpacker.LastReadData.IsNil );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 			throw new SerializationException( "DBNull value should be nil." );
 		}
 

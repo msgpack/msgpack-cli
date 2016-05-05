@@ -24,9 +24,9 @@
 
 using System;
 using System.Threading;
-#if !UNITY
+#if !UNITY && !UNITY2
 using System.Diagnostics.Contracts;
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 namespace MsgPack.Serialization
 {

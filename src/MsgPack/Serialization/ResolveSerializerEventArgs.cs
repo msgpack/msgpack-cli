@@ -23,13 +23,13 @@
 #endif
 
 using System;
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 using System.Globalization;
 
 namespace MsgPack.Serialization
@@ -77,9 +77,9 @@ namespace MsgPack.Serialization
 		/// </returns>
 		internal MessagePackSerializer<T> GetFoundSerializer<T>()
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( typeof( T ) == this.TargetType, typeof( T ) + "==" + this.TargetType );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 			return ( MessagePackSerializer<T> ) this._foundSerializer;
 		}
 

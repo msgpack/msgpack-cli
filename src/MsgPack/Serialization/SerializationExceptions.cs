@@ -26,13 +26,13 @@ using System;
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Globalization;
 #if !UNITY
 using System.Reflection;
@@ -67,12 +67,12 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewValueTypeCannotBeNull( string name, Type memberType, Type declaringType )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( !String.IsNullOrEmpty( name ) );
 			Contract.Requires( memberType != null );
 			Contract.Requires( declaringType != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Member '{0}' of type '{1}' cannot be null because it is value type('{2}').", name, declaringType, memberType ) );
 		}
@@ -99,10 +99,10 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewValueTypeCannotBeNull( Type type )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot be null '{0}' type value.", type ) );
 		}
@@ -115,10 +115,10 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewTypeCannotSerialize( Type type )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot serialize '{0}' type.", type ) );
 		}
@@ -131,10 +131,10 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewTypeCannotDeserialize( Type type )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize '{0}' type.", type ) );
 		}
@@ -149,12 +149,12 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewTypeCannotDeserialize( Type type, string memberName, Exception inner )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( type != null );
 			Contract.Requires( !String.IsNullOrEmpty( memberName ) );
 			Contract.Requires( inner != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize member '{1}' of type '{0}'.", type, memberName ), inner );
 		}
@@ -179,10 +179,10 @@ namespace MsgPack.Serialization
 #endif
 		public static Exception NewMissingItem( int index ) // For compatibility only.
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( index >= 0 );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Items at index '{0}' is missing.", index ) );
 		}
@@ -332,10 +332,10 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		internal static Exception NewTargetDoesNotHavePublicDefaultConstructor( Type type )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have default (parameterless) public constructor.", type ) );
 		}
@@ -348,10 +348,10 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		internal static Exception NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( Type type )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have both of default (parameterless) public constructor and  public constructor with an Int32 parameter.", type ) );
 		}
@@ -370,10 +370,10 @@ namespace MsgPack.Serialization
 		[Obsolete]
 		public static Exception NewMissingProperty( string name )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( !String.IsNullOrEmpty( name ) );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Property '{0}' is missing.", name ) );
 		}
@@ -393,9 +393,9 @@ namespace MsgPack.Serialization
 		[Obsolete]
 		public static Exception NewUnexpectedEndOfStream()
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( "Stream unexpectedly ends." );
 		}
@@ -441,10 +441,10 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewMissingAddMethod( Type type )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have appropriate Add method.", type ) );
 		}
@@ -511,11 +511,11 @@ namespace MsgPack.Serialization
 #if DEBUG
 		[Obsolete]
 #endif // DEBUG
-		public static Exception NewIsNotMapHeader() 
+		public static Exception NewIsNotMapHeader()
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( "Unpacker is not in the map header. The stream may not be map." );
 		}
@@ -559,10 +559,10 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewNotSupportedBecauseCannotInstanciateAbstractType( Type type )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported because '{0}' cannot be instanciated.", type ) );
 		}
@@ -590,10 +590,10 @@ namespace MsgPack.Serialization
 #endif // DEBUG
 		public static Exception NewTupleCardinarityIsNotMatch( int expectedTupleCardinality, int actualArrayLength )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( expectedTupleCardinality > 0 );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The length of array ({0}) does not match to tuple cardinality ({1}).", actualArrayLength, expectedTupleCardinality ) );
 		}
@@ -613,9 +613,9 @@ namespace MsgPack.Serialization
 			Unpacker unpacker 
 		)
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( expectedTupleCardinality > 0 );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 			long offsetOrPosition;
 			var isRealPosition = unpacker.GetPreviousPosition( out offsetOrPosition );
 			if ( offsetOrPosition >= 0L )
@@ -666,9 +666,9 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewIsIncorrectStream( Exception innerException )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( "Failed to unpack items count of the collection.", innerException );
 		}
@@ -685,9 +685,9 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewIsTooLargeCollection()
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new MessageNotSupportedException( "The collection which has more than Int32.MaxValue items is not supported." );
 		}
@@ -711,10 +711,10 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewNullIsProhibited( string memberName )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( !String.IsNullOrEmpty( memberName ) );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member '{0}' cannot be nil.", memberName ) );
 		}
@@ -738,10 +738,10 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewReadOnlyMemberItemsMustNotBeNull( string memberName )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( !String.IsNullOrEmpty( memberName ) );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member '{0}' cannot be nil because it is read only member.", memberName ) );
 		}
@@ -754,10 +754,10 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewStreamDoesNotContainCollectionForMember( string memberName )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( !String.IsNullOrEmpty( memberName ) );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize member '{0}' because the underlying stream does not contain collection.", memberName ) );
 		}
@@ -771,11 +771,11 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewUnexpectedArrayLength( int expectedLength, int actualLength )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( expectedLength >= 0 );
 			Contract.Requires( actualLength >= 0 );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The MessagePack stream is invalid. Expected array length is {0}, but actual is {1}.", expectedLength, actualLength ) );
 		}
@@ -790,12 +790,12 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewFailedToDeserializeMember( Type targetType, string memberName, Exception inner )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( targetType != null );
 			Contract.Requires( !String.IsNullOrEmpty( memberName ) );
 			Contract.Requires( inner != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize member '{0}' of type '{1}'.", memberName, targetType ), inner );
 		}
@@ -814,9 +814,9 @@ namespace MsgPack.Serialization
 
 		internal static Exception NewUnpackToIsNotSupported( Type type, Exception inner )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Requires( type != null );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 			return new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported for '{0}' because it does not have accesible Add(T) method.", type ), inner );
 		}
 

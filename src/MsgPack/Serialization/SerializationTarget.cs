@@ -27,9 +27,9 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY
+#if !UNITY && !UNITY2
 using System.Diagnostics.Contracts;
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -117,9 +117,9 @@ namespace MsgPack.Serialization
 
 		private static IEnumerable<SerializingMember> GetTargetMembers( Type type )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( type != null, "type != null" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 #if !NETSTD_11 && !NETSTD_13
 			var members =
 				type.FindMembers(
@@ -405,9 +405,9 @@ namespace MsgPack.Serialization
 				source < candidates.Count;
 				source++, destination++ )
 			{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 				Contract.Assert( candidates[ source ].Contract.Id >= 0, "candidates[ source ].Contract.Id >= 0" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 				if ( candidates[ source ].Contract.Id < destination )
 				{
@@ -458,9 +458,9 @@ namespace MsgPack.Serialization
 					else
 					{
 						asProperty = serializingMember.Member as PropertyInfo;
-#if DEBUG && !UNITY_IPHONE && !UNITY_ANDROID
+#if DEBUG && !UNITY && !UNITY2
 						Contract.Assert( asProperty != null, serializingMember.Member.ToString() );
-#endif
+#endif // DEBUG && !UNITY && !UNITY2
 						isReadOnly = asProperty.GetSetMethod() == null;
 					}
 

@@ -23,13 +23,13 @@
 #endif
 
 using System;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Text;
 
 namespace MsgPack
@@ -68,9 +68,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "value" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			return _utf8NonBom.GetBytes( value );
@@ -94,9 +94,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "value" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			return _utf8NonBomStrict.GetString( value, 0, value.Length );

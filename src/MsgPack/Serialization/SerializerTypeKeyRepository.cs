@@ -24,13 +24,13 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 #if !NETFX_35 && !UNITY
 using System.Security;
 #endif // !NETFX_35 && !UNITY
@@ -84,15 +84,15 @@ namespace MsgPack.Serialization
 			}
 			else
 			{
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 				Contract.Assert( keyType.GetIsGenericType(), "keyType.GetIsGenericType()" );
 				Contract.Assert( !keyType.GetIsGenericTypeDefinition(), "!keyType.GetIsGenericTypeDefinition()" );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 				var type = genericDefinitionMatched as Type;
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 				Contract.Assert( type != null, "type != null" );
 				Contract.Assert( type.GetIsGenericTypeDefinition(), "type.GetIsGenericTypeDefinition()" );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 #if !UNITY
 				var result =
 					ReflectionExtensions.CreateInstancePreservingExceptionType( 
@@ -107,9 +107,9 @@ namespace MsgPack.Serialization
 					? ReflectionExtensions.CreateInstancePreservingExceptionType( resultType, context )
 					: ReflectionExtensions.CreateInstancePreservingExceptionType( resultType, context, keyType );
 #endif // !UNITY
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 				Contract.Assert( result != null, "result != null" );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 				return result;
 			}
 		}

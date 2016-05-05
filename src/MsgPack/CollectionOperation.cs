@@ -24,13 +24,13 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Linq;
 
 namespace MsgPack
@@ -52,9 +52,9 @@ namespace MsgPack
 		public static void CopyTo<TSource, TDestination>( IEnumerable<TSource> source, int sourceCount, int index, TDestination[] array, int arrayIndex, int count, Func<TSource, TDestination> converter )
 		{
 			ValidateCopyToArguments( sourceCount, index, array, arrayIndex, count );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Assert( converter != null, "converter != null" );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			int i = 0;
 			foreach ( var item in source.Skip( index ).Take( count ) )

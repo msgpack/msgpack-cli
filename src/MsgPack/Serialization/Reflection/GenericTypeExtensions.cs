@@ -24,13 +24,13 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Linq;
 #if NETFX_CORE
 using System.Reflection;
@@ -53,16 +53,16 @@ namespace MsgPack.Serialization.Reflection
 		///		or built closed generic interface type;
 		///		otherwise <c>false</c>.
 		/// </returns>
-#if !UNITY
+#if !UNITY && !UNITY2
 		[Pure]
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 		public static bool Implements( this Type source, Type genericType )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Assert( source != null, "source != null" );
 			Contract.Assert( genericType != null, "genericType != null" );
 			Contract.Assert( genericType.GetIsInterface(), "genericType.GetIsInterface()" );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return EnumerateGenericIntefaces( source, genericType, false ).Any();
 		}
@@ -87,14 +87,14 @@ namespace MsgPack.Serialization.Reflection
 		/// </summary>
 		/// <param name="source">Target type.</param>
 		/// <returns>Simple name of type.</returns>
-#if !UNITY
+#if !UNITY && !UNITY2
 		[Pure]
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 		public static string GetName( this Type source )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Assert( source != null, "source != null" );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 			if ( !source.GetIsGenericType() )
 			{
 				return source.Name;
@@ -118,14 +118,14 @@ namespace MsgPack.Serialization.Reflection
 		/// </summary>
 		/// <param name="source">Target type.</param>
 		/// <returns>Full name of type.</returns>
-#if !UNITY
+#if !UNITY && !UNITY2
 		[Pure]
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 		public static string GetFullName( this Type source )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Assert( source != null, "source != null" );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			if ( source.IsArray )
 			{

@@ -24,9 +24,9 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY
+#if !UNITY && !UNITY2
 using System.Diagnostics.Contracts;
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 #if NETFX_CORE
 using System.Reflection;
 #endif
@@ -166,9 +166,9 @@ namespace MsgPack.Serialization
 
 		public bool Register( Type type, object entry, Type nullableType, object nullableValue, SerializerRegistrationOptions options )
 		{
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( entry != null, "entry != null" );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 
 			return this.RegisterCore( type, entry, nullableType, nullableValue, options );
 		}

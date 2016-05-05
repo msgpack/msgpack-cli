@@ -27,13 +27,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 namespace MsgPack
 {
@@ -80,9 +80,9 @@ namespace MsgPack
 
 			internal ValueCollection( MessagePackObjectDictionary dictionary )
 			{
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.Assert( dictionary != null, "dictionary != null" );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 				this._dictionary = dictionary;
 			}
@@ -101,9 +101,9 @@ namespace MsgPack
 					throw new ArgumentNullException( "array" );
 				}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 				CollectionOperation.CopyTo( this, this.Count, 0, array, 0, this.Count );
@@ -174,9 +174,9 @@ namespace MsgPack
 					throw new ArgumentException( "Specified array is too small to complete copy operation.", "array" );
 				}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 				CollectionOperation.CopyTo( this, this.Count, index, array, arrayIndex, count );
 			}

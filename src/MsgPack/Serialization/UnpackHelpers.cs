@@ -32,13 +32,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 #endif //!UNITY || MSGPACK_UNITY_FULL
 using System.Diagnostics;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Reflection;
 using System.Runtime.CompilerServices;
 #if FEATURE_TAP
@@ -93,20 +93,20 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "array" );
 			}
 
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
 			Contract.Assert( array != null );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 
 			if ( !unpacker.IsArrayHeader )
 			{
 				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -163,20 +163,20 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "addition" );
 			}
 
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( unpacker != null );
 			Contract.Assert( collection != null );
 			Contract.Assert( addition != null );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 
 			if ( !unpacker.IsArrayHeader )
 			{
 				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -240,21 +240,21 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "addition" );
 			}
 
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
 			Contract.Assert( collection != null );
 			Contract.Assert( addition != null );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 
 			if ( !unpacker.IsArrayHeader )
 			{
 				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -312,20 +312,20 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "addition" );
 			}
 
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( unpacker != null );
 			Contract.Assert( collection != null );
 			Contract.Assert( addition != null );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 
 			if ( !unpacker.IsArrayHeader )
 			{
 				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -390,21 +390,21 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "addition" );
 			}
 
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
 			Contract.Assert( collection != null );
 			Contract.Assert( addition != null );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 
 			if ( !unpacker.IsArrayHeader )
 			{
 				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -469,21 +469,21 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "dictionary" );
 			}
 
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( unpacker != null );
 			Contract.Assert( keySerializer != null );
 			Contract.Assert( valueSerializer != null );
 			Contract.Assert( dictionary != null );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 
 			if ( !unpacker.IsMapHeader )
 			{
 				SerializationExceptions.ThrowIsNotMapHeader( unpacker );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -553,19 +553,19 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "dictionary" );
 			}
 
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( unpacker != null );
 			Contract.Assert( dictionary != null );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 
 			if ( !unpacker.IsMapHeader )
 			{
 				SerializationExceptions.ThrowIsNotMapHeader( unpacker );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -692,10 +692,10 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "serializer" );
 			}
 
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 
 			return serializer.UnpackFromCore( unpacker );
 		}
@@ -780,9 +780,9 @@ namespace MsgPack.Serialization
 		/// </returns>
 		internal static bool IsIEqualityComparer( Type type )
 		{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 			Contract.Assert( !type.GetIsGenericTypeDefinition(), "!(" + type + ").GetIsGenericTypeDefinition()" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 
 			return type.GetIsGenericType() && type.GetGenericTypeDefinition() == typeof( IEqualityComparer<> );
 		}
@@ -975,9 +975,9 @@ namespace MsgPack.Serialization
 		[Conditional( "TRACING" )]
 		private static void TraceCore( string format, params object[] args )
 		{
-#if !UNITY && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !UNITY && !UNITY2 && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 			Tracer.Tracing.TraceEvent( Tracer.EventType.Trace, Tracer.EventId.Trace, format, args );
-#endif // !UNITY && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !UNITY && !UNITY2 && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		}
 
 		private sealed class UnpackerTraceContext

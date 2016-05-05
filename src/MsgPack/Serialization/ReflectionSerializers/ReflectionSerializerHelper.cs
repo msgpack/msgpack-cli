@@ -26,13 +26,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Reflection;
 
 using MsgPack.Serialization.DefaultSerializers;
@@ -255,9 +255,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				else
 				{
 					var property = member.Member as PropertyInfo;
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 					Contract.Assert( property != null, "member.Member is PropertyInfo" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 					getters[ i ] = target => property.GetGetMethod( true ).InvokePreservingExceptionType( target, null );
 					var setter = property.GetSetMethod( true );
 					if ( setter != null )

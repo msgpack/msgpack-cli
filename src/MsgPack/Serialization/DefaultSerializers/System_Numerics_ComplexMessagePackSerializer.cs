@@ -22,7 +22,7 @@
 #define UNITY
 #endif
 
-#if !UNITY
+#if !UNITY && !UNITY2
 using System;
 using System.Numerics;
 #if FEATURE_TAP
@@ -94,4 +94,4 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	}
 }
-#endif // !UNITY
+#endif // !UNITY && !UNITY2

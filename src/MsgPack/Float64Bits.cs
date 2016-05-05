@@ -23,13 +23,13 @@
 #endif
 
 using System;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Runtime.InteropServices;
 
 namespace MsgPack
@@ -109,10 +109,10 @@ namespace MsgPack
 		/// <param name="offset">Offset to read.</param>
 		public Float64Bits( byte[] bigEndianBytes, int offset )
 		{
-#if !UNITY && DEBUG
+#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( bigEndianBytes != null, "bigEndianBytes != null" );
 			Contract.Assert( bigEndianBytes.Length - offset >= 8, bigEndianBytes.Length + "-" + offset + ">= 4" );
-#endif // !UNITY && DEBUG
+#endif // !UNITY && !UNITY2 && DEBUG
 
 			this = default( Float64Bits );
 

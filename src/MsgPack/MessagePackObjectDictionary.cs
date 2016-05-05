@@ -27,13 +27,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Globalization;
 using System.Linq;
 
@@ -92,9 +92,9 @@ namespace MsgPack
 		{
 			get
 			{
-#if !UNITY
+#if !UNITY && !UNITY2
 				this.AssertInvariant();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 				return this._dictionary == null ? this._keys.Count : this._dictionary.Count;
 			}
 		}
@@ -133,9 +133,9 @@ namespace MsgPack
 					ThrowKeyNotNilException( "key" );
 				}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 				MessagePackObject result;
@@ -155,11 +155,11 @@ namespace MsgPack
 
 				this.VerifyIsNotFrozen();
 
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.EndContractBlock();
 
 				this.AssertInvariant();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 				this.AddCore( key, value, true );
 			}
 		}
@@ -179,7 +179,9 @@ namespace MsgPack
 		{
 			get
 			{
+#if !UNITY && !UNITY2
 				this.AssertInvariant();
+#endif // !UNITY && !UNITY2
 				return new KeySet( this );
 			}
 		}
@@ -198,9 +200,9 @@ namespace MsgPack
 		{
 			get
 			{
-#if !UNITY
+#if !UNITY && !UNITY2
 				this.AssertInvariant();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 				return new KeyCollection( this );
 			}
 		}
@@ -220,9 +222,9 @@ namespace MsgPack
 		{
 			get
 			{
-#if !UNITY
+#if !UNITY && !UNITY2
 				this.AssertInvariant();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 				return new ValueCollection( this );
 			}
 		}
@@ -275,9 +277,9 @@ namespace MsgPack
 					throw new ArgumentNullException( "key" );
 				}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 				var typedKey = ValidateObjectArgument( key, "key" );
@@ -303,9 +305,9 @@ namespace MsgPack
 
 				this.VerifyIsNotFrozen();
 
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 				var typedKey = ValidateObjectArgument( key, "key" );
@@ -359,9 +361,9 @@ namespace MsgPack
 				throw new ArgumentOutOfRangeException( "initialCapacity" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			if ( initialCapacity <= Threashold )
@@ -396,9 +398,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "dictionary" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			if ( dictionary.Count <= Threashold )
@@ -446,7 +448,7 @@ namespace MsgPack
 			}
 		}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 		[Conditional( "DEBUG" )]
 		private void AssertInvariant()
 		{
@@ -466,7 +468,7 @@ namespace MsgPack
 				Contract.Assert( this._values == null, "this._values == null" );
 			}
 		}
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 		private static MessagePackObject ValidateObjectArgument( object obj, string parameterName )
 		{
@@ -604,14 +606,14 @@ namespace MsgPack
 				ThrowKeyNotNilException( "key" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
-#if !UNITY
-				this.AssertInvariant();
-#endif // !UNITY
+#if !UNITY && !UNITY2
+			this.AssertInvariant();
+#endif // !UNITY && !UNITY2
 			return
 				this._dictionary == null
 				? this._keys.Contains( key, MessagePackObjectEqualityComparer.Instance )
@@ -630,9 +632,9 @@ namespace MsgPack
 		/// </remarks>
 		public bool ContainsValue( MessagePackObject value )
 		{
-#if !UNITY
-				this.AssertInvariant();
-#endif // !UNITY
+#if !UNITY && !UNITY2
+			this.AssertInvariant();
+#endif // !UNITY && !UNITY2
 			return
 				this._dictionary == null 
 				? this._values.Contains( value, MessagePackObjectEqualityComparer.Instance ) 
@@ -710,11 +712,11 @@ namespace MsgPack
 				ThrowKeyNotNilException( "key" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
 
 			this.AssertInvariant();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			if ( this._dictionary == null )
 			{
@@ -771,9 +773,9 @@ namespace MsgPack
 
 			this.VerifyIsNotFrozen();
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			this.AddCore( key, value, false );
@@ -781,9 +783,9 @@ namespace MsgPack
 
 		private void AddCore( MessagePackObject key, MessagePackObject value, bool allowOverwrite )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Assert( !key.IsNil, "!key.IsNil" );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			if ( this._dictionary == null )
 			{
@@ -869,9 +871,9 @@ namespace MsgPack
 
 			this.VerifyIsNotFrozen();
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			this.AddCore( item.Key, item.Value, false );
@@ -886,9 +888,9 @@ namespace MsgPack
 
 			this.VerifyIsNotFrozen();
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			var typedKey = ValidateObjectArgument( key, "key" );
@@ -923,9 +925,9 @@ namespace MsgPack
 
 			this.VerifyIsNotFrozen();
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			return this.RemoveCore( key, default( MessagePackObject ), false );
@@ -933,10 +935,10 @@ namespace MsgPack
 
 		private bool RemoveCore( MessagePackObject key, MessagePackObject value, bool checkValue )
 		{
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.Assert( !key.IsNil, "!key.IsNil" );
 			this.AssertInvariant();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			if ( this._dictionary == null )
 			{
@@ -990,9 +992,9 @@ namespace MsgPack
 
 			this.VerifyIsNotFrozen();
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			return this.RemoveCore( item.Key, item.Value, true );
@@ -1007,9 +1009,9 @@ namespace MsgPack
 
 			this.VerifyIsNotFrozen();
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			var typedKey = ValidateObjectArgument( key, "key" );
@@ -1031,9 +1033,9 @@ namespace MsgPack
 		{
 			this.VerifyIsNotFrozen();
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			this.AssertInvariant();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			if ( this._dictionary == null )
 			{

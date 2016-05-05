@@ -23,13 +23,13 @@
 #endif
 
 using System;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.IO;
 using System.Text;
 
@@ -69,9 +69,9 @@ namespace MsgPack
 		public static UnpackingStream UnpackByteStream( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			return UnpackByteStreamCore( source );
@@ -174,9 +174,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "encoding" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			var stream = UnpackByteStreamCore( source );
@@ -202,9 +202,9 @@ namespace MsgPack
 			public SeekableUnpackingStream( Stream underlying, long rawLength )
 				: base( underlying, rawLength )
 			{
-#if !UNITY
+#if !UNITY && !UNITY2
 				Contract.Assert( underlying.CanSeek, "underlying.CanSeek" );
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 				this._initialPosition = underlying.Position;
 			}
 

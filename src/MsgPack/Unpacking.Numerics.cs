@@ -23,13 +23,13 @@
 #endif
 
 using System;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.IO;
 
 namespace MsgPack
@@ -101,11 +101,11 @@ namespace MsgPack
 		public static UnpackingResult<Byte> UnpackByte( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
-			using( var stream = new MemoryStream( source ) )
+			using ( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
 				var value = UnpackByteCore( stream );
@@ -145,9 +145,9 @@ namespace MsgPack
 		public static Byte UnpackByte( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return UnpackByteCore( source );
 		}
@@ -236,11 +236,11 @@ namespace MsgPack
 		public static UnpackingResult<SByte> UnpackSByte( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
-			using( var stream = new MemoryStream( source ) )
+			using ( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
 				var value = UnpackSByteCore( stream );
@@ -283,9 +283,9 @@ namespace MsgPack
 		public static SByte UnpackSByte( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return UnpackSByteCore( source );
 		}
@@ -368,11 +368,11 @@ namespace MsgPack
 		public static UnpackingResult<Int16> UnpackInt16( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
-			using( var stream = new MemoryStream( source ) )
+			using ( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
 				var value = UnpackInt16Core( stream );
@@ -412,9 +412,9 @@ namespace MsgPack
 		public static Int16 UnpackInt16( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return UnpackInt16Core( source );
 		}
@@ -503,11 +503,11 @@ namespace MsgPack
 		public static UnpackingResult<UInt16> UnpackUInt16( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
-			using( var stream = new MemoryStream( source ) )
+			using ( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
 				var value = UnpackUInt16Core( stream );
@@ -550,9 +550,9 @@ namespace MsgPack
 		public static UInt16 UnpackUInt16( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return UnpackUInt16Core( source );
 		}
@@ -635,11 +635,11 @@ namespace MsgPack
 		public static UnpackingResult<Int32> UnpackInt32( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
-			using( var stream = new MemoryStream( source ) )
+			using ( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
 				var value = UnpackInt32Core( stream );
@@ -679,9 +679,9 @@ namespace MsgPack
 		public static Int32 UnpackInt32( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return UnpackInt32Core( source );
 		}
@@ -770,11 +770,11 @@ namespace MsgPack
 		public static UnpackingResult<UInt32> UnpackUInt32( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
-			using( var stream = new MemoryStream( source ) )
+			using ( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
 				var value = UnpackUInt32Core( stream );
@@ -817,9 +817,9 @@ namespace MsgPack
 		public static UInt32 UnpackUInt32( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return UnpackUInt32Core( source );
 		}
@@ -902,11 +902,11 @@ namespace MsgPack
 		public static UnpackingResult<Int64> UnpackInt64( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
-			using( var stream = new MemoryStream( source ) )
+			using ( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
 				var value = UnpackInt64Core( stream );
@@ -946,9 +946,9 @@ namespace MsgPack
 		public static Int64 UnpackInt64( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return UnpackInt64Core( source );
 		}
@@ -1037,11 +1037,11 @@ namespace MsgPack
 		public static UnpackingResult<UInt64> UnpackUInt64( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
-			using( var stream = new MemoryStream( source ) )
+			using ( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
 				var value = UnpackUInt64Core( stream );
@@ -1084,9 +1084,9 @@ namespace MsgPack
 		public static UInt64 UnpackUInt64( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return UnpackUInt64Core( source );
 		}
@@ -1169,11 +1169,11 @@ namespace MsgPack
 		public static UnpackingResult<Single> UnpackSingle( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
-			using( var stream = new MemoryStream( source ) )
+			using ( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
 				var value = UnpackSingleCore( stream );
@@ -1213,9 +1213,9 @@ namespace MsgPack
 		public static Single UnpackSingle( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return UnpackSingleCore( source );
 		}
@@ -1298,11 +1298,11 @@ namespace MsgPack
 		public static UnpackingResult<Double> UnpackDouble( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
-			using( var stream = new MemoryStream( source ) )
+			using ( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
 				var value = UnpackDoubleCore( stream );
@@ -1342,9 +1342,9 @@ namespace MsgPack
 		public static Double UnpackDouble( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			return UnpackDoubleCore( source );
 		}

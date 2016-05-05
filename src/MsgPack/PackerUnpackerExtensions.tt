@@ -35,13 +35,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Linq;
 #if FEATURE_TAP
 using System.Threading;
@@ -367,9 +367,9 @@ foreach ( var isAsync in new [] { false, true } )
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 
 			PackCore( source, items, SerializationContext.Default );
@@ -404,9 +404,9 @@ foreach ( var isAsync in new [] { false, true } )
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 
 			PackCollectionCore( source, items, context );
 			return source;
@@ -631,9 +631,9 @@ private void PublicApi(
 			}
 #>
 
-#if !UNITY
+#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 <#+
 			if ( isAsync )
 			{

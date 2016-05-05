@@ -23,13 +23,13 @@
 #endif
 
 using System;
-#if !UNITY
+#if !UNITY && !UNITY2
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY
+#endif // !UNITY && !UNITY2
 using System.Runtime.Serialization;
 #if FEATURE_TAP
 using System.Threading;
@@ -65,9 +65,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 			else
 			{
-#if DEBUG && !UNITY
+#if DEBUG && !UNITY && !UNITY2
 				Contract.Assert( this._conversion == DateTimeConversionMethod.UnixEpoc );
-#endif // DEBUG && !UNITY
+#endif // DEBUG && !UNITY && !UNITY2
 				packer.Pack( MessagePackConvert.FromDateTimeOffset( objectTree ) );
 			}
 		}
