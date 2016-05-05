@@ -106,8 +106,26 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\MsgPack.NUnitPortable\TimeoutAttribute.cs">
-      <Link>TimeoutAttribute.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\BigEndianBinaryTest.cs">
+      <Link>BigEndianBinaryTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\CollectionAssertEx.cs">
+      <Link>CollectionAssertEx.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\DirectConversionTest.cs">
+      <Link>DirectConversionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\DirectConversionTest.Scalar.cs">
+      <Link>DirectConversionTest.Scalar.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\EqualsTest.cs">
+      <Link>EqualsTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ExceptionTest.cs">
+      <Link>ExceptionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\GenericExceptionTester.cs">
+      <Link>GenericExceptionTester.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_ImageSerializer.cs">
       <Link>gen\MsgPack_ImageSerializer.cs</Link>
@@ -1504,36 +1522,6 @@
     <Compile Include="..\MsgPack.UnitTest\gen\System_DayOfWeekSerializer.cs">
       <Link>gen\System_DayOfWeekSerializer.cs</Link>
     </Compile>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\MsgPack.UnitTest\BigEndianBinaryTest.cs">
-      <Link>BigEndianBinaryTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\CollectionAssertEx.cs">
-      <Link>CollectionAssertEx.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\DirectConversionTest.cs">
-      <Link>DirectConversionTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\DirectConversionTest.Scalar.cs">
-      <Link>DirectConversionTest.Scalar.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\EqualsTest.cs">
-      <Link>EqualsTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\ExceptionTest.cs">
-      <Link>ExceptionTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\GenericExceptionTester.cs">
-      <Link>GenericExceptionTester.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Image.cs">
       <Link>Image.cs</Link>
     </Compile>
@@ -1861,6 +1849,13 @@
     <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Scalar.cs">
       <Link>UnpackingTest.Scalar.cs</Link>
     </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -1868,13 +1863,9 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\LockScreenLogo.scale-200.png" />
-    <Content Include="Assets\SplashScreen.scale-200.png" />
-    <Content Include="Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Assets\StoreLogo.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="..\MsgPack.UnitTest\gen\_ReadMe.txt">
+      <Link>gen\_ReadMe.txt</Link>
+    </Content>
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -1890,6 +1881,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
