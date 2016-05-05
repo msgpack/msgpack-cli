@@ -1,0 +1,116 @@
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Runtime" #>
+<#@ assembly name="System.Threading.Tasks" #>
+<#@ assembly name="EnvDTE" #>
+<#@ assembly name="$(DevEnvDir)PrivateAssemblies\Microsoft.CodeAnalysis.dll" #>
+<#@ assembly name="$(DevEnvDir)PrivateAssemblies\Microsoft.CodeAnalysis.CSharp.dll" #>
+<#@ assembly name="$(DevEnvDir)PrivateAssemblies\Microsoft.CodeAnalysis.Workspaces.dll" #>
+<#@ assembly name="$(DevEnvDir)PrivateAssemblies\Microsoft.CodeAnalysis.Workspaces.Desktop.dll" #>
+<#@ assembly name="$(DevEnvDir)PrivateAssemblies\System.Collections.Immutable.dll" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Threading.Tasks" #>
+<#@ import namespace="Microsoft.CodeAnalysis" #>
+<#@ import namespace="Microsoft.CodeAnalysis.CSharp" #>
+<#@ import namespace="Microsoft.CodeAnalysis.CSharp.Syntax" #>
+<#@ import namespace="Microsoft.CodeAnalysis.MSBuild" #>
+<#@ import namespace="EnvDTE" #>
+<#+
+// This file is borrowed from UniRX (https://github.com/neuecc/UniRx/blob/master/Assets/UnitTests/UnitTests.tt)
+// This file implicitly depends on DirectUnitTestDriverCore.ttinclude.
+private class TestClassExplorer
+{
+	private readonly string _testClassAttributeFullName;
+	private readonly string _testMethodAttributeFullName;
+	private readonly string _fixtureSetupAttributeFullName;
+	private readonly string _fixtureCleanupAttributeFullName;
+	private readonly string _testSetupAttributeFullName;
+	private readonly string _testCleanupAttributeFullName;
+	private readonly string[] _significantMethodAttributeFullNames;
+
+	public TestClassExplorer( string testClassAttributeFullName, string testMethodAttributeFullName, 
+		string fixtureSetupAttributeFullName, string fixtureCleanupAttributeFullName,
+		string testSetupAttributeFullName, string testCleanupAttributeFullName
+	)
+	{
+		this._testClassAttributeFullName = testClassAttributeFullName;
+		this._testMethodAttributeFullName = testMethodAttributeFullName;
+		this._fixtureSetupAttributeFullName = fixtureSetupAttributeFullName;
+		this._fixtureCleanupAttributeFullName = fixtureCleanupAttributeFullName;
+		this._testSetupAttributeFullName = testSetupAttributeFullName;
+		this._testCleanupAttributeFullName = testCleanupAttributeFullName;
+		this._significantMethodAttributeFullNames = 
+			new [] { testMethodAttributeFullName, fixtureSetupAttributeFullName, fixtureCleanupAttributeFullName, testSetupAttributeFullName, testCleanupAttributeFullName };
+	}
+
+	public static TestClassExplorer ForNUnit()
+	{
+		return 
+			new TestClassExplorer(
+				"NUnit.Framework.TestFixtureAttribute",
+				"NUnit.Framework.TestAttribute",
+				"NUnit.Framework.TestFixtureSetUpAttribute",
+				"NUnit.Framework.TestFixtureTearDownAttribute",
+				"NUnit.Framework.SetUpAttribute",
+				"NUnit.Framework.TearDownAttribute"
+			);
+	}
+
+	public IEnumerable<TestClass> FindTestClasses( object host, string projectName )
+	{
+		var serviceProvider = host as IServiceProvider;
+		var dte = serviceProvider.GetService( typeof( DTE ) ) as DTE;
+		var targetProj = dte.Solution.Projects.Cast<EnvDTE.Project>().First( x => x.Name == projectName );
+		return GetClassesAsync( targetProj.FullName ).Result.OrderBy( x => x.TypeFullName );
+	}
+
+	private async Task<IEnumerable<TestClass>> GetClassesAsync( string csProjectPath )
+	{
+		var workspace = MSBuildWorkspace.Create();
+		var project = await workspace.OpenProjectAsync( csProjectPath );
+
+		var compilation = await project.GetCompilationAsync();
+
+		var testClasses = new List<TestClass>();
+
+		foreach ( var syntaxTree in compilation.SyntaxTrees )
+		{
+			var semModel = compilation.GetSemanticModel( syntaxTree );
+			
+			testClasses.AddRange(
+				syntaxTree.GetRoot()
+				.DescendantNodes()
+				.OfType<ClassDeclarationSyntax>()
+				.Select( x => semModel.GetDeclaredSymbol( x ) )
+				.Where( x => x.GetAttributes().Any( a => a.ToString() == this._testClassAttributeFullName ) )
+				.SelectMany( x => x.GetMembers(), ( @class, member ) => new { @class, member } )
+				.Where( x => x.member.GetAttributes().Any( a => this._significantMethodAttributeFullNames.Contains( a.ToString() ) ) )
+				.GroupBy( x => x.@class.Name )
+				.Select( g => 
+					new TestClass( 
+						g.Key,
+						g.Where( x => x.member.GetAttributes().Any( a => a.ToString() == this._testMethodAttributeFullName ) ).Select( x => new TestMethod( x.member.Name ) ).OrderBy( x => x.Name )
+					)
+					{
+						FixtureSetup = GetMethodName( g.Select( x => x.member ), this._fixtureSetupAttributeFullName ),
+						FixtureCleanup = GetMethodName( g.Select( x => x.member ), this._fixtureCleanupAttributeFullName ),
+						TestSetup = GetMethodName( g.Select( x => x.member ), this._testSetupAttributeFullName ),
+						TestCleanup = GetMethodName( g.Select( x => x.member ), this._testCleanupAttributeFullName )
+					}
+				)
+			);
+		}
+
+		return testClasses;
+	} // GetClassNamesAsync
+
+	private static string GetMethodName( IEnumerable<ISymbol> m, string attributeFullName )
+	{
+		var found = m.FirstOrDefault( x => x.GetAttributes().Any( a => a.ToString() == attributeFullName ) );
+		return found == null ? null : found.Name;
+	}
+} // TestClassExplorer
+
+#>

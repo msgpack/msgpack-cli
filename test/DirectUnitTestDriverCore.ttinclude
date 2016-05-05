@@ -1,0 +1,189 @@
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Threading.Tasks" #>
+<#+
+private const string TestDriverTestListProperty = "TestClasses";
+
+/// <summary>
+/// 	Generate direct test invocation driver code from test class informations.
+/// </summary>
+/// <param name="testClasses">A collection of test classes.</param>
+private void GenerateTestDriver( IEnumerable<TestClass> testClasses )
+{
+#>
+	public partial class TestClass
+	{
+		private static readonly Action Nop = () => {};
+		private static readonly Action<TestClassInstance, object> NoInitialization = ( c, i ) => {};
+		public string Name { get; private set; }
+		public Action FixtureSetup { get; set; }
+		public Action FixtureCleanup { get; set; }
+		public int MethodCount { get; private set; }
+		private readonly Func<object> _instanceFactory;
+		private readonly Action<TestClassInstance, object> _testClassInstanceInitializer;
+
+		public TestClass( string name, Func<object> instanceFactory, int methodCount, Action<TestClassInstance, object> testClassInstanceInitializer )
+		{
+			if ( String.IsNullOrEmpty( name ) )
+			{
+				throw new ArgumentException( "name cannot be null nor empty.", "name" );
+			}
+
+			if ( instanceFactory == null )
+			{
+				throw new ArgumentNullException( "instanceFactory" );
+			}
+
+			this.Name = name;
+			this._instanceFactory = instanceFactory;
+			this._testClassInstanceInitializer = testClassInstanceInitializer ?? NoInitialization;
+			this.MethodCount = methodCount;
+			this.FixtureSetup = Nop;
+			this.FixtureCleanup = Nop;
+		}
+
+		public TestClassInstance NewTest()
+		{
+			var instance = this._instanceFactory();
+			var result = new TestClassInstance( this.MethodCount );
+			this._testClassInstanceInitializer( result, instance );
+			return result;
+		}
+	}
+
+	public partial class TestClassInstance
+	{
+		private static readonly Action Nop = () => {};
+		public Action TestSetup { get; set; }
+		public Action TestCleanup { get; set; }
+		public IList<TestMethod> TestMethods { get; private set; }
+
+		public TestClassInstance( int methodCount )
+		{
+			this.TestMethods = new List<TestMethod>( methodCount );
+			this.TestSetup = Nop;
+			this.TestCleanup = Nop;
+		}
+	}
+
+	public partial class TestMethod
+	{
+		public string Name { get; private set; }
+		public Action Method { get; private set; }
+
+		public TestMethod( string name, Action method )
+		{
+			this.Name = name;
+			this.Method = method;
+		}
+	}
+
+	public partial class TestDriver
+	{
+		protected IList<TestClass> <#= TestDriverTestListProperty #> { get; private set; }
+
+		protected TestDriver()
+		{
+			this.<#= TestDriverTestListProperty #> = NewTestClasses();
+			InitializeTestClasses( this.<#= TestDriverTestListProperty #> );
+		}
+	}
+
+	partial class TestDriver
+	{
+		private static void InitializeTestClasses( IList<TestClass> testClasses )
+		{
+<#+
+	int testClassCount = 0;
+
+	foreach ( var testClass in testClasses ?? Enumerable.Empty<TestClass>() )
+	{
+		testClassCount++;
+		var friendlyName = testClass.TypeFullName;
+		var lastDot = friendlyName.LastIndexOf( "." );
+		if ( lastDot >= 0 && friendlyName.Length > lastDot + 2 )
+		{
+			friendlyName = friendlyName.Substring( lastDot + 1 );
+		}
+#>
+			var testClass = 
+				new TestClass( 
+					"<#= friendlyName #>", 
+					() => new <#= testClass.TypeFullName #>(), 
+					<#= testClass.TestMethods.Count #>,
+					( testClassInstance, testFixtureInstance ) =>
+					{
+						var instance = ( ( <#= testClass.TypeFullName #> )testFixtureInstance );
+<#+
+		GenerateActionAssignmentIfNotEmpty( testClass.TestSetup, "testClassInstance.TestSetup", "instance.{0}" );
+		GenerateActionAssignmentIfNotEmpty( testClass.TestCleanup, "testClassInstance.TestCleanup", "instance.{0}" );
+		foreach ( var method in testClass.TestMethods )
+		{
+#>
+						testClassInstance.TestMethods.Add( new TestMethod( "<#= method.Name #>", new Action( instance.<#= method.Name #> ) ) );
+<#+
+		}
+#>
+					}
+				 );
+<#+
+		GenerateActionAssignmentIfNotEmpty( testClass.FixtureSetup, "testClass.FixtureSetup", testClass.TypeFullName + ".{0}" );
+		GenerateActionAssignmentIfNotEmpty( testClass.FixtureCleanup, "testClass.FixtureCleanup", testClass.TypeFullName + ".{0}" );
+#>
+				testClasses.Add( testClass );
+
+<#+
+	} // foreach ( testClasses )
+
+#>
+		} // void InitializeTestClasses
+
+		private static IList<TestClass> NewTestClasses()
+		{
+			return new List<TestClass>( <#= testClassCount #> );
+		}
+
+	} // partial class TestDriver
+<#+
+}
+
+private void GenerateActionAssignmentIfNotEmpty( string value, string target, string expressionTemplate )
+{
+	if ( !String.IsNullOrEmpty( value ) )
+	{
+#>
+<#= target #> = new Action( <#= String.Format( CultureInfo.InvariantCulture, expressionTemplate, value ) #> );
+<#+
+	}
+}
+
+private class TestClass
+{
+	public string TypeFullName { get; private set; }
+	public string FixtureSetup { get; set; }
+	public string FixtureCleanup { get; set; }
+	public string TestSetup { get; set; }
+	public string TestCleanup { get; set; }
+	public IList<TestMethod> TestMethods { get; private set; }
+
+	public TestClass( string typeFullName, IEnumerable<TestMethod> methods )
+	{
+		this.TypeFullName = typeFullName;
+		this.TestMethods = methods == null ? new List<TestMethod>() : methods.ToList();
+	}
+}
+
+private struct TestMethod
+{
+	public string Name { get; private set; }
+	// TODO: TestCase, TestData etc.
+
+	public TestMethod( string name )
+	{
+		this.Name = name;
+	}
+}
+#>
