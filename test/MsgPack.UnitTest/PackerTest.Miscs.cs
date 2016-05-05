@@ -34,7 +34,7 @@ using ExplicitAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.
 namespace MsgPack
 {
 	[TestFixture]
-	public class PackerTest
+	partial class PackerTest
 	{
 #if !NETFX_CORE && !SILVERLIGHT && !XAMIOS && !UNITY_IPHONE
 		[Test]

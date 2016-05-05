@@ -33,7 +33,7 @@ using Is = NUnit.Framework.Is;
 #endif
 using System.IO;
 
-namespace MsgPack.Serialization
+namespace MsgPack
 {
 	[TestFixture]
 	public partial class PackerTest
