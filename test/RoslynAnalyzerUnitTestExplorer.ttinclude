@@ -73,21 +73,21 @@ private class TestClassExplorer
 
 		var compilation = await project.GetCompilationAsync();
 
-		var testClasses = new List<TestClass>();
+		return 
+			compilation.SyntaxTrees
+				.SelectMany( st => { 
+					var semModel = compilation.GetSemanticModel( st );
 
-		foreach ( var syntaxTree in compilation.SyntaxTrees )
-		{
-			var semModel = compilation.GetSemanticModel( syntaxTree );
-			
-			testClasses.AddRange(
-				syntaxTree.GetRoot()
-				.DescendantNodes()
-				.OfType<ClassDeclarationSyntax>()
-				.Select( x => semModel.GetDeclaredSymbol( x ) )
-				.Where( x => x.GetAttributes().Any( a => a.ToString() == this._testClassAttributeFullName ) )
-				.SelectMany( x => x.GetMembers(), ( @class, member ) => new { @class, member } )
+					return
+						st.GetRoot()
+						.DescendantNodes()
+						.OfType<ClassDeclarationSyntax>()
+						.Select( x => semModel.GetDeclaredSymbol( x ) );
+				} 
+				).SelectMany( x => x.GetMembers(), ( @class, member ) => new { @class, member } )
 				.Where( x => x.member.GetAttributes().Any( a => this._significantMethodAttributeFullNames.Contains( a.ToString() ) ) )
 				.GroupBy( x => x.@class.Name )
+				.Where( g => g.SelectMany( x => x.@class.GetAttributes() ).Any( a => a.ToString() == this._testClassAttributeFullName ) )
 				.Select( g => 
 					new TestClass( 
 						g.Key,
@@ -99,11 +99,8 @@ private class TestClassExplorer
 						TestSetup = GetMethodName( g.Select( x => x.member ), this._testSetupAttributeFullName ),
 						TestCleanup = GetMethodName( g.Select( x => x.member ), this._testCleanupAttributeFullName )
 					}
-				)
-			);
-		}
-
-		return testClasses;
+				).OrderBy( x => x.TypeFullName )
+				.ToArray();
 	} // GetClassNamesAsync
 
 	private static string GetMethodName( IEnumerable<ISymbol> m, string attributeFullName )
