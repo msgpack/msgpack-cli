@@ -28,11 +28,13 @@ private class TestClassExplorer
 	private readonly string _fixtureCleanupAttributeFullName;
 	private readonly string _testSetupAttributeFullName;
 	private readonly string _testCleanupAttributeFullName;
+	private readonly string _testSkippingAttributeFullName;
 	private readonly string[] _significantMethodAttributeFullNames;
 
 	public TestClassExplorer( string testClassAttributeFullName, string testMethodAttributeFullName, 
 		string fixtureSetupAttributeFullName, string fixtureCleanupAttributeFullName,
-		string testSetupAttributeFullName, string testCleanupAttributeFullName
+		string testSetupAttributeFullName, string testCleanupAttributeFullName,
+		string testSkippingAttributeFullName
 	)
 	{
 		this._testClassAttributeFullName = testClassAttributeFullName;
@@ -41,6 +43,7 @@ private class TestClassExplorer
 		this._fixtureCleanupAttributeFullName = fixtureCleanupAttributeFullName;
 		this._testSetupAttributeFullName = testSetupAttributeFullName;
 		this._testCleanupAttributeFullName = testCleanupAttributeFullName;
+		this._testSkippingAttributeFullName = testSkippingAttributeFullName;
 		this._significantMethodAttributeFullNames = 
 			new [] { testMethodAttributeFullName, fixtureSetupAttributeFullName, fixtureCleanupAttributeFullName, testSetupAttributeFullName, testCleanupAttributeFullName };
 	}
@@ -54,7 +57,8 @@ private class TestClassExplorer
 				"NUnit.Framework.TestFixtureSetUpAttribute",
 				"NUnit.Framework.TestFixtureTearDownAttribute",
 				"NUnit.Framework.SetUpAttribute",
-				"NUnit.Framework.TearDownAttribute"
+				"NUnit.Framework.TearDownAttribute",
+				"NUnit.Framework.IgnoreAttribute"
 			);
 	}
 
@@ -85,14 +89,18 @@ private class TestClassExplorer
 						.Select( x => semModel.GetDeclaredSymbol( x ) );
 				} 
 				).SelectMany( x => x.GetMembers(), ( @class, member ) => new { @class, member } )
-				.Where( x => x.member.GetAttributes().Any( a => this._significantMethodAttributeFullNames.Contains( a.ToString() ) ) )
+				.Where( x => x.member.GetAttributes().Any( a => this._significantMethodAttributeFullNames.Contains( GetAttributeName( a ) ) ) )
 				.Distinct()
 				.GroupBy( x => x.@class.Name )
-				.Where( g => g.SelectMany( x => x.@class.GetAttributes() ).Any( a => a.ToString() == this._testClassAttributeFullName ) )
+				.Where( g => g.SelectMany( x => x.@class.GetAttributes() ).Any( a => GetAttributeName( a ) == this._testClassAttributeFullName ) )
 				.Select( g => 
 					new TestClass( 
 						g.Key,
-						g.Where( x => x.member.GetAttributes().Any( a => a.ToString() == this._testMethodAttributeFullName ) ).Select( x => new TestMethod( x.member.Name ) ).OrderBy( x => x.Name )
+						g.Where( x =>
+							x.member.GetAttributes().Any( a => GetAttributeName( a ) == this._testMethodAttributeFullName ) 
+							&& x.member.GetAttributes().All( a => GetAttributeName( a ) != this._testSkippingAttributeFullName )
+						).Select( x => new TestMethod( x.member.Name ) )
+						.OrderBy( x => x.Name )
 					)
 					{
 						FixtureSetup = GetMethodName( g.Select( x => x.member ), this._fixtureSetupAttributeFullName ),
@@ -104,9 +112,21 @@ private class TestClassExplorer
 				.ToArray();
 	} // GetClassNamesAsync
 
+	// From Roslyn source
+	private static readonly SymbolDisplayFormat QualifiedNameOnlyFormat =
+		new SymbolDisplayFormat(
+			globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.Omitted,
+			typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces
+		);
+
+	private static string GetAttributeName( AttributeData attribute )
+	{
+		return attribute.AttributeClass.ToDisplayString( QualifiedNameOnlyFormat );
+	}
+
 	private static string GetMethodName( IEnumerable<ISymbol> m, string attributeFullName )
 	{
-		var found = m.FirstOrDefault( x => x.GetAttributes().Any( a => a.ToString() == attributeFullName ) );
+		var found = m.FirstOrDefault( x => x.GetAttributes().Any( a => GetAttributeName( a ) == attributeFullName ) );
 		return found == null ? null : found.Name;
 	}
 } // TestClassExplorer

@@ -283,7 +283,7 @@ namespace MsgPack
 					new TestClass( 
 						"MessagePackObjectDictionaryTest", 
 						MessagePackObjectDictionaryTestInitializer.CreateInstance, 
-						60,
+						59,
 						MessagePackObjectDictionaryTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -448,7 +448,7 @@ namespace MsgPack
 					new TestClass( 
 						"PackUnpackTest", 
 						PackUnpackTestInitializer.CreateInstance, 
-						38,
+						37,
 						PackUnpackTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -2733,7 +2733,6 @@ namespace MsgPack
 			testClassInstance.TestMethods.Add( new TestMethod( "ICollectionCopyTo_ex3", new Action( instance.ICollectionCopyTo_ex3 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "ICollectionCopyTo_ex4", new Action( instance.ICollectionCopyTo_ex4 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "ICollectionCopyToDictionaryEntryArray", new Action( instance.ICollectionCopyToDictionaryEntryArray ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "ICollectionCopyToInvalidArray", new Action( instance.ICollectionCopyToInvalidArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "ICollectionCopyToKeyValuePairArray", new Action( instance.ICollectionCopyToKeyValuePairArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "ICollectionCopyToObjectArray", new Action( instance.ICollectionCopyToObjectArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "ICollectionOfKeyValuePairContains", new Action( instance.ICollectionOfKeyValuePairContains ) ) );
@@ -5158,7 +5157,6 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestSByte_Splitted", new Action( instance.TestSByte_Splitted ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestSingle", new Action( instance.TestSingle ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestSingle_Splitted", new Action( instance.TestSingle_Splitted ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestStringMedium", new Action( instance.TestStringMedium ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStringShort", new Action( instance.TestStringShort ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestUInt16", new Action( instance.TestUInt16 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestUInt16_Splitted", new Action( instance.TestUInt16_Splitted ) ) );
