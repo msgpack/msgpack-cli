@@ -464,7 +464,7 @@ namespace MsgPack.Serialization
 			Assert.That( registered, Is.False );
 		}
 
-#if !UNITY
+#if !UNITY && !UNITY2
 		[Test]
 		public void TestIssue116()
 		{
