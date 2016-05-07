@@ -170,6 +170,13 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 	}
 
 	var expectedValue = String.Format( CultureInfo.InvariantCulture, testSituation.Item4, testSituation.Item3, testCase.Item2 );
+
+	if ( adjustedValueLength > 10000 )
+	{
+#>
+#if !AOT // Too heavy for mobiles
+<#+
+	}
 #>
 
 		[Test]
@@ -224,5 +231,11 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 #>
 		}
 <#+
+	if ( adjustedValueLength > 10000 )
+	{
+#>
+#endif // !AOT
+<#+
+	}
 }
 #>

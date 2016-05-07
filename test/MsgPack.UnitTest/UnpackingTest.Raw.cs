@@ -1010,6 +1010,7 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 256 ) );
 			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 256 ) ) );
 		}
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr16_65535_AsString_UnpackBinary_JustLength_Success_Stream()
@@ -1036,6 +1037,8 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
 			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 65535 ) ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr16_65535_AsString_UnpackBinary_TooShort_Fail_Stream()
@@ -1058,6 +1061,8 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 65534 ) ).ToArray();
 				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackBinary( buffer ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr16_65535_AsString_UnpackBinary_HasExtra_NoProblem_Stream()
@@ -1084,6 +1089,7 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
 			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 65535 ) ) );
 		}
+#endif // !AOT
 
 		[Test]
 		public void TestUnpackStr32_0_AsString_UnpackBinary_JustLength_Success_Stream()
@@ -1506,6 +1512,7 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 256 ) );
 			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 256 ) ) );
 		}
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr32_65535_AsString_UnpackBinary_JustLength_Success_Stream()
@@ -1532,6 +1539,8 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
 			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 65535 ) ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr32_65535_AsString_UnpackBinary_TooShort_Fail_Stream()
@@ -1554,6 +1563,8 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 65534 ) ).ToArray();
 				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackBinary( buffer ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr32_65535_AsString_UnpackBinary_HasExtra_NoProblem_Stream()
@@ -1580,6 +1591,8 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
 			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 65535 ) ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr32_65536_AsString_UnpackBinary_JustLength_Success_Stream()
@@ -1606,6 +1619,8 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65536 ) );
 			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 65536 ) ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr32_65536_AsString_UnpackBinary_TooShort_Fail_Stream()
@@ -1628,6 +1643,8 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 65535 ) ).ToArray();
 				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackBinary( buffer ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr32_65536_AsString_UnpackBinary_HasExtra_NoProblem_Stream()
@@ -1654,6 +1671,7 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65536 ) );
 			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 65536 ) ) );
 		}
+#endif // !AOT
 
 		[Test]
 		public void TestUnpackBin8_0_AsString_UnpackString_JustLength_Success_Stream()
@@ -2424,6 +2442,7 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 256 ) );
 			Assert.That( result.Value, Is.EqualTo( new String( 'A', 256 ) ) );
 		}
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackBin16_65535_AsString_UnpackString_JustLength_Success_Stream()
@@ -2450,6 +2469,8 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
 			Assert.That( result.Value, Is.EqualTo( new String( 'A', 65535 ) ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackBin16_65535_AsString_UnpackString_TooShort_Fail_Stream()
@@ -2472,6 +2493,8 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 65534 ) ).ToArray();
 				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackString( buffer ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackBin16_65535_AsString_UnpackString_HasExtra_NoProblem_Stream()
@@ -2498,6 +2521,7 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
 			Assert.That( result.Value, Is.EqualTo( new String( 'A', 65535 ) ) );
 		}
+#endif // !AOT
 
 		[Test]
 		public void TestUnpackBin32_0_AsString_UnpackString_JustLength_Success_Stream()
@@ -2920,6 +2944,7 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 256 ) );
 			Assert.That( result.Value, Is.EqualTo( new String( 'A', 256 ) ) );
 		}
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackBin32_65535_AsString_UnpackString_JustLength_Success_Stream()
@@ -2946,6 +2971,8 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
 			Assert.That( result.Value, Is.EqualTo( new String( 'A', 65535 ) ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackBin32_65535_AsString_UnpackString_TooShort_Fail_Stream()
@@ -2968,6 +2995,8 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 65534 ) ).ToArray();
 				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackString( buffer ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackBin32_65535_AsString_UnpackString_HasExtra_NoProblem_Stream()
@@ -2994,6 +3023,8 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
 			Assert.That( result.Value, Is.EqualTo( new String( 'A', 65535 ) ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackBin32_65536_AsString_UnpackString_JustLength_Success_Stream()
@@ -3020,6 +3051,8 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65536 ) );
 			Assert.That( result.Value, Is.EqualTo( new String( 'A', 65536 ) ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackBin32_65536_AsString_UnpackString_TooShort_Fail_Stream()
@@ -3042,6 +3075,8 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 65535 ) ).ToArray();
 				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackString( buffer ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackBin32_65536_AsString_UnpackString_HasExtra_NoProblem_Stream()
@@ -3068,6 +3103,7 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65536 ) );
 			Assert.That( result.Value, Is.EqualTo( new String( 'A', 65536 ) ) );
 		}
+#endif // !AOT
 
 		[Test]
 		public void TestUnpackFixStr_0_AsBinary_UnpackBinary_JustLength_Success_Stream()
@@ -4038,6 +4074,7 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 256 ) );
 			Assert.That( result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 		}
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr16_65535_AsBinary_UnpackBinary_JustLength_Success_Stream()
@@ -4064,6 +4101,8 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
 			Assert.That( result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr16_65535_AsBinary_UnpackBinary_TooShort_Fail_Stream()
@@ -4086,6 +4125,8 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray();
 				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackBinary( buffer ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr16_65535_AsBinary_UnpackBinary_HasExtra_NoProblem_Stream()
@@ -4112,6 +4153,7 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
 			Assert.That( result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 		}
+#endif // !AOT
 
 		[Test]
 		public void TestUnpackStr32_0_AsBinary_UnpackBinary_JustLength_Success_Stream()
@@ -4534,6 +4576,7 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 256 ) );
 			Assert.That( result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 		}
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr32_65535_AsBinary_UnpackBinary_JustLength_Success_Stream()
@@ -4560,6 +4603,8 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
 			Assert.That( result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr32_65535_AsBinary_UnpackBinary_TooShort_Fail_Stream()
@@ -4582,6 +4627,8 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray();
 				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackBinary( buffer ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr32_65535_AsBinary_UnpackBinary_HasExtra_NoProblem_Stream()
@@ -4608,6 +4655,8 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
 			Assert.That( result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr32_65536_AsBinary_UnpackBinary_JustLength_Success_Stream()
@@ -4634,6 +4683,8 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65536 ) );
 			Assert.That( result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 65536 ).ToArray() ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr32_65536_AsBinary_UnpackBinary_TooShort_Fail_Stream()
@@ -4656,6 +4707,8 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray();
 				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackBinary( buffer ) );
 		}
+#endif // !AOT
+#if !AOT // Too heavy for mobiles
 
 		[Test]
 		public void TestUnpackStr32_65536_AsBinary_UnpackBinary_HasExtra_NoProblem_Stream()
@@ -4682,5 +4735,6 @@ namespace MsgPack
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65536 ) );
 			Assert.That( result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 65536 ).ToArray() ) );
 		}
+#endif // !AOT
 	}
 }

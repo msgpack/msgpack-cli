@@ -287,8 +287,10 @@ namespace MsgPack
 					2, // minimum multiple
 					0xf, // max fix array size
 					0x10, // min array16 size
+#if !AOT // Too heavy for mobile envs.
 					0xffff, // max array16 size
 					0x10000, // min array32 size
+#endif // !AOT
 				}
 			)
 			{
@@ -318,9 +320,11 @@ namespace MsgPack
 						2, // minimum multiple
 						0xf, // max fix array size
 						0x10, // min array16 size
+#if !AOT // Too heavy for mobile envs.
 						0xffff, // max array16 size
 						0x10000, // min array32 size
-					}
+#endif // !AOT
+                   }
 			)
 			{
 				using ( var output = new MemoryStream() )
@@ -499,8 +503,10 @@ namespace MsgPack
 					2, // minimum multiple
 					0xf, // max fix map size
 					0x10, // min map16 size
+#if !AOT // Too heavy for mobile envs.
 					0xffff, // max map16 size
 					0x10000, // min map32 size
+#endif // !AOT
 				}
 			)
 			{
@@ -530,8 +536,10 @@ namespace MsgPack
 						2, // minimum multiple
 						0xf, // max fix map size
 						0x10, // min map16 size
+#if !AOT // Too heavy for mobile envs.
 						0xffff, // max map16 size
 						0x10000, // min map32 size
+#endif // !AOT
 					}
 			)
 			{
