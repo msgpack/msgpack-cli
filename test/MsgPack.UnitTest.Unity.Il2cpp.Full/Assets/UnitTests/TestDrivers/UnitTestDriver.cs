@@ -22,8 +22,9 @@
 
 using System;
 using System.Collections;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.Remoting.Messaging;
 
 using NUnit.Framework.Internal;
@@ -40,6 +41,7 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace MsgPack
 {
+#warning TODO: documentation comments
 	/// <summary>
 	///		Implements unit test driver for Unity IL2CPP.
 	/// </summary>
@@ -92,6 +94,19 @@ namespace MsgPack
 		// TODO: View manipulation should be only in Presenter.
 		public void Run( Button buttonPrefab, GameObject buttonVertical, Result resultPrefab, GameObject resultVertical )
 		{
+			// For all run.
+			{
+				var allButton = GameObject.Instantiate( buttonPrefab );
+				allButton.GetComponentInChildren<Text>().text = "All(" + this.TestClasses.Sum( c => c.MethodCount ).ToString( "#,0", CultureInfo.CurrentCulture ) + ")";
+				allButton.OnClickAsObservable().Subscribe( _ =>
+				{
+					Clear( resultVertical );
+					MainThreadDispatcher.StartCoroutine( RunAllTestCoroutine( this.TestClasses, resultPrefab, resultVertical ) );
+				}
+				);
+				allButton.transform.SetParent( buttonVertical.transform, true );
+			}
+
 			foreach ( var item in this.TestClasses )
 			{
 				var testClass = item;
@@ -124,12 +139,41 @@ namespace MsgPack
 			r.Color.Value = UnityEngine.Color.gray;
 			return r;
 		}
-		
+
+		private static IEnumerator RunAllTestCoroutine( IEnumerable<TestClass> testClasses, Result resultPrefab, GameObject resultVertical )
+		{
+			var sumaryReporter = new TestSummaryReporter( "All tests", true, resultPrefab, resultVertical );
+			foreach ( var testClass in testClasses )
+			{
+				sumaryReporter.SetCurrentTestClassName( testClass.Name );
+				var enumerator = RuntTestCoroutineCore( testClass, sumaryReporter, resultPrefab, resultVertical );
+				try
+				{
+					while ( enumerator.MoveNext() )
+					{
+						yield return enumerator.Current;
+					}
+				}
+				finally
+				{
+					var asDisposable = enumerator as IDisposable;
+					if ( asDisposable != null )
+					{
+						asDisposable.Dispose();
+					}
+				}
+
+				yield return null;
+			}
+		}
+
 		private static IEnumerator RunTestCoroutine( TestClass testClass, Result resultPrefab, GameObject resultVertical )
 		{
-			// Summary reporter.
-			var summaryReporter = new TestSummaryReporter( testClass.Name, resultPrefab, resultVertical );
+			return RuntTestCoroutineCore( testClass, new TestSummaryReporter( testClass.Name, false, resultPrefab, resultVertical ), resultPrefab, resultVertical );
+		}
 
+		private static IEnumerator RuntTestCoroutineCore( TestClass testClass, TestSummaryReporter summaryReporter, Result resultPrefab, GameObject resultVertical )
+		{ 
 			bool isCrashed = false;
 
 			try
@@ -220,7 +264,7 @@ namespace MsgPack
 					else
 					{
 						bool isFailure = IsTestFailure( ex );
-						var messageHeader = method.Name + ( isFailure ? " NG" : "Error" ) + Environment.NewLine;
+						var messageHeader = summaryReporter.FormatMethodName( method.Name ) + ( isFailure ? " NG" : "Error" ) + Environment.NewLine;
 						UnityEngine.Debug.LogError( messageHeader + ex );
 						var r = CreateResult( fullMethodName, resultPrefab, resultVertical );
 						var baseException = ex.GetBaseException();

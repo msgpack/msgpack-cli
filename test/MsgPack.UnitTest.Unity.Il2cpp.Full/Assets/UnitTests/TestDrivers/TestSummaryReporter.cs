@@ -32,21 +32,40 @@ namespace MsgPack
 	/// </summary>
 	internal class TestSummaryReporter
 	{
-		private readonly string _testClassName;
+		private string _currentTestClassName;
+		private readonly bool _shouldUseQualifiedMethodName;
 		private readonly Result _globalResult;
 		private int _succeeded;
 		private int _skipped;
 		private int _failued;
 		private int _errors;
 
-		public TestSummaryReporter( string testClassName, Result resultPrefab, GameObject resultVertical )
+		public TestSummaryReporter( string testClassName, bool shouldUseQualifiedMethodName, Result resultPrefab, GameObject resultVertical )
 		{
-			this._testClassName = testClassName;
+			this._currentTestClassName = testClassName;
+			this._shouldUseQualifiedMethodName = shouldUseQualifiedMethodName;
 			this._globalResult = GameObject.Instantiate( resultPrefab );
 			this._globalResult.ForceInitialize();
 			this._globalResult.gameObject.transform.SetParent( resultVertical.transform, true );
 			this._globalResult.Message.Value = testClassName;
 			this._globalResult.Color.Value = UnityEngine.Color.gray;
+		}
+
+		public void SetCurrentTestClassName( string testClassName )
+		{
+			this._currentTestClassName = testClassName;
+		}
+
+		public string FormatMethodName( string methodName )
+		{
+			if ( this._shouldUseQualifiedMethodName )
+			{
+				return this._currentTestClassName + "." + methodName;
+			}
+			else
+			{
+				return methodName;
+			}
 		}
 
 		public void RecordSuccess()
@@ -75,7 +94,7 @@ namespace MsgPack
 
 		public void HandleFatalException( string stage, Exception exception, Result resultPrefab, GameObject resultVertical )
 		{
-			var message = this._testClassName + "." + stage + " FATAL " + Environment.NewLine + exception;
+			var message = this._currentTestClassName + "." + stage + " FATAL " + Environment.NewLine + exception;
 			UnityEngine.Debug.LogError( message );
 			this._globalResult.Message.Value = message;
 			this._globalResult.Color.Value = UnityEngine.Color.red;
@@ -88,7 +107,7 @@ namespace MsgPack
 				String.Format(
 					CultureInfo.CurrentCulture,
 					"{0}{1}Success:{2:#,0} Skipped:{3:#,0}, Failure:{4:#,0} Error:{5:#,0}",
-					this._testClassName,
+					this._currentTestClassName,
 					Environment.NewLine,
 					this._succeeded,
 					this._skipped,
