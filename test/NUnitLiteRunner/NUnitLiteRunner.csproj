@@ -42,13 +42,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\build\msgpack-cli-latest\test\MsgPack.UnitTest.Unity3D\MsgPack.UnitTest.Unity3D.csproj">
-      <Project>{804fbeb9-c62f-4788-8eb5-47c17b45a096}</Project>
-      <Name>MsgPack.UnitTest.Unity3D</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\MsgPack.Unity3D.Full\MsgPack.Unity3D.Full.csproj">
       <Project>{b752ba0a-72a8-4ee8-af44-d4f5a55a6121}</Project>
       <Name>MsgPack.Unity3D.Full</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop\MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop.csproj">
+      <Project>{46c5b3d9-45e8-46b6-89f7-837d52c6187a}</Project>
+      <Name>MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\NUnitLite\src\framework\nunitlite-3.5.csproj">
       <Project>{43b24dc5-16d6-45ef-93f1-b021b785a892}</Project>
@@ -56,13 +56,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
