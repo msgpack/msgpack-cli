@@ -102,10 +102,19 @@ namespace MsgPack.Serialization
 #else
 				var resultType = type.IsGenericTypeDefinition ? type.MakeGenericType( keyType.GetGenericArguments() ) : type;
 				var constructor2 = resultType.GetConstructor( NonGenericSerializerConstructorParameterTypes );
-				var result =
-					constructor2 == null 
-					? ReflectionExtensions.CreateInstancePreservingExceptionType( resultType, context )
-					: ReflectionExtensions.CreateInstancePreservingExceptionType( resultType, context, keyType );
+				object result;
+				try
+				{
+					result =
+						constructor2 == null
+						? ReflectionExtensions.CreateInstancePreservingExceptionType( resultType, context )
+						: ReflectionExtensions.CreateInstancePreservingExceptionType( resultType, context, keyType );
+				}
+				catch ( Exception ex )
+				{
+					AotHelper.HandleAotError( keyType, ex );
+					throw;
+				}
 #endif // !UNITY
 #if !UNITY && !UNITY2 && DEBUG
 				Contract.Assert( result != null, "result != null" );

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,12 +20,68 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Reflection;
+
+using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization
 {
 	internal static partial class AotHelper
 	{
+		public static void HandleAotError( Type mayBeGenericArgument, Exception mayBeAotError )
+		{
+			if ( mayBeGenericArgument == null )
+			{
+				return;
+			}
+
+			Exception targetException;
+			TargetInvocationException targetInvocationException;
+			if ( ( targetInvocationException = mayBeAotError as TargetInvocationException ) != null )
+			{
+				targetException = targetInvocationException.InnerException;
+			}
+			else
+			{
+				targetException = mayBeAotError;
+			}
+
+			if ( targetException is ExecutionEngineException )
+			{
+				string api = null;
+				if ( mayBeGenericArgument.GetIsGenericType() )
+				{
+					var definition = mayBeGenericArgument.GetGenericTypeDefinition();
+					if ( definition == typeof( ArraySegment<> ) )
+					{
+						api = String.Format( CultureInfo.InvariantCulture, "MessagePackSerializer.PrepareArraySegmentType<{0}>", mayBeGenericArgument.GetGenericArguments()[ 0 ].GetFullName() );
+					}
+					else if ( definition == typeof( KeyValuePair<,> ) )
+					{
+						var genericArguments = mayBeGenericArgument.GetGenericArguments();
+						api = String.Format( CultureInfo.InvariantCulture, "MessagePackSerializer.PrepareKeyValuePairType<{0}, {1}>", genericArguments[ 0 ].GetFullName(), genericArguments[ 1 ].GetFullName() );
+					}
+				}
+
+				if ( api == null )
+				{
+					api = String.Format( CultureInfo.InvariantCulture, "MessagePackSerializer.PrepareType<{0}>", mayBeGenericArgument.GetFullName() );
+				}
+
+				throw new InvalidOperationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"An AOT error is occurred. {0} is should be called in advance.",
+						api
+					),
+					mayBeAotError
+				);
+			}
+
+		}
+
 		private static readonly Dictionary<RuntimeTypeHandle, object> EqualityComparerTable =
 			InitializeEqualityComparerTable();
 

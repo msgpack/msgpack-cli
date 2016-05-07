@@ -680,9 +680,9 @@ namespace MsgPack.Serialization
 		// ReSharper disable once UnusedTypeParameter
 		public static void PrepareType<T>()
 		{
-#if UNITY
+#if UNITY || UNITY2
 			// Ensure GetSerializer<T>( object ) is AOT-ed.
-			SerializationContext.Default.GetSerializer<T>( null );
+			SerializationContext.Default.GetSerializer<T>();
 			// Ensure Dictionary<T, ?> is work.
 			AotHelper.PrepareEqualityComparer<T>();
 #endif // UNITY

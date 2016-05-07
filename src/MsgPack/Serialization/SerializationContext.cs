@@ -878,7 +878,19 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer>() != null );
 #endif // !UNITY && !UNITY2
 
-			return SerializerGetter.Instance.Get( this, targetType, providerParameter );
+#if DEBUG && UNITY
+			try
+			{
+#endif // DEBUG && UNITY
+				return SerializerGetter.Instance.Get( this, targetType, providerParameter );
+#if DEBUG && UNITY
+			}
+			catch ( Exception ex )
+			{
+				AotHelper.HandleAotError( targetType, ex );
+				throw;
+			}
+#endif // DEBUG && UNITY
 		}
 
 		private sealed class SerializerGetter
