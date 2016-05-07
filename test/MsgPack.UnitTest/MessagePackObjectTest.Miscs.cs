@@ -140,13 +140,17 @@ namespace MsgPack
 				Int64.MinValue,
 				UInt64.MaxValue,
 				Single.MaxValue,
+#if UNITY_WORKAROUND // Epsilon is 0 in Unity
 				Single.Epsilon,
+#endif // UNITY_WORKAROUND
 				Single.MinValue,
 				Single.NaN,
 				Single.PositiveInfinity,
 				Single.NegativeInfinity,
 				Double.MaxValue,
+#if UNITY_WORKAROUND // Epsilon is 0 in Unity
 				Double.Epsilon,
+#endif // UNITY_WORKAROUND
 				Double.MinValue,
 				Double.NaN,
 				Double.PositiveInfinity,

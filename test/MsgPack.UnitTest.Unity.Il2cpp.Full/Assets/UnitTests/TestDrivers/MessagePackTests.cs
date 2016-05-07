@@ -129,7 +129,7 @@ namespace MsgPack
 					new TestClass( 
 						"ArrayGenerationBasedReflectionMessagePackSerializerTest", 
 						ArrayGenerationBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						336,
+						335,
 						ArrayGenerationBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -151,7 +151,7 @@ namespace MsgPack
 					new TestClass( 
 						"ArrayReflectionBasedReflectionMessagePackSerializerTest", 
 						ArrayReflectionBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						413,
+						412,
 						ArrayReflectionBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -193,17 +193,6 @@ namespace MsgPack
 			{
 				var testClass = 
 					new TestClass( 
-						"ExceptionTest", 
-						ExceptionTestInitializer.CreateInstance, 
-						4,
-						ExceptionTestInitializer.InitializeInstance
-					 );
-				testClasses.Add( testClass );
-			}
-
-			{
-				var testClass = 
-					new TestClass( 
 						"GenerationBasedNilImplicationTest", 
 						GenerationBasedNilImplicationTestInitializer.CreateInstance, 
 						32,
@@ -228,7 +217,7 @@ namespace MsgPack
 					new TestClass( 
 						"MapGenerationBasedReflectionMessagePackSerializerTest", 
 						MapGenerationBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						336,
+						335,
 						MapGenerationBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -250,7 +239,7 @@ namespace MsgPack
 					new TestClass( 
 						"MapReflectionBasedReflectionMessagePackSerializerTest", 
 						MapReflectionBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						413,
+						412,
 						MapReflectionBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -634,7 +623,7 @@ namespace MsgPack
 
 		private static IList<TestClass> NewTestClasses()
 		{
-			return new List<TestClass>( 47 );
+			return new List<TestClass>( 46 );
 		}
 
 	} // partial class TestDriver
@@ -1002,7 +991,6 @@ namespace MsgPack
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonPublicWritableMember_DataContract", new Action( instance.TestNonPublicWritableMember_DataContract ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonPublicWritableMember_MessagePackMember", new Action( instance.TestNonPublicWritableMember_MessagePackMember ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonPublicWritableMember_PlainOldCliClass", new Action( instance.TestNonPublicWritableMember_PlainOldCliClass ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestNonZeroBoundArray", new Action( instance.TestNonZeroBoundArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonZeroBoundMultidimensionalArray", new Action( instance.TestNonZeroBoundMultidimensionalArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNullable", new Action( instance.TestNullable ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNullField", new Action( instance.TestNullField ) ) );
@@ -1488,7 +1476,6 @@ namespace MsgPack
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonPublicWritableMember_DataContract", new Action( instance.TestNonPublicWritableMember_DataContract ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonPublicWritableMember_MessagePackMember", new Action( instance.TestNonPublicWritableMember_MessagePackMember ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonPublicWritableMember_PlainOldCliClass", new Action( instance.TestNonPublicWritableMember_PlainOldCliClass ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestNonZeroBoundArray", new Action( instance.TestNonZeroBoundArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonZeroBoundMultidimensionalArray", new Action( instance.TestNonZeroBoundMultidimensionalArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNullable", new Action( instance.TestNullable ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNullField", new Action( instance.TestNullField ) ) );
@@ -1634,23 +1621,6 @@ namespace MsgPack
 			testClassInstance.TestMethods.Add( new TestMethod( "TestLong", new Action( instance.TestLong ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNil", new Action( instance.TestNil ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestString", new Action( instance.TestString ) ) );
-		}
-	} 
-
-	internal static class ExceptionTestInitializer
-	{
-		public static object CreateInstance()
-		{
-			return new ExceptionTest();
-		}
-
-		public static void InitializeInstance( TestClassInstance testClassInstance, object testFixtureInstance )
-		{
-			var instance = ( ( ExceptionTest )testFixtureInstance );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestInvalidMessagePackStreamException", new Action( instance.TestInvalidMessagePackStreamException ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestMessageNotSupportedException", new Action( instance.TestMessageNotSupportedException ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestMessageTypeException", new Action( instance.TestMessageTypeException ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestUnpackException", new Action( instance.TestUnpackException ) ) );
 		}
 	} 
 
@@ -2063,7 +2033,6 @@ namespace MsgPack
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonPublicWritableMember_DataContract", new Action( instance.TestNonPublicWritableMember_DataContract ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonPublicWritableMember_MessagePackMember", new Action( instance.TestNonPublicWritableMember_MessagePackMember ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonPublicWritableMember_PlainOldCliClass", new Action( instance.TestNonPublicWritableMember_PlainOldCliClass ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestNonZeroBoundArray", new Action( instance.TestNonZeroBoundArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonZeroBoundMultidimensionalArray", new Action( instance.TestNonZeroBoundMultidimensionalArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNullable", new Action( instance.TestNullable ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNullField", new Action( instance.TestNullField ) ) );
@@ -2549,7 +2518,6 @@ namespace MsgPack
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonPublicWritableMember_DataContract", new Action( instance.TestNonPublicWritableMember_DataContract ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonPublicWritableMember_MessagePackMember", new Action( instance.TestNonPublicWritableMember_MessagePackMember ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonPublicWritableMember_PlainOldCliClass", new Action( instance.TestNonPublicWritableMember_PlainOldCliClass ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestNonZeroBoundArray", new Action( instance.TestNonZeroBoundArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNonZeroBoundMultidimensionalArray", new Action( instance.TestNonZeroBoundMultidimensionalArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNullable", new Action( instance.TestNullable ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestNullField", new Action( instance.TestNullField ) ) );

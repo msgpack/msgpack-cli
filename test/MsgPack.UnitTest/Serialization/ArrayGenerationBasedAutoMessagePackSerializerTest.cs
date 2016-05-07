@@ -801,6 +801,9 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+#if UNITY_WORKAROUND
+		[Ignore( "Unity's Array.SetValue is buggy for non-SZArray" )]
+#endif // UNITY_WORKAROUND
 		public void TestNonZeroBoundArray()
 		{
 			var array = Array.CreateInstance( typeof( int ), new [] { 2 }, new [] { 1 } );
