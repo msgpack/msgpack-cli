@@ -35,9 +35,9 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MsgPack.Unity.Il2cpp.Full\MsgPack.Unity.Il2cpp.Full.csproj">
-      <Project>{671e6795-088e-4aa3-a809-53f05658ab40}</Project>
-      <Name>MsgPack.Unity.Il2cpp.Full</Name>
+    <ProjectReference Include="..\..\src\MsgPack.Unity3D.Full\MsgPack.Unity3D.Full.csproj">
+      <Project>{b752ba0a-72a8-4ee8-af44-d4f5a55a6121}</Project>
+      <Name>MsgPack.Unity3D.Full</Name>
     </ProjectReference>
     <ProjectReference Include="..\NUnitLite\src\framework\nunitlite-3.5.csproj">
       <Project>{43b24dc5-16d6-45ef-93f1-b021b785a892}</Project>

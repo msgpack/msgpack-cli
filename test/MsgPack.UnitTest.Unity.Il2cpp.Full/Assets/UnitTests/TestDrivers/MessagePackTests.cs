@@ -283,7 +283,7 @@ namespace MsgPack
 					new TestClass( 
 						"MessagePackObjectDictionaryTest", 
 						MessagePackObjectDictionaryTestInitializer.CreateInstance, 
-						66,
+						60,
 						MessagePackObjectDictionaryTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -2788,12 +2788,6 @@ namespace MsgPack
 			testClassInstance.TestMethods.Add( new TestMethod( "TestIndexer", new Action( instance.TestIndexer ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestKeys", new Action( instance.TestKeys ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestKeysCopyTo", new Action( instance.TestKeysCopyTo ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestKeySetIsProperSubsetOf", new Action( instance.TestKeySetIsProperSubsetOf ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestKeySetIsProperSupersetOf", new Action( instance.TestKeySetIsProperSupersetOf ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestKeySetIsSubsetOf", new Action( instance.TestKeySetIsSubsetOf ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestKeySetIsSupersetOf", new Action( instance.TestKeySetIsSupersetOf ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestKeySetOverlaps", new Action( instance.TestKeySetOverlaps ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestKeySetSetEquals", new Action( instance.TestKeySetSetEquals ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestRemoveNull", new Action( instance.TestRemoveNull ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeSerialization_NotEmpty_RoundTripped", new Action( instance.TestRuntimeSerialization_NotEmpty_RoundTripped ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestSetNull", new Action( instance.TestSetNull ) ) );
