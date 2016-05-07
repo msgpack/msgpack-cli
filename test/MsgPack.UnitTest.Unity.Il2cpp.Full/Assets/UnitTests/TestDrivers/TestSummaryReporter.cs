@@ -27,11 +27,15 @@ using UnityEngine;
 
 namespace MsgPack
 {
+	/// <summary>
+	///		Implements test reporting via dedicated <see cref="Result"/> object.
+	/// </summary>
 	internal class TestSummaryReporter
 	{
 		private readonly string _testClassName;
 		private readonly Result _globalResult;
 		private int _succeeded;
+		private int _skipped;
 		private int _failued;
 		private int _errors;
 
@@ -45,11 +49,18 @@ namespace MsgPack
 			this._globalResult.Color.Value = UnityEngine.Color.gray;
 		}
 
-			public void RecordSuccess()
+		public void RecordSuccess()
 		{
 			this._succeeded++;
 			this.UpdateResult();
 		}
+
+		public void RecordSkip()
+		{
+			this._skipped++;
+			this.UpdateResult();
+		}
+
 		public void RecordFailure()
 		{
 			this._failued++;
@@ -61,8 +72,6 @@ namespace MsgPack
 			this._errors++;
 			this.UpdateResult();
 		}
-
-#warning TODO: Inconclusive
 
 		public void HandleFatalException( string stage, Exception exception, Result resultPrefab, GameObject resultVertical )
 		{
@@ -78,10 +87,11 @@ namespace MsgPack
 			this._globalResult.Message.Value =
 				String.Format(
 					CultureInfo.CurrentCulture,
-					"{0}{1}Success:{2:#,0} Failure:{3:#,0} Error:{4:#,0}",
+					"{0}{1}Success:{2:#,0} Skipped:{3:#,0}, Failure:{4:#,0} Error:{5:#,0}",
 					this._testClassName,
 					Environment.NewLine,
 					this._succeeded,
+					this._skipped,
 					this._failued,
 					this._errors
 				);
@@ -89,7 +99,7 @@ namespace MsgPack
 			{
 				this._globalResult.Color.Value = UnityEngine.Color.red;
 			}
-			else
+			else if( this._succeeded > 0 )
 			{
 				this._globalResult.Color.Value = UnityEngine.Color.green;
 			}

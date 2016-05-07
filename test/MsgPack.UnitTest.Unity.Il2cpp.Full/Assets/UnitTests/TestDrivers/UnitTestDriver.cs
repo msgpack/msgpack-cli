@@ -40,6 +40,9 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace MsgPack
 {
+	/// <summary>
+	///		Implements unit test driver for Unity IL2CPP.
+	/// </summary>
 	public class UnityTestDriver : TestDriver
 	{
 		#region -- NUnit specific --
@@ -49,6 +52,21 @@ namespace MsgPack
 			for ( var current = ex; current != null; current = current.InnerException )
 			{
 				if ( current.GetType().FullName == "NUnit.Framework.AssertionException" )
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		private static bool IsTestSkipping( Exception ex )
+		{
+			for ( var current = ex; current != null; current = current.InnerException )
+			{
+				if ( current.GetType().FullName == "NUnit.Framework.InconclusiveException"
+					|| current.GetType().FullName == "NUnit.Framework.IgnoreException"
+				)
 				{
 					return true;
 				}
@@ -71,6 +89,7 @@ namespace MsgPack
 
 		#endregion -- NUnit specific --
 
+		// TODO: View manipulation should be only in Presenter.
 		public void Run( Button buttonPrefab, GameObject buttonVertical, Result resultPrefab, GameObject resultVertical )
 		{
 			foreach ( var item in this.TestClasses )
@@ -190,32 +209,41 @@ namespace MsgPack
 				{
 					method.Method();
 					summaryReporter.RecordSuccess();
+					// Omit test result to reduce memory usage and avoid cluttered screen.
 				}
 				catch ( Exception ex )
 				{
-					bool isFailure = IsTestFailure( ex );
-					var messageHeader = method.Name + ( isFailure ? " NG" : "Error" ) + Environment.NewLine;
-					UnityEngine.Debug.LogError( messageHeader + ex );
-					var r = CreateResult( fullMethodName, resultPrefab, resultVertical );
-					var baseException = ex.GetBaseException();
-					if ( isFailure || baseException == ex )
+					if ( IsTestSkipping( ex ) )
 					{
-						r.Message.Value = messageHeader + ex.Message;
+						summaryReporter.RecordSkip();
 					}
 					else
 					{
-						r.Message.Value = messageHeader + ex.Message + "-->" + Environment.NewLine + baseException.Message;
-					}
+						bool isFailure = IsTestFailure( ex );
+						var messageHeader = method.Name + ( isFailure ? " NG" : "Error" ) + Environment.NewLine;
+						UnityEngine.Debug.LogError( messageHeader + ex );
+						var r = CreateResult( fullMethodName, resultPrefab, resultVertical );
+						var baseException = ex.GetBaseException();
+						if ( isFailure || baseException == ex )
+						{
+							r.Message.Value = messageHeader + ex.Message;
+						}
+						else
+						{
+							// Record BaseException to help investigation.
+							r.Message.Value = messageHeader + ex.Message + "-->" + Environment.NewLine + baseException.Message;
+						}
 
-					r.Color.Value = UnityEngine.Color.red;
+						r.Color.Value = UnityEngine.Color.red;
 
-					if ( isFailure )
-					{
-						summaryReporter.RecordFailure();
-					}
-					else
-					{
-						summaryReporter.RecordError();
+						if ( isFailure )
+						{
+							summaryReporter.RecordFailure();
+						}
+						else
+						{
+							summaryReporter.RecordError();
+						}
 					}
 				}
 
