@@ -264,7 +264,7 @@ namespace MsgPack
 					else
 					{
 						bool isFailure = IsTestFailure( ex );
-						var messageHeader = summaryReporter.FormatMethodName( method.Name ) + ( isFailure ? " NG" : "Error" ) + Environment.NewLine;
+						var messageHeader = summaryReporter.FormatMethodName( method.Name ) + ( isFailure ? " NG" : " Error" ) + Environment.NewLine;
 						UnityEngine.Debug.LogError( messageHeader + ex );
 						var r = CreateResult( fullMethodName, resultPrefab, resultVertical );
 						var baseException = ex.GetBaseException();
