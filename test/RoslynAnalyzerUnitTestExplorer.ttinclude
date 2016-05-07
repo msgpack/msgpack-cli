@@ -86,6 +86,7 @@ private class TestClassExplorer
 				} 
 				).SelectMany( x => x.GetMembers(), ( @class, member ) => new { @class, member } )
 				.Where( x => x.member.GetAttributes().Any( a => this._significantMethodAttributeFullNames.Contains( a.ToString() ) ) )
+				.Distinct()
 				.GroupBy( x => x.@class.Name )
 				.Where( g => g.SelectMany( x => x.@class.GetAttributes() ).Any( a => a.ToString() == this._testClassAttributeFullName ) )
 				.Select( g => 
