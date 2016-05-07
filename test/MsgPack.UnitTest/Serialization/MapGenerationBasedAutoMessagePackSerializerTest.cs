@@ -94,6 +94,21 @@ namespace MsgPack.Serialization
 		{
 			return context.GetSerializer<T>( context );
 		}
+
+#if UNITY || UNITY2
+		[TestFixtureSetUp]
+		public static void SetUpFixture()
+		{
+			MessagePackSerializer.PrepareType<ArraySegment<byte>>();
+			MessagePackSerializer.PrepareType<ArraySegment<int>>();
+			MessagePackSerializer.PrepareType<ArraySegment<decimal>>();
+			MessagePackSerializer.PrepareType<System.Diagnostics.TraceOptions>();
+			MessagePackSerializer.PrepareType<KeyValuePair<string,int>>();
+			new ArraySegmentEqualityComparer<byte>().Equals( default( ArraySegment<byte> ), default( ArraySegment<byte> ) );
+			new ArraySegmentEqualityComparer<int>().Equals( default( ArraySegment<int> ), default( ArraySegment<int> ) );
+			new ArraySegmentEqualityComparer<decimal>().Equals( default( ArraySegment<decimal> ), default( ArraySegment<decimal> ) );
+		}
+#endif // UNITY || UNITY2
 		
 
 		private void DoKnownCollectionTest<T>( SerializationContext context )

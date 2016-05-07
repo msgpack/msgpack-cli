@@ -132,6 +132,7 @@ namespace MsgPack
 						335,
 						ArrayGenerationBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
+testClass.FixtureSetup = new Action( ArrayGenerationBasedReflectionMessagePackSerializerTest.SetUpFixture );
 				testClasses.Add( testClass );
 			}
 
@@ -154,6 +155,7 @@ namespace MsgPack
 						412,
 						ArrayReflectionBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
+testClass.FixtureSetup = new Action( ArrayReflectionBasedReflectionMessagePackSerializerTest.SetUpFixture );
 				testClasses.Add( testClass );
 			}
 
@@ -220,6 +222,7 @@ namespace MsgPack
 						335,
 						MapGenerationBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
+testClass.FixtureSetup = new Action( MapGenerationBasedReflectionMessagePackSerializerTest.SetUpFixture );
 				testClasses.Add( testClass );
 			}
 
@@ -242,6 +245,7 @@ namespace MsgPack
 						412,
 						MapReflectionBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
+testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSerializerTest.SetUpFixture );
 				testClasses.Add( testClass );
 			}
 

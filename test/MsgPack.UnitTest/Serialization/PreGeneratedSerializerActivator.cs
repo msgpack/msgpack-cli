@@ -22,6 +22,11 @@
 #define UNITY
 #endif
 
+#if UNITY2
+// Prevents AOT error.
+#define UNITY
+#endif // UNITY2
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
