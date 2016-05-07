@@ -907,6 +907,9 @@ namespace MsgPack
 		}
 
 		[Test]
+#if UNITY2
+		[Ignore( "IL2CPP runtime does not throw exception." )]
+#endif // UNITY2
 		public void ICollectionCopyToInvalidArray()
 		{
 			var dictionary = new MessagePackObjectDictionary();
