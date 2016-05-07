@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.Remoting.Messaging;
 
@@ -87,7 +88,6 @@ namespace MsgPack
 			}
 		}
 
-
 		private static void Clear( GameObject resultVertical )
 		{
 			foreach ( Transform child in resultVertical.transform )
@@ -105,16 +105,12 @@ namespace MsgPack
 			r.Color.Value = UnityEngine.Color.gray;
 			return r;
 		}
-
-		private static void HandleFatalException( string testClassName, string stage, Exception exception, Result resultPrefab, GameObject resultVertical )
-		{
-			var r = CreateResult( testClassName + "." + stage, resultPrefab, resultVertical );
-			r.Message.Value = testClassName + "." + stage + " FATAL " + Environment.NewLine + exception;
-			r.Color.Value = UnityEngine.Color.red;
-		}
-
+		
 		private static IEnumerator RunTestCoroutine( TestClass testClass, Result resultPrefab, GameObject resultVertical )
 		{
+			// Summary reporter.
+			var summaryReporter = new TestSummaryReporter( testClass.Name, resultPrefab, resultVertical );
+
 			bool isCrashed = false;
 
 			try
@@ -123,7 +119,7 @@ namespace MsgPack
 			}
 			catch ( Exception ex )
 			{
-				HandleFatalException( testClass.Name, "InitializeTestEngine", ex, resultPrefab, resultVertical );
+				summaryReporter.HandleFatalException( "InitializeTestEngine", ex, resultPrefab, resultVertical );
 				isCrashed = true;
 			}
 
@@ -140,7 +136,7 @@ namespace MsgPack
 			}
 			catch ( Exception ex )
 			{
-				HandleFatalException( testClass.Name, "FixtureSetup", ex, resultPrefab, resultVertical );
+				summaryReporter.HandleFatalException( "FixtureSetup", ex, resultPrefab, resultVertical );
 				isCrashed = true;
 			}
 
@@ -158,7 +154,7 @@ namespace MsgPack
 			}
 			catch ( Exception ex )
 			{
-				HandleFatalException( testClass.Name, "Instantiation", ex, resultPrefab, resultVertical );
+				summaryReporter.HandleFatalException( "Instantiation", ex, resultPrefab, resultVertical );
 				isCrashed = true;
 			}
 
@@ -177,7 +173,7 @@ namespace MsgPack
 				}
 				catch ( Exception ex )
 				{
-					HandleFatalException( testClass.Name, "TestSetup", ex, resultPrefab, resultVertical );
+					summaryReporter.HandleFatalException( "TestSetup", ex, resultPrefab, resultVertical );
 					isCrashed = true;
 				}
 
@@ -189,18 +185,38 @@ namespace MsgPack
 				yield return null;
 
 				var fullMethodName = testClass.Name + "." + method.Name;
-				var r = CreateResult( fullMethodName, resultPrefab, resultVertical );
-				var sw = System.Diagnostics.Stopwatch.StartNew();
+				
 				try
 				{
 					method.Method();
-					r.Message.Value = method.Name + " OK " + sw.Elapsed.TotalMilliseconds + "ms";
-					r.Color.Value = UnityEngine.Color.green;
+					summaryReporter.RecordSuccess();
 				}
 				catch ( Exception ex )
 				{
-					r.Message.Value = method.Name + " NG" + Environment.NewLine + ( IsTestFailure( ex ) ? ex.Message : ex.ToString() );
+					bool isFailure = IsTestFailure( ex );
+					var messageHeader = method.Name + ( isFailure ? " NG" : "Error" ) + Environment.NewLine;
+					UnityEngine.Debug.LogError( messageHeader + ex );
+					var r = CreateResult( fullMethodName, resultPrefab, resultVertical );
+					var baseException = ex.GetBaseException();
+					if ( isFailure || baseException == ex )
+					{
+						r.Message.Value = messageHeader + ex.Message;
+					}
+					else
+					{
+						r.Message.Value = messageHeader + ex.Message + "-->" + Environment.NewLine + baseException.Message;
+					}
+
 					r.Color.Value = UnityEngine.Color.red;
+
+					if ( isFailure )
+					{
+						summaryReporter.RecordFailure();
+					}
+					else
+					{
+						summaryReporter.RecordError();
+					}
 				}
 
 				yield return null;
@@ -211,7 +227,7 @@ namespace MsgPack
 				}
 				catch ( Exception ex )
 				{
-					HandleFatalException( testClass.Name, "TestCleanup", ex, resultPrefab, resultVertical );
+					summaryReporter.HandleFatalException( "TestCleanup", ex, resultPrefab, resultVertical );
 					isCrashed = true;
 				}
 
@@ -229,7 +245,7 @@ namespace MsgPack
 			}
 			catch ( Exception ex )
 			{
-				HandleFatalException( testClass.Name, "FixtureCleanup", ex, resultPrefab, resultVertical );
+				summaryReporter.HandleFatalException( "FixtureCleanup", ex, resultPrefab, resultVertical );
 				isCrashed = true;
 			}
 
@@ -246,7 +262,7 @@ namespace MsgPack
 			}
 			catch ( Exception ex )
 			{
-				HandleFatalException( testClass.Name, "InitializeTestEngine", ex, resultPrefab, resultVertical );
+				summaryReporter.HandleFatalException( "InitializeTestEngine", ex, resultPrefab, resultVertical );
 			}
 
 			yield return null;
