@@ -116,6 +116,18 @@ namespace MsgPack
 			{
 				var testClass = 
 					new TestClass( 
+						"AotTest", 
+						AotTestInitializer.CreateInstance, 
+						10,
+						AotTestInitializer.InitializeInstance
+					 );
+testClass.FixtureSetup = new Action( AotTest.SetupFixture );
+				testClasses.Add( testClass );
+			}
+
+			{
+				var testClass = 
+					new TestClass( 
 						"ArrayGenerationBasedEnumSerializerTest", 
 						ArrayGenerationBasedEnumSerializerTestInitializer.CreateInstance, 
 						62,
@@ -616,10 +628,33 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 
 		private static IList<TestClass> NewTestClasses()
 		{
-			return new List<TestClass>( 45 );
+			return new List<TestClass>( 46 );
 		}
 
 	} // partial class TestDriver
+	internal static class AotTestInitializer
+	{
+		public static object CreateInstance()
+		{
+			return new AotTest();
+		}
+
+		public static void InitializeInstance( TestClassInstance testClassInstance, object testFixtureInstance )
+		{
+			var instance = ( ( AotTest )testFixtureInstance );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericDefaultSerializer_ArraySegmentOfByte", new Action( instance.TestGenericDefaultSerializer_ArraySegmentOfByte ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericDefaultSerializer_ArraySegmentOfChar", new Action( instance.TestGenericDefaultSerializer_ArraySegmentOfChar ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericDefaultSerializer_ArraySegmentOfInt32", new Action( instance.TestGenericDefaultSerializer_ArraySegmentOfInt32 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericDefaultSerializer_Dictionary", new Action( instance.TestGenericDefaultSerializer_Dictionary ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericDefaultSerializer_KeyValuePair", new Action( instance.TestGenericDefaultSerializer_KeyValuePair ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericDefaultSerializer_List", new Action( instance.TestGenericDefaultSerializer_List ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericDefaultSerializer_ListOfMessagePackObject", new Action( instance.TestGenericDefaultSerializer_ListOfMessagePackObject ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericDefaultSerializer_Queue", new Action( instance.TestGenericDefaultSerializer_Queue ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericDefaultSerializer_Stack", new Action( instance.TestGenericDefaultSerializer_Stack ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeMetadataExtraction", new Action( instance.TestTypeMetadataExtraction ) ) );
+		}
+	} 
+
 	internal static class ArrayGenerationBasedEnumSerializerTestInitializer
 	{
 		public static object CreateInstance()

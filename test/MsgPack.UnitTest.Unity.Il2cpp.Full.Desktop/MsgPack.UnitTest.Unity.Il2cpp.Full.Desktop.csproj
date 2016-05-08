@@ -393,6 +393,9 @@
     <Compile Include="..\MsgPack.UnitTest.Net35\Mono\System\Threading\SpinWait.cs">
       <Link>Mono\System\Threading\SpinWait.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest.Xamarin.iOS\Serialization\AotTest.cs">
+      <Link>Serialization\AotTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\BigEndianBinaryTest.cs">
       <Link>BigEndianBinaryTest.cs</Link>
     </Compile>

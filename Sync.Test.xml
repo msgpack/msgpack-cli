@@ -29,6 +29,7 @@
     <Preserve File="*.plist" />
     <Preserve Path="Main.cs" />
     <Preserve Path="UnitTestAppDelegate.cs" />
+    <Preserve Path="Serialization\AotTest.cs" />
     <Exclude File="_SetUpFixture.cs" />
     <Exclude File="ReadMe.txt" />
     <Exclude Path="Serialization\PreGeneratedSerializerGenerator.cs" />
