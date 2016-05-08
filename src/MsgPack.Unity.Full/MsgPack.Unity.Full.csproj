@@ -306,15 +306,6 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\GenericSerializer.cs">
       <Link>Serialization\DefaultSerializers\GenericSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs">
-      <Link>Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs">
-      <Link>Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs">
-      <Link>Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\InternalDateTimeExtensions.cs">
       <Link>Serialization\DefaultSerializers\InternalDateTimeExtensions.cs</Link>
     </Compile>
@@ -383,9 +374,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Globalization_CultureInfoMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_Globalization_CultureInfoMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_ObjectMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_ObjectMessagePackSerializer.cs</Link>
