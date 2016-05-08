@@ -60,7 +60,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			SerializationTarget.VerifyType( typeof( T ) );
 			var target = SerializationTarget.Prepare( context, typeof( T ) );
-			ReflectionSerializerHelper.GetMetadata( target.Members, context, out this._getters, out this._setters, out this._memberInfos, out this._contracts, out this._serializers );
+			ReflectionSerializerHelper.GetMetadata( typeof( T ), target.Members, context, out this._getters, out this._setters, out this._memberInfos, out this._contracts, out this._serializers );
 			this._memberIndexes =
 				this._contracts
 					.Select( ( contract, index ) => new KeyValuePair<string, int>( contract.Name, index ) )

@@ -32,6 +32,8 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack
 {
+
+
 	partial class MessagePackObjectTest_Exceptionals
 	{
 		private void Call<T>( T value )
@@ -175,28 +177,28 @@ namespace MsgPack
 		public void TestOpExplicitSByte_SinglePlusOne()
 		{
 			var result = ( System.SByte )( new MessagePackObject( ( System.Single )1 ) );
-			Assert.AreEqual( ( System.SByte )( 1 ), result );
+			Assert.AreEqual( ( System.SByte )( 1 ), result, new MessagePackObject( ( System.Single )1 ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitSByte_SingleMinusOne()
 		{
 			var result = ( System.SByte )( new MessagePackObject( ( System.Single )( -1 ) ) );
-			Assert.AreEqual( ( System.SByte )( -1 ), result );
+			Assert.AreEqual( ( System.SByte )( -1 ), result, new MessagePackObject( ( System.Single )( -1 ) ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitSByte_DoublePlusOne()
 		{
 			var result = ( System.SByte )( new MessagePackObject( ( System.Double )1 ) );
-			Assert.AreEqual( ( System.SByte )( 1 ), result );
+			Assert.AreEqual( ( System.SByte )( 1 ), result, new MessagePackObject( ( System.Double )1 ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitSByte_DoubleMinusOne()
 		{
 			var result = ( System.SByte )( new MessagePackObject( ( System.Double )( -1 ) ) );
-			Assert.AreEqual( ( System.SByte )( -1 ), result );
+			Assert.AreEqual( ( System.SByte )( -1 ), result, new MessagePackObject( ( System.Double )( -1 ) ).DebugDump() );
 		}
 		
 		[Test]
@@ -305,28 +307,28 @@ namespace MsgPack
 		public void TestOpExplicitInt16_SinglePlusOne()
 		{
 			var result = ( System.Int16 )( new MessagePackObject( ( System.Single )1 ) );
-			Assert.AreEqual( ( System.Int16 )( 1 ), result );
+			Assert.AreEqual( ( System.Int16 )( 1 ), result, new MessagePackObject( ( System.Single )1 ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitInt16_SingleMinusOne()
 		{
 			var result = ( System.Int16 )( new MessagePackObject( ( System.Single )( -1 ) ) );
-			Assert.AreEqual( ( System.Int16 )( -1 ), result );
+			Assert.AreEqual( ( System.Int16 )( -1 ), result, new MessagePackObject( ( System.Single )( -1 ) ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitInt16_DoublePlusOne()
 		{
 			var result = ( System.Int16 )( new MessagePackObject( ( System.Double )1 ) );
-			Assert.AreEqual( ( System.Int16 )( 1 ), result );
+			Assert.AreEqual( ( System.Int16 )( 1 ), result, new MessagePackObject( ( System.Double )1 ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitInt16_DoubleMinusOne()
 		{
 			var result = ( System.Int16 )( new MessagePackObject( ( System.Double )( -1 ) ) );
-			Assert.AreEqual( ( System.Int16 )( -1 ), result );
+			Assert.AreEqual( ( System.Int16 )( -1 ), result, new MessagePackObject( ( System.Double )( -1 ) ).DebugDump() );
 		}
 		
 		[Test]
@@ -438,28 +440,28 @@ namespace MsgPack
 		public void TestOpExplicitInt32_SinglePlusOne()
 		{
 			var result = ( System.Int32 )( new MessagePackObject( ( System.Single )1 ) );
-			Assert.AreEqual( ( System.Int32 )( 1 ), result );
+			Assert.AreEqual( ( System.Int32 )( 1 ), result, new MessagePackObject( ( System.Single )1 ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitInt32_SingleMinusOne()
 		{
 			var result = ( System.Int32 )( new MessagePackObject( ( System.Single )( -1 ) ) );
-			Assert.AreEqual( ( System.Int32 )( -1 ), result );
+			Assert.AreEqual( ( System.Int32 )( -1 ), result, new MessagePackObject( ( System.Single )( -1 ) ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitInt32_DoublePlusOne()
 		{
 			var result = ( System.Int32 )( new MessagePackObject( ( System.Double )1 ) );
-			Assert.AreEqual( ( System.Int32 )( 1 ), result );
+			Assert.AreEqual( ( System.Int32 )( 1 ), result, new MessagePackObject( ( System.Double )1 ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitInt32_DoubleMinusOne()
 		{
 			var result = ( System.Int32 )( new MessagePackObject( ( System.Double )( -1 ) ) );
-			Assert.AreEqual( ( System.Int32 )( -1 ), result );
+			Assert.AreEqual( ( System.Int32 )( -1 ), result, new MessagePackObject( ( System.Double )( -1 ) ).DebugDump() );
 		}
 		
 		[Test]
@@ -574,28 +576,28 @@ namespace MsgPack
 		public void TestOpExplicitInt64_SinglePlusOne()
 		{
 			var result = ( System.Int64 )( new MessagePackObject( ( System.Single )1 ) );
-			Assert.AreEqual( ( System.Int64 )( 1 ), result );
+			Assert.AreEqual( ( System.Int64 )( 1 ), result, new MessagePackObject( ( System.Single )1 ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitInt64_SingleMinusOne()
 		{
 			var result = ( System.Int64 )( new MessagePackObject( ( System.Single )( -1 ) ) );
-			Assert.AreEqual( ( System.Int64 )( -1 ), result );
+			Assert.AreEqual( ( System.Int64 )( -1 ), result, new MessagePackObject( ( System.Single )( -1 ) ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitInt64_DoublePlusOne()
 		{
 			var result = ( System.Int64 )( new MessagePackObject( ( System.Double )1 ) );
-			Assert.AreEqual( ( System.Int64 )( 1 ), result );
+			Assert.AreEqual( ( System.Int64 )( 1 ), result, new MessagePackObject( ( System.Double )1 ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitInt64_DoubleMinusOne()
 		{
 			var result = ( System.Int64 )( new MessagePackObject( ( System.Double )( -1 ) ) );
-			Assert.AreEqual( ( System.Int64 )( -1 ), result );
+			Assert.AreEqual( ( System.Int64 )( -1 ), result, new MessagePackObject( ( System.Double )( -1 ) ).DebugDump() );
 		}
 		
 		[Test]
@@ -713,14 +715,14 @@ namespace MsgPack
 		public void TestOpExplicitByte_SinglePlusOne()
 		{
 			var result = ( System.Byte )( new MessagePackObject( ( System.Single )1 ) );
-			Assert.AreEqual( ( System.Byte )( 1 ), result );
+			Assert.AreEqual( ( System.Byte )( 1 ), result, new MessagePackObject( ( System.Single )1 ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitByte_DoublePlusOne()
 		{
 			var result = ( System.Byte )( new MessagePackObject( ( System.Double )1 ) );
-			Assert.AreEqual( ( System.Byte )( 1 ), result );
+			Assert.AreEqual( ( System.Byte )( 1 ), result, new MessagePackObject( ( System.Double )1 ).DebugDump() );
 		}
 		
 		[Test]
@@ -829,14 +831,14 @@ namespace MsgPack
 		public void TestOpExplicitUInt16_SinglePlusOne()
 		{
 			var result = ( System.UInt16 )( new MessagePackObject( ( System.Single )1 ) );
-			Assert.AreEqual( ( System.UInt16 )( 1 ), result );
+			Assert.AreEqual( ( System.UInt16 )( 1 ), result, new MessagePackObject( ( System.Single )1 ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitUInt16_DoublePlusOne()
 		{
 			var result = ( System.UInt16 )( new MessagePackObject( ( System.Double )1 ) );
-			Assert.AreEqual( ( System.UInt16 )( 1 ), result );
+			Assert.AreEqual( ( System.UInt16 )( 1 ), result, new MessagePackObject( ( System.Double )1 ).DebugDump() );
 		}
 		
 		[Test]
@@ -947,14 +949,14 @@ namespace MsgPack
 		public void TestOpExplicitUInt32_SinglePlusOne()
 		{
 			var result = ( System.UInt32 )( new MessagePackObject( ( System.Single )1 ) );
-			Assert.AreEqual( ( System.UInt32 )( 1 ), result );
+			Assert.AreEqual( ( System.UInt32 )( 1 ), result, new MessagePackObject( ( System.Single )1 ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitUInt32_DoublePlusOne()
 		{
 			var result = ( System.UInt32 )( new MessagePackObject( ( System.Double )1 ) );
-			Assert.AreEqual( ( System.UInt32 )( 1 ), result );
+			Assert.AreEqual( ( System.UInt32 )( 1 ), result, new MessagePackObject( ( System.Double )1 ).DebugDump() );
 		}
 		
 		[Test]
@@ -1067,14 +1069,14 @@ namespace MsgPack
 		public void TestOpExplicitUInt64_SinglePlusOne()
 		{
 			var result = ( System.UInt64 )( new MessagePackObject( ( System.Single )1 ) );
-			Assert.AreEqual( ( System.UInt64 )( 1 ), result );
+			Assert.AreEqual( ( System.UInt64 )( 1 ), result, new MessagePackObject( ( System.Single )1 ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitUInt64_DoublePlusOne()
 		{
 			var result = ( System.UInt64 )( new MessagePackObject( ( System.Double )1 ) );
-			Assert.AreEqual( ( System.UInt64 )( 1 ), result );
+			Assert.AreEqual( ( System.UInt64 )( 1 ), result, new MessagePackObject( ( System.Double )1 ).DebugDump() );
 		}
 		
 		[Test]
@@ -1189,28 +1191,28 @@ namespace MsgPack
 		public void TestOpExplicitSingle_UInt64MaxValue()
 		{
 			var result = ( System.Single )( new MessagePackObject( UInt64.MaxValue ) );
-			Assert.AreEqual( ( System.Single )( UInt64.MaxValue ), result, ( System.Single )0 );
+			Assert.AreEqual( ( System.Single )( UInt64.MaxValue ), result, ( System.Single )0, new MessagePackObject( UInt64.MaxValue ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitSingle_Int64MinValue()
 		{
 			var result = ( System.Single )( new MessagePackObject( Int64.MinValue ) );
-			Assert.AreEqual( ( System.Single )( Int64.MinValue ), result, ( System.Single )0 );
+			Assert.AreEqual( ( System.Single )( Int64.MinValue ), result, ( System.Single )0, new MessagePackObject( Int64.MinValue ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitDouble_UInt64MaxValue()
 		{
 			var result = ( System.Double )( new MessagePackObject( UInt64.MaxValue ) );
-			Assert.AreEqual( ( System.Double )( UInt64.MaxValue ), result, ( System.Double )0 );
+			Assert.AreEqual( ( System.Double )( UInt64.MaxValue ), result, ( System.Double )0, new MessagePackObject( UInt64.MaxValue ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicitDouble_Int64MinValue()
 		{
 			var result = ( System.Double )( new MessagePackObject( Int64.MinValue ) );
-			Assert.AreEqual( ( System.Double )( Int64.MinValue ), result, ( System.Double )0 );
+			Assert.AreEqual( ( System.Double )( Int64.MinValue ), result, ( System.Double )0, new MessagePackObject( Int64.MinValue ).DebugDump() );
 		}
 		
 	}

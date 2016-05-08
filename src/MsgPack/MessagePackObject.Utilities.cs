@@ -23,6 +23,7 @@
 #endif
 
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 #if !UNITY && !UNITY2
@@ -1834,6 +1835,25 @@ namespace MsgPack
 		}
 
 		#endregion -- Conversion Operator Overloads --
+
+#if DEBUG
+		internal string DebugDump()
+		{
+			var typeCode = this._handleOrTypeCode as ValueTypeCode;
+			if ( typeCode != null )
+			{
+				return String.Format( CultureInfo.InvariantCulture, "{0}([{1}]0x{0:X})", this._value, typeCode.Type );
+			}
+			else if ( this._handleOrTypeCode != null )
+			{
+				return String.Format( CultureInfo.InvariantCulture, "{0}([{1}])", this._handleOrTypeCode, this._handleOrTypeCode.GetType() );
+			}
+			else
+			{
+				return "(null)";
+			}
+		}
+#endif // DEBUG
 
 #if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		[Serializable]

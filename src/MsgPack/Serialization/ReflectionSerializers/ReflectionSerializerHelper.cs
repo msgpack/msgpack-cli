@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2015 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,14 +26,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY || UNITY2
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY || UNITY2
 using System.Reflection;
+using System.Runtime.Serialization;
 
 using MsgPack.Serialization.DefaultSerializers;
 using MsgPack.Serialization.Reflection;
@@ -221,6 +220,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		}
 
 		public static void GetMetadata(
+			Type targetType,
 			IList<SerializingMember> members,
 			SerializationContext context,
 			out Func<object, object>[] getters,
@@ -238,11 +238,14 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			for ( var i = 0; i < members.Count; i++ )
 			{
 				var member = members[ i ];
+
 				if ( member.Member == null )
 				{
-#if UNITY
-					contracts[ i ] = DataMemberContract.Null;
-#endif // UNITY
+					// Tuple serializer should not use this method.
+#if DEBUG && !NETFX_35 && !UNITY && !UNITY2
+					Contract.Assert( false, targetType + "'s member[" + i + "].Member == null" );
+#endif // DEBUG && !NETFX_35 && !UNITY && !UNITY2
+					ThrowMissingMetadataException( targetType, i );
 					continue;
 				}
 
@@ -255,10 +258,16 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				else
 				{
 					var property = member.Member as PropertyInfo;
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 					Contract.Assert( property != null, "member.Member is PropertyInfo" );
-#endif // DEBUG && !UNITY && !UNITY2
-					getters[ i ] = target => property.GetGetMethod( true ).InvokePreservingExceptionType( target, null );
+#endif // DEBUG
+					var getter = property.GetGetMethod( true );
+					if ( getter == null )
+					{
+						ThrowMissingGetterException( targetType, i );
+					}
+
+					getters[ i ] = target => getter.InvokePreservingExceptionType( target, null );
 					var setter = property.GetSetMethod( true );
 					if ( setter != null )
 					{
@@ -301,6 +310,38 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					serializers[ i ] = context.GetSerializer( memberType, PolymorphismSchema.Create( memberType, member ) );
 				}
 			}
+		}
+
+		private static void ThrowMissingMetadataException( Type targetType, int number )
+		{
+			throw new SerializationException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					"The {0}th member metadata of type '{1}' is missing."
+#if UNITY
+					+ " Ensure link.xml or [Preserve] attribute for the target type, or use pre-generated serializer."
+#endif // UNITY
+					,
+					number,
+					targetType
+				)
+			);
+		}
+
+		private static void ThrowMissingGetterException( Type targetType, int number )
+		{
+			throw new SerializationException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					"The {0}th getter metadata of type '{1}' is missing."
+#if UNITY
+					+ " Ensure link.xml or [Preserve] attribute for the target type, or use pre-generated serializer."
+#endif // UNITY
+					,
+					number,
+					targetType
+				)
+			);
 		}
 
 #if !UNITY

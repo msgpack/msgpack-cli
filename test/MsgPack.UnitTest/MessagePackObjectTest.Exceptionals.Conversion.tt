@@ -101,6 +101,8 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack
 {
+
+
 	partial class MessagePackObjectTest_Exceptionals
 	{
 		private void Call<T>( T value )
@@ -136,7 +138,7 @@ foreach( var __integer in __integers )
 		public void TestOpExplicit<#= __integer.Name #>_<#= __real.Name #>PlusOne()
 		{
 			var result = ( <#= __integer #> )( new MessagePackObject( ( <#= __real #> )1 ) );
-			Assert.AreEqual( ( <#= __integer #> )( 1 ), result );
+			Assert.AreEqual( ( <#= __integer #> )( 1 ), result, new MessagePackObject( ( <#= __real #> )1 ).DebugDump() );
 		}
 		
 <#
@@ -147,7 +149,7 @@ foreach( var __integer in __integers )
 		public void TestOpExplicit<#= __integer.Name #>_<#= __real.Name #>MinusOne()
 		{
 			var result = ( <#= __integer #> )( new MessagePackObject( ( <#= __real #> )( -1 ) ) );
-			Assert.AreEqual( ( <#= __integer #> )( -1 ), result );
+			Assert.AreEqual( ( <#= __integer #> )( -1 ), result, new MessagePackObject( ( <#= __real #> )( -1 ) ).DebugDump() );
 		}
 		
 <#
@@ -216,14 +218,14 @@ foreach( var __real in __reals )
 		public void TestOpExplicit<#= __real.Name #>_UInt64MaxValue()
 		{
 			var result = ( <#= __real #> )( new MessagePackObject( UInt64.MaxValue ) );
-			Assert.AreEqual( ( <#= __real #> )( UInt64.MaxValue ), result, ( <#= __real #> )0 );
+			Assert.AreEqual( ( <#= __real #> )( UInt64.MaxValue ), result, ( <#= __real #> )0, new MessagePackObject( UInt64.MaxValue ).DebugDump() );
 		}
 		
 		[Test]
 		public void TestOpExplicit<#= __real.Name #>_Int64MinValue()
 		{
 			var result = ( <#= __real #> )( new MessagePackObject( Int64.MinValue ) );
-			Assert.AreEqual( ( <#= __real #> )( Int64.MinValue ), result, ( <#= __real #> )0 );
+			Assert.AreEqual( ( <#= __real #> )( Int64.MinValue ), result, ( <#= __real #> )0, new MessagePackObject( Int64.MinValue ).DebugDump() );
 		}
 		
 <#

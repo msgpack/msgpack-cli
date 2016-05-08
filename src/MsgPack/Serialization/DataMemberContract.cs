@@ -23,13 +23,11 @@
 #endif
 
 using System;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY || UNITY2
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY && !UNITY2
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -42,6 +40,7 @@ namespace MsgPack.Serialization
 #if !UNITY
 	internal struct DataMemberContract
 #else
+#warning TODO: To struct if possible
 	internal sealed class DataMemberContract
 #endif // !UNITY
 	{
@@ -122,9 +121,7 @@ namespace MsgPack.Serialization
 		/// <param name="member">The target member.</param>
 		public DataMemberContract( MemberInfo member )
 		{
-#if !UNITY && !UNITY2
-			Contract.Requires( member != null );
-#endif // !UNITY && !UNITY2
+			Contract.Assert( member != null );
 
 			this._name = member.Name;
 			this._nilImplication = NilImplication.MemberDefault;
@@ -140,9 +137,7 @@ namespace MsgPack.Serialization
 		/// <param name="id">The ID of the member. This value cannot be negative and must be unique in the type.</param>
 		public DataMemberContract( MemberInfo member, string name, NilImplication nilImplication, int? id )
 		{
-#if !UNITY && !UNITY2
-			Contract.Requires( member != null );
-#endif // !UNITY && !UNITY2
+			Contract.Assert( member != null );
 
 			if ( id < 0 )
 			{
@@ -161,10 +156,8 @@ namespace MsgPack.Serialization
 		/// <param name="attribute">The MessagePack member attribute.</param>
 		public DataMemberContract( MemberInfo member, MessagePackMemberAttribute attribute )
 		{
-#if !UNITY && !UNITY2
-			Contract.Requires( member != null );
-			Contract.Requires( attribute != null );
-#endif // !UNITY && !UNITY2
+			Contract.Assert( member != null );
+			Contract.Assert( attribute != null );
 
 			if ( attribute.Id < 0 )
 			{

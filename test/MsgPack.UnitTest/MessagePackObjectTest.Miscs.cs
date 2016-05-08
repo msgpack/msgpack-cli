@@ -190,7 +190,7 @@ namespace MsgPack
 			{
 				index++;
 				var result = target.ToString();
-				var indicator = String.Format( "Index:{0}, Next to \"{1}\"", index, previous );
+				var indicator = String.Format( "Index:{0}, Next to \"{1}\", '{2}'", index, previous, target.DebugDump() );
 				previous = result;
 				if ( target.IsNil )
 				{

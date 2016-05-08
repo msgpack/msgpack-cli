@@ -39,7 +39,7 @@ namespace MsgPack
 	{
 		private static void TestEqualsCore( MessagePackObject left, MessagePackObject right, bool expected )
 		{
-			Assert.AreEqual( expected, left.Equals( right ), "{0}=={1}", left, right );
+			Assert.AreEqual( expected, left.Equals( right ), "{0}=={1}", left.DebugDump(), right.DebugDump() );
 		}
 
 		private static void AssertEquals( MessagePackObject left, MessagePackObject right )
