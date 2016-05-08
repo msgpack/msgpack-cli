@@ -99,6 +99,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	}
 #else
+#warning TODO: Use generic collection if possible for maintenancibility.
 	internal class NullableMessagePackSerializer : NonGenericMessagePackSerializer
 	{
 		private readonly MessagePackSerializer _valueSerializer;

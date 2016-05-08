@@ -43,6 +43,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 	public abstract class DictionaryMessagePackSerializer<TDictionary, TKey, TValue> : DictionaryMessagePackSerializerBase<TDictionary, TKey, TValue>
 		where TDictionary : IDictionary<TKey, TValue>
 #if UNITY
+#warning TODO: Remove if possible for maintenancibility.
 		, IEnumerable<KeyValuePair<TKey, TValue>> // This is obvious from IDictionary<TKey, TValue>, but Unity compiler cannot recognize this.
 #endif // UNITY
 	{
@@ -99,6 +100,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 	}
 
 #if UNITY
+#warning TODO: Remove if possible for maintenancibility.
 	internal abstract class UnityDictionaryMessagePackSerializer : NonGenericMessagePackSerializer,
 		ICollectionInstanceFactory
 	{

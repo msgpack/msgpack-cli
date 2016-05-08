@@ -150,6 +150,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 	}
 
 #if UNITY
+#warning TODO: Remove if possible for maintenancibility.
 	internal abstract class UnityNonGenericListMessagePackSerializer : UnityNonGenericCollectionMessagePackSerializer
 	{
 		protected UnityNonGenericListMessagePackSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema schema )

@@ -35,6 +35,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if !UNITY
 	internal sealed class MultidimensionalArraySerializer<TArray, TItem> : MessagePackSerializer<TArray>
 #else
+#warning TODO: Use generic collection if possible for maintenancibility.
 	internal sealed class UnityMultidimensionalArraySerializer : NonGenericMessagePackSerializer
 #endif // !UNITY
 	{

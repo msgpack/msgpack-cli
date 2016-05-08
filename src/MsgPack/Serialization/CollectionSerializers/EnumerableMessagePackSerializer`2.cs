@@ -126,6 +126,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 #endif // FEATURE_TAP
 	}
 #if UNITY
+#warning TODO: Remove if possible for maintenancibility.
 	internal abstract class UnityEnumerableMessagePackSerializer : UnityEnumerableMessagePackSerializerBase
 	{
 		private readonly MethodInfo _getCount;

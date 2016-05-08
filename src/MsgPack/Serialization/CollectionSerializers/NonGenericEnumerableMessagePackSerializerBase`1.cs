@@ -245,6 +245,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 	}
 
 #if UNITY
+#warning TODO: Remove if possible for maintenancibility.
 	internal abstract class UnityNonGenericEnumerableMessagePackSerializerBase : NonGenericMessagePackSerializer, ICollectionInstanceFactory
 	{
 		private readonly MessagePackSerializer _itemSerializer;

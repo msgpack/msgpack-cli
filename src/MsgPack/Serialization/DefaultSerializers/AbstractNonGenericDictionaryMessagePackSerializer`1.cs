@@ -40,6 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class AbstractNonGenericDictionaryMessagePackSerializer<TDictionary> : NonGenericDictionaryMessagePackSerializer<TDictionary>
 		where TDictionary : IDictionary
 #else
+#warning TODO: Use generic collection if possible for maintenancibility.
 	internal sealed class AbstractNonGenericDictionaryMessagePackSerializer : UnityNonGenericDictionaryMessagePackSerializer
 #endif // !UNITY
 	{

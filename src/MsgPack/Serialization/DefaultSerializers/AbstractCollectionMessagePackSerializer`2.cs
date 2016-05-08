@@ -40,6 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class AbstractCollectionMessagePackSerializer<TCollection, TItem> : CollectionMessagePackSerializer<TCollection, TItem>
 		where TCollection : ICollection<TItem>
 #else
+#warning TODO: Use generic collection if possible for maintenancibility.
 	internal sealed class AbstractCollectionMessagePackSerializer : UnityCollectionMessagePackSerializer
 #endif // !UNITY
 	{

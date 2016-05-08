@@ -36,6 +36,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if !UNITY
 	internal sealed class ArraySerializer<T> : MessagePackSerializer<T[]>
 #else
+#warning TODO: Use generic collection if possible for maintenancibility.
 	internal sealed class UnityArraySerializer : NonGenericMessagePackSerializer
 #endif // !UNITY
 	{

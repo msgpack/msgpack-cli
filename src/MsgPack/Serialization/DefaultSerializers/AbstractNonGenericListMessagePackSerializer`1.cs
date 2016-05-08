@@ -40,6 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class AbstractNonGenericListMessagePackSerializer<TCollection> : NonGenericListMessagePackSerializer<TCollection>
 		where TCollection : IList
 #else
+#warning TODO: Use generic collection if possible for maintenancibility.
 	internal sealed class AbstractNonGenericListMessagePackSerializer : UnityNonGenericListMessagePackSerializer
 #endif // !UNITY
 	{

@@ -90,6 +90,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 	}
 
 #if UNITY
+#warning TODO: Remove if possible for maintenancibility.
 	internal abstract class UnityCollectionMessagePackSerializer : UnityEnumerableMessagePackSerializerBase
 	{
 		private readonly MethodInfo _getCount;

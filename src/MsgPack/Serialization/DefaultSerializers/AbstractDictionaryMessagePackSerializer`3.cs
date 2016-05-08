@@ -40,6 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class AbstractDictionaryMessagePackSerializer<TDictionary, TKey, TValue> : DictionaryMessagePackSerializer<TDictionary, TKey, TValue>
 		where TDictionary : IDictionary<TKey, TValue>
 #else
+#warning TODO: Use generic collection if possible for maintenancibility.
 	internal sealed class AbstractDictionaryMessagePackSerializer : UnityDictionaryMessagePackSerializer
 #endif // !UNITY
 	{

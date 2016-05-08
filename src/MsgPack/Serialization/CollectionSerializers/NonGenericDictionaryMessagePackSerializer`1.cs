@@ -373,6 +373,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 	}
 
 #if UNITY
+#warning TODO: Remove if possible for maintenancibility.
 	internal abstract class UnityNonGenericDictionaryMessagePackSerializer : NonGenericMessagePackSerializer, ICollectionInstanceFactory
 	{
 		private readonly MessagePackSerializer _keySerializer;
