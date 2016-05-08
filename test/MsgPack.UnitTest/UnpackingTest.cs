@@ -140,7 +140,8 @@ namespace MsgPack
 		[Test]
 		public void TestUnpackString_ByteArray_Encoding_1ByteNonSpecifiedString()
 		{
-#if MONO || XAMDROID
+#if MONO || XAMDROID || UNITY2
+#warning TODO: Workaround
 			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
 #elif !NETFX_CORE && !SILVERLIGHT
 			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackString( new byte[] { 0xA4, 0x7F, 0x7F, 0x7F, 0x7F }, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) ) );
@@ -292,7 +293,8 @@ namespace MsgPack
 		[Test]
 		public void TestUnpackString_Stream_Encoding_1ByteNonSpecifiedString()
 		{
-#if MONO || XAMDROID
+#if MONO || XAMDROID || UNITY2
+#warning TODO: Workaround
 			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
 #endif
 
@@ -584,7 +586,8 @@ namespace MsgPack
 		[Test]
 		public void TestUnpackCharStream_Stream_Encoding_1ByteNonSpecifiedString_ExceptionInReaderOperation()
 		{
-#if MONO || XAMDROID
+#if MONO || XAMDROID || UNITY2
+#warning TODO: Workaround
 			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
 #endif
 #if !NETFX_CORE && !SILVERLIGHT

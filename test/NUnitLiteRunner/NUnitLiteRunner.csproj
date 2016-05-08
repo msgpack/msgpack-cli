@@ -42,9 +42,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MsgPack.Unity3D.Full\MsgPack.Unity3D.Full.csproj">
-      <Project>{b752ba0a-72a8-4ee8-af44-d4f5a55a6121}</Project>
-      <Name>MsgPack.Unity3D.Full</Name>
+    <ProjectReference Include="..\..\src\MsgPack.Unity.Full\MsgPack.Unity.Full.csproj">
+      <Project>{30581b4a-bca5-4446-b5e7-4f890a3e9514}</Project>
+      <Name>MsgPack.Unity.Full</Name>
     </ProjectReference>
     <ProjectReference Include="..\MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop\MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop.csproj">
       <Project>{46c5b3d9-45e8-46b6-89f7-837d52c6187a}</Project>

@@ -35,9 +35,9 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MsgPack.Unity3D.Full\MsgPack.Unity3D.Full.csproj">
-      <Project>{b752ba0a-72a8-4ee8-af44-d4f5a55a6121}</Project>
-      <Name>MsgPack.Unity3D.Full</Name>
+    <ProjectReference Include="..\..\src\MsgPack.Unity.Full\MsgPack.Unity.Full.csproj">
+      <Project>{30581b4a-bca5-4446-b5e7-4f890a3e9514}</Project>
+      <Name>MsgPack.Unity.Full</Name>
     </ProjectReference>
     <ProjectReference Include="..\NUnitLite\src\framework\nunitlite-3.5.csproj">
       <Project>{43b24dc5-16d6-45ef-93f1-b021b785a892}</Project>
@@ -393,9 +393,6 @@
     <Compile Include="..\MsgPack.UnitTest.Net35\Mono\System\Threading\SpinWait.cs">
       <Link>Mono\System\Threading\SpinWait.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest.Unity3D\Serialization\AotWorkarounds.cs">
-      <Link>Serialization\AotWorkarounds.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\BigEndianBinaryTest.cs">
       <Link>BigEndianBinaryTest.cs</Link>
     </Compile>
@@ -621,9 +618,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationTargets.cs">
       <Link>Serialization\SerializationTargets.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationTargetTest.cs">
-      <Link>Serialization\SerializationTargetTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\SimpleCollection`1.cs">
       <Link>Serialization\SimpleCollection`1.cs</Link>
     </Compile>
@@ -691,6 +685,9 @@
       <Link>UnpackingTest.Scalar.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -483,17 +483,6 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			{
 				var testClass = 
 					new TestClass( 
-						"SerializationTargetTest", 
-						SerializationTargetTestInitializer.CreateInstance, 
-						8,
-						SerializationTargetTestInitializer.InitializeInstance
-					 );
-				testClasses.Add( testClass );
-			}
-
-			{
-				var testClass = 
-					new TestClass( 
 						"SubtreeUnpackerTest", 
 						SubtreeUnpackerTestInitializer.CreateInstance, 
 						7,
@@ -627,7 +616,7 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 
 		private static IList<TestClass> NewTestClasses()
 		{
-			return new List<TestClass>( 46 );
+			return new List<TestClass>( 45 );
 		}
 
 	} // partial class TestDriver
@@ -5246,27 +5235,6 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestResolveSerializer_SetFound_CanCustomizeSerializer", new Action( instance.TestResolveSerializer_SetFound_CanCustomizeSerializer ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestResolveSerializer_SetNull_Generated", new Action( instance.TestResolveSerializer_SetNull_Generated ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestResolveSerializer_WrongSerializer_Fail", new Action( instance.TestResolveSerializer_WrongSerializer_Fail ) ) );
-		}
-	} 
-
-	internal static class SerializationTargetTestInitializer
-	{
-		public static object CreateInstance()
-		{
-			return new SerializationTargetTest();
-		}
-
-		public static void InitializeInstance( TestClassInstance testClassInstance, object testFixtureInstance )
-		{
-			var instance = ( ( SerializationTargetTest )testFixtureInstance );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestAliasInDataMember", new Action( instance.TestAliasInDataMember ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestAliasInMessagePackMember", new Action( instance.TestAliasInMessagePackMember ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestAnnotated", new Action( instance.TestAnnotated ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestDataMember", new Action( instance.TestDataMember ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestDuplicatedKey", new Action( instance.TestDuplicatedKey ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestIgnoreKinds", new Action( instance.TestIgnoreKinds ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestIndexerOverload", new Action( instance.TestIndexerOverload ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestPlain", new Action( instance.TestPlain ) ) );
 		}
 	} 
 

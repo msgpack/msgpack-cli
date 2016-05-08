@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015-2016 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ using System.Runtime.CompilerServices;
 using System.Security;
 
 [assembly: AssemblyTitle( "MessagePack for CLI(.NET/Mono)" )]
-[assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library for Unity3D with Full .NET 2.0 mode." )]
+[assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library for Unity .NET 2.0 subset." )]
 
 [assembly: AssemblyFileVersion( "0.7.2259.1047" )]
 
@@ -31,7 +31,4 @@ using System.Security;
 
 #if DEBUG || PERFORMANCE_TEST
 [assembly: InternalsVisibleTo( "MsgPack.UnitTest" )]
-[assembly: InternalsVisibleTo( "MsgPack.UnitTest.Unity3D" )]
-[assembly: InternalsVisibleTo( "MsgPack.UnitTest.Unity3D.Desktop" )]
-
 #endif

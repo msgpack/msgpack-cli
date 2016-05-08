@@ -90,30 +90,7 @@
     <Preserve Path="Properties\AssemblyInfo.cs" />
   </Project>
 
-  <Project Name="MsgPack.Unity.Il2cpp.Full" Base="MsgPack.Xamarin.iOS">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude Path="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
-    <Exclude Path="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyCollectionMessagePackSerializer`2.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyDictionaryMessagePackSerializer`3.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
-    <Exclude Path="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
-    <Preserve Path="Volatile.cs" />
-  </Project>
-
-  <Project Name="MsgPack.Unity.Il2cpp" Base="MsgPack.Unity.Il2cpp.Full">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs" />
-    <!-- TODO: Move to here -->
-    <Preserve Path="CorLibOnlyHelper.cs" />
-  </Project>
-
-  <!-- TOOD: should be replaced with *.Il2cpp.Full -->
-  <Project Name="MsgPack.Unity3D.Full" Base="MsgPack.Xamarin.iOS">
+  <Project Name="MsgPack.Unity.Full" Base="MsgPack.Xamarin.iOS">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve Path="Serialization\AotHelper*.tt" />
     <Preserve Path="Serialization\AotHelper*.cs" />
@@ -137,8 +114,7 @@
     <Exclude Path="Validation.cs" />
   </Project>
 
-  <!-- TOOD: should be replaced with *.Il2cpp -->
-  <Project Name="MsgPack.Unity3D" Base="MsgPack.Unity3D.Full">
+  <Project Name="MsgPack.Unity" Base="MsgPack.Unity.Full">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude Path="Serialization\AotHelper*.tt" />
     <Exclude Path="Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs" />
