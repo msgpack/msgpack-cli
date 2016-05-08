@@ -206,11 +206,11 @@ namespace MsgPack.Serialization
 								item.data.GetNamedArguments()
 								.Where( arg => arg.GetMemberName() == "Order" )
 #if !UNITY
-.Select( arg => ( int? )arg.GetTypedValue().Value )
+								.Select( arg => ( int? )arg.GetTypedValue().Value )
 #else
 								.Select( arg => arg.GetTypedValue().Value )
 #endif
-.FirstOrDefault();
+								.FirstOrDefault();
 #if SILVERLIGHT
 							if ( id == -1 )
 							{
@@ -223,11 +223,11 @@ namespace MsgPack.Serialization
 								new SerializingMember(
 									item.member,
 #if !UNITY
- new DataMemberContract( item.member, name, NilImplication.MemberDefault, id )
+									new DataMemberContract( item.member, name, NilImplication.MemberDefault, id )
 #else
 									new DataMemberContract( item.member, name, NilImplication.MemberDefault, ( int? )id )
 #endif // !UNITY
- );
+								);
 						}
 					);
 		}
@@ -416,7 +416,9 @@ namespace MsgPack.Serialization
 							CultureInfo.CurrentCulture,
 							"The member ID '{0}' is duplicated in the '{1}' elementType.",
 							candidates[ source ].Contract.Id,
-							targetType ) );
+							targetType
+						)
+					);
 				}
 
 				while ( candidates[ source ].Contract.Id > destination )
