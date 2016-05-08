@@ -183,6 +183,7 @@ namespace MsgPack
 			catch ( Exception ex )
 			{
 				summaryReporter.HandleFatalException( "InitializeTestEngine", ex, resultPrefab, resultVertical );
+				summaryReporter.RecordError( testClass.MethodCount );
 				isCrashed = true;
 			}
 
@@ -200,6 +201,7 @@ namespace MsgPack
 			catch ( Exception ex )
 			{
 				summaryReporter.HandleFatalException( "FixtureSetup", ex, resultPrefab, resultVertical );
+				summaryReporter.RecordError( testClass.MethodCount );
 				isCrashed = true;
 			}
 
@@ -218,6 +220,7 @@ namespace MsgPack
 			catch ( Exception ex )
 			{
 				summaryReporter.HandleFatalException( "Instantiation", ex, resultPrefab, resultVertical );
+				summaryReporter.RecordError( testClass.MethodCount );
 				isCrashed = true;
 			}
 
@@ -228,6 +231,7 @@ namespace MsgPack
 
 			yield return null;
 
+			int remains = testClass.MethodCount;
 			foreach ( var method in instance.TestMethods )
 			{
 				try
@@ -237,6 +241,7 @@ namespace MsgPack
 				catch ( Exception ex )
 				{
 					summaryReporter.HandleFatalException( "TestSetup", ex, resultPrefab, resultVertical );
+					summaryReporter.RecordError( remains );
 					isCrashed = true;
 				}
 
@@ -291,6 +296,8 @@ namespace MsgPack
 					}
 				}
 
+				remains--;
+
 				yield return null;
 
 				try
@@ -300,6 +307,7 @@ namespace MsgPack
 				catch ( Exception ex )
 				{
 					summaryReporter.HandleFatalException( "TestCleanup", ex, resultPrefab, resultVertical );
+					summaryReporter.RecordError( remains );
 					isCrashed = true;
 				}
 
@@ -334,7 +342,7 @@ namespace MsgPack
 			}
 			catch ( Exception ex )
 			{
-				summaryReporter.HandleFatalException( "InitializeTestEngine", ex, resultPrefab, resultVertical );
+				summaryReporter.HandleFatalException( "CleanupTestEngine", ex, resultPrefab, resultVertical );
 			}
 
 			yield return null;

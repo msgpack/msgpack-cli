@@ -44,11 +44,17 @@ namespace MsgPack
 		{
 			this._currentTestClassName = testClassName;
 			this._shouldUseQualifiedMethodName = shouldUseQualifiedMethodName;
-			this._globalResult = GameObject.Instantiate( resultPrefab );
-			this._globalResult.ForceInitialize();
-			this._globalResult.gameObject.transform.SetParent( resultVertical.transform, true );
+			this._globalResult = CreateNewResult( resultPrefab, resultVertical );
 			this._globalResult.Message.Value = testClassName;
 			this._globalResult.Color.Value = UnityEngine.Color.gray;
+		}
+
+		private static Result CreateNewResult( Result resultPrefab, GameObject resultVertical )
+		{
+			var r = GameObject.Instantiate( resultPrefab );
+			r.ForceInitialize();
+			r.gameObject.transform.SetParent( resultVertical.transform, true );
+			return r;
 		}
 
 		public void SetCurrentTestClassName( string testClassName )
@@ -88,7 +94,18 @@ namespace MsgPack
 
 		public void RecordError()
 		{
-			this._errors++;
+			this.RecordError( 1 );
+		}
+
+		public void RecordError( int errorCount )
+		{
+			if ( errorCount <= 0 )
+			{
+				UnityEngine.Debug.LogWarning( "Invalid error count:" + errorCount );
+				return;
+			}
+
+			this._errors += errorCount;
 			this.UpdateResult();
 		}
 
@@ -96,8 +113,9 @@ namespace MsgPack
 		{
 			var message = this._currentTestClassName + "." + stage + " FATAL " + Environment.NewLine + exception;
 			UnityEngine.Debug.LogError( message );
-			this._globalResult.Message.Value = message;
-			this._globalResult.Color.Value = UnityEngine.Color.red;
+			var result = this._shouldUseQualifiedMethodName ? this._globalResult : CreateNewResult( resultPrefab, resultVertical );
+			result.Message.Value = message;
+			result.Color.Value = UnityEngine.Color.red;
 		}
 
 
