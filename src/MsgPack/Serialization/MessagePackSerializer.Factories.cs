@@ -27,6 +27,7 @@ using System.IO;
 using System.Globalization;
 using System.Runtime.Serialization;
 
+using MsgPack.Serialization.DefaultSerializers;
 using MsgPack.Serialization.ReflectionSerializers;
 #if !SILVERLIGHT && !NETFX_35 && !UNITY
 using System.Collections.Concurrent;
@@ -664,28 +665,96 @@ namespace MsgPack.Serialization
 
 		/// <summary>
 		///		Try to prepare specified type for some AOT(Ahead-Of-Time) compilation environment.
+		///		If the type will be used in collection or dictionary, use <see cref="PrepareCollectionType{TElement}"/> and/or <see cref="PrepareDictionaryType{TKey,TValue}"/> instead.
 		/// </summary>
 		/// <typeparam name="T">The type to be prepared. Normally, this should be value type.</typeparam>
 		/// <remarks>
 		///		<para>
-		///			Currently, this method only works in Unity3D build.
+		///			Currently, this method only works in Unity build.
 		///			This method does not any work for other environments(and should be removed on JIT/AOT), but exists to simplify the application compilation.
 		///			It is recommended to use this method on start up code to reduce probability of some AOT errors.
 		///		</para>
 		///		<para>
 		///			Please note that this method do not ensure for full linkage for AOT.
-		///			Manifest or attribute based linker options (e.g. for .NET Native or Xamarin.iOS) are still required.
 		///		</para>
 		/// </remarks>
 		// ReSharper disable once UnusedTypeParameter
 		public static void PrepareType<T>()
 		{
 #if UNITY || UNITY2
-			// Ensure GetSerializer<T>( object ) is AOT-ed.
-			SerializationContext.Default.GetSerializer<T>();
-			// Ensure Dictionary<T, ?> is work.
-			AotHelper.PrepareEqualityComparer<T>();
+			PrepareTypeCore<T>( new SerializationContext() );
 #endif // UNITY
 		}
+
+		/// <summary>
+		///		Try to prepare specified types which will be used as dictionary keys and values for some AOT(Ahead-Of-Time) compilation environment.
+		///		If the type will be used in collection use <see cref="PrepareCollectionType{TElement}"/> instead.
+		/// </summary>
+		/// <typeparam name="TKey">The key type to be prepared. Normally, this should be value type.</typeparam>
+		/// <typeparam name="TValue">The value type to be prepared. Normally, this should be value type.</typeparam>
+		/// <remarks>
+		///		<para>
+		///			Currently, this method only works in Unity build.
+		///			This method does not any work for other environments(and should be removed on JIT/AOT), but exists to simplify the application compilation.
+		///			It is recommended to use this method on start up code to reduce probability of some AOT errors.
+		///		</para>
+		///		<para>
+		///			Please note that this method do not ensure for full linkage for AOT.
+		///		</para>
+		///		<para>
+		///			Currently, this method prepares <see cref="KeyValuePair{TKey,TValue}"/> and also invokes <see cref="PrepareType{T}"/> implicitly.
+		///		</para>
+		/// </remarks>
+		public static void PrepareDictionaryType<TKey, TValue>()
+		{
+#if UNITY || UNITY2
+			var context = new SerializationContext();
+			var dummy = new System_Collections_Generic_KeyValuePair_2MessagePackSerializer<TKey, TValue>( context );
+			PrepareTypeCore<KeyValuePair<TKey, TValue>>( context );
+#endif // UNITY
+		}
+
+		/// <summary>
+		///		Try to prepare specified type which will be used as collection elements for some AOT(Ahead-Of-Time) compilation environment.
+		///		If the type will be used in dictionary, use <see cref="PrepareCollectionType{TElement}"/> instead.
+		/// </summary>
+		/// <typeparam name="TElement">The element type to be prepared. Normally, this should be value type.</typeparam>
+		/// <remarks>
+		///		<para>
+		///			Currently, this method only works in Unity build.
+		///			This method does not any work for other environments(and should be removed on JIT/AOT), but exists to simplify the application compilation.
+		///			It is recommended to use this method on start up code to reduce probability of some AOT errors.
+		///		</para>
+		///		<para>
+		///			Please note that this method do not ensure for full linkage for AOT.
+		///		</para>
+		///		<para>
+		///			Currently, this method prepares <see cref="ArraySegment{T}"/>, <see cref="Queue{T}"/>, and <see cref="Stack{T}"/>.
+		///			In addition, this method also invokes <see cref="PrepareType{T}"/> implicitly.
+		///		</para>
+		/// </remarks>
+		public static void PrepareCollectionType<TElement>()
+		{
+#if UNITY || UNITY2
+			var context = new SerializationContext();
+			var dummy1 = new System_ArraySegment_1MessagePackSerializer<TElement>( context );
+#if MSGPACK_UNITY_FULL
+			var dummy2 = new System_Collections_Generic_Queue_1MessagePackSerializer<TElement>( context );
+			var dummy3 = new System_Collections_Generic_Stack_1MessagePackSerializer<TElement>( context );
+#endif // MSGPACK_UNITY_FULL
+			PrepareTypeCore<ArraySegment<TElement>>( context );
+#endif // UNITY
+		}
+
+#if UNITY || UNITY2
+
+		private static void PrepareTypeCore<T>( SerializationContext dummyContext )
+		{
+			// Ensure GetSerializer<T>( object ) is AOT-ed.
+			dummyContext.GetSerializer<T>();
+			// Ensure Dictionary<T, ?> is work.
+			AotHelper.PrepareEqualityComparer<T>();
+		}
+#endif // UNITY || UNITY2
 	}
 }

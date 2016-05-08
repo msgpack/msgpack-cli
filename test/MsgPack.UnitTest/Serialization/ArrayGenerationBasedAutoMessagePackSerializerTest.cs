@@ -99,12 +99,16 @@ namespace MsgPack.Serialization
 		[TestFixtureSetUp]
 		public static void SetUpFixture()
 		{
-			MessagePackSerializer.PrepareType<ArraySegment<byte>>();
-			MessagePackSerializer.PrepareType<ArraySegment<int>>();
-			MessagePackSerializer.PrepareType<ArraySegment<decimal>>();
+			MessagePackSerializer.PrepareCollectionType<byte>();
+			MessagePackSerializer.PrepareCollectionType<char>();
+			MessagePackSerializer.PrepareCollectionType<int>();
+			MessagePackSerializer.PrepareCollectionType<decimal>();
+			MessagePackSerializer.PrepareDictionaryType<string, int>();
+			MessagePackSerializer.PrepareDictionaryType<int, int>();
+			MessagePackSerializer.PrepareDictionaryType<string, DateTimeOffset>();
 			MessagePackSerializer.PrepareType<System.Diagnostics.TraceOptions>();
-			MessagePackSerializer.PrepareType<KeyValuePair<string,int>>();
 			new ArraySegmentEqualityComparer<byte>().Equals( default( ArraySegment<byte> ), default( ArraySegment<byte> ) );
+			new ArraySegmentEqualityComparer<char>().Equals( default( ArraySegment<char> ), default( ArraySegment<char> ) );
 			new ArraySegmentEqualityComparer<int>().Equals( default( ArraySegment<int> ), default( ArraySegment<int> ) );
 			new ArraySegmentEqualityComparer<decimal>().Equals( default( ArraySegment<decimal> ), default( ArraySegment<decimal> ) );
 		}

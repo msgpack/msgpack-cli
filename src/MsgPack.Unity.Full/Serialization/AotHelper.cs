@@ -54,14 +54,19 @@ namespace MsgPack.Serialization
 				if ( mayBeGenericArgument.GetIsGenericType() )
 				{
 					var definition = mayBeGenericArgument.GetGenericTypeDefinition();
-					if ( definition == typeof( ArraySegment<> ) )
+					if ( definition == typeof( ArraySegment<> )
+#if MSGPACK_UNITY_FULL
+						|| definition == typeof( Stack<> )
+						|| definition == typeof( Queue<> )
+#endif// MSGPACK_UNITY_FULL
+					)
 					{
-						api = String.Format( CultureInfo.InvariantCulture, "MessagePackSerializer.PrepareArraySegmentType<{0}>", mayBeGenericArgument.GetGenericArguments()[ 0 ].GetFullName() );
+						api = String.Format( CultureInfo.InvariantCulture, "MessagePackSerializer.PrepareCollectionType<{0}>", mayBeGenericArgument.GetGenericArguments()[ 0 ].GetFullName() );
 					}
 					else if ( definition == typeof( KeyValuePair<,> ) )
 					{
 						var genericArguments = mayBeGenericArgument.GetGenericArguments();
-						api = String.Format( CultureInfo.InvariantCulture, "MessagePackSerializer.PrepareKeyValuePairType<{0}, {1}>", genericArguments[ 0 ].GetFullName(), genericArguments[ 1 ].GetFullName() );
+						api = String.Format( CultureInfo.InvariantCulture, "MessagePackSerializer.PrepareDictionaryType<{0}, {1}>", genericArguments[ 0 ].GetFullName(), genericArguments[ 1 ].GetFullName() );
 					}
 				}
 
