@@ -222,12 +222,6 @@ var notInNetStandard1_1 =
 		typeof( System.Collections.Specialized.NameValueCollection ),
 		typeof( System.Security.Cryptography.HashAlgorithmName ),
 	};
-var notInUnities =
-	new HashSet<Type>
-	{
-		typeof( ArraySegment<> ),
-		typeof( KeyValuePair<,> ),
-	};
 #>
 #region -- License Terms --
 //
@@ -306,10 +300,6 @@ namespace MsgPack.Serialization
 #if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY2
 			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.FileTimeMessagePackSerializerProvider( ownerContext, true ) );
 #endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY2
-#if UNITY
-			dictionary.Add( typeof( System.Collections.Generic.KeyValuePair<,> ).TypeHandle, typeof( System_Collections_Generic_KeyValuePair_2MessagePackSerializer ) );
-			dictionary.Add( typeof( System.ArraySegment<> ).TypeHandle, typeof( System_ArraySegment_1MessagePackSerializer ) );
-#endif // UNITY
 #if !NETFX_CORE
 			dictionary.Add( typeof( DBNull ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_DBNullMessagePackSerializer( ownerContext ) );
 #endif // !NETFX_CORE
@@ -459,13 +449,6 @@ foreach( Type type in classTypes )
 <#
 	}
 
-	if( notInUnities.Contains( type) )
-	{
-#>
-#if !UNITY
-<#
-	}
-
 	if ( type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
@@ -490,13 +473,6 @@ foreach( Type type in classTypes )
 	{
 #>
 #endif // !UNITY || MSGPACK_UNITY_FULL
-<#
-	}
-
-	if( notInUnities.Contains( type) )
-	{
-#>
-#endif // !UNITY
 <#
 	}
 

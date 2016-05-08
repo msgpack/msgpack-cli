@@ -23,12 +23,7 @@
 #endif
 
 using System;
-#if !UNITY
 using System.Collections.Generic;
-#endif // !UNITY
-#if UNITY
-using System.Reflection;
-#endif // UNITY
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,7 +31,6 @@ using System.Threading.Tasks;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-#if !UNITY
 	// ReSharper disable once InconsistentNaming
 	internal sealed class System_Collections_Generic_KeyValuePair_2MessagePackSerializer<TKey, TValue> : MessagePackSerializer<KeyValuePair<TKey, TValue>>
 	{
@@ -109,53 +103,4 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // FEATURE_TAP
 
 	}
-#else
-	// ReSharper disable once InconsistentNaming
-	internal sealed class System_Collections_Generic_KeyValuePair_2MessagePackSerializer : NonGenericMessagePackSerializer
-	{
-		private readonly MessagePackSerializer _keySerializer;
-		private readonly MessagePackSerializer _valueSerializer;
-		private readonly MethodInfo _getKey;
-		private readonly MethodInfo _getValue;
-
-		public System_Collections_Generic_KeyValuePair_2MessagePackSerializer( SerializationContext ownerContext, Type targetType )
-			: base( ownerContext, targetType )
-		{
-			var genericArguments = targetType.GetGenericArguments();
-			this._keySerializer = ownerContext.GetSerializer( genericArguments[ 0 ] );
-			this._valueSerializer = ownerContext.GetSerializer( genericArguments[ 1 ] );
-			this._getKey = targetType.GetProperty( "Key" ).GetGetMethod();
-			this._getValue = targetType.GetProperty( "Value" ).GetGetMethod();
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected internal override void PackToCore( Packer packer, object objectTree )
-		{
-			packer.PackArrayHeader( 2 );
-			this._keySerializer.PackTo( packer, this._getKey.InvokePreservingExceptionType( objectTree ) );
-			this._valueSerializer.PackTo( packer, this._getValue.InvokePreservingExceptionType( objectTree ) );
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected internal override object UnpackFromCore( Unpacker unpacker )
-		{
-			if ( !unpacker.Read() )
-			{
-				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
-			}
-
-			var key =
-				unpacker.LastReadData.IsNil ? null : this._keySerializer.UnpackFrom( unpacker );
-
-			if ( !unpacker.Read() )
-			{
-				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
-			}
-
-			var value = unpacker.LastReadData.IsNil ? null : this._valueSerializer.UnpackFrom( unpacker );
-
-			return ReflectionExtensions.CreateInstancePreservingExceptionType( this.TargetType, key, value );
-		}
-	}
-#endif // !UNITY
 }

@@ -30,7 +30,6 @@ using System.Threading.Tasks;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-#if !UNITY
 	// ReSharper disable once InconsistentNaming
 	internal class System_ArraySegment_1MessagePackSerializer<T> : MessagePackSerializer<ArraySegment<T>>
 	{
@@ -164,66 +163,4 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 #endif // FEATURE_TAP
 	}
-#else
-	// ReSharper disable once InconsistentNaming
-	internal class System_ArraySegment_1MessagePackSerializer : NonGenericMessagePackSerializer
-	{
-		private readonly Type _elementType;
-		private readonly MessagePackSerializer _itemSerializer;
-		private readonly Action<Packer, object, MessagePackSerializer> _packing;
-		private readonly Func<Unpacker, Type, MessagePackSerializer, object> _unpacking;
-		
-		public System_ArraySegment_1MessagePackSerializer( SerializationContext ownerContext, Type targetType )
-			: base( ownerContext, targetType )
-		{
-			var elementType = targetType.GetGenericArguments()[ 0 ];
-			this._elementType = elementType;
-			this._itemSerializer = ownerContext.GetSerializer( elementType );
-			this._packing = InitializePacking( elementType );
-			this._unpacking = InitializeUnpacking( elementType );
-		}
-
-		private static Action<Packer, object, MessagePackSerializer> InitializePacking( Type elementType )
-		{
-			if ( elementType == typeof( byte ) )
-			{
-				return ArraySegmentMessageSerializer.PackByteArraySegmentTo;
-			}
-			else if ( elementType == typeof( char ) )
-			{
-				return ArraySegmentMessageSerializer.PackCharArraySegmentTo;
-			}
-			else
-			{
-				return ArraySegmentMessageSerializer.PackGenericArraySegmentTo;
-			}
-		}
-
-		private static Func<Unpacker, Type, MessagePackSerializer, object> InitializeUnpacking( Type elementType )
-		{
-			if ( elementType == typeof( byte ) )
-			{
-				return ArraySegmentMessageSerializer.UnpackByteArraySegmentFrom;
-			}
-			else if ( elementType == typeof( char ) )
-			{
-				return ArraySegmentMessageSerializer.UnpackCharArraySegmentFrom;
-			}
-			else
-			{
-				return ArraySegmentMessageSerializer.UnpackGenericArraySegmentFrom;
-			}
-		}
-
-		protected internal sealed override void PackToCore( Packer packer, object objectTree )
-		{
-			this._packing( packer, objectTree, this._itemSerializer );
-		}
-
-		protected internal sealed override object UnpackFromCore( Unpacker unpacker )
-		{
-			return this._unpacking( unpacker, this._elementType, this._itemSerializer );
-		}
-	}
-#endif // !UNITY
 }
