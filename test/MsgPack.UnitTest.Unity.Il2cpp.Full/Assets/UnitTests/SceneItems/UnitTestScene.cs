@@ -9,12 +9,29 @@ using UniRx;
 
 namespace MsgPack
 {
+	/// <summary>
+	///		The presenter for whole unit testing tool.
+	/// </summary>
 	public class UnitTestScene : MonoBehaviour
 	{
+		/// <summary>
+		///		The prefab for test starting buttons.
+		/// </summary>
 		public Button buttonPrefab;
+
+		/// <summary>
+		///		The vertical area which test starting buttons to be belonging.
+		/// </summary>
 		public GameObject buttonVertical;
 
+		/// <summary>
+		///		The prefab for test result indicators.
+		/// </summary>
 		public Result resultPrefab;
+
+		/// <summary>
+		///		The vertical area which test result indicators to be belonging.
+		/// </summary>
 		public GameObject resultVertical;
 
 

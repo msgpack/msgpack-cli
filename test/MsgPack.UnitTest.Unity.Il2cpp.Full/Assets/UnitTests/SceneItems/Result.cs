@@ -2,43 +2,56 @@
 
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 using UniRx;
 
 // This file is borrowed from UniRX (https://github.com/neuecc/UniRx/blob/master/Assets/ScheneItems/Result.cs)
 
 namespace MsgPack
 {
-    public class Result : PresenterBase
+	/// <summary>
+	///		Implements presentation logic for text test result.
+	/// </summary>
+	public class Result : PresenterBase
     {
-        public UnityEngine.UI.Text text;
+		/// <summary>
+		///		The Text Widget to be updated from this presenter.
+		/// </summary>
+		public UnityEngine.UI.Text text;
 
-        public ReactiveProperty<string> Message { get; private set; }
-        public ReactiveProperty<Color> Color { get; private set; }
+		/// <summary>
+		///		Gets the reactive property for result message text.
+		/// </summary>
+		/// <value>
+		///		The reactive property for result message text.
+		/// </value>
+		public ReactiveProperty<string> Message { get; private set; }
 
-        protected override IPresenter[] Children
-        {
-            get
-            {
-                return EmptyChildren;
-            }
-        }
+		/// <summary>
+		///		Gets the reactive property for result coloring.
+		/// </summary>
+		/// <value>
+		///		The reactive property for result coloring.
+		/// </value>
+		public ReactiveProperty<Color> Color { get; private set; }
 
-        protected override void BeforeInitialize()
-        {
-        }
+		protected override IPresenter[] Children
+		{
+			get { return EmptyChildren; }
+		}
 
-        protected override void Initialize()
-        {
-            var image = this.GetComponent<UnityEngine.UI.Image>();
+		protected override void BeforeInitialize() {}
 
-            Message = new ReactiveProperty<string>("");
-            Message.SubscribeToText(text);
+		protected override void Initialize()
+		{
+			var image = this.GetComponent<UnityEngine.UI.Image>();
 
-            Color = new ReactiveProperty<UnityEngine.Color>();
-            Color.Subscribe(x => image.color = x);
-        }
+			Message = new ReactiveProperty<string>( "" );
+			Message.SubscribeToText( text );
+
+			Color = new ReactiveProperty<UnityEngine.Color>();
+			Color.Subscribe( x => image.color = x );
+		}
     }
 }
 
-#endif
+#endif // !UNITY_METRO && !UNITY_4_5

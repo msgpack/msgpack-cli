@@ -20,17 +20,62 @@
 <#+
 // This file is borrowed from UniRX (https://github.com/neuecc/UniRx/blob/master/Assets/UnitTests/UnitTests.tt)
 // This file implicitly depends on DirectUnitTestDriverCore.ttinclude.
+
+/// <summary>
+///		Explores test classes/methods using EnvDTE and Roslyn Analyzer.
+/// ><summary>
 private class TestClassExplorer
 {
+	/// <summary>
+	///		The type full name of "test class" inidicator attribute type.
+	/// ><summary>
 	private readonly string _testClassAttributeFullName;
+
+	/// <summary>
+	///		The type full name of "test method" inidicator attribute type.
+	/// ><summary>
 	private readonly string _testMethodAttributeFullName;
+
+	/// <summary>
+	///		The type full name of "fixture level test setip routine" inidicator attribute type.
+	/// ><summary>
 	private readonly string _fixtureSetupAttributeFullName;
+
+	/// <summary>
+	///		The type full name of "fixture level test cleanup routine" inidicator attribute type.
+	/// ><summary>
 	private readonly string _fixtureCleanupAttributeFullName;
+
+	/// <summary>
+	///		The type full name of "per test setip routine" inidicator attribute type.
+	/// ><summary>
 	private readonly string _testSetupAttributeFullName;
+
+	/// <summary>
+	///		The type full name of "per test cleanup routine" inidicator attribute type.
+	/// ><summary>
 	private readonly string _testCleanupAttributeFullName;
+
+	/// <summary>
+	///		The type full name of "skipping specified test" inidicator attribute type.
+	/// ><summary>
 	private readonly string _testSkippingAttributeFullName;
+
+	/// <summary>
+	///		The array of type full names of attributes which should mark significant methods including test method, setup method, etc.
+	/// ><summary>
 	private readonly string[] _significantMethodAttributeFullNames;
 
+	/// <summary>
+	///		Initializes a new instance.
+	/// </summary>
+	/// <param name="testClassAttributeFullName">The type full name of "test class" inidicator attribute type.</param>
+	/// <param name="testMethodAttributeFullName">The type full name of "test method" inidicator attribute type.</param>
+	/// <param name="fixtureSetupAttributeFullName">The type full name of "fixture level test setip routine" inidicator attribute type.</param>
+	/// <param name="fixtureCleanupAttributeFullName">The type full name of "fixture level test cleanup routine" inidicator attribute type.</param>
+	/// <param name="testSetupAttributeFullName">The type full name of "per test setip routine" inidicator attribute type.</param>
+	/// <param name="testCleanupAttributeFullName">The type full name of "per test cleanup routine" inidicator attribute type.</param>
+	/// <param name="testSkippingAttributeFullName">The type full name of "skipping specified test" inidicator attribute type.</param>
 	public TestClassExplorer( string testClassAttributeFullName, string testMethodAttributeFullName, 
 		string fixtureSetupAttributeFullName, string fixtureCleanupAttributeFullName,
 		string testSetupAttributeFullName, string testCleanupAttributeFullName,
@@ -48,6 +93,12 @@ private class TestClassExplorer
 			new [] { testMethodAttributeFullName, fixtureSetupAttributeFullName, fixtureCleanupAttributeFullName, testSetupAttributeFullName, testCleanupAttributeFullName };
 	}
 
+	/// <summary>
+	///		Returns a new instance for NUnit or NUnitLite.
+	/// </summary>
+	/// <returns>
+	///		 A new instance for NUnit or NUnitLite.
+	/// </returns>
 	public static TestClassExplorer ForNUnit()
 	{
 		return 
@@ -62,6 +113,14 @@ private class TestClassExplorer
 			);
 	}
 
+	/// <summary>
+	///		Explores specified projects and returns found test classes.
+	/// </summary>
+	/// <param name="host">The host object which implements <see cref="IServiceProvider"/>.</param>
+	/// <param name="projectName">The name of exploring test project.</param>
+	/// <returns>
+	///		 A sequence of the found test classes.
+	/// </returns>
 	public IEnumerable<TestClass> FindTestClasses( object host, string projectName )
 	{
 		var serviceProvider = host as IServiceProvider;
@@ -70,6 +129,13 @@ private class TestClassExplorer
 		return GetClassesAsync( targetProj.FullName ).Result.OrderBy( x => x.TypeFullName );
 	}
 
+	/// <summary>
+	///		Explores specified projects and returns found test classes asynchronously.
+	/// </summary>
+	/// <param name="csProjectPath">The path to C# project.</param>
+	/// <returns>
+	///		 A pending asynchronous operation. Its value is sequence of the found test classes.
+	/// </returns>
 	private async Task<IEnumerable<TestClass>> GetClassesAsync( string csProjectPath )
 	{
 		var workspace = MSBuildWorkspace.Create();
@@ -79,15 +145,16 @@ private class TestClassExplorer
 
 		return 
 			compilation.SyntaxTrees
-				.SelectMany( st => { 
-					var semModel = compilation.GetSemanticModel( st );
+				.SelectMany( st => 
+					{ 
+						var semModel = compilation.GetSemanticModel( st );
 
-					return
-						st.GetRoot()
-						.DescendantNodes()
-						.OfType<ClassDeclarationSyntax>()
-						.Select( x => semModel.GetDeclaredSymbol( x ) );
-				} 
+						return
+							st.GetRoot()
+							.DescendantNodes()
+							.OfType<ClassDeclarationSyntax>()
+							.Select( x => semModel.GetDeclaredSymbol( x ) );
+					} 
 				).SelectMany( x => x.GetMembers(), ( @class, member ) => new { @class, member } )
 				.Where( x => x.member.GetAttributes().Any( a => this._significantMethodAttributeFullNames.Contains( GetAttributeName( a ) ) ) )
 				.Distinct()
@@ -97,16 +164,16 @@ private class TestClassExplorer
 					new TestClass( 
 						g.Key,
 						g.Where( x =>
-							x.member.GetAttributes().Any( a => GetAttributeName( a ) == this._testMethodAttributeFullName ) 
-							&& x.member.GetAttributes().All( a => GetAttributeName( a ) != this._testSkippingAttributeFullName )
+							x.member.GetAttributes().Any( a => GetAttributeName( a ) == this._testMethodAttributeFullName ) // Only test methods
+							&& x.member.GetAttributes().All( a => GetAttributeName( a ) != this._testSkippingAttributeFullName ) // Excludes "Ignored" method
 						).Select( x => new TestMethod( x.member.Name ) )
 						.OrderBy( x => x.Name )
 					)
 					{
-						FixtureSetup = GetMethodName( g.Select( x => x.member ), this._fixtureSetupAttributeFullName ),
-						FixtureCleanup = GetMethodName( g.Select( x => x.member ), this._fixtureCleanupAttributeFullName ),
-						TestSetup = GetMethodName( g.Select( x => x.member ), this._testSetupAttributeFullName ),
-						TestCleanup = GetMethodName( g.Select( x => x.member ), this._testCleanupAttributeFullName )
+						FixtureSetup = GetSpecialMethodName( g.Select( x => x.member ), this._fixtureSetupAttributeFullName ),
+						FixtureCleanup = GetSpecialMethodName( g.Select( x => x.member ), this._fixtureCleanupAttributeFullName ),
+						TestSetup = GetSpecialMethodName( g.Select( x => x.member ), this._testSetupAttributeFullName ),
+						TestCleanup = GetSpecialMethodName( g.Select( x => x.member ), this._testCleanupAttributeFullName )
 					}
 				).OrderBy( x => x.TypeFullName )
 				.ToArray();
@@ -119,12 +186,27 @@ private class TestClassExplorer
 			typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces
 		);
 
+	/// <summary>
+	///		Gets the type full name of the attribute.
+	/// </summary>
+	/// <param name="attribute">The attribute.</param>
+	/// <returns>
+	///		 The type full name of the attribute.
+	/// </returns>
 	private static string GetAttributeName( AttributeData attribute )
 	{
 		return attribute.AttributeClass.ToDisplayString( QualifiedNameOnlyFormat );
 	}
 
-	private static string GetMethodName( IEnumerable<ISymbol> m, string attributeFullName )
+	/// <summary>
+	///		Gets the name of the special method which marked with specified attribute.
+	/// </summary>
+	/// <param name="m">The sequence of <see cref="ISymbol" /> which represents member of the type.</param>
+	/// <param name="attributeFullName">The type full name of the attribute.</param>
+	/// <returns>
+	///		 The name of the special method which marked with specified attribute.
+	/// </returns>
+	private static string GetSpecialMethodName( IEnumerable<ISymbol> m, string attributeFullName )
 	{
 		var found = m.FirstOrDefault( x => x.GetAttributes().Any( a => GetAttributeName( a ) == attributeFullName ) );
 		return found == null ? null : found.Name;

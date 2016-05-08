@@ -41,7 +41,6 @@ using UnityEngine.UI;
 // ReSharper disable once CheckNamespace
 namespace MsgPack
 {
-#warning TODO: documentation comments
 	/// <summary>
 	///		Implements unit test driver for Unity IL2CPP.
 	/// </summary>
@@ -49,6 +48,11 @@ namespace MsgPack
 	{
 		#region -- NUnit specific --
 
+		/// <summary>
+		///		Determines whether the exception represents test failure instead of exceptional case (that is, error).
+		/// </summary>
+		/// <param name="ex">The exxception to be determined.</param>
+		/// <returns><c>true</c> if the exception represents test failure; <c>false</c>, otherwise.</returns>
 		private static bool IsTestFailure( Exception ex )
 		{
 			for ( var current = ex; current != null; current = current.InnerException )
@@ -62,6 +66,11 @@ namespace MsgPack
 			return false;
 		}
 
+		/// <summary>
+		///		Determines whether the exception represents test skipping instead of exceptional case (that is, error).
+		/// </summary>
+		/// <param name="ex">The exxception to be determined.</param>
+		/// <returns><c>true</c> if the exception represents test skipping; <c>false</c>, otherwise.</returns>
 		private static bool IsTestSkipping( Exception ex )
 		{
 			for ( var current = ex; current != null; current = current.InnerException )
@@ -77,6 +86,9 @@ namespace MsgPack
 			return false;
 		}
 
+		/// <summary>
+		///		Initializes the underlying test engine.
+		/// </summary>
 		private static void InitializeTestEngine()
 		{
 			TestExecutionContext context = new TestExecutionContext();
@@ -84,6 +96,9 @@ namespace MsgPack
 			CallContext.SetData( "NUnit.Framework.TestContext", context );
 		}
 
+		/// <summary>
+		///		Clean-ups the underlying test engine.
+		/// </summary>
 		private static void CleanUpTestEngine()
 		{
 			CallContext.FreeNamedDataSlot( "NUnit.Framework.TestContext" );
@@ -91,7 +106,14 @@ namespace MsgPack
 
 		#endregion -- NUnit specific --
 
-		// TODO: View manipulation should be only in Presenter.
+		// TODO: View manipulation should be only in Presenter.		
+		/// <summary>
+		///		Runs this test driver.
+		/// </summary>
+		/// <param name="buttonPrefab">The prefab for test starting buttons.</param>
+		/// <param name="buttonVertical">The vertical area which test starting buttons to be belonging.</param>
+		/// <param name="resultPrefab">The prefab for test result indicators.</param>
+		/// <param name="resultVertical">The vertical area which test result indicators to be belonging.</param>
 		public void Run( Button buttonPrefab, GameObject buttonVertical, Result resultPrefab, GameObject resultVertical )
 		{
 			// For all run.
@@ -122,6 +144,10 @@ namespace MsgPack
 			}
 		}
 
+		/// <summary>
+		///		Clears the test results..
+		/// </summary>
+		/// <param name="resultVertical">The vertical area which holds prevous test results.</param>
 		private static void Clear( GameObject resultVertical )
 		{
 			foreach ( Transform child in resultVertical.transform )
@@ -130,6 +156,13 @@ namespace MsgPack
 			}
 		}
 
+		/// <summary>
+		///		Creates new test result.
+		/// </summary>
+		/// <param name="methodName">Name of the method.</param>
+		/// <param name="resultPrefab">The prefab for test result indicators.</param>
+		/// <param name="resultVertical">The vertical area which test result indicators to be belonging.</param>
+		/// <returns>The result object represents current test method result.</returns>
 		private static Result CreateResult( string methodName, Result resultPrefab, GameObject resultVertical )
 		{
 			var r = GameObject.Instantiate( resultPrefab );
@@ -140,6 +173,13 @@ namespace MsgPack
 			return r;
 		}
 
+		/// <summary>
+		///		Runs all test as coroutine.
+		/// </summary>
+		/// <param name="testClasses">The list of test classes.</param>
+		/// <param name="resultPrefab">The prefab for test result indicators.</param>
+		/// <param name="resultVertical">The vertical area which test result indicators to be belonging.</param>
+		/// <returns><see cref="IEnumerator"/> for coroutine.</returns>
 		private static IEnumerator RunAllTestCoroutine( IEnumerable<TestClass> testClasses, Result resultPrefab, GameObject resultVertical )
 		{
 			var sumaryReporter = new TestSummaryReporter( "All tests", true, resultPrefab, resultVertical );
@@ -167,11 +207,26 @@ namespace MsgPack
 			}
 		}
 
+		/// <summary>
+		///		Runs specified test class as coroutine.
+		/// </summary>
+		/// <param name="testClass">The test class.</param>
+		/// <param name="resultPrefab">The prefab for test result indicators.</param>
+		/// <param name="resultVertical">The vertical area which test result indicators to be belonging.</param>
+		/// <returns><see cref="IEnumerator"/> for coroutine.</returns>
 		private static IEnumerator RunTestCoroutine( TestClass testClass, Result resultPrefab, GameObject resultVertical )
 		{
 			return RuntTestCoroutineCore( testClass, new TestSummaryReporter( testClass.Name, false, resultPrefab, resultVertical ), resultPrefab, resultVertical );
 		}
 
+		/// <summary>
+		///		Runs specified test class as coroutine.
+		/// </summary>
+		/// <param name="testClass">The test class.</param>
+		/// <param name="summaryReporter">The reporter object to report test class execution summary.</param>
+		/// <param name="resultPrefab">The prefab for test result indicators.</param>
+		/// <param name="resultVertical">The vertical area which test result indicators to be belonging.</param>
+		/// <returns><see cref="IEnumerator"/> for coroutine.</returns>
 		private static IEnumerator RuntTestCoroutineCore( TestClass testClass, TestSummaryReporter summaryReporter, Result resultPrefab, GameObject resultVertical )
 		{ 
 			bool isCrashed = false;

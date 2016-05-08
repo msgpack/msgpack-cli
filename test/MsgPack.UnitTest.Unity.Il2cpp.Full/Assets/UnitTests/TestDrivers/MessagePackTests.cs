@@ -31,17 +31,72 @@ using MsgPack.Serialization;
 
 namespace MsgPack
 {
+	/// <summary>
+	///		Represents a test class which groups related tests and holds their states.
+	/// </summary>
 	public partial class TestClass
 	{
+		/// <summary>
+		///		The null object for <see cref="Action" /> typed property.
+		/// </summary>
 		private static readonly Action Nop = () => {};
+
+		/// <summary>
+		///		The null object for <see cref="Action{TestClassInstance, object}"/> typed property.
+		/// </summary>
 		private static readonly Action<TestClassInstance, object> NoInitialization = ( c, i ) => {};
+
+		/// <summary>
+		///		Gets the name of the test class.
+		/// </summary>
+		/// <value>
+		///		The name of the test class. This value will not be <c>null</c>.
+		/// </value>
 		public string Name { get; private set; }
+
+		/// <summary>
+		///		Gets the delegate for fixture level setup routine.
+		/// </summary>
+		/// <value>
+		///		The delegate for fixture level setup routine. This value will not be <c>null</c> even if the underlying test class does not have any fixture level setup routines.
+		/// </value>
 		public Action FixtureSetup { get; set; }
+
+		/// <summary>
+		///		Gets the delegate for fixture level cleanup routine.
+		/// </summary>
+		/// <value>
+		///		The delegate for fixture level cleanup routine. This value will not be <c>null</c> even if the underlying test class does not have any fixture level cleanup routines.
+		/// </value>
 		public Action FixtureCleanup { get; set; }
+
+		/// <summary>
+		///		Gets the count of test methods in the test class.
+		/// </summary>
+		/// <value>
+		///		The ount of test methods in the test class.
+		/// </value>
 		public int MethodCount { get; private set; }
+
+		/// <summary>
+		///		The delegate which instantiate "test class" instance.
+		/// </summary>
 		private readonly Func<object> _instanceFactory;
+
+		/// <summary>
+		///		The delegate which initializes <see cref="TestClassInstance" /> instance with "test class" instance.
+		/// </summary>
 		private readonly Action<TestClassInstance, object> _testClassInstanceInitializer;
 
+		/// <summary>
+		///		Initializes a new instance.
+		/// </summary>
+		/// <param name="name">The name of the test class.</param>
+		/// <param name="instanceFactory">The delegate which instantiate "test class" instance.</param>
+		/// <param name="methodCount">The ount of test methods in the test class.</param>
+		/// <param name="testClassInstanceInitializer">The delegate which initializes <see cref="TestClassInstance" /> instance with "test class" instance.</param>
+		/// <exception cref="ArgumentException">The <paramref name="name"/> is <c>null</c> or empty.</exception>
+		/// <exception cref="ArgumentNullException">The <paramref name="instanceFactory"/> is <c>null</c>.</exception>
 		public TestClass( string name, Func<object> instanceFactory, int methodCount, Action<TestClassInstance, object> testClassInstanceInitializer )
 		{
 			if ( String.IsNullOrEmpty( name ) )
@@ -62,6 +117,12 @@ namespace MsgPack
 			this.FixtureCleanup = Nop;
 		}
 
+		/// <summary>
+		///		Creates a new, initialized <see cref="TestClassInstance" /> which represents instantiated test class information.
+		/// </summary>
+		/// <returns>
+		///		The new, initialized <see cref="TestClassInstance" /> which represents instantiated test class information.
+		/// </returns>
 		public TestClassInstance NewTest()
 		{
 			var instance = this._instanceFactory();
@@ -71,13 +132,46 @@ namespace MsgPack
 		}
 	}
 
+	/// <summary>
+	///		Represents instantiated test class information.
+	/// </summary>
 	public partial class TestClassInstance
 	{
+		// A test class intance will be hold via delegate for its instance methods.
+
+		/// <summary>
+		///		The null object for <see cref="Action" /> typed property.
+		/// </summary>
 		private static readonly Action Nop = () => {};
+
+		/// <summary>
+		///		Gets the delegate for per test setup routine.
+		/// </summary>
+		/// <value>
+		///		The delegate for per test setup routine. This value will not be <c>null</c> even if the underlying test class does not have any per test setup routines.
+		/// </value>
 		public Action TestSetup { get; set; }
+
+		/// <summary>
+		///		Gets the delegate for per test cleanup routine.
+		/// </summary>
+		/// <value>
+		///		The delegate for per test cleanup routine. This value will not be <c>null</c> even if the underlying test class does not have any per test cleanup routines.
+		/// </value>
 		public Action TestCleanup { get; set; }
+
+		/// <summary>
+		///		Gets the list of the test methods.
+		/// </summary>
+		/// <value>
+		///		The list of the test methods. This value will not be <c>null</c>.
+		/// </value>
 		public IList<TestMethod> TestMethods { get; private set; }
 
+		/// <summary>
+		///		Initializes a new instance.
+		/// </summary>
+		/// <param name="methodCount">The ount of test methods in the test class.</param>
 		public TestClassInstance( int methodCount )
 		{
 			this.TestMethods = new List<TestMethod>( methodCount );
@@ -86,31 +180,78 @@ namespace MsgPack
 		}
 	}
 
+	/// <summary>
+	///		Represents a test method.
+	/// </summary>
 	public partial class TestMethod
 	{
+		// "test case" is not supported.
+
+		/// <summary>
+		///		Gets the name of the test method.
+		/// </summary>
+		/// <value>
+		///		The name of the test method. This value will not be <c>null</c>.
+		/// </value>
 		public string Name { get; private set; }
+
+		/// <summary>
+		///		Gets the delegate for instance methnod which is test method itself
+		/// </summary>
+		/// <value>
+		///		The delegate for instance methnod which is test method itself. This value will not be <c>null</c>.
+		/// </value>
 		public Action Method { get; private set; }
 
+		/// <summary>
+		///		Initializes a new instance.
+		/// </summary>
+		/// <param name="name">The name of the test method.</param>
+		/// <param name="method">The delegate for instance methnod which is test method itself.</param>
+		/// <exception cref="ArgumentException">The <paramref name="name"/> is <c>null</c> or empty.</exception>
+		/// <exception cref="ArgumentNullException">The <paramref name="method"/> is <c>null</c>.</exception>
 		public TestMethod( string name, Action method )
 		{
+			if ( String.IsNullOrEmpty( name ) )
+			{
+				throw new ArgumentException( "name cannot be null nor empty.", "name" );
+			}
+
+			if ( method == null )
+			{
+				throw new ArgumentNullException( "method" );
+			}
+
 			this.Name = name;
 			this.Method = method;
 		}
 	}
 
+	/// <summary>
+	///		Implements running environment agnostics test driver features.
+	/// </summary>
 	public partial class TestDriver
 	{
+		/// <summary>
+		///		Gets the list of the test classes.
+		/// </summary>
+		/// <value>
+		///		The list of the test classes. This value will not be <c>null</c>.
+		/// </value>
 		protected IList<TestClass> TestClasses { get; private set; }
 
+		/// <summary>
+		///		Initializes a new instance.
+		/// </summary>
 		protected TestDriver()
 		{
-			this.TestClasses = NewTestClasses();
+			this.TestClasses = new List<TestClass>( 46 );
 			InitializeTestClasses( this.TestClasses );
 		}
-	}
 
-	partial class TestDriver
-	{
+		/// <summary>
+		///		Fills intialized <see cref="TestClass" /> to specified list.
+		/// </summary>
 		private static void InitializeTestClasses( IList<TestClass> testClasses )
 		{
 			{
@@ -625,12 +766,6 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			}
 
 		} // void InitializeTestClasses
-
-		private static IList<TestClass> NewTestClasses()
-		{
-			return new List<TestClass>( 46 );
-		}
-
 	} // partial class TestDriver
 	internal static class AotTestInitializer
 	{

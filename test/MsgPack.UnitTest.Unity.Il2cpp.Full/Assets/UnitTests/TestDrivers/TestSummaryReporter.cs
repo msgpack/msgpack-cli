@@ -32,23 +32,63 @@ namespace MsgPack
 	/// </summary>
 	internal class TestSummaryReporter
 	{
+		/// <summary>
+		///		Current test class name. This field will be changed via <see cref="SetCurrentTestClassName"/> when all-run mode.
+		/// </summary>
 		private string _currentTestClassName;
-		private readonly bool _shouldUseQualifiedMethodName;
+
+		/// <summary>
+		///		<c>true</c> if the summary reporting is in context of all-run mode.
+		/// </summary>
+		private readonly bool _isAllRunMode;
+
+		/// <summary>
+		///		The <see cref="Result"/> object which represents test class or all test result summary.
+		/// </summary>
 		private readonly Result _globalResult;
+
+		/// <summary>
+		///		The number of succeeded tests.
+		/// </summary>
 		private int _succeeded;
+
+		/// <summary>
+		///		The number of skipped tests.
+		/// </summary>
 		private int _skipped;
-		private int _failued;
+
+		/// <summary>
+		///		The number of failed tests.
+		/// </summary>
+		private int _failed;
+
+		/// <summary>
+		///		The number of test errors.
+		/// </summary>
 		private int _errors;
 
-		public TestSummaryReporter( string testClassName, bool shouldUseQualifiedMethodName, Result resultPrefab, GameObject resultVertical )
+		/// <summary>
+		///		Initializes a new instance of the <see cref="TestSummaryReporter"/> class.
+		/// </summary>
+		/// <param name="testClassName">Name of the test class.</param>
+		/// <param name="isAllRunMode"><c>true</c> if the summary reporting is in context of all-run mode..</param>
+		/// <param name="resultPrefab">The prefab for test result indicators.</param>
+		/// <param name="resultVertical">The vertical area which test result indicators to be belonging.</param>
+		public TestSummaryReporter( string testClassName, bool isAllRunMode, Result resultPrefab, GameObject resultVertical )
 		{
 			this._currentTestClassName = testClassName;
-			this._shouldUseQualifiedMethodName = shouldUseQualifiedMethodName;
+			this._isAllRunMode = isAllRunMode;
 			this._globalResult = CreateNewResult( resultPrefab, resultVertical );
 			this._globalResult.Message.Value = testClassName;
 			this._globalResult.Color.Value = UnityEngine.Color.gray;
 		}
 
+		/// <summary>
+		///		Creates the new <see cref="Result"/> object.
+		/// </summary>
+		/// <param name="resultPrefab">The prefab for test result indicators.</param>
+		/// <param name="resultVertical">The vertical area which test result indicators to be belonging.</param>
+		/// <returns>The new <see cref="Result"/> object with finishing common initialization.</returns>
 		private static Result CreateNewResult( Result resultPrefab, GameObject resultVertical )
 		{
 			var r = GameObject.Instantiate( resultPrefab );
@@ -57,14 +97,23 @@ namespace MsgPack
 			return r;
 		}
 
+		/// <summary>
+		///		Sets the name of the current test class.
+		/// </summary>
+		/// <param name="testClassName">Name of the test class.</param>
 		public void SetCurrentTestClassName( string testClassName )
 		{
 			this._currentTestClassName = testClassName;
 		}
 
+		/// <summary>
+		///		Formats the name of the method for reporting.
+		/// </summary>
+		/// <param name="methodName">Name of the method.</param>
+		/// <returns>The formatted method name.</returns>
 		public string FormatMethodName( string methodName )
 		{
-			if ( this._shouldUseQualifiedMethodName )
+			if ( this._isAllRunMode )
 			{
 				return this._currentTestClassName + "." + methodName;
 			}
@@ -74,29 +123,45 @@ namespace MsgPack
 			}
 		}
 
+		/// <summary>
+		///		Records that last test has been succeeded.
+		/// </summary>
 		public void RecordSuccess()
 		{
 			this._succeeded++;
 			this.UpdateResult();
 		}
 
+		/// <summary>
+		///		Records that last test has been skipped.
+		/// </summary>
 		public void RecordSkip()
 		{
 			this._skipped++;
 			this.UpdateResult();
 		}
 
+		/// <summary>
+		///		Records that last test has been failed.
+		/// </summary>
 		public void RecordFailure()
 		{
-			this._failued++;
+			this._failed++;
 			this.UpdateResult();
 		}
 
+		/// <summary>
+		///		Records that an error has been ocurred.
+		/// </summary>
 		public void RecordError()
 		{
 			this.RecordError( 1 );
 		}
 
+		/// <summary>
+		///		Records that a critical error has been ocurred and specified tests will be skipped as error.
+		/// </summary>
+		/// <param name="errorCount">The count of tests will be skipped as error</param>
 		public void RecordError( int errorCount )
 		{
 			if ( errorCount <= 0 )
@@ -109,16 +174,25 @@ namespace MsgPack
 			this.UpdateResult();
 		}
 
+		/// <summary>
+		///		Handles the fatal exception.
+		/// </summary>
+		/// <param name="stage">The stage of test execution for reporting.</param>
+		/// <param name="exception">The fatal exception.</param>
+		/// <param name="resultPrefab">The prefab for test result indicators.</param>
+		/// <param name="resultVertical">The vertical area which test result indicators to be belonging.</param>
 		public void HandleFatalException( string stage, Exception exception, Result resultPrefab, GameObject resultVertical )
 		{
 			var message = this._currentTestClassName + "." + stage + " FATAL " + Environment.NewLine + exception;
 			UnityEngine.Debug.LogError( message );
-			var result = this._shouldUseQualifiedMethodName ? this._globalResult : CreateNewResult( resultPrefab, resultVertical );
+			var result = this._isAllRunMode ? this._globalResult : CreateNewResult( resultPrefab, resultVertical );
 			result.Message.Value = message;
 			result.Color.Value = UnityEngine.Color.red;
 		}
 
-
+		/// <summary>
+		///		Updates the summary <see cref="Result"/>.
+		/// </summary>
 		private void UpdateResult()
 		{
 			this._globalResult.Message.Value =
@@ -129,10 +203,10 @@ namespace MsgPack
 					Environment.NewLine,
 					this._succeeded,
 					this._skipped,
-					this._failued,
+					this._failed,
 					this._errors
 				);
-			if ( this._failued > 0 || this._errors > 0 )
+			if ( this._failed > 0 || this._errors > 0 )
 			{
 				this._globalResult.Color.Value = UnityEngine.Color.red;
 			}
