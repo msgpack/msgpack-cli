@@ -241,11 +241,10 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 				if ( member.Member == null )
 				{
-					// Tuple serializer should not use this method.
-#if DEBUG && !NETFX_35 && !UNITY && !UNITY2
-					Contract.Assert( false, targetType + "'s member[" + i + "].Member == null" );
-#endif // DEBUG && !NETFX_35 && !UNITY && !UNITY2
-					ThrowMissingMetadataException( targetType, i );
+					// Missing member exist because of unconbinous Id of MessagePackMember or Order of DataMember. 
+#if UNITY
+					contracts[ i ] = DataMemberContract.Null;
+#endif // UNITY
 					continue;
 				}
 
@@ -310,22 +309,6 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					serializers[ i ] = context.GetSerializer( memberType, PolymorphismSchema.Create( memberType, member ) );
 				}
 			}
-		}
-
-		private static void ThrowMissingMetadataException( Type targetType, int number )
-		{
-			throw new SerializationException(
-				String.Format(
-					CultureInfo.CurrentCulture,
-					"The {0}th member metadata of type '{1}' is missing."
-#if UNITY
-					+ " Ensure link.xml or [Preserve] attribute for the target type, or use pre-generated serializer."
-#endif // UNITY
-					,
-					number,
-					targetType
-				)
-			);
 		}
 
 		private static void ThrowMissingGetterException( Type targetType, int number )

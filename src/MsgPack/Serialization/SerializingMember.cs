@@ -23,6 +23,11 @@
 #endif
 
 using System;
+#if CORE_CLR || UNITY || UNITY2
+using MPContract = MsgPack.MPContract;
+#else
+using MPContract = System.Diagnostics.Contracts.Contract;
+#endif // CORE_CLR
 using System.Reflection;
 
 namespace MsgPack.Serialization
@@ -50,6 +55,9 @@ namespace MsgPack.Serialization
 
 		public SerializingMember( MemberInfo member, DataMemberContract contract )
 		{
+#if DEBUG
+			MPContract.Assert( member != null );
+#endif // DEBUG
 			this.Member = member;
 			this.Contract = contract;
 			// Use contract name for aliased map serialization.
@@ -60,6 +68,9 @@ namespace MsgPack.Serialization
 		// For Tuple
 		public SerializingMember( string name )
 		{
+#if DEBUG
+			MPContract.Assert( name.StartsWith( "Item" ), name + ".StartsWith(\"Item\")" );
+#endif // DEBUG
 			this.Member = null;
 			this.Contract = default ( DataMemberContract );
 			this.MemberName = name;
