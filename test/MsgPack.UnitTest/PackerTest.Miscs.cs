@@ -33,7 +33,6 @@ using ExplicitAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.
 
 namespace MsgPack
 {
-	[TestFixture]
 	partial class PackerTest
 	{
 #if !NETFX_CORE && !SILVERLIGHT && !AOT
