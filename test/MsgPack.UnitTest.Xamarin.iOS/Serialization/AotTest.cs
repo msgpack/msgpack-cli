@@ -136,7 +136,7 @@ namespace MsgPack.Serialization
 				"Some members are lacked.{0}  Expected:[{1}]{0}  Actual  :[{2}]",
 				Environment.NewLine,
 				String.Join( ", ", expectedMemberNames ),
-				String.Join( ", ", target.Members.Select( m => m.MemberName + "@Id=" + m.Contract.Id ).ToArray() )
+				String.Join( ", ", target.Members.Select( m => String.Format("{{Name: {0}, Contract: {{Name: {1}, Id: {2}, NilImplication: {3}}}, Member: '{4}'}}", m.MemberName, m.Contract.Name, m.Contract.Id, m.Contract.NilImplication, m.Member) ).ToArray() )
 			);
 
 			for ( var i = 0; i < expectedMemberNames.Length; i++ )
@@ -157,7 +157,7 @@ namespace MsgPack.Serialization
 			MemberInfo[] memberInfos;
 			DataMemberContract[] contracts;
 			MessagePackSerializer[] serializers;
-			ReflectionSerializerHelper.GetMetadata( target.Members, context, out getters, out setters, out memberInfos, out contracts, out serializers );
+			ReflectionSerializerHelper.GetMetadata( type, target.Members, context, out getters, out setters, out memberInfos, out contracts, out serializers );
 
 			Assert.That( getters.Length, Is.EqualTo( target.Members.Count ), "getters.Length" );
 			Assert.That( setters.Length, Is.EqualTo( target.Members.Count ), "setters.Length" );
