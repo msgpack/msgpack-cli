@@ -40,6 +40,7 @@ namespace MsgPack.Serialization
 	internal static class ReflectionExtensions
 	{
 		private static readonly Type[] ExceptionConstructorWithInnerParameterTypes = { typeof( string ), typeof( Exception ) };
+		private static readonly Type[] ObjectAddParameterTypes = { typeof( object ) };
 
 		public static object InvokePreservingExceptionType( this ConstructorInfo source, params object[] parameters )
 		{
@@ -729,10 +730,10 @@ namespace MsgPack.Serialization
 			}
 
 			var argumentTypes = new[] { argumentType };
-			var result = targetType.GetMethod( "Add", argumentTypes );
-			if ( result != null )
+			var typedAdd = targetType.GetMethod( "Add", argumentTypes );
+			if ( typedAdd != null )
 			{
-				return result;
+				return typedAdd;
 			}
 
 			var icollectionT = typeof( ICollection<> ).MakeGenericType( argumentType );
@@ -741,9 +742,16 @@ namespace MsgPack.Serialization
 				return icollectionT.GetMethod( "Add", argumentTypes );
 			}
 
+			// It ensures .NET Framework and .NET Core compatibility and provides "natural" feel.
+			var objectAdd = targetType.GetMethod( "Add", ObjectAddParameterTypes );
+			if ( objectAdd != null )
+			{
+				return objectAdd;
+			}
+
 			if ( targetType.IsAssignableTo( typeof( IList ) ) )
 			{
-				return typeof( IList ).GetMethod( "Add", new[] { typeof( object ) } );
+				return typeof( IList ).GetMethod( "Add", ObjectAddParameterTypes );
 			}
 
 			return null;
