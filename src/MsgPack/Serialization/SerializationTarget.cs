@@ -155,7 +155,7 @@ namespace MsgPack.Serialization
 			var duplicated =
 				filtered.FirstOrDefault(
 					member => member.IsDefined( typeof( MessagePackIgnoreAttribute ) )
-					);
+				);
 
 			if ( duplicated != null )
 			{
@@ -165,8 +165,8 @@ namespace MsgPack.Serialization
 						"A member '{0}' of type '{1}' is marked with both MessagePackMemberAttribute and MessagePackIgnoreAttribute.",
 						duplicated.Name,
 						type
-						)
-					);
+					)
+				);
 			}
 
 			return
@@ -175,7 +175,7 @@ namespace MsgPack.Serialization
 						new SerializingMember(
 							member,
 							new DataMemberContract( member, member.GetCustomAttribute<MessagePackMemberAttribute>() )
-							)
+						)
 					);
 		}
 
