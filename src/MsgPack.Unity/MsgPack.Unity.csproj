@@ -55,22 +55,22 @@
     <Compile Include="..\MsgPack.Net35\Volatile.cs">
       <Link>Volatile.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.Unity3D.Full\CorLibOnlyHelper.cs">
+    <Compile Include="..\MsgPack.Unity.Full\CorLibOnlyHelper.cs">
       <Link>CorLibOnlyHelper.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.Unity3D.Full\Serialization\AotHelper.cs">
+    <Compile Include="..\MsgPack.Unity.Full\Serialization\AotHelper.cs">
       <Link>Serialization\AotHelper.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.Unity3D.Full\Serialization\AotHelper.EqualityComparers.cs">
+    <Compile Include="..\MsgPack.Unity.Full\Serialization\AotHelper.EqualityComparers.cs">
       <Link>Serialization\AotHelper.EqualityComparers.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.Unity3D.Full\Serialization\EnumTypedMessagePackSerializerWrapper`1.cs">
+    <Compile Include="..\MsgPack.Unity.Full\Serialization\EnumTypedMessagePackSerializerWrapper`1.cs">
       <Link>Serialization\EnumTypedMessagePackSerializerWrapper`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.Unity3D.Full\Serialization\NonGenericMessagePackSerializer.cs">
+    <Compile Include="..\MsgPack.Unity.Full\Serialization\NonGenericMessagePackSerializer.cs">
       <Link>Serialization\NonGenericMessagePackSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.Unity3D.Full\Serialization\TypedMessagePackSerializerWrapper`1.cs">
+    <Compile Include="..\MsgPack.Unity.Full\Serialization\TypedMessagePackSerializerWrapper`1.cs">
       <Link>Serialization\TypedMessagePackSerializerWrapper`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\AsyncReadResult.cs">
@@ -328,15 +328,6 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\GenericSerializer.cs">
       <Link>Serialization\DefaultSerializers\GenericSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs">
-      <Link>Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs">
-      <Link>Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs">
-      <Link>Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\InternalDateTimeExtensions.cs">
       <Link>Serialization\DefaultSerializers\InternalDateTimeExtensions.cs</Link>
     </Compile>
@@ -396,9 +387,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Globalization_CultureInfoMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_Globalization_CultureInfoMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_ObjectMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_ObjectMessagePackSerializer.cs</Link>

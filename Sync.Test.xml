@@ -123,7 +123,8 @@
     <Exclude File="*.ttinclude" />
   </Project>
 
-  <Project Name="MsgPack.UnitTest.Unity3D" Base="MsgPack.UnitTest.Net35">
+
+  <Project Name="MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop" Base="MsgPack.UnitTest.Net35">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve Path="Resources\*" />
     <Preserve File="*.config" />
@@ -134,15 +135,20 @@
     <Preserve File="Delegates.cs" />
     <Preserve File="NetFxCompatibilities.cs" />
     <Preserve File="Tuple`n.cs" />
-    <Preserve Path="Serialization\AotWorkarounds.cs" />
+    <Preserve Path="Serialization\AotTest.cs" />
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
     <Exclude File="_SetUpFixture.cs" />
     <Exclude File="ReadMe.txt" />
-    <Exclude Path="Serialization\PreGeneratedSerializerGenerator.cs" />
-    <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
+    <Exclude Path="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType*" />
+    <Exclude Path="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType*" />
+    <Exclude Path="ExceptionTest.cs" />
     <Exclude Path="TestSuite.cs" />
+    <Exclude Path="UnpackingTest.Combinations*" />
+    <Exclude Path="Serialization\PreGeneratedSerializerGenerator.cs" />
+    <Exclude Path="Serialization\SerializationTargetTest.cs" />
+    <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
     <Exclude Path="Serialization\CompositeTest.cs" />
     <!-- Generator related -->
     <Exclude File="*ContextBased*.cs" />
@@ -151,16 +157,6 @@
     <Exclude Path="Serialization\MessagePackMemberAndDataMemberMixedTarget.cs" />
     <Exclude Path="Serialization\MessagePackMemberAttributeTest.cs" />
     <Exclude Path="MessagePackObjectTest.RuntimeSerialization.cs" />
-  </Project>
-
-  <Project Name="MsgPack.UnitTest.Unity3D.Desktop" Base="MsgPack.UnitTest.Unity3D">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Preserve Path="Resources\*" />
-  </Project>
-
-  <Project Name="MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop" Base="MsgPack.UnitTest.Unity3D">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Preserve Path="Resources\*" />
   </Project>
 
   <Project Name="MsgPack.UnitTest.WinRT" Base="MsgPack.UnitTest">
