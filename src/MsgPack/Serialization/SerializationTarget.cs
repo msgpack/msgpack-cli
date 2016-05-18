@@ -115,26 +115,38 @@ namespace MsgPack.Serialization
 			return new SerializationTarget( members, defaultConstructor );
 		}
 
-		private static IEnumerable<SerializingMember> GetTargetMembers( Type type )
+		private static MemberInfo[] GetFilteredMembers(Type type)
+		{
+			const MemberTypes Types = MemberTypes.Field | MemberTypes.Property;
+			const BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+            var ret = new List<MemberInfo>();
+			var returnedMemberNamesHashSet = new HashSet<string>();
+			while (type != typeof(object) && type != null)
+			{
+				var members = type.FindMembers( Types, Flags, null, null );
+				foreach (var memberInfo in members)
+				{
+                    if (returnedMemberNamesHashSet.Add( memberInfo.Name )) //HashSet returns true is new key was added
+                        ret.Add( memberInfo );
+				}
+				type = type.BaseType;
+			}
+		    return ret.ToArray();
+		}
+		private static IEnumerable<SerializingMember> GetTargetMembers(Type type)
 		{
 #if DEBUG && !UNITY && !UNITY2
-			Contract.Assert( type != null, "type != null" );
+			Contract.Assert(type != null, "type != null");
 #endif // DEBUG && !UNITY && !UNITY2
 #if !NETSTD_11 && !NETSTD_13
-			var members =
-				type.FindMembers(
-					MemberTypes.Field | MemberTypes.Property,
-					BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-					null,
-					null
-				);
+			var members = GetFilteredMembers( type );
 #else
 			var members =
 				type.GetRuntimeFields().Where( f => !f.IsStatic ).OfType<MemberInfo>()
 					.Concat( type.GetRuntimeProperties().Where( p => p.GetMethod != null && !p.GetMethod.IsStatic ) )
 					.ToArray();
 #endif // !NETSTD_11 && !NETSTD_13
-			var filtered = members.Where( item => item.IsDefined( typeof( MessagePackMemberAttribute ) ) ).ToArray();
+            var filtered = members.Where( item => item.IsDefined( typeof( MessagePackMemberAttribute ) ) ).ToArray();
 
 			if ( filtered.Length > 0 )
 			{
