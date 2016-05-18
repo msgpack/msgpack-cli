@@ -14,7 +14,7 @@
         "define": [ "TRACE", "FEATURE_TAP" ],
         "optimize": true
       }
-    },
+    }
   },
   "compile": [
     "../../../MsgPack/**/*.cs",
@@ -28,6 +28,7 @@
     "../../../MsgPack/Serialization/AbstractSerializers/ISerializerCodeGenerationContext.cs",
     "../../../MsgPack/Serialization/AbstractSerializers/ISerializerCodeGenerator.cs",
     "../../../MsgPack/Serialization/CodeDomSerializers/**/*.*",
+    "../../../MsgPack/Serialization/DefaultSerializers/System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs",
     "../../../MsgPack/Serialization/EmittingSerializers/AssemblyBuilderCodeGenerationContext.cs",
     "../../../MsgPack/Serialization/ISerializerGeneratorConfiguration.cs",
     "../../../MsgPack/Serialization/SerializerAssemblyGenerationConfiguration.cs",
@@ -42,17 +43,17 @@
         "define": [ "NETSTD_13" ]
       },
       "dependencies": {
-        "NETStandard.Library": "(1.5.0-rc3-24015-*,]",
-        "System.Collections.NonGeneric": "(4.0.1-rc3-24015-*,]",
-        "System.Collections.Specialized": "(4.0.1-rc3-24015-*,]",
-        "System.Data.Common": "(4.0.1-rc3-24015-*,]",
-        "System.Diagnostics.Contracts": "(4.0.1-rc3-24015-*,]",
-        "System.Diagnostics.TraceSource": "(4.0.0-rc3-24015-*,]",
-        "System.Linq.Expressions": "(4.0.11-rc3-24015-*,]",
-        "System.Numerics.Vectors": "(4.1.1-rc3-24015-*,]",
-        "System.Reflection.Emit": "(4.0.1-rc3-24015-*,]",
-        "System.Runtime.Numerics": "(4.0.1-rc3-24015-*,]",
-        "System.Runtime.Serialization.Primitives": "(4.1.1-rc3-24015-*,]"
+        "NETStandard.Library": "[1.5.0-rc2-24027,]",
+        "System.Collections.NonGeneric": "[4.0.1-rc2-24027,]",
+        "System.Collections.Specialized": "[4.0.1-rc2-24027,]",
+        "System.Data.Common": "[4.0.1-rc2-24027,]",
+        "System.Diagnostics.Contracts": "[4.0.1-rc2-24027,]",
+        "System.Diagnostics.TraceSource": "[4.0.0-rc2-24027,]",
+        "System.Linq.Expressions": "[4.0.11-rc2-24027,]",
+        "System.Numerics.Vectors": "[4.1.1-rc2-24027,]",
+        "System.Reflection.Emit": "[4.0.1-rc2-24027,]",
+        "System.Runtime.Numerics": "[4.0.1-rc2-24027,]",
+        "System.Runtime.Serialization.Primitives": "[4.1.1-rc2-24027,]"
       }
     }
   }
