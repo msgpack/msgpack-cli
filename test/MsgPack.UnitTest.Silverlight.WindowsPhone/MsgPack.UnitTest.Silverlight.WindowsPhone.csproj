@@ -243,6 +243,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\EnumSerializationTest.EnumDefinitions.cs">
       <Link>Serialization\EnumSerializationTest.EnumDefinitions.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\InheritanceTest.cs">
+      <Link>Serialization\InheritanceTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable.cs">
       <Link>Serialization\IVerifiable.cs</Link>
     </Compile>

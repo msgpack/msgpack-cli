@@ -1640,6 +1640,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\GenerationBasedNilImplicationTest.cs">
       <Link>Serialization\GenerationBasedNilImplicationTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\InheritanceTest.cs">
+      <Link>Serialization\InheritanceTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable.cs">
       <Link>Serialization\IVerifiable.cs</Link>
     </Compile>
