@@ -590,6 +590,7 @@
     <Compile Include="gen\System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer.cs" />
     <Compile Include="gen\System_DayOfWeekSerializer.cs" />
     <Compile Include="Image.cs" />
+    <Compile Include="InheritanceTest.cs" />
     <Compile Include="MessagePackConvertTest.cs" />
     <Compile Include="MessagePackExtendedTypeObjectTest.cs" />
     <Compile Include="MessagePackObjectDictionaryTest.cs" />
