@@ -429,19 +429,23 @@ Release 0.7.0-alpha2 2016/03/10
   KNOWN ISSUES
   * CoreCLR(.NET Core) is not supported because of corefx #5381.
 
-Release 0.7.0-alpha3 2016/05/x
+Release 0.7.0-alpha3 2016/05/22
 
   BREAKING CHANGES
   * Internal structure for Silverlight builds are changed. They now use only reflection based serializers and pre-generated serializers instead of Expression Tree based serializers.
 
   IMPROVEMENTS
-  * Improve CoreCLR(.NET Core) support with work around for corefx GetInterfaceMap() limitation.
+  * Improve .NET Core support with work around for corefx GetInterfaceMap() limitation. .NET Core build requires RC2 or above.
+  * Improve Unity support. Unity DLLs now support IL2CPP with various AOT issue workarounds. Unity build requires 5.3.5f1 or above.
 
   NEW FEATURES
-  * SerializerGenerator.GenerateSerializerCodeAssembly now supports custom namespace. #138.
+  * SerializerGenerator.GenerateSerializerCodeAssembly now supports custom namespace. Issue #138.
 
   BUG FIXES
   * Fix generated serializer codes are not available in WinRT/UWP because of reflection API incompatibility when the type has non-public and explicitly marked fields/properties.
+  * Fix collection only implements IEnumerable may cause NotSupportedException.
+  * Fix hidden by signature members ("new" in C#) causes invalid serializer code generation. Issue/PR #147, #161, #162.
 
   KNOWN ISSUES
-  * Windows App (WinRT) and UWP are built as .NET Standard 1.1/1.3 library now, but there are no NuGet package for them, so WinRT/UWP apps are temporarily unstable. You have to refer dev build of CoreFX in MyGet instead of NuGet to work them.
+  * Reflection based serializers in Unity build is not stable even if you specify [Preserve] and/or link.xml.
+  * .NET Core packaging is under testing.
