@@ -5692,17 +5692,59 @@
         <member name="M:MsgPack.Serialization.MessagePackSerializer.PrepareType``1">
             <summary>
             	Try to prepare specified type for some AOT(Ahead-Of-Time) compilation environment.
+            	If the type will be used in collection or dictionary, use <see cref="M:MsgPack.Serialization.MessagePackSerializer.PrepareCollectionType``1"/> and/or <see cref="M:MsgPack.Serialization.MessagePackSerializer.PrepareDictionaryType``2"/> instead.
             </summary>
             <typeparam name="T">The type to be prepared. Normally, this should be value type.</typeparam>
             <remarks>
             	<para>
-            		Currently, this method only works in Unity3D build.
+            		Currently, this method only works in Unity build.
             		This method does not any work for other environments(and should be removed on JIT/AOT), but exists to simplify the application compilation.
             		It is recommended to use this method on start up code to reduce probability of some AOT errors.
             	</para>
             	<para>
             		Please note that this method do not ensure for full linkage for AOT.
-            		Manifest or attribute based linker options (e.g. for .NET Native or Xamarin.iOS) are still required.
+            	</para>
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.MessagePackSerializer.PrepareDictionaryType``2">
+            <summary>
+            	Try to prepare specified types which will be used as dictionary keys and values for some AOT(Ahead-Of-Time) compilation environment.
+            	If the type will be used in collection use <see cref="M:MsgPack.Serialization.MessagePackSerializer.PrepareCollectionType``1"/> instead.
+            </summary>
+            <typeparam name="TKey">The key type to be prepared. Normally, this should be value type.</typeparam>
+            <typeparam name="TValue">The value type to be prepared. Normally, this should be value type.</typeparam>
+            <remarks>
+            	<para>
+            		Currently, this method only works in Unity build.
+            		This method does not any work for other environments(and should be removed on JIT/AOT), but exists to simplify the application compilation.
+            		It is recommended to use this method on start up code to reduce probability of some AOT errors.
+            	</para>
+            	<para>
+            		Please note that this method do not ensure for full linkage for AOT.
+            	</para>
+            	<para>
+            		Currently, this method prepares <see cref="T:System.Collections.Generic.KeyValuePair`2"/> and also invokes <see cref="M:MsgPack.Serialization.MessagePackSerializer.PrepareType``1"/> implicitly.
+            	</para>
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.MessagePackSerializer.PrepareCollectionType``1">
+            <summary>
+            	Try to prepare specified type which will be used as collection elements for some AOT(Ahead-Of-Time) compilation environment.
+            	If the type will be used in dictionary, use <see cref="M:MsgPack.Serialization.MessagePackSerializer.PrepareCollectionType``1"/> instead.
+            </summary>
+            <typeparam name="TElement">The element type to be prepared. Normally, this should be value type.</typeparam>
+            <remarks>
+            	<para>
+            		Currently, this method only works in Unity build.
+            		This method does not any work for other environments(and should be removed on JIT/AOT), but exists to simplify the application compilation.
+            		It is recommended to use this method on start up code to reduce probability of some AOT errors.
+            	</para>
+            	<para>
+            		Please note that this method do not ensure for full linkage for AOT.
+            	</para>
+            	<para>
+            		Currently, this method prepares <see cref="T:System.ArraySegment`1"/>, <see cref="T:System.Collections.Generic.Queue`1"/>, and <see cref="T:System.Collections.Generic.Stack`1"/>.
+            		In addition, this method also invokes <see cref="M:MsgPack.Serialization.MessagePackSerializer.PrepareType``1"/> implicitly.
             	</para>
             </remarks>
         </member>
@@ -8608,6 +8650,29 @@
             	Non-interoperable type info embedding based polymorphism.
             </summary>
         </member>
+        <member name="T:MsgPack.Serialization.ReflectionHelpers">
+            <summary>
+            	<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+            	Defines serialization helper reflection APIs.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.ReflectionHelpers.GetMethod(System.Type,System.String,System.Type[])">
+            <summary>
+            	Gets a specified <see cref="T:System.Reflection.MethodInfo"/> even if the method is not publicly exposed.
+            </summary>
+            <param name="type">The type to be introspected.</param>
+            <param name="name">The name of the method.</param>
+            <param name="parameterTypes">The parameter types of the method.</param>
+            <returns>A <see cref="T:System.Reflection.MethodInfo"/> object.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.ReflectionHelpers.GetField(System.Type,System.String)">
+            <summary>
+            	Gets a specified <see cref="T:System.Reflection.FieldInfo"/> even if the field is not publicly exposed.
+            </summary>
+            <param name="type">The type to be introspected.</param>
+            <param name="name">The name of the method.</param>
+            <returns>A <see cref="T:System.Reflection.FieldInfo"/> object.</returns>
+        </member>
         <member name="T:MsgPack.Serialization.ReflectionSerializers.ReflectionEnumMessagePackSerializer`1">
             <summary>
             	Implements reflection-based enum serializer for restricted platforms.
@@ -9516,6 +9581,20 @@
             	</note>
             </remarks>
         </member>
+        <member name="P:MsgPack.Serialization.SerializationCompatibilityOptions.IgnorePackabilityForCollection">
+            <summary>
+            	Gets or sets a value indicating whether serializer generator ignores packability interfaces for collections or not.
+            </summary>
+            <value>
+            	<c>true</c> if serializer generator ignores packability interfaces for collections; otherwise, <c>false</c>. The default is <c>true</c>.
+            </value>
+            <remarks>
+            	Historically, MessagePack for CLI ignored packability interfaces (<see cref="T:MsgPack.IPackable"/>, <see cref="T:MsgPack.IUnpackable"/>, 
+            	<see cref="!:IAsyncPackable"/> and <see cref="!:IAsyncUnpackable"/>) for collection which implements <see cref="T:System.IEquatable`1"/> (except <see cref="T:System.String"/> and its kinds).
+            	As of 0.7, the generator respects such interfaces even if the target type is collection.
+            	Although this behavior is desirable and correct, setting this property <c>true</c> turn out the new behavior for backward compatibility.
+            </remarks>
+        </member>
         <member name="T:MsgPack.Serialization.SerializationContext">
             <summary>
             	<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -10179,6 +10258,16 @@
             <c>true</c> if creates Nullable of T serializers for value type serializers; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="P:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.Namespace">
+            <summary>
+            	Gets or sets the namespace of generated classes.
+            </summary>
+            <value>
+            	The namespace of generated classes.
+            	The default is <c>"MsgPack.Serialization.GeneratedSerializers"</c>.
+            </value>
+            <exception cref="T:System.ArgumentException">Specified value is not valid for namespace.</exception>
+        </member>
         <member name="T:MsgPack.Serialization.SerializerCapabilities">
             <summary>
             	Represents serializer capabilities.
@@ -10392,6 +10481,25 @@
             <summary>
             	Flushes the trace data.
             </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.SerializerDebugging.PrepareDump(System.Reflection.Emit.AssemblyBuilder)">
+            <summary>
+            	Prepares instruction dump with specified <see cref="T:System.Reflection.Emit.AssemblyBuilder"/>.
+            </summary>
+            <param name="assemblyBuilder">The assembly builder to hold instructions.</param>
+        </member>
+        <member name="M:MsgPack.Serialization.SerializerDebugging.PrepareDump">
+            <summary>
+            	Prepares the dump with dedicated internal <see cref="T:System.Reflection.Emit.AssemblyBuilder"/>.
+            </summary>
+        </member>
+        <member name="M:MsgPack.Serialization.SerializerDebugging.NewTypeBuilder(System.Type)">
+            <summary>
+            	Creates the new type builder for the serializer.
+            </summary>
+            <param name="targetType">The serialization target type.</param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException">PrepareDump() was not called.</exception>
         </member>
         <member name="M:MsgPack.Serialization.SerializerDebugging.Dump">
             <summary>
