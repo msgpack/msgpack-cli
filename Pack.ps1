@@ -1,11 +1,10 @@
-#TODO: CommonAssemblyInfo.cs 1つにする、FileVersion の集約、CopyRight の集約
-
 param([Switch]$Rebuild)
 
 [string]$temp = '.\nugettmp'
 [string]$builder = "$env:windir\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
 [string]$winBuilder = "${env:ProgramFiles(x86)}\MSBuild\14.0\Bin\MSBuild.exe"
-[string]$projCoreClr = "src/MsgPack"
+[string]$projNetStandard11 = "src/netstandard/1.1/MsgPack"
+[string]$projNetStandard13 = "src/netstandard/1.3/MsgPack"
 
 if ( ![IO.File]::Exists( "$winBuilder" ) )
 {
@@ -71,20 +70,31 @@ if ( $LastExitCode -ne 0 )
 	exit $LastExitCode
 }
 
-dotnet restore $projCoreClr
+dotnet restore $projNetStandard11
 if ( $LastExitCode -ne 0 )
 {
 	exit $LastExitCode
 }
 
-#TODO: netcore50 -> netstandard1.4 netcore50 -> netstandard1.4
-dotnet build $projCoreClr -o bin\dnxcore50 -f dnxcore50 -c Release
+dotnet build $projNetStandard11 -o bin\netstandard1.1 -f netstandard11 -c Release
 if ( $LastExitCode -ne 0 )
 {
 	exit $LastExitCode
 }
 
-$winFile = New-Object IO.FileInfo( ".\bin\portable-net45+win+wpa81\MsgPack.dll" )
+dotnet restore $projNetStandard13
+if ( $LastExitCode -ne 0 )
+{
+	exit $LastExitCode
+}
+
+dotnet build $projNetStandard13 -o bin\netstandard1.3 -f netstandard13 -c Release
+if ( $LastExitCode -ne 0 )
+{
+	exit $LastExitCode
+}
+
+$winFile = New-Object IO.FileInfo( ".\bin\windowsphone8\MsgPack.dll" )
 $xamarinFile = New-Object IO.FileInfo( ".\bin\MonoTouch10\MsgPack.dll" )
 if( ( $winFile.LastWriteTime - $xamarinFile.LastWriteTime ).Days -ne 0 )
 {
