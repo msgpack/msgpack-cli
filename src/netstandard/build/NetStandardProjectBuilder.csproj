@@ -35,45 +35,16 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <None Include="build.cmd" />
+    <None Include="build.sh" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>echo Retore netstandard 1.1 project...
-dotnet restore $(ProjectDir)..\1.1\MsgPack\project.json
-if not %25ERRORLEVEL%25==0 (
-  echo "Failed to restore netstandard1.1"
-  exit 1
-)
-
-echo Build netstandard 1.1 project...
-dotnet build $(ProjectDir)..\1.1\MsgPack\project.json -c $(ConfigurationName)
-if not %25ERRORLEVEL%25==0 (
-  echo "Failed to build netstandard1.1"
-  exit 1
-)
-
-echo Retore netstandard 1.3 project...
-dotnet restore $(ProjectDir)..\1.3\MsgPack\project.json
-if not %25ERRORLEVEL%25==0 (
-  echo "Failed to restore netstandard1.3"
-  exit 1
-)
-
-echo Build netstandard 1.1 project...
-dotnet build $(ProjectDir)..\1.3\MsgPack\project.json -c $(ConfigurationName)
-if not %25ERRORLEVEL%25==0 (
-  echo "Failed to build netstandard1.3"
-  exit 1
-)
-
-if "Release"=="$(ConfigurationName)" (
-echo Copy release binaries...
-robocopy ..\1.1\bin\Release\ $(SolutionDir)bin\ /S
-robocopy ..\1.3\bin\Release\ $(SolutionDir)bin\ /S
-)</PreBuildEvent>
+    <PreBuildEvent Condition="'$(OS)' == 'Windows_NT'">$(ProjectDir)\build.cmd $(SolutionDir) $(ProjectDir) $(ConfigurationName)</PreBuildEvent>
+    <PreBuildEvent Condition="'$(OS)' != 'Windows_NT'">bash $(ProjectDir)/build.sh $(SolutionDir) $(ProjectDir) $(ConfigurationName)</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
