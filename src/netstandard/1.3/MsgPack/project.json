@@ -1,45 +1,47 @@
-﻿{
-  "compilationOptions": {
-    "keyFile": "../../../MsgPack.snk"
-  },
-  "configurations": {
-    "Debug": {
-      "compilationOptions": {
-        "define": [ "DEBUG", "TRACE", "FEATURE_TAP" ],
-        "optimize": false
+{
+  "buildOptions": {
+    "keyFile": "../../../MsgPack.snk",
+    "configurations": {
+      "Debug": {
+        "buildOptions": {
+          "define": [ "DEBUG" ],
+          "optimize": false
+        }
+      },
+      "Release": {
+        "buildOptions": {
+          "optimize": true
+        }
       }
     },
-    "Release": {
-      "compilationOptions": {
-        "define": [ "TRACE", "FEATURE_TAP" ],
-        "optimize": true
-      }
-    }
+    "define": [ "TRACE", "FEATURE_TAP" ],
+    "compile": {
+      "include": [
+        "../../../MsgPack/**/*.cs",
+        "../../../CommonAssemblyInfo.cs",
+        "../../BufferedStream.cs",
+        "../../NetStandardCompatibility.cs"
+      ],
+      "exclude": [
+        "../../../MsgPack/Serialization/ExpressionSerializers/**/*.*",
+        "../../../MsgPack/Properties/AssemblyInfo.cs",
+        "../../../MsgPack/Serialization/AbstractSerializers/ISerializerCodeGenerationContext.cs",
+        "../../../MsgPack/Serialization/AbstractSerializers/ISerializerCodeGenerator.cs",
+        "../../../MsgPack/Serialization/CodeDomSerializers/**/*.*",
+        "../../../MsgPack/Serialization/DefaultSerializers/System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs",
+        "../../../MsgPack/Serialization/EmittingSerializers/AssemblyBuilderCodeGenerationContext.cs",
+        "../../../MsgPack/Serialization/ISerializerGeneratorConfiguration.cs",
+        "../../../MsgPack/Serialization/SerializerAssemblyGenerationConfiguration.cs",
+        "../../../MsgPack/Serialization/SerializerGenerator.cs",
+        "../../../MsgPack/Serialization/SerializerCodeGenerationConfiguration.cs",
+        "../../../MsgPack/Serialization/SerializerCodeGenerationContext.cs",
+        "../../../MsgPack/Serialization/SerializerCodeGenerationResult.cs"
+      ]
+    },
   },
-  "compile": [
-    "../../../MsgPack/**/*.cs",
-    "../../../CommonAssemblyInfo.cs",
-    "../../BufferedStream.cs",
-    "../../NetStandardCompatibility.cs"
-  ],
-  "compileExclude": [
-    "../../../MsgPack/Serialization/ExpressionSerializers/**/*.*",
-    "../../../MsgPack/Properties/AssemblyInfo.cs",
-    "../../../MsgPack/Serialization/AbstractSerializers/ISerializerCodeGenerationContext.cs",
-    "../../../MsgPack/Serialization/AbstractSerializers/ISerializerCodeGenerator.cs",
-    "../../../MsgPack/Serialization/CodeDomSerializers/**/*.*",
-    "../../../MsgPack/Serialization/DefaultSerializers/System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs",
-    "../../../MsgPack/Serialization/EmittingSerializers/AssemblyBuilderCodeGenerationContext.cs",
-    "../../../MsgPack/Serialization/ISerializerGeneratorConfiguration.cs",
-    "../../../MsgPack/Serialization/SerializerAssemblyGenerationConfiguration.cs",
-    "../../../MsgPack/Serialization/SerializerGenerator.cs",
-    "../../../MsgPack/Serialization/SerializerCodeGenerationConfiguration.cs",
-    "../../../MsgPack/Serialization/SerializerCodeGenerationContext.cs",
-    "../../../MsgPack/Serialization/SerializerCodeGenerationResult.cs"
-  ],
   "frameworks": {
     "netstandard1.3": {
-      "compilationOptions": {
+      "buildOptions": {
         "define": [ "NETSTD_13" ]
       },
       "dependencies": {
