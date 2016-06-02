@@ -29,11 +29,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\MsgPack-CLI\unity3d\</OutputPath>
+    <OutputPath>..\..\build\MsgPack-CLI\unity\</OutputPath>
     <DefineConstants>TRACE;UNITY_IPHONE;AOT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\MsgPack-CLI\unity3d\MsgPack.XML</DocumentationFile>
+    <DocumentationFile>..\..\build\MsgPack-CLI\unity\MsgPack.XML</DocumentationFile>
     <NoWarn>3001,3002</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
