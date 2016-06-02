@@ -1,1 +1,0 @@
-@powershell .\packxamarin.ps1 %1

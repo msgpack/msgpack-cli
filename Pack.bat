@@ -1,1 +1,0 @@
-@powershell .\pack.ps1 %1
