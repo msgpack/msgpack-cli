@@ -83,56 +83,56 @@ if ( !( Test-Path "./MsgPack-CLI/mpu" ) )
 }
 
 # build
-&$nuget restore $sln
+& $nuget restore $sln
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $sln"
 	exit $LastExitCode
 }
 
-&$builder $sln $buildOptions
+& $builder $sln $buildOptions
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to build $sln"
 	exit $LastExitCode
 }
 
-&$nuget restore $slnCompat
+& $nuget restore $slnCompat
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $slnCompat"
 	exit $LastExitCode
 }
 
-&$builder $slnCompat $buildOptions
+& $builder $slnCompat $buildOptions
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to build $slnCompat"
 	exit $LastExitCode
 }
 
-&$nuget restore $slnWindows
+& $nuget restore $slnWindows
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $slnWindows"
 	exit $LastExitCode
 }
 
-&$winBuilder $slnWindows $buildOptions
+& $winBuilder $slnWindows $buildOptions
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to build $slnWindows"
 	exit $LastExitCode
 }
 
-&$nuget restore $slnXamarin
+& $nuget restore $slnXamarin
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $slnXamarin"
 	exit $LastExitCode
 }
 
-&$builder $slnXamarin $buildOptions
+& $builder $slnXamarin $buildOptions
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to build $slnXamarin"
@@ -171,7 +171,7 @@ if ( $LastExitCode -ne 0 )
 if ( $buildConfig -eq 'Release' )
 {
 	[string]$zipVersion = $env:PackageVersion
-	&$nuget pack ../MsgPack.nuspec -Symbols -Version $env:PackageVersion -OutputDirectory ../dist
+	& $nuget pack ../MsgPack.nuspec -Symbols -Version $env:PackageVersion -OutputDirectory ../dist
 
 	Copy-Item ../bin/ ./MsgPack-CLI/ -Recurse -Exclude @("*.vshost.*")
 	Copy-Item ../tools/mpu/bin/ ./MsgPack-CLI/mpu/ -Recurse -Exclude @("*.vshost.*")
