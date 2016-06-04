@@ -151,7 +151,11 @@ if ( $LastExitCode -ne 0 )
 	Write-Error "Failed to build $slnXamarin"
 	exit $LastExitCode
 }
-Copy-Item ../bin/MonoTouch10 ../bin/Xamarin.iOS10 -Recurse
+
+if ( $buildConfig -eq 'Release' )
+{
+	Copy-Item ../bin/MonoTouch10 ../bin/Xamarin.iOS10 -Recurse
+}
 
 dotnet restore $projNetStandard11
 if ( $LastExitCode -ne 0 )
