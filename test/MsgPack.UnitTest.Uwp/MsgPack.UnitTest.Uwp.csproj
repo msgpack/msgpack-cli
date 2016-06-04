@@ -1876,6 +1876,12 @@
     <Content Include="..\MsgPack.UnitTest\gen\_ReadMe.txt">
       <Link>gen\_ReadMe.txt</Link>
     </Content>
+    <Content Include="Assets\LockScreenLogo.png" />
+    <Content Include="Assets\SplashScreen.png" />
+    <Content Include="Assets\Square150x150Logo.png" />
+    <Content Include="Assets\Square44x44Logo.png" />
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\Wide310x150Logo.png" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
