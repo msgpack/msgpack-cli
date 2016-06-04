@@ -1,11 +1,10 @@
 param([Switch]$Rebuild)
 
-[string]$temp = './nugettmp'
-
 if ( $env:APPVEYOR -eq "True" )
 {
 	[string]$builder = "MSBuild.exe"
 	[string]$winBuilder = "MSBuild.exe"
+	[string]$nuget = "nuget"
 	
 	# AppVeyor should have right MSBuild and dotnet-cli...
 }
@@ -14,6 +13,7 @@ else
 	./SetBuildEnv.ps1
 	[string]$builder = "$env:windir\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
 	[string]$winBuilder = "${env:ProgramFiles(x86)}\MSBuild\14.0\Bin\MSBuild.exe"
+	[string]$nuget = "../.nuget/nuget.exe"
 
 	if ( !( Test-Path( "$winBuilder" ) ) )
 	{
@@ -83,7 +83,19 @@ if ( !( Test-Path "./MsgPack-CLI/mpu" ) )
 }
 
 # build
+&$nuget restore $sln
+if ( $LastExitCode -ne 0 )
+{
+	exit $LastExitCode
+}
+
 &$builder $sln $buildOptions
+if ( $LastExitCode -ne 0 )
+{
+	exit $LastExitCode
+}
+
+&$nuget restore $slnCompat
 if ( $LastExitCode -ne 0 )
 {
 	exit $LastExitCode
@@ -95,7 +107,19 @@ if ( $LastExitCode -ne 0 )
 	exit $LastExitCode
 }
 
+&$nuget restore $slnWindows
+if ( $LastExitCode -ne 0 )
+{
+	exit $LastExitCode
+}
+
 &$winBuilder $slnWindows $buildOptions
+if ( $LastExitCode -ne 0 )
+{
+	exit $LastExitCode
+}
+
+&$nuget restore $slnXamarin
 if ( $LastExitCode -ne 0 )
 {
 	exit $LastExitCode
@@ -134,15 +158,6 @@ if ( $LastExitCode -ne 0 )
 
 if ( $buildConfig -eq 'Release' )
 {
-	if ( $env:APPVEYPOR -eq "True" )
-	{
-		[string]$nuget = "nuget"
-	}
-	else
-	{
-		[string]$nuget = "../.nuget/nuget.exe"
-	}
-	
 	[string]$zipVersion = $env:PackageVersion
 	&$nuget pack ../MsgPack.nuspec -Symbols -Version $env:PackageVersion -OutputDirectory ../dist
 
