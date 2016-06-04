@@ -3,7 +3,7 @@
   <Identity Name="66082f86-cfc2-4153-ba8e-8d7002c9f8e2" Publisher="CN=MsgPack.Cli.UnitTest" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="66082f86-cfc2-4153-ba8e-8d7002c9f8e2" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>MsgPack.UnitTest.Uwp</DisplayName>
+    <DisplayName>MsgPack.Cli.UnitTest.Uwp</DisplayName>
     <PublisherDisplayName>MsgPack.Cli.UnitTest</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>

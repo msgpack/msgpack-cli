@@ -3,8 +3,8 @@
   <Identity Name="7051c654-51cf-4934-bb53-676ff413908f" Publisher="CN=Yusuke" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="7051c654-51cf-4934-bb53-676ff413908f" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>MsgPack.UnitTest</DisplayName>
-    <PublisherDisplayName>FUJIWARA Yusuke</PublisherDisplayName>
+    <DisplayName>MsgPack.Cli.UnitTest.WindowsPhone</DisplayName>
+    <PublisherDisplayName>MsgPack.Cli.UnitTest</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>

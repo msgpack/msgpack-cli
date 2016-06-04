@@ -67,8 +67,8 @@ namespace MsgPack.Serialization
 		public void SetUp()
 		{
 			SerializerDebugging.DeletePastTemporaries();
-			//SerializerDebugging.TraceEnabled = true;
-			//SerializerDebugging.DumpEnabled = true;
+			SerializerDebugging.TraceEnabled = true;
+			SerializerDebugging.DumpEnabled = true;
 			if ( SerializerDebugging.TraceEnabled )
 			{
 				Tracer.Emit.Listeners.Clear();
@@ -103,6 +103,14 @@ namespace MsgPack.Serialization
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
 #endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
+
+		[Test]
+		public void TestIssue166()
+		{
+			this.CreateSerializationContext().GetSerializer<Exception>();
+		}
+
+
 
 		// ------ Creation ------
 

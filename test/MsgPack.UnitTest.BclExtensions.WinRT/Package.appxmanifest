@@ -2,7 +2,7 @@
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
   <Identity Name="9775e3cb-f869-4754-b13a-963a63ea417a" Publisher="CN=MsgPack.Cli.UnitTest" Version="1.1.0.0" />
   <Properties>
-    <DisplayName>MsgPack.UnitTest.BclExtensions.WinRT</DisplayName>
+    <DisplayName>MsgPack.Cli.UnitTest.BclExtensions.WinRT</DisplayName>
     <PublisherDisplayName>MsgPack.Cli.UnitTest</PublisherDisplayName>
     <Logo>Images\UnitTestStoreLogo.png</Logo>
     <Description>MsgPack.UnitTest.WinRT.BclExtensions</Description>
