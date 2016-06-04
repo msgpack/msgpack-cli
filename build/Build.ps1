@@ -86,48 +86,56 @@ if ( !( Test-Path "./MsgPack-CLI/mpu" ) )
 &$nuget restore $sln
 if ( $LastExitCode -ne 0 )
 {
+	Write-Error "Failed to restore $sln"
 	exit $LastExitCode
 }
 
 &$builder $sln $buildOptions
 if ( $LastExitCode -ne 0 )
 {
+	Write-Error "Failed to build $sln"
 	exit $LastExitCode
 }
 
 &$nuget restore $slnCompat
 if ( $LastExitCode -ne 0 )
 {
+	Write-Error "Failed to restore $slnCompat"
 	exit $LastExitCode
 }
 
 &$builder $slnCompat $buildOptions
 if ( $LastExitCode -ne 0 )
 {
+	Write-Error "Failed to build $slnCompat"
 	exit $LastExitCode
 }
 
 &$nuget restore $slnWindows
 if ( $LastExitCode -ne 0 )
 {
+	Write-Error "Failed to restore $slnWindows"
 	exit $LastExitCode
 }
 
 &$winBuilder $slnWindows $buildOptions
 if ( $LastExitCode -ne 0 )
 {
+	Write-Error "Failed to build $slnWindows"
 	exit $LastExitCode
 }
 
 &$nuget restore $slnXamarin
 if ( $LastExitCode -ne 0 )
 {
+	Write-Error "Failed to restore $slnXamarin"
 	exit $LastExitCode
 }
 
 &$builder $slnXamarin $buildOptions
 if ( $LastExitCode -ne 0 )
 {
+	Write-Error "Failed to build $slnXamarin"
 	exit $LastExitCode
 }
 Copy-Item ../bin/MonoTouch10 ../bin/Xamarin.iOS10 -Recurse
@@ -135,24 +143,28 @@ Copy-Item ../bin/MonoTouch10 ../bin/Xamarin.iOS10 -Recurse
 dotnet restore $projNetStandard11
 if ( $LastExitCode -ne 0 )
 {
+	Write-Error "Failed to restore $projNetStandard11"
 	exit $LastExitCode
 }
 
 dotnet build $projNetStandard11 -o ../bin/netstandard1.1 -f netstandard11 -c $buildConfig
 if ( $LastExitCode -ne 0 )
 {
+	Write-Error "Failed to build $projNetStandard11"
 	exit $LastExitCode
 }
 
 dotnet restore $projNetStandard13
 if ( $LastExitCode -ne 0 )
 {
+	Write-Error "Failed to restore $projNetStandard13"
 	exit $LastExitCode
 }
 
 dotnet build $projNetStandard13 -o ../bin/netstandard1.3 -f netstandard13 -c $buildConfig
 if ( $LastExitCode -ne 0 )
 {
+	Write-Error "Failed to build $projNetStandard13"
 	exit $LastExitCode
 }
 
