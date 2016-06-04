@@ -23,6 +23,7 @@ Storage.dat
 test-results/
 TestResult/
 TestResults/
+AppPackages/
 *.userprefs
 .DS_Store
 src/MsgPack.Unity/Assets/MsgPack/*
