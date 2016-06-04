@@ -32,6 +32,29 @@ else
 	}
 }
 
+[string]$androidTool = "$env:localappdata\Android\android-sdk\tools\android.bat"
+
+if ( !( Test-Path $androidTool ) )
+{
+	Write-Error "ADK is required."
+	exit 1
+}
+
+# Ensure Android SDK for API level 10 is installed.
+# Thanks to http://help.appveyor.com/discussions/problems/3177-how-to-add-more-android-sdks-to-build-agents
+$adkIndexes = 
+	& $androidTool list sdk --all |% { 
+		if ( $_ -match '(?<index>\d+)- (?<sdk>.+), revision (?<revision>[\d\.]+)' ) { 
+			$sdk = New-Object PSObject 
+			Add-Member -InputObject $sdk -MemberType NoteProperty -Name Index -Value $Matches.index 
+			Add-Member -InputObject $sdk -MemberType NoteProperty -Name Name -Value $Matches.sdk 
+			Add-Member -InputObject $sdk -MemberType NoteProperty -Name Revision -Value $Matches.revision 
+			$sdk
+		}
+	} |? { $_.name -like 'sdk platform*API 10*' -or $_.name -like 'google apis*api 10' } |% { $_.Index }
+
+Echo 'y' | & $androidTool update sdk -u -a -t ( [String]::Join( ',', $adkIndexes ) )
+
 [string]$buildConfig = 'Release'
 if ( ![String]::IsNullOrWhitespace( $env:CONFIGURATION ) )
 {
