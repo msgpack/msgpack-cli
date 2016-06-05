@@ -5,6 +5,8 @@ if ( $env:APPVEYOR -eq "True" )
 	[string]$builder = "MSBuild.exe"
 	[string]$winBuilder = "MSBuild.exe"
 	[string]$nuget = "nuget"
+	[string]$nugetVerbosity = "quiet"
+	[string]$dotnetVerbosity = "Warning"
 	
 	# AppVeyor should have right MSBuild and dotnet-cli...
 	# Android SDK should be installed in init and ANDROID_HOME should be initialized before this script.
@@ -27,6 +29,8 @@ else
 	[string]$builder = "$env:windir\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
 	[string]$winBuilder = "${env:ProgramFiles(x86)}\MSBuild\14.0\Bin\MSBuild.exe"
 	[string]$nuget = "../.nuget/nuget.exe"
+	[string]$nugetVerbosity = "normal"
+	[string]$dotnetVerbosity = "Information"
 
 	if ( !( Test-Path( "$winBuilder" ) ) )
 	{
@@ -96,7 +100,7 @@ if ( !( Test-Path "./MsgPack-CLI/mpu" ) )
 }
 
 # build
-& $nuget restore $sln
+& $nuget restore $sln -Verbosity $nugetVerbosity
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $sln"
@@ -110,7 +114,7 @@ if ( $LastExitCode -ne 0 )
 	exit $LastExitCode
 }
 
-& $nuget restore $slnCompat
+& $nuget restore $slnCompat -Verbosity $nugetVerbosity
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $slnCompat"
@@ -124,7 +128,7 @@ if ( $LastExitCode -ne 0 )
 	exit $LastExitCode
 }
 
-& $nuget restore $slnWindows
+& $nuget restore $slnWindows -Verbosity $nugetVerbosity
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $slnWindows"
@@ -138,7 +142,7 @@ if ( $LastExitCode -ne 0 )
 	exit $LastExitCode
 }
 
-& $nuget restore $slnXamarin
+& $nuget restore $slnXamarin -Verbosity $nugetVerbosity
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $slnXamarin"
@@ -157,7 +161,7 @@ if ( $buildConfig -eq 'Release' )
 	Copy-Item ../bin/MonoTouch10 ../bin/Xamarin.iOS10 -Recurse
 }
 
-dotnet restore $projNetStandard11
+dotnet restore $projNetStandard11 -v $dotnetVerbosity
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $projNetStandard11"
@@ -171,7 +175,7 @@ if ( $LastExitCode -ne 0 )
 	exit $LastExitCode
 }
 
-dotnet restore $projNetStandard13
+dotnet restore $projNetStandard13 -v $dotnetVerbosity
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $projNetStandard13"
