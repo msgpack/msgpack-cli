@@ -48,8 +48,18 @@ namespace MsgPack.Serialization
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
 			var target = new SerializerGenerator( typeof( GeneratorTestObject ), name );
-			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
-			target.GenerateAssemblyFile();
+			var filePath = Path.GetFullPath( TestContext.CurrentContext.WorkDirectory + Path.DirectorySeparatorChar + name.Name + ".dll" );
+
+			var originalCurrentDirectory = Environment.CurrentDirectory;
+			Environment.CurrentDirectory = TestContext.CurrentContext.WorkDirectory;
+			try
+			{
+				target.GenerateAssemblyFile();
+			}
+			finally
+			{
+				Environment.CurrentDirectory = originalCurrentDirectory;
+			}
 			// Assert is not polluted.
 			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
 
@@ -103,8 +113,18 @@ namespace MsgPack.Serialization
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
 			var target = new SerializerGenerator( typeof( GeneratorTestObject ), name );
 			target.Method = SerializationMethod.Map;
-			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
-			target.GenerateAssemblyFile();
+			var filePath = Path.GetFullPath( TestContext.CurrentContext.WorkDirectory + Path.DirectorySeparatorChar + name.Name + ".dll" );
+
+			var originalCurrentDirectory = Environment.CurrentDirectory;
+			Environment.CurrentDirectory = TestContext.CurrentContext.WorkDirectory;
+			try
+			{
+				target.GenerateAssemblyFile();
+			}
+			finally
+			{
+				Environment.CurrentDirectory = originalCurrentDirectory;
+			}
 			// Assert is not polluted.
 			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
 
@@ -131,8 +151,18 @@ namespace MsgPack.Serialization
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
 			var target = new SerializerGenerator( typeof( GeneratorTestObject ), name );
-			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
-			target.GenerateAssemblyFile();
+			var filePath = Path.GetFullPath( TestContext.CurrentContext.WorkDirectory + Path.DirectorySeparatorChar + name.Name + ".dll" );
+
+			var originalCurrentDirectory = Environment.CurrentDirectory;
+			Environment.CurrentDirectory = TestContext.CurrentContext.WorkDirectory;
+			try
+			{
+				target.GenerateAssemblyFile();
+			}
+			finally
+			{
+				Environment.CurrentDirectory = originalCurrentDirectory;
+			}
 			// Assert is not polluted.
 			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
 
@@ -228,11 +258,24 @@ namespace MsgPack.Serialization
 		public void TestGenerateAssembly_WithDefault_DllIsGeneratedOnAppBase()
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
-			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
-			var result =
-				SerializerGenerator.GenerateAssembly(
-					new SerializerAssemblyGenerationConfiguration { AssemblyName = name }, typeof( GeneratorTestObject )
-				);
+			var filePath = Path.GetFullPath( TestContext.CurrentContext.WorkDirectory + Path.DirectorySeparatorChar + name.Name + ".dll" );
+
+			string result;
+			var originalCurrentDirectory = Environment.CurrentDirectory;
+			Environment.CurrentDirectory = TestContext.CurrentContext.WorkDirectory;
+			try
+			{
+				result =
+					SerializerGenerator.GenerateAssembly(
+						new SerializerAssemblyGenerationConfiguration { AssemblyName = name },
+						typeof( GeneratorTestObject )
+					);
+			}
+			finally
+			{
+				Environment.CurrentDirectory = originalCurrentDirectory;
+			}
+
 			// Assert is not polluted.
 			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
 			Assert.That( result, Is.EqualTo( filePath ) );
@@ -290,10 +333,10 @@ namespace MsgPack.Serialization
 		public void TestGenerateAssembly_WithMethod_OptionsAreAsSpecified()
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
-			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
+			var filePath = Path.GetFullPath( TestContext.CurrentContext.WorkDirectory + Path.DirectorySeparatorChar + name.Name + ".dll" );
 			var result =
 				SerializerGenerator.GenerateAssembly(
-					new SerializerAssemblyGenerationConfiguration { AssemblyName = name },
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, OutputDirectory = TestContext.CurrentContext.WorkDirectory },
 					typeof( GeneratorTestObject )
 				);
 			// Assert is not polluted.
@@ -322,10 +365,10 @@ namespace MsgPack.Serialization
 		public void TestGenerateAssembly_WithPackerOption_OptionsAreAsSpecified()
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
-			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
+			var filePath = Path.GetFullPath( TestContext.CurrentContext.WorkDirectory + Path.DirectorySeparatorChar + name.Name + ".dll" );
 			var result =
 				SerializerGenerator.GenerateAssembly(
-					new SerializerAssemblyGenerationConfiguration { AssemblyName = name },
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, OutputDirectory = TestContext.CurrentContext.WorkDirectory },
 					typeof( GeneratorTestObject )
 				);
 			// Assert is not polluted.
@@ -433,10 +476,10 @@ namespace MsgPack.Serialization
 		public void TestGenerateAssembly_DefaultEnumSerializationMethod_IsReflected()
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
-			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
+			var filePath = Path.GetFullPath( TestContext.CurrentContext.WorkDirectory + Path.DirectorySeparatorChar + name.Name + ".dll" );
 			var result =
 				SerializerGenerator.GenerateAssembly(
-					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue }, typeof( TestEnumType )
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue, OutputDirectory = TestContext.CurrentContext.WorkDirectory }, typeof( TestEnumType )
 				);
 			try
 			{
@@ -466,10 +509,10 @@ namespace MsgPack.Serialization
 		public void TestGenerateSerializerCodeAssembly_WithDefaultNamespace()
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
-			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
+			var filePath = Path.GetFullPath( TestContext.CurrentContext.WorkDirectory + Path.DirectorySeparatorChar + name.Name + ".dll" );
 			var result =
 				SerializerGenerator.GenerateSerializerCodeAssembly(
-					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, IsRecursive = false },
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, IsRecursive = false, OutputDirectory = TestContext.CurrentContext.WorkDirectory },
 					typeof( GeneratorTestObject ),
 					typeof( AnotherGeneratorTestObject )
 				).ToArray();
@@ -528,7 +571,7 @@ namespace MsgPack.Serialization
 			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
 			var result =
 				SerializerGenerator.GenerateSerializerCodeAssembly(
-					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, IsRecursive = true },
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, IsRecursive = true, OutputDirectory = TestContext.CurrentContext.WorkDirectory },
 					typeof( int ),
 					typeof( string ),
 					typeof( DateTime ),
@@ -553,10 +596,10 @@ namespace MsgPack.Serialization
 		public void TestGenerateSerializerCodeAssembly_ElementTypes_Generated()
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
-			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
+			var filePath = Path.GetFullPath( TestContext.CurrentContext.WorkDirectory + Path.DirectorySeparatorChar + name.Name + ".dll" );
 			var result =
 				SerializerGenerator.GenerateSerializerCodeAssembly(
-					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, IsRecursive = true },
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, IsRecursive = true, OutputDirectory = TestContext.CurrentContext.WorkDirectory },
 					typeof( List<GeneratorTestObject> ),
 					typeof( AnotherGeneratorTestObject[] )
 				).ToArray();
@@ -580,10 +623,10 @@ namespace MsgPack.Serialization
 		public void TestGenerateSerializerCodeAssembly_ElementTypesNested_Generated()
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
-			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
+			var filePath = Path.GetFullPath( TestContext.CurrentContext.WorkDirectory + Path.DirectorySeparatorChar + name.Name + ".dll" );
 			var result =
 				SerializerGenerator.GenerateSerializerCodeAssembly(
-					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, IsRecursive = true },
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, IsRecursive = true, OutputDirectory = TestContext.CurrentContext.WorkDirectory },
 					typeof( HoldsElementTypeObject )
 				).ToArray();
 			try
@@ -615,7 +658,7 @@ namespace MsgPack.Serialization
 						Path.DirectorySeparatorChar.ToString(),
 						new[]
 						{
-							".",
+							TestContext.CurrentContext.WorkDirectory,
 							"MsgPack",
 							"Serialization",
 							"GeneratedSerializers",
@@ -623,10 +666,22 @@ namespace MsgPack.Serialization
 						}
 					)
 				);
-			var resultCS =
-				SerializerGenerator.GenerateCode(
-					typeof( GeneratorTestObject )
-				).ToArray();
+
+			string[] resultCS;
+			var oritinalCurrentDirectory = Environment.CurrentDirectory;
+			Environment.CurrentDirectory = TestContext.CurrentContext.WorkDirectory;
+			try
+			{
+				resultCS =
+					SerializerGenerator.GenerateCode(
+						typeof( GeneratorTestObject )
+					).ToArray();
+			}
+			finally
+			{
+				Environment.CurrentDirectory = oritinalCurrentDirectory;
+			}
+
 			try
 			{
 				// Assert is not polluted.
@@ -746,7 +801,7 @@ namespace MsgPack.Serialization
 						Path.DirectorySeparatorChar.ToString(),
 						new[]
 						{
-							".",
+							TestContext.CurrentContext.WorkDirectory,
 							"MsgPack",
 							"Serialization",
 							"GeneratedSerializers",
@@ -754,10 +809,22 @@ namespace MsgPack.Serialization
 						}
 					)
 				);
-			var resultCS =
-				SerializerGenerator.GenerateCode(
-					typeof( RootGeneratorTestObject )
+
+			string[] resultCS;
+			var oritinalCurrentDirectory = Environment.CurrentDirectory;
+			Environment.CurrentDirectory = TestContext.CurrentContext.WorkDirectory;
+			try
+			{
+				resultCS =
+					SerializerGenerator.GenerateCode(
+						typeof( RootGeneratorTestObject )
 					).ToArray();
+			}
+			finally
+			{
+				Environment.CurrentDirectory = oritinalCurrentDirectory;
+			}
+
 			try
 			{
 				// Assert is not polluted.
@@ -783,7 +850,7 @@ namespace MsgPack.Serialization
 						Path.DirectorySeparatorChar.ToString(),
 						new[]
 						{
-							".",
+							TestContext.CurrentContext.WorkDirectory,
 							"MsgPack",
 							"Serialization",
 							"GeneratedSerializers",
@@ -797,7 +864,7 @@ namespace MsgPack.Serialization
 						Path.DirectorySeparatorChar.ToString(),
 						new[]
 						{
-							".",
+							TestContext.CurrentContext.WorkDirectory,
 							"MsgPack",
 							"Serialization",
 							"GeneratedSerializers",
@@ -805,11 +872,23 @@ namespace MsgPack.Serialization
 						}
 					)
 				);
-			var resultCS =
-				SerializerGenerator.GenerateCode(
-					typeof( GeneratorTestObject ),
-					typeof( AnotherGeneratorTestObject )
+
+			string[] resultCS;
+			var oritinalCurrentDirectory = Environment.CurrentDirectory;
+			Environment.CurrentDirectory = TestContext.CurrentContext.WorkDirectory;
+			try
+			{
+				resultCS =
+					SerializerGenerator.GenerateCode(
+						typeof( GeneratorTestObject ),
+						typeof( AnotherGeneratorTestObject )
 					).ToArray();
+			}
+			finally
+			{
+				Environment.CurrentDirectory = oritinalCurrentDirectory;
+			}
+
 			try
 			{
 				// Assert is not polluted.
@@ -832,7 +911,7 @@ namespace MsgPack.Serialization
 		{
 			var resultCS =
 				SerializerGenerator.GenerateCode(
-					new SerializerCodeGenerationConfiguration { EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue },
+					new SerializerCodeGenerationConfiguration { EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue, OutputDirectory = TestContext.CurrentContext.WorkDirectory },
 					typeof( TestEnumType )
 				).ToArray();
 			try
@@ -882,7 +961,7 @@ namespace MsgPack.Serialization
 
 		private static void TestGenerateSerializerSourceCodesCore( string @namespace )
 		{
-			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = false, Namespace = @namespace };
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = false, Namespace = @namespace, OutputDirectory = TestContext.CurrentContext.WorkDirectory };
 			var resultCS =
 				SerializerGenerator.GenerateSerializerSourceCodes(
 					configuration,
@@ -905,7 +984,7 @@ namespace MsgPack.Serialization
 						Path.GetFullPath(
 							String.Join(
 								Path.DirectorySeparatorChar.ToString(),
-								new[] { "." }
+								new[] { TestContext.CurrentContext.WorkDirectory }
 								.Concat( configuration.Namespace.Split( Type.Delimiter ) )
 								.Concat(
 									new[] { "MsgPack_Serialization_GeneratorTestObjectSerializer.cs" }
@@ -938,7 +1017,7 @@ namespace MsgPack.Serialization
 						Path.GetFullPath(
 							String.Join(
 								Path.DirectorySeparatorChar.ToString(),
-								new[] { "." }
+								new[] { TestContext.CurrentContext.WorkDirectory }
 								.Concat( configuration.Namespace.Split( Type.Delimiter ) )
 								.Concat(
 									new[] { "MsgPack_Serialization_AnotherGeneratorTestObjectSerializer.cs" }
@@ -979,7 +1058,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestGenerateSerializerSourceCodes_WithBuiltInSupportedTypes_Ignored()
 		{
-			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false };
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, OutputDirectory = TestContext.CurrentContext.WorkDirectory };
 			var resultCS =
 				SerializerGenerator.GenerateSerializerSourceCodes(
 					configuration,
@@ -1009,7 +1088,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestGenerateSerializerSourceCodes_ElementTypes_Generated()
 		{
-			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false };
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, OutputDirectory = TestContext.CurrentContext.WorkDirectory };
 			var resultCS =
 				SerializerGenerator.GenerateSerializerSourceCodes(
 					configuration,
@@ -1038,7 +1117,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestGenerateSerializerSourceCodes_ElementTypesNested_Generated()
 		{
-			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false };
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, OutputDirectory = TestContext.CurrentContext.WorkDirectory };
 			var resultCS =
 				SerializerGenerator.GenerateSerializerSourceCodes(
 					configuration,
@@ -1072,7 +1151,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestGenerateSerializerSourceCodes_MemberTypesOfElementTypes_Generated()
 		{
-			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false };
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, OutputDirectory = TestContext.CurrentContext.WorkDirectory };
 			var resultCS =
 				SerializerGenerator.GenerateSerializerSourceCodes(
 					configuration,
@@ -1107,7 +1186,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestGenerateSerializerSourceCodes_MemberTypesOfElementTypesNested_Generated()
 		{
-			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false };
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, OutputDirectory = TestContext.CurrentContext.WorkDirectory };
 			var resultCS =
 				SerializerGenerator.GenerateSerializerSourceCodes(
 					configuration,
@@ -1147,7 +1226,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestGenerateSerializerSourceCodes_MemberTypesOfElementTypes_ValueType_WithNullable_GeneratedWithNullable()
 		{
-			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, WithNullableSerializers = true };
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, WithNullableSerializers = true, OutputDirectory = TestContext.CurrentContext.WorkDirectory };
 			var resultCS =
 				SerializerGenerator.GenerateSerializerSourceCodes(
 					configuration,
@@ -1191,7 +1270,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestGenerateSerializerSourceCodes_MemberTypesOfElementTypesNested_ValueType_WithNullable_GeneratedWithNullable()
 		{
-			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, WithNullableSerializers = true };
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, WithNullableSerializers = true, OutputDirectory = TestContext.CurrentContext.WorkDirectory };
 			var resultCS =
 				SerializerGenerator.GenerateSerializerSourceCodes(
 					configuration,
@@ -1237,7 +1316,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestGenerateSerializerSourceCodes_MemberTypesOfElementTypes_ValueType_WithoutNullable_GeneratedWithoutNullable()
 		{
-			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false };
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, OutputDirectory = TestContext.CurrentContext.WorkDirectory };
 			Assert.That( configuration.WithNullableSerializers, Is.False );
 			var resultCS =
 				SerializerGenerator.GenerateSerializerSourceCodes(
@@ -1282,7 +1361,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestGenerateSerializerSourceCodes_MemberTypesOfElementTypesNested_ValueType_WithoutNullable_GeneratedWithoutNullable()
 		{
-			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false };
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, OutputDirectory = TestContext.CurrentContext.WorkDirectory };
 			Assert.That( configuration.WithNullableSerializers, Is.False );
 			var resultCS =
 				SerializerGenerator.GenerateSerializerSourceCodes(
@@ -1328,7 +1407,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestGenerateSerializerSourceCodes_MemberIsPrimitive_WithNullable_GeneratedWithNullable()
 		{
-			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, WithNullableSerializers = true };
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, PreferReflectionBasedSerializer = false, WithNullableSerializers = true, OutputDirectory = TestContext.CurrentContext.WorkDirectory };
 			var resultCS =
 				SerializerGenerator.GenerateSerializerSourceCodes(
 					configuration,
@@ -1379,7 +1458,7 @@ namespace MsgPack.Serialization
 
 		private static void TestGenerateSerializerCodeAssemblyCore( string @namespace )
 		{
-			var configuration = new SerializerAssemblyGenerationConfiguration { IsRecursive = false, Namespace = @namespace, AssemblyName = new AssemblyName( MethodBase.GetCurrentMethod().Name ) };
+			var configuration = new SerializerAssemblyGenerationConfiguration { IsRecursive = false, Namespace = @namespace, AssemblyName = new AssemblyName( MethodBase.GetCurrentMethod().Name ), OutputDirectory = TestContext.CurrentContext.WorkDirectory };
 			var results =
 				SerializerGenerator.GenerateSerializerCodeAssembly(
 					configuration,
@@ -1401,7 +1480,7 @@ namespace MsgPack.Serialization
 					Is.EqualTo(
 						Path.GetFullPath(
 							String.Concat(
-								".",
+								TestContext.CurrentContext.WorkDirectory,
 								Path.DirectorySeparatorChar.ToString(),
 								configuration.AssemblyName.Name,
 								".dll"
@@ -1432,7 +1511,7 @@ namespace MsgPack.Serialization
 					Is.EqualTo(
 						Path.GetFullPath(
 							String.Concat(
-								".",
+								TestContext.CurrentContext.WorkDirectory,
 								Path.DirectorySeparatorChar.ToString(),
 								configuration.AssemblyName.Name,
 								".dll"

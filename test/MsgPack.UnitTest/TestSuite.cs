@@ -70,8 +70,8 @@ namespace MsgPack
 				Unpacker pac = Unpacker.Create( pacStream );
 				Unpacker pac_compact = Unpacker.Create( pacCompactStream );
 
-				FeedFile( pacStream, "." + Path.DirectorySeparatorChar + "cases.mpac" );
-				FeedFile( pacCompactStream, "." + Path.DirectorySeparatorChar + "cases_compact.mpac" );
+				FeedFile( pacStream, TestContext.CurrentContext.TestDirectory + Path.DirectorySeparatorChar + "cases.mpac" );
+				FeedFile( pacCompactStream, TestContext.CurrentContext.TestDirectory + Path.DirectorySeparatorChar + "cases_compact.mpac" );
 
 				pac.SequenceEqual( pac_compact, EqualityComparer<MessagePackObject>.Default );
 			}
