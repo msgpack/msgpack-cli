@@ -1212,7 +1212,7 @@ namespace MsgPack
 				var result = await target.ReadItemAsync();
 				Assert.That( result.HasValue );
 				Assert.That( result.Value == 1, result.Value.ToString() );
-				Assert.That( target.ReadItem(), Is.Null );
+				Assert.That( await target.ReadItemAsync(), Is.Null );
 			}
 		}
 

@@ -551,7 +551,7 @@ foreach( var isAsync in new [] { false, true } )
 				var result = <#= Await( "target.ReadItem", isAsync ) #>();
 				Assert.That( result.HasValue );
 				Assert.That( result.Value == 1, result.Value.ToString() );
-				Assert.That( target.ReadItem(), Is.Null );
+				Assert.That( <#= Await( "target.ReadItem", isAsync ) #>(), Is.Null );
 			}
 		}
 
