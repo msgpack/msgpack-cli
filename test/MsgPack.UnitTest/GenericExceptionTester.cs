@@ -160,7 +160,7 @@ namespace MsgPack
 		{
 			var message = Guid.NewGuid().ToString();
 			var target = this._messageConstructor( message );
-			Assert.That( target.Message, Is.Not.Null.And.StringContaining( message ), "Message should contain message argument." );
+			Assert.That( target.Message, Is.Not.Null.And.Contains( message ), "Message should contain message argument." );
 			TestToString( target, typeof( T ).Name + "()" );
 		}
 
@@ -168,7 +168,7 @@ namespace MsgPack
 		{
 			var defaultInstance = this._defaultConstructor();
 			var target = this._messageConstructor( null );
-			Assert.That( target.Message, Is.Not.Null.And.StringContaining( defaultInstance.Message ), "Message should equal to default message." );
+			Assert.That( target.Message, Is.Not.Null.And.Contains( defaultInstance.Message ), "Message should equal to default message." );
 			TestToString( target, typeof( T ).Name + "()" );
 		}
 
@@ -177,7 +177,7 @@ namespace MsgPack
 			var message = Guid.NewGuid().ToString();
 			var innerException = new Exception();
 			var target = this._innerExceptionConstructor( message, innerException );
-			Assert.That( target.Message, Is.Not.Null.And.StringContaining( message ), "Message should contain message argument." );
+			Assert.That( target.Message, Is.Not.Null.And.Contains( message ), "Message should contain message argument." );
 			Assert.That( target.InnerException, Is.SameAs( innerException ), "InnerException should contain innerException argument." );
 			TestToString( target, typeof( T ).Name + "()" );
 		}
@@ -186,7 +186,7 @@ namespace MsgPack
 		{
 			var defaultInstance = this._defaultConstructor();
 			var target = this._innerExceptionConstructor( null, null );
-			Assert.That( target.Message, Is.Not.Null.And.StringContaining( defaultInstance.Message ), "Message should equal to default message." );
+			Assert.That( target.Message, Is.Not.Null.And.Contains( defaultInstance.Message ), "Message should equal to default message." );
 			Assert.That( target.InnerException, Is.Null, "InnerException should be null." );
 			TestToString( target, typeof( T ).Name + "()" );
 		}
@@ -210,10 +210,10 @@ namespace MsgPack
 
 		private static void TestToStringCore( T target, string ctor )
 		{
-			Assert.That( target.ToString(), Is.Not.Null.And.Not.Empty.And.StringContaining( target.Message ).And.StringContaining( target.GetType().FullName ).And.StringContaining( target.StackTrace ), "ToString() should contain Message, Type.FullName, and StackTrace ({0}).", ctor );
+			Assert.That( target.ToString(), Is.Not.Null.And.Not.Empty.And.Contains( target.Message ).And.Contains( target.GetType().FullName ).And.Contains( target.StackTrace ), "ToString() should contain Message, Type.FullName, and StackTrace ({0}).", ctor );
 			if ( target.InnerException != null )
 			{
-				Assert.That( target.ToString(), Is.Not.Null.And.StringContaining( target.InnerException.Message ), "ToString() should contain InnerException ({0}).", ctor );
+				Assert.That( target.ToString(), Is.Not.Null.And.Contains( target.InnerException.Message ), "ToString() should contain InnerException ({0}).", ctor );
 			}
 		}
 

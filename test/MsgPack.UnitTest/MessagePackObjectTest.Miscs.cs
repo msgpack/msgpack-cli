@@ -205,27 +205,27 @@ namespace MsgPack
 					}
 					catch ( InvalidOperationException ) { }
 
-					Assert.That( result, Is.StringMatching( "^(0x[0-9A-F]+)?$" ), indicator );
+					Assert.That( result, Does.Match( "^(0x[0-9A-F]+)?$" ), indicator );
 				}
 				else if ( target.IsArray )
 				{
-					Assert.That( result, Is.StringMatching( @"^\[\s*([0-9]+(,\s*[0-9]+)*)?\s*\]$" ), indicator );
+					Assert.That( result, Does.Match( @"^\[\s*([0-9]+(,\s*[0-9]+)*)?\s*\]$" ), indicator );
 				}
 				else if ( target.IsDictionary )
 				{
-					Assert.That( result, Is.StringMatching( @"^\{\s*([0-9]+\s*:\s*[0-9]+(,\s*[0-9]+\s*:\s*[0-9]+)*)?\s*\}$" ), indicator );
+					Assert.That( result, Does.Match( @"^\{\s*([0-9]+\s*:\s*[0-9]+(,\s*[0-9]+\s*:\s*[0-9]+)*)?\s*\}$" ), indicator );
 				}
 				else if ( target.IsTypeOf<float>().GetValueOrDefault() || target.IsTypeOf<double>().GetValueOrDefault() )
 				{
-					Assert.That( result, Is.StringMatching( "^(NaN|Infinity|-Infinity|(-?[0-9]+\\.[0-9]+(E(\\+|-)[0-9]+)?))$" ), indicator );
+					Assert.That( result, Does.Match( "^(NaN|Infinity|-Infinity|(-?[0-9]+\\.[0-9]+(E(\\+|-)[0-9]+)?))$" ), indicator );
 				}
 				else if ( target.IsTypeOf<bool>().GetValueOrDefault() )
 				{
-					Assert.That( result, Is.StringMatching( "^(True|False)$" ), indicator );
+					Assert.That( result, Does.Match( "^(True|False)$" ), indicator );
 				}
 				else
 				{
-					Assert.That( result, Is.StringMatching( "^-?[0-9]+$" ), indicator );
+					Assert.That( result, Does.Match( "^-?[0-9]+$" ), indicator );
 				}
 			}
 		}

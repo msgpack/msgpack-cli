@@ -53,7 +53,7 @@ public sealed class _SetUpFixture
 #endif
 
 #if !MSTEST
-	[SetUp]
+	[OneTimeSetUp]
 #endif
 	public void SetupCurrentNamespaceTests()
 	{
