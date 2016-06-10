@@ -91,6 +91,7 @@
     <Compile Include="NUnit\Framework\Constraints\ThrowsConstraint.cs" />
     <Compile Include="NUnit\Framework\Constraints\Tolerance.cs" />
     <Compile Include="NUnit\Framework\Constraints\TypeConstraints.cs" />
+    <Compile Include="NUnit\Framework\Does.cs" />
     <Compile Include="NUnit\Framework\GlobalSettings.cs" />
     <Compile Include="NUnit\Framework\Has.cs" />
     <Compile Include="NUnit\Framework\Interfaces\INUnitEqualityComparer.cs" />

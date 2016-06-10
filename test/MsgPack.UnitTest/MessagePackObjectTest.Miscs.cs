@@ -28,6 +28,7 @@ using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.Test
 using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
+using Does = NUnit.Framework.Does;
 #endif
 
 namespace MsgPack
