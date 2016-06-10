@@ -888,7 +888,7 @@ namespace MsgPack
 				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
 				{
 					// To be failed.
-					Assert.Throws<InvalidOperationException>( async () => await rootUnpacker.ReadAsync() );
+					Assert.ThrowsAsync<InvalidOperationException>( async () => await rootUnpacker.ReadAsync() );
 				}
 			}
 		}
@@ -1099,7 +1099,7 @@ namespace MsgPack
 			using ( var target = Unpacker.Create( buffer ) )
 			{
 				Assert.That( await target.SkipAsync(), Is.Null, "Precondition" );
-				Assert.Throws<InvalidOperationException>( async () => await target.ReadAsync() );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await target.ReadAsync() );
 			}
 		}
 
@@ -1140,7 +1140,7 @@ namespace MsgPack
 			{
 				foreach ( var item in target )
 				{
-					Assert.Throws<InvalidOperationException>( async () => await target.ReadAsync() );
+					Assert.ThrowsAsync<InvalidOperationException>( async () => await target.ReadAsync() );
 				}
 			}
 		}
@@ -1153,7 +1153,7 @@ namespace MsgPack
 			{
 				foreach ( var item in target )
 				{
-					Assert.Throws<InvalidOperationException>( async () => await target.SkipAsync() );
+					Assert.ThrowsAsync<InvalidOperationException>( async () => await target.SkipAsync() );
 				}
 			}
 		}
@@ -1447,7 +1447,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream( new byte[] { 0xC1 } ) )
 			using ( var target = Unpacker.Create( buffer ) )
 			{
-				Assert.Throws<UnassignedMessageTypeException>( async () => await target.ReadAsync() );
+				Assert.ThrowsAsync<UnassignedMessageTypeException>( async () => await target.ReadAsync() );
 			}
 		}
 

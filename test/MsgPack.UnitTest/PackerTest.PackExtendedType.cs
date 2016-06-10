@@ -943,7 +943,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 0 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -974,7 +974,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 0 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
@@ -1004,7 +1004,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 1 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1035,7 +1035,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 1 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
@@ -1065,7 +1065,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 2 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1096,7 +1096,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 2 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
@@ -1126,7 +1126,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 3 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1157,7 +1157,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 3 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
@@ -1187,7 +1187,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 4 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1218,7 +1218,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 4 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
@@ -1248,7 +1248,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 5 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1279,7 +1279,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 5 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
@@ -1309,7 +1309,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 8 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1340,7 +1340,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 8 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
@@ -1370,7 +1370,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 9 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1401,7 +1401,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 9 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
@@ -1431,7 +1431,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 16 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1462,7 +1462,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 16 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
@@ -1492,7 +1492,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 17 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1523,7 +1523,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 17 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
@@ -1553,7 +1553,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 255 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1584,7 +1584,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 255 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
@@ -1614,7 +1614,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 256 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1645,7 +1645,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 256 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
@@ -1675,7 +1675,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 65535 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1706,7 +1706,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 65535 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
@@ -1736,7 +1736,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 65536 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1767,7 +1767,7 @@ namespace MsgPack
 			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 65536 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.Throws<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		
@@ -1777,7 +1777,7 @@ namespace MsgPack
 			using( var buffer = new MemoryStream() )
 			using( var packer = Packer.Create( buffer ) )
 			{
-				Assert.Throws<ArgumentNullException>( async () => await packer.PackExtendedTypeValueAsync( 1, null ) );
+				Assert.ThrowsAsync<ArgumentNullException>( async () => await packer.PackExtendedTypeValueAsync( 1, null ) );
 			}
 		}
 		
@@ -1787,7 +1787,7 @@ namespace MsgPack
 			using( var buffer = new MemoryStream() )
 			using( var packer = Packer.Create( buffer ) )
 			{
-				Assert.Throws<ArgumentException>( async () => await packer.PackExtendedTypeValueAsync( default( MessagePackExtendedTypeObject ) ) );
+				Assert.ThrowsAsync<ArgumentException>( async () => await packer.PackExtendedTypeValueAsync( default( MessagePackExtendedTypeObject ) ) );
 			}
 		}
 
