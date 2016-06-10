@@ -3,7 +3,6 @@ nunit3-console %APPVEYOR_BUILD_FOLDER%/test/MsgPack.UnitTest.BclExtensions/bin/D
 nunit3-console %APPVEYOR_BUILD_FOLDER%/test/MsgPack.UnitTest.CodeDom/bin/Debug/MsgPack.UnitTest.CodeDom.dll --framework:net-4.5 --result=test-result-net45-codedom.xml;format=AppVeyor
 nunit-console %APPVEYOR_BUILD_FOLDER%/test/MsgPack.UnitTest.Net35/bin/Debug/MsgPack.UnitTest.Net35.dll --framework:net-3.5 --result=test-result-net35.xml;format=AppVeyor
 nunit-console %APPVEYOR_BUILD_FOLDER%/test/MsgPack.UnitTest.CodeDom.Net35/bin/Debug/MsgPack.UnitTest.CodeDom.Net35.dll --framework:net-3.5 --result=test-result-net35-codedom.xml;format=AppVeyor
-nunit-console %APPVEYOR_BUILD_FOLDER%/test/MsgPack.UnitTest.Unity.Il2Cpp.Full.Desktop/bin/Debug/MsgPack.UnitTest.dll --framework:net-3.5 --result=test-result-unity-il2cpp-desktop.xml;format=AppVeyor
 @rem WinRT related tests require developer license...
 @rem vstest.console /logger:Appveyor /InIsolation %APPVEYOR_BUILD_FOLDER%/test/MsgPack.UnitTest.WinRT/AppPackages/MsgPack.UnitTest.WinRT_1.1.0.0_AnyCPU_Debug_Test/MsgPack.UnitTest.WinRT_1.1.0.0_AnyCPU_Debug.appx 
 @rem vstest.console /logger:Appveyor /InIsolation %APPVEYOR_BUILD_FOLDER%/test/MsgPack.UnitTest.BclExtensions.WinRT/AppPackages/MsgPack.UnitTest.BclExtensions.WinRT_1.1.0.0_AnyCPU_Debug_Test/MsgPack.UnitTest.BclExtensions.WinRT_1.1.0.0_AnyCPU_Debug.appx
