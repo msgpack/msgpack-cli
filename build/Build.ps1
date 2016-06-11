@@ -25,7 +25,10 @@ else
 	}
 
 	./SetBuildEnv.ps1
-	./UpdateAndroidSdk.cmd
+	if ( $env:SKIP_ANDROID_SDK_UPDATE -ne "True" )
+	{
+		./UpdateAndroidSdk.cmd
+	}
 	[string]$builder = "${env:ProgramFiles(x86)}\MSBuild\14.0\Bin\MSBuild.exe"
 	[string]$winBuilder = "${env:ProgramFiles(x86)}\MSBuild\14.0\Bin\MSBuild.exe"
 	[string]$nuget = "../.nuget/nuget.exe"
