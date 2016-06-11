@@ -37,6 +37,18 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\MsgPack.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
+    <OutputPath>bin\CodeAnalysis\</OutputPath>
+    <DefineConstants>TRACE;FEATURE_TAP;NETFX_45;CODE_ANALYSIS</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />

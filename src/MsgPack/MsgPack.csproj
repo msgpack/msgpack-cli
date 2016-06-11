@@ -74,7 +74,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
     <DefineConstants>TRACE;FEATURE_TAP;CODE_ANALYSIS</DefineConstants>
-    <DocumentationFile>bin\CodeAnalysis\MsgPack.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -84,6 +85,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CoreProfile|AnyCPU'">
     <OutputPath>bin\CoreProfile\</OutputPath>

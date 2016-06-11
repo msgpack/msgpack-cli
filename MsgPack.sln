@@ -209,8 +209,8 @@ Global
 		{9C7B55A6-AF7F-4D26-AB5B-297B7FF25B6D}.CodeAnalysis|Any CPU.ActiveCfg = Release|Any CPU
 		{9C7B55A6-AF7F-4D26-AB5B-297B7FF25B6D}.CodeAnalysis|Any CPU.Build.0 = Release|Any CPU
 		{9C7B55A6-AF7F-4D26-AB5B-297B7FF25B6D}.CodeAnalysis|ARM.ActiveCfg = Release|Any CPU
-		{9C7B55A6-AF7F-4D26-AB5B-297B7FF25B6D}.CodeAnalysis|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{9C7B55A6-AF7F-4D26-AB5B-297B7FF25B6D}.CodeAnalysis|Mixed Platforms.Build.0 = Release|Any CPU
+		{9C7B55A6-AF7F-4D26-AB5B-297B7FF25B6D}.CodeAnalysis|Mixed Platforms.ActiveCfg = CodeAnalysis|Any CPU
+		{9C7B55A6-AF7F-4D26-AB5B-297B7FF25B6D}.CodeAnalysis|Mixed Platforms.Build.0 = CodeAnalysis|Any CPU
 		{9C7B55A6-AF7F-4D26-AB5B-297B7FF25B6D}.CodeAnalysis|x64.ActiveCfg = Release|Any CPU
 		{9C7B55A6-AF7F-4D26-AB5B-297B7FF25B6D}.CodeAnalysis|x86.ActiveCfg = Release|Any CPU
 		{9C7B55A6-AF7F-4D26-AB5B-297B7FF25B6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

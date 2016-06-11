@@ -86,13 +86,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
     <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE;AOT;CODE_ANALYSIS</DefineConstants>
-    <DocumentationFile>..\..\bin\windowsphone8\MsgPack.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <Optimize>true</Optimize>
     <NoStdLib>true</NoStdLib>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|x86'">
     <OutputPath>bin\x86\CodeAnalysis\</OutputPath>

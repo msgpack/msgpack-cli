@@ -44,12 +44,14 @@
     <OutputPath>bin\CodeAnalysis\</OutputPath>
     <DefineConstants>TRACE;NETFX_35;CODE_ANALYSIS</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>..\..\bin\net35-client\MsgPack.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

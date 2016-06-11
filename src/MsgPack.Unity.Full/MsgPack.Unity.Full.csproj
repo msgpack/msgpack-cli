@@ -36,13 +36,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
     <DefineConstants>TRACE;UNITY_IPHONE;MSGPACK_UNITY_FULL;AOT;CODE_ANALYSIS</DefineConstants>
-    <DocumentationFile>..\..\MsgPack-CLI\unity3d-full\MsgPack.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>3001,3002</NoWarn>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">

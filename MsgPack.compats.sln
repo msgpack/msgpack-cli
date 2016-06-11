@@ -240,7 +240,6 @@ Global
 		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Release|x64.ActiveCfg = Release|Any CPU
 		{43B24DC5-16D6-45EF-93F1-B021B785A892}.Release|x86.ActiveCfg = Release|Any CPU
 		{46C5B3D9-45E8-46B6-89F7-837D52C6187A}.CodeAnalysis|Any CPU.ActiveCfg = Release|Any CPU
-		{46C5B3D9-45E8-46B6-89F7-837D52C6187A}.CodeAnalysis|Any CPU.Build.0 = Release|Any CPU
 		{46C5B3D9-45E8-46B6-89F7-837D52C6187A}.CodeAnalysis|ARM.ActiveCfg = Release|Any CPU
 		{46C5B3D9-45E8-46B6-89F7-837D52C6187A}.CodeAnalysis|x64.ActiveCfg = Release|Any CPU
 		{46C5B3D9-45E8-46B6-89F7-837D52C6187A}.CodeAnalysis|x86.ActiveCfg = Release|Any CPU

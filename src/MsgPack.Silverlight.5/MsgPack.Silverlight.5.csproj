@@ -56,7 +56,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
     <DefineConstants>TRACE;SILVERLIGHT;CODE_ANALYSIS</DefineConstants>
-    <DocumentationFile>..\..\bin\sl5\MsgPack.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <Optimize>true</Optimize>
     <NoStdLib>true</NoStdLib>
     <DebugType>pdbonly</DebugType>
@@ -64,6 +65,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoConfig>true</NoConfig>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
