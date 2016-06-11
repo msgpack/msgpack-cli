@@ -192,7 +192,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTimeStamp(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexType unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.DateTime), "TimeStamp", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTimeStampDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.DateTime), "TimeStamp", null, this.this_SetUnpackedValueOfTimeStampDelegate);
         }
         
         private void SetUnpackedValueOfHistory(MsgPack.Serialization.ComplexType unpackingContext, System.Collections.Generic.Dictionary<System.DateTime, string> unpackedValue) {

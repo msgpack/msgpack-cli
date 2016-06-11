@@ -135,7 +135,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfheightAsync(MsgPack.Unpacker unpacker, MsgPack.Image unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "height", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfheightDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "height", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfheightDelegate, cancellationToken);
         }
         
         private void SetUnpackedValueOfsize(MsgPack.Image unpackingContext, int unpackedValue) {
@@ -143,7 +143,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfsizeAsync(MsgPack.Unpacker unpacker, MsgPack.Image unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "size", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfsizeDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "size", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfsizeDelegate, cancellationToken);
         }
         
         private void SetUnpackedValueOftitle(MsgPack.Image unpackingContext, string unpackedValue) {
@@ -167,7 +167,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfwidthAsync(MsgPack.Unpacker unpacker, MsgPack.Image unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "width", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfwidthDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "width", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfwidthDelegate, cancellationToken);
         }
         
         protected internal override System.Threading.Tasks.Task<MsgPack.Image> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {

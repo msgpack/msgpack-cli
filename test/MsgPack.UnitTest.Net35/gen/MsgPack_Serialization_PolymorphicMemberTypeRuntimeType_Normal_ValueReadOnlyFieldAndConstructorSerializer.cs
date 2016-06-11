@@ -86,7 +86,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfValue(MsgPack.Unpacker unpacker, UnpackingContext unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.DateTime), "Value", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfValueDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.DateTime), "Value", null, this.this_SetUnpackedValueOfValueDelegate);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeRuntimeType_Normal_ValueReadOnlyFieldAndConstructor UnpackFromCore(MsgPack.Unpacker unpacker) {

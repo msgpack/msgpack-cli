@@ -294,7 +294,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTimeStamp(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexType unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.DateTime), "TimeStamp", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTimeStampDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.DateTime), "TimeStamp", null, this.this_SetUnpackedValueOfTimeStampDelegate);
         }
         
         private void SetUnpackedValueOfHistory(MsgPack.Serialization.ComplexType unpackingContext, System.Collections.Generic.Dictionary<System.DateTime, string> unpackedValue) {
@@ -367,7 +367,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfTimeStampAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexType unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.DateTime), "TimeStamp", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTimeStampDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.DateTime), "TimeStamp", null, this.this_SetUnpackedValueOfTimeStampDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfHistoryAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexType unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {

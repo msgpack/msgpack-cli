@@ -38,8 +38,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<string, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
             typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
-            typeMap0.Add("1", typeof(MsgPack.Serialization.DirectoryEntry));
             typeMap0.Add("0", typeof(MsgPack.Serialization.FileEntry));
+            typeMap0.Add("1", typeof(MsgPack.Serialization.DirectoryEntry));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(object), typeMap0);
             this._serializer0 = context.GetSerializer<object>(schema0);
             System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject>[]);

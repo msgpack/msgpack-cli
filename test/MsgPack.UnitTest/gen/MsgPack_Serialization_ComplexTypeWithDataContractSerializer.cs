@@ -275,7 +275,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTimeStamp(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeWithDataContract unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.DateTime), "TimeStamp", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTimeStampDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.DateTime), "TimeStamp", null, this.this_SetUnpackedValueOfTimeStampDelegate);
         }
         
         protected internal override MsgPack.Serialization.ComplexTypeWithDataContract UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -302,7 +302,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfTimeStampAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeWithDataContract unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.DateTime), "TimeStamp", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTimeStampDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.DateTime), "TimeStamp", null, this.this_SetUnpackedValueOfTimeStampDelegate, cancellationToken);
         }
         
         protected internal override System.Threading.Tasks.Task<MsgPack.Serialization.ComplexTypeWithDataContract> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {

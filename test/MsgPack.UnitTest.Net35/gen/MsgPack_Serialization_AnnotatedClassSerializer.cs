@@ -501,7 +501,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfAlias(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "Alias", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfPublicPropertyDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "Alias", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfPublicPropertyDelegate);
         }
         
         private void SetUnpackedValueOfPublicField(MsgPack.Serialization.AnnotatedClass unpackingContext, int unpackedValue) {
@@ -509,7 +509,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfPublicField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "PublicField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfPublicFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "PublicField", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfPublicFieldDelegate);
         }
         
         private void UnpackMemberPlaceHolder(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
@@ -522,7 +522,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNonPublicProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonPublicProperty", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonPublicPropertyDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonPublicProperty", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonPublicPropertyDelegate);
         }
         
         private void SetUnpackedValueOfNonPublicField(MsgPack.Serialization.AnnotatedClass unpackingContext, int unpackedValue) {
@@ -530,7 +530,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNonPublicField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonPublicField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonPublicFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonPublicField", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonPublicFieldDelegate);
         }
         
         private void SetUnpackedValueOfNonSerializedPublicField(MsgPack.Serialization.AnnotatedClass unpackingContext, int unpackedValue) {
@@ -538,7 +538,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNonSerializedPublicField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonSerializedPublicField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonSerializedPublicFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonSerializedPublicField", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonSerializedPublicFieldDelegate);
         }
         
         private void SetUnpackedValueOfNonSerializedNonPublicField(MsgPack.Serialization.AnnotatedClass unpackingContext, int unpackedValue) {
@@ -546,7 +546,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNonSerializedNonPublicField(MsgPack.Unpacker unpacker, MsgPack.Serialization.AnnotatedClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonSerializedNonPublicField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonSerializedNonPublicFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "NonSerializedNonPublicField", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfNonSerializedNonPublicFieldDelegate);
         }
         
         private void SetUnpackedValueOfCollectionReadOnlyProperty(MsgPack.Serialization.AnnotatedClass unpackingContext, System.Collections.Generic.List<int> unpackedValue) {

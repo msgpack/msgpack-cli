@@ -3017,7 +3017,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfArraySegmentByteField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer4, itemsCount, indexOfItem, typeof(System.ArraySegment<byte>), "ArraySegmentByteField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfArraySegmentByteFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer4, itemsCount, indexOfItem, typeof(System.ArraySegment<byte>), "ArraySegmentByteField", null, this.this_SetUnpackedValueOfArraySegmentByteFieldDelegate);
         }
         
         private void SetUnpackedValueOfArraySegmentDecimalField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.ArraySegment<decimal> unpackedValue) {
@@ -3025,7 +3025,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfArraySegmentDecimalField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer5, itemsCount, indexOfItem, typeof(System.ArraySegment<decimal>), "ArraySegmentDecimalField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfArraySegmentDecimalFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer5, itemsCount, indexOfItem, typeof(System.ArraySegment<decimal>), "ArraySegmentDecimalField", null, this.this_SetUnpackedValueOfArraySegmentDecimalFieldDelegate);
         }
         
         private void SetUnpackedValueOfArraySegmentInt32Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.ArraySegment<int> unpackedValue) {
@@ -3033,7 +3033,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfArraySegmentInt32Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer6, itemsCount, indexOfItem, typeof(System.ArraySegment<int>), "ArraySegmentInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfArraySegmentInt32FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer6, itemsCount, indexOfItem, typeof(System.ArraySegment<int>), "ArraySegmentInt32Field", null, this.this_SetUnpackedValueOfArraySegmentInt32FieldDelegate);
         }
         
         private void SetUnpackedValueOfBigIntegerField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Numerics.BigInteger unpackedValue) {
@@ -3041,7 +3041,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfBigIntegerField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer7, itemsCount, indexOfItem, typeof(System.Numerics.BigInteger), "BigIntegerField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfBigIntegerFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer7, itemsCount, indexOfItem, typeof(System.Numerics.BigInteger), "BigIntegerField", null, this.this_SetUnpackedValueOfBigIntegerFieldDelegate);
         }
         
         private void SetUnpackedValueOfByteArrayField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, byte[] unpackedValue) {
@@ -3057,7 +3057,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfByteField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer9, itemsCount, indexOfItem, typeof(byte), "ByteField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueDelegate, this.this_SetUnpackedValueOfByteFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer9, itemsCount, indexOfItem, typeof(byte), "ByteField", this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueDelegate, this.this_SetUnpackedValueOfByteFieldDelegate);
         }
         
         private void SetUnpackedValueOfCharArrayField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, char[] unpackedValue) {
@@ -3073,7 +3073,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfCharField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer11, itemsCount, indexOfItem, typeof(char), "CharField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCharFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer11, itemsCount, indexOfItem, typeof(char), "CharField", null, this.this_SetUnpackedValueOfCharFieldDelegate);
         }
         
         private void SetUnpackedValueOfCollection_MessagePackObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> unpackedValue) {
@@ -3147,7 +3147,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfComplexField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer15, itemsCount, indexOfItem, typeof(System.Numerics.Complex), "ComplexField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfComplexFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer15, itemsCount, indexOfItem, typeof(System.Numerics.Complex), "ComplexField", null, this.this_SetUnpackedValueOfComplexFieldDelegate);
         }
         
         private void SetUnpackedValueOfCurrentCultureField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Globalization.CultureInfo unpackedValue) {
@@ -3163,7 +3163,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDateTimeField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer17, itemsCount, indexOfItem, typeof(System.DateTime), "DateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDateTimeFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer17, itemsCount, indexOfItem, typeof(System.DateTime), "DateTimeField", null, this.this_SetUnpackedValueOfDateTimeFieldDelegate);
         }
         
         private void SetUnpackedValueOfDateTimeOffsetField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.DateTimeOffset unpackedValue) {
@@ -3171,7 +3171,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDateTimeOffsetField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer18, itemsCount, indexOfItem, typeof(System.DateTimeOffset), "DateTimeOffsetField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDateTimeOffsetFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer18, itemsCount, indexOfItem, typeof(System.DateTimeOffset), "DateTimeOffsetField", null, this.this_SetUnpackedValueOfDateTimeOffsetFieldDelegate);
         }
         
         private void SetUnpackedValueOfDecimalField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, decimal unpackedValue) {
@@ -3179,7 +3179,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDecimalField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer19, itemsCount, indexOfItem, typeof(decimal), "DecimalField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDecimalFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer19, itemsCount, indexOfItem, typeof(decimal), "DecimalField", null, this.this_SetUnpackedValueOfDecimalFieldDelegate);
         }
         
         private void SetUnpackedValueOfDictionary_MessagePackObject_MessagePackObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> unpackedValue) {
@@ -3209,7 +3209,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDictionaryEntryField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer21, itemsCount, indexOfItem, typeof(System.Collections.DictionaryEntry), "DictionaryEntryField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryEntryFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer21, itemsCount, indexOfItem, typeof(System.Collections.DictionaryEntry), "DictionaryEntryField", null, this.this_SetUnpackedValueOfDictionaryEntryFieldDelegate);
         }
         
         private void SetUnpackedValueOfDictionaryObjectObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.Dictionary<object, object> unpackedValue) {
@@ -3261,7 +3261,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfFalseField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer24, itemsCount, indexOfItem, typeof(bool), "FalseField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueDelegate, this.this_SetUnpackedValueOfFalseFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer24, itemsCount, indexOfItem, typeof(bool), "FalseField", this.MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueDelegate, this.this_SetUnpackedValueOfFalseFieldDelegate);
         }
         
         private void SetUnpackedValueOfFILETIMEField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Runtime.InteropServices.ComTypes.FILETIME unpackedValue) {
@@ -3269,7 +3269,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfFILETIMEField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer25, itemsCount, indexOfItem, typeof(System.Runtime.InteropServices.ComTypes.FILETIME), "FILETIMEField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfFILETIMEFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer25, itemsCount, indexOfItem, typeof(System.Runtime.InteropServices.ComTypes.FILETIME), "FILETIMEField", null, this.this_SetUnpackedValueOfFILETIMEFieldDelegate);
         }
         
         private void SetUnpackedValueOfGuidField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Guid unpackedValue) {
@@ -3277,7 +3277,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfGuidField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer26, itemsCount, indexOfItem, typeof(System.Guid), "GuidField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfGuidFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer26, itemsCount, indexOfItem, typeof(System.Guid), "GuidField", null, this.this_SetUnpackedValueOfGuidFieldDelegate);
         }
         
         private void SetUnpackedValueOfHashSet_MessagePackObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.HashSet<MsgPack.MessagePackObject> unpackedValue) {
@@ -3648,7 +3648,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfKeyValuePairStringComplexField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer44, itemsCount, indexOfItem, typeof(System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>), "KeyValuePairStringComplexField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfKeyValuePairStringComplexFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer44, itemsCount, indexOfItem, typeof(System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>), "KeyValuePairStringComplexField", null, this.this_SetUnpackedValueOfKeyValuePairStringComplexFieldDelegate);
         }
         
         private void SetUnpackedValueOfKeyValuePairStringDateTimeOffsetField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset> unpackedValue) {
@@ -3656,7 +3656,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfKeyValuePairStringDateTimeOffsetField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer45, itemsCount, indexOfItem, typeof(System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>), "KeyValuePairStringDateTimeOffsetField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfKeyValuePairStringDateTimeOffsetFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer45, itemsCount, indexOfItem, typeof(System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>), "KeyValuePairStringDateTimeOffsetField", null, this.this_SetUnpackedValueOfKeyValuePairStringDateTimeOffsetFieldDelegate);
         }
         
         private void SetUnpackedValueOfList_MessagePackObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Collections.Generic.List<MsgPack.MessagePackObject> unpackedValue) {
@@ -3730,7 +3730,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfMaxByteField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer9, itemsCount, indexOfItem, typeof(byte), "MaxByteField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueDelegate, this.this_SetUnpackedValueOfMaxByteFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer9, itemsCount, indexOfItem, typeof(byte), "MaxByteField", this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueDelegate, this.this_SetUnpackedValueOfMaxByteFieldDelegate);
         }
         
         private void SetUnpackedValueOfMaxInt32Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int unpackedValue) {
@@ -3738,7 +3738,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfMaxInt32Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer49, itemsCount, indexOfItem, typeof(int), "MaxInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfMaxInt32FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer49, itemsCount, indexOfItem, typeof(int), "MaxInt32Field", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfMaxInt32FieldDelegate);
         }
         
         private void SetUnpackedValueOfMaxInt64Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, long unpackedValue) {
@@ -3746,7 +3746,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfMaxInt64Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer50, itemsCount, indexOfItem, typeof(long), "MaxInt64Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueDelegate, this.this_SetUnpackedValueOfMaxInt64FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer50, itemsCount, indexOfItem, typeof(long), "MaxInt64Field", this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueDelegate, this.this_SetUnpackedValueOfMaxInt64FieldDelegate);
         }
         
         private void SetUnpackedValueOfMaxUInt16Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, ushort unpackedValue) {
@@ -3754,7 +3754,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfMaxUInt16Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer51, itemsCount, indexOfItem, typeof(ushort), "MaxUInt16Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueDelegate, this.this_SetUnpackedValueOfMaxUInt16FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer51, itemsCount, indexOfItem, typeof(ushort), "MaxUInt16Field", this.MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueDelegate, this.this_SetUnpackedValueOfMaxUInt16FieldDelegate);
         }
         
         private void SetUnpackedValueOfMessagePackObject_Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, MsgPack.MessagePackObject unpackedValue) {
@@ -3778,7 +3778,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfMinInt32Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer49, itemsCount, indexOfItem, typeof(int), "MinInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfMinInt32FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer49, itemsCount, indexOfItem, typeof(int), "MinInt32Field", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfMinInt32FieldDelegate);
         }
         
         private void SetUnpackedValueOfMinInt64Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, long unpackedValue) {
@@ -3786,7 +3786,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfMinInt64Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer50, itemsCount, indexOfItem, typeof(long), "MinInt64Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueDelegate, this.this_SetUnpackedValueOfMinInt64FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer50, itemsCount, indexOfItem, typeof(long), "MinInt64Field", this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueDelegate, this.this_SetUnpackedValueOfMinInt64FieldDelegate);
         }
         
         private void SetUnpackedValueOfNullField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, object unpackedValue) {
@@ -3958,7 +3958,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTimeSpanField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer63, itemsCount, indexOfItem, typeof(System.TimeSpan), "TimeSpanField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTimeSpanFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer63, itemsCount, indexOfItem, typeof(System.TimeSpan), "TimeSpanField", null, this.this_SetUnpackedValueOfTimeSpanFieldDelegate);
         }
         
         private void SetUnpackedValueOfTinyByteField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, byte unpackedValue) {
@@ -3966,7 +3966,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTinyByteField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer9, itemsCount, indexOfItem, typeof(byte), "TinyByteField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueDelegate, this.this_SetUnpackedValueOfTinyByteFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer9, itemsCount, indexOfItem, typeof(byte), "TinyByteField", this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueDelegate, this.this_SetUnpackedValueOfTinyByteFieldDelegate);
         }
         
         private void SetUnpackedValueOfTinyInt32Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int unpackedValue) {
@@ -3974,7 +3974,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTinyInt32Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer49, itemsCount, indexOfItem, typeof(int), "TinyInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfTinyInt32FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer49, itemsCount, indexOfItem, typeof(int), "TinyInt32Field", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfTinyInt32FieldDelegate);
         }
         
         private void SetUnpackedValueOfTinyInt64Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, long unpackedValue) {
@@ -3982,7 +3982,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTinyInt64Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer50, itemsCount, indexOfItem, typeof(long), "TinyInt64Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueDelegate, this.this_SetUnpackedValueOfTinyInt64FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer50, itemsCount, indexOfItem, typeof(long), "TinyInt64Field", this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueDelegate, this.this_SetUnpackedValueOfTinyInt64FieldDelegate);
         }
         
         private void SetUnpackedValueOfTinyUInt16Field(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, ushort unpackedValue) {
@@ -3990,7 +3990,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTinyUInt16Field(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer51, itemsCount, indexOfItem, typeof(ushort), "TinyUInt16Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueDelegate, this.this_SetUnpackedValueOfTinyUInt16FieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer51, itemsCount, indexOfItem, typeof(ushort), "TinyUInt16Field", this.MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueDelegate, this.this_SetUnpackedValueOfTinyUInt16FieldDelegate);
         }
         
         private void SetUnpackedValueOfTrueField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, bool unpackedValue) {
@@ -3998,7 +3998,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTrueField(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer24, itemsCount, indexOfItem, typeof(bool), "TrueField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueDelegate, this.this_SetUnpackedValueOfTrueFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer24, itemsCount, indexOfItem, typeof(bool), "TrueField", this.MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueDelegate, this.this_SetUnpackedValueOfTrueFieldDelegate);
         }
         
         private void SetUnpackedValueOfTuple_Int32_String_MessagePackObject_ObjectField(MsgPack.Serialization.ComplexTypeGenerated unpackingContext, System.Tuple<int, string, MsgPack.MessagePackObject, object> unpackedValue) {
@@ -4053,19 +4053,19 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfArraySegmentByteFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer4, itemsCount, indexOfItem, typeof(System.ArraySegment<byte>), "ArraySegmentByteField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfArraySegmentByteFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer4, itemsCount, indexOfItem, typeof(System.ArraySegment<byte>), "ArraySegmentByteField", null, this.this_SetUnpackedValueOfArraySegmentByteFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfArraySegmentDecimalFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer5, itemsCount, indexOfItem, typeof(System.ArraySegment<decimal>), "ArraySegmentDecimalField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfArraySegmentDecimalFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer5, itemsCount, indexOfItem, typeof(System.ArraySegment<decimal>), "ArraySegmentDecimalField", null, this.this_SetUnpackedValueOfArraySegmentDecimalFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfArraySegmentInt32FieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer6, itemsCount, indexOfItem, typeof(System.ArraySegment<int>), "ArraySegmentInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfArraySegmentInt32FieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer6, itemsCount, indexOfItem, typeof(System.ArraySegment<int>), "ArraySegmentInt32Field", null, this.this_SetUnpackedValueOfArraySegmentInt32FieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfBigIntegerFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer7, itemsCount, indexOfItem, typeof(System.Numerics.BigInteger), "BigIntegerField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfBigIntegerFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer7, itemsCount, indexOfItem, typeof(System.Numerics.BigInteger), "BigIntegerField", null, this.this_SetUnpackedValueOfBigIntegerFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfByteArrayFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
@@ -4073,7 +4073,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfByteFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer9, itemsCount, indexOfItem, typeof(byte), "ByteField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueAsyncDelegate, this.this_SetUnpackedValueOfByteFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer9, itemsCount, indexOfItem, typeof(byte), "ByteField", this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueAsyncDelegate, this.this_SetUnpackedValueOfByteFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfCharArrayFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
@@ -4081,7 +4081,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfCharFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer11, itemsCount, indexOfItem, typeof(char), "CharField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCharFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer11, itemsCount, indexOfItem, typeof(char), "CharField", null, this.this_SetUnpackedValueOfCharFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfCollection_MessagePackObjectFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
@@ -4097,7 +4097,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfComplexFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer15, itemsCount, indexOfItem, typeof(System.Numerics.Complex), "ComplexField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfComplexFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer15, itemsCount, indexOfItem, typeof(System.Numerics.Complex), "ComplexField", null, this.this_SetUnpackedValueOfComplexFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfCurrentCultureFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
@@ -4105,15 +4105,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfDateTimeFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer17, itemsCount, indexOfItem, typeof(System.DateTime), "DateTimeField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDateTimeFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer17, itemsCount, indexOfItem, typeof(System.DateTime), "DateTimeField", null, this.this_SetUnpackedValueOfDateTimeFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfDateTimeOffsetFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer18, itemsCount, indexOfItem, typeof(System.DateTimeOffset), "DateTimeOffsetField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDateTimeOffsetFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer18, itemsCount, indexOfItem, typeof(System.DateTimeOffset), "DateTimeOffsetField", null, this.this_SetUnpackedValueOfDateTimeOffsetFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfDecimalFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer19, itemsCount, indexOfItem, typeof(decimal), "DecimalField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDecimalFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer19, itemsCount, indexOfItem, typeof(decimal), "DecimalField", null, this.this_SetUnpackedValueOfDecimalFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfDictionary_MessagePackObject_MessagePackObjectFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
@@ -4121,7 +4121,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfDictionaryEntryFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer21, itemsCount, indexOfItem, typeof(System.Collections.DictionaryEntry), "DictionaryEntryField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryEntryFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer21, itemsCount, indexOfItem, typeof(System.Collections.DictionaryEntry), "DictionaryEntryField", null, this.this_SetUnpackedValueOfDictionaryEntryFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfDictionaryObjectObjectFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
@@ -4133,15 +4133,15 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfFalseFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer24, itemsCount, indexOfItem, typeof(bool), "FalseField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueAsyncDelegate, this.this_SetUnpackedValueOfFalseFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer24, itemsCount, indexOfItem, typeof(bool), "FalseField", this.MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueAsyncDelegate, this.this_SetUnpackedValueOfFalseFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfFILETIMEFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer25, itemsCount, indexOfItem, typeof(System.Runtime.InteropServices.ComTypes.FILETIME), "FILETIMEField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfFILETIMEFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer25, itemsCount, indexOfItem, typeof(System.Runtime.InteropServices.ComTypes.FILETIME), "FILETIMEField", null, this.this_SetUnpackedValueOfFILETIMEFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfGuidFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer26, itemsCount, indexOfItem, typeof(System.Guid), "GuidField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfGuidFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer26, itemsCount, indexOfItem, typeof(System.Guid), "GuidField", null, this.this_SetUnpackedValueOfGuidFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfHashSet_MessagePackObjectFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
@@ -4217,11 +4217,11 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfKeyValuePairStringComplexFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer44, itemsCount, indexOfItem, typeof(System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>), "KeyValuePairStringComplexField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfKeyValuePairStringComplexFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer44, itemsCount, indexOfItem, typeof(System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>), "KeyValuePairStringComplexField", null, this.this_SetUnpackedValueOfKeyValuePairStringComplexFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfKeyValuePairStringDateTimeOffsetFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer45, itemsCount, indexOfItem, typeof(System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>), "KeyValuePairStringDateTimeOffsetField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfKeyValuePairStringDateTimeOffsetFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer45, itemsCount, indexOfItem, typeof(System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>), "KeyValuePairStringDateTimeOffsetField", null, this.this_SetUnpackedValueOfKeyValuePairStringDateTimeOffsetFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfList_MessagePackObjectFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
@@ -4237,19 +4237,19 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfMaxByteFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer9, itemsCount, indexOfItem, typeof(byte), "MaxByteField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueAsyncDelegate, this.this_SetUnpackedValueOfMaxByteFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer9, itemsCount, indexOfItem, typeof(byte), "MaxByteField", this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueAsyncDelegate, this.this_SetUnpackedValueOfMaxByteFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfMaxInt32FieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer49, itemsCount, indexOfItem, typeof(int), "MaxInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfMaxInt32FieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer49, itemsCount, indexOfItem, typeof(int), "MaxInt32Field", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfMaxInt32FieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfMaxInt64FieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer50, itemsCount, indexOfItem, typeof(long), "MaxInt64Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueAsyncDelegate, this.this_SetUnpackedValueOfMaxInt64FieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer50, itemsCount, indexOfItem, typeof(long), "MaxInt64Field", this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueAsyncDelegate, this.this_SetUnpackedValueOfMaxInt64FieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfMaxUInt16FieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer51, itemsCount, indexOfItem, typeof(ushort), "MaxUInt16Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueAsyncDelegate, this.this_SetUnpackedValueOfMaxUInt16FieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer51, itemsCount, indexOfItem, typeof(ushort), "MaxUInt16Field", this.MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueAsyncDelegate, this.this_SetUnpackedValueOfMaxUInt16FieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfMessagePackObject_FieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
@@ -4261,11 +4261,11 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfMinInt32FieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer49, itemsCount, indexOfItem, typeof(int), "MinInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfMinInt32FieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer49, itemsCount, indexOfItem, typeof(int), "MinInt32Field", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfMinInt32FieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfMinInt64FieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer50, itemsCount, indexOfItem, typeof(long), "MinInt64Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueAsyncDelegate, this.this_SetUnpackedValueOfMinInt64FieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer50, itemsCount, indexOfItem, typeof(long), "MinInt64Field", this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueAsyncDelegate, this.this_SetUnpackedValueOfMinInt64FieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfNullFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
@@ -4309,27 +4309,27 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfTimeSpanFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer63, itemsCount, indexOfItem, typeof(System.TimeSpan), "TimeSpanField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTimeSpanFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer63, itemsCount, indexOfItem, typeof(System.TimeSpan), "TimeSpanField", null, this.this_SetUnpackedValueOfTimeSpanFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfTinyByteFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer9, itemsCount, indexOfItem, typeof(byte), "TinyByteField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueAsyncDelegate, this.this_SetUnpackedValueOfTinyByteFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer9, itemsCount, indexOfItem, typeof(byte), "TinyByteField", this.MsgPack_Serialization_UnpackHelpers_UnpackByteValueAsyncDelegate, this.this_SetUnpackedValueOfTinyByteFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfTinyInt32FieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer49, itemsCount, indexOfItem, typeof(int), "TinyInt32Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfTinyInt32FieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer49, itemsCount, indexOfItem, typeof(int), "TinyInt32Field", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfTinyInt32FieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfTinyInt64FieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer50, itemsCount, indexOfItem, typeof(long), "TinyInt64Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueAsyncDelegate, this.this_SetUnpackedValueOfTinyInt64FieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer50, itemsCount, indexOfItem, typeof(long), "TinyInt64Field", this.MsgPack_Serialization_UnpackHelpers_UnpackInt64ValueAsyncDelegate, this.this_SetUnpackedValueOfTinyInt64FieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfTinyUInt16FieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer51, itemsCount, indexOfItem, typeof(ushort), "TinyUInt16Field", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueAsyncDelegate, this.this_SetUnpackedValueOfTinyUInt16FieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer51, itemsCount, indexOfItem, typeof(ushort), "TinyUInt16Field", this.MsgPack_Serialization_UnpackHelpers_UnpackUInt16ValueAsyncDelegate, this.this_SetUnpackedValueOfTinyUInt16FieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfTrueFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer24, itemsCount, indexOfItem, typeof(bool), "TrueField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueAsyncDelegate, this.this_SetUnpackedValueOfTrueFieldDelegate, cancellationToken);
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer24, itemsCount, indexOfItem, typeof(bool), "TrueField", this.MsgPack_Serialization_UnpackHelpers_UnpackBooleanValueAsyncDelegate, this.this_SetUnpackedValueOfTrueFieldDelegate, cancellationToken);
         }
         
         private System.Threading.Tasks.Task UnpackValueOfTuple_Int32_String_MessagePackObject_ObjectFieldAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGenerated unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {

@@ -187,7 +187,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTimeStamp(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeWithDataContract unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.DateTime), "TimeStamp", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfTimeStampDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.DateTime), "TimeStamp", null, this.this_SetUnpackedValueOfTimeStampDelegate);
         }
         
         protected internal override MsgPack.Serialization.ComplexTypeWithDataContract UnpackFromCore(MsgPack.Unpacker unpacker) {

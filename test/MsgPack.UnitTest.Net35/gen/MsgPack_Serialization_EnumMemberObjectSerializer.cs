@@ -245,7 +245,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfByNameByNameProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumByName), "ByNameByNameProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfByNameByNamePropertyDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumByName), "ByNameByNameProperty", null, this.this_SetUnpackedValueOfByNameByNamePropertyDelegate);
         }
         
         private void SetUnpackedValueOfByNameByUnderlyingValueProperty(MsgPack.Serialization.EnumMemberObject unpackingContext, MsgPack.Serialization.EnumByName unpackedValue) {
@@ -253,7 +253,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfByNameByUnderlyingValueProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumByName), "ByNameByUnderlyingValueProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfByNameByUnderlyingValuePropertyDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumByName), "ByNameByUnderlyingValueProperty", null, this.this_SetUnpackedValueOfByNameByUnderlyingValuePropertyDelegate);
         }
         
         private void SetUnpackedValueOfByNameDefaultProperty(MsgPack.Serialization.EnumMemberObject unpackingContext, MsgPack.Serialization.EnumByName unpackedValue) {
@@ -261,7 +261,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfByNameDefaultProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumByName), "ByNameDefaultProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfByNameDefaultPropertyDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumByName), "ByNameDefaultProperty", null, this.this_SetUnpackedValueOfByNameDefaultPropertyDelegate);
         }
         
         private void SetUnpackedValueOfByUnderlyingValueByNameProperty(MsgPack.Serialization.EnumMemberObject unpackingContext, MsgPack.Serialization.EnumByUnderlyingValue unpackedValue) {
@@ -269,7 +269,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfByUnderlyingValueByNameProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumByUnderlyingValue), "ByUnderlyingValueByNameProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfByUnderlyingValueByNamePropertyDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumByUnderlyingValue), "ByUnderlyingValueByNameProperty", null, this.this_SetUnpackedValueOfByUnderlyingValueByNamePropertyDelegate);
         }
         
         private void SetUnpackedValueOfByUnderlyingValueByUnderlyingValueProperty(MsgPack.Serialization.EnumMemberObject unpackingContext, MsgPack.Serialization.EnumByUnderlyingValue unpackedValue) {
@@ -277,7 +277,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfByUnderlyingValueByUnderlyingValueProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer4, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumByUnderlyingValue), "ByUnderlyingValueByUnderlyingValueProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfByUnderlyingValueByUnderlyingValuePropertyDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer4, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumByUnderlyingValue), "ByUnderlyingValueByUnderlyingValueProperty", null, this.this_SetUnpackedValueOfByUnderlyingValueByUnderlyingValuePropertyDelegate);
         }
         
         private void SetUnpackedValueOfByUnderlyingValueDefaultProperty(MsgPack.Serialization.EnumMemberObject unpackingContext, MsgPack.Serialization.EnumByUnderlyingValue unpackedValue) {
@@ -285,7 +285,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfByUnderlyingValueDefaultProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer5, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumByUnderlyingValue), "ByUnderlyingValueDefaultProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfByUnderlyingValueDefaultPropertyDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer5, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumByUnderlyingValue), "ByUnderlyingValueDefaultProperty", null, this.this_SetUnpackedValueOfByUnderlyingValueDefaultPropertyDelegate);
         }
         
         private void SetUnpackedValueOfDefaultByNameProperty(MsgPack.Serialization.EnumMemberObject unpackingContext, MsgPack.Serialization.EnumDefault unpackedValue) {
@@ -293,7 +293,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDefaultByNameProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer6, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumDefault), "DefaultByNameProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDefaultByNamePropertyDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer6, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumDefault), "DefaultByNameProperty", null, this.this_SetUnpackedValueOfDefaultByNamePropertyDelegate);
         }
         
         private void SetUnpackedValueOfDefaultByUnderlyingValueProperty(MsgPack.Serialization.EnumMemberObject unpackingContext, MsgPack.Serialization.EnumDefault unpackedValue) {
@@ -301,7 +301,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDefaultByUnderlyingValueProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer7, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumDefault), "DefaultByUnderlyingValueProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDefaultByUnderlyingValuePropertyDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer7, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumDefault), "DefaultByUnderlyingValueProperty", null, this.this_SetUnpackedValueOfDefaultByUnderlyingValuePropertyDelegate);
         }
         
         private void SetUnpackedValueOfDefaultDefaultProperty(MsgPack.Serialization.EnumMemberObject unpackingContext, MsgPack.Serialization.EnumDefault unpackedValue) {
@@ -309,7 +309,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDefaultDefaultProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.EnumMemberObject unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer8, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumDefault), "DefaultDefaultProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDefaultDefaultPropertyDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer8, itemsCount, indexOfItem, typeof(MsgPack.Serialization.EnumDefault), "DefaultDefaultProperty", null, this.this_SetUnpackedValueOfDefaultDefaultPropertyDelegate);
         }
         
         protected internal override MsgPack.Serialization.EnumMemberObject UnpackFromCore(MsgPack.Unpacker unpacker) {

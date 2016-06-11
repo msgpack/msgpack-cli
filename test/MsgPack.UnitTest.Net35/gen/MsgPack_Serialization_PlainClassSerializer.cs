@@ -145,7 +145,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfPublicField(MsgPack.Unpacker unpacker, MsgPack.Serialization.PlainClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(int), "PublicField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfPublicFieldDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(int), "PublicField", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfPublicFieldDelegate);
         }
         
         private void SetUnpackedValueOfPublicProperty(MsgPack.Serialization.PlainClass unpackingContext, int unpackedValue) {
@@ -153,7 +153,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfPublicProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.PlainClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(int), "PublicProperty", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfPublicPropertyDelegate);
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(int), "PublicProperty", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfPublicPropertyDelegate);
         }
         
         protected internal override MsgPack.Serialization.PlainClass UnpackFromCore(MsgPack.Unpacker unpacker) {

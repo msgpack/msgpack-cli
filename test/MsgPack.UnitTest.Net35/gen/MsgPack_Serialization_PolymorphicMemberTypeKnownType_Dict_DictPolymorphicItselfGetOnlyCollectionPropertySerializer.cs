@@ -39,8 +39,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             System.Collections.Generic.Dictionary<string, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<string, System.Type>);
             typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
             typeMap0 = new System.Collections.Generic.Dictionary<string, System.Type>(2);
-            typeMap0.Add("1", typeof(System.Collections.Generic.SortedDictionary<string, string>));
             typeMap0.Add("0", typeof(System.Collections.Generic.Dictionary<string, string>));
+            typeMap0.Add("1", typeof(System.Collections.Generic.SortedDictionary<string, string>));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicDictionary(typeof(System.Collections.Generic.IDictionary<string, string>), typeMap0, null, null);
             this._serializer0 = context.GetSerializer<System.Collections.Generic.IDictionary<string, string>>(schema0);
             System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty>[] packOperationList = default(System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty>[]);
