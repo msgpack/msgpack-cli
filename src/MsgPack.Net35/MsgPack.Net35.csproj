@@ -622,9 +622,6 @@
     <Compile Include="..\MsgPack\Serialization\ISerializerGeneratorConfiguration.cs">
       <Link>Serialization\ISerializerGeneratorConfiguration.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\ISupportMessagePackSerializerCapability.cs">
-      <Link>Serialization\ISupportMessagePackSerializerCapability.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\LazyDelegatingMessagePackSerializer`1.cs">
       <Link>Serialization\LazyDelegatingMessagePackSerializer`1.cs</Link>
     </Compile>
