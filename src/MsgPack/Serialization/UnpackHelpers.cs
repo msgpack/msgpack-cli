@@ -31,7 +31,6 @@
 #if DEBUG && !NETFX_CORE
 #define TRACING
 #endif // DEBUG && !NETFX_CORE
-#warning TODO: Conditional -> #if
 
 using System;
 using System.Collections;
@@ -920,16 +919,24 @@ namespace MsgPack.Serialization
 
 		[Conditional( "TRACING" )]
 		// ReSharper disable once RedundantAssignment
-		private static void InitializeUnpackerTrace( Unpacker unpacker, ref UnpackerTraceContext context, [CallerMemberName]string callerMemberName = null )
+		private static void InitializeUnpackerTrace( Unpacker unpacker, ref UnpackerTraceContext context,
+#if TRACING
+			[CallerMemberName]
+#endif // TRACING
+			string callerMemberName = null
+		)
 		{
+#if TRACING
 			long positionOrOffset;
 			unpacker.GetPreviousPosition( out positionOrOffset );
 			context = new UnpackerTraceContext( positionOrOffset, callerMemberName );
+#endif // TRACING
 		}
 
 		[Conditional( "TRACING" )]
 		private static void Trace( UnpackerTraceContext context, string label, Unpacker unpacker )
 		{
+#if TRACING
 			long positionOrOffset;
 			unpacker.GetPreviousPosition( out positionOrOffset );
 			TraceCore(
@@ -940,11 +947,13 @@ namespace MsgPack.Serialization
 				positionOrOffset
 			);
 			context.PositionOrOffset = positionOrOffset;
+#endif // TRACING
 		}
 
 		[Conditional( "TRACING" )]
 		private static void Trace( UnpackerTraceContext context, string label, Unpacker unpacker, int index )
 		{
+#if TRACING
 			long positionOrOffset;
 			unpacker.GetPreviousPosition( out positionOrOffset );
 			TraceCore(
@@ -956,11 +965,13 @@ namespace MsgPack.Serialization
 				index
 			);
 			context.PositionOrOffset = positionOrOffset;
+#endif // TRACING
 		}
 
 		[Conditional( "TRACING" )]
 		private static void Trace( UnpackerTraceContext context, string label, Unpacker unpacker, int index, IList<string> itemNames )
 		{
+#if TRACING
 			long positionOrOffset;
 			unpacker.GetPreviousPosition( out positionOrOffset );
 			TraceCore(
@@ -973,11 +984,13 @@ namespace MsgPack.Serialization
 				index
 			);
 			context.PositionOrOffset = positionOrOffset;
+#endif // TRACING
 		}
 
 		[Conditional( "TRACING" )]
 		private static void Trace( UnpackerTraceContext context, string label, Unpacker unpacker, int index, string key )
 		{
+#if TRACING
 			long positionOrOffset;
 			unpacker.GetPreviousPosition( out positionOrOffset );
 			TraceCore(
@@ -990,11 +1003,13 @@ namespace MsgPack.Serialization
 				index
 			);
 			context.PositionOrOffset = positionOrOffset;
+#endif // TRACING
 		}
 
 		[Conditional( "TRACING" )]
 		private static void Trace( UnpackerTraceContext context, string label, Unpacker unpacker, string key )
 		{
+#if TRACING
 			long positionOrOffset;
 			unpacker.GetPreviousPosition( out positionOrOffset );
 			TraceCore(
@@ -1006,6 +1021,7 @@ namespace MsgPack.Serialization
 				key
 			);
 			context.PositionOrOffset = positionOrOffset;
+#endif // TRACING
 		}
 
 		[Conditional( "TRACING" )]
@@ -1018,6 +1034,7 @@ namespace MsgPack.Serialization
 
 		private sealed class UnpackerTraceContext
 		{
+#if TRACING
 			public long PositionOrOffset { get; set; }
 			public string MethodName { get; private set; }
 
@@ -1026,9 +1043,11 @@ namespace MsgPack.Serialization
 				this.PositionOrOffset = positionOrOffset;
 				this.MethodName = methodName;
 			}
+#endif // TRACING
 		}
 	}
 }
+#if TRACING
 #if ( SILVERLIGHT && !WINDOWS_PHONE ) || NETFX_35 || NETFX_40 || UNITY
 namespace System.Runtime.CompilerServices
 {
@@ -1036,4 +1055,4 @@ namespace System.Runtime.CompilerServices
 	internal sealed class CallerMemberNameAttribute : Attribute { }
 }
 #endif // SILVERLIGHT || NETFX_35 || NETFX_40 || UNITY
-
+#endif // TRACING
