@@ -49,8 +49,6 @@ namespace MsgPack.Serialization
 	// This file is generated from UnpackHelpers.facade.tt file with T4.
 	// Do not modify this cs file directly.
 
-	#warning TODO: Some of methods are never used.
-
 	partial class UnpackHelpers
 	{
 		/// <summary>
@@ -305,7 +303,6 @@ namespace MsgPack.Serialization
 		/// <param name="unpacked">The unpacked items count.</param>
 		/// <param name="targetObjectType">Type of the target object for debugging message.</param>
 		/// <param name="memberName">Name of the member for debugging message.</param>
-		/// <param name="nilImplication">The nil implication of current item.</param>
 		/// <param name="directRead">The delegate which referes direct reading. This parameter should be <c>null</c> when <paramref name="serializer" /> is specified.</param>
 		/// <param name="setter">The delegate which takes <paramref name="context" /> and unpacked value, and then set the value to the context.</param>
 #if !UNITY || MSGPACK_UNITY_FULL
@@ -317,7 +314,7 @@ namespace MsgPack.Serialization
 		public static void UnpackValueTypeValue<TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<TValue> serializer,
 			int itemsCount, int unpacked,
-			Type targetObjectType, string memberName, NilImplication nilImplication,
+			Type targetObjectType, string memberName,
 			Func<Unpacker, Type, string, TValue> directRead, Action<TContext, TValue> setter
 		)
 			where TValue : struct
@@ -408,7 +405,6 @@ namespace MsgPack.Serialization
 		/// <param name="unpacked">The unpacked items count.</param>
 		/// <param name="targetObjectType">Type of the target object for debugging message.</param>
 		/// <param name="memberName">Name of the member for debugging message.</param>
-		/// <param name="nilImplication">The nil implication of current item.</param>
 		/// <param name="directRead">The delegate which referes direct reading. This parameter should be <c>null</c> when <paramref name="serializer" /> is specified.</param>
 		/// <param name="setter">The delegate which takes <paramref name="context" /> and unpacked value, and then set the value to the context.</param>
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
@@ -422,7 +418,7 @@ namespace MsgPack.Serialization
 		public static async Task UnpackValueTypeValueAsync<TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<TValue> serializer,
 			int itemsCount, int unpacked,
-			Type targetObjectType, string memberName, NilImplication nilImplication,
+			Type targetObjectType, string memberName,
 			Func<Unpacker, Type, string, CancellationToken, Task<TValue>> directRead, Action<TContext, TValue> setter, CancellationToken cancellationToken
 		)
 			where TValue : struct
@@ -525,7 +521,8 @@ namespace MsgPack.Serialization
 		public static void UnpackReferenceTypeValue<TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<TValue> serializer,
 			int itemsCount, int unpacked,
-			Type targetObjectType, string memberName, NilImplication nilImplication,
+			Type targetObjectType, string memberName,
+			NilImplication nilImplication,
 			Func<Unpacker, Type, string, TValue> directRead, Action<TContext, TValue> setter
 		)
 			where TValue : class
@@ -641,7 +638,8 @@ namespace MsgPack.Serialization
 		public static async Task UnpackReferenceTypeValueAsync<TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<TValue> serializer,
 			int itemsCount, int unpacked,
-			Type targetObjectType, string memberName, NilImplication nilImplication,
+			Type targetObjectType, string memberName,
+			NilImplication nilImplication,
 			Func<Unpacker, Type, string, CancellationToken, Task<TValue>> directRead, Action<TContext, TValue> setter, CancellationToken cancellationToken
 		)
 			where TValue : class
@@ -755,7 +753,8 @@ namespace MsgPack.Serialization
 		public static void UnpackNullableTypeValue<TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<TValue?> serializer,
 			int itemsCount, int unpacked,
-			Type targetObjectType, string memberName, NilImplication nilImplication,
+			Type targetObjectType, string memberName,
+			NilImplication nilImplication,
 			Func<Unpacker, Type, string, TValue?> directRead, Action<TContext, TValue?> setter
 		)
 			where TValue : struct
@@ -871,7 +870,8 @@ namespace MsgPack.Serialization
 		public static async Task UnpackNullableTypeValueAsync<TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<TValue?> serializer,
 			int itemsCount, int unpacked,
-			Type targetObjectType, string memberName, NilImplication nilImplication,
+			Type targetObjectType, string memberName,
+			NilImplication nilImplication,
 			Func<Unpacker, Type, string, CancellationToken, Task<TValue?>> directRead, Action<TContext, TValue?> setter, CancellationToken cancellationToken
 		)
 			where TValue : struct

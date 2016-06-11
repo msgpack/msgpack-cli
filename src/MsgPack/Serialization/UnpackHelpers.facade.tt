@@ -58,8 +58,6 @@ namespace MsgPack.Serialization
 	// This file is generated from UnpackHelpers.facade.tt file with T4.
 	// Do not modify this cs file directly.
 
-	#warning TODO: Some of methods are never used.
-
 	partial class UnpackHelpers
 	{
 <#
@@ -223,7 +221,14 @@ foreach ( var kind in new [] { TypeKind.Value, TypeKind.Reference, TypeKind.Null
 		/// <param name="unpacked">The unpacked items count.</param>
 		/// <param name="targetObjectType">Type of the target object for debugging message.</param>
 		/// <param name="memberName">Name of the member for debugging message.</param>
+<#
+		if ( kind != TypeKind.Value )
+		{
+#>
 		/// <param name="nilImplication">The nil implication of current item.</param>
+<#
+		}
+#>
 		/// <param name="directRead">The delegate which referes direct reading. This parameter should be <c>null</c> when <paramref name="serializer" /> is specified.</param>
 		/// <param name="setter">The delegate which takes <paramref name="context" /> and unpacked value, and then set the value to the context.</param>
 <#
@@ -244,7 +249,15 @@ foreach ( var kind in new [] { TypeKind.Value, TypeKind.Reference, TypeKind.Null
 		public static <#= AsyncVoid( isAsync ) #> Unpack<#= kind #>TypeValue<#= MethodSuffix( isAsync ) #><TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<<#= TypeParameter( kind ) #>> serializer,
 			int itemsCount, int unpacked,
-			Type targetObjectType, string memberName, NilImplication nilImplication,
+			Type targetObjectType, string memberName,
+<#
+		if ( kind != TypeKind.Value )
+		{
+#>
+			NilImplication nilImplication,
+<#
+		}
+#>
 			<#= DirectReadDelegate( kind, isAsync ) #> directRead, Action<TContext, <#= TypeParameter( kind ) #>> setter<#= CancellationTokenParameter( isAsync ) #>
 		)
 			where TValue : <#= kind == TypeKind.Reference ? "class" : "struct" #>

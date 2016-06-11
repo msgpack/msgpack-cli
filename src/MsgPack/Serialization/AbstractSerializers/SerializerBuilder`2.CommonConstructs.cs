@@ -1444,12 +1444,22 @@ namespace MsgPack.Serialization.AbstractSerializers
 				// Unpacker, TContext, MPS<T> int, int, Type, string, NilImplication, Func<Unpacker,Type,string,[CancellationToken, Task of]TValue>, Action<TContext, MPO>[, CancellationToken]
 				helperArguments =
 					new [] { unpacker, unpackingContext, this.EmitGetSerializerExpression( context, memberType, memberInfo, itemsSchema ), 
-						countOfItem, indexOfItem, this.EmitTypeOfExpression( context, memberType ), memberName, this.MakeEnumLiteral( context, typeof( NilImplication ), nilImplication ),
-						directReadMethod == null
-							? this.MakeNullLiteral( context, directReadDelegateType )
-							: this.EmitGetStaticDelegateExpression( context, directReadMethod ),
-						setterDelegate
-					}
+						countOfItem, indexOfItem, this.EmitTypeOfExpression( context, memberType ), memberName };
+				if ( typeKind != "Value" )
+				{
+					helperArguments = helperArguments.Concat( new[] { this.MakeEnumLiteral( context, typeof( NilImplication ), nilImplication ) } );
+				}
+
+				helperArguments =
+					helperArguments.Concat(
+						new []
+						{
+							directReadMethod == null
+								? this.MakeNullLiteral( context, directReadDelegateType )
+								: this.EmitGetStaticDelegateExpression( context, directReadMethod ),
+							setterDelegate
+						} 
+					)
 #if FEATURE_TAP
 					.Concat( isAsync ? new [] { this.ReferCancellationToken( context, 5 ) } : NoConstructs )
 #endif // FEATURE_TAP
