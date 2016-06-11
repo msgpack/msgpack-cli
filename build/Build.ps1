@@ -26,7 +26,7 @@ else
 
 	./SetBuildEnv.ps1
 	./UpdateAndroidSdk.cmd
-	[string]$builder = "$env:windir\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
+	[string]$builder = "${env:ProgramFiles(x86)}\MSBuild\14.0\Bin\MSBuild.exe"
 	[string]$winBuilder = "${env:ProgramFiles(x86)}\MSBuild\14.0\Bin\MSBuild.exe"
 	[string]$nuget = "../.nuget/nuget.exe"
 	[string]$nugetVerbosity = "normal"
