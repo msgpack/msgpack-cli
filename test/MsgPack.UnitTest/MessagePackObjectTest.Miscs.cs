@@ -18,6 +18,14 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
+#if UNITY || UNITY2 || XAMARIN
+#define NUNITLITE
+#endif // UNITY || UNITY2 || XAMARIN
+
 using System;
 using System.Linq;
 #if !MSTEST
@@ -230,5 +238,15 @@ namespace MsgPack
 				}
 			}
 		}
+
+#if NUNITLITE
+		private static class Does
+		{
+			public static NUnit.Framework.Constraints.Constraint Match( string regex )
+			{
+				return Is.StringMatching( regex );
+			}
+		}
+#endif // NUNITLITE
 	}
 }
