@@ -52,7 +52,7 @@ namespace MsgPack.Serialization
 	partial class UnpackHelpers
 	{
 		/// <summary>
-		///		Unpacks the complex object from specified <see cref="Unpacker"/> with specified <see cref="MessagePackSerializer{T}"/>L
+		///		Unpacks the complex object from specified <see cref="Unpacker"/> with specified <see cref="MessagePackSerializer{T}"/>/
 		/// </summary>
 		/// <typeparam name="T">The type of unpacking value.</typeparam>
 		/// <param name="unpacker">The unpacker.</param>
@@ -110,7 +110,7 @@ namespace MsgPack.Serialization
 #if FEATURE_TAP
 
 		/// <summary>
-		///		Unpacks the complex object from specified <see cref="Unpacker"/> with specified <see cref="MessagePackSerializer{T}"/> asyncronouslyL
+		///		Unpacks the complex object from specified <see cref="Unpacker"/> with specified <see cref="MessagePackSerializer{T}"/> asyncronously/
 		/// </summary>
 		/// <typeparam name="T">The type of unpacking value.</typeparam>
 		/// <param name="unpacker">The unpacker.</param>
@@ -153,127 +153,6 @@ namespace MsgPack.Serialization
 			if ( !( await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
 			{
 				SerializationExceptions.ThrowMissingItem( unpacked, unpacker );
-			}
-
-			if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
-			{
-				return await serializer.UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false );
-			}
-			else
-			{
-				using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
-				{
-					return  await serializer.UnpackFromAsync( subtreeUnpacker, cancellationToken ).ConfigureAwait( false );
-				}
-			}
-		}
-
-#endif // FEATURE_TAP
-
-		/// <summary>
-		///		Unpacks the complex object from specified <see cref="Unpacker"/> with specified <see cref="MessagePackSerializer{T}"/>L
-		/// </summary>
-		/// <typeparam name="T">The type of unpacking value.</typeparam>
-		/// <param name="unpacker">The unpacker.</param>
-		/// <param name="serializer">The serializer to deserialize complex object.</param>
-		/// <param name="unpacked">The current unpacked count for debugging.</param>
-		/// <param name="currentKey">The deserialized key of the map which should be name of the current item.</param>
-		/// <returns>
-		///		A value read from current stream.
-		/// </returns>
-#if !UNITY || MSGPACK_UNITY_FULL
-		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
-		public static T UnpackComplexObject<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked, string currentKey )
-		{
-			if ( unpacker == null )
-			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
-			}
-
-			if ( serializer == null )
-			{
-				SerializationExceptions.ThrowArgumentNullException( "serializer" );
-			}
-
-			if ( unpacked < 0 )
-			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
-			}
-
-#if ASSERT
-			Contract.Assert( unpacker != null );
-			Contract.Assert( serializer != null );
-			Contract.Assert( unpacked >= 0 );
-#endif // ASSERT
-			if ( !unpacker.Read() )
-			{
-				SerializationExceptions.ThrowMissingItem( unpacked, currentKey, unpacker );
-			}
-
-			if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
-			{
-				return serializer.UnpackFrom( unpacker );
-			}
-			else
-			{
-				using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
-				{
-					return  serializer.UnpackFrom( subtreeUnpacker );
-				}
-			}
-		}
-
-#if FEATURE_TAP
-
-		/// <summary>
-		///		Unpacks the complex object from specified <see cref="Unpacker"/> with specified <see cref="MessagePackSerializer{T}"/> asyncronouslyL
-		/// </summary>
-		/// <typeparam name="T">The type of unpacking value.</typeparam>
-		/// <param name="unpacker">The unpacker.</param>
-		/// <param name="serializer">The serializer to deserialize complex object.</param>
-		/// <param name="unpacked">The current unpacked count for debugging.</param>
-		/// <param name="currentKey">The deserialized key of the map which should be name of the current item.</param>
-		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
-		/// <returns>
-		///		A <see cref="Task"/> that represents the asynchronous operation. 
-		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
-		///		a <typeparamref name="T" /> value read from current stream.
-		/// </returns>
-#if !UNITY || MSGPACK_UNITY_FULL
-		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
-		public static async Task<T> UnpackComplexObjectAsync<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked, string currentKey, CancellationToken cancellationToken )
-		{
-			if ( unpacker == null )
-			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
-			}
-
-			if ( serializer == null )
-			{
-				SerializationExceptions.ThrowArgumentNullException( "serializer" );
-			}
-
-			if ( unpacked < 0 )
-			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
-			}
-
-#if ASSERT
-			Contract.Assert( unpacker != null );
-			Contract.Assert( serializer != null );
-			Contract.Assert( unpacked >= 0 );
-#endif // ASSERT
-			if ( !( await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
-			{
-				SerializationExceptions.ThrowMissingItem( unpacked, currentKey, unpacker );
 			}
 
 			if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )

@@ -61,56 +61,47 @@ namespace MsgPack.Serialization
 	partial class UnpackHelpers
 	{
 <#
-foreach ( var forMap in new [] { false, true } )
+foreach ( var isAsync in new [] { false, true } )
 {
-	foreach ( var isAsync in new [] { false, true } )
+	if ( isAsync )
 	{
-		if ( isAsync )
-		{
 #>
 #if FEATURE_TAP
 
 <#
-		}
+	}
 #>
 		/// <summary>
-		///		Unpacks the complex object from specified <see cref="Unpacker"/> with specified <see cref="MessagePackSerializer{T}"/><#= SummarySuffix( isAsync ) #>L
+		///		Unpacks the complex object from specified <see cref="Unpacker"/> with specified <see cref="MessagePackSerializer{T}"/><#= SummarySuffix( isAsync ) #>/
 		/// </summary>
 		/// <typeparam name="T">The type of unpacking value.</typeparam>
 		/// <param name="unpacker">The unpacker.</param>
 		/// <param name="serializer">The serializer to deserialize complex object.</param>
 		/// <param name="unpacked">The current unpacked count for debugging.</param>
 <#
-		if ( forMap )
-		{
-#>
-		/// <param name="currentKey">The deserialized key of the map which should be name of the current item.</param>
-<#
-		}
-
-		if ( isAsync )
-		{
+	if ( isAsync )
+	{
 #>
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
 <#
-		}
+	}
 #>
 		/// <returns>
 <#
-		if ( isAsync )
-		{
+	if ( isAsync )
+	{
 #>
 		///		A <see cref="Task"/> that represents the asynchronous operation. 
 		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
 		///		a <typeparamref name="T" /> value read from current stream.
 <#
-		}
-		else
-		{
+	}
+	else
+	{
 #>
 		///		A value read from current stream.
 <#
-		}
+	}
 #>
 		/// </returns>
 #if !UNITY || MSGPACK_UNITY_FULL
@@ -119,7 +110,7 @@ foreach ( var forMap in new [] { false, true } )
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
-		public static <#= AsyncT( isAsync ) #> UnpackComplexObject<#= MethodSuffix( isAsync ) #><T>( Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked<#= forMap ? ", string currentKey" : String.Empty #><#= CancellationTokenParameter( isAsync ) #> )
+		public static <#= AsyncT( isAsync ) #> UnpackComplexObject<#= MethodSuffix( isAsync ) #><T>( Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked<#= CancellationTokenParameter( isAsync ) #> )
 		{
 			if ( unpacker == null )
 			{
@@ -142,34 +133,21 @@ foreach ( var forMap in new [] { false, true } )
 			Contract.Assert( unpacked >= 0 );
 #endif // ASSERT
 <#
-		if ( !isAsync )
-		{
+	if ( !isAsync )
+	{
 #>
 			if ( !unpacker.Read() )
 <#
-		}
-		else
-		{
+	}
+	else
+	{
 #>
 			if ( !( await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
 <#
-		}
+	}
 #>
 			{
-<#
-		if ( !forMap )
-		{
-#>
 				SerializationExceptions.ThrowMissingItem( unpacked, unpacker );
-<#
-		}
-		else
-		{
-#>
-				SerializationExceptions.ThrowMissingItem( unpacked, currentKey, unpacker );
-<#
-		}
-#>
 			}
 
 			if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
@@ -186,15 +164,14 @@ foreach ( var forMap in new [] { false, true } )
 		}
 
 <#
-		if ( isAsync )
-		{
+	if ( isAsync )
+	{
 #>
 #endif // FEATURE_TAP
 
 <#
-		}
-	} // foreach ( var isAsync )
-} // foreach ( var forMap )
+	}
+} // foreach ( var isAsync )
 
 foreach ( var kind in new [] { TypeKind.Value, TypeKind.Reference, TypeKind.Nullable } )
 {
