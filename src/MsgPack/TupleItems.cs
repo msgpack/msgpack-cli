@@ -25,13 +25,11 @@
 #if !UNITY
 using System;
 using System.Collections.Generic;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Linq;
 #if NETFX_CORE
 using System.Reflection;
@@ -84,9 +82,9 @@ namespace MsgPack
 
 		public static IList<Type> GetTupleItemTypes( Type tupleType )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( tupleType.Name.StartsWith( "Tuple`" ) && tupleType.GetAssembly().Equals( typeof( Tuple ).GetAssembly() ), "tupleType.Name.StartsWith( \"Tuple`\" ) && tupleType.GetAssembly().Equals( typeof( Tuple ).GetAssembly() )" );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 			var arguments = tupleType.GetGenericArguments();
 			List<Type> itemTypes = new List<Type>( tupleType.GetGenericArguments().Length );
 			GetTupleItemTypes( arguments, itemTypes );
@@ -104,9 +102,9 @@ namespace MsgPack
 			if ( itemTypes.Count == 8 )
 			{
 				var trest = itemTypes[ 7 ];
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 				Contract.Assert( trest.Name.StartsWith( "Tuple`" ) && trest.GetAssembly().Equals( typeof( Tuple ).GetAssembly() ), "trest.Name.StartsWith( \"Tuple`\" ) && trest.Assembly == typeof( Tuple ).Assembly" );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 				GetTupleItemTypes( trest.GetGenericArguments(), result );
 			}
 		}

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,13 +23,11 @@
 #endif
 
 using System;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 
 namespace MsgPack
 {
@@ -40,9 +38,9 @@ namespace MsgPack
 	{
 		public static sbyte ToSByte( byte[] buffer, int offset )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( buffer.Length >= offset + sizeof( sbyte ), buffer.Length + ">=" + offset + " + " + sizeof( sbyte ) );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 			unchecked
 			{
@@ -52,9 +50,9 @@ namespace MsgPack
 
 		public static short ToInt16( byte[] buffer, int offset )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( buffer.Length >= offset + sizeof( short ), buffer.Length + ">=" + offset + " + " + sizeof( short ) );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 			unchecked
 			{
@@ -64,9 +62,9 @@ namespace MsgPack
 
 		public static int ToInt32( byte[] buffer, int offset )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( buffer.Length >= offset + sizeof( int ), buffer.Length + ">=" + offset + " + " + sizeof( int ) );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 			unchecked
 			{
@@ -76,9 +74,9 @@ namespace MsgPack
 
 		public static long ToInt64( byte[] buffer, int offset )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( buffer.Length >= offset + sizeof( long ), buffer.Length + ">=" + offset + " + " + sizeof( long ) );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 			unchecked
 			{
@@ -90,18 +88,18 @@ namespace MsgPack
 
 		public static byte ToByte( byte[] buffer, int offset )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( buffer.Length >= offset + sizeof( byte ), buffer.Length + ">=" + offset + " + " + sizeof( byte ) );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 			return buffer[ offset ];
 		}
 
 		public static ushort ToUInt16( byte[] buffer, int offset )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( buffer.Length >= offset + sizeof( ushort ), buffer.Length + ">=" + offset + " + " + sizeof( ushort ) );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 			unchecked
 			{
@@ -111,9 +109,9 @@ namespace MsgPack
 
 		public static uint ToUInt32( byte[] buffer, int offset )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( buffer.Length >= offset + sizeof( uint ), buffer.Length + ">=" + offset + " + " + sizeof( uint ) );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 			unchecked
 			{
@@ -123,9 +121,9 @@ namespace MsgPack
 
 		public static ulong ToUInt64( byte[] buffer, int offset )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( buffer.Length >= offset + sizeof( ulong ), buffer.Length + ">=" + offset + " + " + sizeof( ulong ) );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 			unchecked
 			{

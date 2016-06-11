@@ -22,11 +22,11 @@
 #define UNITY
 #endif
 
-#warning TODO: unify UNITY and UNITY2
+#warning TODO: unify UNITY and UNITY
 
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 #define ASSERT
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG && !UNITY && !UNITY
 
 #if DEBUG && !NETFX_CORE
 #define TRACING
@@ -40,11 +40,11 @@ using System.ComponentModel;
 #endif //!UNITY || MSGPACK_UNITY_FULL
 using System.Diagnostics;
 #if ASSERT
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
+#endif // CORE_CLR || UNITY
 #endif // ASSERT
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -1027,9 +1027,9 @@ namespace MsgPack.Serialization
 		[Conditional( "TRACING" )]
 		private static void TraceCore( string format, params object[] args )
 		{
-#if !UNITY && !UNITY2 && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !UNITY && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 			Tracer.Tracing.TraceEvent( Tracer.EventType.Trace, Tracer.EventId.Trace, format, args );
-#endif // !UNITY && !UNITY2 && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !UNITY && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		}
 
 		private sealed class UnpackerTraceContext

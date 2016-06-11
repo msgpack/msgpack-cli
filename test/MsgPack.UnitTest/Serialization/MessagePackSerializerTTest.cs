@@ -26,9 +26,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using MsgPack.Serialization.DefaultSerializers;
-#if !AOT && !UNITY && !SILVERLIGHT
+#if !AOT && !SILVERLIGHT
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !AOT && !UNITY && !SILVERLIGHT
+#endif // !AOT && !SILVERLIGHT
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -47,7 +47,7 @@ namespace MsgPack.Serialization
 	{
 		private static MessagePackSerializer<T> CreateTarget<T>()
 		{
-#if AOT || UNITY
+#if AOT
 			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions ).GetSerializer<T>();
 #elif !SILVERLIGHT
 			var context = new SerializationContext();
@@ -57,7 +57,7 @@ namespace MsgPack.Serialization
 			var context = new SerializationContext();
 			context.SerializerOptions.EmitterFlavor = EmitterFlavor.ReflectionBased;
 			return context.GetSerializer<T>();
-#endif
+#endif // AOT
 		}
 
 		[Test]

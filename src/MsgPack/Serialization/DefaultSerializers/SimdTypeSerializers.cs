@@ -32,8 +32,8 @@ using System.Threading.Tasks;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-	// This file generated from DefaultSerializers.tt T4Template.
-	// Do not modify this file. Edit DefaultMarshalers.tt instead.
+	// This file generated from SimdTypeSerializer.tt T4Template.
+	// Do not modify this file. Edit SimdTypeSerializer.tt instead.
 
 	// ReSharper disable InconsistentNaming
 	// ReSharper disable RedundantNameQualifier

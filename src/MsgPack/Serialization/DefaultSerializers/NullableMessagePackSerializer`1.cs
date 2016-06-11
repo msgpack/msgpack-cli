@@ -23,13 +23,13 @@
 #endif
 
 using System;
-#if DEBUG && !UNITY && !UNITY2
-#if CORE_CLR
+#if DEBUG
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
+#endif // DEBUG
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -58,9 +58,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, T? objectTree )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( objectTree != null, "objectTree != null" );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 			// null was handled in PackTo() method.
 			this._valueSerializer.PackToCore( packer, objectTree.Value );
 		}
@@ -68,9 +68,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override T? UnpackFromCore( Unpacker unpacker )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( !unpacker.LastReadData.IsNil, "!unpacker.LastReadData.IsNil" );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 			// nil was handled in UnpackFrom() method.
 			return this._valueSerializer.UnpackFromCore( unpacker );
 		}
@@ -79,18 +79,18 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal override Task PackToAsyncCore( Packer packer, T? objectTree, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY
+#if DEBUG
 			Contract.Assert( objectTree != null, "objectTree != null" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 			// null was handled in PackTo() method.
 			return this._valueSerializer.PackToAsyncCore( packer, objectTree.Value, cancellationToken );
 		}
 
 		protected internal override async Task<T?> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY
+#if DEBUG
 			Contract.Assert( !unpacker.LastReadData.IsNil, "!unpacker.LastReadData.IsNil" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 			// nil was handled in UnpackFrom() method.
 			return await this._valueSerializer.UnpackFromAsyncCore( unpacker, cancellationToken ).ConfigureAwait( false );
 		}

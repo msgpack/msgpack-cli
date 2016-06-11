@@ -24,13 +24,11 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY
+#endif // CORE_CLR || UNITY
 using System.Linq;
 using System.Reflection;
 #if FEATURE_TAP
@@ -80,19 +78,17 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				{
 					// .TRest.TRest ...
 					var restProperty = tupleTypes[ j ].GetProperty( "Rest" );
-#if DEBUG && !UNITY
 					Contract.Assert( restProperty != null, "restProperty != null" );
-#endif // DEBUG && !UNITY
 					propertyInvocationChain.Add( restProperty );
 				}
 
 				var itemNProperty = tupleTypes[ depth ].GetProperty( "Item" + ( ( i % 7 ) + 1 ) );
 				propertyInvocationChain.Add( itemNProperty );
-#if DEBUG && !UNITY
+#if DEBUG
 				Contract.Assert(
 					itemNProperty != null,
 					tupleTypes[ depth ].GetFullName() + "::Item" + ( ( i % 7 ) + 1 ) + " [ " + depth + " ] @ " + i );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 				var getters = propertyInvocationChain.Select( property => property.GetGetMethod() ).ToArray();
 				yield return
 					 tuple =>

@@ -23,13 +23,11 @@
 #endif
 
 using System;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Runtime.Serialization;
 #if FEATURE_TAP
 using System.Threading;
@@ -52,9 +50,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal override DBNull UnpackFromCore( Unpacker unpacker )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( !unpacker.LastReadData.IsNil );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 			throw new SerializationException( "DBNull value should be nil." );
 		}
 
@@ -73,9 +71,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal override Task<DBNull> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY
+#if DEBUG
 			Contract.Assert( !unpacker.LastReadData.IsNil );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 			throw new SerializationException( "DBNull value should be nil." );
 		}
 

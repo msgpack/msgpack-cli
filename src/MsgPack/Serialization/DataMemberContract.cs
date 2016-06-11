@@ -23,11 +23,11 @@
 #endif
 
 using System;
-#if CORE_CLR || UNITY || UNITY2
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
+#endif // CORE_CLR || UNITY
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -65,9 +65,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if !UNITY && !UNITY2
+#if DEBUG
 				Contract.Ensures( !String.IsNullOrEmpty( Contract.Result<string>() ) );
-#endif // !UNITY && !UNITY2
+#endif // DEBUG
 
 				return this._name;
 			}
@@ -85,9 +85,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if !UNITY && !UNITY2
+#if DEBUG
 				Contract.Ensures( Contract.Result<int>() >= -1 );
-#endif // !UNITY && !UNITY2
+#endif // DEBUG
 
 				return this._id;
 			}

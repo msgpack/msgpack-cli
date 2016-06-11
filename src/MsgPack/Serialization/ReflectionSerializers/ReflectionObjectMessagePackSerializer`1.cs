@@ -25,13 +25,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Linq;
 using System.Reflection;
 #if FEATURE_TAP
@@ -248,9 +246,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 			else
 			{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 				Contract.Assert( unpacker.IsMapHeader, "unpacker.IsMapHeader" );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 				var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
 
 				for ( int i = 0; i < itemsCount; i++ )
@@ -324,9 +322,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 			if ( this._constructorParameters != null )
 			{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 				Contract.Assert( objectGraph is object[], "objectGraph is object[]" );
-#endif // !UNITY && !UNITY2
+#endif // !UNITY
 
 				int argumentIndex;
 				if ( this._constructorArgumentIndexes.TryGetValue( index, out argumentIndex ) )
@@ -497,9 +495,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 			else
 			{
-#if DEBUG && !UNITY
+#if DEBUG
 				Contract.Assert( unpacker.IsMapHeader, "unpacker.IsMapHeader" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 				var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
 
 				for ( int i = 0; i < itemsCount; i++ )
@@ -573,9 +571,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 			if ( this._constructorParameters != null )
 			{
-#if DEBUG && !UNITY
+#if DEBUG
 				Contract.Assert( objectGraph is object[], "objectGraph is object[]" );
-#endif // !UNITY
+#endif // DEBUG
 
 				int argumentIndex;
 				if ( this._constructorArgumentIndexes.TryGetValue( index, out argumentIndex ) )

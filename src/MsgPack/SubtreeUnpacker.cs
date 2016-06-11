@@ -23,13 +23,11 @@
 #endif
 
 using System;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -104,10 +102,10 @@ namespace MsgPack
 
 		private SubtreeUnpacker( ItemsUnpacker root, SubtreeUnpacker parent )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( root != null, "root != null" );
 			Contract.Assert( root.IsArrayHeader || root.IsMapHeader, "root.IsArrayHeader || root.IsMapHeader" );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 			this._root = root;
 			this._parent = parent;
 			this._unpacked = new Int64Stack( 2 );
@@ -344,9 +342,9 @@ namespace MsgPack
 		{
 			if ( this._itemsCount.Count == 0 )
 			{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 				Contract.Assert( this._unpacked.Count == 0, "this._unpacked.Count == 0" );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 				return;
 			}
 
@@ -358,9 +356,9 @@ namespace MsgPack
 
 				if ( this._itemsCount.Count == 0 )
 				{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 					Contract.Assert( this._unpacked.Count == 0, "this._unpacked.Count == 0 " );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 					break;
 				}
 

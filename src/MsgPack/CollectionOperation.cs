@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,13 +24,11 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Linq;
 
 namespace MsgPack
@@ -52,9 +50,7 @@ namespace MsgPack
 		public static void CopyTo<TSource, TDestination>( IEnumerable<TSource> source, int sourceCount, int index, TDestination[] array, int arrayIndex, int count, Func<TSource, TDestination> converter )
 		{
 			ValidateCopyToArguments( sourceCount, index, array, arrayIndex, count );
-#if !UNITY && !UNITY2
 			Contract.Assert( converter != null, "converter != null" );
-#endif // !UNITY && !UNITY2
 
 			int i = 0;
 			foreach ( var item in source.Skip( index ).Take( count ) )

@@ -23,13 +23,11 @@
 #endif
 
 using System;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -42,9 +40,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		public static MessagePackSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema itemsSchema )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( targetType.IsArray, "targetType.IsArray" );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 			// Check the T is SZArray -- Type.GetArrayRank() returns 1 for single dimension, non-zero based arrays, so use (SZArrayType).IsAssinableFrom() instead.
 			if ( targetType.GetElementType().MakeArrayType().IsAssignableFrom( targetType ) )
@@ -79,9 +77,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		private static object GetPrimitiveArraySerializer( SerializationContext context, Type targetType )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( targetType.IsArray, "targetType.IsArray" );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 			Func<SerializationContext, object> serializerFactory;
 			if ( !_arraySerializerFactories.TryGetValue( targetType, out serializerFactory ) )

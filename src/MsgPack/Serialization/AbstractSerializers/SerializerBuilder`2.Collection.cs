@@ -20,13 +20,11 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY
+#endif // CORE_CLR || UNITY
 using System.Linq;
 #if FEATURE_TAP
 using System.Threading;
@@ -44,7 +42,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			PolymorphismSchema schema
 		)
 		{
-#if DEBUG && !UNITY
+#if DEBUG
 			Contract.Assert( this.CollectionTraits.DetailedCollectionType != CollectionDetailedKind.Array );
 #endif // DEBUG
 			bool isUnpackFromRequired;

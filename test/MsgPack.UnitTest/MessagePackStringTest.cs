@@ -159,7 +159,7 @@ namespace MsgPack
 
 #endif // !UNITY && !SILVERLIGHT && !AOT
 
-#if !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 		private static StrongName GetStrongName( Type type )
 		{
 			var assemblyName = type.Assembly.GetName();
@@ -241,7 +241,7 @@ namespace MsgPack
 			AppDomain.CurrentDomain.SetData( "TestEqualsWorker.Performance", result );
 			AppDomain.CurrentDomain.SetData( "MessagePackString.IsFastEqualsDisabled", MessagePackString.IsFastEqualsDisabled );
 		}
-#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 
 		private static Tuple<double, double, double, double> TestEqualsCore()
 		{

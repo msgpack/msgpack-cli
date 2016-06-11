@@ -22,11 +22,6 @@
 #define UNITY
 #endif
 
-#if UNITY2
-// Prevents AOT error.
-#define UNITY
-#endif // UNITY2
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -110,9 +105,9 @@ namespace MsgPack.Serialization
 				context.Serializers.Register( entry.Key, entry.Value, null, null, SerializerRegistrationOptions.None );
 			}
 
-#if !AOT && !UNITY
+#if !AOT
 			context.SerializerOptions.IsRuntimeGenerationDisabled = true;
-#endif
+#endif // !AOT
 			return context;
 		}
 

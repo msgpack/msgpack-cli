@@ -64,9 +64,9 @@ namespace MsgPack.Serialization
 			Assert.That( first, Is.Not.Null );
 			var second = MessagePackSerializer.Create<Image>();
 			Assert.That( second, Is.Not.Null );
-#if !UNITY && !UNITY2
+#if !UNITY
 			Assert.That( first.GetType(), Is.EqualTo( second.GetType() ) );
-#endif // !UNITY && !UNITY2
+#endif // !UNITY
 		}
 
 		[Test]
@@ -77,9 +77,9 @@ namespace MsgPack.Serialization
 			Assert.That( first, Is.Not.Null );
 			var second = MessagePackSerializer.Create<Image>( context );
 			Assert.That( second, Is.Not.Null );
-#if !UNITY && !UNITY2
+#if !UNITY
 			Assert.That( first.GetType(), Is.EqualTo( second.GetType() ) );
-#endif // !UNITY && !UNITY2
+#endif // !UNITY
 		}
 
 		[Test]

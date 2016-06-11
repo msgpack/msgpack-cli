@@ -22,9 +22,9 @@
 #define UNITY
 #endif
 
-#if UNITY || UNITY2 || XAMARIN
+#if AOT
 #define NUNITLITE
-#endif // UNITY || UNITY2 || XAMARIN
+#endif // AOT
 
 using System;
 using System.Linq;

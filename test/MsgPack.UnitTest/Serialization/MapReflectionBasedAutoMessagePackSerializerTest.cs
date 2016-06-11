@@ -44,12 +44,12 @@ using System.Text;
 #if FEATURE_TAP
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
-#if !SILVERLIGHT && !AOT && !UNITY
+#if !SILVERLIGHT && !AOT
 #if !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.CodeDomSerializers;
 #endif // !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !UNITY
+#endif // !SILVERLIGHT && !AOT
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -76,7 +76,6 @@ namespace MsgPack.Serialization
 #else
 			var context = new SerializationContext { SerializationMethod = SerializationMethod.Map };
 			context.SerializerOptions.EmitterFlavor = EmitterFlavor.ReflectionBased;
-			AotWorkarounds.SetWorkaround( context );
 			return context;
 
 #endif // !UNITY
@@ -94,7 +93,7 @@ namespace MsgPack.Serialization
 			return context.GetSerializer<T>( context );
 		}
 
-#if UNITY || UNITY2
+#if UNITY
 		[TestFixtureSetUp]
 		public static void SetUpFixture()
 		{
@@ -111,14 +110,14 @@ namespace MsgPack.Serialization
 			new ArraySegmentEqualityComparer<int>().Equals( default( ArraySegment<int> ), default( ArraySegment<int> ) );
 			new ArraySegmentEqualityComparer<decimal>().Equals( default( ArraySegment<decimal> ), default( ArraySegment<decimal> ) );
 		}
-#endif // UNITY || UNITY2
+#endif // UNITY
 		
 		private bool CanDump
 		{
 			get { return false; }
 		}
 
-#if !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 		[SetUp]
 		public void SetUp()
 		{
@@ -162,7 +161,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
-#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 
 		private void DoKnownCollectionTest<T>( SerializationContext context )
 			where T : new()
@@ -6892,7 +6891,7 @@ namespace MsgPack.Serialization
 
 		#region ------ KnownType.NormalTypes ------
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -6915,10 +6914,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -6940,10 +6939,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -6966,10 +6965,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -6991,10 +6990,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7017,10 +7016,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7042,10 +7041,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7068,10 +7067,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7093,10 +7092,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7119,10 +7118,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7144,10 +7143,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7170,10 +7169,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7195,10 +7194,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7221,10 +7220,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7246,10 +7245,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7272,10 +7271,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7297,10 +7296,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7323,10 +7322,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7348,10 +7347,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7374,10 +7373,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7399,10 +7398,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7425,10 +7424,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7450,10 +7449,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7476,10 +7475,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7501,10 +7500,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7527,10 +7526,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7552,10 +7551,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7578,10 +7577,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7603,10 +7602,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7629,10 +7628,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7654,10 +7653,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7680,10 +7679,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7705,10 +7704,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7731,10 +7730,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7756,10 +7755,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7782,10 +7781,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7807,10 +7806,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7833,10 +7832,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7858,10 +7857,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7884,10 +7883,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7909,10 +7908,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7935,10 +7934,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7961,10 +7960,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -7987,10 +7986,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8013,10 +8012,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8039,10 +8038,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8065,10 +8064,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8091,10 +8090,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8117,10 +8116,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8143,10 +8142,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8169,13 +8168,13 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 		#endregion ------ KnownType.NormalTypes ------
 
 		#region ------ KnownType.CollectionTypes ------
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8198,10 +8197,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8224,10 +8223,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8250,10 +8249,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8276,10 +8275,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8302,10 +8301,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8328,10 +8327,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8354,10 +8353,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8380,10 +8379,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8406,10 +8405,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8432,10 +8431,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8458,10 +8457,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8484,10 +8483,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8510,10 +8509,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8536,10 +8535,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8562,10 +8561,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8588,10 +8587,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8614,10 +8613,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8640,10 +8639,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8666,10 +8665,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8692,10 +8691,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8718,10 +8717,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8744,10 +8743,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8758,10 +8757,10 @@ namespace MsgPack.Serialization
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfGetOnlyCollectionProperty>() );
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8784,10 +8783,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8798,13 +8797,13 @@ namespace MsgPack.Serialization
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfReadOnlyCollectionField>() );
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 		#endregion ------ KnownType.CollectionTypes ------
 
 		#region ------ KnownType.DictionaryTypes ------
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8827,10 +8826,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8853,10 +8852,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8879,10 +8878,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8905,10 +8904,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8931,10 +8930,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8957,10 +8956,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -8983,10 +8982,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9009,10 +9008,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9035,10 +9034,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9061,10 +9060,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9087,10 +9086,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9113,10 +9112,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9139,10 +9138,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9165,10 +9164,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9191,10 +9190,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9217,10 +9216,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9243,10 +9242,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9269,10 +9268,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9295,10 +9294,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9321,10 +9320,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9347,10 +9346,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9373,10 +9372,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9399,10 +9398,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9425,10 +9424,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9451,10 +9450,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9477,10 +9476,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9503,10 +9502,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9529,10 +9528,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9555,10 +9554,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9581,10 +9580,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9607,10 +9606,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9633,10 +9632,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9659,10 +9658,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9685,10 +9684,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9711,10 +9710,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9737,10 +9736,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9763,10 +9762,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9789,10 +9788,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9815,10 +9814,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9841,10 +9840,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9867,10 +9866,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9893,10 +9892,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9907,10 +9906,10 @@ namespace MsgPack.Serialization
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfGetOnlyCollectionProperty>() );
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9933,10 +9932,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9947,14 +9946,14 @@ namespace MsgPack.Serialization
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadOnlyCollectionField>() );
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 		#endregion ------ KnownType.DictionaryTypes ------
 
 #if !NETFX_35 && !UNITY
 		#region ------ KnownType.TupleTypes ------
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -9977,10 +9976,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10003,10 +10002,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10029,10 +10028,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10055,10 +10054,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10081,10 +10080,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10107,10 +10106,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10133,10 +10132,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10159,10 +10158,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10185,10 +10184,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10211,10 +10210,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10237,10 +10236,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10263,10 +10262,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10289,10 +10288,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10315,10 +10314,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10341,10 +10340,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10367,10 +10366,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10393,10 +10392,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10419,10 +10418,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10445,10 +10444,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10471,10 +10470,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10497,10 +10496,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10523,10 +10522,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10549,10 +10548,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10575,10 +10574,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10601,10 +10600,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10627,10 +10626,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10653,10 +10652,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10679,10 +10678,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10705,10 +10704,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10731,10 +10730,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10757,10 +10756,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10783,10 +10782,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10809,10 +10808,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10835,10 +10834,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10861,10 +10860,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10887,10 +10886,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10913,10 +10912,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10939,10 +10938,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10965,10 +10964,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -10991,10 +10990,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11017,10 +11016,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11043,10 +11042,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11069,10 +11068,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11095,10 +11094,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11121,10 +11120,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11147,10 +11146,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11173,10 +11172,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11199,10 +11198,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11225,10 +11224,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11251,10 +11250,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11277,10 +11276,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11303,10 +11302,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11329,10 +11328,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11355,10 +11354,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11381,10 +11380,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11407,10 +11406,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11433,10 +11432,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11459,10 +11458,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11485,10 +11484,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11511,7 +11510,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 		#endregion ------ KnownType.TupleTypes ------
 #endif // #if !NETFX_35 && !UNITY
@@ -11521,7 +11520,7 @@ namespace MsgPack.Serialization
 
 		#region ------ RuntimeType.NormalTypes ------
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11544,10 +11543,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11569,10 +11568,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11595,10 +11594,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11620,10 +11619,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11646,10 +11645,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11671,10 +11670,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11697,10 +11696,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11722,10 +11721,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11748,10 +11747,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11773,10 +11772,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11799,10 +11798,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11824,10 +11823,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11850,10 +11849,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11875,10 +11874,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11901,10 +11900,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11926,10 +11925,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11952,10 +11951,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -11977,10 +11976,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12003,10 +12002,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12028,10 +12027,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12054,10 +12053,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12079,10 +12078,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12105,10 +12104,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12130,10 +12129,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12156,10 +12155,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12181,10 +12180,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12207,10 +12206,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12232,10 +12231,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12258,10 +12257,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12283,10 +12282,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12309,10 +12308,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12334,10 +12333,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12360,10 +12359,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12385,10 +12384,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12411,10 +12410,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12436,10 +12435,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12462,10 +12461,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12487,10 +12486,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12513,10 +12512,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12538,10 +12537,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12564,10 +12563,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12590,10 +12589,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12616,10 +12615,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12642,10 +12641,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12668,10 +12667,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12694,10 +12693,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12720,10 +12719,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12746,10 +12745,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12772,10 +12771,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12798,13 +12797,13 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 		#endregion ------ RuntimeType.NormalTypes ------
 
 		#region ------ RuntimeType.CollectionTypes ------
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12827,10 +12826,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12853,10 +12852,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12879,10 +12878,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12905,10 +12904,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12931,10 +12930,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12957,10 +12956,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -12983,10 +12982,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13009,10 +13008,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13035,10 +13034,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13061,10 +13060,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13087,10 +13086,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13113,10 +13112,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13139,10 +13138,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13165,10 +13164,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13191,10 +13190,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13217,10 +13216,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13243,10 +13242,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13269,10 +13268,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13295,10 +13294,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13321,10 +13320,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13347,10 +13346,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13373,10 +13372,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13387,10 +13386,10 @@ namespace MsgPack.Serialization
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfGetOnlyCollectionProperty>() );
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13413,10 +13412,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13427,13 +13426,13 @@ namespace MsgPack.Serialization
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadOnlyCollectionField>() );
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 		#endregion ------ RuntimeType.CollectionTypes ------
 
 		#region ------ RuntimeType.DictionaryTypes ------
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13456,10 +13455,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13482,10 +13481,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13508,10 +13507,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13534,10 +13533,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13560,10 +13559,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13586,10 +13585,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13612,10 +13611,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13638,10 +13637,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13664,10 +13663,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13690,10 +13689,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13716,10 +13715,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13742,10 +13741,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13768,10 +13767,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13794,10 +13793,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13820,10 +13819,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13846,10 +13845,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13872,10 +13871,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13898,10 +13897,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13924,10 +13923,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13950,10 +13949,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -13976,10 +13975,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14002,10 +14001,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14028,10 +14027,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14054,10 +14053,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14080,10 +14079,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14106,10 +14105,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14132,10 +14131,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14158,10 +14157,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14184,10 +14183,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14210,10 +14209,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14236,10 +14235,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14262,10 +14261,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14288,10 +14287,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14314,10 +14313,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14340,10 +14339,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14366,10 +14365,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14392,10 +14391,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14418,10 +14417,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14444,10 +14443,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14470,10 +14469,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14496,10 +14495,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14522,10 +14521,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14536,10 +14535,10 @@ namespace MsgPack.Serialization
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfGetOnlyCollectionProperty>() );
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14562,10 +14561,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14576,14 +14575,14 @@ namespace MsgPack.Serialization
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadOnlyCollectionField>() );
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 		#endregion ------ RuntimeType.DictionaryTypes ------
 
 #if !NETFX_35 && !UNITY
 		#region ------ RuntimeType.TupleTypes ------
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14606,10 +14605,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14632,10 +14631,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14658,10 +14657,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14684,10 +14683,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14710,10 +14709,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14736,10 +14735,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14762,10 +14761,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14788,10 +14787,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14814,10 +14813,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14840,10 +14839,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14866,10 +14865,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14892,10 +14891,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14918,10 +14917,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14944,10 +14943,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14970,10 +14969,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -14996,10 +14995,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15022,10 +15021,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15048,10 +15047,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15074,10 +15073,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15100,10 +15099,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15126,10 +15125,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15152,10 +15151,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15178,10 +15177,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15204,10 +15203,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15230,10 +15229,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15256,10 +15255,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15282,10 +15281,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15308,10 +15307,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15334,10 +15333,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15360,10 +15359,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15386,10 +15385,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15412,10 +15411,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15438,10 +15437,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15464,10 +15463,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15490,10 +15489,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15516,10 +15515,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15542,10 +15541,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15568,10 +15567,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15594,10 +15593,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15620,10 +15619,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15646,10 +15645,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15672,10 +15671,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15698,10 +15697,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15724,10 +15723,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15750,10 +15749,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15776,10 +15775,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15802,10 +15801,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15828,10 +15827,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15854,10 +15853,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15880,10 +15879,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15906,10 +15905,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15932,10 +15931,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15958,10 +15957,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15984,10 +15983,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -16010,10 +16009,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -16036,10 +16035,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -16062,10 +16061,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -16088,10 +16087,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -16114,10 +16113,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -16140,7 +16139,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 		#endregion ------ RuntimeType.TupleTypes ------
 #endif // #if !NETFX_35 && !UNITY

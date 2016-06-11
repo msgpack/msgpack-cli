@@ -156,10 +156,7 @@ private void WriteReadBody( string typeName, string fullTypeName, bool isForSubt
 	{
 		this.PopIndent();
 #>
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 <#+
 		this.PushIndent( 2 );
 

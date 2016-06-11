@@ -615,7 +615,7 @@ namespace MsgPack
 			IEnumerator<MessagePackObject> ke = values.Keys.GetEnumerator();
 			IEnumerator<MessagePackObject> ve = values.Values.GetEnumerator();
 
-#if !UNITY && !UNITY2
+#if !UNITY
 			Assert.IsTrue( ke is MessagePackObjectDictionary.KeySet.Enumerator );
 #else
 			Assert.IsTrue( ke is MessagePackObjectDictionary.KeyCollection.Enumerator );
@@ -907,9 +907,9 @@ namespace MsgPack
 		}
 
 		[Test]
-#if UNITY2
+#if UNITY
 		[Ignore( "IL2CPP runtime does not throw exception." )]
-#endif // UNITY2
+#endif // UNITY
 		public void ICollectionCopyToInvalidArray()
 		{
 			var dictionary = new MessagePackObjectDictionary();
@@ -986,7 +986,7 @@ namespace MsgPack
 		// based on #491858, #517415
 		public void KeyEnumerator_Current()
 		{
-#if !UNITY && !UNITY2
+#if !UNITY
 			var e1 = new MessagePackObjectDictionary.KeySet.Enumerator();
 			Assert.IsFalse( Throws( delegate { var x = e1.Current; } ) );
 #else
@@ -1147,7 +1147,7 @@ namespace MsgPack
 			Assert.That( array[ 4 ], Is.EqualTo( MessagePackObject.Nil ) );
 		}
 
-#if !UNITY && !UNITY2
+#if !UNITY
 		[Test]
 		public void TestKeySetIsProperSupersetOf()
 		{

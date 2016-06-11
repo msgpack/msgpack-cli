@@ -20,6 +20,7 @@
 
 #if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
 #define UNITY
+#define AOT
 #endif
 
 using System;
@@ -34,9 +35,11 @@ using System.Collections.Concurrent;
 #else // !SILVERLIGHT && !NETFX_35 && !UNITY
 using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
-#if !UNITY && !UNITY2
+#if CORE_CLR || UNITY
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 #if NETFX_CORE || WINDOWS_PHONE
 using System.Linq.Expressions;
 #endif
@@ -62,9 +65,9 @@ namespace MsgPack.Serialization
 		[Obsolete( "Use Get<T>() instead." )]
 		public static MessagePackSerializer<T> Create<T>()
 		{
-#if !UNITY && !UNITY2
+#if DEBUG
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
-#endif // !UNITY && !UNITY2
+#endif // DEBUG
 
 			return Create<T>( SerializationContext.Default );
 		}
@@ -201,9 +204,9 @@ namespace MsgPack.Serialization
 		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context, PolymorphismSchema schema )
 		{
 
-#if !AOT
+#if DEBUG
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
-#endif // !AOT
+#endif // DEBUG
 
 #if DEBUG && !AOT && !SILVERLIGHT
 			SerializerDebugging.TraceEvent(
@@ -348,9 +351,9 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
+#if DEBUG
 			Contract.Ensures( Contract.Result<MessagePackSerializer>() != null );
-#endif // !UNITY && !UNITY2
+#endif // DEBUG
 
 #if AOT
 			return CreateInternal( context, targetType, null );
@@ -682,7 +685,7 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Required for pre-heat generic methods." )]
 		public static void PrepareType<T>()
 		{
-#if UNITY || UNITY2
+#if UNITY
 			PrepareTypeCore<T>( new SerializationContext() );
 #endif // UNITY
 		}
@@ -709,7 +712,7 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Required for pre-heat generic methods." )]
 		public static void PrepareDictionaryType<TKey, TValue>()
 		{
-#if UNITY || UNITY2
+#if UNITY
 			var context = new SerializationContext();
 			var dummy = new System_Collections_Generic_KeyValuePair_2MessagePackSerializer<TKey, TValue>( context );
 			PrepareTypeCore<KeyValuePair<TKey, TValue>>( context );
@@ -738,7 +741,7 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Required for pre-heat generic methods." )]
 		public static void PrepareCollectionType<TElement>()
 		{
-#if UNITY || UNITY2
+#if UNITY
 			var context = new SerializationContext();
 			var dummy1 = new System_ArraySegment_1MessagePackSerializer<TElement>( context );
 #if MSGPACK_UNITY_FULL
@@ -749,7 +752,7 @@ namespace MsgPack.Serialization
 #endif // UNITY
 		}
 
-#if UNITY || UNITY2
+#if UNITY
 
 		private static void PrepareTypeCore<T>( SerializationContext dummyContext )
 		{
@@ -758,6 +761,6 @@ namespace MsgPack.Serialization
 			// Ensure Dictionary<T, ?> is work.
 			AotHelper.PrepareEqualityComparer<T>();
 		}
-#endif // UNITY || UNITY2
+#endif // UNITY || UNITY
 	}
 }

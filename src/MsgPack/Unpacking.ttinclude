@@ -53,10 +53,10 @@ private static void ReadBytes( Stream source, byte[] buffer, int offset, int exp
 private void WriteUnpackCore( Type type, bool isNullable )
 {
 #>
-#if DEBUG && !UNITY
+#if DEBUG
 Contract.Assert( source != null, "source != null" );
 Contract.Assert( buffer != null, "buffer != null" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -276,9 +276,9 @@ var resultValue = <#= allocationWriter( "size", "contentBufferOffset" ) #>;
 private void WriteUnpackString()
 {
 #>
-#if DEBUG && !UNITY
+#if DEBUG
 Contract.Assert( encoding != null, "encoding != null" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 <#+
 	WriteUnpackRawLength( typeof( String ).FullName, "result" );
 #>
@@ -346,10 +346,10 @@ private void WriteUnpackRawLength( string typeName, string resultVariable )
 {
 #>
 #region UnpackRawLength
-#if DEBUG && !UNITY
+#if DEBUG
 Contract.Assert( source != null, "source != null" );
 Contract.Assert( buffer != null, "buffer != null" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -439,10 +439,10 @@ ReadBytes( source, <#= bufferVariable #>, <#= bufferOffsetVariable #>, <#= lengt
 private void WriteUnpackObject()
 {
 #>
-#if DEBUG && !UNITY
+#if DEBUG
 Contract.Assert( source != null, "source != null" );
 Contract.Assert( buffer != null, "buffer != null" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -804,9 +804,9 @@ foreach( var entry in
 #>
 	default:
 	{
-#if DEBUG && !UNITY
+#if DEBUG
 		Contract.Assert( header == 0xC1, "Unhandled header:" + header.ToString( "X2" ) );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 		throw new UnassignedMessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
 	}
 }
@@ -844,10 +844,10 @@ private void WriteUnpackArrayLength()
 {
 #>
 #region UnpackArrayLength
-#if DEBUG && !UNITY
+#if DEBUG
 Contract.Assert( source != null, "source != null" );
 Contract.Assert( buffer != null, "buffer != null" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -919,10 +919,10 @@ private void WriteUnpackMapLength()
 {
 #>
 #region UnpackMapLength
-#if DEBUG && !UNITY
+#if DEBUG
 Contract.Assert( source != null, "source != null" );
 Contract.Assert( buffer != null, "buffer != null" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -993,10 +993,10 @@ private void WriteUnpackExtendedTypeObject()
 {
 	#>
 #region UnpackExt
-#if DEBUG && !UNITY
+#if DEBUG
 Contract.Assert( source != null, "source != null" );
 Contract.Assert( buffer != null, "buffer != null" );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 
 var header = source.ReadByte();
 if( header < 0 )

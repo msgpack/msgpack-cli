@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,13 +24,11 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Globalization;
 using System.IO;
 #if FEATURE_TAP
@@ -309,9 +307,7 @@ namespace MsgPack
 				ThrowArgumentNullException( "value" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			// ReSharper disable once PossibleNullReferenceException
 			foreach ( var b in value )
@@ -345,9 +341,7 @@ namespace MsgPack
 				ThrowArgumentNullException( "value" );
 			}
 
-#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY
 
 			// ReSharper disable once PossibleNullReferenceException
 			foreach ( var b in value )
@@ -371,9 +365,7 @@ namespace MsgPack
 				ThrowArgumentNullException( "value" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			// ReSharper disable once PossibleNullReferenceException
 			foreach ( var b in value )
@@ -409,9 +401,7 @@ namespace MsgPack
 				ThrowArgumentNullException( "value" );
 			}
 
-#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY
 
 			// ReSharper disable once PossibleNullReferenceException
 			foreach ( var b in value )
@@ -431,15 +421,12 @@ namespace MsgPack
 		/// <param name="value"><see cref="SByte"/> value.</param>
 		/// <returns>This instance.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Packer Pack( sbyte value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -452,9 +439,7 @@ namespace MsgPack
 		/// <param name="value"><see cref="SByte"/> value.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( sbyte value )
 		{
 			return this.PackAsync( value, CancellationToken.None );
@@ -467,15 +452,12 @@ namespace MsgPack
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( sbyte value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY
+
 			return this.PrivatePackAsyncCore( value, cancellationToken );
 		}
 
@@ -491,9 +473,9 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackInt8( value );
 #pragma warning restore 168
-#if !UNITY && !UNITY2 && DEBUG
+#if DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && !UNITY2 && DEBUG
+#endif // DEBUG
 		}
 
 #if FEATURE_TAP
@@ -508,9 +490,9 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = await this.TryPackInt8Async( value, cancellationToken ).ConfigureAwait( false );
 #pragma warning restore 168
-#if !UNITY && DEBUG
+#if DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && DEBUG
+#endif // DEBUG
 		}
 
 #endif // FEATURE_TAP
@@ -585,9 +567,8 @@ namespace MsgPack
 		public Packer Pack( byte value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -615,9 +596,8 @@ namespace MsgPack
 		public Task PackAsync( byte value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY
+
 			return this.PrivatePackAsyncCore( value, cancellationToken );
 		}
 
@@ -633,9 +613,9 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackUInt8( value );
 #pragma warning restore 168
-#if !UNITY && !UNITY2 && DEBUG
+#if DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && !UNITY2 && DEBUG
+#endif // DEBUG
 		}
 
 #if FEATURE_TAP
@@ -650,9 +630,9 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = await this.TryPackUInt8Async( value, cancellationToken ).ConfigureAwait( false );
 #pragma warning restore 168
-#if !UNITY && DEBUG
+#if DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && DEBUG
+#endif // DEBUG
 		}
 
 #endif // FEATURE_TAP
@@ -662,9 +642,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Maybe <see cref="Byte"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		protected bool TryPackUInt8( ulong value )
 		{
 			if ( value > Byte.MaxValue )
@@ -688,9 +666,7 @@ namespace MsgPack
 		///		The value of the <c>TResult</c> parameter contains the value
 		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
 		/// </returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		protected Task<bool> TryPackUInt8Async( ulong value )
 		{
 			return this.TryPackUInt8Async( value, CancellationToken.None );
@@ -706,9 +682,7 @@ namespace MsgPack
 		///		The value of the <c>TResult</c> parameter contains the value
 		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
 		/// </returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		protected async Task<bool> TryPackUInt8Async( ulong value, CancellationToken cancellationToken )
 		{
 			if ( value > Byte.MaxValue )
@@ -857,9 +831,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Maybe tiny <see cref="Byte"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		protected bool TryPackTinyUnsignedInteger( ulong value )
 		{
 			// positive fixnum
@@ -883,9 +855,7 @@ namespace MsgPack
 		///		The value of the <c>TResult</c> parameter contains the value
 		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
 		/// </returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		protected Task<bool> TryPackTinyUnsignedIntegerAsync( ulong value )
 		{
 			return this.TryPackTinyUnsignedIntegerAsync( value, CancellationToken.None );
@@ -901,9 +871,7 @@ namespace MsgPack
 		///		The value of the <c>TResult</c> parameter contains the value
 		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
 		/// </returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		protected async Task<bool> TryPackTinyUnsignedIntegerAsync( ulong value, CancellationToken cancellationToken )
 		{
 			// positive fixnum
@@ -926,9 +894,7 @@ namespace MsgPack
 		public Packer PackNull()
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			this.PrivatePackNullCore();
 			return this;
@@ -955,9 +921,7 @@ namespace MsgPack
 		public async Task PackNullAsync( CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY
 
 			await this.PrivatePackNullAsyncCore( cancellationToken ).ConfigureAwait( false );
 		}

@@ -23,13 +23,11 @@
 #endif
 
 using System;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -189,10 +187,7 @@ namespace MsgPack
 				throw new ArgumentNullException( "encoding" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
-
 
 			try
 			{
@@ -280,10 +275,7 @@ namespace MsgPack
 				throw new ArgumentNullException( "encoding" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
-
 
 			try
 			{

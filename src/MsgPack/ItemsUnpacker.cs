@@ -18,19 +18,18 @@
 //
 #endregion -- License Terms --
 
-
 #if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
 #define UNITY
 #endif
 
 using System;
-#if DEBUG && !UNITY && !UNITY2
-#if CORE_CLR
+#if DEBUG
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
+#endif // DEBUG
 using System.Globalization;
 using System.IO;
 #if FEATURE_TAP
@@ -226,12 +225,13 @@ namespace MsgPack
 
 		private void ReadStrict( byte[] buffer, int size )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			if ( this._source.CanSeek )
 			{
 				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
 			}
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
+
 			// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
 			if ( size == 0 )
 			{
@@ -251,12 +251,12 @@ namespace MsgPack
 			} while ( read > 0 && remaining > 0 );
 
 			this._offset += offset;
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			if ( this._source.CanSeek )
 			{
 				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
 			}
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 			if ( offset < size )
 			{
@@ -268,12 +268,12 @@ namespace MsgPack
 
 		private async Task ReadStrictAsync( byte[] buffer, int size, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY
+#if DEBUG
 			if ( this._source.CanSeek )
 			{
 				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
 			}
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 			// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
 			if ( size == 0 )
 			{
@@ -293,12 +293,12 @@ namespace MsgPack
 			} while ( read > 0 && remaining > 0 );
 
 			this._offset += offset;
-#if DEBUG && !UNITY
+#if DEBUG
 			if ( this._source.CanSeek )
 			{
 				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
 			}
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 
 			if ( offset < size )
 			{
@@ -311,35 +311,35 @@ namespace MsgPack
 		private int ReadByteFromSource()
 		{
 			this._lastOffset = this._offset;
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			if ( this._source.CanSeek )
 			{
 				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
 			}
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 			var read = this._source.Read( this._oneByteBuffer, 0, 1 );
 			if ( read > 0 )
 			{
 				this._offset++;
 			}
 
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			if ( this._source.CanSeek )
 			{
 				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
 			}
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 			return read == 0 ? -1 : this._oneByteBuffer[ 0 ];
 		}
 
 		private byte ReadByteStrict()
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			if ( this._source.CanSeek )
 			{
 				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
 			}
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 			this._lastOffset = this._offset;
 			var read = this._source.Read( this._oneByteBuffer, 0, 1 );
 			if ( read == 0 )
@@ -348,12 +348,12 @@ namespace MsgPack
 			}
 
 			this._offset++;
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			if ( this._source.CanSeek )
 			{
 				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
 			}
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 			return this._oneByteBuffer[ 0 ];
 		}
 
@@ -362,35 +362,35 @@ namespace MsgPack
 		private async Task<int> ReadByteFromSourceAsync( CancellationToken cancellationToken )
 		{
 			this._lastOffset = this._offset;
-#if DEBUG && !UNITY
+#if DEBUG
 			if ( this._source.CanSeek )
 			{
 				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
 			}
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 			var read = await this._source.ReadAsync( this._oneByteBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
 			if ( read > 0 )
 			{
 				this._offset++;
 			}
 
-#if DEBUG && !UNITY
+#if DEBUG
 			if ( this._source.CanSeek )
 			{
 				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
 			}
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 			return read == 0 ? -1 : this._oneByteBuffer[ 0 ];
 		}
 
 		private async Task<byte> ReadByteStrictAsync( CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY
+#if DEBUG
 			if ( this._source.CanSeek )
 			{
 				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
 			}
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 			this._lastOffset = this._offset;
 			var read = await this._source.ReadAsync( this._oneByteBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
 			if ( read == 0 )
@@ -399,12 +399,12 @@ namespace MsgPack
 			}
 
 			this._offset++;
-#if DEBUG && !UNITY
+#if DEBUG
 			if ( this._source.CanSeek )
 			{
 				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
 			}
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 			return this._oneByteBuffer[ 0 ];
 		}
 
@@ -443,9 +443,9 @@ namespace MsgPack
 
 		private void ThrowUnassignedMessageTypeException( int header )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( header == 0xC1, "Unhandled header:" + header.ToString( "X2" ) );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 			long offsetOrPosition;
 			var isRealOffset = this.GetPreviousPosition( out offsetOrPosition );
 			throw new UnassignedMessageTypeException(
@@ -462,9 +462,9 @@ namespace MsgPack
 
 		private void ThrowUnexpectedExtCodeException( ReadValueResult type )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( false, "Unexpected ext-code type:" + type );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 			// ReSharper disable HeuristicUnreachableCode
 			long offsetOrPosition;
 			var isRealOffset = this.GetPreviousPosition( out offsetOrPosition );

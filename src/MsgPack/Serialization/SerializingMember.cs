@@ -23,11 +23,11 @@
 #endif
 
 using System;
-#if CORE_CLR || UNITY || UNITY2
+#if CORE_CLR || UNITY
 using MPContract = MsgPack.MPContract;
 #else
 using MPContract = System.Diagnostics.Contracts.Contract;
-#endif // CORE_CLR
+#endif // CORE_CLR || UNITY
 using System.Reflection;
 
 namespace MsgPack.Serialization

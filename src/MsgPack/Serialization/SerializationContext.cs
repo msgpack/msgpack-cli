@@ -20,6 +20,7 @@
 
 #if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
 #define UNITY
+#define AOT
 #endif
 
 using System;
@@ -31,9 +32,11 @@ using System.Collections.Concurrent;
 #else // !SILVERLIGHT && !NETFX_35 && !UNITY
 using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
-#if !UNITY && !UNITY2
+#if CORE_CLR || UNITY
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 #if UNITY || NETSTD_11 || NETSTD_13
 using System.Linq;
 #endif // UNITY || NETSTD_11 || NETSTD_13
@@ -124,9 +127,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if !UNITY && !UNITY2
+#if DEBUG
 				Contract.Ensures( Contract.Result<SerializerRepository>() != null );
-#endif // !UNITY && !UNITY2
+#endif // DEBUG
 
 				return this._serializers;
 			}
@@ -145,9 +148,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if !UNITY && !UNITY2
+#if DEBUG
 				Contract.Ensures( Contract.Result<SerializerOptions>() != null );
-#endif // !UNITY && !UNITY2
+#endif // DEBUG
 
 				return this._serializerGeneratorOptions;
 			}
@@ -165,9 +168,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if !UNITY && !UNITY2
+#if DEBUG
 				Contract.Ensures( Contract.Result<SerializationCompatibilityOptions>() != null );
-#endif // !UNITY && !UNITY2
+#endif // DEBUG
 
 				return this._compatibilityOptions;
 			}
@@ -186,9 +189,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if !UNITY && !UNITY2
+#if DEBUG
 				Contract.Ensures( Enum.IsDefined( typeof( SerializationMethod ), Contract.Result<SerializationMethod>() ) );
-#endif // !UNITY && !UNITY2
+#endif // DEBUG
 
 				return ( SerializationMethod )Volatile.Read( ref this._serializationMethod );
 			}
@@ -207,10 +210,7 @@ namespace MsgPack.Serialization
 					}
 				}
 
-#if !UNITY && !UNITY2
 				Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
-
 
 				Volatile.Write( ref this._serializationMethod, ( int )value );
 			}
@@ -238,9 +238,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if !UNITY && !UNITY2
+#if DEBUG
 				Contract.Ensures( Enum.IsDefined( typeof( EnumSerializationMethod ), Contract.Result<EnumSerializationMethod>() ) );
-#endif // !UNITY && !UNITY2
+#endif // DEBUG
 
 				return ( EnumSerializationMethod )Volatile.Read( ref this._enumSerializationMethod );
 			}
@@ -259,9 +259,7 @@ namespace MsgPack.Serialization
 					}
 				}
 
-#if !UNITY && !UNITY2
 				Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 				Volatile.Write( ref this._enumSerializationMethod, ( int )value );
 			}
@@ -347,9 +345,8 @@ namespace MsgPack.Serialization
 					}
 				}
 
-#if !UNITY && !UNITY2
 				Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 				Volatile.Write( ref this._defaultDateTimeConversionMethod, ( int )value );
 			}
 		}
@@ -600,9 +597,9 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public MessagePackSerializer<T> GetSerializer<T>( object providerParameter )
 		{
-#if !UNITY && !UNITY2
+#if DEBUG
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
-#endif // !UNITY && !UNITY2
+#endif // DEBUG
 
 			var schema = providerParameter as PolymorphismSchema;
 			// Explicitly generated serializer should always used, so get it first.
@@ -685,17 +682,17 @@ namespace MsgPack.Serialization
 					var asEnumSerializer = serializer as ICustomizableEnumSerializer;
 					if ( asEnumSerializer != null )
 					{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 						Contract.Assert( typeof( T ).GetIsEnum(), typeof( T ) + " is not enum but generated serializer is ICustomizableEnumSerializer" );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 						provider = new EnumMessagePackSerializerProvider( typeof( T ), asEnumSerializer );
 					}
 					else
 					{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 						Contract.Assert( !typeof( T ).GetIsEnum(), typeof( T ) + " is enum but generated serializer is not ICustomizableEnumSerializer : " + ( serializer == null ? "null" : serializer.GetType().FullName ) );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 						// Creates provider even if no schema -- the schema might be specified future for the type.
 						// It is OK to use polymorphic provider for value type.
@@ -789,12 +786,12 @@ namespace MsgPack.Serialization
 					{
 						var typedSerializer = serializer as MessagePackSerializer<T>;
 
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 						Contract.Assert(
 							typedSerializer != null,
 							serializer.GetType() + " : " + serializer.GetType().GetBaseType() + " is " + typeof( MessagePackSerializer<T> )
 						);
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 						provider = new PolymorphicSerializerProvider<T>( typedSerializer );
 					}
@@ -874,9 +871,9 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "targetType" );
 			}
 
-#if !UNITY && !UNITY2
+#if DEBUG
 			Contract.Ensures( Contract.Result<MessagePackSerializer>() != null );
-#endif // !UNITY && !UNITY2
+#endif // DEBUG
 
 #if DEBUG && UNITY
 			try
@@ -941,9 +938,9 @@ namespace MsgPack.Serialization
 							typeof( Func<SerializationContext, object, MessagePackSerializer> )
 						) as Func<SerializationContext, object, MessagePackSerializer>;
 #endif // !NETSTD_11 && !NETSTD_13
-#if DEBUG && !UNITY && !UNITY2
+
 					Contract.Assert( func != null, "func != null" );
-#endif // if DEBUG && !UNITY && !UNITY2
+
 					this._cache[ targetType.TypeHandle ] = func;
 				}
 #if SILVERLIGHT || NETFX_35 || UNITY
@@ -958,7 +955,7 @@ namespace MsgPack.Serialization
 		private static class SerializerGetter<T>
 		{
 			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
-#if !NETSTD_11 && !NETSTD_13 && !WINDOWS_PHONE && !UNITY && !UNITY2
+#if !NETSTD_11 && !NETSTD_13 && !WINDOWS_PHONE && !UNITY
 			Delegate.CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> ),
 					Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) )
@@ -972,7 +969,7 @@ namespace MsgPack.Serialization
 				.MakeGenericMethod( typeof( T ) ).CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> )
 				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTD_11 && !NETSTD_13 && !WINDOWS_PHONE && !UNITY
 
 			// ReSharper disable UnusedMember.Local
 			// This method is invoked via Reflection on SerializerGetter.Get().

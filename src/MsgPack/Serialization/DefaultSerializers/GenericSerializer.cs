@@ -27,13 +27,11 @@ using System;
 using System.Collections;
 #endif // !UNITY
 using System.Collections.Generic;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -100,9 +98,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		private static MessagePackSerializer CreateArraySerializer( SerializationContext context, Type targetType, PolymorphismSchema itemsSchema )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( targetType.IsArray, "targetType.IsArray" );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 			return ArraySerializer.Create( context, targetType, itemsSchema );
 		}
 
@@ -226,9 +224,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 				}
 				default:
 				{
-#if DEBUG && !UNITY
+#if DEBUG
 					Contract.Assert( false, "Unknown type:" + targetType );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 					// ReSharper disable HeuristicUnreachableCode
 					return null;
 					// ReSharper restore HeuristicUnreachableCode
@@ -286,9 +284,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 				}
 				default:
 				{
-#if DEBUG && !UNITY
+#if DEBUG
 					Contract.Assert( false, "Unknown type:" + targetType );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 					// ReSharper disable HeuristicUnreachableCode
 					return ImmutableCollectionType.Unknown;
 					// ReSharper restore HeuristicUnreachableCode

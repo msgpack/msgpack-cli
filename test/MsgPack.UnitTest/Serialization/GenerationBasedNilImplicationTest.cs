@@ -24,9 +24,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-#if !SILVERLIGHT && !AOT && !UNITY
+#if !SILVERLIGHT && !AOT
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !UNITY
+#endif // !SILVERLIGHT && !AOT
 #if !MSTEST
 using NUnit.Framework;
 #else

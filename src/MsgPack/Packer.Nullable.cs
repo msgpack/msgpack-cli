@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -40,9 +40,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
 		/// <returns>This instance.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Packer Pack( SByte? value )
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
@@ -55,9 +53,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( SByte? value )
 		{
 			return this.PackAsync( value, CancellationToken.None );
@@ -69,9 +65,7 @@ namespace MsgPack
 		/// <param name="value">Value to serialize.</param>
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( SByte? value, CancellationToken cancellationToken )
 		{
 			return value.HasValue ? this.PackAsync( value.Value, cancellationToken ) : this.PackNullAsync( cancellationToken );
@@ -154,9 +148,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
 		/// <returns>This instance.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Packer Pack( UInt16? value )
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
@@ -169,9 +161,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( UInt16? value )
 		{
 			return this.PackAsync( value, CancellationToken.None );
@@ -183,9 +173,7 @@ namespace MsgPack
 		/// <param name="value">Value to serialize.</param>
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( UInt16? value, CancellationToken cancellationToken )
 		{
 			return value.HasValue ? this.PackAsync( value.Value, cancellationToken ) : this.PackNullAsync( cancellationToken );
@@ -233,9 +221,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
 		/// <returns>This instance.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Packer Pack( UInt32? value )
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
@@ -248,9 +234,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( UInt32? value )
 		{
 			return this.PackAsync( value, CancellationToken.None );
@@ -262,9 +246,7 @@ namespace MsgPack
 		/// <param name="value">Value to serialize.</param>
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( UInt32? value, CancellationToken cancellationToken )
 		{
 			return value.HasValue ? this.PackAsync( value.Value, cancellationToken ) : this.PackNullAsync( cancellationToken );
@@ -312,9 +294,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
 		/// <returns>This instance.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Packer Pack( UInt64? value )
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
@@ -327,9 +307,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( UInt64? value )
 		{
 			return this.PackAsync( value, CancellationToken.None );
@@ -341,9 +319,7 @@ namespace MsgPack
 		/// <param name="value">Value to serialize.</param>
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( UInt64? value, CancellationToken cancellationToken )
 		{
 			return value.HasValue ? this.PackAsync( value.Value, cancellationToken ) : this.PackNullAsync( cancellationToken );

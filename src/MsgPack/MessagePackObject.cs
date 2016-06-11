@@ -23,13 +23,11 @@
 #endif
 
 using System;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Runtime.InteropServices;
 
 namespace MsgPack
@@ -70,9 +68,7 @@ namespace MsgPack
 		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="SByte"/> instance.
 		/// </summary>
 		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public MessagePackObject( SByte value )
 		{
 			// trick: Avoid long boilerplate initialization.
@@ -95,9 +91,7 @@ namespace MsgPack
 		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="UInt16"/> instance.
 		/// </summary>
 		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public MessagePackObject( UInt16 value )
 		{
 			// trick: Avoid long boilerplate initialization.
@@ -120,9 +114,7 @@ namespace MsgPack
 		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="UInt32"/> instance.
 		/// </summary>
 		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public MessagePackObject( UInt32 value )
 		{
 			// trick: Avoid long boilerplate initialization.
@@ -145,9 +137,7 @@ namespace MsgPack
 		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="UInt64"/> instance.
 		/// </summary>
 		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public MessagePackObject( UInt64 value )
 		{
 			// trick: Avoid long boilerplate initialization.
@@ -345,9 +335,7 @@ namespace MsgPack
 		///		Convert this instance to <see cref="SByte" /> instance.
 		/// </summary>
 		/// <returns><see cref="SByte" /> instance corresponds to this instance.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public SByte AsSByte()
 		{
 			if( this.IsNil )
@@ -462,9 +450,7 @@ namespace MsgPack
 		///		Convert this instance to <see cref="UInt16" /> instance.
 		/// </summary>
 		/// <returns><see cref="UInt16" /> instance corresponds to this instance.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public UInt16 AsUInt16()
 		{
 			if( this.IsNil )
@@ -565,9 +551,7 @@ namespace MsgPack
 		///		Convert this instance to <see cref="UInt32" /> instance.
 		/// </summary>
 		/// <returns><see cref="UInt32" /> instance corresponds to this instance.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public UInt32 AsUInt32()
 		{
 			if( this.IsNil )
@@ -659,9 +643,7 @@ namespace MsgPack
 		///		Convert this instance to <see cref="UInt64" /> instance.
 		/// </summary>
 		/// <returns><see cref="UInt64" /> instance corresponds to this instance.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public UInt64 AsUInt64()
 		{
 			if( this.IsNil )
@@ -801,9 +783,7 @@ namespace MsgPack
 			}
 
 			var asString = this._handleOrTypeCode as MessagePackString;
-#if !UNITY && !UNITY2
 			Contract.Assert( asString != null );
-#endif // !UNITY && !UNITY2
 			return asString.GetString();
 		}
 
@@ -822,9 +802,7 @@ namespace MsgPack
 			}
 
 			var asString = this._handleOrTypeCode as MessagePackString;
-#if !UNITY && !UNITY2
 			Contract.Assert( asString != null );
-#endif // !UNITY && !UNITY2
 			return asString.GetBytes();
 		}
 
@@ -883,9 +861,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="SByte" /> instance.</param>
 		/// <returns><see cref="MessagePackObject"/> instance corresponds to <paramref name="value"/>.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public static implicit operator MessagePackObject( SByte value )
 		{
 			MessagePackObject result;
@@ -916,9 +892,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="UInt16" /> instance.</param>
 		/// <returns><see cref="MessagePackObject"/> instance corresponds to <paramref name="value"/>.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public static implicit operator MessagePackObject( UInt16 value )
 		{
 			MessagePackObject result;
@@ -949,9 +923,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="UInt32" /> instance.</param>
 		/// <returns><see cref="MessagePackObject"/> instance corresponds to <paramref name="value"/>.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public static implicit operator MessagePackObject( UInt32 value )
 		{
 			MessagePackObject result;
@@ -982,9 +954,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="UInt64" /> instance.</param>
 		/// <returns><see cref="MessagePackObject"/> instance corresponds to <paramref name="value"/>.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public static implicit operator MessagePackObject( UInt64 value )
 		{
 			MessagePackObject result;
@@ -1185,9 +1155,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="MessagePackObject"/> instance.</param>
 		/// <returns><see cref="SByte" /> instance corresponds to <paramref name="value"/>.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public static explicit operator SByte( MessagePackObject value )
 		{
 			if( value.IsNil )
@@ -1304,9 +1272,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="MessagePackObject"/> instance.</param>
 		/// <returns><see cref="UInt16" /> instance corresponds to <paramref name="value"/>.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public static explicit operator UInt16( MessagePackObject value )
 		{
 			if( value.IsNil )
@@ -1409,9 +1375,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="MessagePackObject"/> instance.</param>
 		/// <returns><see cref="UInt32" /> instance corresponds to <paramref name="value"/>.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public static explicit operator UInt32( MessagePackObject value )
 		{
 			if( value.IsNil )
@@ -1505,9 +1469,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="MessagePackObject"/> instance.</param>
 		/// <returns><see cref="UInt64" /> instance corresponds to <paramref name="value"/>.</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public static explicit operator UInt64( MessagePackObject value )
 		{
 			if( value.IsNil )
@@ -1650,9 +1612,7 @@ namespace MsgPack
 			}
 
 			var asString = value._handleOrTypeCode as MessagePackString;
-#if !UNITY && !UNITY2
 			Contract.Assert( asString != null );
-#endif // !UNITY && !UNITY2
 			return asString.GetString();
 		}
 
@@ -1672,9 +1632,7 @@ namespace MsgPack
 			}
 
 			var asString = value._handleOrTypeCode as MessagePackString;
-#if !UNITY && !UNITY2
 			Contract.Assert( asString != null );
-#endif // !UNITY && !UNITY2
 			return asString.GetBytes();
 		}
 

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,13 +24,11 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Linq;
 using System.Text;
 #if FEATURE_TAP
@@ -57,9 +55,7 @@ namespace MsgPack
 		public Packer Pack( Int16 value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -79,9 +75,7 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackInt16( value );
 #pragma warning restore 168
-#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && !UNITY2 && DEBUG
 		}
 
 		/// <summary>
@@ -128,9 +122,7 @@ namespace MsgPack
 		public Task PackAsync( Int16 value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			return this.PrivatePackAsyncCore( value, cancellationToken );
 		}
 
@@ -149,9 +141,7 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = await this.TryPackInt16Async( value, cancellationToken ).ConfigureAwait( false );
 #pragma warning restore 168
-#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && !UNITY2 && DEBUG
 		}
 
 		/// <summary>
@@ -206,15 +196,11 @@ namespace MsgPack
 		/// <param name="value"><see cref="UInt16"/> value.</param>
 		/// <returns>This instance.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Packer Pack( UInt16 value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -234,9 +220,7 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackUInt16( value );
 #pragma warning restore 168
-#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && !UNITY2 && DEBUG
 		}
 
 		/// <summary>
@@ -244,9 +228,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Maybe <see cref="UInt16"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		protected bool TryPackUInt16( UInt64 value )
 		{
 			if ( value > UInt16.MaxValue )
@@ -271,9 +253,7 @@ namespace MsgPack
 		/// <param name="value"><see cref="UInt16"/> value.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( UInt16 value )
 		{
 			return this.PackAsync( value, CancellationToken.None );
@@ -286,15 +266,11 @@ namespace MsgPack
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( UInt16 value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			return this.PrivatePackAsyncCore( value, cancellationToken );
 		}
 
@@ -313,9 +289,7 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = await this.TryPackUInt16Async( value, cancellationToken ).ConfigureAwait( false );
 #pragma warning restore 168
-#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && !UNITY2 && DEBUG
 		}
 
 		/// <summary>
@@ -327,9 +301,7 @@ namespace MsgPack
 		///		The value of the <c>TResult</c> parameter contains the value
 		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
 		///	</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		protected Task<bool> TryPackUInt16Async( UInt64 value )
 		{
 			return this.TryPackUInt16Async( value, CancellationToken.None );
@@ -345,9 +317,7 @@ namespace MsgPack
 		///		The value of the <c>TResult</c> parameter contains the value
 		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
 		///	</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		protected async Task<bool> TryPackUInt16Async( UInt64 value, CancellationToken cancellationToken )
 		{
 			if ( value > UInt16.MaxValue )
@@ -379,9 +349,7 @@ namespace MsgPack
 		public Packer Pack( Int32 value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -406,9 +374,7 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackInt32( value );
 #pragma warning restore 168
-#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && !UNITY2 && DEBUG
 		}
 
 		/// <summary>
@@ -457,9 +423,7 @@ namespace MsgPack
 		public Task PackAsync( Int32 value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			return this.PrivatePackAsyncCore( value, cancellationToken );
 		}
 
@@ -483,9 +447,7 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = await this.TryPackInt32Async( value, cancellationToken ).ConfigureAwait( false );
 #pragma warning restore 168
-#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && !UNITY2 && DEBUG
 		}
 
 		/// <summary>
@@ -542,15 +504,11 @@ namespace MsgPack
 		/// <param name="value"><see cref="UInt32"/> value.</param>
 		/// <returns>This instance.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Packer Pack( UInt32 value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -575,9 +533,7 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackUInt32( value );
 #pragma warning restore 168
-#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && !UNITY2 && DEBUG
 		}
 
 		/// <summary>
@@ -585,9 +541,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Maybe <see cref="UInt32"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		protected bool TryPackUInt32( UInt64 value )
 		{
 			if ( value > UInt32.MaxValue )
@@ -614,9 +568,7 @@ namespace MsgPack
 		/// <param name="value"><see cref="UInt32"/> value.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( UInt32 value )
 		{
 			return this.PackAsync( value, CancellationToken.None );
@@ -629,15 +581,11 @@ namespace MsgPack
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( UInt32 value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			return this.PrivatePackAsyncCore( value, cancellationToken );
 		}
 
@@ -661,9 +609,7 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = await this.TryPackUInt32Async( value, cancellationToken ).ConfigureAwait( false );
 #pragma warning restore 168
-#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && !UNITY2 && DEBUG
 		}
 
 		/// <summary>
@@ -675,9 +621,7 @@ namespace MsgPack
 		///		The value of the <c>TResult</c> parameter contains the value
 		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
 		///	</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		protected Task<bool> TryPackUInt32Async( UInt64 value )
 		{
 			return this.TryPackUInt32Async( value, CancellationToken.None );
@@ -693,9 +637,7 @@ namespace MsgPack
 		///		The value of the <c>TResult</c> parameter contains the value
 		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
 		///	</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		protected async Task<bool> TryPackUInt32Async( UInt64 value, CancellationToken cancellationToken )
 		{
 			if ( value > UInt32.MaxValue )
@@ -729,9 +671,7 @@ namespace MsgPack
 		public Packer Pack( Int64 value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -761,9 +701,7 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackInt64( value );
 #pragma warning restore 168
-#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && !UNITY2 && DEBUG
 		}
 
 		/// <summary>
@@ -812,9 +750,7 @@ namespace MsgPack
 		public Task PackAsync( Int64 value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			return this.PrivatePackAsyncCore( value, cancellationToken );
 		}
 
@@ -843,9 +779,7 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = await this.TryPackInt64Async( value, cancellationToken ).ConfigureAwait( false );
 #pragma warning restore 168
-#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && !UNITY2 && DEBUG
 		}
 
 		/// <summary>
@@ -902,15 +836,11 @@ namespace MsgPack
 		/// <param name="value"><see cref="UInt64"/> value.</param>
 		/// <returns>This instance.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Packer Pack( UInt64 value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -940,9 +870,7 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = this.TryPackUInt64( value );
 #pragma warning restore 168
-#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && !UNITY2 && DEBUG
 		}
 
 		/// <summary>
@@ -950,9 +878,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Maybe <see cref="UInt64"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		protected bool TryPackUInt64( UInt64 value )
 		{
 
@@ -979,9 +905,7 @@ namespace MsgPack
 		/// <param name="value"><see cref="UInt64"/> value.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( UInt64 value )
 		{
 			return this.PackAsync( value, CancellationToken.None );
@@ -994,15 +918,11 @@ namespace MsgPack
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		public Task PackAsync( UInt64 value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			return this.PrivatePackAsyncCore( value, cancellationToken );
 		}
 
@@ -1031,9 +951,7 @@ namespace MsgPack
 #pragma warning disable 168
 			var b = await this.TryPackUInt64Async( value, cancellationToken ).ConfigureAwait( false );
 #pragma warning restore 168
-#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && !UNITY2 && DEBUG
 		}
 
 		/// <summary>
@@ -1045,9 +963,7 @@ namespace MsgPack
 		///		The value of the <c>TResult</c> parameter contains the value
 		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
 		///	</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		protected Task<bool> TryPackUInt64Async( UInt64 value )
 		{
 			return this.TryPackUInt64Async( value, CancellationToken.None );
@@ -1063,9 +979,7 @@ namespace MsgPack
 		///		The value of the <c>TResult</c> parameter contains the value
 		///		whether <paramref name="value"/> has be packed successfully or not(normally, larger type required).
 		///	</returns>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		protected async Task<bool> TryPackUInt64Async( UInt64 value, CancellationToken cancellationToken )
 		{
 
@@ -1279,9 +1193,7 @@ namespace MsgPack
 				ThrowCannotBeNegativeException( "count" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.VerifyNotDisposed();
 
 			this.PrivatePackArrayHeaderCore( count );
@@ -1289,9 +1201,9 @@ namespace MsgPack
 
 		private void PrivatePackArrayHeaderCore( int count )
 		{
-#if !UNITY && !UNITY2
+#if !UNITY
 			Contract.Assert( 0 <= count, "0 <= count" );
-#endif // !UNITY && !UNITY2
+#endif // !UNITY
 			if ( count < 16 )
 			{
 				this.WriteByte( unchecked( ( byte )( MessagePackCode.MinimumFixedArray | count ) ) );
@@ -1366,9 +1278,7 @@ namespace MsgPack
 				ThrowCannotBeNegativeException( "count" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.VerifyNotDisposed();
 
 			return this.PrivatePackArrayHeaderAsyncCore( count, cancellationToken );
@@ -1376,9 +1286,9 @@ namespace MsgPack
 
 		private async Task PrivatePackArrayHeaderAsyncCore( int count, CancellationToken cancellationToken )
 		{
-#if !UNITY && !UNITY2
+#if !UNITY
 			Contract.Assert( 0 <= count, "0 <= count" );
-#endif // !UNITY && !UNITY2
+#endif // !UNITY
 			if ( count < 16 )
 			{
 				await this.WriteByteAsync( unchecked( ( byte )( MessagePackCode.MinimumFixedArray | count ) ), cancellationToken ).ConfigureAwait( false );
@@ -1430,9 +1340,7 @@ namespace MsgPack
 				ThrowCannotBeNegativeException( "count" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.VerifyNotDisposed();
 
 			this.PrivatePackMapHeaderCore( count );
@@ -1440,9 +1348,9 @@ namespace MsgPack
 
 		private void PrivatePackMapHeaderCore( int count )
 		{
-#if !UNITY && !UNITY2
+#if !UNITY
 			Contract.Assert( 0 <= count, "0 <= count" );
-#endif // !UNITY && !UNITY2
+#endif // !UNITY
 			if ( count < 16 )
 			{
 				this.WriteByte( unchecked( ( byte )( MessagePackCode.MinimumFixedMap | count ) ) );
@@ -1517,9 +1425,7 @@ namespace MsgPack
 				ThrowCannotBeNegativeException( "count" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.VerifyNotDisposed();
 
 			return this.PrivatePackMapHeaderAsyncCore( count, cancellationToken );
@@ -1527,9 +1433,9 @@ namespace MsgPack
 
 		private async Task PrivatePackMapHeaderAsyncCore( int count, CancellationToken cancellationToken )
 		{
-#if !UNITY && !UNITY2
+#if !UNITY
 			Contract.Assert( 0 <= count, "0 <= count" );
-#endif // !UNITY && !UNITY2
+#endif // !UNITY
 			if ( count < 16 )
 			{
 				await this.WriteByteAsync( unchecked( ( byte )( MessagePackCode.MinimumFixedMap | count ) ), cancellationToken ).ConfigureAwait( false );
@@ -1744,9 +1650,7 @@ namespace MsgPack
 				ThrowCannotBeNegativeException( "length" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.VerifyNotDisposed();
 
 			this.PrivatePackRawHeaderCore( length, true );
@@ -1777,9 +1681,7 @@ namespace MsgPack
 				ThrowCannotBeNegativeException( "length" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.VerifyNotDisposed();
 
 			return this.PrivatePackRawHeaderAsyncCore( length, true, cancellationToken );
@@ -1798,9 +1700,7 @@ namespace MsgPack
 				ThrowCannotBeNegativeException( "length" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.VerifyNotDisposed();
 
 			this.PrivatePackRawHeaderCore( length, false );
@@ -1831,9 +1731,7 @@ namespace MsgPack
 				ThrowCannotBeNegativeException( "length" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.VerifyNotDisposed();
 
 			return this.PrivatePackRawHeaderAsyncCore( length, false, cancellationToken );
@@ -1843,9 +1741,7 @@ namespace MsgPack
 
 		private void PrivatePackRawHeaderCore( int length, bool isString )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( 0 <= length, "0 <= length" );
-#endif // !UNITY && !UNITY2
 
 			if ( isString || ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
 			{
@@ -1923,9 +1819,7 @@ namespace MsgPack
 
 		private async Task PrivatePackRawHeaderAsyncCore( int length, bool isString, CancellationToken cancellationToken )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( 0 <= length, "0 <= length" );
-#endif // !UNITY && !UNITY2
 
 			if ( isString || ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
 			{
@@ -2017,9 +1911,7 @@ namespace MsgPack
 		public Packer PackRaw( IEnumerable<byte> value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			var asCollection = value as ICollection<byte>;
 			if ( asCollection == null )
@@ -2046,9 +1938,7 @@ namespace MsgPack
 		public Packer PackRaw( IList<byte> value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			var asByteArray = value as byte[];
 			if ( asByteArray == null )
@@ -2075,9 +1965,7 @@ namespace MsgPack
 		public Packer PackRaw( byte[] value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			this.PrivatePackRaw( value );
 			return this;
@@ -2167,9 +2055,7 @@ namespace MsgPack
 		public Task PackRawAsync( IEnumerable<byte> value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			var asCollection = value as ICollection<byte>;
 			if ( asCollection == null )
@@ -2210,9 +2096,7 @@ namespace MsgPack
 		public Task PackRawAsync( IList<byte> value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			var asByteArray = value as byte[];
 			if ( asByteArray == null )
@@ -2253,9 +2137,7 @@ namespace MsgPack
 		public Task PackRawAsync( byte[] value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			return this.PrivatePackRawAsync( value, cancellationToken );
 		}
@@ -2333,9 +2215,7 @@ namespace MsgPack
 		public Packer PackBinary( IEnumerable<byte> value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			var asCollection = value as ICollection<byte>;
 			if ( asCollection == null )
@@ -2362,9 +2242,7 @@ namespace MsgPack
 		public Packer PackBinary( IList<byte> value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			var asByteArray = value as byte[];
 			if ( asByteArray == null )
@@ -2391,9 +2269,7 @@ namespace MsgPack
 		public Packer PackBinary( byte[] value )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			this.PrivatePackBinary( value );
 			return this;
@@ -2492,9 +2368,7 @@ namespace MsgPack
 		public Task PackBinaryAsync( IEnumerable<byte> value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			var asCollection = value as ICollection<byte>;
 			if ( asCollection == null )
@@ -2535,9 +2409,7 @@ namespace MsgPack
 		public Task PackBinaryAsync( IList<byte> value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			var asByteArray = value as byte[];
 			if ( asByteArray == null )
@@ -2578,9 +2450,7 @@ namespace MsgPack
 		public Task PackBinaryAsync( byte[] value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			return this.PrivatePackBinaryAsync( value, cancellationToken );
 		}
@@ -2694,9 +2564,7 @@ namespace MsgPack
 				ThrowArgumentNullException( "encoding ");
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.VerifyNotDisposed();
 
 			this.PrivatePackString( value, encoding );
@@ -2704,9 +2572,7 @@ namespace MsgPack
 
 		private void PrivatePackString( IEnumerable<char> value, Encoding encoding )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( encoding != null, "encoding != null" );
-#endif // !UNITY && !UNITY2
 
 			if ( value == null )
 			{
@@ -2719,10 +2585,8 @@ namespace MsgPack
 
 		private void PrivatePackStringCore( IEnumerable<char> value, Encoding encoding )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( value != null, "value != null" );
 			Contract.Assert( encoding != null, "encoding != null" );
-#endif // !UNITY && !UNITY2
 
 			// TODO: streaming encoding
 			var encoded = encoding.GetBytes( value.ToArray() );
@@ -2809,9 +2673,7 @@ namespace MsgPack
 				ThrowArgumentNullException( "encoding ");
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.VerifyNotDisposed();
 
 			return this.PrivatePackStringAsync( value, encoding, cancellationToken );
@@ -2819,9 +2681,7 @@ namespace MsgPack
 
 		private async Task PrivatePackStringAsync( IEnumerable<char> value, Encoding encoding, CancellationToken cancellationToken )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( encoding != null, "encoding != null" );
-#endif // !UNITY && !UNITY2
 
 			if ( value == null )
 			{
@@ -2834,10 +2694,8 @@ namespace MsgPack
 
 		private async Task PrivatePackStringAsyncCore( IEnumerable<char> value, Encoding encoding, CancellationToken cancellationToken )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( value != null, "value != null" );
 			Contract.Assert( encoding != null, "encoding != null" );
-#endif // !UNITY && !UNITY2
 
 			// TODO: streaming encoding
 			var encoded = encoding.GetBytes( value.ToArray() );
@@ -2886,9 +2744,7 @@ namespace MsgPack
 				ThrowArgumentNullException( "encoding ");
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.VerifyNotDisposed();
 
 			this.PrivatePackString( value, encoding );
@@ -2896,9 +2752,7 @@ namespace MsgPack
 
 		private void PrivatePackString( string value, Encoding encoding )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( encoding != null, "encoding != null" );
-#endif // !UNITY && !UNITY2
 
 			if ( value == null )
 			{
@@ -2911,10 +2765,8 @@ namespace MsgPack
 
 		private void PrivatePackStringCore( string value, Encoding encoding )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( value != null, "value != null" );
 			Contract.Assert( encoding != null, "encoding != null" );
-#endif // !UNITY && !UNITY2
 
 			// TODO: streaming encoding
 			var encoded = encoding.GetBytes( value );
@@ -3001,9 +2853,7 @@ namespace MsgPack
 				ThrowArgumentNullException( "encoding ");
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.VerifyNotDisposed();
 
 			return this.PrivatePackStringAsync( value, encoding, cancellationToken );
@@ -3011,9 +2861,7 @@ namespace MsgPack
 
 		private async Task PrivatePackStringAsync( string value, Encoding encoding, CancellationToken cancellationToken )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( encoding != null, "encoding != null" );
-#endif // !UNITY && !UNITY2
 
 			if ( value == null )
 			{
@@ -3026,10 +2874,8 @@ namespace MsgPack
 
 		private async Task PrivatePackStringAsyncCore( string value, Encoding encoding, CancellationToken cancellationToken )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( value != null, "value != null" );
 			Contract.Assert( encoding != null, "encoding != null" );
-#endif // !UNITY && !UNITY2
 
 			// TODO: streaming encoding
 			var encoded = encoding.GetBytes( value );
@@ -3060,9 +2906,7 @@ namespace MsgPack
 			}
 
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			this.WriteBytes( value, false );
 			return this;
@@ -3085,9 +2929,7 @@ namespace MsgPack
 			}
 
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			this.PrivatePackRawBodyCore( value );
 			return this;
@@ -3095,9 +2937,7 @@ namespace MsgPack
 
 		private int PrivatePackRawBodyCore( IEnumerable<byte> value )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( value != null, "value != null" );
-#endif // !UNITY && !UNITY2
 
 			var asCollection = value as ICollection<byte>;
 			if ( asCollection != null )
@@ -3118,9 +2958,7 @@ namespace MsgPack
 
 		private int PrivatePackRawBodyCore( ICollection<byte> value, bool isImmutable )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( value != null, "value != null" );
-#endif // !UNITY && !UNITY2
 
 			var asArray = value as byte[];
 			if ( asArray != null )
@@ -3183,9 +3021,7 @@ namespace MsgPack
 			}
 
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			return this.WriteBytesAsync( value, false, cancellationToken );
 		}
@@ -3208,18 +3044,14 @@ namespace MsgPack
 			}
 
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			return this.PrivatePackRawBodyAsyncCore( value, cancellationToken );
 		}
 
 		private async Task<int> PrivatePackRawBodyAsyncCore( IEnumerable<byte> value, CancellationToken cancellationToken )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( value != null, "value != null" );
-#endif // !UNITY && !UNITY2
 
 			var asCollection = value as ICollection<byte>;
 			if ( asCollection != null )
@@ -3240,9 +3072,7 @@ namespace MsgPack
 
 		private async Task<int> PrivatePackRawBodyAsyncCore( ICollection<byte> value, bool isImmutable, CancellationToken cancellationToken )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( value != null, "value != null" );
-#endif // !UNITY && !UNITY2
 
 			var asArray = value as byte[];
 			if ( asArray != null )
@@ -3364,9 +3194,7 @@ namespace MsgPack
 			}
 
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			this.PrivatePackExtendedTypeValueCore( typeCode, body );
 			return this;
@@ -3504,9 +3332,7 @@ namespace MsgPack
 			}
 
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			return this.PrivatePackExtendedTypeValueAsyncCore( typeCode, body, cancellationToken );
 		}

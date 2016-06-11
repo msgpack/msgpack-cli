@@ -22,9 +22,9 @@
 #define UNITY
 #endif
 
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 #define ASSERT
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 
 using System;
@@ -32,13 +32,11 @@ using System.Collections.Generic;
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif //!UNITY || MSGPACK_UNITY_FULL
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -145,10 +143,10 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "operations" );
 			}
 
-#if DEBUG && !UNITY
+#if ASSERT
 			Contract.Assert( packer != null );
 			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY
+#endif // ASSERT
 
 			await packer.PackArrayHeaderAsync( operations.Count, cancellationToken ).ConfigureAwait( false );
 			foreach ( var operation in operations )
@@ -248,10 +246,8 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "operations" );
 			}
 
-#if DEBUG && !UNITY
 			Contract.Assert( packer != null );
 			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY
 
 			await packer.PackMapHeaderAsync( operations.Count, cancellationToken ).ConfigureAwait( false );
 			foreach ( var operation in operations )

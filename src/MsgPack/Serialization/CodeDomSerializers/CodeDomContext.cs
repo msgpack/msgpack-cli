@@ -274,9 +274,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				this.CollectionToBeAdded = CodeDomConstruct.Parameter( targetType, "collection" );
 				this.ItemToAdd = CodeDomConstruct.Parameter( traits.ElementType, "item" );
 				if ( traits.DetailedCollectionType == CollectionDetailedKind.GenericDictionary
-#if !NETFX_35 && !UNITY && !NETFX_40
+#if !NETFX_35 && !NETFX_40
 					|| traits.DetailedCollectionType == CollectionDetailedKind.GenericReadOnlyDictionary
-#endif // !NETFX_35 && !UNITY && !NETFX_40
+#endif // !NETFX_35 && !NETFX_40
 				)
 				{
 					this.KeyToAdd = CodeDomConstruct.Parameter( traits.ElementType.GetGenericArguments()[ 0 ], "key" );

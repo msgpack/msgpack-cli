@@ -24,13 +24,11 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Linq;
 #if NETFX_CORE
 using System.Reflection;
@@ -53,16 +51,14 @@ namespace MsgPack.Serialization.Reflection
 		///		or built closed generic interface type;
 		///		otherwise <c>false</c>.
 		/// </returns>
-#if !UNITY && !UNITY2
 		[Pure]
-#endif // !UNITY && !UNITY2
 		public static bool Implements( this Type source, Type genericType )
 		{
-#if !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( source != null, "source != null" );
 			Contract.Assert( genericType != null, "genericType != null" );
 			Contract.Assert( genericType.GetIsInterface(), "genericType.GetIsInterface()" );
-#endif // !UNITY && !UNITY2
+#endif // DEBUG
 
 			return EnumerateGenericIntefaces( source, genericType, false ).Any();
 		}
@@ -87,14 +83,11 @@ namespace MsgPack.Serialization.Reflection
 		/// </summary>
 		/// <param name="source">Target type.</param>
 		/// <returns>Simple name of type.</returns>
-#if !UNITY && !UNITY2
 		[Pure]
-#endif // !UNITY && !UNITY2
 		public static string GetName( this Type source )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( source != null, "source != null" );
-#endif // !UNITY && !UNITY2
+
 			if ( !source.GetIsGenericType() )
 			{
 				return source.Name;
@@ -118,14 +111,10 @@ namespace MsgPack.Serialization.Reflection
 		/// </summary>
 		/// <param name="source">Target type.</param>
 		/// <returns>Full name of type.</returns>
-#if !UNITY && !UNITY2
 		[Pure]
-#endif // !UNITY && !UNITY2
 		public static string GetFullName( this Type source )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( source != null, "source != null" );
-#endif // !UNITY && !UNITY2
 
 			if ( source.IsArray )
 			{

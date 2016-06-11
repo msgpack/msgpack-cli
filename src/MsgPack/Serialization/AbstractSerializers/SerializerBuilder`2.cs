@@ -19,7 +19,11 @@
 #endregion -- License Terms --
 
 using System;
+#if CORE_CLR
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // CORE_CLR
 
 using MsgPack.Serialization.CollectionSerializers;
 
@@ -67,7 +71,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		private static Type DetermineBaseClass( Type targetType, CollectionTraits traits )
 		{
 
-#if DEBUG && !UNITY
+#if DEBUG
 			Contract.Assert(
 				traits.DetailedCollectionType != CollectionDetailedKind.Unserializable,
 				targetType + "(" + traits.DetailedCollectionType + ") != CollectionDetailedKind.Unserializable" 
@@ -80,20 +84,20 @@ namespace MsgPack.Serialization.AbstractSerializers
 					return typeof( EnumerableMessagePackSerializer<,> ).MakeGenericType( targetType, traits.ElementType );
 				}
 				case CollectionDetailedKind.GenericCollection:
-#if !NETFX_35 && !UNITY
+#if !NETFX_35
 				case CollectionDetailedKind.GenericSet:
-#endif // !NETFX_35 && !UNITY
+#endif // !NETFX_35
 				case CollectionDetailedKind.GenericList:
 				{
 					return typeof( CollectionMessagePackSerializer<,> ).MakeGenericType( targetType, traits.ElementType );
 				}
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#if !NETFX_35 && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericReadOnlyCollection:
 				case CollectionDetailedKind.GenericReadOnlyList:
 				{
 					return typeof( ReadOnlyCollectionMessagePackSerializer<,> ).MakeGenericType( targetType, traits.ElementType );
 				}
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#endif // !NETFX_35 && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericDictionary:
 				{
 					var keyValuePairGenericArguments = traits.ElementType.GetGenericArguments();
@@ -104,7 +108,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							keyValuePairGenericArguments[ 1 ]
 						);
 				}
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#if !NETFX_35 && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericReadOnlyDictionary:
 				{
 					var keyValuePairGenericArguments = traits.ElementType.GetGenericArguments();
@@ -115,7 +119,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							keyValuePairGenericArguments[ 1 ]
 						);
 				}
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#endif // !NETFX_35 && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.NonGenericEnumerable:
 				{
 					return typeof( NonGenericEnumerableMessagePackSerializer<> ).MakeGenericType( targetType );
@@ -139,12 +143,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 				default:
 				{
-#if DEBUG && !UNITY
+#if DEBUG
 					Contract.Assert(
 						traits.DetailedCollectionType == CollectionDetailedKind.NotCollection,
 						"Unknown type:" + traits.DetailedCollectionType 
 					);
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 					return
 						targetType.GetIsEnum()
 							? typeof( EnumMessagePackSerializer<> ).MakeGenericType( targetType )
@@ -183,7 +187,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public MessagePackSerializer BuildSerializerInstance( SerializationContext context, Type concreteType, PolymorphismSchema schema )
 		{
-#if DEBUG && !UNITY
+#if DEBUG
 			Contract.Assert(
 				this.CollectionTraits.DetailedCollectionType != CollectionDetailedKind.Array,
 				this.TargetType + "(" + this.CollectionTraits.DetailedCollectionType + ") != CollectionDetailedKind.Array"
@@ -207,9 +211,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 			if ( constructor != null )
 			{
 				var serializer = constructor( context );
-#if DEBUG && !UNITY
+#if DEBUG
 				Contract.Assert( serializer != null );
-#endif // DEBUG && !UNITY
+#endif // DEBUG
 				return serializer;
 			}
 
@@ -269,7 +273,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 #endif
 					else
 					{
-#if DEBUG && !UNITY
+#if DEBUG
 						Contract.Assert( schema == null || schema.UseDefault );
 #endif // DEBUG
 						this.BuildObjectSerializer( context, out targetInfo );

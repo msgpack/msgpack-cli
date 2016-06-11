@@ -20,17 +20,18 @@
 
 #if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
 #define UNITY
+#define AOT
 #endif
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-#if CORE_CLR || UNITY || UNITY2
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || UNITY2
+#endif // CORE_CLR || UNITY
 using System.Reflection;
 using System.Runtime.Serialization;
 
@@ -206,18 +207,18 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 			// CreateDelegate causes AOT error.
 			// So use reflection in AOT environment.
-#if ( !UNITY && !XAMIOS ) || AOT_CHECK
+#if !AOT || AOT_CHECK
 			try
 			{
 				return collectionTraits.AddMethod.CreateDelegate( typeof( Action<TCollection, TItem> ) ) as Action<TCollection, TItem>;
 			}
 			catch ( ArgumentException )
 			{
-#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
+#endif // !AOT || AOT_CHECK
 			return ( collection, item ) => collectionTraits.AddMethod.InvokePreservingExceptionType( collection, item );
-#if ( !UNITY && !XAMIOS ) || AOT_CHECK
+#if !AOT || AOT_CHECK
 			}
-#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
+#endif // !AOT || AOT_CHECK
 		}
 
 		public static void GetMetadata(

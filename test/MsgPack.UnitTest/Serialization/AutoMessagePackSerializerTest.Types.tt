@@ -749,12 +749,12 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 			if ( expected.GetType().GetTypeInfo().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
 #endif
 			{
-#if !NETFX_35 && !AOT && !UNITY
+#if !NETFX_35 && !AOT
 				Verify( ( ( dynamic )expected ).Key, ( ( dynamic )actual ).Key );
 				Verify( ( ( dynamic )expected ).Value, ( ( dynamic )actual ).Value );
 #else
 				Assert.Inconclusive( ".NET 3.5 does not support dynamic." );
-#endif // !NETFX_35 && !AOT && !UNITY
+#endif // !NETFX_35 && !AOT
 				return;
 			}
 

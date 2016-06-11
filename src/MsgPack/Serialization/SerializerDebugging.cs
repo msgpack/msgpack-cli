@@ -20,6 +20,7 @@
 
 #if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
 #define UNITY
+#define AOT
 #endif
 
 using System;
@@ -27,9 +28,11 @@ using System;
 using System.Collections.Concurrent;
 #endif // !NETFX_35 && !UNITY && !WINDOWS_PHONE
 using System.Collections.Generic;
-#if !UNITY && !UNITY2
+#if CORE_CLR || UNITY
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Globalization;
 using System.IO;
 using System.Linq;

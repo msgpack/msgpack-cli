@@ -38,10 +38,7 @@ namespace MsgPack
 	{
 		public override bool ReadBoolean( out Boolean result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeBoolean( out result );
 		} 
 		
@@ -49,10 +46,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Boolean>> ReadBooleanAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeBooleanAsync( cancellationToken );
 		} 
 		
@@ -118,10 +112,7 @@ namespace MsgPack
 
 		public override bool ReadNullableBoolean( out Boolean? result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableBoolean( out result );
 		} 
 		
@@ -129,10 +120,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Boolean?>> ReadNullableBooleanAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableBooleanAsync( cancellationToken );
 		} 
 		
@@ -209,10 +197,7 @@ namespace MsgPack
 
 		public override bool ReadByte( out Byte result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeByte( out result );
 		} 
 		
@@ -220,10 +205,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Byte>> ReadByteAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeByteAsync( cancellationToken );
 		} 
 		
@@ -343,10 +325,7 @@ namespace MsgPack
 
 		public override bool ReadNullableByte( out Byte? result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableByte( out result );
 		} 
 		
@@ -354,10 +333,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Byte?>> ReadNullableByteAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableByteAsync( cancellationToken );
 		} 
 		
@@ -488,10 +464,7 @@ namespace MsgPack
 
 		public override bool ReadSByte( out SByte result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeSByte( out result );
 		} 
 		
@@ -499,10 +472,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<SByte>> ReadSByteAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeSByteAsync( cancellationToken );
 		} 
 		
@@ -622,10 +592,7 @@ namespace MsgPack
 
 		public override bool ReadNullableSByte( out SByte? result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableSByte( out result );
 		} 
 		
@@ -633,10 +600,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<SByte?>> ReadNullableSByteAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableSByteAsync( cancellationToken );
 		} 
 		
@@ -767,10 +731,7 @@ namespace MsgPack
 
 		public override bool ReadInt16( out Int16 result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeInt16( out result );
 		} 
 		
@@ -778,10 +739,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Int16>> ReadInt16Async( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeInt16Async( cancellationToken );
 		} 
 		
@@ -901,10 +859,7 @@ namespace MsgPack
 
 		public override bool ReadNullableInt16( out Int16? result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableInt16( out result );
 		} 
 		
@@ -912,10 +867,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Int16?>> ReadNullableInt16Async( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableInt16Async( cancellationToken );
 		} 
 		
@@ -1046,10 +998,7 @@ namespace MsgPack
 
 		public override bool ReadUInt16( out UInt16 result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeUInt16( out result );
 		} 
 		
@@ -1057,10 +1006,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<UInt16>> ReadUInt16Async( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeUInt16Async( cancellationToken );
 		} 
 		
@@ -1180,10 +1126,7 @@ namespace MsgPack
 
 		public override bool ReadNullableUInt16( out UInt16? result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableUInt16( out result );
 		} 
 		
@@ -1191,10 +1134,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<UInt16?>> ReadNullableUInt16Async( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableUInt16Async( cancellationToken );
 		} 
 		
@@ -1325,10 +1265,7 @@ namespace MsgPack
 
 		public override bool ReadInt32( out Int32 result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeInt32( out result );
 		} 
 		
@@ -1336,10 +1273,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Int32>> ReadInt32Async( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeInt32Async( cancellationToken );
 		} 
 		
@@ -1459,10 +1393,7 @@ namespace MsgPack
 
 		public override bool ReadNullableInt32( out Int32? result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableInt32( out result );
 		} 
 		
@@ -1470,10 +1401,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Int32?>> ReadNullableInt32Async( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableInt32Async( cancellationToken );
 		} 
 		
@@ -1604,10 +1532,7 @@ namespace MsgPack
 
 		public override bool ReadUInt32( out UInt32 result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeUInt32( out result );
 		} 
 		
@@ -1615,10 +1540,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<UInt32>> ReadUInt32Async( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeUInt32Async( cancellationToken );
 		} 
 		
@@ -1738,10 +1660,7 @@ namespace MsgPack
 
 		public override bool ReadNullableUInt32( out UInt32? result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableUInt32( out result );
 		} 
 		
@@ -1749,10 +1668,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<UInt32?>> ReadNullableUInt32Async( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableUInt32Async( cancellationToken );
 		} 
 		
@@ -1883,10 +1799,7 @@ namespace MsgPack
 
 		public override bool ReadInt64( out Int64 result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeInt64( out result );
 		} 
 		
@@ -1894,10 +1807,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Int64>> ReadInt64Async( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeInt64Async( cancellationToken );
 		} 
 		
@@ -2017,10 +1927,7 @@ namespace MsgPack
 
 		public override bool ReadNullableInt64( out Int64? result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableInt64( out result );
 		} 
 		
@@ -2028,10 +1935,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Int64?>> ReadNullableInt64Async( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableInt64Async( cancellationToken );
 		} 
 		
@@ -2162,10 +2066,7 @@ namespace MsgPack
 
 		public override bool ReadUInt64( out UInt64 result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeUInt64( out result );
 		} 
 		
@@ -2173,10 +2074,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<UInt64>> ReadUInt64Async( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeUInt64Async( cancellationToken );
 		} 
 		
@@ -2287,10 +2185,7 @@ namespace MsgPack
 
 		public override bool ReadNullableUInt64( out UInt64? result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableUInt64( out result );
 		} 
 		
@@ -2298,10 +2193,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<UInt64?>> ReadNullableUInt64Async( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableUInt64Async( cancellationToken );
 		} 
 		
@@ -2423,10 +2315,7 @@ namespace MsgPack
 
 		public override bool ReadSingle( out Single result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeSingle( out result );
 		} 
 		
@@ -2434,10 +2323,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Single>> ReadSingleAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeSingleAsync( cancellationToken );
 		} 
 		
@@ -2548,10 +2434,7 @@ namespace MsgPack
 
 		public override bool ReadNullableSingle( out Single? result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableSingle( out result );
 		} 
 		
@@ -2559,10 +2442,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Single?>> ReadNullableSingleAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableSingleAsync( cancellationToken );
 		} 
 		
@@ -2684,10 +2564,7 @@ namespace MsgPack
 
 		public override bool ReadDouble( out Double result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeDouble( out result );
 		} 
 		
@@ -2695,10 +2572,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Double>> ReadDoubleAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeDoubleAsync( cancellationToken );
 		} 
 		
@@ -2809,10 +2683,7 @@ namespace MsgPack
 
 		public override bool ReadNullableDouble( out Double? result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableDouble( out result );
 		} 
 		
@@ -2820,10 +2691,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Double?>> ReadNullableDoubleAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeNullableDoubleAsync( cancellationToken );
 		} 
 		
@@ -2945,10 +2813,7 @@ namespace MsgPack
 
 		public override bool ReadBinary( out Byte[] result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeBinary( out result );
 		} 
 		
@@ -2956,10 +2821,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Byte[]>> ReadBinaryAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeBinaryAsync( cancellationToken );
 		} 
 		
@@ -3036,10 +2898,7 @@ namespace MsgPack
 
 		public override bool ReadString( out String result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeString( out result );
 		} 
 		
@@ -3047,10 +2906,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<String>> ReadStringAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeStringAsync( cancellationToken );
 		} 
 		
@@ -3127,10 +2983,7 @@ namespace MsgPack
 
 		public override bool ReadObject( out MessagePackObject result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeObject( /* isDeep */true, out result );
 		} 
 		
@@ -3138,10 +2991,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<MessagePackObject>> ReadObjectAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeObjectAsync( /* isDeep */true, cancellationToken );
 		} 
 		
@@ -3549,10 +3399,7 @@ namespace MsgPack
 
 		public override bool ReadArrayLength( out Int64 result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeArrayLength( out result );
 		} 
 		
@@ -3560,10 +3407,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Int64>> ReadArrayLengthAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeArrayLengthAsync( cancellationToken );
 		} 
 		
@@ -3631,10 +3475,7 @@ namespace MsgPack
 
 		public override bool ReadMapLength( out Int64 result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeMapLength( out result );
 		} 
 		
@@ -3642,10 +3483,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<Int64>> ReadMapLengthAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeMapLengthAsync( cancellationToken );
 		} 
 		
@@ -3713,10 +3551,7 @@ namespace MsgPack
 
 		public override bool ReadMessagePackExtendedTypeObject( out MessagePackExtendedTypeObject result )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeMessagePackExtendedTypeObject( out result );
 		} 
 		
@@ -3724,10 +3559,7 @@ namespace MsgPack
 
 		public override Task<AsyncReadResult<MessagePackExtendedTypeObject>> ReadMessagePackExtendedTypeObjectAsync( CancellationToken cancellationToken )
 		{
-#if !UNITY
 			this.EnsureNotInSubtreeMode();
-#endif // !UNITY
-
 			return this.ReadSubtreeMessagePackExtendedTypeObjectAsync( cancellationToken );
 		} 
 		

@@ -79,13 +79,11 @@ Func<object, bool> IsNotCLSCompliant =
 #endif
 
 using System;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Runtime.InteropServices;
 
 namespace MsgPack
@@ -145,9 +143,7 @@ foreach(var t in types.Keys )
 		if( IsNotCLSCompliant( t ) )
 		{
 #>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 <#
 		}
 #>
@@ -198,9 +194,7 @@ foreach(var t in types.Keys )
 if( IsNotCLSCompliant( t ) )
 {
 #>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 <#
 }
 #>
@@ -232,9 +226,7 @@ foreach(var t in types.Keys )
 if( IsNotCLSCompliant( t ) )
 {
 #>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 <#
 }
 #>
@@ -264,9 +256,7 @@ foreach(var t in types.Keys )
 	if( IsNotCLSCompliant( t ) )
 	{
 #>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 <#
 	}
 #>
@@ -427,9 +417,7 @@ private void GenerateAsT( string val, Object typeOrTypeName, bool passParameterN
 			}
 
 			var asString = <#= val #>._handleOrTypeCode as MessagePackString;
-#if !UNITY && !UNITY2
 			Contract.Assert( asString != null );
-#endif // !UNITY && !UNITY2
 			return asString.GetBytes();
 <#+
 	}
@@ -445,9 +433,7 @@ private void GenerateAsT( string val, Object typeOrTypeName, bool passParameterN
 			}
 
 			var asString = <#= val #>._handleOrTypeCode as MessagePackString;
-#if !UNITY && !UNITY2
 			Contract.Assert( asString != null );
-#endif // !UNITY && !UNITY2
 			return asString.GetString();
 <#+
 	}

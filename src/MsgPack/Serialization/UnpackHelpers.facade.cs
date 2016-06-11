@@ -23,9 +23,9 @@
 #define UNITY
 #endif
 
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 #define ASSERT
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 using System;
 using System.Collections.Generic;
@@ -33,11 +33,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #if ASSERT
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
+#endif // CORE_CLR || UNITY
 #endif // ASSERT
 #if FEATURE_TAP
 using System.Threading;

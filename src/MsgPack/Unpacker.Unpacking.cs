@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -51,9 +51,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Boolean" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadBoolean( out Boolean result )
 		{
@@ -83,9 +81,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Boolean" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public Task<AsyncReadResult<Boolean>> ReadBooleanAsync()
 		{
@@ -107,9 +103,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Boolean" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<Boolean>> ReadBooleanAsync( CancellationToken cancellationToken )
 		{
@@ -138,9 +132,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Boolean" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableBoolean( out Boolean? result )
 		{
@@ -170,9 +162,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Boolean" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public Task<AsyncReadResult<Boolean?>> ReadNullableBooleanAsync()
 		{
@@ -194,9 +184,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Boolean" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<Boolean?>> ReadNullableBooleanAsync( CancellationToken cancellationToken )
 		{
@@ -226,9 +214,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Byte" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadByte( out Byte result )
 		{
@@ -258,9 +244,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Byte" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public Task<AsyncReadResult<Byte>> ReadByteAsync()
 		{
@@ -282,9 +266,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Byte" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<Byte>> ReadByteAsync( CancellationToken cancellationToken )
 		{
@@ -313,9 +295,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Byte" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableByte( out Byte? result )
 		{
@@ -345,9 +325,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Byte" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public Task<AsyncReadResult<Byte?>> ReadNullableByteAsync()
 		{
@@ -369,9 +347,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Byte" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<Byte?>> ReadNullableByteAsync( CancellationToken cancellationToken )
 		{
@@ -401,9 +377,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="SByte" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadSByte( out SByte result )
 		{
@@ -433,9 +407,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="SByte" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public Task<AsyncReadResult<SByte>> ReadSByteAsync()
 		{
@@ -457,9 +429,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="SByte" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<SByte>> ReadSByteAsync( CancellationToken cancellationToken )
 		{
@@ -488,9 +458,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="SByte" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableSByte( out SByte? result )
 		{
@@ -520,9 +488,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="SByte" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public Task<AsyncReadResult<SByte?>> ReadNullableSByteAsync()
 		{
@@ -544,9 +510,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="SByte" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<SByte?>> ReadNullableSByteAsync( CancellationToken cancellationToken )
 		{
@@ -576,9 +540,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Int16" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadInt16( out Int16 result )
 		{
@@ -608,9 +570,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Int16" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public Task<AsyncReadResult<Int16>> ReadInt16Async()
 		{
@@ -632,9 +592,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Int16" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<Int16>> ReadInt16Async( CancellationToken cancellationToken )
 		{
@@ -663,9 +621,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Int16" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableInt16( out Int16? result )
 		{
@@ -695,9 +651,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Int16" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public Task<AsyncReadResult<Int16?>> ReadNullableInt16Async()
 		{
@@ -719,9 +673,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Int16" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<Int16?>> ReadNullableInt16Async( CancellationToken cancellationToken )
 		{
@@ -751,9 +703,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="UInt16" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadUInt16( out UInt16 result )
 		{
@@ -783,9 +733,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="UInt16" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public Task<AsyncReadResult<UInt16>> ReadUInt16Async()
 		{
@@ -807,9 +755,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="UInt16" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<UInt16>> ReadUInt16Async( CancellationToken cancellationToken )
 		{
@@ -838,9 +784,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="UInt16" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableUInt16( out UInt16? result )
 		{
@@ -870,9 +814,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="UInt16" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public Task<AsyncReadResult<UInt16?>> ReadNullableUInt16Async()
 		{
@@ -894,9 +836,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="UInt16" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<UInt16?>> ReadNullableUInt16Async( CancellationToken cancellationToken )
 		{
@@ -926,9 +866,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Int32" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadInt32( out Int32 result )
 		{
@@ -958,9 +896,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Int32" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public Task<AsyncReadResult<Int32>> ReadInt32Async()
 		{
@@ -982,9 +918,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Int32" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<Int32>> ReadInt32Async( CancellationToken cancellationToken )
 		{
@@ -1013,9 +947,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Int32" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableInt32( out Int32? result )
 		{
@@ -1045,9 +977,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Int32" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public Task<AsyncReadResult<Int32?>> ReadNullableInt32Async()
 		{
@@ -1069,9 +999,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Int32" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<Int32?>> ReadNullableInt32Async( CancellationToken cancellationToken )
 		{
@@ -1101,9 +1029,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="UInt32" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadUInt32( out UInt32 result )
 		{
@@ -1133,9 +1059,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="UInt32" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public Task<AsyncReadResult<UInt32>> ReadUInt32Async()
 		{
@@ -1157,9 +1081,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="UInt32" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<UInt32>> ReadUInt32Async( CancellationToken cancellationToken )
 		{
@@ -1188,9 +1110,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="UInt32" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableUInt32( out UInt32? result )
 		{
@@ -1220,9 +1140,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="UInt32" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public Task<AsyncReadResult<UInt32?>> ReadNullableUInt32Async()
 		{
@@ -1244,9 +1162,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="UInt32" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<UInt32?>> ReadNullableUInt32Async( CancellationToken cancellationToken )
 		{
@@ -1276,9 +1192,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Int64" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadInt64( out Int64 result )
 		{
@@ -1308,9 +1222,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Int64" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public Task<AsyncReadResult<Int64>> ReadInt64Async()
 		{
@@ -1332,9 +1244,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Int64" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<Int64>> ReadInt64Async( CancellationToken cancellationToken )
 		{
@@ -1363,9 +1273,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Int64" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableInt64( out Int64? result )
 		{
@@ -1395,9 +1303,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Int64" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public Task<AsyncReadResult<Int64?>> ReadNullableInt64Async()
 		{
@@ -1419,9 +1325,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Int64" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<Int64?>> ReadNullableInt64Async( CancellationToken cancellationToken )
 		{
@@ -1451,9 +1355,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="UInt64" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadUInt64( out UInt64 result )
 		{
@@ -1483,9 +1385,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="UInt64" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public Task<AsyncReadResult<UInt64>> ReadUInt64Async()
 		{
@@ -1507,9 +1407,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="UInt64" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<UInt64>> ReadUInt64Async( CancellationToken cancellationToken )
 		{
@@ -1538,9 +1436,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="UInt64" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableUInt64( out UInt64? result )
 		{
@@ -1570,9 +1466,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="UInt64" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public Task<AsyncReadResult<UInt64?>> ReadNullableUInt64Async()
 		{
@@ -1594,9 +1488,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="UInt64" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<UInt64?>> ReadNullableUInt64Async( CancellationToken cancellationToken )
 		{
@@ -1626,9 +1518,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Single" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadSingle( out Single result )
 		{
@@ -1658,9 +1548,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Single" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public Task<AsyncReadResult<Single>> ReadSingleAsync()
 		{
@@ -1682,9 +1570,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Single" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<Single>> ReadSingleAsync( CancellationToken cancellationToken )
 		{
@@ -1713,9 +1599,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Single" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableSingle( out Single? result )
 		{
@@ -1745,9 +1629,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Single" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public Task<AsyncReadResult<Single?>> ReadNullableSingleAsync()
 		{
@@ -1769,9 +1651,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Single" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<Single?>> ReadNullableSingleAsync( CancellationToken cancellationToken )
 		{
@@ -1801,9 +1681,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Double" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadDouble( out Double result )
 		{
@@ -1833,9 +1711,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Double" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public Task<AsyncReadResult<Double>> ReadDoubleAsync()
 		{
@@ -1857,9 +1733,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Double" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<Double>> ReadDoubleAsync( CancellationToken cancellationToken )
 		{
@@ -1888,9 +1762,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Double" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableDouble( out Double? result )
 		{
@@ -1920,9 +1792,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Double" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public Task<AsyncReadResult<Double?>> ReadNullableDoubleAsync()
 		{
@@ -1944,9 +1814,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Double" /> type.
 		/// </exception>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<Double?>> ReadNullableDoubleAsync( CancellationToken cancellationToken )
 		{
@@ -2503,7 +2371,6 @@ namespace MsgPack
 		/// <exception cref="InvalidMessagePackStreamException">
 		///		Cannot read a value because the underlying stream unexpectedly ends.
 		/// </exception>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		public Task<AsyncReadResult<MessagePackObject>> ReadObjectAsync()
 		{
 			return this.ReadObjectAsync( CancellationToken.None );
@@ -2522,7 +2389,6 @@ namespace MsgPack
 		/// <exception cref="InvalidMessagePackStreamException">
 		///		Cannot read a value because the underlying stream unexpectedly ends.
 		/// </exception>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		public virtual async Task<AsyncReadResult<MessagePackObject>> ReadObjectAsync( CancellationToken cancellationToken )
 		{
 			if( !( await this.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )

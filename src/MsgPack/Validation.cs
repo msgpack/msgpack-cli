@@ -23,9 +23,11 @@
 #endif
 
 using System;
-#if !UNITY && !UNITY2
+#if CORE_CLR || UNITY
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -105,9 +107,7 @@ namespace MsgPack
 				}
 			}
 
-#if !UNITY && !UNITY2
 			Contract.Assert( position >= 0, "position >= 0" );
-#endif // !UNITY && !UNITY2
 
 			var category = CharUnicodeInfo.GetUnicodeCategory( @namespace, position );
 			if ( IsPrintable( category ) )

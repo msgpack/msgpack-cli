@@ -98,9 +98,9 @@ using System.Threading.Tasks;
 	if ( !forIos )
 	{
 #>
-#if !SILVERLIGHT && !AOT && !UNITY
+#if !SILVERLIGHT && !AOT
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !UNITY
+#endif // !SILVERLIGHT && !AOT
 <#+
 	}
 #>
@@ -149,7 +149,7 @@ namespace MsgPack.Serialization
 			get { return <#= canDump.ToString().ToLowerInvariant() #>; }
 		}
 
-#if !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 		[SetUp]
 		public void SetUp()
 		{
@@ -478,7 +478,7 @@ private void CreateEnumTest( Type underlyingType, bool useBuilder, bool canBeFla
 	if ( useBuilder )
 	{
 #>
-#if !SILVERLIGHT && !AOT && !UNITY
+#if !SILVERLIGHT && !AOT
 <#+
 	}
 #>
@@ -604,7 +604,7 @@ private void CreateEnumTest( Type underlyingType, bool useBuilder, bool canBeFla
 	if ( useBuilder )
 	{
 #>
-#endif // !SILVERLIGHT && !AOT && !UNITY
+#endif // !SILVERLIGHT && !AOT
 <#+
 	}
 }

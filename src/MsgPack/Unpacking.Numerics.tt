@@ -49,7 +49,7 @@ Func<Type,bool> __isClsCompliant =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -70,13 +70,11 @@ Func<Type,bool> __isClsCompliant =
 #endif
 
 using System;
-#if !UNITY
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY
+#endif // CORE_CLR || UNITY
 using System.IO;
 
 namespace MsgPack
@@ -121,9 +119,7 @@ foreach( var __type in __numericTypes )
 	if( !__isClsCompliant( __type ) )
 	{
 #>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 <#
 	}
 #>
@@ -163,18 +159,14 @@ foreach( var __type in __numericTypes )
 	if( !__isClsCompliant( __type ) )
 	{
 #>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 <#
 	}
 #>
 		public static UnpackingResult<#= "<" + __type.Name + ">" #> Unpack<#= __type.Name #>( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -217,18 +209,14 @@ foreach( var __type in __numericTypes )
 	if( !__isClsCompliant( __type ) )
 	{
 #>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 <#
 	}
 #>
 		public static <#= __type.Name #> Unpack<#= __type.Name #>( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY
 
 			return Unpack<#= __type.Name #>Core( source );
 		}

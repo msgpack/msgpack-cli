@@ -551,7 +551,7 @@ private string GeneratePolymorphicTestType( string suffix, TypeKind kind, Member
 	if ( generateTypes )
 	{
 #>
-#if !UNITY2
+#if !UNITY
 
 		public class <#= typeName #>
 		{
@@ -564,7 +564,7 @@ private string GeneratePolymorphicTestType( string suffix, TypeKind kind, Member
 #>
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 <#+
 	}
 
@@ -710,7 +710,7 @@ private void GeneratePolymorphicTestMethods( string targetType, TypeKind kind, M
 	}
 #>
 
-#if !UNITY2
+#if !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -782,7 +782,7 @@ private void GeneratePolymorphicTestMethods( string targetType, TypeKind kind, M
 #>
 		}
 
-#endif // !UNITY2
+#endif // !UNITY
 
 <#+
 }

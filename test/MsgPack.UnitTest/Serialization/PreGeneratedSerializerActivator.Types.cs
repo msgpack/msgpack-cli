@@ -5,7 +5,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -135,7 +135,7 @@ namespace MsgPack.Serialization
 			result.Add( typeof( PlainClass ) );
 			result.Add( typeof( AnnotatedClass ) );
 			result.Add( typeof( DataMamberClass ) );
-#if !UNITY2
+#if !UNITY
 			result.Add( typeof( PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty ) ); 
 			result.Add( typeof( PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject ) ); 
 			result.Add( typeof( PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField ) ); 
@@ -534,7 +534,7 @@ namespace MsgPack.Serialization
 			result.Add( typeof( InterfaceCollectionNoAttribute ) ); 
 			result.Add( typeof( InterfaceCollectionKnownType ) ); 
 			result.Add( typeof( InterfaceCollectionRuntimeType ) ); 
-#endif // !UNITY2
+#endif // !UNITY
 			return result;
 		}
 	}

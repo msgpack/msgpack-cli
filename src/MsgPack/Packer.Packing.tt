@@ -13,7 +13,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -35,13 +35,11 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Linq;
 using System.Text;
 #if FEATURE_TAP
@@ -111,9 +109,7 @@ for ( var bits = 16; bits < 128; bits *= 2 )
 				if ( !isSigned )
 				{
 #>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 <#
 				}
 #>
@@ -130,9 +126,7 @@ for ( var bits = 16; bits < 128; bits *= 2 )
 				{
 #>
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 <#
 					if ( !isAsync )
 					{
@@ -176,9 +170,7 @@ for ( var bits = 16; bits < 128; bits *= 2 )
 #pragma warning disable 168
 			var b = <#= Await( isAsync, "this.TryPack" + ( isSigned ? "Int" : "UInt" ) + suffix + Async( isAsync ) + "( value" + LastArgument( isAsync ) + " )" ) #>;
 #pragma warning restore 168
-#if !UNITY && !UNITY2 && DEBUG
 			Contract.Assert( b, "success" );
-#endif // !UNITY && !UNITY2 && DEBUG
 		}
 <#
 			foreach ( var withCancel in ( isAsync ? new [] { false, true } : new [] { false } ) )
@@ -216,9 +208,7 @@ for ( var bits = 16; bits < 128; bits *= 2 )
 				if ( !isSigned )
 				{
 #>
-#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY
 <#
 				}
 #>
@@ -607,9 +597,7 @@ foreach ( var item in
 				ThrowCannotBeNegativeException( "count" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.VerifyNotDisposed();
 
 			<#= isAsync ? "return " : String.Empty #>this.PrivatePack<#= item.Type #>Header<#= Async( isAsync ) #>Core( count<#= LastArgument( isAsync ) #> );
@@ -623,9 +611,9 @@ foreach ( var item in
 #>
 		private <#= AsyncReturn( isAsync ) #> PrivatePack<#= item.Type #>Header<#= Async( isAsync ) #>Core( int count<#= Parameter( isAsync ) #> )
 		{
-#if !UNITY && !UNITY2
+#if !UNITY
 			Contract.Assert( 0 <= count, "0 <= count" );
-#endif // !UNITY && !UNITY2
+#endif // !UNITY
 			if ( count < 16 )
 			{
 				<#= Await( isAsync, "this.WriteByte" + Async( isAsync )  + "( unchecked( ( byte )( MessagePackCode.MinimumFixed" + item.Type + " | count ) )" + LastArgument( isAsync ) + " )" ) #>;
@@ -827,9 +815,7 @@ foreach ( var item in stringBinaryItems )
 				ThrowCannotBeNegativeException( "length" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.VerifyNotDisposed();
 
 			<#= isAsync ? "return " : String.Empty #>this.PrivatePackRawHeader<#= Async( isAsync ) #>Core( length, <#= ( item.Type == "String" ).ToString().ToLowerInvariant() #><#= LastArgument( isAsync ) #> );
@@ -867,9 +853,7 @@ foreach ( var isAsync in new [] { false, true } )
 #>
 		private <#= AsyncReturn( isAsync ) #> PrivatePackRawHeader<#= Async( isAsync ) #>Core( int length, bool isString<#= Parameter( isAsync ) #> )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( 0 <= length, "0 <= length" );
-#endif // !UNITY && !UNITY2
 
 			if ( isString || ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
 			{
@@ -983,9 +967,7 @@ foreach ( var item in
 				{
 #>
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 <#
 					if ( parameter.AsType != null )
@@ -1250,9 +1232,7 @@ foreach ( var item in stringItems )
 				ThrowArgumentNullException( "encoding ");
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 			this.VerifyNotDisposed();
 
 			<#= isAsync ? "return " : String.Empty #>this.PrivatePackString<#= Async( isAsync ) #>( value, encoding<#= LastArgument( isAsync ) #> );
@@ -1266,9 +1246,7 @@ foreach ( var item in stringItems )
 #>
 		private <#= AsyncReturn( isAsync ) #> PrivatePackString<#= Async( isAsync ) #>( <#= item.Type #> value, Encoding encoding<#= Parameter( isAsync ) #> )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( encoding != null, "encoding != null" );
-#endif // !UNITY && !UNITY2
 
 			if ( value == null )
 			{
@@ -1281,10 +1259,8 @@ foreach ( var item in stringItems )
 
 		private <#= isAsync ? "async Task" : "void" #> PrivatePackString<#= Async( isAsync ) #>Core( <#= item.Type #> value, Encoding encoding<#= Parameter( isAsync ) #> )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( value != null, "value != null" );
 			Contract.Assert( encoding != null, "encoding != null" );
-#endif // !UNITY && !UNITY2
 
 			// TODO: streaming encoding
 			var encoded = encoding.GetBytes( value<#= item.Type != "string" ? ".ToArray()" : String.Empty #> );
@@ -1371,9 +1347,7 @@ foreach ( var isAsync in new [] { false, true } )
 			}
 
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 <#
 			if ( !isAsync )
@@ -1439,9 +1413,7 @@ foreach ( var isAsync in new [] { false, true } )
 			}
 
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 <#
 			if ( !isAsync )
@@ -1466,9 +1438,7 @@ foreach ( var isAsync in new [] { false, true } )
 #>
 		private <#= AsyncReturn( "int", isAsync ) #> PrivatePackRawBody<#= Async( isAsync ) #>Core( IEnumerable<byte> value<#= Parameter( isAsync ) #> )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( value != null, "value != null" );
-#endif // !UNITY && !UNITY2
 
 			var asCollection = value as ICollection<byte>;
 			if ( asCollection != null )
@@ -1489,9 +1459,7 @@ foreach ( var isAsync in new [] { false, true } )
 
 		private <#= AsyncReturn( "int", isAsync ) #> PrivatePackRawBody<#= Async( isAsync ) #>Core( ICollection<byte> value, bool isImmutable<#= Parameter( isAsync ) #> )
 		{
-#if !UNITY && !UNITY2
 			Contract.Assert( value != null, "value != null" );
-#endif // !UNITY && !UNITY2
 
 			var asArray = value as byte[];
 			if ( asArray != null )
@@ -1727,9 +1695,7 @@ foreach ( var isAsync in new [] { false, true } )
 			}
 
 			this.VerifyNotDisposed();
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 <#
 			if ( !isAsync )

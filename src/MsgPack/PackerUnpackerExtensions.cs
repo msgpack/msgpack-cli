@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,13 +25,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Linq;
 #if FEATURE_TAP
 using System.Threading;
@@ -72,9 +70,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			PackCore( source, value, SerializationContext.Default );
 			return source;
 		}
@@ -106,9 +103,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			PackCore( source, value, context );
 			return source;
 		}
@@ -157,9 +153,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackAsyncCore( source, value, SerializationContext.Default, CancellationToken.None );
 		}
 
@@ -184,9 +179,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackAsyncCore( source, value, SerializationContext.Default, cancellationToken );
 		}
 
@@ -217,9 +211,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackAsyncCore( source, value, context, CancellationToken.None );
 		}
 
@@ -251,9 +244,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackAsyncCore( source, value, context, cancellationToken );
 		}
 
@@ -311,9 +303,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			PackCollectionCore( source, collection, SerializationContext.Default );
 			return source;
 		}
@@ -345,9 +336,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			PackCollectionCore( source, collection, context );
 			return source;
 		}
@@ -372,9 +362,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			PackCollectionCore( source, collection, SerializationContext.Default );
 			return source;
 		}
@@ -406,9 +395,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			PackCollectionCore( source, collection, context );
 			return source;
 		}
@@ -484,9 +472,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackCollectionAsyncCore( source, collection, SerializationContext.Default, CancellationToken.None );
 		}
 
@@ -511,9 +498,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackCollectionAsyncCore( source, collection, SerializationContext.Default, cancellationToken );
 		}
 
@@ -544,9 +530,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackCollectionAsyncCore( source, collection, context, CancellationToken.None );
 		}
 
@@ -578,9 +563,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackCollectionAsyncCore( source, collection, context, cancellationToken );
 		}
 
@@ -604,9 +588,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackCollectionAsyncCore( source, collection, SerializationContext.Default, CancellationToken.None );
 		}
 
@@ -631,9 +614,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackCollectionAsyncCore( source, collection, SerializationContext.Default, cancellationToken );
 		}
 
@@ -664,9 +646,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackCollectionAsyncCore( source, collection, context, CancellationToken.None );
 		}
 
@@ -698,9 +679,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackCollectionAsyncCore( source, collection, context, cancellationToken );
 		}
 
@@ -788,9 +768,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			PackDictionaryCore( source, dictionary, SerializationContext.Default );
 			return source;
 		}
@@ -823,9 +802,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			PackDictionaryCore( source, dictionary, context );
 			return source;
 		}
@@ -851,9 +829,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			PackDictionaryCore( source, dictionary, SerializationContext.Default );
 			return source;
 		}
@@ -886,9 +863,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			PackDictionaryCore( source, dictionary, context );
 			return source;
 		}
@@ -954,9 +930,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackDictionaryAsyncCore( source, dictionary, SerializationContext.Default, CancellationToken.None );
 		}
 
@@ -982,9 +957,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackDictionaryAsyncCore( source, dictionary, SerializationContext.Default, cancellationToken );
 		}
 
@@ -1016,9 +990,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackDictionaryAsyncCore( source, dictionary, context, CancellationToken.None );
 		}
 
@@ -1051,9 +1024,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackDictionaryAsyncCore( source, dictionary, context, cancellationToken );
 		}
 
@@ -1078,9 +1050,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackDictionaryAsyncCore( source, dictionary, SerializationContext.Default, CancellationToken.None );
 		}
 
@@ -1106,9 +1077,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackDictionaryAsyncCore( source, dictionary, SerializationContext.Default, cancellationToken );
 		}
 
@@ -1140,9 +1110,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackDictionaryAsyncCore( source, dictionary, context, CancellationToken.None );
 		}
 
@@ -1175,9 +1144,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackDictionaryAsyncCore( source, dictionary, context, cancellationToken );
 		}
 
@@ -1254,10 +1222,7 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
-
 
 			PackCore( source, items, SerializationContext.Default );
 			return source;
@@ -1291,9 +1256,7 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			PackCollectionCore( source, items, context );
 			return source;
@@ -1321,9 +1284,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			PackObjectCore( source, value, SerializationContext.Default );
 			return source;
 		}
@@ -1354,9 +1316,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			PackObjectCore( source, value, context );
 			return source;
 		}
@@ -1395,9 +1356,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackObjectAsyncCore( source, value, SerializationContext.Default, CancellationToken.None );
 		}
 
@@ -1421,9 +1381,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackObjectAsyncCore( source, value, SerializationContext.Default, cancellationToken );
 		}
 
@@ -1453,9 +1412,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackObjectAsyncCore( source, value, context, CancellationToken.None );
 		}
 
@@ -1486,9 +1444,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return PackObjectAsyncCore( source, value, context, cancellationToken );
 		}
 
@@ -1530,9 +1487,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return UnpackCore<T>( source, SerializationContext.Default );
 		}
 
@@ -1562,9 +1518,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return UnpackCore<T>( source, context );
 		}
 
@@ -1596,9 +1551,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return UnpackAsyncCore<T>( source, SerializationContext.Default, CancellationToken.None );
 		}
 
@@ -1622,9 +1576,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return UnpackAsyncCore<T>( source, SerializationContext.Default, cancellationToken );
 		}
 
@@ -1654,9 +1607,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return UnpackAsyncCore<T>( source, context, CancellationToken.None );
 		}
 
@@ -1687,9 +1639,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+
 			return UnpackAsyncCore<T>( source, context, cancellationToken );
 		}
 

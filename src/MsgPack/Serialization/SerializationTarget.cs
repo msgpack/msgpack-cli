@@ -25,13 +25,16 @@
 
 #if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
 #define UNITY
+#define AOT
 #endif
 
 using System;
 using System.Collections.Generic;
-#if !UNITY && !UNITY2
+#if CORE_CLR || UNITY
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -151,9 +154,8 @@ namespace MsgPack.Serialization
 
 		private static IEnumerable<SerializingMember> GetTargetMembers(Type type)
 		{
-#if DEBUG && !UNITY && !UNITY2
-			Contract.Assert(type != null, "type != null");
-#endif // DEBUG && !UNITY && !UNITY2
+			Contract.Assert( type != null, "type != null" );
+
 			var members = GetDistinctMembers( type );
 			var filtered = members.Where( item => item.IsDefined( typeof( MessagePackMemberAttribute ) ) ).ToArray();
 
@@ -426,9 +428,9 @@ namespace MsgPack.Serialization
 				source < candidates.Count;
 				source++, destination++ )
 			{
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 				Contract.Assert( candidates[ source ].Contract.Id >= 0, "candidates[ source ].Contract.Id >= 0" );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 
 				if ( candidates[ source ].Contract.Id < destination )
 				{
@@ -481,9 +483,9 @@ namespace MsgPack.Serialization
 					else
 					{
 						asProperty = serializingMember.Member as PropertyInfo;
-#if DEBUG && !UNITY && !UNITY2
+#if DEBUG
 						Contract.Assert( asProperty != null, serializingMember.Member.ToString() );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 						isReadOnly = asProperty.GetSetMethod() == null;
 					}
 

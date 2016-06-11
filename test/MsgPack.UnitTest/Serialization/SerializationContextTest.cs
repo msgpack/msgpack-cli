@@ -58,7 +58,7 @@ namespace MsgPack.Serialization
 			Assert.Throws<ArgumentNullException>( () => target.GetSerializer( null ) );
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT
 		[Test]
 		public void TestGetSerializer_Concurrent()
 		{
@@ -67,19 +67,19 @@ namespace MsgPack.Serialization
 				target.GetSerializer<ComplexType>
 			).Test();
 		}
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT
 
 		[Test]
 		public void TestGetSerializer_Type()
 		{
 			var target = new SerializationContext();
 			Assert.That( target.GetSerializer( typeof( int ) ), Is.Not.Null );
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT
 			Assert.That( target.GetSerializer( typeof( ComplexType ) ), Is.Not.Null );
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT
 		[Test]
 		public void TestGetSerializer_TypeConcurrent()
 		{
@@ -88,7 +88,7 @@ namespace MsgPack.Serialization
 				() => ( MessagePackSerializer<ComplexType> )target.GetSerializer( typeof( ComplexType ) )
 			).Test();
 		}
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT
 
 		[Test]
 		public void TestDefaultCollectionTypes_Default_Check()
@@ -436,9 +436,9 @@ namespace MsgPack.Serialization
 			var result = context.GetSerializer<Image>();
 			Assert.That( raised, Is.EqualTo( 1 ) );
 			Assert.That( result, Is.Not.Null );
-#if !NETFX_35 && !UNITY && !NETFX_CORE && !SILVERLIGHT && !XAMIOS && !XAMDROID
+#if !NETFX_35 && !AOT && !NETFX_CORE && !SILVERLIGHT
 			Assert.That( result.GetType().GetAssembly().IsDynamic );
-#endif // !NETFX_35 && !UNITY && !NETFX_CORE && !SILVERLIGHT && !XAMIOS && !XAMDROID
+#endif // !NETFX_35 && !AOT && !NETFX_CORE && !SILVERLIGHT
 		}
 
 
@@ -464,7 +464,7 @@ namespace MsgPack.Serialization
 			Assert.That( registered, Is.False );
 		}
 
-#if !UNITY && !UNITY2
+#if !UNITY
 		[Test]
 		public void TestIssue116()
 		{
@@ -502,7 +502,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !AOT
 		private sealed class ConcurrentHelper<T> : IDisposable
 			where T : class
 		{
@@ -567,7 +567,7 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !AOT
 
 		public abstract class NewAbstractCollection<T> : Collection<T>
 		{

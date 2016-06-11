@@ -18,10 +18,6 @@
 //
 #endregion -- License Terms --
 
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -1794,21 +1790,21 @@ namespace MsgPack.Serialization.AbstractSerializers
 				case CollectionDetailedKind.GenericCollection:
 				case CollectionDetailedKind.GenericEnumerable:
 				case CollectionDetailedKind.GenericList:
-#if !NETFX_35 && !UNITY
+#if !NETFX_35
 				case CollectionDetailedKind.GenericSet:
 #if !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericReadOnlyCollection:
 				case CollectionDetailedKind.GenericReadOnlyList:
 #endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-#endif // !NETFX_35 && !UNITY
+#endif // !NETFX_35
 				{
 					comparisonType = this.CollectionTraits.ElementType;
 					break;
 				}
 				case CollectionDetailedKind.GenericDictionary:
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#if !NETFX_35 && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericReadOnlyDictionary:
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#endif // !NETFX_35 && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				{
 					comparisonType = this.CollectionTraits.ElementType.GetGenericArguments()[ 0 ];
 					break;
@@ -2087,7 +2083,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					}
 					break;
 				}
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !WINDOWS_PHONE && !NETFX_35
 				case PolymorphismSchemaChildrenType.TupleItems:
 				{
 					if ( schema.ChildSchemaList.Count == 0 )
@@ -2158,7 +2154,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						);
 					break;
 				}
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !WINDOWS_PHONE && !NETFX_35
 				default:
 				{
 					foreach ( var instruction in

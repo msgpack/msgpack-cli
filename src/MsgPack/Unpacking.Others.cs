@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,13 +25,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.IO;
 
 namespace MsgPack
@@ -111,9 +109,7 @@ namespace MsgPack
 		public static UnpackingResult<IList<MessagePackObject>> UnpackArray( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -158,9 +154,7 @@ namespace MsgPack
 		public static IList<MessagePackObject> UnpackArray( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			return UnpackArrayCore( source );
 		}
@@ -229,9 +223,7 @@ namespace MsgPack
 		public static UnpackingResult<Int64?> UnpackArrayLength( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -273,9 +265,7 @@ namespace MsgPack
 		public static Int64? UnpackArrayLength( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			return UnpackArrayLengthCore( source );
 		}
@@ -348,9 +338,7 @@ namespace MsgPack
 		public static UnpackingResult<MessagePackObjectDictionary> UnpackDictionary( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -395,9 +383,7 @@ namespace MsgPack
 		public static MessagePackObjectDictionary UnpackDictionary( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			return UnpackDictionaryCore( source );
 		}
@@ -466,9 +452,7 @@ namespace MsgPack
 		public static UnpackingResult<Int64?> UnpackDictionaryCount( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -510,9 +494,7 @@ namespace MsgPack
 		public static Int64? UnpackDictionaryCount( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			return UnpackDictionaryCountCore( source );
 		}
@@ -585,9 +567,7 @@ namespace MsgPack
 		public static UnpackingResult<byte[]> UnpackBinary( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -632,9 +612,7 @@ namespace MsgPack
 		public static byte[] UnpackBinary( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			return UnpackBinaryCore( source );
 		}
@@ -701,9 +679,7 @@ namespace MsgPack
 		public static UnpackingResult<bool> UnpackBoolean( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -745,9 +721,7 @@ namespace MsgPack
 		public static bool UnpackBoolean( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			return UnpackBooleanCore( source );
 		}
@@ -814,9 +788,7 @@ namespace MsgPack
 		public static UnpackingResult<object> UnpackNull( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -858,9 +830,7 @@ namespace MsgPack
 		public static object UnpackNull( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			return UnpackNullCore( source );
 		}
@@ -927,9 +897,7 @@ namespace MsgPack
 		public static UnpackingResult<MessagePackObject> UnpackObject( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -971,9 +939,7 @@ namespace MsgPack
 		public static MessagePackObject UnpackObject( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			return UnpackObjectCore( source );
 		}
@@ -1046,9 +1012,7 @@ namespace MsgPack
 		public static UnpackingResult<MessagePackExtendedTypeObject> UnpackExtendedTypeObject( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -1093,9 +1057,7 @@ namespace MsgPack
 		public static MessagePackExtendedTypeObject UnpackExtendedTypeObject( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY && !UNITY2
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
 
 			return UnpackExtendedTypeObjectCore( source );
 		}

@@ -25,9 +25,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-#if !UNITY && !UNITY2
+#if CORE_CLR || UNITY
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Linq;
 using System.Reflection;
 

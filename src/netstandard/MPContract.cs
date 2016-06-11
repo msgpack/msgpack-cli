@@ -68,7 +68,5 @@ namespace MsgPack
 		}
 	}
 
-#if CORE_CLR
 	internal sealed class PureAttribute : Attribute { }
-#endif // CORE_CLR
 }

@@ -48,10 +48,10 @@ namespace MsgPack.Serialization
 		public void TestIssue70()
 		{
 			var serializer = MessagePackSerializer.Get<DBNull>( new SerializationContext() );
-#if !UNITY && !UNITY2
+#if !UNITY
 			// Should not be created dynamically.
 			Assert.That( serializer, Is.TypeOf( typeof( DefaultSerializers.System_DBNullMessagePackSerializer ) ) );
-#endif // !UNITY && !UNITY2
+#endif // !UNITY
 
 			using ( var buffer = new MemoryStream() )
 			{
@@ -170,7 +170,7 @@ namespace MsgPack.Serialization
 		}
 #endif // !SLIVERLIGHT && !NETFX_CORE
 
-#if !UNITY && !UNITY2
+#if !UNITY
 		[Test]
 		public void TestIssue111()
 		{
@@ -222,7 +222,7 @@ namespace MsgPack.Serialization
 			public string y;
 			public Issue111Aux aux;
 		}
-#endif // !UNITY && !UNITY2
+#endif // !UNITY
 
 		public class TestValueTypeWrapper
 		{
@@ -280,7 +280,7 @@ namespace MsgPack.Serialization
 			Assert.That( unpackedList[ 3 ] == 909 );
 		}
 
-#if !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 		[Test]
 		public void Issue145()
 		{
@@ -342,6 +342,6 @@ namespace MsgPack.Serialization
 				this.Items = items;
 			}
 		}
-#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 	}
 }

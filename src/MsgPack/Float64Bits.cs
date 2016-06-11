@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,13 +23,11 @@
 #endif
 
 using System;
-#if !UNITY && !UNITY2
-#if CORE_CLR
+#if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Runtime.InteropServices;
 
 namespace MsgPack
@@ -109,10 +107,10 @@ namespace MsgPack
 		/// <param name="offset">Offset to read.</param>
 		public Float64Bits( byte[] bigEndianBytes, int offset )
 		{
-#if !UNITY && !UNITY2 && DEBUG
+#if DEBUG
 			Contract.Assert( bigEndianBytes != null, "bigEndianBytes != null" );
 			Contract.Assert( bigEndianBytes.Length - offset >= 8, bigEndianBytes.Length + "-" + offset + ">= 4" );
-#endif // !UNITY && !UNITY2 && DEBUG
+#endif // DEBUG
 
 			this = default( Float64Bits );
 

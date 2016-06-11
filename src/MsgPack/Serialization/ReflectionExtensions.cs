@@ -26,9 +26,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-#if !UNITY && !UNITY2
+#if CORE_CLR || UNITY
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
-#endif // !UNITY && !UNITY2
+#endif // CORE_CLR || UNITY
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -161,9 +163,9 @@ namespace MsgPack.Serialization
 
 		public static CollectionTraits GetCollectionTraits( this Type source, CollectionTraitOptions options )
 		{
-#if !UNITY && !UNITY2 && DEBUG
+#if DEBUG
 			Contract.Assert( !source.GetContainsGenericParameters(), "!source.GetContainsGenericParameters()" );
-#endif // !UNITY && !UNITY2
+#endif // DEBUG
 			/*
 			 * SPEC
 			 * If the object has single public method TEnumerator GetEnumerator() ( where TEnumerator implements IEnumerator<TItem>),
@@ -708,13 +710,13 @@ namespace MsgPack.Serialization
 
 			if ( index < 0 )
 			{
-#if DEBUG && !UNITY && !UNITY2
-#if !NETFX_35
+#if DEBUG
+#if !NETFX_35 && !UNITY
 				Contract.Assert( false, interfaceType + "::" + name + "(" + String.Join<Type>( ", ", parameterTypes ) + ") is not found in " + targetType );
 #else
 				Contract.Assert( false, interfaceType + "::" + name + "(" + String.Join( ", ", parameterTypes.Select( t => t.ToString() ).ToArray() ) + ") is not found in " + targetType );
 #endif // !NETFX_35
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // DEBUG
 				// ReSharper disable once HeuristicUnreachableCode
 				return null;
 			}
@@ -822,9 +824,9 @@ namespace MsgPack.Serialization
 		private static bool FilterCollectionType( Type type, object filterCriteria )
 		{
 #if !NETSTD_11 && !NETSTD_13
-#if !UNITY && !UNITY2
+#if DEBUG
 			Contract.Assert( type.GetIsInterface(), "type.IsInterface" );
-#endif // !UNITY && !UNITY2
+#endif // DEBUG
 			return type.GetAssembly().Equals( typeof( Array ).GetAssembly() ) && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
 #else
 			var typeInfo = type.GetTypeInfo();
