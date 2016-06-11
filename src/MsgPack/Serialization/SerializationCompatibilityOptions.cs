@@ -127,11 +127,10 @@ namespace MsgPack.Serialization
 		}
 
 		// TODO: CheckNilImplicationInConstructorDeserialization
-#warning TODO: Classic as default should be obsolete.
 
 		internal SerializationCompatibilityOptions()
 		{
-			this.PackerCompatibilityOptions = PackerCompatibilityOptions.Classic;
+			this.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			this.IgnorePackabilityForCollection = false;
 		}
 	}
