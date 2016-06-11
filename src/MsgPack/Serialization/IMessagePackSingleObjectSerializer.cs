@@ -40,7 +40,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		The type of <paramref name="objectTree"/> is not serializable even if it can be deserialized.
 		/// </exception>
-		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		/// <seealso cref="MessagePackSerializer.Capabilities"/>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "'objectTree' does not mean System.Object." )]
 		byte[] PackSingleObject( object objectTree );
 
@@ -64,7 +64,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		The type of deserializing is not serializable even if it can be serialized.
 		/// </exception>
-		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		/// <seealso cref="MessagePackSerializer.Capabilities"/>
 		/// <remarks>
 		///		<para>
 		///			This method assumes that <paramref name="buffer"/> contains single serialized object dedicatedly,

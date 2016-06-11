@@ -99,7 +99,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="packer"><see cref="Packer" /> which packs values in <paramref name="objectTree" />.</param>
 		/// <param name="objectTree">Object to be serialized.</param>
-		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities" />
+		/// <seealso cref="Capabilities" />
 		public void PackTo( Packer packer, object objectTree )
 		{
 			this.InternalPackTo( packer, objectTree );
@@ -114,7 +114,7 @@ namespace MsgPack.Serialization
 		/// <returns>
 		///		The deserialized object.
 		/// </returns>
-		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities" />
+		/// <seealso cref="Capabilities" />
 		public object UnpackFrom( Unpacker unpacker )
 		{
 			return this.InternalUnpackFrom( unpacker );
@@ -127,7 +127,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker" /> which unpacks values of resulting object tree.</param>
 		/// <param name="collection">Collection that the items to be stored.</param>
-		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities" />
+		/// <seealso cref="Capabilities" />
 		public void UnpackTo( Unpacker unpacker, object collection )
 		{
 			this.InternalUnpackTo( unpacker, collection );
@@ -142,7 +142,7 @@ namespace MsgPack.Serialization
 		/// <returns>
 		///		An array of <see cref="Byte" /> which stores serialized value.
 		/// </returns>
-		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities" />
+		/// <seealso cref="Capabilities" />
 		public byte[] PackSingleObject( object objectTree )
 		{
 			return this.InternalPackSingleObject( objectTree );
@@ -166,7 +166,7 @@ namespace MsgPack.Serialization
 		///		This method is a counter part of <see cref="PackSingleObject" />.
 		/// </para>
 		/// </remarks>
-		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities" />
+		/// <seealso cref="Capabilities" />
 		public object UnpackSingleObject( byte[] buffer )
 		{
 			return this.InternalUnpackSingleObject( buffer );
@@ -196,7 +196,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		The type of <paramref name="objectTree"/> is not serializable even if it can be deserialized.
 		/// </exception>
-		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		/// <seealso cref="Capabilities"/>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "objectTree is more meningful." )]
 		public Task PackToAsync( Packer packer, object objectTree, CancellationToken cancellationToken )
 		{
@@ -229,7 +229,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		The type of deserializing is not serializable even if it can be serialized.
 		/// </exception>
-		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		/// <seealso cref="Capabilities"/>
 		public Task<object> UnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			return this.InternalUnpackFromAsync( unpacker, cancellationToken );
@@ -265,7 +265,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		The type of deserializing is not mutable collection.
 		/// </exception>
-		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		/// <seealso cref="Capabilities"/>
 		public Task UnpackToAsync( Unpacker unpacker, object collection, CancellationToken cancellationToken )
 		{
 			return this.InternalUnpackToAsync( unpacker, collection, cancellationToken );
@@ -289,7 +289,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		The type of <paramref name="objectTree"/> is not serializable even if it can be deserialized.
 		/// </exception>
-		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		/// <seealso cref="Capabilities"/>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "objectTree is more meningful." )]
 		public Task<byte[]> PackSingleObjectAsync( object objectTree, CancellationToken cancellationToken )
 		{
@@ -322,7 +322,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		The type of deserializing is not serializable even if it can be serialized.
 		/// </exception>
-		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		/// <seealso cref="Capabilities"/>
 		/// <remarks>
 		///		<para>
 		///			This method assumes that <paramref name="buffer"/> contains single serialized object dedicatedly,

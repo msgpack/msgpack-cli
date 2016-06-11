@@ -278,7 +278,7 @@ namespace MsgPack.Serialization
 				{
 #endif // !AOT
 					return
-						DefaultSerializers.GenericSerializer.TryCreateAbstractCollectionSerializer( context, typeof( T ), concreteType, schema ) as MessagePackSerializer<T>
+						GenericSerializer.TryCreateAbstractCollectionSerializer( context, typeof( T ), concreteType, schema ) as MessagePackSerializer<T>
 						?? CreateReflectionInternal<T>( context, concreteType ?? typeof( T ), schema );
 #if !AOT
 				}
@@ -642,7 +642,7 @@ namespace MsgPack.Serialization
 
 		// For stable behavior, use singleton concrete deserializer and private context.
 		private static readonly MessagePackSerializer<MessagePackObject> _singleTonMpoDeserializer =
-			new DefaultSerializers.MsgPack_MessagePackObjectMessagePackSerializer( new SerializationContext() );
+			new MsgPack_MessagePackObjectMessagePackSerializer( new SerializationContext() );
 
 		/// <summary>
 		///		Directly deserialize specified MessagePack <see cref="Stream"/> as <see cref="MessagePackObject"/> tree.
@@ -703,7 +703,7 @@ namespace MsgPack.Serialization
 		///			Please note that this method do not ensure for full linkage for AOT.
 		///		</para>
 		///		<para>
-		///			Currently, this method prepares <see cref="KeyValuePair{TKey,TValue}"/> and also invokes <see cref="PrepareType{T}"/> implicitly.
+		///			Currently, this method prepares <see cref="System.Collections.Generic.KeyValuePair{TKey,TValue}"/> and also invokes <see cref="PrepareType{T}"/> implicitly.
 		///		</para>
 		/// </remarks>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Required for pre-heat generic methods." )]

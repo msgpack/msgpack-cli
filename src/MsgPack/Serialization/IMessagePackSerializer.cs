@@ -50,7 +50,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		The type of <paramref name="objectTree"/> is not serializable even if it can be deserialized.
 		/// </exception>
-		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		/// <seealso cref="MessagePackSerializer.Capabilities"/>
 		[SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "'objectTree' does not mean System.Object." )]
 		void PackTo( Packer packer, object objectTree );
 
@@ -74,7 +74,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		The type of deserializing is not serializable even if it can be serialized.
 		/// </exception>
-		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		/// <seealso cref="MessagePackSerializer.Capabilities"/>
 		object UnpackFrom( Unpacker unpacker );
 
 		/// <summary>
@@ -101,7 +101,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		The type of deserializing is not mutable collection.
 		/// </exception>
-		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		/// <seealso cref="MessagePackSerializer.Capabilities"/>
 		void UnpackTo( Unpacker unpacker, object collection );
 	}
 }

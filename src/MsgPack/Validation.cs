@@ -40,6 +40,7 @@ namespace MsgPack
 	// [ArgumentValidator]
 	internal static class Validation
 	{
+#if DEBUG
 		public static void ValidateIsNotNullNorEmpty( string value, string parameterName )
 		{
 			if ( value == null )
@@ -55,6 +56,7 @@ namespace MsgPack
 				);
 			}
 		}
+#endif // DEBUG
 
 		private const string UnicodeTr15Annex7Idneifier =
 			@"[\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]*";
