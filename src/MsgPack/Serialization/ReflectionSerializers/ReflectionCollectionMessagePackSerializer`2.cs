@@ -36,6 +36,7 @@ using MsgPack.Serialization.CollectionSerializers;
 namespace MsgPack.Serialization.ReflectionSerializers
 {
 #if !UNITY
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance", Justification = "By design." )]
 	internal sealed class ReflectionCollectionMessagePackSerializer<TCollection, TItem> : CollectionMessagePackSerializer<TCollection, TItem>
 		where TCollection : ICollection<TItem>
 #else

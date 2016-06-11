@@ -29,6 +29,7 @@ using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling" )]
 	partial class SerializerEmitter
 	{
 		private static readonly Type[] ContextConstructorParameterTypes = { typeof( SerializationContext ) };
@@ -55,23 +56,21 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		Creates the serializer type built now and returns its new instance.
 		/// </summary>
 		/// <param name="context">The <see cref="SerializationContext"/> to holds serializers.</param>
-		/// <param name="targetType">Target type to be serialized/deserialized.</param>
 		/// <param name="serializationMethod">The <see cref="EnumSerializationMethod"/> which determines serialization form of the enums.</param>
 		/// <returns>
 		///		Newly built <see cref="MessagePackSerializer{T}"/> instance.
 		///		This value will not be <c>null</c>.
 		///	</returns>
-		public MessagePackSerializer CreateEnumInstance( SerializationContext context, Type targetType, EnumSerializationMethod serializationMethod )
+		public MessagePackSerializer CreateEnumInstance( SerializationContext context, EnumSerializationMethod serializationMethod )
 		{
-			return this.CreateEnumConstructor( targetType )( context, serializationMethod );
+			return this.CreateEnumConstructor()( context, serializationMethod );
 		}
 
 		/// <summary>
 		///		Creates instance constructor delegates.
 		/// </summary>
-		/// <param name="targetType">Target type to be serialized/deserialized.</param>
 		/// <returns>A delegate for serializer constructor.</returns>
-		public Func<SerializationContext, EnumSerializationMethod, MessagePackSerializer> CreateEnumConstructor( Type targetType )
+		public Func<SerializationContext, EnumSerializationMethod, MessagePackSerializer> CreateEnumConstructor()
 		{
 			var methodConstructor =
 				this.CreateConstructor(

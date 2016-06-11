@@ -76,6 +76,7 @@ namespace MsgPack.Serialization
 			return methodCallExpression.Method;
 		}
 
+#if DEBUG
 		public static MethodInfo ToOperator<T1, T2, TResult>( Expression<Func<T1, T2, TResult>> source )
 		{
 			if ( source == null )
@@ -91,6 +92,7 @@ namespace MsgPack.Serialization
 
 			return binaryExpression.Method;
 		}
+#endif // DEBUG
 		
 		private static void ThrowNotValidExpressionTypeException( Expression source )
 		{

@@ -184,6 +184,7 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Prepares the dump with dedicated internal <see cref="AssemblyBuilder"/>.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void PrepareDump()
 		{
 			_assemblyBuilder =
@@ -347,6 +348,8 @@ namespace MsgPack.Serialization
 		/// <param name="targetType">The serialization target type.</param>
 		/// <returns></returns>
 		/// <exception cref="System.InvalidOperationException">PrepareDump() was not called.</exception>
+		[Obsolete( "", true )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static TypeBuilder NewTypeBuilder( Type targetType )
 		{
 			if ( _moduleBuilder == null )

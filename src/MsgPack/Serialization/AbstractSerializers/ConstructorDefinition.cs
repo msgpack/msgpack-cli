@@ -38,11 +38,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 	{
 		private ConstructorInfo _runtimeConstructor;
 
-		public ConstructorInfo TryGetRuntimeConstructor()
-		{
-			return this._runtimeConstructor;
-		}
-
 		public ConstructorInfo ResolveRuntimeConstructor()
 		{
 			if ( this._runtimeConstructor == null )

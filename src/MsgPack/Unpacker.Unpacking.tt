@@ -137,7 +137,8 @@ foreach ( var withCancel in new [] { false, true } )
 <#
 	}
 #>
-		public  <#= AsyncReturn( type, withCancel ) #> Read<#= GetTypeName( type ) #>Async(<#= Parameter( withCancel ) #>)
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
+		public <#= AsyncReturn( type, withCancel ) #> Read<#= GetTypeName( type ) #>Async(<#= Parameter( withCancel ) #>)
 		{
 <#
 	if ( !withCancel )
@@ -241,6 +242,7 @@ foreach ( var withCancel in new [] { false, true } )
 <#
 	}
 #>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
 		public <#= AsyncReturnNullable( type, withCancel ) #> ReadNullable<#= GetTypeName( type ) #>Async(<#= Parameter( withCancel ) #>)
 		{
 <#
@@ -336,6 +338,7 @@ foreach ( var withCancel in new [] { false, true } )
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not an array.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		public <#= AsyncReturn( "long", withCancel ) #> ReadArrayLengthAsync(<#= Parameter( withCancel ) #>)
 		{
 <#
@@ -433,6 +436,7 @@ foreach ( var withCancel in new [] { false, true } )
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not a map.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		public <#= AsyncReturn( "long", withCancel ) #> ReadMapLengthAsync(<#= Parameter( withCancel ) #>)
 		{
 <#
@@ -524,6 +528,7 @@ foreach ( var withCancel in new [] { false, true } )
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not a raw.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		public <#= AsyncReturn( "byte[]", withCancel ) #> ReadBinaryAsync(<#= Parameter( withCancel ) #>)
 		{
 <#
@@ -610,6 +615,7 @@ foreach ( var withCancel in new [] { false, true } )
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not a raw.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		public <#= AsyncReturn( "string", withCancel ) #> ReadStringAsync(<#= Parameter( withCancel ) #>)
 		{
 <#

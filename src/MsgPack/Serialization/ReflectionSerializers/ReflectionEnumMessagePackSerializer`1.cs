@@ -64,7 +64,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			) { }
 #endif // !UNITY
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 #if !UNITY
 		protected internal override void PackUnderlyingValueTo( Packer packer, T enumValue )
 #else
@@ -76,6 +76,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 #if FEATURE_TAP
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override Task PackUnderlyingValueToAsync( Packer packer, T enumValue, CancellationToken cancellationToken )
 		{
 			return packer.PackAsync( UInt64.Parse( ( ( IFormattable )enumValue ).ToString( "D", CultureInfo.InvariantCulture ), CultureInfo.InvariantCulture ), cancellationToken );
@@ -83,7 +84,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 #endif // FEATURE_TAP
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 #if !UNITY
 		protected internal override T UnpackFromUnderlyingValue( MessagePackObject messagePackObject )
 		{

@@ -118,7 +118,8 @@ namespace MsgPack
 						@namespace[ position ],
 						( ushort )@namespace[ position ],
 						category
-					)
+					),
+					parameterName
 				);
 			}
 			else
@@ -130,7 +131,8 @@ namespace MsgPack
 						position,
 						( ushort )@namespace[ position ],
 						category
-					)
+					),
+					parameterName
 				);
 			}
 		}

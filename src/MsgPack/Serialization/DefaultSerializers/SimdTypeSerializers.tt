@@ -69,6 +69,7 @@ foreach( var type in types )
 		public System_Numerics_<#= type.Name #>MessagePackSerializer( SerializationContext ownerContext ) 
 			: base( ownerContext ) { }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, <#= type.Name #> objectTree )
 		{
 			packer.PackArrayHeader( <#= type.Fields.Length #> );
@@ -82,6 +83,7 @@ foreach( var type in types )
 #>
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override <#= type.Name #> UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsArrayHeader )
@@ -116,6 +118,7 @@ foreach( var type in types )
 
 #if FEATURE_TAP
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override async Task PackToAsyncCore( Packer packer, <#= type.Name #> objectTree, CancellationToken cancellationToken )
 		{
 			await packer.PackArrayHeaderAsync( <#= type.Fields.Length #>, cancellationToken ).ConfigureAwait( false );
@@ -129,6 +132,7 @@ foreach( var type in types )
 #>
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override async Task<#= typeArgument #> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			if ( !unpacker.IsArrayHeader )

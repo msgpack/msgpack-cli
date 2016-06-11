@@ -36,11 +36,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 	{
 		private FieldInfo _runtimeField;
 
-		public FieldInfo TryGetRuntimeField()
-		{
-			return this._runtimeField;
-		}
-
 		public FieldInfo ResolveRuntimeField()
 		{
 			if ( this._runtimeField == null )

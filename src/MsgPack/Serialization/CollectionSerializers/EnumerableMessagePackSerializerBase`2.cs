@@ -121,6 +121,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <exception cref="SerializationException">
 		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal void UnpackToCore( Unpacker unpacker, TCollection collection, int itemsCount )
 		{
 			for ( var i = 0; i < itemsCount; i++ )
@@ -171,6 +172,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TCollection"/> is not mutable collection.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, TCollection collection, CancellationToken cancellationToken )
 		{
 			if ( !unpacker.IsArrayHeader )

@@ -199,7 +199,6 @@ namespace MsgPack.Serialization.Reflection
 		{
 			Contract.Assert( methodBuilder != null );
 		}
-#endif // DEBUG
 
 #if !NETSTD_11 && !NETSTD_13
 		/// <summary>
@@ -213,6 +212,7 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( dynamicMethod != null );
 		}
 #endif // !NETSTD_11 && !NETSTD_13
+#endif // DEBUG
 
 		// TODO: NLIblet
 
@@ -285,8 +285,9 @@ namespace MsgPack.Serialization.Reflection
 			}
 		}
 
-#region -- Locals --
+		#region -- Locals --
 
+#if DEBUG
 		/// <summary>
 		///		Declare local without pinning and name for debugging.
 		/// </summary>
@@ -301,7 +302,6 @@ namespace MsgPack.Serialization.Reflection
 			return this.DeclareLocalCore( localType, null );
 		}
 
-#if DEBUG
 		/// <summary>
 		///		Declare local without name for debugging.
 		/// </summary>

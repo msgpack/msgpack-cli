@@ -22,7 +22,7 @@ using System;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
-	internal class FieldName
+	internal static class FieldName
 	{
 		public const string PackOperationList = "_packOperationList";
 		public const string PackOperationTable = "_packOperationTable";

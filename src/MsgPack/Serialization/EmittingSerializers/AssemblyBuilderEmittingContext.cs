@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 #if FEATURE_TAP
@@ -133,8 +134,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this._ilGeneratorStack.Push( this.Emitter.DefineOverrideMethod( name ) );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		public override void BeginPrivateMethod( string name, bool isStatic, TypeDefinition returnType, params ILConstruct[] parameters )
 		{
+			Contract.Assert( returnType != null );
+
 			this._ilGeneratorStack.Push(
 				this.Emitter.DefinePrivateMethod(
 					name,
@@ -177,8 +181,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return new MethodDefinition( lastMethod.Method, null, lastMethod.ParameterTypes );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override FieldDefinition DeclarePrivateFieldCore( string name, TypeDefinition type )
 		{
+			Contract.Assert( type != null );
+
 			return this.Emitter.RegisterField( name, type.ResolveRuntimeType() );
 		}
 

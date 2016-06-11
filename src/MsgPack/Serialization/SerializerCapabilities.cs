@@ -22,6 +22,7 @@ using System;
 
 namespace MsgPack.Serialization
 {
+#warning TODO: Asymmetric serializers
 	/// <summary>
 	///		Represents serializer capabilities.
 	/// </summary>
@@ -31,7 +32,7 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		None.
 		/// </summary>
-		Unknown = 0,
+		None = 0,
 
 		/// <summary>
 		///		Caller can call <c>Pack</c> and <c>PackTo</c> method safely.

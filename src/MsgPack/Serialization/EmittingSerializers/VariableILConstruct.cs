@@ -37,8 +37,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private int _index;
 		private readonly string _name;
 
-		public string Name { get { return this._name; } }
-
 		public VariableILConstruct( string name, TypeDefinition valueType )
 			: base( valueType )
 		{

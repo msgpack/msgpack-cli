@@ -132,6 +132,7 @@ namespace MsgPack
 #endif // NETSTD_11 || NETSTD_13
 		}
 
+#if DEBUG
 		public static bool GetIsPrimitive( this Type source )
 		{
 #if NETSTD_11 || NETSTD_13
@@ -140,6 +141,7 @@ namespace MsgPack
 			return source.IsPrimitive;
 #endif // NETSTD_11 || NETSTD_13
 		}
+#endif // DEBUG
 
 		public static Type GetBaseType( this Type source )
 		{
@@ -219,6 +221,7 @@ namespace MsgPack
 				);
 		}
 
+#if DEBUG
 		public static PropertyInfo GetRuntimeProperty( this Type source, string name )
 		{
 			return
@@ -227,6 +230,7 @@ namespace MsgPack
 					BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic
 				);
 		}
+#endif // DEBUG
 
 		public static FieldInfo GetRuntimeField( this Type source, string name )
 		{

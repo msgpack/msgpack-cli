@@ -28,8 +28,6 @@ namespace MsgPack.Serialization.Metadata
 {
 	internal static class _Packer
 	{
-		public static readonly MethodInfo PackArrayHeader = FromExpression.ToMethod( ( Packer packer, int count ) => packer.PackArrayHeader( count ) );
-		public static readonly MethodInfo PackMapHeader = FromExpression.ToMethod( ( Packer packer, int count ) => packer.PackMapHeader( count ) );
 		public static readonly MethodInfo PackNull = FromExpression.ToMethod( ( Packer packer ) => packer.PackNull() );
 #if FEATURE_TAP
 		public static readonly MethodInfo PackNullAsync = FromExpression.ToMethod( ( Packer packer, CancellationToken cancellationToken ) => packer.PackNullAsync( cancellationToken ) );

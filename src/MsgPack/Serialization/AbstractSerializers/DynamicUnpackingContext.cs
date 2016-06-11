@@ -30,14 +30,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 {
 	internal class DynamicUnpackingContext
 	{
-		internal static readonly ConstructorInfo Constructor =
-			typeof( DynamicUnpackingContext ).GetConstructors().Single( c => c.GetParameters().Length == 1 );
-
-#if FEATURE_TAP
-		internal static readonly ConstructorInfo ConstructorForAsync =
-			typeof( DynamicUnpackingContext ).GetConstructors().Single( c => c.GetParameters().Length == 2 );
-
-#endif // FEATURE_TAP
 		private readonly Dictionary<string, object> _bag;
 
 		public object Get( string key )

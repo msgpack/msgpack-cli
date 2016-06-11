@@ -77,8 +77,8 @@ internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 	public SByteArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, SByte[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -88,7 +88,7 @@ internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override SByte[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -102,7 +102,7 @@ internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, SByte[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -129,8 +129,8 @@ internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, SByte[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -140,7 +140,7 @@ internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<SByte[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -154,7 +154,7 @@ internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, SByte[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -189,8 +189,8 @@ internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 	public Int16ArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, Int16[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -200,7 +200,7 @@ internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Int16[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -214,7 +214,7 @@ internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, Int16[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -241,8 +241,8 @@ internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, Int16[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -252,7 +252,7 @@ internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<Int16[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -266,7 +266,7 @@ internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Int16[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -301,8 +301,8 @@ internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 	public Int32ArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, Int32[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -312,7 +312,7 @@ internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Int32[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -326,7 +326,7 @@ internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, Int32[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -353,8 +353,8 @@ internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, Int32[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -364,7 +364,7 @@ internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<Int32[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -378,7 +378,7 @@ internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Int32[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -413,8 +413,8 @@ internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 	public Int64ArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, Int64[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -424,7 +424,7 @@ internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Int64[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -438,7 +438,7 @@ internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, Int64[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -465,8 +465,8 @@ internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, Int64[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -476,7 +476,7 @@ internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<Int64[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -490,7 +490,7 @@ internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Int64[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -525,8 +525,8 @@ internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 	public ByteArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, Byte[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -536,7 +536,7 @@ internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Byte[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -550,7 +550,7 @@ internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, Byte[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -577,8 +577,8 @@ internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, Byte[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -588,7 +588,7 @@ internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<Byte[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -602,7 +602,7 @@ internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Byte[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -637,8 +637,8 @@ internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 	public UInt16ArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, UInt16[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -648,7 +648,7 @@ internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override UInt16[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -662,7 +662,7 @@ internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, UInt16[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -689,8 +689,8 @@ internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, UInt16[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -700,7 +700,7 @@ internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<UInt16[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -714,7 +714,7 @@ internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, UInt16[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -749,8 +749,8 @@ internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 	public UInt32ArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, UInt32[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -760,7 +760,7 @@ internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override UInt32[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -774,7 +774,7 @@ internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, UInt32[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -801,8 +801,8 @@ internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, UInt32[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -812,7 +812,7 @@ internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<UInt32[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -826,7 +826,7 @@ internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, UInt32[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -861,8 +861,8 @@ internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 	public UInt64ArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, UInt64[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -872,7 +872,7 @@ internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override UInt64[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -886,7 +886,7 @@ internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, UInt64[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -913,8 +913,8 @@ internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, UInt64[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -924,7 +924,7 @@ internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<UInt64[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -938,7 +938,7 @@ internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, UInt64[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -973,8 +973,8 @@ internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 	public SingleArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, Single[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -984,7 +984,7 @@ internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Single[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -998,7 +998,7 @@ internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, Single[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1025,8 +1025,8 @@ internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, Single[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -1036,7 +1036,7 @@ internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<Single[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1050,7 +1050,7 @@ internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Single[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1085,8 +1085,8 @@ internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 	public DoubleArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, Double[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -1096,7 +1096,7 @@ internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Double[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1110,7 +1110,7 @@ internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, Double[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1137,8 +1137,8 @@ internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, Double[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -1148,7 +1148,7 @@ internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<Double[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1162,7 +1162,7 @@ internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Double[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1197,8 +1197,8 @@ internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 	public BooleanArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, Boolean[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -1208,7 +1208,7 @@ internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Boolean[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1222,7 +1222,7 @@ internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, Boolean[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1249,8 +1249,8 @@ internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, Boolean[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -1260,7 +1260,7 @@ internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<Boolean[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1274,7 +1274,7 @@ internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Boolean[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1309,8 +1309,8 @@ internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte
 	public NullableSByteArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, SByte?[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -1320,7 +1320,7 @@ internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override SByte?[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1334,7 +1334,7 @@ internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, SByte?[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1361,8 +1361,8 @@ internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, SByte?[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -1372,7 +1372,7 @@ internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<SByte?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1386,7 +1386,7 @@ internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, SByte?[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1421,8 +1421,8 @@ internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16
 	public NullableInt16ArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, Int16?[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -1432,7 +1432,7 @@ internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Int16?[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1446,7 +1446,7 @@ internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, Int16?[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1473,8 +1473,8 @@ internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, Int16?[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -1484,7 +1484,7 @@ internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<Int16?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1498,7 +1498,7 @@ internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Int16?[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1533,8 +1533,8 @@ internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32
 	public NullableInt32ArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, Int32?[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -1544,7 +1544,7 @@ internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Int32?[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1558,7 +1558,7 @@ internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, Int32?[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1585,8 +1585,8 @@ internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, Int32?[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -1596,7 +1596,7 @@ internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<Int32?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1610,7 +1610,7 @@ internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Int32?[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1645,8 +1645,8 @@ internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64
 	public NullableInt64ArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, Int64?[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -1656,7 +1656,7 @@ internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Int64?[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1670,7 +1670,7 @@ internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, Int64?[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1697,8 +1697,8 @@ internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, Int64?[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -1708,7 +1708,7 @@ internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<Int64?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1722,7 +1722,7 @@ internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Int64?[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1757,8 +1757,8 @@ internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[
 	public NullableByteArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, Byte?[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -1768,7 +1768,7 @@ internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Byte?[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1782,7 +1782,7 @@ internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, Byte?[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1809,8 +1809,8 @@ internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, Byte?[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -1820,7 +1820,7 @@ internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<Byte?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1834,7 +1834,7 @@ internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Byte?[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1869,8 +1869,8 @@ internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt
 	public NullableUInt16ArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, UInt16?[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -1880,7 +1880,7 @@ internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override UInt16?[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1894,7 +1894,7 @@ internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, UInt16?[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1921,8 +1921,8 @@ internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, UInt16?[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -1932,7 +1932,7 @@ internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<UInt16?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1946,7 +1946,7 @@ internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, UInt16?[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -1981,8 +1981,8 @@ internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt
 	public NullableUInt32ArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, UInt32?[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -1992,7 +1992,7 @@ internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override UInt32?[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2006,7 +2006,7 @@ internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, UInt32?[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2033,8 +2033,8 @@ internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, UInt32?[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -2044,7 +2044,7 @@ internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<UInt32?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2058,7 +2058,7 @@ internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, UInt32?[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2093,8 +2093,8 @@ internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt
 	public NullableUInt64ArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, UInt64?[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -2104,7 +2104,7 @@ internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override UInt64?[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2118,7 +2118,7 @@ internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, UInt64?[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2145,8 +2145,8 @@ internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, UInt64?[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -2156,7 +2156,7 @@ internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<UInt64?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2170,7 +2170,7 @@ internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, UInt64?[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2205,8 +2205,8 @@ internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Sing
 	public NullableSingleArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, Single?[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -2216,7 +2216,7 @@ internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Sing
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Single?[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2230,7 +2230,7 @@ internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Sing
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, Single?[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2257,8 +2257,8 @@ internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Sing
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, Single?[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -2268,7 +2268,7 @@ internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Sing
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<Single?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2282,7 +2282,7 @@ internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Sing
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Single?[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2317,8 +2317,8 @@ internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Doub
 	public NullableDoubleArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, Double?[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -2328,7 +2328,7 @@ internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Doub
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Double?[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2342,7 +2342,7 @@ internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Doub
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, Double?[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2369,8 +2369,8 @@ internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Doub
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, Double?[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -2380,7 +2380,7 @@ internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Doub
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<Double?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2394,7 +2394,7 @@ internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Doub
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Double?[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2429,8 +2429,8 @@ internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boo
 	public NullableBooleanArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, Boolean?[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -2440,7 +2440,7 @@ internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boo
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Boolean?[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2454,7 +2454,7 @@ internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boo
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, Boolean?[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2481,8 +2481,8 @@ internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boo
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, Boolean?[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -2492,7 +2492,7 @@ internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boo
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<Boolean?[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2506,7 +2506,7 @@ internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boo
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Boolean?[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2541,8 +2541,8 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 	public StringArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, String[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -2552,7 +2552,7 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override String[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2566,7 +2566,7 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, String[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2593,8 +2593,8 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, String[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -2604,7 +2604,7 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<String[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2618,7 +2618,7 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, String[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2653,8 +2653,8 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 	public BinaryArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, Byte[][] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -2664,7 +2664,7 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Byte[][] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2678,7 +2678,7 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, Byte[][] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2705,8 +2705,8 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, Byte[][] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -2716,7 +2716,7 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<Byte[][]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2730,7 +2730,7 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Byte[][] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2765,8 +2765,8 @@ internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<M
 	public MessagePackObjectArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override void PackToCore( Packer packer, MessagePackObject[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -2776,7 +2776,7 @@ internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<M
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override MessagePackObject[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2790,7 +2790,7 @@ internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<M
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, MessagePackObject[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2817,8 +2817,8 @@ internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<M
 
 #if FEATURE_TAP
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 	protected internal override async Task PackToAsyncCore( Packer packer, MessagePackObject[] objectTree, CancellationToken cancellationToken )
 	{
 		await packer.PackArrayHeaderAsync( objectTree.Length, cancellationToken ).ConfigureAwait( false );
@@ -2828,7 +2828,7 @@ internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<M
 		}
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override async Task<MessagePackObject[]> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -2842,7 +2842,7 @@ internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<M
 		return result;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	protected internal override Task UnpackToAsyncCore( Unpacker unpacker, MessagePackObject[] collection, CancellationToken cancellationToken )
 	{
 		if ( !unpacker.IsArrayHeader )

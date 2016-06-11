@@ -679,6 +679,7 @@ namespace MsgPack.Serialization
 		///		</para>
 		/// </remarks>
 		// ReSharper disable once UnusedTypeParameter
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Required for pre-heat generic methods." )]
 		public static void PrepareType<T>()
 		{
 #if UNITY || UNITY2
@@ -705,6 +706,7 @@ namespace MsgPack.Serialization
 		///			Currently, this method prepares <see cref="KeyValuePair{TKey,TValue}"/> and also invokes <see cref="PrepareType{T}"/> implicitly.
 		///		</para>
 		/// </remarks>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Required for pre-heat generic methods." )]
 		public static void PrepareDictionaryType<TKey, TValue>()
 		{
 #if UNITY || UNITY2
@@ -733,6 +735,7 @@ namespace MsgPack.Serialization
 		///			In addition, this method also invokes <see cref="PrepareType{T}"/> implicitly.
 		///		</para>
 		/// </remarks>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Required for pre-heat generic methods." )]
 		public static void PrepareCollectionType<TElement>()
 		{
 #if UNITY || UNITY2

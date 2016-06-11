@@ -758,6 +758,9 @@ namespace MsgPack.Serialization
 		}
 
 		// ReSharper disable UnusedParameter.Local
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "targetType", Justification = "For Unity compatibility" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "elementType", Justification = "For Unity compatibility" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "options", Justification = "For Unity compatibility" )]
 		private static MethodInfo GetCountGetterMethod( Type targetType, Type elementType, CollectionTraitOptions options )
 		// ReSharper restore UnusedParameter.Local
 		{

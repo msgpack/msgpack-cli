@@ -30,8 +30,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		private readonly CodeTypeReference _type;
 		private readonly string _name;
 
-		public string Name { get { return this._name; } }
-
 		public CodeParameterDeclarationExpression Declaration
 		{
 			get { return new CodeParameterDeclarationExpression( this._type, this._name ); }

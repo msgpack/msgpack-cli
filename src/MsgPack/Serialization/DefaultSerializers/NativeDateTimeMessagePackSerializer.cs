@@ -47,11 +47,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 #if FEATURE_TAP
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override Task PackToAsyncCore( Packer packer, DateTime objectTree, CancellationToken cancellationToken )
 		{
 			return packer.PackAsync( objectTree.ToBinary(), cancellationToken );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Transfers all catched exceptions." )]
 		protected internal override Task<DateTime> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			var tcs = new TaskCompletionSource<DateTime>();

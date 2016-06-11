@@ -632,6 +632,7 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitNewarr( elementType );
 		}
 
+#if DEBUG
 		/// <summary>
 		///		Emit array element loading instructions. 
 		///		Post condition is that exactly one loaded element will be placed on the top of stack and its element type is <paramref name="elementType"/>.
@@ -648,6 +649,7 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( 0 <= index );
 			this.EmitAnyLdelem( elementType, arrayLoadingEmitter, il => il.EmitLiteralInteger( index ) );
 		}
+#endif // DEBUG
 
 		/// <summary>
 		///		Emit array element storing instructions.

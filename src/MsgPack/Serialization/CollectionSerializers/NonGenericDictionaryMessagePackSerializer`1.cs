@@ -74,8 +74,8 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <exception cref="SerializationException">
 		///		<typeparamref name="TDictionary"/> is not serializable etc.
 		/// </exception>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, TDictionary objectTree )
 		{
 			packer.PackMapHeader( objectTree.Count );
@@ -179,6 +179,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TDictionary"/> is not serializable even if it can be serialized.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override Task<TDictionary> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			if ( !unpacker.IsMapHeader )
@@ -232,8 +233,8 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="TDictionary"/> is not collection.
 		/// </exception>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 		protected internal override void UnpackToCore( Unpacker unpacker, TDictionary collection )
 		{
 			if ( !unpacker.IsMapHeader )
@@ -312,6 +313,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TDictionary"/> is not mutable collection.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, TDictionary collection, CancellationToken cancellationToken )
 		{
 			if ( !unpacker.IsMapHeader )

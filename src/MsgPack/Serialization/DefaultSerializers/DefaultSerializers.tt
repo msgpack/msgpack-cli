@@ -294,7 +294,7 @@ foreach( Type type in types )
 		public <#= typeName #>( SerializationContext ownerContext )
 			: base( ownerContext ) { }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, <#= type.FullName #> value )
 		{
 <#
@@ -341,7 +341,7 @@ foreach( var ctor in ctors )
 #>
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override <#= type.FullName #> UnpackFromCore( Unpacker unpacker )
 		{
 <#
@@ -419,7 +419,7 @@ foreach( var ctor in ctors )
 
 #if FEATURE_TAP
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override async Task PackToAsyncCore( Packer packer, <#= type.FullName #> value, CancellationToken cancellationToken )
 		{
 <#
@@ -466,7 +466,8 @@ foreach( var ctor in ctors )
 #>
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Transfers all catched exceptions." )]
 		protected internal override Task<#= "<" + type.FullName + ">" #> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 <#

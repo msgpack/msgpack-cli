@@ -70,7 +70,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="packer"><see cref="Packer"/> which packs values in <paramref name="objectTree"/>. This value will not be <c>null</c>.</param>
 		/// <param name="objectTree">Object to be serialized.</param>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal sealed override void PackToCore( Packer packer, TEnum objectTree )
 		{
 			if ( this._serializationMethod == EnumSerializationMethod.ByUnderlyingValue )
@@ -102,6 +102,7 @@ namespace MsgPack.Serialization
 		/// A <see cref="Task" /> that represents the asynchronous operation.
 		/// </returns>
 		/// <seealso cref="P:Capabilities" />
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal sealed override Task PackToAsyncCore( Packer packer, TEnum objectTree, CancellationToken cancellationToken )
 		{
 			if ( this._serializationMethod == EnumSerializationMethod.ByUnderlyingValue )
@@ -144,7 +145,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="InvalidMessagePackStreamException">
 		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
 		/// </exception>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal sealed override TEnum UnpackFromCore( Unpacker unpacker )
 		{
 			if ( unpacker.LastReadData.IsRaw )
@@ -267,7 +268,7 @@ namespace MsgPack.Serialization
 			this._underlyingType = Enum.GetUnderlyingType( targetType );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal sealed override void PackToCore( Packer packer, object objectTree )
 		{
 			if ( this._serializationMethod == EnumSerializationMethod.ByUnderlyingValue )
@@ -282,7 +283,7 @@ namespace MsgPack.Serialization
 
 		protected internal abstract void PackUnderlyingValueTo( Packer packer, object enumValue );
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal sealed override object UnpackFromCore( Unpacker unpacker )
 		{
 			if ( unpacker.LastReadData.IsRaw )

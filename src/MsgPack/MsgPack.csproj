@@ -114,7 +114,6 @@
     <Compile Include="BufferManager.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BufferPool.cs" />
     <Compile Include="CollectionDebuggerProxy`1.cs" />
     <Compile Include="CollectionOperation.cs" />
     <Compile Include="DictionaryDebuggerProxy`2.cs" />
@@ -274,10 +273,8 @@
     </Compile>
     <Compile Include="Serialization\MessagePackSerializer.cs" />
     <Compile Include="Serialization\Metadata\_DateTimeMessagePackSerializerHelpers.cs" />
-    <Compile Include="Serialization\Metadata\_Delegate.cs" />
     <Compile Include="Serialization\Metadata\_DynamicUnpackingContext.cs" />
     <Compile Include="Serialization\Metadata\_Object.cs" />
-    <Compile Include="Serialization\Metadata\_MethodInfo.cs" />
     <Compile Include="Serialization\PackHelpers.cs" />
     <Compile Include="Serialization\Polymorphic\IPolymorphicHelperAttributes.cs" />
     <Compile Include="Serialization\Polymorphic\IPolymorphicDeserializer.cs" />
@@ -405,7 +402,6 @@
     <Compile Include="Serialization\Metadata\_MessagePackObject.cs" />
     <Compile Include="Serialization\Metadata\_IDisposable.cs" />
     <Compile Include="Serialization\Metadata\_DictionaryEntry.cs" />
-    <Compile Include="Serialization\Metadata\_Type.cs" />
     <Compile Include="Serialization\Metadata\_Unpacker.cs" />
     <Compile Include="Serialization\Metadata\_Packer.cs" />
     <Compile Include="Serialization\IdentifierUtility.cs" />

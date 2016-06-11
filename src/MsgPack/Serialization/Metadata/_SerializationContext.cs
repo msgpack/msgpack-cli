@@ -27,7 +27,6 @@ namespace MsgPack.Serialization.Metadata
 	internal static class _SerializationContext
 	{
 		// ReSharper disable InconsistentNaming
-		public static readonly MethodInfo GetSerializer1_Method = typeof( SerializationContext ).GetMethod( "GetSerializer", ReflectionAbstractions.EmptyTypes );
 		public static readonly MethodInfo GetSerializer1_Parameter_Method = typeof( SerializationContext ).GetMethod( "GetSerializer", new[] { typeof( object ) } );
 		public static readonly PropertyInfo SerializationMethod = FromExpression.ToProperty( ( SerializationContext context ) => context.SerializationMethod );
 		// ReSharper restore InconsistentNaming

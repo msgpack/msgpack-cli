@@ -54,11 +54,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 				: serializerTypeNamespace + "." + serializerTypeName;
 		}
 
-		internal static SerializerSpecification CreateAnonymous( Type targetType, CollectionTraits targetCollectionTraits )
-		{
-			return new SerializerSpecification( targetType, targetCollectionTraits, "Anonymous", "AnonymousGeneratedSerializers" );
-		}
-
 		public override bool Equals( object obj )
 		{
 			return this.Equals( obj as SerializerSpecification );

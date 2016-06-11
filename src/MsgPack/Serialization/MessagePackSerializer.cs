@@ -197,6 +197,7 @@ namespace MsgPack.Serialization
 		///		The type of <paramref name="objectTree"/> is not serializable even if it can be deserialized.
 		/// </exception>
 		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "objectTree is more meningful." )]
 		public Task PackToAsync( Packer packer, object objectTree, CancellationToken cancellationToken )
 		{
 			return this.InternalPackToAsync( packer, objectTree, cancellationToken );
@@ -289,6 +290,7 @@ namespace MsgPack.Serialization
 		///		The type of <paramref name="objectTree"/> is not serializable even if it can be deserialized.
 		/// </exception>
 		/// <seealso cref="ISupportMessagePackSerializerCapability.Capabilities"/>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "objectTree is more meningful." )]
 		public Task<byte[]> PackSingleObjectAsync( object objectTree, CancellationToken cancellationToken )
 		{
 			return this.InternalPackSingleObjectAsync( objectTree, cancellationToken );

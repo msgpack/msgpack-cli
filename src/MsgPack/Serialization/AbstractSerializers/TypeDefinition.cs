@@ -148,11 +148,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return Generic( false, definition, arguments );
 		}
 
-		public static TypeDefinition GenericValueType( Type definition, params TypeDefinition[] arguments )
-		{
-			return Generic( true, definition, arguments );
-		}
-
 		private static TypeDefinition Generic( bool isValueType, Type definition, TypeDefinition[] arguments )
 		{
 #if DEBUG

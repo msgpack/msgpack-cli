@@ -21,9 +21,17 @@
 #if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
 #define UNITY
 #endif
+
+#warning TODO: unify UNITY and UNITY2
+
+#if DEBUG && !UNITY && !UNITY2
+#define ASSERT
+#endif // DEBUG && !UNITY && !UNITY2
+
 #if DEBUG && !NETFX_CORE
 #define TRACING
 #endif // DEBUG && !NETFX_CORE
+#warning TODO: Conditional -> #if
 
 using System;
 using System.Collections;
@@ -32,13 +40,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 #endif //!UNITY || MSGPACK_UNITY_FULL
 using System.Diagnostics;
-#if !UNITY && !UNITY2
+#if ASSERT
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // !UNITY && !UNITY2
+#endif // ASSERT
 using System.Reflection;
 using System.Runtime.CompilerServices;
 #if FEATURE_TAP
@@ -57,6 +65,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 	[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Aggregating facade." )]
 	public static partial class UnpackHelpers
 	{
 		private static readonly MessagePackSerializer<MessagePackObject> _messagePackObjectSerializer =
@@ -76,6 +85,9 @@ namespace MsgPack.Serialization
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
 		public static void UnpackArrayTo<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, T[] array )
 		{
 			if ( unpacker == null )
@@ -93,20 +105,20 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "array" );
 			}
 
-#if !UNITY && !UNITY2 && DEBUG
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
 			Contract.Assert( array != null );
-#endif // !UNITY && !UNITY2 && DEBUG
+#endif // ASSERT
 
 			if ( !unpacker.IsArrayHeader )
 			{
 				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
-#if !UNITY && !UNITY2
+#if ASSERT
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+#endif // ASSERT
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -146,6 +158,9 @@ namespace MsgPack.Serialization
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
 		public static void UnpackCollectionTo( Unpacker unpacker, IEnumerable collection, Action<object> addition )
 		{
 			if ( unpacker == null )
@@ -163,20 +178,20 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "addition" );
 			}
 
-#if !UNITY && !UNITY2 && DEBUG
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( collection != null );
 			Contract.Assert( addition != null );
-#endif // !UNITY && !UNITY2 && DEBUG
+#endif // ASSERT
 
 			if ( !unpacker.IsArrayHeader )
 			{
 				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
-#if !UNITY && !UNITY2
+#if ASSERT
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+#endif // ASSERT
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -218,6 +233,10 @@ namespace MsgPack.Serialization
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "False positive because never reached." )]
 		public static void UnpackCollectionTo<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, IEnumerable<T> collection, Action<T> addition )
 		{
 			if ( unpacker == null )
@@ -240,21 +259,21 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "addition" );
 			}
 
-#if !UNITY && !UNITY2 && DEBUG
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
 			Contract.Assert( collection != null );
 			Contract.Assert( addition != null );
-#endif // !UNITY && !UNITY2 && DEBUG
+#endif // ASSERT
 
 			if ( !unpacker.IsArrayHeader )
 			{
 				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
-#if !UNITY && !UNITY2
+#if ASSERT
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+#endif // ASSERT
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -295,6 +314,9 @@ namespace MsgPack.Serialization
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
 		public static void UnpackCollectionTo<TDiscarded>( Unpacker unpacker, IEnumerable collection, Func<object, TDiscarded> addition )
 		{
 			if ( unpacker == null )
@@ -312,20 +334,20 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "addition" );
 			}
 
-#if !UNITY && !UNITY2 && DEBUG
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( collection != null );
 			Contract.Assert( addition != null );
-#endif // !UNITY && !UNITY2 && DEBUG
+#endif // ASSERT
 
 			if ( !unpacker.IsArrayHeader )
 			{
 				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
-#if !UNITY && !UNITY2
+#if ASSERT
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+#endif // ASSERT
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -368,6 +390,10 @@ namespace MsgPack.Serialization
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "False positive because never reached." )]
 		public static void UnpackCollectionTo<T, TDiscarded>( Unpacker unpacker, MessagePackSerializer<T> serializer, IEnumerable<T> collection, Func<T, TDiscarded> addition )
 		{
 			if ( unpacker == null )
@@ -390,21 +416,21 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "addition" );
 			}
 
-#if !UNITY && !UNITY2 && DEBUG
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
 			Contract.Assert( collection != null );
 			Contract.Assert( addition != null );
-#endif // !UNITY && !UNITY2 && DEBUG
+#endif // ASSERT
 
 			if ( !unpacker.IsArrayHeader )
 			{
 				SerializationExceptions.ThrowIsNotArrayHeader( unpacker );
 			}
 
-#if !UNITY && !UNITY2
+#if ASSERT
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+#endif // ASSERT
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -447,6 +473,10 @@ namespace MsgPack.Serialization
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "False positive because never reached." )]
 		public static void UnpackMapTo<TKey, TValue>( Unpacker unpacker, MessagePackSerializer<TKey> keySerializer, MessagePackSerializer<TValue> valueSerializer, IDictionary<TKey, TValue> dictionary )
 		{
 			if ( unpacker == null )
@@ -466,24 +496,24 @@ namespace MsgPack.Serialization
 
 			if ( dictionary == null )
 			{
-				throw new ArgumentNullException( "dictionary" );
+				SerializationExceptions.ThrowArgumentNullException( "dictionary" );
 			}
 
-#if !UNITY && !UNITY2 && DEBUG
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( keySerializer != null );
 			Contract.Assert( valueSerializer != null );
 			Contract.Assert( dictionary != null );
-#endif // !UNITY && !UNITY2 && DEBUG
+#endif // ASSERT
 
 			if ( !unpacker.IsMapHeader )
 			{
 				SerializationExceptions.ThrowIsNotMapHeader( unpacker );
 			}
 
-#if !UNITY && !UNITY2
+#if ASSERT
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+#endif // ASSERT
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -541,6 +571,8 @@ namespace MsgPack.Serialization
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
 		public static void UnpackMapTo( Unpacker unpacker, IDictionary dictionary )
 		{
 			if ( unpacker == null )
@@ -553,19 +585,19 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "dictionary" );
 			}
 
-#if !UNITY && !UNITY2 && DEBUG
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( dictionary != null );
-#endif // !UNITY && !UNITY2 && DEBUG
+#endif // ASSERT
 
 			if ( !unpacker.IsMapHeader )
 			{
 				SerializationExceptions.ThrowIsNotMapHeader( unpacker );
 			}
 
-#if !UNITY && !UNITY2
+#if ASSERT
 			Contract.EndContractBlock();
-#endif // !UNITY && !UNITY2
+#endif // ASSERT
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -625,6 +657,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static int GetItemsCount( Unpacker unpacker )
 		{
 			if ( unpacker == null )
@@ -664,6 +697,7 @@ namespace MsgPack.Serialization
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static T ConvertWithEnsuringNotNull<T>( object boxed, string name, Type targetType )
 		{
 			if ( typeof( T ).GetIsValueType() && boxed == null && Nullable.GetUnderlyingType( typeof( T ) ) == null )
@@ -685,6 +719,7 @@ namespace MsgPack.Serialization
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static T InvokeUnpackFrom<T>( MessagePackSerializer<T> serializer, Unpacker unpacker )
 		{
 			if ( serializer == null )
@@ -692,10 +727,10 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "serializer" );
 			}
 
-#if !UNITY && !UNITY2 && DEBUG
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
-#endif // !UNITY && !UNITY2 && DEBUG
+#endif // ASSERT
 
 			return serializer.UnpackFromCore( unpacker );
 		}
@@ -780,9 +815,9 @@ namespace MsgPack.Serialization
 		/// </returns>
 		internal static bool IsIEqualityComparer( Type type )
 		{
-#if DEBUG && !UNITY && !UNITY2
+#if ASSERT
 			Contract.Assert( !type.GetIsGenericTypeDefinition(), "!(" + type + ").GetIsGenericTypeDefinition()" );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			return type.GetIsGenericType() && type.GetGenericTypeDefinition() == typeof( IEqualityComparer<> );
 		}
@@ -855,6 +890,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
 		public static async Task<T?> ToNullable<T>( Task<T> task )
 			where T : struct
 		{

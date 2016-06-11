@@ -124,6 +124,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Transfers all catched exceptions." )]
 		protected internal override Task<DateTimeOffset> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			var tcs = new TaskCompletionSource<DateTimeOffset>();

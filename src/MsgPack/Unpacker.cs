@@ -615,6 +615,7 @@ namespace MsgPack
 		///		a kipped byte length.
 		///		Or, if the subtree is not completed, then <c>null</c>.
 		/// </returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		public Task<long?> SkipAsync()
 		{
 			return this.SkipAsync( CancellationToken.None );
@@ -630,6 +631,7 @@ namespace MsgPack
 		///		a kipped byte length.
 		///		Or, if the subtree is not completed, then <c>null</c>.
 		/// </returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		public async Task<long?> SkipAsync( CancellationToken cancellationToken )
 		{
 			this.BeginSkip();
@@ -647,6 +649,7 @@ namespace MsgPack
 		///		Skipped byte length.
 		///		If the subtree is not completed, then <c>null</c>.
 		/// </returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		protected Task<long?> SkipAsyncCore()
 		{
 			return this.SkipAsyncCore( CancellationToken.None );
@@ -660,6 +663,7 @@ namespace MsgPack
 		///		Skipped byte length.
 		///		If the subtree is not completed, then <c>null</c>.
 		/// </returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		protected virtual Task<long?> SkipAsyncCore( CancellationToken cancellationToken )
 		{
 			return Task.Run( () => this.SkipCore(), cancellationToken );
@@ -718,6 +722,7 @@ namespace MsgPack
 		///		a read item or collection from the stream.
 		/// </returns>
 		/// <exception cref="InvalidMessagePackStreamException">The stream unexpectedly ends.</exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		public Task<MessagePackObject?> ReadItemAsync()
 		{
 			return this.ReadItemAsync( CancellationToken.None );
@@ -733,6 +738,7 @@ namespace MsgPack
 		///		a read item or collection from the stream.
 		/// </returns>
 		/// <exception cref="InvalidMessagePackStreamException">The stream unexpectedly ends.</exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		public async Task<MessagePackObject?> ReadItemAsync( CancellationToken cancellationToken )
 		{
 			if ( !( await this.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
@@ -882,6 +888,7 @@ namespace MsgPack
 		///		an unpacked array or map when current position is array or map header.
 		///		Or <c>null</c> when current position is not array nor map header.
 		/// </returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		public Task<MessagePackObject?> UnpackSubtreeAsync()
 		{
 			return this.UnpackSubtreeAsync( CancellationToken.None );
@@ -897,6 +904,7 @@ namespace MsgPack
 		///		an unpacked array or map when current position is array or map header.
 		///		Or <c>null</c> when current position is not array nor map header.
 		/// </returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		public async Task<MessagePackObject?> UnpackSubtreeAsync( CancellationToken cancellationToken )
 		{
 			var result = await this.UnpackSubtreeDataAsyncCore( cancellationToken ).ConfigureAwait( false );

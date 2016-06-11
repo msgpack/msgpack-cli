@@ -27,7 +27,5 @@ namespace MsgPack.Serialization.Metadata
 	internal static class _Object
 	{
 		public static readonly ConstructorInfo Ctor = typeof( object ).GetConstructor( ReflectionAbstractions.EmptyTypes );
-
-		public static readonly MethodInfo GetTypeMethod = FromExpression.ToMethod( ( object @this ) => @this.GetType() );
 	}
 }

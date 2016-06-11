@@ -32,17 +32,21 @@
 #define UNITY
 #endif
 
+#if DEBUG && !UNITY && !UNITY2
+#define ASSERT
+#endif // DEBUG && !UNITY && !UNITY2
+
 using System;
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
-#if DEBUG && !UNITY && !UNITY2
+#if ASSERT
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -139,14 +143,29 @@ foreach ( Type type in
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static <#= Async( type.Name, isAsync ) #> Unpack<#= type.Name #>Value<#= MethodSuffix( isAsync ) #>( Unpacker unpacker, Type objectType, String memberName<#= CancellationTokenParameter( isAsync ) #> )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -247,14 +266,30 @@ foreach ( Type type in
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static <#= Async( type.Name + "?", isAsync ) #> UnpackNullable<#= type.Name #>Value<#= MethodSuffix( isAsync ) #>( Unpacker unpacker, Type objectType, String memberName<#= CancellationTokenParameter( isAsync ) #> )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -366,14 +401,29 @@ foreach ( var isAsync in new [] { false, true } )
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static <#= Async( "string", isAsync ) #> UnpackStringValue<#= MethodSuffix( isAsync ) #>( Unpacker unpacker, Type objectType, String memberName<#= CancellationTokenParameter( isAsync ) #> )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -464,14 +514,29 @@ foreach ( var isAsync in new [] { false, true } )
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static <#= Async( "byte[]", isAsync ) #> UnpackBinaryValue<#= MethodSuffix( isAsync ) #>( Unpacker unpacker, Type objectType, String memberName<#= CancellationTokenParameter( isAsync ) #> )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );

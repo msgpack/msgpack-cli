@@ -186,6 +186,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		}
 
 #if !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "targetType", Justification = "For Unity compatibility." )]
 		public static Action<TCollection, TItem> GetAddItem<TCollection, TItem>( Type targetType, CollectionTraits collectionTraits )
 #else
 		public static Action<object, object> GetAddItem( Type targetType, CollectionTraits collectionTraits )

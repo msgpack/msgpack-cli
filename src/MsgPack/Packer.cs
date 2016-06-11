@@ -301,6 +301,7 @@ namespace MsgPack
 		///		Writes specified bytes to stream using implementation specific most efficient manner.
 		/// </summary>
 		/// <param name="value">Collection of bytes to be written.</param>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		protected virtual void WriteBytes( ICollection<byte> value )
 		{
 			if ( value == null )
@@ -362,6 +363,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Bytes to be written.</param>
 		/// <param name="isImmutable">If the <paramref name="value"/> can be treat as immutable (that is, can be used safely without copying) then <c>true</c>.</param>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		protected virtual void WriteBytes( byte[] value, bool isImmutable )
 		{
 			if ( value == null )

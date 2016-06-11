@@ -43,6 +43,7 @@ namespace MsgPack
 	// This file was generated from Packer.Packing.tt and StreamingUnapkcerBase.ttinclude T4Template.
 	// Do not modify this file. Edit Packer.Packing.tt and StreamingUnapkcerBase.ttinclude instead.
 
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "AsyncResult<T>" )]
 	partial class Packer
 	{
 		#region -- Int16 --

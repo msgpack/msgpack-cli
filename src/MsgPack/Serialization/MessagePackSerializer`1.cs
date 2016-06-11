@@ -53,12 +53,6 @@ namespace MsgPack.Serialization
 		// ReSharper disable once StaticFieldInGenericType
 		private static readonly bool _isNullable = JudgeNullable();
 
-#if !AOT && !UNITY
-		// This field exists for each closed generic types.
-		internal static readonly MethodInfo UnpackToCoreMethod =
-			FromExpression.ToMethod( ( MessagePackSerializer<T> @this, Unpacker unpacker, T collection ) => @this.UnpackToCore( unpacker, collection ) );
-#endif // !AOT && !UNITY
-
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with <see cref="T:PackerCompatibilityOptions.Classic"/>.
 		/// </summary>
@@ -344,6 +338,7 @@ namespace MsgPack.Serialization
 		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public void PackTo( Packer packer, T objectTree )
 		{
 			if ( packer == null )
@@ -420,6 +415,7 @@ namespace MsgPack.Serialization
 		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public async Task PackToAsync( Packer packer, T objectTree, CancellationToken cancellationToken )
 		{
 			if ( packer == null )
@@ -485,6 +481,7 @@ namespace MsgPack.Serialization
 		///		<typeparamref name="T"/> is not serializable even if it can be serialized.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public new T UnpackFrom( Unpacker unpacker )
 		{
 			if ( unpacker == null )
@@ -605,6 +602,7 @@ namespace MsgPack.Serialization
 		///		<typeparamref name="T"/> is not serializable even if it can be serialized.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public new async Task<T> UnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			if ( unpacker == null )
@@ -675,6 +673,8 @@ namespace MsgPack.Serialization
 		///		<typeparamref name="T"/> is not mutable collection.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
 		public void UnpackTo( Unpacker unpacker, T collection )
 		{
 			if ( unpacker == null )
@@ -685,7 +685,7 @@ namespace MsgPack.Serialization
 			// ReSharper disable once CompareNonConstrainedGenericWithNull
 			if ( collection == null )
 			{
-				ThrowArgumentNullException( "unpacker" );
+				ThrowArgumentNullException( "collection" );
 			}
 
 			// ReSharper disable once PossibleNullReferenceException
@@ -778,6 +778,8 @@ namespace MsgPack.Serialization
 		///		<typeparamref name="T"/> is not mutable collection.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
 		public async Task UnpackToAsync( Unpacker unpacker, T collection, CancellationToken cancellationToken )
 		{
 			if ( unpacker == null )
@@ -788,7 +790,7 @@ namespace MsgPack.Serialization
 			// ReSharper disable once CompareNonConstrainedGenericWithNull
 			if ( collection == null )
 			{
-				ThrowArgumentNullException( "unpacker" );
+				ThrowArgumentNullException( "collection" );
 			}
 
 			// ReSharper disable once PossibleNullReferenceException
@@ -933,6 +935,7 @@ namespace MsgPack.Serialization
 		///			This method is a counter part of <see cref="PackSingleObject"/>.
 		///		</para>
 		/// </remarks>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public new T UnpackSingleObject( byte[] buffer )
 		{
 			if ( buffer == null )
@@ -1021,6 +1024,7 @@ namespace MsgPack.Serialization
 		///			This method is a counter part of <see cref="PackSingleObject"/>.
 		///		</para>
 		/// </remarks>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public new async Task<T> UnpackSingleObjectAsync( byte[] buffer, CancellationToken cancellationToken )
 		{
 			if ( buffer == null )

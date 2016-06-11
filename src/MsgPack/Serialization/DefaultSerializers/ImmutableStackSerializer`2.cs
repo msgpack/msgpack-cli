@@ -38,7 +38,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._itemSerializer = ownerContext.GetSerializer<TItem>( itemsSchema );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsArrayHeader )

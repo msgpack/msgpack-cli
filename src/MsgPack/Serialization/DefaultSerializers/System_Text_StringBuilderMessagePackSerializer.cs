@@ -57,6 +57,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return packer.PackStringAsync( objectTree.ToString(), cancellationToken );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Transfers all catched exceptions." )]
 		protected internal override Task<StringBuilder> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			var tcs = new TaskCompletionSource<StringBuilder>();

@@ -62,8 +62,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 #endif // !UNITY
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 #if !UNITY
 		protected internal override void PackToCore( Packer packer, T[] objectTree )
 		{
@@ -87,7 +87,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 #endif // !UNITY
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Template method should not be validate parameters." )]
 #if !UNITY
 		protected internal override T[] UnpackFromCore( Unpacker unpacker )
 #else
@@ -109,7 +109,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return result;
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Template method should not be validate parameters." )]
 #if !UNITY
 		protected internal override void UnpackToCore( Unpacker unpacker, T[] collection )
 #else
@@ -186,6 +186,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return result;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Template method should not be validate parameters." )]
 		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, T[] collection, CancellationToken cancellationToken )
 		{
 			if ( !unpacker.IsArrayHeader )

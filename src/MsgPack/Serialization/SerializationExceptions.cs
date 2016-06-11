@@ -159,15 +159,6 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize member '{1}' of type '{0}'.", type, memberName ), inner );
 		}
 
-#if !AOT && !UNITY
-		// ReSharper disable InconsistentNaming
-		/// <summary>
-		///		<see cref="ThrowMissingItem(int,string,Unpacker)"/>
-		/// </summary>
-		internal static readonly MethodInfo ThrowMissingItemMethod = FromExpression.ToMethod( ( int index, string name, Unpacker unpacker ) => ThrowMissingItem( index, name, unpacker ) );
-		// ReSharper restore InconsistentNaming
-#endif // !AOT && !UNITY
-
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 		///		Returns new exception to notify that item is not found on the unpacking stream.
@@ -209,8 +200,13 @@ namespace MsgPack.Serialization
 		/// <exception cref="Exception">Always thrown.</exception>
 		public static void ThrowMissingItem( int index, string name, Unpacker unpacker )
 		{
-			long offsetOrPosition;
-			var isRealPosition = unpacker.GetPreviousPosition( out offsetOrPosition );
+			long offsetOrPosition = -1;
+			bool isRealPosition = false;
+			if ( unpacker != null )
+			{
+				isRealPosition = unpacker.GetPreviousPosition( out offsetOrPosition );
+			}
+
 			if ( String.IsNullOrEmpty( name ) )
 			{
 				if ( offsetOrPosition >= 0L )
@@ -367,7 +363,6 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="name">The name of the property.</param>
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
-		[Obsolete]
 		public static Exception NewMissingProperty( string name )
 		{
 #if !UNITY && !UNITY2
@@ -390,7 +385,7 @@ namespace MsgPack.Serialization
 		///		Returns new exception to notify that unpacking stream ends on unexpectedly position.
 		/// </summary>
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
-		[Obsolete]
+		[Obsolete( "This method is no longer used internally. So this internal API will be removed in future." )]
 		public static Exception NewUnexpectedEndOfStream()
 		{
 #if !UNITY && !UNITY2
@@ -459,9 +454,7 @@ namespace MsgPack.Serialization
 		///		Returns new exception to notify that unpacker is not in the array header, that is the state is invalid.
 		/// </summary>
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
-#if DEBUG
-		[Obsolete]
-#endif // DEBUG
+		[Obsolete( "This method is no longer used internally. So this internal API will be removed in future." )]
 		public static Exception NewIsNotArrayHeader()
 		{
 			return new SerializationException( "Unpacker is not in the array header. The stream may not be array." );
@@ -476,24 +469,33 @@ namespace MsgPack.Serialization
 		public static void ThrowIsNotArrayHeader( Unpacker unpacker )
 		{
 			long offsetOrPosition;
-			if ( unpacker.GetPreviousPosition( out offsetOrPosition ) )
+			if ( unpacker != null )
 			{
-				throw new SerializationException(
-					String.Format(
-						CultureInfo.CurrentCulture,
-						"Unpacker is not in the array header at position {0}. The stream may not be array.",
-						offsetOrPosition
-					)
-				);
+				if ( unpacker.GetPreviousPosition( out offsetOrPosition ) )
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Unpacker is not in the array header at position {0}. The stream may not be array.",
+							offsetOrPosition
+						)
+					);
+				}
+				else
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Unpacker is not in the array header at offset {0}. The stream may not be array.",
+							offsetOrPosition
+						)
+					);
+				}
 			}
 			else
 			{
 				throw new SerializationException(
-					String.Format(
-						CultureInfo.CurrentCulture,
-						"Unpacker is not in the array header at offset {0}. The stream may not be array.",
-						offsetOrPosition
-					)
+					"Unpacker is not in the array header. The stream may not be array."
 				);
 			}
 		}
@@ -529,24 +531,33 @@ namespace MsgPack.Serialization
 		public static void ThrowIsNotMapHeader( Unpacker unpacker )
 		{
 			long offsetOrPosition;
-			if ( unpacker.GetPreviousPosition( out offsetOrPosition ) )
+			if ( unpacker != null )
 			{
-				throw new SerializationException(
-					String.Format(
-						CultureInfo.CurrentCulture,
-						"Unpacker is not in the map header at position {0}. The stream may not be map.",
-						offsetOrPosition
-					)
-				);
+				if ( unpacker.GetPreviousPosition( out offsetOrPosition ) )
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Unpacker is not in the map header at position {0}. The stream may not be map.",
+							offsetOrPosition
+						)
+					);
+				}
+				else
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Unpacker is not in the map header at offset {0}. The stream may not be map.",
+							offsetOrPosition
+						)
+					);
+				}
 			}
 			else
 			{
 				throw new SerializationException(
-					String.Format(
-						CultureInfo.CurrentCulture,
-						"Unpacker is not in the map header at offset {0}. The stream may not be map.",
-						offsetOrPosition
-					)
+					"Unpacker is not in the map header. The stream may not be map."
 				);
 			}
 		}
@@ -616,8 +627,13 @@ namespace MsgPack.Serialization
 #if !UNITY && !UNITY2
 			Contract.Requires( expectedTupleCardinality > 0 );
 #endif // !UNITY && !UNITY2
-			long offsetOrPosition;
-			var isRealPosition = unpacker.GetPreviousPosition( out offsetOrPosition );
+			long offsetOrPosition = -1;
+			bool isRealPosition = false;
+			if ( unpacker != null )
+			{
+				isRealPosition = unpacker.GetPreviousPosition( out offsetOrPosition );
+			}
+
 			if ( offsetOrPosition >= 0L )
 			{
 				if ( isRealPosition )
@@ -698,8 +714,6 @@ namespace MsgPack.Serialization
 		}
 
 #if !AOT && !UNITY
-		[Obsolete( "Use ThrowNullIsProhibitedMethod" )]
-		internal static readonly MethodInfo NewNullIsProhibitedMethod = FromExpression.ToMethod( ( string memberName ) => NewNullIsProhibited( memberName ) );
 		internal static readonly MethodInfo ThrowNullIsProhibitedMethod = FromExpression.ToMethod( ( string memberName ) => ThrowNullIsProhibited( memberName ) );
 #endif // !AOT && !UNITY
 
@@ -833,40 +847,6 @@ namespace MsgPack.Serialization
 			return new SerializationException( "Cannot deserialize with type-embedding based serializer. Root object must be 3 element array." );
 		}
 
-		internal static void ThrowUnknownTypeEmbedding( Unpacker unpacker )
-		{
-
-			long offsetOrPosition;
-			var isRealPosition = unpacker.GetPreviousPosition( out offsetOrPosition );
-			if ( offsetOrPosition >= 0L )
-			{
-				if ( isRealPosition )
-				{
-					throw new SerializationException(
-						String.Format(
-							CultureInfo.CurrentCulture,
-							"Cannot deserialize with type-embedding based serializer. Root object must be 3 element array at position {0}",
-							offsetOrPosition
-						)
-					);
-				}
-				else
-				{
-					throw new SerializationException(
-						String.Format(
-							CultureInfo.CurrentCulture,
-							"Cannot deserialize with type-embedding based serializer. Root object must be 3 element array at offset {0}",
-							offsetOrPosition
-						)
-					);
-				}
-			}
-			else
-			{
-				throw new SerializationException( "Cannot deserialize with type-embedding based serializer. Root object must be 3 element array." );
-			}
-		}
-
 		internal static Exception NewIncompatibleCollectionSerializer( Type targetType, Type incompatibleType, Type exampleClass )
 		{
 			return
@@ -887,9 +867,14 @@ namespace MsgPack.Serialization
 			throw new ArgumentNullException( parameterName );
 		}
 
-		internal static void ThrowArgumentException( string message )
+		internal static void ThrowArgumentCannotBeNegativeException( string parameterName )
 		{
-			throw new ArgumentException( message );
+			throw new ArgumentOutOfRangeException( parameterName, "The value cannot be negative number." );
+		}
+
+		internal static void ThrowArgumentException( string parameterName, string message )
+		{
+			throw new ArgumentException( message, parameterName );
 		}
 
 		internal static void ThrowSerializationException( string message )

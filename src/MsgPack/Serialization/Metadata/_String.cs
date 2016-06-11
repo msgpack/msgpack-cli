@@ -26,8 +26,6 @@ namespace MsgPack.Serialization.Metadata
 // ReSharper disable InconsistentNaming
 	internal static class _String
 	{
-		public static readonly MethodInfo op_Equality = FromExpression.ToOperator( ( String left, String right ) => left == right );
-
 		public static readonly MethodInfo Format_P =
 			FromExpression.ToMethod(
 				( IFormatProvider provider, string format, object[] args ) => String.Format( provider, format, args )

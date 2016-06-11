@@ -32,13 +32,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer( SerializationContext ownerContext )
 			: base( ownerContext ) { }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, MessagePackExtendedTypeObject value )
 		{
 			packer.PackExtendedTypeValue( value );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override MessagePackExtendedTypeObject UnpackFromCore( Unpacker unpacker )
 		{
 			return unpacker.LastReadData.AsMessagePackExtendedTypeObject();
@@ -46,11 +46,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 #if FEATURE_TAP
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override Task PackToAsyncCore( Packer packer, MessagePackExtendedTypeObject objectTree, CancellationToken cancellationToken )
 		{
 			return packer.PackExtendedTypeValueAsync( objectTree, cancellationToken );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Transfers all catched exceptions." )]
 		protected internal override Task<MessagePackExtendedTypeObject> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			var tcs = new TaskCompletionSource<MessagePackExtendedTypeObject>();

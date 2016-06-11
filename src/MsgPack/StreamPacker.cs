@@ -102,6 +102,7 @@ namespace MsgPack
 			return this._stream.WriteAsync( new [] { value }, 0, 1, cancellationToken );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected override Task WriteBytesAsync( byte[] asArray, bool isImmutable, CancellationToken cancellationToken )
 		{
 			return this._stream.WriteAsync( asArray, 0, asArray.Length, cancellationToken );

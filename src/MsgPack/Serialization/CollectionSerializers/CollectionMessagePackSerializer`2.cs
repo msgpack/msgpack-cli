@@ -76,7 +76,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// </summary>
 		/// <param name="collection">The collection to be added.</param>
 		/// <param name="item">The item to be added.</param>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected override void AddItem( TCollection collection, TItem item )
 		{
 #if ( !UNITY && !XAMIOS ) || AOT_CHECK

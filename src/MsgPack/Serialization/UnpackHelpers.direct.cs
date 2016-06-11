@@ -22,17 +22,21 @@
 #define UNITY
 #endif
 
+#if DEBUG && !UNITY && !UNITY2
+#define ASSERT
+#endif // DEBUG && !UNITY && !UNITY2
+
 using System;
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
-#if DEBUG && !UNITY && !UNITY2
+#if ASSERT
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -60,14 +64,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static Boolean UnpackBooleanValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -107,14 +126,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static Boolean? UnpackNullableBooleanValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -159,14 +194,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< Boolean> UnpackBooleanValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -210,14 +260,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< Boolean?> UnpackNullableBooleanValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -260,14 +326,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static Byte UnpackByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -307,14 +388,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static Byte? UnpackNullableByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -359,14 +456,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< Byte> UnpackByteValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -410,14 +522,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< Byte?> UnpackNullableByteValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -460,14 +588,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static Int16 UnpackInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -507,14 +650,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static Int16? UnpackNullableInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -559,14 +718,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< Int16> UnpackInt16ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -610,14 +784,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< Int16?> UnpackNullableInt16ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -660,14 +850,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static Int32 UnpackInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -707,14 +912,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static Int32? UnpackNullableInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -759,14 +980,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< Int32> UnpackInt32ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -810,14 +1046,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< Int32?> UnpackNullableInt32ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -860,14 +1112,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static Int64 UnpackInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -907,14 +1174,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static Int64? UnpackNullableInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -959,14 +1242,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< Int64> UnpackInt64ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1010,14 +1308,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< Int64?> UnpackNullableInt64ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1063,14 +1377,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static SByte UnpackSByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1113,14 +1442,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static SByte? UnpackNullableSByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1168,14 +1513,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< SByte> UnpackSByteValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1222,14 +1582,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< SByte?> UnpackNullableSByteValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1275,14 +1651,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static UInt16 UnpackUInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1325,14 +1716,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static UInt16? UnpackNullableUInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1380,14 +1787,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< UInt16> UnpackUInt16ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1434,14 +1856,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< UInt16?> UnpackNullableUInt16ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1487,14 +1925,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static UInt32 UnpackUInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1537,14 +1990,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static UInt32? UnpackNullableUInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1592,14 +2061,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< UInt32> UnpackUInt32ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1646,14 +2130,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< UInt32?> UnpackNullableUInt32ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1699,14 +2199,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static UInt64 UnpackUInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1749,14 +2264,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static UInt64? UnpackNullableUInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1804,14 +2335,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< UInt64> UnpackUInt64ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1858,14 +2404,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< UInt64?> UnpackNullableUInt64ValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1908,14 +2470,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static Single UnpackSingleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -1955,14 +2532,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static Single? UnpackNullableSingleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -2007,14 +2600,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< Single> UnpackSingleValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -2058,14 +2666,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< Single?> UnpackNullableSingleValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -2108,14 +2732,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static Double UnpackDoubleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -2155,14 +2794,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static Double? UnpackNullableDoubleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -2207,14 +2862,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< Double> UnpackDoubleValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -2258,14 +2928,30 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> for nullables essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< Double?> UnpackNullableDoubleValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -2308,14 +2994,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static string UnpackStringValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -2355,14 +3056,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static byte[] UnpackBinaryValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -2407,14 +3123,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< string> UnpackStringValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
@@ -2458,14 +3189,29 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public static async Task< byte[]> UnpackBinaryValueAsync( Unpacker unpacker, Type objectType, String memberName, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( objectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "objectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( objectType != null );
 			Contract.Assert( memberName != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );

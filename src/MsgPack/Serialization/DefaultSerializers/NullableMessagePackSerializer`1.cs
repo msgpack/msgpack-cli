@@ -55,7 +55,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._valueSerializer = valueSerializer;
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, T? objectTree )
 		{
 #if DEBUG && !UNITY && !UNITY2
@@ -65,7 +65,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._valueSerializer.PackToCore( packer, objectTree.Value );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override T? UnpackFromCore( Unpacker unpacker )
 		{
 #if DEBUG && !UNITY && !UNITY2
@@ -116,14 +116,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._valueSerializer = valueSerializer;
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, object objectTree )
 		{
 			// null was handled in PackTo() method.
 			this._valueSerializer.PackTo( packer, objectTree );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override object UnpackFromCore( Unpacker unpacker )
 		{
 			// nil was handled in UnpackFrom() method.

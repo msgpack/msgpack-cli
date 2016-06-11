@@ -125,6 +125,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Transfers all catched exceptions." )]
 		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemSerializer", Justification = "For Delegate signature compatibility" )]
 		public static Task<ArraySegment<byte>> UnpackByteArraySegmentFromAsync( Unpacker unpacker, MessagePackSerializer<byte> itemSerializer, CancellationToken cancellationToken )
 		{
@@ -141,6 +142,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return tcs.Task;
 		}
 
+		[SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Transfers all catched exceptions." )]
 		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemSerializer", Justification = "For Delegate signature compatibility" )]
 		public static Task<ArraySegment<char>> UnpackCharArraySegmentFromAsync( Unpacker unpacker, MessagePackSerializer<char> itemSerializer, CancellationToken cancellationToken )
 		{

@@ -23,18 +23,22 @@
 #define UNITY
 #endif
 
+#if DEBUG && !UNITY && !UNITY2
+#define ASSERT
+#endif // DEBUG && !UNITY && !UNITY2
+
 using System;
 using System.Collections.Generic;
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
-#if DEBUG && !UNITY && !UNITY2
+#if ASSERT
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,6 +48,8 @@ namespace MsgPack.Serialization
 {
 	// This file is generated from UnpackHelpers.facade.tt file with T4.
 	// Do not modify this cs file directly.
+
+	#warning TODO: Some of methods are never used.
 
 	partial class UnpackHelpers
 	{
@@ -60,13 +66,31 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
 		public static T UnpackComplexObject<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( serializer == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "serializer" );
+			}
+
+			if ( unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
 			Contract.Assert( unpacked >= 0 );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 			if ( !unpacker.Read() )
 			{
 				SerializationExceptions.ThrowMissingItem( unpacked, unpacker );
@@ -103,13 +127,31 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
 		public static async Task<T> UnpackComplexObjectAsync<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( serializer == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "serializer" );
+			}
+
+			if ( unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
 			Contract.Assert( unpacked >= 0 );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 			if ( !( await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
 			{
 				SerializationExceptions.ThrowMissingItem( unpacked, unpacker );
@@ -144,13 +186,31 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
 		public static T UnpackComplexObject<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked, string currentKey )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( serializer == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "serializer" );
+			}
+
+			if ( unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
 			Contract.Assert( unpacked >= 0 );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 			if ( !unpacker.Read() )
 			{
 				SerializationExceptions.ThrowMissingItem( unpacked, currentKey, unpacker );
@@ -188,13 +248,31 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
 		public static async Task<T> UnpackComplexObjectAsync<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked, string currentKey, CancellationToken cancellationToken )
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( serializer == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "serializer" );
+			}
+
+			if ( unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( serializer != null );
 			Contract.Assert( unpacked >= 0 );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 			if ( !( await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
 			{
 				SerializationExceptions.ThrowMissingItem( unpacked, currentKey, unpacker );
@@ -233,6 +311,9 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "9", Justification = "False positive because never reached." )]
 		public static void UnpackValueTypeValue<TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<TValue> serializer,
 			int itemsCount, int unpacked,
@@ -241,7 +322,47 @@ namespace MsgPack.Serialization
 		)
 			where TValue : struct
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( context == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "context" );
+			}
+
+			if ( itemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+			}
+
+			if ( unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+			}
+
+			if ( targetObjectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+			if ( setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
+			}
+
+			if ( serializer == null && directRead == null )
+			{
+				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
@@ -250,7 +371,7 @@ namespace MsgPack.Serialization
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
 			Contract.Assert( serializer != null || directRead != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			TValue? nullable;
 			if ( unpacked < itemsCount )
@@ -295,6 +416,9 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "9", Justification = "False positive because never reached." )]
 		public static async Task UnpackValueTypeValueAsync<TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<TValue> serializer,
 			int itemsCount, int unpacked,
@@ -303,7 +427,47 @@ namespace MsgPack.Serialization
 		)
 			where TValue : struct
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( context == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "context" );
+			}
+
+			if ( itemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+			}
+
+			if ( unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+			}
+
+			if ( targetObjectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+			if ( setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
+			}
+
+			if ( serializer == null && directRead == null )
+			{
+				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
@@ -312,7 +476,7 @@ namespace MsgPack.Serialization
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
 			Contract.Assert( serializer != null || directRead != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			TValue? nullable;
 			if ( unpacked < itemsCount )
@@ -355,6 +519,9 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "9", Justification = "False positive because never reached." )]
 		public static void UnpackReferenceTypeValue<TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<TValue> serializer,
 			int itemsCount, int unpacked,
@@ -363,7 +530,47 @@ namespace MsgPack.Serialization
 		)
 			where TValue : class
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( context == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "context" );
+			}
+
+			if ( itemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+			}
+
+			if ( unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+			}
+
+			if ( targetObjectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+			if ( setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
+			}
+
+			if ( serializer == null && directRead == null )
+			{
+				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
@@ -372,7 +579,7 @@ namespace MsgPack.Serialization
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
 			Contract.Assert( serializer != null || directRead != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			TValue nullable;
 			if ( unpacked < itemsCount )
@@ -428,6 +635,9 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "9", Justification = "False positive because never reached." )]
 		public static async Task UnpackReferenceTypeValueAsync<TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<TValue> serializer,
 			int itemsCount, int unpacked,
@@ -436,7 +646,47 @@ namespace MsgPack.Serialization
 		)
 			where TValue : class
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( context == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "context" );
+			}
+
+			if ( itemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+			}
+
+			if ( unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+			}
+
+			if ( targetObjectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+			if ( setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
+			}
+
+			if ( serializer == null && directRead == null )
+			{
+				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
@@ -445,7 +695,7 @@ namespace MsgPack.Serialization
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
 			Contract.Assert( serializer != null || directRead != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			TValue nullable;
 			if ( unpacked < itemsCount )
@@ -499,6 +749,9 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "9", Justification = "False positive because never reached." )]
 		public static void UnpackNullableTypeValue<TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<TValue?> serializer,
 			int itemsCount, int unpacked,
@@ -507,7 +760,47 @@ namespace MsgPack.Serialization
 		)
 			where TValue : struct
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( context == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "context" );
+			}
+
+			if ( itemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+			}
+
+			if ( unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+			}
+
+			if ( targetObjectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+			if ( setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
+			}
+
+			if ( serializer == null && directRead == null )
+			{
+				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
@@ -516,7 +809,7 @@ namespace MsgPack.Serialization
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
 			Contract.Assert( serializer != null || directRead != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			TValue? nullable;
 			if ( unpacked < itemsCount )
@@ -572,6 +865,9 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "9", Justification = "False positive because never reached." )]
 		public static async Task UnpackNullableTypeValueAsync<TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<TValue?> serializer,
 			int itemsCount, int unpacked,
@@ -580,7 +876,47 @@ namespace MsgPack.Serialization
 		)
 			where TValue : struct
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( context == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "context" );
+			}
+
+			if ( itemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+			}
+
+			if ( unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+			}
+
+			if ( targetObjectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+			if ( setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
+			}
+
+			if ( serializer == null && directRead == null )
+			{
+				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
@@ -589,7 +925,7 @@ namespace MsgPack.Serialization
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
 			Contract.Assert( serializer != null || directRead != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			TValue? nullable;
 			if ( unpacked < itemsCount )
@@ -639,6 +975,11 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "6", Justification = "False positive because never reached." )]
 		public static void UnpackMessagePackObjectValueFromArray<TContext>(
 			Unpacker unpacker, TContext context,
 			int itemsCount, int unpacked,
@@ -646,14 +987,44 @@ namespace MsgPack.Serialization
 			Action<TContext, MessagePackObject> setter
 		)
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( context == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "context" );
+			}
+
+			if ( itemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+			}
+
+			if ( unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+			if ( setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
 			Contract.Assert( unpacked >= 0 );
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			MessagePackObject nullable;
 			if ( unpacked < itemsCount )
@@ -707,6 +1078,11 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "6", Justification = "False positive because never reached." )]
 		public static async Task UnpackMessagePackObjectValueFromArrayAsync<TContext>(
 			Unpacker unpacker, TContext context,
 			int itemsCount, int unpacked,
@@ -714,14 +1090,44 @@ namespace MsgPack.Serialization
 			Action<TContext, MessagePackObject> setter, CancellationToken cancellationToken
 		)
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( context == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "context" );
+			}
+
+			if ( itemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+			}
+
+			if ( unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+			if ( setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
 			Contract.Assert( unpacked >= 0 );
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			MessagePackObject nullable;
 			if ( unpacked < itemsCount )
@@ -773,6 +1179,11 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "6", Justification = "False positive because never reached." )]
 		public static void UnpackMessagePackObjectValueFromMap<TContext>(
 			Unpacker unpacker, TContext context,
 			int itemsCount, int unpacked,
@@ -780,14 +1191,44 @@ namespace MsgPack.Serialization
 			Action<TContext, MessagePackObject> setter
 		)
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( context == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "context" );
+			}
+
+			if ( itemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+			}
+
+			if ( unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+			if ( setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
 			Contract.Assert( unpacked >= 0 );
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			MessagePackObject nullable;
 			if ( unpacked < itemsCount )
@@ -841,6 +1282,11 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "6", Justification = "False positive because never reached." )]
 		public static async Task UnpackMessagePackObjectValueFromMapAsync<TContext>(
 			Unpacker unpacker, TContext context,
 			int itemsCount, int unpacked,
@@ -848,14 +1294,44 @@ namespace MsgPack.Serialization
 			Action<TContext, MessagePackObject> setter, CancellationToken cancellationToken
 		)
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( context == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "context" );
+			}
+
+			if ( itemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+			}
+
+			if ( unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+			}
+
+			if ( setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
+			}
+
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( context != null );
 			Contract.Assert( itemsCount >= 0 );
 			Contract.Assert( unpacked >= 0 );
 			Contract.Assert( memberName != null );
 			Contract.Assert( setter != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			MessagePackObject nullable;
 			if ( unpacked < itemsCount )
@@ -918,6 +1394,11 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemNames", Justification = "For tracing." )]
 		public static TResult UnpackFromArray<TContext, TResult>(
 			Unpacker unpacker, TContext context,
 			Func<TContext, TResult> factory, 
@@ -925,11 +1406,25 @@ namespace MsgPack.Serialization
 			IList<Action<Unpacker, TContext, int, int>> operations
 		)
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( factory == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "factory" );
+			}
+
+			if ( operations == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "operations" );
+			}
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( factory != null );
 			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			var count = GetItemsCount( unpacker );
 
@@ -985,6 +1480,11 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemNames", Justification = "For tracing." )]
 		public static async Task<TResult> UnpackFromArrayAsync<TContext, TResult>(
 			Unpacker unpacker, TContext context,
 			Func<TContext, TResult> factory, 
@@ -992,11 +1492,25 @@ namespace MsgPack.Serialization
 			IList<Func<Unpacker, TContext, int, int, CancellationToken, Task>> operations, CancellationToken cancellationToken
 		)
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( factory == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "factory" );
+			}
+
+			if ( operations == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "operations" );
+			}
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( factory != null );
 			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			var count = GetItemsCount( unpacker );
 
@@ -1049,17 +1563,35 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "False positive because never reached." )]
 		public static TResult UnpackFromMap<TContext, TResult>(
 			Unpacker unpacker, TContext context,
 			Func<TContext, TResult> factory, 
 			IDictionary<string, Action<Unpacker, TContext, int, int>> operations
 		)
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( factory == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "factory" );
+			}
+
+			if ( operations == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "operations" );
+			}
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( factory != null );
 			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			var count = GetItemsCount( unpacker );
 
@@ -1128,17 +1660,35 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "False positive because never reached." )]
 		public static async Task<TResult> UnpackFromMapAsync<TContext, TResult>(
 			Unpacker unpacker, TContext context,
 			Func<TContext, TResult> factory, 
 			IDictionary<string, Func<Unpacker, TContext, int, int, CancellationToken, Task>> operations, CancellationToken cancellationToken
 		)
 		{
-#if DEBUG && !UNITY && !UNITY2
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+			}
+
+			if ( factory == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "factory" );
+			}
+
+			if ( operations == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( "operations" );
+			}
+#if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( factory != null );
 			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			var count = GetItemsCount( unpacker );
 
@@ -1204,6 +1754,9 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "False positive because never reached." )]
 		public static T UnpackCollection<T>( Unpacker unpacker, int itemsCount, T collection, Action<Unpacker, T, int> bulkOperation, Action<Unpacker, T, int, int> eachOperation )
 		{
 			if ( collection == null )
@@ -1225,12 +1778,12 @@ namespace MsgPack.Serialization
 			{
 				if ( eachOperation == null )
 				{
-					SerializationExceptions.ThrowArgumentException( "bulkOperation or eachOperation must not be null." );
+					SerializationExceptions.ThrowArgumentException( "eachOperation", "eachOperation cannot not be null when bulkOperation is null." );
 				}
 
-#if DEBUG && !UNITY && !UNITY2
+#if ASSERT
 				Contract.Assert( eachOperation != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 				for ( var i = 0; i < itemsCount; i++ )
 				{
@@ -1272,6 +1825,9 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "False positive because never reached." )]
 		public static async Task<T> UnpackCollectionAsync<T>( Unpacker unpacker, int itemsCount, T collection, Func<Unpacker, T, int, CancellationToken, Task> bulkOperation, Func<Unpacker, T, int, int, CancellationToken, Task> eachOperation, CancellationToken cancellationToken )
 		{
 			if ( collection == null )
@@ -1293,12 +1849,12 @@ namespace MsgPack.Serialization
 			{
 				if ( eachOperation == null )
 				{
-					SerializationExceptions.ThrowArgumentException( "bulkOperation or eachOperation must not be null." );
+					SerializationExceptions.ThrowArgumentException( "eachOperation", "eachOperation cannot not be null when bulkOperation is null." );
 				}
 
-#if DEBUG && !UNITY && !UNITY2
+#if ASSERT
 				Contract.Assert( eachOperation != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 				for ( var i = 0; i < itemsCount; i++ )
 				{

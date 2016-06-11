@@ -1035,7 +1035,6 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Ble, target );
 		}
-#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'blt' instruction with specified arguments.
@@ -1054,7 +1053,6 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Blt, target );
 		}
 
-#if DEBUG
 		///	<summary>
 		///		Emit 'bne.un' instruction with specified arguments.
 		///	</summary>
@@ -1941,7 +1939,6 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Unbox, type );
 		}
-#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'throw' instruction with specified arguments.
@@ -1956,6 +1953,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Throw );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'ldfld' instruction with specified arguments.
@@ -2500,6 +2498,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Ldelem_I8 );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'ldelem.i' instruction with specified arguments.
 		///	</summary>
@@ -2514,6 +2513,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Ldelem_I );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'ldelem.r4' instruction with specified arguments.
@@ -2560,6 +2560,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Ldelem_Ref );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'stelem.i' instruction with specified arguments.
 		///	</summary>
@@ -2574,6 +2575,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Stelem_I );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'stelem.i1' instruction with specified arguments.

@@ -211,6 +211,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TDictionary"/> is not serializable even if it can be serialized.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override Task<TDictionary> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			if ( !unpacker.IsMapHeader )
@@ -346,6 +347,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TDictionary"/> is not mutable collection.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, TDictionary collection, CancellationToken cancellationToken )
 		{
 			if ( !unpacker.IsMapHeader )

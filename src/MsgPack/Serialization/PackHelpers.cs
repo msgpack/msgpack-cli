@@ -22,6 +22,11 @@
 #define UNITY
 #endif
 
+#if DEBUG && !UNITY && !UNITY2
+#define ASSERT
+#endif // DEBUG && !UNITY && !UNITY2
+
+
 using System;
 using System.Collections.Generic;
 #if !UNITY || MSGPACK_UNITY_FULL
@@ -68,6 +73,9 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
 		public static void PackToArray<TObject>(
 			Packer packer,
 			TObject target,
@@ -84,10 +92,10 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "operations" );
 			}
 
-#if DEBUG && !UNITY && !UNITY2
+#if ASSERT
 			Contract.Assert( packer != null );
 			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			packer.PackArrayHeader( operations.Count );
 			foreach ( var operation in operations )
@@ -117,6 +125,9 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
 		public static async Task PackToArrayAsync<TObject>(
 			Packer packer,
 			TObject target,
@@ -165,6 +176,9 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
 		public static void PackToMap<TObject>(
 			Packer packer,
 			TObject target,
@@ -181,10 +195,10 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( "operations" );
 			}
 
-#if DEBUG && !UNITY && !UNITY2
+#if ASSERT
 			Contract.Assert( packer != null );
 			Contract.Assert( operations != null );
-#endif // DEBUG && !UNITY && !UNITY2
+#endif // ASSERT
 
 			packer.PackMapHeader( operations.Count );
 			foreach ( var operation in operations )
@@ -214,6 +228,9 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
 		public static async Task PackToMapAsync<TObject>(
 			Packer packer,
 			TObject target,

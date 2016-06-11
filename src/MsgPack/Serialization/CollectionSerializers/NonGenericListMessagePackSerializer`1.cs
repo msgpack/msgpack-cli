@@ -117,6 +117,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TList"/> is not serializable even if it can be serialized.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override Task<TList> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			if ( !unpacker.IsArrayHeader )

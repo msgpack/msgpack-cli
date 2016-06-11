@@ -30,6 +30,7 @@ using MsgPack.Serialization.Polymorphic;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance", Justification = "User may not use this hierarchy." )]
 	internal sealed class AbstractReadOnlyCollectionMessagePackSerializer<TCollection, TItem> : ReadOnlyCollectionMessagePackSerializer<TCollection, TItem>
 		where TCollection : IReadOnlyCollection<TItem>
 	{

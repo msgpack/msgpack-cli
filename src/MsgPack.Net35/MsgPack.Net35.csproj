@@ -76,9 +76,6 @@
     <Compile Include="..\MsgPack\BufferManager.cs">
       <Link>BufferManager.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\BufferPool.cs">
-      <Link>BufferPool.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\CollectionDebuggerProxy`1.cs">
       <Link>CollectionDebuggerProxy`1.cs</Link>
     </Compile>
@@ -679,9 +676,6 @@
     <Compile Include="..\MsgPack\Serialization\Metadata\_Decimal.cs">
       <Link>Serialization\Metadata\_Decimal.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Metadata\_Delegate.cs">
-      <Link>Serialization\Metadata\_Delegate.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_DictionaryEntry.cs">
       <Link>Serialization\Metadata\_DictionaryEntry.cs</Link>
     </Compile>
@@ -711,9 +705,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_MethodBase.cs">
       <Link>Serialization\Metadata\_MethodBase.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\Metadata\_MethodInfo.cs">
-      <Link>Serialization\Metadata\_MethodInfo.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_Object.cs">
       <Link>Serialization\Metadata\_Object.cs</Link>

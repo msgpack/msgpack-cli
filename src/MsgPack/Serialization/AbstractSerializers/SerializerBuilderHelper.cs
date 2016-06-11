@@ -32,8 +32,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 	{
 		public static readonly KeyValuePair<string, TypeDefinition>[] EmptyParameters = new KeyValuePair<string, TypeDefinition>[ 0 ];
 
-		public static readonly Type[] DictionaryConstructorParametersWithCapacity = { typeof( int ) };
-
 #if FEATURE_TAP
 		public static readonly Type[] UnpackFromAsyncParameterTypes = { typeof( Unpacker ), typeof( CancellationToken ) };
 #endif // FEATURE_TAP

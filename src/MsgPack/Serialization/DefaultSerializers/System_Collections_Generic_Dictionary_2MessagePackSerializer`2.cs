@@ -154,6 +154,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return collection;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, Dictionary<TKey, TValue> collection, CancellationToken cancellationToken )
 		{
 			if ( !unpacker.IsMapHeader )

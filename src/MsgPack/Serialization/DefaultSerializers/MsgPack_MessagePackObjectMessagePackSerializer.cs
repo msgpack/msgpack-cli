@@ -37,7 +37,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			value.PackToMessage( packer, null );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override MessagePackObject UnpackFromCore( Unpacker unpacker )
 		{
 			if ( unpacker.IsArrayHeader || unpacker.IsMapHeader )

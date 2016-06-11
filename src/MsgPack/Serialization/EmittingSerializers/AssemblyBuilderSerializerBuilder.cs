@@ -37,6 +37,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 	/// <summary>
 	///		An implementation of <see cref="SerializerBuilder{AssemblyBuilderEmittingContext,TConstruct}"/> with <see cref="AssemblyBuilder"/>.
 	/// </summary>
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Constracts" )]
 	internal sealed class AssemblyBuilderSerializerBuilder : SerializerBuilder<AssemblyBuilderEmittingContext, ILConstruct>
 	{
 		/// <summary>
@@ -47,11 +48,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public AssemblyBuilderSerializerBuilder( Type targetType, CollectionTraits collectionTraits )
 			: base( targetType, collectionTraits ) { }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitSequentialStatements( AssemblyBuilderEmittingContext context, TypeDefinition contextType, IEnumerable<ILConstruct> statements )
 		{
 			return ILConstruct.Sequence( contextType.ResolveRuntimeType(), statements );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct MakeNullLiteral( AssemblyBuilderEmittingContext context, TypeDefinition contextType )
 		{
 			return ILConstruct.Literal( contextType.ResolveRuntimeType(), default( object ), il => il.EmitLdnull() );
@@ -181,6 +184,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Literal( typeof( string ), constant, il => il.EmitLdstr( constant ) );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct MakeEnumLiteral( AssemblyBuilderEmittingContext context, TypeDefinition type, object constant )
 		{
 			var underyingType = Enum.GetUnderlyingType( type.ResolveRuntimeType() );
@@ -245,6 +249,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct MakeDefaultLiteral( AssemblyBuilderEmittingContext context, TypeDefinition type )
 		{
 			return
@@ -261,6 +266,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitThisReferenceExpression( AssemblyBuilderEmittingContext context )
 		{
 			return ILConstruct.Literal( context.GetSerializerType( this.TargetType ), "(this)", il => il.EmitLdarg_0() );
@@ -522,6 +528,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct ReferArgument( AssemblyBuilderEmittingContext context, TypeDefinition type, string name, int index )
 		{
 			return ILConstruct.Argument( index, type.ResolveRuntimeType(), name );
@@ -543,8 +550,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 					);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitCreateNewObjectExpression( AssemblyBuilderEmittingContext context, ILConstruct variable, ConstructorDefinition constructor, params ILConstruct[] arguments )
 		{
+			Contract.Assert( constructor != null );
+
 			return ILConstruct.NewObject( variable, constructor.ResolveRuntimeConstructor(), arguments );
 		}
 
@@ -623,6 +633,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitGetArrayElementExpression( AssemblyBuilderEmittingContext context, ILConstruct array, ILConstruct index )
 		{
 			return
@@ -666,6 +677,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Invoke( instance, method, arguments );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitInvokeDelegateExpression( AssemblyBuilderEmittingContext context, TypeDefinition delegateReturnType, ILConstruct @delegate, params ILConstruct[] arguments )
 		{
 			return ILConstruct.Invoke( @delegate, @delegate.ContextType.ResolveRuntimeType().GetMethod( "Invoke" ), arguments );
@@ -677,6 +689,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Invoke( instance, property.GetGetMethod( true ), ILConstruct.NoArguments );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitGetFieldExpression( AssemblyBuilderEmittingContext context, ILConstruct instance, FieldDefinition field )
 		{
 			return ILConstruct.LoadField( instance, field.ResolveRuntimeField() );
@@ -696,6 +709,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Invoke( instance, property.GetSetMethod( true ), new[] { value } );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "Validated by caller in base class" )]
 		protected override ILConstruct EmitSetIndexedProperty( AssemblyBuilderEmittingContext context, ILConstruct instance, TypeDefinition declaringType, string proeprtyName, ILConstruct key, ILConstruct value )
 		{
 #if DEBUG
@@ -706,11 +721,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Invoke( instance, indexer.GetSetMethod( true ), new[] { key, value } );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitSetField( AssemblyBuilderEmittingContext context, ILConstruct instance, FieldDefinition field, ILConstruct value )
 		{
 			return ILConstruct.StoreField( instance, field.ResolveRuntimeField(), value );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitSetField( AssemblyBuilderEmittingContext context, ILConstruct instance, TypeDefinition nestedType, string fieldName, ILConstruct value )
 		{
 			return ILConstruct.StoreField( instance, nestedType.ResolveRuntimeType().GetField( fieldName ), value );
@@ -896,7 +913,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return context =>
 				codeGenerationContext.Emitter.CreateEnumInstance(
 					context,
-					this.TargetType,
 					EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod( context, this.TargetType, EnumMemberSerializationMethod.Default )
 				);
 		}
@@ -938,6 +954,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			yield return this.EmitLoadVariableExpression( context, schema );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitGetActionsExpression( AssemblyBuilderEmittingContext context, ActionType actionType, bool isAsync )
 		{
 			Type type;
@@ -1049,6 +1066,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return this.EmitGetFieldExpression( context, this.EmitThisReferenceExpression( context ), field );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitGetMemberNamesExpression( AssemblyBuilderEmittingContext context )
 		{
 			var field = context.DeclarePrivateField( FieldName.MemberNames, typeof( IList<string> ) );
@@ -1056,6 +1074,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return this.EmitGetFieldExpression( context, this.EmitThisReferenceExpression( context ), field );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitFinishFieldInitializationStatement( AssemblyBuilderEmittingContext context, string name, ILConstruct value )
 		{
 			var field = context.DeclarePrivateField( name, value.ContextType.ResolveRuntimeType() );
@@ -1121,12 +1141,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 			{
 				this.BuildEnumSerializer( emittingContext );
 				// Finish type creation, and discard returned ctor.
-				emittingContext.Emitter.CreateEnumConstructor( this.TargetType );
+				emittingContext.Emitter.CreateEnumConstructor();
 			}
 		}
 
 #endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitNewPrivateMethodDelegateExpression( AssemblyBuilderEmittingContext context, MethodDefinition method )
 		{
 			var delegateType = SerializerBuilderHelper.GetResolvedDelegateType( method.ReturnType, method.ParameterTypes );

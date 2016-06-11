@@ -37,6 +37,7 @@ using MsgPack.Serialization.Polymorphic;
 namespace MsgPack.Serialization.DefaultSerializers
 {
 #if !UNITY
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance", Justification = "User may not use this hierarchy." )]
 	internal sealed class AbstractNonGenericListMessagePackSerializer<TCollection> : NonGenericListMessagePackSerializer<TCollection>
 		where TCollection : IList
 #else

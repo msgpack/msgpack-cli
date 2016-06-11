@@ -54,12 +54,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			return this.ResolveRuntimeMethodCore( true );
 		}
-
-		public MethodInfo TryResolveRuntimeMethod()
-		{
-			return this.ResolveRuntimeMethodCore( false );
-		}
-
+		
 		private MethodInfo ResolveRuntimeMethodCore( bool throws )
 		{
 			if ( this._resoolvedMethod != null )

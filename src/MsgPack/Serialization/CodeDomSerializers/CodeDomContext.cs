@@ -39,6 +39,7 @@ using MsgPack.Serialization.AbstractSerializers;
 
 namespace MsgPack.Serialization.CodeDomSerializers
 {
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "CodeDOM" )]
 	internal class CodeDomContext : SerializerGenerationContext<CodeDomConstruct>, ISerializerCodeGenerationContext
 	{
 		public static readonly CodeCatchClause[] EmptyCatches = new CodeCatchClause[ 0 ];
@@ -309,6 +310,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "CodeDOM" )]
 		protected override MethodDefinition EndMethodOverrideCore( string name, CodeDomConstruct body )
 		{
 			var context = this._methodContextStack.Pop();
@@ -541,6 +543,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			this._methodContextStack.Pop();
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override void DefineUnpackingContextCore(
 			IList<KeyValuePair<string, TypeDefinition>> fields,
 			out TypeDefinition type,
