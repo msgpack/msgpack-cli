@@ -71,6 +71,9 @@ Func<Type, bool> __isUnsigned =
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+#if NETFX_35
+using Debug = System.Console; // For missing Debug.WriteLine(String, params Object[])
+#endif // NETFX_35
 using System.IO;
 using System.Text;
 #if !MSTEST
@@ -114,7 +117,7 @@ foreach( var __type in __integerTypes )
 				Test<#= __type.Name #>( rand.Next<#= __type.Name #>() );
 			}
 			sw.Stop();
-			Console.WriteLine( "<#= __type.Name #>: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
+			Debug.WriteLine( "<#= __type.Name #>: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
 		}
 
 		private static void Test<#= __type.Name #>( <#= __type.Name #> value )
@@ -150,7 +153,7 @@ foreach( var __type in __floatingTypes )
 				Test<#= __type.Name #>( rand.Next<#= __type.Name #>() );
 			}
 			sw.Stop();
-			Console.WriteLine( "<#= __type.Name #>: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
+			Debug.WriteLine( "<#= __type.Name #>: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
 		}
 
 		private static void Test<#= __type.Name #>( <#= __type.Name #> value )
