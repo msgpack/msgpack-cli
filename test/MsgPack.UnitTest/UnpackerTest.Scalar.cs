@@ -37,7 +37,6 @@ namespace MsgPack
 	// This file was generated from UnpackerTest.Scalar.tt T4Template.
 	// Do not modify this file. Edit UnpackerTest.Scalar.tt instead.
 
-	#warning TODO: Read int and unpack as real and vice versa.
 	[TestFixture]
 	[Timeout( 500 )]
 	public class UnpackerTest_Scalar
