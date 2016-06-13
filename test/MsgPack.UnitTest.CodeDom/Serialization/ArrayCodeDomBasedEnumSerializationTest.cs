@@ -28,9 +28,9 @@ using System.Threading;
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
 
-#if !SILVERLIGHT && !AOT && !UNITY
+#if !SILVERLIGHT && !AOT
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !UNITY
+#endif // !SILVERLIGHT && !AOT
 
 #if !MSTEST
 using NUnit.Framework;
@@ -59,7 +59,7 @@ namespace MsgPack.Serialization
 			get { return true; }
 		}
 
-#if !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 		[SetUp]
 		public void SetUp()
 		{

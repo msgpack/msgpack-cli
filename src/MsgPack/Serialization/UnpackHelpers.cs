@@ -22,8 +22,6 @@
 #define UNITY
 #endif
 
-#warning TODO: unify UNITY and UNITY
-
 #if DEBUG
 #define ASSERT
 #endif // DEBUG && !UNITY && !UNITY

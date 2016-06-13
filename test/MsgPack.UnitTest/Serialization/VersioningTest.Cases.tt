@@ -142,14 +142,14 @@ foreach( var method in new []{ "Array", "Map" } )
 			case "Field":
 			{
 #>
-#if !AOT
+#if !AOT && !SILVERLIGHT
 <#
 				break;
 			}
 			case "CodeDom":
 			{
 #>
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTD_11 && !NETSTD_13 && !AOT && !SILVERLIGHT
 <#
 				break;
 			}
@@ -197,14 +197,14 @@ foreach( var method in new []{ "Array", "Map" } )
 			case "Field":
 			{
 #>
-#endif // !AOT
+#endif // !AOT && !SILVERLIGHT
 <#
 				break;
 			}
 			case "CodeDom":
 			{
 #>
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTD_11 && !NETSTD_13 && !AOT && !SILVERLIGHT
 <#
 				break;
 			}
