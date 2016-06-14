@@ -71,6 +71,44 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             MsgPack.Serialization.PolymorphismSchema schema1 = default(MsgPack.Serialization.PolymorphismSchema);
             schema1 = null;
             this._serializer1 = context.GetSerializer<string>(schema1);
+            System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] packOperationListAsync = default(System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            packOperationListAsync = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>[5];
+            packOperationListAsync[0] = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfheightAsync);
+            packOperationListAsync[1] = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfsizeAsync);
+            packOperationListAsync[2] = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOftitleAsync);
+            packOperationListAsync[3] = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfuriAsync);
+            packOperationListAsync[4] = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfwidthAsync);
+            this._packOperationListAsync = packOperationListAsync;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>> packOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            packOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(5);
+            packOperationTableAsync["height"] = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfheightAsync);
+            packOperationTableAsync["size"] = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfsizeAsync);
+            packOperationTableAsync["title"] = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOftitleAsync);
+            packOperationTableAsync["uri"] = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfuriAsync);
+            packOperationTableAsync["width"] = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfwidthAsync);
+            this._packOperationTableAsync = packOperationTableAsync;
+            System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] unpackOperationListAsync = default(System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
+            unpackOperationListAsync = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[5];
+            unpackOperationListAsync[0] = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfheightAsync);
+            unpackOperationListAsync[1] = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfsizeAsync);
+            unpackOperationListAsync[2] = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOftitleAsync);
+            unpackOperationListAsync[3] = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfuriAsync);
+            unpackOperationListAsync[4] = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfwidthAsync);
+            this._unpackOperationListAsync = unpackOperationListAsync;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> unpackOperationTableAsync = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>);
+            unpackOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(5);
+            unpackOperationTableAsync["height"] = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfheightAsync);
+            unpackOperationTableAsync["size"] = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfsizeAsync);
+            unpackOperationTableAsync["title"] = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOftitleAsync);
+            unpackOperationTableAsync["uri"] = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfuriAsync);
+            unpackOperationTableAsync["width"] = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfwidthAsync);
+            this._unpackOperationTableAsync = unpackOperationTableAsync;
+            this._memberNames = new string[] {
+                    "height",
+                    "size",
+                    "title",
+                    "uri",
+                    "width"};
             this.this_PackValueOfheightAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfheightAsync);
             this.this_PackValueOfsizeAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfsizeAsync);
             this.this_PackValueOftitleAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOftitleAsync);

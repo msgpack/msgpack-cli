@@ -1498,14 +1498,22 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					if ( targetInfo != null )
 					{ 
 						// For object only.
-						if ( !typeof( IPackable ).IsAssignableFrom( this.TargetType ) )
+						if (
+							!typeof( IPackable ).IsAssignableFrom( this.TargetType )
+#if FEATURE_TAP
+							|| !typeof( IAsyncPackable ).IsAssignableFrom( this.TargetType )
+#endif // FEATURE_TAP
+						)
 						{
 
-							ctor.Statements.AddRange(
-								this.EmitPackOperationListInitialization( context, targetInfo, false ).AsStatements().ToArray()
-							);
+							if ( !typeof( IPackable ).IsAssignableFrom( this.TargetType ) )
+							{
+								ctor.Statements.AddRange(
+									this.EmitPackOperationListInitialization( context, targetInfo, false ).AsStatements().ToArray()
+								);
+							}
 #if FEATURE_TAP
-							if ( this.WithAsync( context ) )
+							if ( this.WithAsync( context ) && !typeof( IAsyncPackable ).IsAssignableFrom( this.TargetType ) )
 							{
 								ctor.Statements.AddRange(
 									this.EmitPackOperationListInitialization( context, targetInfo, true ).AsStatements().ToArray()
@@ -1514,11 +1522,14 @@ namespace MsgPack.Serialization.CodeDomSerializers
 #endif // FEATURE_TAP
 							if ( targetInfo.Members.Any( m => m.Member != null ) ) // not Tuple
 							{
-								ctor.Statements.AddRange(
-									this.EmitPackOperationTableInitialization( context, targetInfo, false ).AsStatements().ToArray()
-								);
+								if ( !typeof( IPackable ).IsAssignableFrom( this.TargetType ) )
+								{
+									ctor.Statements.AddRange(
+										this.EmitPackOperationTableInitialization( context, targetInfo, false ).AsStatements().ToArray()
+									);
+								}
 #if FEATURE_TAP
-								if ( this.WithAsync( context ) )
+								if ( this.WithAsync( context ) && !typeof( IAsyncPackable ).IsAssignableFrom( this.TargetType ) )
 								{
 									ctor.Statements.AddRange(
 										this.EmitPackOperationTableInitialization( context, targetInfo, true ).AsStatements().ToArray()
@@ -1528,13 +1539,21 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							}
 						}
 
-						if ( !typeof( IUnpackable ).IsAssignableFrom( this.TargetType ) )
-						{
-							ctor.Statements.AddRange(
-								this.EmitUnpackOperationListInitialization( context, targetInfo, false ).AsStatements().ToArray()
-							);
+						if (
+							!typeof( IUnpackable ).IsAssignableFrom( this.TargetType )
 #if FEATURE_TAP
-							if ( this.WithAsync( context ) )
+							|| !typeof( IAsyncUnpackable ).IsAssignableFrom( this.TargetType )
+#endif // FEATURE_TAP
+						)
+						{
+							if ( !typeof( IUnpackable ).IsAssignableFrom( this.TargetType ) )
+							{
+								ctor.Statements.AddRange(
+									this.EmitUnpackOperationListInitialization( context, targetInfo, false ).AsStatements().ToArray()
+								);
+							}
+#if FEATURE_TAP
+							if ( this.WithAsync( context ) && !typeof( IAsyncUnpackable ).IsAssignableFrom( this.TargetType ) )
 							{
 								ctor.Statements.AddRange(
 									this.EmitUnpackOperationListInitialization( context, targetInfo, true ).AsStatements().ToArray()
@@ -1545,11 +1564,14 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							if ( targetInfo.Members.Any( m => m.Member != null ) )
 							{
 								// Except tuples
-								ctor.Statements.AddRange(
-									this.EmitUnpackOperationTableInitialization( context, targetInfo, false ).AsStatements().ToArray()
-								);
+								if ( !typeof( IUnpackable ).IsAssignableFrom( this.TargetType ) )
+								{
+									ctor.Statements.AddRange(
+										this.EmitUnpackOperationTableInitialization( context, targetInfo, false ).AsStatements().ToArray()
+									);
+								}
 #if FEATURE_TAP
-								if ( this.WithAsync( context ) )
+								if ( this.WithAsync( context ) && !typeof( IAsyncUnpackable ).IsAssignableFrom( this.TargetType ) )
 								{
 									ctor.Statements.AddRange(
 										this.EmitUnpackOperationTableInitialization( context, targetInfo, true ).AsStatements().ToArray()

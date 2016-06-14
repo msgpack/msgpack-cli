@@ -307,8 +307,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public Func<SerializationContext, PolymorphismSchema, MessagePackSerializer> CreateObjectConstructor( AssemblyBuilderEmittingContext context, AssemblyBuilderSerializerBuilder builder, SerializationTarget targetInfo )
 		{
 			var hasPackActions = targetInfo != null && !typeof( IPackable ).IsAssignableFrom( builder.TargetType );
-			var hasUnackActions = targetInfo != null && !typeof( IUnpackable ).IsAssignableFrom( builder.TargetType );
-			var hasUnpackActionTables = hasUnackActions && targetInfo.Members.Any( m => m.Member != null ); // Except tuples
+			var hasUnpackActions = targetInfo != null && !typeof( IUnpackable ).IsAssignableFrom( builder.TargetType );
+			var hasUnpackActionTables = hasUnpackActions && targetInfo.Members.Any( m => m.Member != null ); // Except tuples
+#if FEATURE_TAP
+			var hasPackAsyncActions = targetInfo != null && !typeof( IAsyncPackable ).IsAssignableFrom( builder.TargetType );
+			var hasUnpackAsyncActions = targetInfo != null && !typeof( IAsyncUnpackable ).IsAssignableFrom( builder.TargetType );
+			var hasUnpackAsyncActionTables = hasUnpackAsyncActions && targetInfo.Members.Any( m => m.Member != null ); // Except tuples
+#endif // FEATURE_TAP
 			// ReSharper disable RedundantDelegateCreation
 			Func<bool, Func<ILConstruct>> packActionsInitialization =
 				isAsync =>
@@ -337,28 +342,32 @@ namespace MsgPack.Serialization.EmittingSerializers
 							hasPackActions
 								? packActionTableInitialization( false )
 								: default( Func<ILConstruct> ),
-							hasUnackActions
+							hasUnpackActions
 								? unpackActionsInitialization( false )
 								: default( Func<ILConstruct> ),
 							hasUnpackActionTables
 								? unpackActionTableInitialization( false )
 								: default( Func<ILConstruct> ),
 #if FEATURE_TAP
-							hasPackActions && context.SerializationContext.SerializerOptions.WithAsync
+							hasPackAsyncActions && context.SerializationContext.SerializerOptions.WithAsync
 								? packActionsInitialization( true )
 								: default( Func<ILConstruct> ),
-							hasPackActions && context.SerializationContext.SerializerOptions.WithAsync
+							hasPackAsyncActions && context.SerializationContext.SerializerOptions.WithAsync
 								? packActionTableInitialization( true )
 								: default( Func<ILConstruct> ),
-							hasUnackActions && context.SerializationContext.SerializerOptions.WithAsync
+							hasUnpackAsyncActions && context.SerializationContext.SerializerOptions.WithAsync
 								? unpackActionsInitialization( true )
 								: default( Func<ILConstruct> ),
-							hasUnpackActionTables && context.SerializationContext.SerializerOptions.WithAsync
+							hasUnpackAsyncActionTables && context.SerializationContext.SerializerOptions.WithAsync
 								? unpackActionTableInitialization( true )
 								: default( Func<ILConstruct> ),
 #endif // FEATURE_TAP
-							hasUnackActions
-								? () => builder.EmitMemberListInitialization( context, targetInfo )
+							( 
+								hasUnpackActions
+#if FEATURE_TAP
+								|| hasUnpackAsyncActions
+#endif // FEATURE_TAP
+							) ? () => builder.EmitMemberListInitialization( context, targetInfo )
 								: default( Func<ILConstruct> ),
 							context.IsUnpackToUsed
 								? () => builder.EmitUnpackToInitialization( context )

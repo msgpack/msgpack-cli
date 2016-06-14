@@ -42,6 +42,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
 using System.Text;
 #if FEATURE_TAP
+using System.Threading;
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
 #if !SILVERLIGHT && !AOT
@@ -1965,9 +1966,18 @@ namespace MsgPack.Serialization
 				var value = new JustPackable();
 				value.Int32Field = 1;
 				serializer.Pack( stream, value );
-				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x91, 0xA1, ( byte )'A' } ) );
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x91, 0xA1, ( byte )'1' } ) );
 				stream.Position = 0;
 				Assert.Throws<SerializationException>( () => serializer.Unpack( stream ), "Round-trip should not be succeeded." );
+
+#if FEATURE_TAP
+				stream.SetLength( 0 );
+				serializer.PackAsync( stream, value, CancellationToken.None ).GetAwaiter().GetResult();
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x81, 0xAA, 0x49, 0x6E, 0x74, 0x33, 0x32, 0x46, 0x69, 0x65, 0x6C, 0x64, 0x1 } ) );
+				stream.Position = 0;
+				var result = serializer.UnpackAsync( stream, CancellationToken.None ).GetAwaiter().GetResult();
+				Assert.That( result.Int32Field, Is.EqualTo( value.Int32Field ) );
+#endif // FEATURE_TAP
 			}
 		}
 
@@ -1978,12 +1988,70 @@ namespace MsgPack.Serialization
 			using ( var stream = new MemoryStream() )
 			{
 				var value = new JustUnpackable();
+				value.Int32Field = 1;
 				serializer.Pack( stream, value );
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
 				Assert.That( result.Int32Field.ToString(), Is.EqualTo( JustUnpackable.Dummy ) );
+
+#if FEATURE_TAP
+				stream.SetLength( 0 );
+				serializer.PackAsync( stream, value, CancellationToken.None ).GetAwaiter().GetResult();
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x81, 0xAA, 0x49, 0x6E, 0x74, 0x33, 0x32, 0x46, 0x69, 0x65, 0x6C, 0x64, 0x1 } ) );
+				stream.Position = 0;
+				result = serializer.UnpackAsync( stream, CancellationToken.None ).GetAwaiter().GetResult();
+				Assert.That( result.Int32Field, Is.EqualTo( value.Int32Field ) );
+#endif // FEATURE_TAP
 			}
 		}
+		
+#if FEATURE_TAP
+
+		[Test]
+		public void TestAsyncPackable_PackToMessageUsed()
+		{
+			var serializer = this.CreateTarget<JustAsyncPackable>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new JustAsyncPackable();
+				value.Int32Field = 1;
+				serializer.Pack( stream, value );
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x81, 0xAA, 0x49, 0x6E, 0x74, 0x33, 0x32, 0x46, 0x69, 0x65, 0x6C, 0x64, 0x1 } ) );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Int32Field, Is.EqualTo( value.Int32Field ) );
+
+				stream.SetLength( 0 );
+				serializer.PackAsync( stream, value, CancellationToken.None ).GetAwaiter().GetResult();
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x91, 0xA1, ( byte )'1' } ) );
+				stream.Position = 0;
+				Assert.Throws<SerializationException>( () => serializer.UnpackAsync( stream, CancellationToken.None ).GetAwaiter().GetResult(), "Round-trip should not be succeeded." );
+			}
+		}
+
+		[Test]
+		public void TestAsyncUnpackable_UnpackFromMessageUsed()
+		{
+			var serializer = this.CreateTarget<JustAsyncUnpackable>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new JustAsyncUnpackable();
+				value.Int32Field = 1;
+				serializer.Pack( stream, value );
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x81, 0xAA, 0x49, 0x6E, 0x74, 0x33, 0x32, 0x46, 0x69, 0x65, 0x6C, 0x64, 0x1 } ) );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Int32Field, Is.EqualTo( value.Int32Field ) );
+
+				stream.SetLength( 0 );
+				serializer.PackAsync( stream, value, CancellationToken.None ).GetAwaiter().GetResult();
+				stream.Position = 0;
+				result = serializer.UnpackAsync( stream, CancellationToken.None ).GetAwaiter().GetResult();
+				Assert.That( result.Int32Field.ToString(), Is.EqualTo( JustAsyncUnpackable.Dummy ) );
+			}
+		}
+
+#endif // FEATURE_TAP
 
 		[Test]
 		public void TestPackableUnpackable_PackToMessageAndUnpackFromMessageUsed()
@@ -1994,11 +2062,71 @@ namespace MsgPack.Serialization
 				var value = new PackableUnpackable();
 				value.Int32Field = 1;
 				serializer.Pack( stream, value );
-				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x91, 0xA1, ( byte )'A' } ) );
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x91, 0xA1, ( byte )'1' } ) );
 				stream.Position = 0;
-				serializer.Unpack( stream );
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Int32Field.ToString(), Is.EqualTo( PackableUnpackable.Dummy ) );
+
+#if FEATURE_TAP
+				stream.SetLength( 0 );
+				serializer.PackAsync( stream, value, CancellationToken.None ).GetAwaiter().GetResult();
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x81, 0xAA, 0x49, 0x6E, 0x74, 0x33, 0x32, 0x46, 0x69, 0x65, 0x6C, 0x64, 0x1 } ) );
+				stream.Position = 0;
+				result = serializer.UnpackAsync( stream, CancellationToken.None ).GetAwaiter().GetResult();
+				Assert.That( result.Int32Field, Is.EqualTo( value.Int32Field ) );
+#endif // FEATURE_TAP
 			}
 		}
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestAsyncPackableUnpackable_PackToMessageAndUnpackFromMessageUsed()
+		{
+			var serializer = this.CreateTarget<AsyncPackableUnpackable>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new AsyncPackableUnpackable();
+				value.Int32Field = 1;
+				serializer.Pack( stream, value );
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x81, 0xAA, 0x49, 0x6E, 0x74, 0x33, 0x32, 0x46, 0x69, 0x65, 0x6C, 0x64, 0x1 } ) );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Int32Field, Is.EqualTo( value.Int32Field ) );
+
+				stream.SetLength( 0 );
+				serializer.PackAsync( stream, value, CancellationToken.None ).GetAwaiter().GetResult();
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x91, 0xA1, ( byte )'1' } ) );
+				stream.Position = 0;
+				result = serializer.UnpackAsync( stream, CancellationToken.None ).GetAwaiter().GetResult();
+				Assert.That( result.Int32Field.ToString(), Is.EqualTo( AsyncPackableUnpackable.Dummy ) );
+			}
+		}
+
+		[Test]
+		public void TestFullPackableUnpackable_PackToMessageAndUnpackFromMessageUsed()
+		{
+			var serializer = this.CreateTarget<FullPackableUnpackable>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new FullPackableUnpackable();
+				value.Int32Field = 1;
+				serializer.Pack( stream, value );
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x91, 0xA1, ( byte )'1' } ) );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Int32Field.ToString(), Is.EqualTo( FullPackableUnpackable.Dummy ) );
+
+				stream.SetLength( 0 );
+				serializer.PackAsync( stream, value, CancellationToken.None ).GetAwaiter().GetResult();
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x91, 0xA1, ( byte )'1' } ) );
+				stream.Position = 0;
+				result = serializer.UnpackAsync( stream, CancellationToken.None ).GetAwaiter().GetResult();
+				Assert.That( result.Int32Field.ToString(), Is.EqualTo( FullPackableUnpackable.Dummy ) );
+			}
+		}
+
+#endif // FEATURE_TAP
 
 		[Test]
 		public void TestBinary_ClassicContext()
@@ -6055,7 +6183,7 @@ namespace MsgPack.Serialization
 
 		public class JustPackable : IPackable
 		{
-			public const string Dummy = "A";
+			public const string Dummy = "1";
 
 			public int Int32Field { get; set; }
 
@@ -6074,27 +6202,14 @@ namespace MsgPack.Serialization
 
 			public void UnpackFromMessage( Unpacker unpacker )
 			{
-				var value = unpacker.UnpackSubtreeData();
-				if ( value.IsArray )
-				{
-					Assert.That( value.AsList()[ 0 ] == 0, "{0} != \"[{1}]\"", value, 0 );
-				}
-				else if ( value.IsMap )
-				{
-					Assert.That( value.AsDictionary().First().Value == 0, "{0} != \"[{1}]\"", value, 0 );
-				}
-				else
-				{
-					Assert.Fail( "Unknown spec." );
-				}
-
+				unpacker.UnpackSubtreeData();
 				this.Int32Field = Int32.Parse( Dummy );
 			}
 		}
 
 		public class PackableUnpackable : IPackable, IUnpackable
 		{
-			public const string Dummy = "A";
+			public const string Dummy = "1";
 
 			public int Int32Field { get; set; }
 
@@ -6106,11 +6221,90 @@ namespace MsgPack.Serialization
 
 			public void UnpackFromMessage( Unpacker unpacker )
 			{
-				Assert.That( unpacker.IsArrayHeader );
-				var value = unpacker.UnpackSubtreeData();
-				Assert.That( value.AsList()[ 0 ] == Dummy, "{0} != \"[{1}]\"", value, Dummy );
+				unpacker.UnpackSubtreeData();
+				this.Int32Field = Int32.Parse( Dummy );
 			}
 		}
+
+#if FEATURE_TAP
+#pragma warning disable 1998
+
+		public class JustAsyncPackable : IAsyncPackable
+		{
+			public const string Dummy = "1";
+
+			public int Int32Field { get; set; }
+
+			public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+			{
+				packer.PackArrayHeader( 1 );
+				packer.PackString( Dummy );
+			}
+		}
+
+		public class JustAsyncUnpackable : IAsyncUnpackable
+		{
+			public const string Dummy = "1";
+
+			public int Int32Field { get; set; }
+
+			public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+			{
+				unpacker.UnpackSubtreeData();
+				this.Int32Field = Int32.Parse( Dummy );
+			}
+		}
+
+		public class AsyncPackableUnpackable : IAsyncPackable, IAsyncUnpackable
+		{
+			public const string Dummy = "1";
+
+			public int Int32Field { get; set; }
+
+			public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+			{
+				packer.PackArrayHeader( 1 );
+				packer.PackString( Dummy );
+			}
+
+			public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+			{
+				unpacker.UnpackSubtreeData();
+				this.Int32Field = Int32.Parse( Dummy );
+			}
+		}
+
+		public class FullPackableUnpackable : IPackable, IUnpackable, IAsyncPackable, IAsyncUnpackable
+		{
+			public const string Dummy = "1";
+
+			public int Int32Field { get; set; }
+
+			public void PackToMessage( Packer packer, PackingOptions options )
+			{
+				packer.PackArrayHeader( 1 );
+				packer.PackString( Dummy );
+			}
+
+			public void UnpackFromMessage( Unpacker unpacker )
+			{
+				unpacker.UnpackSubtreeData();
+				this.Int32Field = Int32.Parse( Dummy );
+			}
+
+			public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+			{
+				this.PackToMessage( packer, options );
+			}
+
+			public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+			{
+				this.UnpackFromMessage( unpacker );
+			}
+		}
+
+#pragma warning restore 1998
+#endif // FEATURE_TAP
 
 		public class CustomDateTimeSerealizer : MessagePackSerializer<DateTime>
 		{

@@ -156,13 +156,6 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				return;
 			}
 
-			var asPackable = objectTree as IPackable;
-			if ( asPackable != null )
-			{
-				await Task.Run( () => asPackable.PackToMessage( packer, null ), cancellationToken ).ConfigureAwait( false );
-				return;
-			}
-
 			if ( this.OwnerContext.SerializationMethod != SerializationMethod.Map )
 			{
 				await packer.PackArrayHeaderAsync( this._serializers.Length, cancellationToken ).ConfigureAwait( false );
