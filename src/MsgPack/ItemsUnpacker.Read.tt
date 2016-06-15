@@ -368,7 +368,7 @@ case ReadValueResult.Double:
 <#+
 		this.PushIndent( 1 );
 		this.OnReturnScalar();
-		this.Success( nullableType, resultVariable, CastIfNecessary( typeof( double ), type, true, valueVariable.Real32( isAsync ), false, isAsync ), isAsync );
+		this.Success( nullableType, resultVariable, CastIfNecessary( typeof( double ), type, true, valueVariable.Real64( isAsync ), false, isAsync ), isAsync );
 		this.PopIndent();
 #>
 }

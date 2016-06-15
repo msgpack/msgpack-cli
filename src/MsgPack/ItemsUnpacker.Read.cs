@@ -257,7 +257,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( Byte )real32 );
+					result = checked( ( Byte )real64 );
 					return true;
 				}
 				default:
@@ -310,7 +310,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success( checked( ( Byte )asyncResult.real32 ) );
+					return AsyncReadResult.Success( checked( ( Byte )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -391,7 +391,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( Byte )real32 );
+					result = checked( ( Byte )real64 );
 					return true;
 				}
 				default:
@@ -449,7 +449,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success<Byte?>( checked( ( Byte )asyncResult.real32 ) );
+					return AsyncReadResult.Success<Byte?>( checked( ( Byte )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -524,7 +524,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( SByte )real32 );
+					result = checked( ( SByte )real64 );
 					return true;
 				}
 				default:
@@ -577,7 +577,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success( checked( ( SByte )asyncResult.real32 ) );
+					return AsyncReadResult.Success( checked( ( SByte )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -658,7 +658,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( SByte )real32 );
+					result = checked( ( SByte )real64 );
 					return true;
 				}
 				default:
@@ -716,7 +716,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success<SByte?>( checked( ( SByte )asyncResult.real32 ) );
+					return AsyncReadResult.Success<SByte?>( checked( ( SByte )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -791,7 +791,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( Int16 )real32 );
+					result = checked( ( Int16 )real64 );
 					return true;
 				}
 				default:
@@ -844,7 +844,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success( checked( ( Int16 )asyncResult.real32 ) );
+					return AsyncReadResult.Success( checked( ( Int16 )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -925,7 +925,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( Int16 )real32 );
+					result = checked( ( Int16 )real64 );
 					return true;
 				}
 				default:
@@ -983,7 +983,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success<Int16?>( checked( ( Int16 )asyncResult.real32 ) );
+					return AsyncReadResult.Success<Int16?>( checked( ( Int16 )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -1058,7 +1058,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( UInt16 )real32 );
+					result = checked( ( UInt16 )real64 );
 					return true;
 				}
 				default:
@@ -1111,7 +1111,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success( checked( ( UInt16 )asyncResult.real32 ) );
+					return AsyncReadResult.Success( checked( ( UInt16 )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -1192,7 +1192,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( UInt16 )real32 );
+					result = checked( ( UInt16 )real64 );
 					return true;
 				}
 				default:
@@ -1250,7 +1250,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success<UInt16?>( checked( ( UInt16 )asyncResult.real32 ) );
+					return AsyncReadResult.Success<UInt16?>( checked( ( UInt16 )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -1325,7 +1325,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( Int32 )real32 );
+					result = checked( ( Int32 )real64 );
 					return true;
 				}
 				default:
@@ -1378,7 +1378,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success( checked( ( Int32 )asyncResult.real32 ) );
+					return AsyncReadResult.Success( checked( ( Int32 )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -1459,7 +1459,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( Int32 )real32 );
+					result = checked( ( Int32 )real64 );
 					return true;
 				}
 				default:
@@ -1517,7 +1517,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success<Int32?>( checked( ( Int32 )asyncResult.real32 ) );
+					return AsyncReadResult.Success<Int32?>( checked( ( Int32 )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -1592,7 +1592,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( UInt32 )real32 );
+					result = checked( ( UInt32 )real64 );
 					return true;
 				}
 				default:
@@ -1645,7 +1645,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success( checked( ( UInt32 )asyncResult.real32 ) );
+					return AsyncReadResult.Success( checked( ( UInt32 )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -1726,7 +1726,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( UInt32 )real32 );
+					result = checked( ( UInt32 )real64 );
 					return true;
 				}
 				default:
@@ -1784,7 +1784,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success<UInt32?>( checked( ( UInt32 )asyncResult.real32 ) );
+					return AsyncReadResult.Success<UInt32?>( checked( ( UInt32 )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -1859,7 +1859,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( Int64 )real32 );
+					result = checked( ( Int64 )real64 );
 					return true;
 				}
 				default:
@@ -1912,7 +1912,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success( checked( ( Int64 )asyncResult.real32 ) );
+					return AsyncReadResult.Success( checked( ( Int64 )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -1993,7 +1993,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( Int64 )real32 );
+					result = checked( ( Int64 )real64 );
 					return true;
 				}
 				default:
@@ -2051,7 +2051,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success<Int64?>( checked( ( Int64 )asyncResult.real32 ) );
+					return AsyncReadResult.Success<Int64?>( checked( ( Int64 )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -2121,7 +2121,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( UInt64 )real32 );
+					result = checked( ( UInt64 )real64 );
 					return true;
 				}
 				default:
@@ -2170,7 +2170,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success( checked( ( UInt64 )asyncResult.real32 ) );
+					return AsyncReadResult.Success( checked( ( UInt64 )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -2246,7 +2246,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( UInt64 )real32 );
+					result = checked( ( UInt64 )real64 );
 					return true;
 				}
 				default:
@@ -2300,7 +2300,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success<UInt64?>( checked( ( UInt64 )asyncResult.real32 ) );
+					return AsyncReadResult.Success<UInt64?>( checked( ( UInt64 )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -2370,7 +2370,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( Single )real32 );
+					result = checked( ( Single )real64 );
 					return true;
 				}
 				default:
@@ -2419,7 +2419,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success( checked( ( Single )asyncResult.real32 ) );
+					return AsyncReadResult.Success( checked( ( Single )asyncResult.real64 ) );
 				}
 				default:
 				{
@@ -2495,7 +2495,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					result = checked( ( Single )real32 );
+					result = checked( ( Single )real64 );
 					return true;
 				}
 				default:
@@ -2549,7 +2549,7 @@ namespace MsgPack
 				case ReadValueResult.Double:
 				{
 					this.InternalCollectionType = CollectionType.None;
-					return AsyncReadResult.Success<Single?>( checked( ( Single )asyncResult.real32 ) );
+					return AsyncReadResult.Success<Single?>( checked( ( Single )asyncResult.real64 ) );
 				}
 				default:
 				{
