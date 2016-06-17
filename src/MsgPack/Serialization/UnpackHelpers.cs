@@ -896,7 +896,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Returns <see cref="Task{T}"/> which returns nullable wrapper for the value returned from specified <see cref="Task{T}" />.
+		///		Returns <see cref="Task{T}"/> which returns the value returned from specified <paramref name="target"/>.
 		/// </summary>
 		/// <typeparam name="T">The type of deserializing object.</typeparam>
 		/// <param name="target">The deserializing object.</param>
