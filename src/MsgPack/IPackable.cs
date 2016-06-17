@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,16 +23,25 @@ using System;
 namespace MsgPack
 {
 	/// <summary>
-	///		Represents objects which knows how to pack ifself using specified <see cref="Packer"/>.
+	///		An interface which is implemented by the objects which know how to pack themselves using specified <see cref="Packer"/>.
 	/// </summary>
+	/// <remarks>
+	///		<include file='remarks.xml' path='doc/para[@name="MsgPack.Serialization.customPackingUnpacking"]'/>
+	/// </remarks>
 	public interface IPackable
 	{
 		/// <summary>
-		///		Pack this instance itself using specified <see cref="Packer"/>.
+		///		Packs this object contents to the specified <see cref="Packer"/>.
 		/// </summary>
-		/// <param name="packer"><see cref="Packer"/>.</param>
+		/// <param name="packer">The <see cref="Packer"/> that this object will write to.</param>
 		/// <param name="options">Packing options. This value can be null.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="packer"/> is null.</exception>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="packer"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to serialize this object.
+		/// </exception>
+		/// <include file='remarks.xml' path='doc/remarks[@name="MsgPack.Serialization.customPacking"]'/>
 		void PackToMessage( Packer packer, PackingOptions options );
 	}
 }

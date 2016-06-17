@@ -27,18 +27,27 @@ using System.Threading.Tasks;
 namespace MsgPack
 {
 	/// <summary>
-	///		Represents objects which knows how to pack ifself using specified <see cref="Packer"/> asynchronously.
+	///		An interface which is implemented by the objects which know how to pack themselves using specified <see cref="Packer"/> asynchronously.
 	/// </summary>
+	/// <remarks>
+	///		<include file='remarks.xml' path='doc/para[@name="MsgPack.Serialization.customPackingUnpacking"]'/>
+	/// </remarks>
 	public interface IAsyncPackable
 	{
 		/// <summary>
-		///		Pack this instance itself using specified <see cref="Packer"/> asynchronously.
+		///		Packs this object contents to the specified <see cref="Packer"/> asynchronously.
 		/// </summary>
-		/// <param name="packer"><see cref="Packer"/>.</param>
+		/// <param name="packer">The <see cref="Packer"/> that this object will write to.</param>
 		/// <param name="options">Packing options. This value can be null.</param>
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="packer"/> is null.</exception>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="packer"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to serialize this object.
+		/// </exception>
+		/// <include file='remarks.xml' path='doc/remarks[@name="MsgPack.Serialization.customPacking"]'/>
 		Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken );
 	}
 }

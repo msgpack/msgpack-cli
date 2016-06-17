@@ -59,4 +59,34 @@
       </item>
     </list>
   </remarks>
+  <remarks name="MsgPack.Serialization.customPacking">
+    <para>
+      In general, objet's state will be serialized as array or map.
+      If so, emit array/map header with the items count via <see cref="Packer.PackArrayHeader"/> or <see cref="Packer.PackMapHeader"/>,
+      then serialize states themselves.
+    </para>
+    <para>
+      On the other hand, value types may be serialized as single value.
+      For example, <see cref="TimeSpan" /> can be serialized as <c>int64</c> value with its <see cref="TimeSpan.Ticks">Ticks</see> property.
+    </para>
+  </remarks>
+  <remarks name="MsgPack.Serialization.customUnpacking">
+    <para>
+      In general, objet's state is serialized as array or map.
+      If so, reading array/map header and then read individual fields (note that every state has their key string when the object serialized as map).
+      You should accept both of array and map for the object itself, and allow string and underlying numerics for enum values as "torelant reader".
+    </para>
+    <para>
+      On the other hand, value types may be serialized as single value.
+      For example, <see cref="TimeSpan" /> can be serialized as <c>int64</c> value with its <see cref="TimeSpan.Ticks">Ticks</see> property.
+    </para>
+  </remarks>
+  <para name="MsgPack.Serialization.customPackingUnpacking">
+    Custom serialization interfaces are lightweight way to implement custom serialization especially you own the type itself.
+    You can tweak individual member serialization as well. For example:
+    <list type="bullet">
+      <item>Encode text data which may contain non-ASCII charactors with UTF-16 format.</item>
+      <item>Pack binary with encryption or compression.</item>
+    </list>
+  </para>
 </doc>

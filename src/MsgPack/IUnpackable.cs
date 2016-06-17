@@ -19,21 +19,28 @@
 #endregion -- License Terms --
 
 using System;
-using System.Runtime.Serialization;
 
 namespace MsgPack
 {
 	/// <summary>
-	///		Defines interface for object which can be deserialzed from MessagePack object.
+	///		An interface which is implemented by the objects which know how to unpack themselves using specified <see cref="Unpacker"/>.
 	/// </summary>
+	/// <remarks>
+	///		<include file='remarks.xml' path='doc/remarks[@name="MsgPack.Serialization.customPackingUnpacking"]'/>
+	/// </remarks>
 	public interface IUnpackable
 	{
 		/// <summary>
-		///		Restore object state from specified <see cref="Unpacker"/>.
+		///		Unpacks this object contents from the specified <see cref="Unpacker"/>.
 		/// </summary>
-		/// <param name="unpacker"><see cref="Unpacker"/>.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="unpacker"/> is <c>null</c>.</exception>
-		/// <exception cref="SerializationException">Cannot restore state from the stream.</exception>
+		/// <param name="unpacker">The <see cref="Unpacker"/> that this object will read from.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to deserialize this object.
+		/// </exception>
+		/// <include file='remarks.xml' path='doc/remarks[@name="MsgPack.Serialization.customUnpacking"]'/>
 		void UnpackFromMessage( Unpacker unpacker );
 	}
 }

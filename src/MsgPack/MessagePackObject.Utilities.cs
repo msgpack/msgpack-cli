@@ -1052,7 +1052,7 @@ namespace MsgPack
 #endregion -- Type Of Methods --
 
 		/// <summary>
-		///		Pack this instance itself using specified <see cref="Packer"/>.
+		///		Packs this instance itself using specified <see cref="Packer"/>.
 		/// </summary>
 		/// <param name="packer"><see cref="Packer"/>.</param>
 		/// <param name="options">Packing options. This value can be null.</param>
@@ -1182,7 +1182,7 @@ namespace MsgPack
 #if FEATURE_TAP
 
 		/// <summary>
-		///		Pack this instance itself using specified <see cref="Packer" /> asynchronously.
+		///		Packs this object contents to the specified <see cref="Packer"/> asynchronously.
 		/// </summary>
 		/// <param name="packer"><see cref="Packer" />.</param>
 		/// <param name="options">Packing options. This value can be null.</param>
@@ -1192,9 +1192,7 @@ namespace MsgPack
 		/// </returns>
 		/// <exception cref="System.ArgumentNullException">packer</exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
-		///		Failed to pack this object.
-		///		or
-		///		Failed to pack this object.
+		///		Failed to serialize this object.
 		/// </exception>
 		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
 		{

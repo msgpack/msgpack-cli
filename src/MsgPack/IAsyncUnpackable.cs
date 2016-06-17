@@ -28,18 +28,26 @@ using System.Threading.Tasks;
 namespace MsgPack
 {
 	/// <summary>
-	///		Defines interface for object which can be deserialzed from MessagePack object asynchronously.
+	///		An interface which is implemented by the objects which know how to unpack themselves using specified <see cref="Unpacker"/> asynchronously.
 	/// </summary>
+	/// <remarks>
+	///		<include file='remarks.xml' path='doc/para[@name="MsgPack.Serialization.customPackingUnpacking"]'/>
+	/// </remarks>
 	public interface IAsyncUnpackable
 	{
 		/// <summary>
-		///		Restore object state from specified <see cref="Unpacker"/> asynchronously.
+		///		Unpacks this object contents from the specified <see cref="Unpacker"/> asynchronously.
 		/// </summary>
-		/// <param name="unpacker"><see cref="Unpacker"/>.</param>
+		/// <param name="unpacker">The <see cref="Unpacker"/> that this object will read from.</param>
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="unpacker"/> is <c>null</c>.</exception>
-		/// <exception cref="SerializationException">Cannot restore state from the stream.</exception>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to deserialize this object.
+		/// </exception>
+		/// <include file='remarks.xml' path='doc/remarks[@name="MsgPack.Serialization.customUnpacking"]'/>
 		Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken );
 	}
 }
