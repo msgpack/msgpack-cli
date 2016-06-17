@@ -909,7 +909,7 @@ namespace MsgPack.Serialization
 		public static async Task<T> UnpackFromMessageAsync<T>( T target, Unpacker unpacker, CancellationToken cancellationToken )
 			where T : IAsyncUnpackable
 		{
-			await target.UnpackFromMessageAsync( unpacker, cancellationToken );
+			await target.UnpackFromMessageAsync( unpacker, cancellationToken ).ConfigureAwait( false );
 			return target;
 		}
 
