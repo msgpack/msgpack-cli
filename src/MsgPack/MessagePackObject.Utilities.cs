@@ -1081,7 +1081,14 @@ namespace MsgPack
 				byte[] asExtendedTypeObjectBody;
 				if ( ( asString = this._handleOrTypeCode as MessagePackString ) != null )
 				{
-					packer.PackRaw( asString.GetBytes() );
+					if ( asString.GetUnderlyingType() == typeof( string ) || ( packer.CompatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
+					{
+						packer.PackRaw( asString.GetBytes() );
+					}
+					else
+					{
+						packer.PackBinary( asString.GetBytes() );
+					}
 				}
 				else if ( ( asList = this._handleOrTypeCode as IList<MessagePackObject> ) != null )
 				{
@@ -1218,7 +1225,14 @@ namespace MsgPack
 				byte[] asExtendedTypeObjectBody;
 				if ( ( asString = this._handleOrTypeCode as MessagePackString ) != null )
 				{
-					await packer.PackRawAsync( asString.GetBytes(), cancellationToken ).ConfigureAwait( false );
+					if ( asString.GetUnderlyingType() == typeof( string ) || ( packer.CompatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
+					{
+						await packer.PackRawAsync( asString.GetBytes(), cancellationToken ).ConfigureAwait( false );
+					}
+					else
+					{
+						await packer.PackBinaryAsync( asString.GetBytes(), cancellationToken ).ConfigureAwait( false );
+					}
 				}
 				else if ( ( asList = this._handleOrTypeCode as IList<MessagePackObject> ) != null )
 				{

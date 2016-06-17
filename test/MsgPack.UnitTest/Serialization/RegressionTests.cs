@@ -327,6 +327,17 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		// Issue 168
+		[Test]
+		public void TestMessagePackObject_Binary_PackToMessage_ToBianry()
+		{
+			MessagePackObject obj = new MessagePackObject( new byte[] { 1, 2, 3 }, isBinary: true );
+			var ctx = new SerializationContext( PackerCompatibilityOptions.None );
+			var serializer = ctx.GetSerializer<MessagePackObject>();
+			byte[] serialized = serializer.PackSingleObject( obj );
+			Assert.That( serialized[ 0 ], Is.EqualTo( MessagePackCode.Bin8 ) );
+		}
+
 		public class Issue152
 		{
 			[MessagePackMember( 0 )]
