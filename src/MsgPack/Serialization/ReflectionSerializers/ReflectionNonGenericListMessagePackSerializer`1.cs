@@ -134,13 +134,13 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			if ( this._isAsyncUnpackable )
 			{
-				return this.UnpackFromMessageAasync( unpacker, cancellationToken );
+				return this.UnpackFromMessageAsync( unpacker, cancellationToken );
 			}
 
 			return base.UnpackFromAsyncCore( unpacker, cancellationToken );
 		}
 
-		private async Task<TList> UnpackFromMessageAasync( Unpacker unpacker, CancellationToken cancellationToken )
+		private async Task<TList> UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
 		{
 			var result = this.CreateInstance( 0 );
 			await ( ( IAsyncUnpackable )result ).UnpackFromMessageAsync( unpacker, cancellationToken ).ConfigureAwait( false );
