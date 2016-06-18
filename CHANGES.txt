@@ -433,6 +433,7 @@ Release 0.7.0-alpha3 2016/05/22
 
   BREAKING CHANGES
   * Internal structure for Silverlight builds are changed. They now use only reflection based serializers and pre-generated serializers instead of Expression Tree based serializers.
+  * IPackable/IUnpackable is respected for collections now. Issue #153.
 
   IMPROVEMENTS
   * Improve .NET Core support with work around for corefx GetInterfaceMap() limitation. .NET Core build requires RC2 or above.
@@ -445,7 +446,75 @@ Release 0.7.0-alpha3 2016/05/22
   * Fix generated serializer codes are not available in WinRT/UWP because of reflection API incompatibility when the type has non-public and explicitly marked fields/properties.
   * Fix collection only implements IEnumerable may cause NotSupportedException.
   * Fix hidden by signature members ("new" in C#) causes invalid serializer code generation. Issue/PR #147, #161, #162.
+  * IPackable/IUnpackable is respected for collections now. Issue #153.
+    This behavior can be disabled by setting SerializationCompatibilityOptions.IgnorePackabilityForCollection to true.
 
   KNOWN ISSUES
   * Reflection based serializers in Unity build is not stable even if you specify [Preserve] and/or link.xml.
   * .NET Core packaging is under testing.
+
+Release 0.7-Beta1 - 2016/06/18
+
+  This release cleans up API surface and internal code for 0.7 stable release.
+
+  MAJOR BREAKING CHANGES
+  * PackerCompatibilityOptions.None is now default. This means that msgpack bin or str8 formats are used by default.
+    You can still turn off them by PackerCompatibilityOptions.Classic.
+
+  MINOR BREAKING CHANGES
+  * UnpackHelpers.UnpackValueTypeValue signature is changed (note that this API has not been published in stable release yet).
+  * UnpackHelpers.UnpackComplexObject[Async] with currentKey parameter are removed(note that this API has not been published in stable release yet).
+  * Rename SerializerCapabilities>Unknown to SerializerCapabilities.None (note that this API has not been published in stable release yet).
+  * Remove ISupportMessagePackSerializerCapability(note that this API has not been published in stable release yet).
+  * Reflection based serializers now do not use IPackable/IUnpacabke members when the type does not implement IAsyncPackable/IAsyncUnpackable(note that this API has not been published in stable release yet).
+
+  BUG FIXES
+  * Fix the Unpacker always returns 0 when the underlying stream has double typed value.
+  * Fix MessagePackObject.PackToMessage does not look PackerCompatibilityOptions. Issue #168.
+
+Release 0.7 (planned)
+
+  This release includes 0.6.8 fixes. Here are cumulative changelogs from 0.6.8.
+
+  MAJOR BREAKING CHANGES
+  * PackerCompatibilityOptions.None is now default. This means that msgpack bin or str8 formats are used by default.
+    You can still turn off them by PackerCompatibilityOptions.Classic.
+
+  MINOR BREAKING CHANGES
+  * .NET 4.0, 4.5.0, 4.5.1, 4.6.0 are no longer supported.
+  * Unity without IL2CPP (a.k.a. AOT) is no longer supported.
+  * IPackable/IUnpackable is respected for collections now. Issue #153.
+    This behavior can be disabled by setting SerializationCompatibilityOptions.IgnorePackabilityForCollection to true.
+
+  TRIVIAL BREAKING CHANGES
+  * Generated serializers code has different structure, it might break your custom toolset which depends generated code structure.
+  * Generated serializer now always check SerializationContext.SerializationMethod when they serialize objects. Changing SerializationContext.SerializationMethod in use causes unexpected behavior even it is extremely rare to do it.
+  * Generated serializers code has different structure, it might break your custom toolset which depends generated code structure.
+  * Internal structure for Silverlight builds are changed. They now use only reflection based serializers and pre-generated serializers instead of Expression Tree based serializers.
+
+  NEW FEATURES
+  * Add .NET Core support. Note that .NET Core does NOT support CodeDOM or persistance of AsemblyBuilder, so MsgPack for CLI .NET Core build cannot support code generation. To generate source code or assembly of serializers in non-Windows environment, you must use Mono with .NET 4.5 build. #Issue 128
+  * Add buffering option for Packer/Unpacker which can be enabled by PackerUnpackerStreamOptions.WithBuffering = true. It should improve performance for non-buffered stream like NetworkStream.
+  * Async support. Issue #49. Note that it is highly recommended to use buffering feature of Packer or Unpacker factory methods to avoid too chutty asynchronous I/O call. In addition, async API may avoid unnecessary blocking but it is not so efficienty in most cases.
+  * SerializerGenerator.GenerateSerializerCodeAssembly now supports custom namespace. Issue #138.
+  * Add .NET Core support. .NET Core build requires RC2 or above.
+  * Unity I+2CPP support. Unity DLLs now support IL2CPP with various AOT issue workarounds. Unity build requires 5.3.5f1 or above.
+
+  IMPROVEMENTS
+  * Exceptions now includes stream position for seekable stream or "offset from Unpacker construction" for non-seekable stream.
+  * Generated code now well structured which improves debuggability, it also remove some redundant expressions.
+  * Move throw statements from hot-path to improve performance a bit.
+  * Generated serializer now always check SerializationContext.SerializationMethod when they serialize objects. No longer need to re-generate serializer codes/assemblies to switch serialization method between array and map.
+  * Generated code now more structured which improves debuggability, it also remove some redundant expressions.
+
+  BUG FIXES
+  * Fix Unpacker.Skip failes when the stream is fragmented such as raw NetworkStream.
+  * Fix generated serializer codes are not available in WinRT/UWP because of reflection API incompatibility when the type has non-public and explicitly marked fields/properties.
+  * Fix collection only implements IEnumerable may cause NotSupportedException.
+  * Fix hidden by signature members ("new" in C#) causes invalid serializer code generation. Issue/PR #147, #161, #162.
+  * IPackable/IUnpackable is respected for collections now. Issue #153.
+  * Fix the Unpacker always returns 0 when the underlying stream has double typed value.
+  * Fix MessagePackObject.PackToMessage does not look PackerCompatibilityOptions. Issue #168.
+
+  KNOWN ISSUES
+  * Reflection based serializers in Unity build is not stable even if you specify [Preserve] and/or link.xml.

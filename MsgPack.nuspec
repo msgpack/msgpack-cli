@@ -3,7 +3,7 @@
   <metadata>
     <id>MsgPack.Cli</id>
     <title>MessagePack for CLI</title>
-    <version>0.7.0-alpha3</version>
+    <version>0.7.0-beta1</version>
     <authors>FUJIWARA, Yusuke</authors>
     <owners>FUJIWARA, Yusuke</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -12,7 +12,11 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>MessagePack is fast, compact, and interoperable binary serialization format.
 This package provides MessagePack serialization/deserialization APIs. This pacakge also supports Mono, Xamarin, .NET Core and Unity.</description>
-    <releaseNotes>This release add .NET Core support.</releaseNotes>
+    <releaseNotes><!CDATA[This release including
+* .NET Core and Unity IL2CPP support
+* Asynchronous serialization support
+* Multiple improvements and bug fixes reported in github issues
+    ]]></releaseNotes>
     <copyright>Copyright 2010-2016 FUJIWARA, Yusuke, all rights reserved.</copyright>
     <tags>MsgPack MessagePack Serialization Formatter Serializer</tags>
     <dependencies>
