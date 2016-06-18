@@ -7,8 +7,11 @@ configuration: Release
 init:
 - cmd: >-
     cd \
+
     appveyor DownloadFile http://dl.google.com/android/android-sdk_r24.3.4-windows.zip
+
     7z x android-sdk_r24.3.4-windows.zip > nul
+
     cd %APPVEYOR_BUILD_FOLDER%
 assembly_info:
   patch: true
@@ -21,15 +24,22 @@ environment:
 install:
 - ps: >-
     cd ./build
+
     ./SetBuildEnv.ps1
+
     ./UpdateAndroidSdk.cmd
+
     cd ..
 nuget:
   project_feed: true
 build_script:
 - ps: >-
     Write-Host "Configuration=${env:CONFIGURATION}"
+
     cd ./build
+
     ./Build.ps1
+
     appveyor PushArtifact "../dist/MsgPack.Cli.${env:PackageVersion}.nupkg
+
     cd ..

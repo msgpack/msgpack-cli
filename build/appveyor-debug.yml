@@ -4,8 +4,11 @@ configuration: Debug
 init:
 - cmd: >-
     cd \
+
     appveyor DownloadFile http://dl.google.com/android/android-sdk_r24.3.4-windows.zip
+
     7z x android-sdk_r24.3.4-windows.zip > nul
+
     cd %APPVEYOR_BUILD_FOLDER%
 assembly_info:
   patch: true
@@ -18,19 +21,25 @@ environment:
 install:
 - ps: >-
     cd ./build
+
     ./SetBuildEnv.ps1
+
     ./UpdateAndroidSdk.cmd
+
     cd ..
 build_script:
 - ps: >-
     Write-Host "Configuration=${env:CONFIGURATION}"
+
     cd ./build
+
     ./Build.ps1
+
     cd ..
 test_script:
 - cmd: >-
-    nunit3-console %APPVEYOR_BUILD_FOLDER%/test/MsgPack.UnitTest.BclExtensions/bin/Debug/MsgPack.UnitTest.BclExtensions.dll
-    exit
     cd ./build
+
     ./RunUnitTests.cmd
+
     cd ..
