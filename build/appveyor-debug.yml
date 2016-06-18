@@ -1,0 +1,39 @@
+version: '{branch}-{build}'
+configuration: Debug
+init:
+- cmd: >-
+    cd \
+    appveyor DownloadFile http://dl.google.com/android/android-sdk_r24.3.4-windows.zip
+    7z x android-sdk_r24.3.4-windows.zip > nul
+    cd %APPVEYOR_BUILD_FOLDER%
+assembly_info:
+  patch: true
+  file: '**\*AssemblyInfo.cs'
+  assembly_version: $(AssemblyBaseVersion).0.0
+  assembly_file_version: $(PackageVersion).{build}
+  assembly_informational_version: $(PackageVersion)
+environment:
+  ANDROID_HOME: C:\android-sdk-windows
+install:
+- ps: >-
+    cd ./build
+    ./SetBuildEnv.ps1
+    ./UpdateAndroidSdk.cmd
+    cd ..
+#xamarin:
+#  Set up via Web UI with your account credential and following:
+#  android: true
+#  ios: true
+build_script:
+- ps: >-
+    Write-Host "Configuration=${env:CONFIGURATION}"
+    cd ./build
+    ./Build.ps1
+    cd ..
+test_script:
+- cmd: >-
+    nunit3-console %APPVEYOR_BUILD_FOLDER%/test/MsgPack.UnitTest.BclExtensions/bin/Debug/MsgPack.UnitTest.BclExtensions.dll
+    exit
+    cd ./build
+    ./RunUnitTests.cmd
+    cd ..
