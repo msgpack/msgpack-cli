@@ -39,6 +39,10 @@ build_script:
 
     ./Build.ps1
 
-    appveyor PushArtifact "../dist/MsgPack.Cli.${env:PackageVersion}.nupkg"
+    appveyor PushArtifact "../dist/MsgPack.Cli.${env:PackageVersion}.nupkg
+
+    appveyor PushArtifact "../dist/MsgPack.Cli.${env:PackageVersion}.symbols.nupkg
+
+    appveyor PushArtifact "../dist/MsgPack.Cli.${env:PackageVersion}.zip
 
     cd ..
