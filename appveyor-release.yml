@@ -2,7 +2,6 @@ version: '{branch}-{build}'
 branches:
   only:
   - master
-skip_tags: true
 configuration: Release
 init:
 - cmd: >-
@@ -30,8 +29,6 @@ install:
     ./UpdateAndroidSdk.cmd
 
     cd ..
-nuget:
-  project_feed: true
 build_script:
 - ps: >-
     Write-Host "Configuration=${env:CONFIGURATION}"
@@ -47,3 +44,14 @@ build_script:
     appveyor PushArtifact "../dist/MsgPack.Cli.${env:PackageVersion}.zip"
 
     cd ..
+deploy:
+- provider: Environment
+  name: msgpack-cli-nuget
+  on:
+    branch: master
+    APPVEYOR_REPO_TAG: true
+- provider: Environment
+  name: msgpack-cli-github
+  on:
+    branch: master
+    APPVEYOR_REPO_TAG: true
