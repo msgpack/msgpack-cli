@@ -12066,6 +12066,20 @@ namespace MsgPack.Serialization
 		}
 
 		#endregion -- Polymorphism --
+
+		// Issue170
+		public class ClassHasStaticField
+		{
+			public string m_string;
+			public static int m_int = 1000;
+
+			public ClassHasStaticField()
+			{
+				m_string = "dummy";
+				m_int = 1000;
+			}
+		}
+
 }
 
 // Issue #108

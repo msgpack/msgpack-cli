@@ -314,7 +314,7 @@ namespace MsgPack
 
 		public static ConstructorInfo GetConstructor( this TypeInfo source, Type[] parameteres )
 		{
-			return source.DeclaredConstructors.SingleOrDefault( c => c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameteres ) );
+			return source.DeclaredConstructors.SingleOrDefault( c => !c.IsStatic && c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameteres ) );
 		}
 
 

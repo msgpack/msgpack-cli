@@ -4949,6 +4949,13 @@ namespace MsgPack.Serialization
 			Assert.Throws<SerializationException>( () => this.CreateTarget<NonPublicWithDataContract>( GetSerializationContext() ) );
 		}
 
+		// Issue 170
+		[Test]
+		public void TestStaticMembersDoNotCausePrepareError()
+		{
+			MessagePackSerializer.Get<ClassHasStaticField>().PackSingleObject( new ClassHasStaticField() );
+		}
+
 #pragma warning disable 649
 		internal class NonPublic
 		{
