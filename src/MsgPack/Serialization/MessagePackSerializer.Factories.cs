@@ -597,7 +597,7 @@ namespace MsgPack.Serialization
 					{
 						return ReflectionSerializerHelper.CreateReflectionEnumMessagePackSerializer<T>( context );
 					}
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !NETFX_35 && !UNITY
 					if ( TupleItems.IsTuple( typeof( T ) ) )
 					{
 						return
@@ -606,7 +606,7 @@ namespace MsgPack.Serialization
 								( schema ?? PolymorphismSchema.Default ).ChildSchemaList
 							);
 					}
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !NETFX_35 && !UNITY
 
 					return new ReflectionObjectMessagePackSerializer<T>( context );
 				}
