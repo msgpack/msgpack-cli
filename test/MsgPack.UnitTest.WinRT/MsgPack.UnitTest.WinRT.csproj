@@ -277,9 +277,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithTwoMember.cs">
       <Link>Serialization\ComplexTypeWithTwoMember.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\CompositeTest.cs">
-      <Link>Serialization\CompositeTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataContractAndNonSerializedMixedTarget.cs">
       <Link>Serialization\DataContractAndNonSerializedMixedTarget.cs</Link>
     </Compile>

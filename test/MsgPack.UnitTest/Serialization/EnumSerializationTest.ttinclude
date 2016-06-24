@@ -98,9 +98,9 @@ using System.Threading.Tasks;
 	if ( !forIos )
 	{
 #>
-#if !SILVERLIGHT && !AOT
+#if !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT
+#endif // !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 <#+
 	}
 #>

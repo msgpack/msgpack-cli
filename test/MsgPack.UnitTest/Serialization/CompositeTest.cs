@@ -18,19 +18,13 @@
 //
 #endregion -- License Terms --
 
-#define NETFX_CORE
-
 using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-#if !SILVERLIGHT
 using MsgPack.Serialization.AbstractSerializers;
-#if !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.CodeDomSerializers;
-#endif // !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -43,12 +37,9 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
-#if !SILVERLIGHT
 	[TestFixture]
 	public class CompositeTest
 	{
-#if !NETSTD_11 && !NETSTD_13
-
 		[SetUp]
 		public void SetUp()
 		{
@@ -85,8 +76,6 @@ namespace MsgPack.Serialization
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
 
-#endif // NETSTD_11 && !NETSTD_13
-
 		[Test]
 		public void TestArrayFieldBased()
 		{
@@ -99,8 +88,6 @@ namespace MsgPack.Serialization
 			TestCore( EmitterFlavor.FieldBased, SerializationMethod.Map, new AssemblyBuilderSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits( CollectionTraitOptions.Full ) ) );
 		}
 
-#if !NETSTD_11 && !NETSTD_13
-
 		[Test]
 		public void TestArrayCodeDomBased()
 		{
@@ -112,8 +99,6 @@ namespace MsgPack.Serialization
 		{
 			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Map, new CodeDomSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits( CollectionTraitOptions.Full ) ) );
 		}
-
-#endif // !NETSTD_11 && !NETSTD_13
 
 		private static void TestCore( EmitterFlavor emittingFlavor, SerializationMethod serializationMethod, ISerializerBuilder generator )
 		{
@@ -135,11 +120,7 @@ namespace MsgPack.Serialization
 					new SerializationContext
 					{
 						SerializationMethod = serializationMethod,
-#if NETSTD_11 || NETSTD_13
-						GeneratorOption = SerializationMethodGeneratorOption.CanCollect
-#else
 						GeneratorOption = SerializationMethodGeneratorOption.CanDump
-#endif //  NETSTD_11 || NETSTD_13
 					};
 			context.SerializerOptions.EmitterFlavor = emittingFlavor;
 
@@ -171,8 +152,6 @@ namespace MsgPack.Serialization
 			}
 		}
 	}
-#endif // !SILVERLIGHT
-
 	public abstract class FileSystemItem
 	{
 		public string Name { get; set; }

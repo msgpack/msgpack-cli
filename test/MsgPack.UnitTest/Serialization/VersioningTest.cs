@@ -24,9 +24,9 @@ using System.Diagnostics;
 #endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
 using System.IO;
 
-#if !SILVERLIGHT && !AOT
+#if !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT
+#endif // !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 
 #if !MSTEST
 using NUnit.Framework;

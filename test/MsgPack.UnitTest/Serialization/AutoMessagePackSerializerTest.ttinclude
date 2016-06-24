@@ -77,12 +77,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
-#if !SILVERLIGHT && !AOT
-#if !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.CodeDomSerializers;
-#endif // !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT
+#endif // !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 #if !MSTEST
 using NUnit.Framework;
 #else

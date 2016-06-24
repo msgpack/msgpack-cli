@@ -335,7 +335,7 @@ foreach( Type type in structTypes )
 	if( notInNetStandard1_3.Contains( type ) )
 	{
 #>
-#if !NETSTD_13
+#if !NETSTD_11 && !NETSTD_13
 <#
 	}
 
@@ -387,7 +387,7 @@ foreach( Type type in structTypes )
 	if( notInNetStandard1_3.Contains( type ) )
 	{
 #>
-#endif // !NETSTD_13
+#endif // !NETSTD_11 && !NETSTD_13
 <#
 	}
 

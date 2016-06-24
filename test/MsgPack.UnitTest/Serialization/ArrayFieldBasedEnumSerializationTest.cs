@@ -28,9 +28,9 @@ using System.Threading;
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
 
-#if !SILVERLIGHT && !AOT
+#if !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT
+#endif // !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
 
 #if !MSTEST
 using NUnit.Framework;

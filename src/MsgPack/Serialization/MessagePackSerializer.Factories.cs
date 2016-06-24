@@ -23,6 +23,10 @@
 #define AOT
 #endif
 
+#if !AOT && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#define FEATURE_EMIT
+#endif // !AOT && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+
 using System;
 using System.IO;
 using System.Globalization;
@@ -43,13 +47,11 @@ using System.Diagnostics.Contracts;
 #if NETFX_CORE || WINDOWS_PHONE
 using System.Linq.Expressions;
 #endif
-#if !AOT && !SILVERLIGHT
+#if FEATURE_EMIT
 using MsgPack.Serialization.AbstractSerializers;
-#if !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.CodeDomSerializers;
-#endif // !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !AOT && !SILVERLIGHT
+#endif // FEATURE_EMIT
 
 namespace MsgPack.Serialization
 {
@@ -246,14 +248,10 @@ namespace MsgPack.Serialization
 				ValidateType( typeof( T ) );
 			}
 
-#if !AOT
-#if !SILVERLIGHT
+#if FEATURE_EMIT
 			ISerializerBuilder builder;
-#endif // !SILVERLIGHT
 			switch ( context.SerializerOptions.EmitterFlavor )
 			{
-#if !SILVERLIGHT
-#if !NETSTD_11 && !NETSTD_13
 				case EmitterFlavor.CodeDomBased:
 				{
 					if ( !SerializerDebugging.OnTheFlyCodeDomEnabled )
@@ -270,27 +268,23 @@ namespace MsgPack.Serialization
 					builder = new CodeDomSerializerBuilder( typeof( T ), collectionTraits );
 					break;
 				}
-#endif // !!NETSTD_11 && !NETSTD_13
 				case EmitterFlavor.FieldBased:
 				{
 					builder = new AssemblyBuilderSerializerBuilder( typeof( T ), collectionTraits );
 					break;
 				}
-#endif // !SILVERLIGHT
 				default: // EmitterFlavor.ReflectionBased
 				{
-#endif // !AOT
+#endif // FEATURE_EMIT
 					return
 						GenericSerializer.TryCreateAbstractCollectionSerializer( context, typeof( T ), concreteType, schema ) as MessagePackSerializer<T>
 						?? CreateReflectionInternal<T>( context, concreteType ?? typeof( T ), schema );
-#if !AOT
+#if FEATURE_EMIT
 				}
 			}
-#endif // !AOT
 
-#if !AOT && !SILVERLIGHT
 			return ( MessagePackSerializer<T> ) builder.BuildSerializerInstance( context, concreteType, schema == null ? null : schema.FilterSelf() );
-#endif // !AOT
+#endif // FEATURE_EMIT
 		}
 
 #if !XAMIOS && !XAMDROID && !UNITY

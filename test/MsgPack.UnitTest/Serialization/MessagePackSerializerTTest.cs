@@ -26,9 +26,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using MsgPack.Serialization.DefaultSerializers;
-#if !AOT && !SILVERLIGHT
+#if !AOT && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !AOT && !SILVERLIGHT
+#endif // !AOT && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 #if !MSTEST
 using NUnit.Framework;
 #else

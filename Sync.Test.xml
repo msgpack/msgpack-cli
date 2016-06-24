@@ -180,6 +180,7 @@
     <Exclude Path="Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\ArrayGenerationBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\CodeDomBasedNilImplicationTest.cs" />
+    <Exclude Path="Serialization\CompositeTest.cs" />
     <Exclude Path="Serialization\ContextBasedNilImplicationTest.cs" />
     <Exclude Path="Serialization\FieldBasedNilImplicationTest.cs" />
     <Exclude Path="Serialization\GenerationBasedNilImplicationTest.cs" />

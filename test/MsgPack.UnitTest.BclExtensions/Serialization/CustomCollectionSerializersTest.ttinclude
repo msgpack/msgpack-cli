@@ -32,12 +32,10 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-#if !SILVERLIGHT
-#if !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.CodeDomSerializers;
-#endif // !NETSTD_11 && !NETSTD_13
 using MsgPack.Serialization.EmittingSerializers;
-#endif // SILVERLIGHT
+#endif // SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 #if !MSTEST
 using NUnit.Framework;
 #else
