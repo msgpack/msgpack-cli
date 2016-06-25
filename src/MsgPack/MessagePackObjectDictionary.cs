@@ -602,12 +602,7 @@ namespace MsgPack
 			return
 				this._dictionary == null 
 				? this._values.Contains( value, MessagePackObjectEqualityComparer.Instance )
-#if !UNITY
-#warning TODO: VERIFY_UNITY
 				: this._dictionary.ContainsValue( value );
-#else
-				: this._dictionary.Values.Contains( value, MessagePackObjectEqualityComparer.Instance );
-#endif // !UNITY
 		}
 
 		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
