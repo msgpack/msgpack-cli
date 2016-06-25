@@ -62,8 +62,7 @@ if ( ![String]::IsNullOrWhitespace( $env:CONFIGURATION ) )
 [string]$slnCompat = '../MsgPack.compats.sln'
 [string]$slnWindows = '../MsgPack.Windows.sln'
 [string]$slnXamarin = '../MsgPack.Xamarin.sln'
-[string]$projNetStandard11 = "../src/netstandard/1.1/MsgPack"
-[string]$projNetStandard13 = "../src/netstandard/1.3/MsgPack"
+[string]$projCoreClr = "../src/Msgpack.CoreClr"
 
 $buildOptions = @( '/v:minimal' )
 if( $Rebuild )
@@ -164,31 +163,33 @@ if ( $buildConfig -eq 'Release' )
 	Copy-Item ../bin/MonoTouch10 ../bin/Xamarin.iOS10 -Recurse
 }
 
-dotnet restore $projNetStandard11 -v $dotnetVerbosity
+dotnet restore $projCoreClr
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $projNetStandard11"
 	exit $LastExitCode
 }
 
-dotnet build $projNetStandard11 -o ../bin/netstandard1.1 -f netstandard11 -c $buildConfig
+$netstandardBaseCommandLine = @("build", "$projCoreClr", "-c", "$buildConfig")
+$netstandard1_1CommandLine = $netstandardBaseCommandLine + @("-f", "netstandard1.1")
+$netstandard1_3CommandLine = $netstandardBaseCommandLine + @("-f", "netstandard1.3")
+if ( $buildConfig -eq 'Release' )
+{
+	$netstandard1_1CommandLine += @("-o", "../bin/netstandard1.1")
+	$netstandard1_3CommandLine += @("-o", "../bin/netstandard1.3")
+}
+
+& "dotnet" $netstandard1_1CommandLine
 if ( $LastExitCode -ne 0 )
 {
-	Write-Error "Failed to build $projNetStandard11"
+	Write-Error "Failed to build netstd1.1. $netstandard1_1CommandLine"
 	exit $LastExitCode
 }
 
-dotnet restore $projNetStandard13 -v $dotnetVerbosity
+& "dotnet" $netstandard1_3CommandLine
 if ( $LastExitCode -ne 0 )
 {
-	Write-Error "Failed to restore $projNetStandard13"
-	exit $LastExitCode
-}
-
-dotnet build $projNetStandard13 -o ../bin/netstandard1.3 -f netstandard13 -c $buildConfig
-if ( $LastExitCode -ne 0 )
-{
-	Write-Error "Failed to build $projNetStandard13"
+	Write-Error "Failed to build netstd1.3. $netstandard1_3CommandLine"
 	exit $LastExitCode
 }
 

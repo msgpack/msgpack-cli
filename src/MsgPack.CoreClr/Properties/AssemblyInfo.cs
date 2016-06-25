@@ -22,7 +22,13 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security;
 
+#if NETSTANDARD1_1
 [assembly: AssemblyTitle( "MessagePack for .NET Platform Standard 1.1" )]
+#elif NETSTANDARD1_3
+[assembly: AssemblyTitle( "MessagePack for .NET Platform Standard 1.3" )]
+#else
+[assembly: AssemblyTitle( "MessagePack for .NET Platform Standard" )]
+#endif
 [assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library for .NET Platform Standard 1.1 including .NET 4.5.x, Windows App, and Mono without AOT" )]
 
 [assembly: AssemblyFileVersion( "0.7.2259.1047" )]
