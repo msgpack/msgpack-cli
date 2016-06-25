@@ -245,7 +245,7 @@ namespace MsgPack
 		/// </summary>
 		protected TestDriver()
 		{
-			this.TestClasses = new List<TestClass>( 46 );
+			this.TestClasses = new List<TestClass>( 47 );
 			InitializeTestClasses( this.TestClasses );
 		}
 
@@ -282,7 +282,7 @@ testClass.FixtureSetup = new Action( AotTest.SetupFixture );
 					new TestClass( 
 						"ArrayGenerationBasedReflectionMessagePackSerializerTest", 
 						ArrayGenerationBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						335,
+						336,
 						ArrayGenerationBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( ArrayGenerationBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -305,7 +305,7 @@ testClass.FixtureSetup = new Action( ArrayGenerationBasedReflectionMessagePackSe
 					new TestClass( 
 						"ArrayReflectionBasedReflectionMessagePackSerializerTest", 
 						ArrayReflectionBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						412,
+						409,
 						ArrayReflectionBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( ArrayReflectionBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -359,6 +359,17 @@ testClass.FixtureSetup = new Action( ArrayReflectionBasedReflectionMessagePackSe
 			{
 				var testClass = 
 					new TestClass( 
+						"InheritanceTest", 
+						InheritanceTestInitializer.CreateInstance, 
+						1,
+						InheritanceTestInitializer.InitializeInstance
+					 );
+				testClasses.Add( testClass );
+			}
+
+			{
+				var testClass = 
+					new TestClass( 
 						"MapGenerationBasedEnumSerializerTest", 
 						MapGenerationBasedEnumSerializerTestInitializer.CreateInstance, 
 						62,
@@ -372,7 +383,7 @@ testClass.FixtureSetup = new Action( ArrayReflectionBasedReflectionMessagePackSe
 					new TestClass( 
 						"MapGenerationBasedReflectionMessagePackSerializerTest", 
 						MapGenerationBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						335,
+						336,
 						MapGenerationBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( MapGenerationBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -395,7 +406,7 @@ testClass.FixtureSetup = new Action( MapGenerationBasedReflectionMessagePackSeri
 					new TestClass( 
 						"MapReflectionBasedReflectionMessagePackSerializerTest", 
 						MapReflectionBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						412,
+						409,
 						MapReflectionBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -429,7 +440,7 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 					new TestClass( 
 						"MessagePackObjectDictionaryTest", 
 						MessagePackObjectDictionaryTestInitializer.CreateInstance, 
-						59,
+						58,
 						MessagePackObjectDictionaryTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -627,7 +638,7 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 					new TestClass( 
 						"SerializationContextTest", 
 						SerializationContextTestInitializer.CreateInstance, 
-						32,
+						30,
 						SerializationContextTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -693,7 +704,7 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 					new TestClass( 
 						"UnpackerTest_Scalar", 
 						UnpackerTest_ScalarInitializer.CreateInstance, 
-						292,
+						574,
 						UnpackerTest_ScalarInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -759,7 +770,7 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 					new TestClass( 
 						"VersioningTest", 
 						VersioningTestInitializer.CreateInstance, 
-						13,
+						9,
 						VersioningTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -1170,6 +1181,7 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestObjectFieldNull", new Action( instance.TestObjectFieldNull ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Null_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Null_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestStaticMembersDoNotCausePrepareError", new Action( instance.TestStaticMembersDoNotCausePrepareError ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestString", new Action( instance.TestString ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStringField", new Action( instance.TestStringField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStringFieldArray", new Action( instance.TestStringFieldArray ) ) );
@@ -1470,10 +1482,6 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestFalseFieldArray", new Action( instance.TestFalseFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestFILETIMEField", new Action( instance.TestFILETIMEField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestFILETIMEFieldArray", new Action( instance.TestFILETIMEFieldArray ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericDerived_Reference_Success", new Action( instance.TestGenericDerived_Reference_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericDerived_Value_Success", new Action( instance.TestGenericDerived_Value_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericRecordDerived_Reference_Success", new Action( instance.TestGenericRecordDerived_Reference_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericRecordDerived_Value_Success", new Action( instance.TestGenericRecordDerived_Value_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGlobalNamespace", new Action( instance.TestGlobalNamespace ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGuidField", new Action( instance.TestGuidField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGuidFieldArray", new Action( instance.TestGuidFieldArray ) ) );
@@ -1672,6 +1680,7 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPackableUnpackable_PackToMessageAndUnpackFromMessageUsed", new Action( instance.TestPackableUnpackable_PackToMessageAndUnpackFromMessageUsed ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Null_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Null_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestStaticMembersDoNotCausePrepareError", new Action( instance.TestStaticMembersDoNotCausePrepareError ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestString", new Action( instance.TestString ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStringField", new Action( instance.TestStringField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStringFieldArray", new Action( instance.TestStringFieldArray ) ) );
@@ -1829,6 +1838,20 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestUnpack_ValueType_MemberDefault_Preserved_Map", new Action( instance.TestUnpack_ValueType_MemberDefault_Preserved_Map ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestUnpack_ValueType_Prohibit_Fail_Array", new Action( instance.TestUnpack_ValueType_Prohibit_Fail_Array ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestUnpack_ValueType_Prohibit_Fail_Map", new Action( instance.TestUnpack_ValueType_Prohibit_Fail_Map ) ) );
+		}
+	} 
+
+	internal static class InheritanceTestInitializer
+	{
+		public static object CreateInstance()
+		{
+			return new InheritanceTest();
+		}
+
+		public static void InitializeInstance( TestClassInstance testClassInstance, object testFixtureInstance )
+		{
+			var instance = ( ( InheritanceTest )testFixtureInstance );
+			testClassInstance.TestMethods.Add( new TestMethod( "Issue147_161_162_HidingMembersWillNotBeDuplicated", new Action( instance.Issue147_161_162_HidingMembersWillNotBeDuplicated ) ) );
 		}
 	} 
 
@@ -2212,6 +2235,7 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestObjectFieldNull", new Action( instance.TestObjectFieldNull ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Null_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Null_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestStaticMembersDoNotCausePrepareError", new Action( instance.TestStaticMembersDoNotCausePrepareError ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestString", new Action( instance.TestString ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStringField", new Action( instance.TestStringField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStringFieldArray", new Action( instance.TestStringFieldArray ) ) );
@@ -2512,10 +2536,6 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestFalseFieldArray", new Action( instance.TestFalseFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestFILETIMEField", new Action( instance.TestFILETIMEField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestFILETIMEFieldArray", new Action( instance.TestFILETIMEFieldArray ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericDerived_Reference_Success", new Action( instance.TestGenericDerived_Reference_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericDerived_Value_Success", new Action( instance.TestGenericDerived_Value_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericRecordDerived_Reference_Success", new Action( instance.TestGenericRecordDerived_Reference_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestGenericRecordDerived_Value_Success", new Action( instance.TestGenericRecordDerived_Value_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGlobalNamespace", new Action( instance.TestGlobalNamespace ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGuidField", new Action( instance.TestGuidField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGuidFieldArray", new Action( instance.TestGuidFieldArray ) ) );
@@ -2714,6 +2734,7 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPackableUnpackable_PackToMessageAndUnpackFromMessageUsed", new Action( instance.TestPackableUnpackable_PackToMessageAndUnpackFromMessageUsed ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Null_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Null_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestStaticMembersDoNotCausePrepareError", new Action( instance.TestStaticMembersDoNotCausePrepareError ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestString", new Action( instance.TestString ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStringField", new Action( instance.TestStringField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStringFieldArray", new Action( instance.TestStringFieldArray ) ) );
@@ -2904,7 +2925,6 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestKeys", new Action( instance.TestKeys ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestKeysCopyTo", new Action( instance.TestKeysCopyTo ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestRemoveNull", new Action( instance.TestRemoveNull ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeSerialization_NotEmpty_RoundTripped", new Action( instance.TestRuntimeSerialization_NotEmpty_RoundTripped ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestSetNull", new Action( instance.TestSetNull ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTryGetValueNull", new Action( instance.TestTryGetValueNull ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestValues", new Action( instance.TestValues ) ) );
@@ -5390,10 +5410,8 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDefaultCollectionTypes_Register_OpenClose_Fail", new Action( instance.TestDefaultCollectionTypes_Register_OpenClose_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDefaultTableCapacity", new Action( instance.TestDefaultTableCapacity ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGetSerializer", new Action( instance.TestGetSerializer ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestGetSerializer_Concurrent", new Action( instance.TestGetSerializer_Concurrent ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGetSerializer_Null", new Action( instance.TestGetSerializer_Null ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGetSerializer_Type", new Action( instance.TestGetSerializer_Type ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestGetSerializer_TypeConcurrent", new Action( instance.TestGetSerializer_TypeConcurrent ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestIssue24", new Action( instance.TestIssue24 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestIssue27_Collection", new Action( instance.TestIssue27_Collection ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestIssue27_Dictionary", new Action( instance.TestIssue27_Dictionary ) ) );
@@ -6874,6 +6892,36 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadBoolean_BooleanFalse_Splitted", new Action( instance.TestReadBoolean_BooleanFalse_Splitted ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadBoolean_BooleanTrue", new Action( instance.TestReadBoolean_BooleanTrue ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadBoolean_BooleanTrue_Splitted", new Action( instance.TestReadBoolean_BooleanTrue_Splitted ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedDouble_LittleNegative_AsZero", new Action( instance.TestReadByteFromPackedDouble_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedDouble_LittlePositive_AsZero", new Action( instance.TestReadByteFromPackedDouble_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedDouble_Negative_Overflow", new Action( instance.TestReadByteFromPackedDouble_Negative_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedDouble_Positive_AsInteger", new Action( instance.TestReadByteFromPackedDouble_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedDouble_Zero_AsInteger", new Action( instance.TestReadByteFromPackedDouble_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedInt16_MaxValue_Overflow", new Action( instance.TestReadByteFromPackedInt16_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedInt16_MinValue_Overflow", new Action( instance.TestReadByteFromPackedInt16_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedInt32_MaxValue_Overflow", new Action( instance.TestReadByteFromPackedInt32_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedInt32_MinValue_Overflow", new Action( instance.TestReadByteFromPackedInt32_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedInt64_MaxValue_Overflow", new Action( instance.TestReadByteFromPackedInt64_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedInt64_MinValue_Overflow", new Action( instance.TestReadByteFromPackedInt64_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedInt8_MaxValue_Overflow", new Action( instance.TestReadByteFromPackedInt8_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedInt8_MinValue_Overflow", new Action( instance.TestReadByteFromPackedInt8_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedNegativeFixNum_MaxValue_Overflow", new Action( instance.TestReadByteFromPackedNegativeFixNum_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedNegativeFixNum_MinValue_Overflow", new Action( instance.TestReadByteFromPackedNegativeFixNum_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedPositiveFixNum_MaxValue_AsInteger", new Action( instance.TestReadByteFromPackedPositiveFixNum_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedPositiveFixNum_MinValue_AsInteger", new Action( instance.TestReadByteFromPackedPositiveFixNum_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedSingle_LittleNegative_AsZero", new Action( instance.TestReadByteFromPackedSingle_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedSingle_LittlePositive_AsZero", new Action( instance.TestReadByteFromPackedSingle_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedSingle_Negative_Overflow", new Action( instance.TestReadByteFromPackedSingle_Negative_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedSingle_Positive_AsInteger", new Action( instance.TestReadByteFromPackedSingle_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedSingle_Zero_AsInteger", new Action( instance.TestReadByteFromPackedSingle_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedUInt16_MaxValue_Overflow", new Action( instance.TestReadByteFromPackedUInt16_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedUInt16_MinValue_Overflow", new Action( instance.TestReadByteFromPackedUInt16_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedUInt32_MaxValue_Overflow", new Action( instance.TestReadByteFromPackedUInt32_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedUInt32_MinValue_Overflow", new Action( instance.TestReadByteFromPackedUInt32_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedUInt64_MaxValue_Overflow", new Action( instance.TestReadByteFromPackedUInt64_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedUInt64_MinValue_Overflow", new Action( instance.TestReadByteFromPackedUInt64_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedUInt8_MaxValue_AsInteger", new Action( instance.TestReadByteFromPackedUInt8_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadByteFromPackedUInt8_MinValue_AsInteger", new Action( instance.TestReadByteFromPackedUInt8_MinValue_AsInteger ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDouble_DoubleEpsilon", new Action( instance.TestReadDouble_DoubleEpsilon ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDouble_DoubleEpsilon_Splitted", new Action( instance.TestReadDouble_DoubleEpsilon_Splitted ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDouble_DoubleMaxValue", new Action( instance.TestReadDouble_DoubleMaxValue ) ) );
@@ -6896,6 +6944,87 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDouble_DoublePositiveInfinity_Splitted", new Action( instance.TestReadDouble_DoublePositiveInfinity_Splitted ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDouble_DoublePositiveZero", new Action( instance.TestReadDouble_DoublePositiveZero ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDouble_DoublePositiveZero_Splitted", new Action( instance.TestReadDouble_DoublePositiveZero_Splitted ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedInt16_Maximum_Normal", new Action( instance.TestReadDoubleFromPackedInt16_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedInt16_Minimum_Normal", new Action( instance.TestReadDoubleFromPackedInt16_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedInt32_Maximum_Normal", new Action( instance.TestReadDoubleFromPackedInt32_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedInt32_Minimum_Normal", new Action( instance.TestReadDoubleFromPackedInt32_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedInt64_Maximum_Normal", new Action( instance.TestReadDoubleFromPackedInt64_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedInt64_Minimum_Normal", new Action( instance.TestReadDoubleFromPackedInt64_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedInt8_Maximum_Normal", new Action( instance.TestReadDoubleFromPackedInt8_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedInt8_Minimum_Normal", new Action( instance.TestReadDoubleFromPackedInt8_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedNegativeFixNum_Maximum_Normal", new Action( instance.TestReadDoubleFromPackedNegativeFixNum_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedNegativeFixNum_Minimum_Normal", new Action( instance.TestReadDoubleFromPackedNegativeFixNum_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedPositiveFixNum_Maximum_Normal", new Action( instance.TestReadDoubleFromPackedPositiveFixNum_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedPositiveFixNum_Minimum_Normal", new Action( instance.TestReadDoubleFromPackedPositiveFixNum_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedUInt16_Maximum_Normal", new Action( instance.TestReadDoubleFromPackedUInt16_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedUInt16_Minimum_Normal", new Action( instance.TestReadDoubleFromPackedUInt16_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedUInt32_Maximum_Normal", new Action( instance.TestReadDoubleFromPackedUInt32_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedUInt32_Minimum_Normal", new Action( instance.TestReadDoubleFromPackedUInt32_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedUInt64_Maximum_Normal", new Action( instance.TestReadDoubleFromPackedUInt64_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedUInt64_Minimum_Normal", new Action( instance.TestReadDoubleFromPackedUInt64_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedUInt8_Maximum_Normal", new Action( instance.TestReadDoubleFromPackedUInt8_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedUInt8_Minimum_Normal", new Action( instance.TestReadDoubleFromPackedUInt8_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadDoubleFromPackedZero_Normal", new Action( instance.TestReadDoubleFromPackedZero_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedDouble_LittleNegative_AsZero", new Action( instance.TestReadInt16FromPackedDouble_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedDouble_LittlePositive_AsZero", new Action( instance.TestReadInt16FromPackedDouble_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedDouble_Negative_AsInteger", new Action( instance.TestReadInt16FromPackedDouble_Negative_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedDouble_Positive_AsInteger", new Action( instance.TestReadInt16FromPackedDouble_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedDouble_Zero_AsInteger", new Action( instance.TestReadInt16FromPackedDouble_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedInt16_MaxValue_AsInteger", new Action( instance.TestReadInt16FromPackedInt16_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedInt16_MinValue_AsInteger", new Action( instance.TestReadInt16FromPackedInt16_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedInt32_MaxValue_Overflow", new Action( instance.TestReadInt16FromPackedInt32_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedInt32_MinValue_Overflow", new Action( instance.TestReadInt16FromPackedInt32_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedInt64_MaxValue_Overflow", new Action( instance.TestReadInt16FromPackedInt64_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedInt64_MinValue_Overflow", new Action( instance.TestReadInt16FromPackedInt64_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedInt8_MaxValue_AsInteger", new Action( instance.TestReadInt16FromPackedInt8_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedInt8_MinValue_AsInteger", new Action( instance.TestReadInt16FromPackedInt8_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedNegativeFixNum_MaxValue_AsInteger", new Action( instance.TestReadInt16FromPackedNegativeFixNum_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedNegativeFixNum_MinValue_AsInteger", new Action( instance.TestReadInt16FromPackedNegativeFixNum_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedPositiveFixNum_MaxValue_AsInteger", new Action( instance.TestReadInt16FromPackedPositiveFixNum_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedPositiveFixNum_MinValue_AsInteger", new Action( instance.TestReadInt16FromPackedPositiveFixNum_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedSingle_LittleNegative_AsZero", new Action( instance.TestReadInt16FromPackedSingle_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedSingle_LittlePositive_AsZero", new Action( instance.TestReadInt16FromPackedSingle_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedSingle_Negative_AsInteger", new Action( instance.TestReadInt16FromPackedSingle_Negative_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedSingle_Positive_AsInteger", new Action( instance.TestReadInt16FromPackedSingle_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedSingle_Zero_AsInteger", new Action( instance.TestReadInt16FromPackedSingle_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedUInt16_MaxValue_Overflow", new Action( instance.TestReadInt16FromPackedUInt16_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedUInt16_MinValue_AsInteger", new Action( instance.TestReadInt16FromPackedUInt16_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedUInt32_MaxValue_Overflow", new Action( instance.TestReadInt16FromPackedUInt32_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedUInt32_MinValue_Overflow", new Action( instance.TestReadInt16FromPackedUInt32_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedUInt64_MaxValue_Overflow", new Action( instance.TestReadInt16FromPackedUInt64_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedUInt64_MinValue_Overflow", new Action( instance.TestReadInt16FromPackedUInt64_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedUInt8_MaxValue_AsInteger", new Action( instance.TestReadInt16FromPackedUInt8_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt16FromPackedUInt8_MinValue_AsInteger", new Action( instance.TestReadInt16FromPackedUInt8_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedDouble_LittleNegative_AsZero", new Action( instance.TestReadInt32FromPackedDouble_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedDouble_LittlePositive_AsZero", new Action( instance.TestReadInt32FromPackedDouble_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedDouble_Negative_AsInteger", new Action( instance.TestReadInt32FromPackedDouble_Negative_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedDouble_Positive_AsInteger", new Action( instance.TestReadInt32FromPackedDouble_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedDouble_Zero_AsInteger", new Action( instance.TestReadInt32FromPackedDouble_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedInt16_MaxValue_AsInteger", new Action( instance.TestReadInt32FromPackedInt16_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedInt16_MinValue_AsInteger", new Action( instance.TestReadInt32FromPackedInt16_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedInt32_MaxValue_AsInteger", new Action( instance.TestReadInt32FromPackedInt32_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedInt32_MinValue_AsInteger", new Action( instance.TestReadInt32FromPackedInt32_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedInt64_MaxValue_Overflow", new Action( instance.TestReadInt32FromPackedInt64_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedInt64_MinValue_Overflow", new Action( instance.TestReadInt32FromPackedInt64_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedInt8_MaxValue_AsInteger", new Action( instance.TestReadInt32FromPackedInt8_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedInt8_MinValue_AsInteger", new Action( instance.TestReadInt32FromPackedInt8_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedNegativeFixNum_MaxValue_AsInteger", new Action( instance.TestReadInt32FromPackedNegativeFixNum_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedNegativeFixNum_MinValue_AsInteger", new Action( instance.TestReadInt32FromPackedNegativeFixNum_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedPositiveFixNum_MaxValue_AsInteger", new Action( instance.TestReadInt32FromPackedPositiveFixNum_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedPositiveFixNum_MinValue_AsInteger", new Action( instance.TestReadInt32FromPackedPositiveFixNum_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedSingle_LittleNegative_AsZero", new Action( instance.TestReadInt32FromPackedSingle_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedSingle_LittlePositive_AsZero", new Action( instance.TestReadInt32FromPackedSingle_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedSingle_Negative_AsInteger", new Action( instance.TestReadInt32FromPackedSingle_Negative_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedSingle_Positive_AsInteger", new Action( instance.TestReadInt32FromPackedSingle_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedSingle_Zero_AsInteger", new Action( instance.TestReadInt32FromPackedSingle_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedUInt16_MaxValue_AsInteger", new Action( instance.TestReadInt32FromPackedUInt16_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedUInt16_MinValue_AsInteger", new Action( instance.TestReadInt32FromPackedUInt16_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedUInt32_MaxValue_Overflow", new Action( instance.TestReadInt32FromPackedUInt32_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedUInt32_MinValue_AsInteger", new Action( instance.TestReadInt32FromPackedUInt32_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedUInt64_MaxValue_Overflow", new Action( instance.TestReadInt32FromPackedUInt64_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedUInt64_MinValue_Overflow", new Action( instance.TestReadInt32FromPackedUInt64_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedUInt8_MaxValue_AsInteger", new Action( instance.TestReadInt32FromPackedUInt8_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt32FromPackedUInt8_MinValue_AsInteger", new Action( instance.TestReadInt32FromPackedUInt8_MinValue_AsInteger ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64_Int16MinValue", new Action( instance.TestReadInt64_Int16MinValue ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64_Int16MinValue_Splitted", new Action( instance.TestReadInt64_Int16MinValue_Splitted ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64_Int16MinValueMinusOne", new Action( instance.TestReadInt64_Int16MinValueMinusOne ) ) );
@@ -6916,6 +7045,36 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64_SByteMinValue_Splitted", new Action( instance.TestReadInt64_SByteMinValue_Splitted ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64_SByteMinValueMinusOne", new Action( instance.TestReadInt64_SByteMinValueMinusOne ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64_SByteMinValueMinusOne_Splitted", new Action( instance.TestReadInt64_SByteMinValueMinusOne_Splitted ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedDouble_LittleNegative_AsZero", new Action( instance.TestReadInt64FromPackedDouble_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedDouble_LittlePositive_AsZero", new Action( instance.TestReadInt64FromPackedDouble_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedDouble_Negative_AsInteger", new Action( instance.TestReadInt64FromPackedDouble_Negative_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedDouble_Positive_AsInteger", new Action( instance.TestReadInt64FromPackedDouble_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedDouble_Zero_AsInteger", new Action( instance.TestReadInt64FromPackedDouble_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedInt16_MaxValue_AsInteger", new Action( instance.TestReadInt64FromPackedInt16_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedInt16_MinValue_AsInteger", new Action( instance.TestReadInt64FromPackedInt16_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedInt32_MaxValue_AsInteger", new Action( instance.TestReadInt64FromPackedInt32_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedInt32_MinValue_AsInteger", new Action( instance.TestReadInt64FromPackedInt32_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedInt64_MaxValue_AsInteger", new Action( instance.TestReadInt64FromPackedInt64_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedInt64_MinValue_AsInteger", new Action( instance.TestReadInt64FromPackedInt64_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedInt8_MaxValue_AsInteger", new Action( instance.TestReadInt64FromPackedInt8_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedInt8_MinValue_AsInteger", new Action( instance.TestReadInt64FromPackedInt8_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedNegativeFixNum_MaxValue_AsInteger", new Action( instance.TestReadInt64FromPackedNegativeFixNum_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedNegativeFixNum_MinValue_AsInteger", new Action( instance.TestReadInt64FromPackedNegativeFixNum_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedPositiveFixNum_MaxValue_AsInteger", new Action( instance.TestReadInt64FromPackedPositiveFixNum_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedPositiveFixNum_MinValue_AsInteger", new Action( instance.TestReadInt64FromPackedPositiveFixNum_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedSingle_LittleNegative_AsZero", new Action( instance.TestReadInt64FromPackedSingle_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedSingle_LittlePositive_AsZero", new Action( instance.TestReadInt64FromPackedSingle_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedSingle_Negative_AsInteger", new Action( instance.TestReadInt64FromPackedSingle_Negative_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedSingle_Positive_AsInteger", new Action( instance.TestReadInt64FromPackedSingle_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedSingle_Zero_AsInteger", new Action( instance.TestReadInt64FromPackedSingle_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedUInt16_MaxValue_AsInteger", new Action( instance.TestReadInt64FromPackedUInt16_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedUInt16_MinValue_AsInteger", new Action( instance.TestReadInt64FromPackedUInt16_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedUInt32_MaxValue_AsInteger", new Action( instance.TestReadInt64FromPackedUInt32_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedUInt32_MinValue_AsInteger", new Action( instance.TestReadInt64FromPackedUInt32_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedUInt64_MaxValue_Overflow", new Action( instance.TestReadInt64FromPackedUInt64_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedUInt64_MinValue_AsInteger", new Action( instance.TestReadInt64FromPackedUInt64_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedUInt8_MaxValue_AsInteger", new Action( instance.TestReadInt64FromPackedUInt8_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadInt64FromPackedUInt8_MinValue_AsInteger", new Action( instance.TestReadInt64FromPackedUInt8_MinValue_AsInteger ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadNullableBoolean", new Action( instance.TestReadNullableBoolean ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadNullableBoolean_BooleanFalse", new Action( instance.TestReadNullableBoolean_BooleanFalse ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadNullableBoolean_BooleanFalse_Splitted", new Action( instance.TestReadNullableBoolean_BooleanFalse_Splitted ) ) );
@@ -7028,6 +7187,36 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadNullableUInt64_UInt64MaxValue_Splitted", new Action( instance.TestReadNullableUInt64_UInt64MaxValue_Splitted ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadNullableUInt64_Zero", new Action( instance.TestReadNullableUInt64_Zero ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadNullableUInt64_Zero_Splitted", new Action( instance.TestReadNullableUInt64_Zero_Splitted ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedDouble_LittleNegative_AsZero", new Action( instance.TestReadSByteFromPackedDouble_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedDouble_LittlePositive_AsZero", new Action( instance.TestReadSByteFromPackedDouble_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedDouble_Negative_AsInteger", new Action( instance.TestReadSByteFromPackedDouble_Negative_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedDouble_Positive_AsInteger", new Action( instance.TestReadSByteFromPackedDouble_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedDouble_Zero_AsInteger", new Action( instance.TestReadSByteFromPackedDouble_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedInt16_MaxValue_Overflow", new Action( instance.TestReadSByteFromPackedInt16_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedInt16_MinValue_Overflow", new Action( instance.TestReadSByteFromPackedInt16_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedInt32_MaxValue_Overflow", new Action( instance.TestReadSByteFromPackedInt32_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedInt32_MinValue_Overflow", new Action( instance.TestReadSByteFromPackedInt32_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedInt64_MaxValue_Overflow", new Action( instance.TestReadSByteFromPackedInt64_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedInt64_MinValue_Overflow", new Action( instance.TestReadSByteFromPackedInt64_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedInt8_MaxValue_AsInteger", new Action( instance.TestReadSByteFromPackedInt8_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedInt8_MinValue_AsInteger", new Action( instance.TestReadSByteFromPackedInt8_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedNegativeFixNum_MaxValue_AsInteger", new Action( instance.TestReadSByteFromPackedNegativeFixNum_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedNegativeFixNum_MinValue_AsInteger", new Action( instance.TestReadSByteFromPackedNegativeFixNum_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedPositiveFixNum_MaxValue_AsInteger", new Action( instance.TestReadSByteFromPackedPositiveFixNum_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedPositiveFixNum_MinValue_AsInteger", new Action( instance.TestReadSByteFromPackedPositiveFixNum_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedSingle_LittleNegative_AsZero", new Action( instance.TestReadSByteFromPackedSingle_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedSingle_LittlePositive_AsZero", new Action( instance.TestReadSByteFromPackedSingle_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedSingle_Negative_AsInteger", new Action( instance.TestReadSByteFromPackedSingle_Negative_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedSingle_Positive_AsInteger", new Action( instance.TestReadSByteFromPackedSingle_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedSingle_Zero_AsInteger", new Action( instance.TestReadSByteFromPackedSingle_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedUInt16_MaxValue_Overflow", new Action( instance.TestReadSByteFromPackedUInt16_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedUInt16_MinValue_Overflow", new Action( instance.TestReadSByteFromPackedUInt16_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedUInt32_MaxValue_Overflow", new Action( instance.TestReadSByteFromPackedUInt32_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedUInt32_MinValue_Overflow", new Action( instance.TestReadSByteFromPackedUInt32_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedUInt64_MaxValue_Overflow", new Action( instance.TestReadSByteFromPackedUInt64_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedUInt64_MinValue_Overflow", new Action( instance.TestReadSByteFromPackedUInt64_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedUInt8_MaxValue_Overflow", new Action( instance.TestReadSByteFromPackedUInt8_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSByteFromPackedUInt8_MinValue_Overflow", new Action( instance.TestReadSByteFromPackedUInt8_MinValue_Overflow ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingle_SingleEpsilon", new Action( instance.TestReadSingle_SingleEpsilon ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingle_SingleEpsilon_Splitted", new Action( instance.TestReadSingle_SingleEpsilon_Splitted ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingle_SingleMaxValue", new Action( instance.TestReadSingle_SingleMaxValue ) ) );
@@ -7050,6 +7239,87 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingle_SinglePositiveInfinity_Splitted", new Action( instance.TestReadSingle_SinglePositiveInfinity_Splitted ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingle_SinglePositiveZero", new Action( instance.TestReadSingle_SinglePositiveZero ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingle_SinglePositiveZero_Splitted", new Action( instance.TestReadSingle_SinglePositiveZero_Splitted ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedInt16_Maximum_Normal", new Action( instance.TestReadSingleFromPackedInt16_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedInt16_Minimum_Normal", new Action( instance.TestReadSingleFromPackedInt16_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedInt32_Maximum_Normal", new Action( instance.TestReadSingleFromPackedInt32_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedInt32_Minimum_Normal", new Action( instance.TestReadSingleFromPackedInt32_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedInt64_Maximum_Normal", new Action( instance.TestReadSingleFromPackedInt64_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedInt64_Minimum_Normal", new Action( instance.TestReadSingleFromPackedInt64_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedInt8_Maximum_Normal", new Action( instance.TestReadSingleFromPackedInt8_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedInt8_Minimum_Normal", new Action( instance.TestReadSingleFromPackedInt8_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedNegativeFixNum_Maximum_Normal", new Action( instance.TestReadSingleFromPackedNegativeFixNum_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedNegativeFixNum_Minimum_Normal", new Action( instance.TestReadSingleFromPackedNegativeFixNum_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedPositiveFixNum_Maximum_Normal", new Action( instance.TestReadSingleFromPackedPositiveFixNum_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedPositiveFixNum_Minimum_Normal", new Action( instance.TestReadSingleFromPackedPositiveFixNum_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedUInt16_Maximum_Normal", new Action( instance.TestReadSingleFromPackedUInt16_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedUInt16_Minimum_Normal", new Action( instance.TestReadSingleFromPackedUInt16_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedUInt32_Maximum_Normal", new Action( instance.TestReadSingleFromPackedUInt32_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedUInt32_Minimum_Normal", new Action( instance.TestReadSingleFromPackedUInt32_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedUInt64_Maximum_Normal", new Action( instance.TestReadSingleFromPackedUInt64_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedUInt64_Minimum_Normal", new Action( instance.TestReadSingleFromPackedUInt64_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedUInt8_Maximum_Normal", new Action( instance.TestReadSingleFromPackedUInt8_Maximum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedUInt8_Minimum_Normal", new Action( instance.TestReadSingleFromPackedUInt8_Minimum_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadSingleFromPackedZero_Normal", new Action( instance.TestReadSingleFromPackedZero_Normal ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedDouble_LittleNegative_AsZero", new Action( instance.TestReadUInt16FromPackedDouble_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedDouble_LittlePositive_AsZero", new Action( instance.TestReadUInt16FromPackedDouble_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedDouble_Negative_Overflow", new Action( instance.TestReadUInt16FromPackedDouble_Negative_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedDouble_Positive_AsInteger", new Action( instance.TestReadUInt16FromPackedDouble_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedDouble_Zero_AsInteger", new Action( instance.TestReadUInt16FromPackedDouble_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedInt16_MaxValue_Overflow", new Action( instance.TestReadUInt16FromPackedInt16_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedInt16_MinValue_Overflow", new Action( instance.TestReadUInt16FromPackedInt16_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedInt32_MaxValue_Overflow", new Action( instance.TestReadUInt16FromPackedInt32_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedInt32_MinValue_Overflow", new Action( instance.TestReadUInt16FromPackedInt32_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedInt64_MaxValue_Overflow", new Action( instance.TestReadUInt16FromPackedInt64_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedInt64_MinValue_Overflow", new Action( instance.TestReadUInt16FromPackedInt64_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedInt8_MaxValue_Overflow", new Action( instance.TestReadUInt16FromPackedInt8_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedInt8_MinValue_Overflow", new Action( instance.TestReadUInt16FromPackedInt8_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedNegativeFixNum_MaxValue_Overflow", new Action( instance.TestReadUInt16FromPackedNegativeFixNum_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedNegativeFixNum_MinValue_Overflow", new Action( instance.TestReadUInt16FromPackedNegativeFixNum_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedPositiveFixNum_MaxValue_AsInteger", new Action( instance.TestReadUInt16FromPackedPositiveFixNum_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedPositiveFixNum_MinValue_AsInteger", new Action( instance.TestReadUInt16FromPackedPositiveFixNum_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedSingle_LittleNegative_AsZero", new Action( instance.TestReadUInt16FromPackedSingle_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedSingle_LittlePositive_AsZero", new Action( instance.TestReadUInt16FromPackedSingle_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedSingle_Negative_Overflow", new Action( instance.TestReadUInt16FromPackedSingle_Negative_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedSingle_Positive_AsInteger", new Action( instance.TestReadUInt16FromPackedSingle_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedSingle_Zero_AsInteger", new Action( instance.TestReadUInt16FromPackedSingle_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedUInt16_MaxValue_AsInteger", new Action( instance.TestReadUInt16FromPackedUInt16_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedUInt16_MinValue_AsInteger", new Action( instance.TestReadUInt16FromPackedUInt16_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedUInt32_MaxValue_Overflow", new Action( instance.TestReadUInt16FromPackedUInt32_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedUInt32_MinValue_Overflow", new Action( instance.TestReadUInt16FromPackedUInt32_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedUInt64_MaxValue_Overflow", new Action( instance.TestReadUInt16FromPackedUInt64_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedUInt64_MinValue_Overflow", new Action( instance.TestReadUInt16FromPackedUInt64_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedUInt8_MaxValue_AsInteger", new Action( instance.TestReadUInt16FromPackedUInt8_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt16FromPackedUInt8_MinValue_AsInteger", new Action( instance.TestReadUInt16FromPackedUInt8_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedDouble_LittleNegative_AsZero", new Action( instance.TestReadUInt32FromPackedDouble_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedDouble_LittlePositive_AsZero", new Action( instance.TestReadUInt32FromPackedDouble_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedDouble_Negative_Overflow", new Action( instance.TestReadUInt32FromPackedDouble_Negative_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedDouble_Positive_AsInteger", new Action( instance.TestReadUInt32FromPackedDouble_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedDouble_Zero_AsInteger", new Action( instance.TestReadUInt32FromPackedDouble_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedInt16_MaxValue_Overflow", new Action( instance.TestReadUInt32FromPackedInt16_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedInt16_MinValue_Overflow", new Action( instance.TestReadUInt32FromPackedInt16_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedInt32_MaxValue_Overflow", new Action( instance.TestReadUInt32FromPackedInt32_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedInt32_MinValue_Overflow", new Action( instance.TestReadUInt32FromPackedInt32_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedInt64_MaxValue_Overflow", new Action( instance.TestReadUInt32FromPackedInt64_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedInt64_MinValue_Overflow", new Action( instance.TestReadUInt32FromPackedInt64_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedInt8_MaxValue_Overflow", new Action( instance.TestReadUInt32FromPackedInt8_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedInt8_MinValue_Overflow", new Action( instance.TestReadUInt32FromPackedInt8_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedNegativeFixNum_MaxValue_Overflow", new Action( instance.TestReadUInt32FromPackedNegativeFixNum_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedNegativeFixNum_MinValue_Overflow", new Action( instance.TestReadUInt32FromPackedNegativeFixNum_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedPositiveFixNum_MaxValue_AsInteger", new Action( instance.TestReadUInt32FromPackedPositiveFixNum_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedPositiveFixNum_MinValue_AsInteger", new Action( instance.TestReadUInt32FromPackedPositiveFixNum_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedSingle_LittleNegative_AsZero", new Action( instance.TestReadUInt32FromPackedSingle_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedSingle_LittlePositive_AsZero", new Action( instance.TestReadUInt32FromPackedSingle_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedSingle_Negative_Overflow", new Action( instance.TestReadUInt32FromPackedSingle_Negative_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedSingle_Positive_AsInteger", new Action( instance.TestReadUInt32FromPackedSingle_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedSingle_Zero_AsInteger", new Action( instance.TestReadUInt32FromPackedSingle_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedUInt16_MaxValue_AsInteger", new Action( instance.TestReadUInt32FromPackedUInt16_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedUInt16_MinValue_AsInteger", new Action( instance.TestReadUInt32FromPackedUInt16_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedUInt32_MaxValue_AsInteger", new Action( instance.TestReadUInt32FromPackedUInt32_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedUInt32_MinValue_AsInteger", new Action( instance.TestReadUInt32FromPackedUInt32_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedUInt64_MaxValue_Overflow", new Action( instance.TestReadUInt32FromPackedUInt64_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedUInt64_MinValue_Overflow", new Action( instance.TestReadUInt32FromPackedUInt64_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedUInt8_MaxValue_AsInteger", new Action( instance.TestReadUInt32FromPackedUInt8_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt32FromPackedUInt8_MinValue_AsInteger", new Action( instance.TestReadUInt32FromPackedUInt8_MinValue_AsInteger ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64_ByteMaxValue", new Action( instance.TestReadUInt64_ByteMaxValue ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64_ByteMaxValue_Splitted", new Action( instance.TestReadUInt64_ByteMaxValue_Splitted ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64_ByteMaxValuePlusOne", new Action( instance.TestReadUInt64_ByteMaxValuePlusOne ) ) );
@@ -7072,6 +7342,36 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64_UInt64MaxValue_Splitted", new Action( instance.TestReadUInt64_UInt64MaxValue_Splitted ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64_Zero", new Action( instance.TestReadUInt64_Zero ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64_Zero_Splitted", new Action( instance.TestReadUInt64_Zero_Splitted ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedDouble_LittleNegative_AsZero", new Action( instance.TestReadUInt64FromPackedDouble_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedDouble_LittlePositive_AsZero", new Action( instance.TestReadUInt64FromPackedDouble_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedDouble_Negative_Overflow", new Action( instance.TestReadUInt64FromPackedDouble_Negative_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedDouble_Positive_AsInteger", new Action( instance.TestReadUInt64FromPackedDouble_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedDouble_Zero_AsInteger", new Action( instance.TestReadUInt64FromPackedDouble_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedInt16_MaxValue_Overflow", new Action( instance.TestReadUInt64FromPackedInt16_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedInt16_MinValue_Overflow", new Action( instance.TestReadUInt64FromPackedInt16_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedInt32_MaxValue_Overflow", new Action( instance.TestReadUInt64FromPackedInt32_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedInt32_MinValue_Overflow", new Action( instance.TestReadUInt64FromPackedInt32_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedInt64_MaxValue_Overflow", new Action( instance.TestReadUInt64FromPackedInt64_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedInt64_MinValue_Overflow", new Action( instance.TestReadUInt64FromPackedInt64_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedInt8_MaxValue_Overflow", new Action( instance.TestReadUInt64FromPackedInt8_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedInt8_MinValue_Overflow", new Action( instance.TestReadUInt64FromPackedInt8_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedNegativeFixNum_MaxValue_Overflow", new Action( instance.TestReadUInt64FromPackedNegativeFixNum_MaxValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedNegativeFixNum_MinValue_Overflow", new Action( instance.TestReadUInt64FromPackedNegativeFixNum_MinValue_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedPositiveFixNum_MaxValue_AsInteger", new Action( instance.TestReadUInt64FromPackedPositiveFixNum_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedPositiveFixNum_MinValue_AsInteger", new Action( instance.TestReadUInt64FromPackedPositiveFixNum_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedSingle_LittleNegative_AsZero", new Action( instance.TestReadUInt64FromPackedSingle_LittleNegative_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedSingle_LittlePositive_AsZero", new Action( instance.TestReadUInt64FromPackedSingle_LittlePositive_AsZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedSingle_Negative_Overflow", new Action( instance.TestReadUInt64FromPackedSingle_Negative_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedSingle_Positive_AsInteger", new Action( instance.TestReadUInt64FromPackedSingle_Positive_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedSingle_Zero_AsInteger", new Action( instance.TestReadUInt64FromPackedSingle_Zero_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedUInt16_MaxValue_AsInteger", new Action( instance.TestReadUInt64FromPackedUInt16_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedUInt16_MinValue_AsInteger", new Action( instance.TestReadUInt64FromPackedUInt16_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedUInt32_MaxValue_AsInteger", new Action( instance.TestReadUInt64FromPackedUInt32_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedUInt32_MinValue_AsInteger", new Action( instance.TestReadUInt64FromPackedUInt32_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedUInt64_MaxValue_AsInteger", new Action( instance.TestReadUInt64FromPackedUInt64_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedUInt64_MinValue_AsInteger", new Action( instance.TestReadUInt64FromPackedUInt64_MinValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedUInt8_MaxValue_AsInteger", new Action( instance.TestReadUInt64FromPackedUInt8_MaxValue_AsInteger ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestReadUInt64FromPackedUInt8_MinValue_AsInteger", new Action( instance.TestReadUInt64FromPackedUInt8_MinValue_AsInteger ) ) );
 		}
 	} 
 
@@ -7879,17 +8179,13 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 		public static void InitializeInstance( TestClassInstance testClassInstance, object testFixtureInstance )
 		{
 			var instance = ( ( VersioningTest )testFixtureInstance );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestExtraField_NotExtensible_Array_CodeDomBased_Classic_Fail", new Action( instance.TestExtraField_NotExtensible_Array_CodeDomBased_Classic_Fail ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestExtraField_NotExtensible_Array_CodeDomBased_None_Fail", new Action( instance.TestExtraField_NotExtensible_Array_CodeDomBased_None_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestExtraField_NotExtensible_Array_ReflectionBased_Classic_Fail", new Action( instance.TestExtraField_NotExtensible_Array_ReflectionBased_Classic_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestExtraField_NotExtensible_Array_ReflectionBased_None_Fail", new Action( instance.TestExtraField_NotExtensible_Array_ReflectionBased_None_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestExtraField_NotExtensible_Map_ReflectionBased_Classic_Fail", new Action( instance.TestExtraField_NotExtensible_Map_ReflectionBased_Classic_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestExtraField_NotExtensible_Map_ReflectionBased_None_Fail", new Action( instance.TestExtraField_NotExtensible_Map_ReflectionBased_None_Fail ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestFieldInvalidType_Array_CodeDomBased_Fail", new Action( instance.TestFieldInvalidType_Array_CodeDomBased_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestFieldInvalidType_Array_ReflectionBased_Fail", new Action( instance.TestFieldInvalidType_Array_ReflectionBased_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestFieldInvalidType_Map_ReflectionBased_Fail", new Action( instance.TestFieldInvalidType_Map_ReflectionBased_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestFieldModified_Map_ReflectionBased_ExtraIsStoredAsExtensionData_MissingIsTreatedAsNil", new Action( instance.TestFieldModified_Map_ReflectionBased_ExtraIsStoredAsExtensionData_MissingIsTreatedAsNil ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestMissingField_Array_CodeDomBased_MissingIsTreatedAsNil", new Action( instance.TestMissingField_Array_CodeDomBased_MissingIsTreatedAsNil ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestMissingField_Array_ReflectionBased_MissingIsTreatedAsNil", new Action( instance.TestMissingField_Array_ReflectionBased_MissingIsTreatedAsNil ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestMissingField_Map_ReflectionBased_MissingIsTreatedAsNil", new Action( instance.TestMissingField_Map_ReflectionBased_MissingIsTreatedAsNil ) ) );
 		}

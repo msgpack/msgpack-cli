@@ -209,7 +209,7 @@ namespace MsgPack.Serialization
 
 				return new PolymorphicSerializerProvider<T>( serializer ).Get( context, schema ?? PolymorphismSchema.Default ) as MessagePackSerializer;
 #else
-				IMessagePackSingleObjectSerializer serializer;
+				MessagePackSerializer serializer;
 				if ( this._constructor1 != null )
 				{
 					serializer = this._constructor1.InvokePreservingExceptionType( context ) as MessagePackSerializer;
