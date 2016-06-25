@@ -823,7 +823,7 @@ namespace MsgPack.Serialization
 
 		private static bool FilterCollectionType( Type type, object filterCriteria )
 		{
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 #if DEBUG
 			Contract.Assert( type.GetIsInterface(), "type.IsInterface" );
 #endif // DEBUG
@@ -832,7 +832,7 @@ namespace MsgPack.Serialization
 			var typeInfo = type.GetTypeInfo();
 			Contract.Assert( typeInfo.IsInterface );
 			return typeInfo.Assembly.Equals( typeof( Array ).GetTypeInfo().Assembly ) && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
 		private static bool IsIEnumeratorT( Type @interface )
@@ -858,11 +858,11 @@ namespace MsgPack.Serialization
 			FieldInfo asField;
 			if ( ( asProperty = source as PropertyInfo ) != null )
 			{
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 				return asProperty.GetGetMethod() != null;
 #else
 				return ( asProperty.GetMethod != null && asProperty.GetMethod.IsPublic );
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 			}
 			else if ( ( asField = source as FieldInfo ) != null )
 			{
@@ -880,11 +880,11 @@ namespace MsgPack.Serialization
 			FieldInfo asField;
 			if ( ( asProperty = source as PropertyInfo ) != null )
 			{
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 				return asProperty.GetSetMethod() != null;
 #else
 				return ( asProperty.SetMethod != null && asProperty.SetMethod.IsPublic );
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 			}
 			else if ( ( asField = source as FieldInfo ) != null )
 			{
@@ -901,17 +901,17 @@ namespace MsgPack.Serialization
 			PropertyInfo asProperty;
 			FieldInfo asField;
 			MethodBase asMethod;
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			Type asType;
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 			if ( ( asProperty = source as PropertyInfo ) != null )
 			{
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 				return asProperty.GetAccessors( true ).Where( a => a.ReturnType != typeof( void ) ).All( a => a.IsPublic );
 #else
 				return
 					( asProperty.GetMethod == null || asProperty.GetMethod.IsPublic );
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 			}
 			else if ( ( asField = source as FieldInfo ) != null )
 			{
@@ -921,12 +921,12 @@ namespace MsgPack.Serialization
 			{
 				return asMethod.IsPublic;
 			}
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			else if ( ( asType = source as Type ) != null )
 			{
 				return asType.IsPublic;
 			}
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 			else
 			{
 				throw new NotSupportedException( source.GetType() + " is not supported." );

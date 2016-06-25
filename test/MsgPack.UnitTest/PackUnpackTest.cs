@@ -781,9 +781,7 @@ namespace MsgPack
 				var item = Unpacking.UnpackObject( stream );
 				Assert.That( item, Is.Not.Null );
 				Assert.That( item.IsTypeOf<int>().Value );
-#if !NETFX_CORE
-				Assert.That( item.UnderlyingType.IsPrimitive, Is.True );
-#endif
+				Assert.That( item.UnderlyingType.GetIsPrimitive(), Is.True );
 				Assert.That( item.AsInt32(), Is.EqualTo( 1 ) );
 				item = Unpacking.UnpackObject( stream );
 				Assert.That( item, Is.Not.Null );

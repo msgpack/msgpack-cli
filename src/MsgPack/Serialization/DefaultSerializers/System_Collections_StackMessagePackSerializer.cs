@@ -18,6 +18,7 @@
 //
 #endregion -- License Terms --
 
+#if !NETSTANDARD1_1
 using System;
 using System.Collections;
 #if FEATURE_TAP
@@ -157,3 +158,4 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	}
 }
+#endif // !NETSTANDARD1_1

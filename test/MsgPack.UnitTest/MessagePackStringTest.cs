@@ -24,7 +24,7 @@ using System.Diagnostics;
 using Debug = System.Console; // For missing Debug.WriteLine(String, params Object[])
 #endif // NETFX_35
 using System.Security;
-#if !NETFX_CORE && !WINDOWS_PHONE
+#if !NETFX_CORE && !WINDOWS_PHONE && !NETSTANDARD1_1 && !NETSTANDARD1_3
 using System.Security.Permissions;
 using System.Security.Policy;
 #endif
@@ -159,7 +159,7 @@ namespace MsgPack
 
 #endif // !UNITY && !SILVERLIGHT && !AOT
 
-#if !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		private static StrongName GetStrongName( Type type )
 		{
 			var assemblyName = type.Assembly.GetName();
@@ -241,7 +241,7 @@ namespace MsgPack
 			AppDomain.CurrentDomain.SetData( "TestEqualsWorker.Performance", result );
 			AppDomain.CurrentDomain.SetData( "MessagePackString.IsFastEqualsDisabled", MessagePackString.IsFastEqualsDisabled );
 		}
-#endif // !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 		private static Tuple<double, double, double, double> TestEqualsCore()
 		{

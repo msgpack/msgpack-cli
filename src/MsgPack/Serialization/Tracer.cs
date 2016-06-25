@@ -20,9 +20,9 @@
 
 using System;
 using System.Diagnostics;
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 using System.Globalization;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 
 namespace MsgPack.Serialization
 {
@@ -54,7 +54,7 @@ namespace MsgPack.Serialization
 		}
 	}
 
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 	internal enum TraceEventType
 	{
 		Critical = 1,
@@ -85,5 +85,5 @@ namespace MsgPack.Serialization
 			Debug.WriteLine( String.Format( CultureInfo.InvariantCulture, "{0} {1}: {2} : {3}", this._name, eventType, id, data ) );
 		}
 	}
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 }

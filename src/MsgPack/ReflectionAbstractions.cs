@@ -43,133 +43,133 @@ namespace MsgPack
 
 		public static bool GetIsValueType( this Type source )
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			return source.GetTypeInfo().IsValueType;
 #else
 			return source.IsValueType;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 
 		public static bool GetIsEnum( this Type source )
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			return source.GetTypeInfo().IsEnum;
 #else
 			return source.IsEnum;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 
 		public static bool GetIsInterface( this Type source )
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			return source.GetTypeInfo().IsInterface;
 #else
 			return source.IsInterface;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 
 		public static bool GetIsAbstract( this Type source )
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			return source.GetTypeInfo().IsAbstract;
 #else
 			return source.IsAbstract;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 
 		public static bool GetIsGenericType( this Type source )
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			return source.GetTypeInfo().IsGenericType;
 #else
 			return source.IsGenericType;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 
 		public static bool GetIsGenericTypeDefinition( this Type source )
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			return source.GetTypeInfo().IsGenericTypeDefinition;
 #else
 			return source.IsGenericTypeDefinition;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 
 #if DEBUG
 		public static bool GetContainsGenericParameters( this Type source )
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			return source.GetTypeInfo().ContainsGenericParameters;
 #else
 			return source.ContainsGenericParameters;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 #endif // DEBUG
 
 		public static Assembly GetAssembly( this Type source )
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			return source.GetTypeInfo().Assembly;
 #else
 			return source.Assembly;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 
 		public static bool GetIsVisible( this Type source )
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			return source.GetTypeInfo().IsVisible;
 #else
 			return source.IsVisible;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Wrong detection" )]
 		public static bool GetIsPublic( this Type source )
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			return source.GetTypeInfo().IsPublic;
 #else
 			return source.IsPublic;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 
 #if DEBUG
 		public static bool GetIsPrimitive( this Type source )
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			return source.GetTypeInfo().IsPrimitive;
 #else
 			return source.IsPrimitive;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 #endif // DEBUG
 
 		public static Type GetBaseType( this Type source )
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			return source.GetTypeInfo().BaseType;
 #else
 			return source.BaseType;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 		public static MethodBase GetDeclaringMethod( this Type source )
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			return source.GetTypeInfo().DeclaringMethod;
 #else
 			return source.DeclaringMethod;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 
 
 		public static Type[] GetGenericTypeParameters( this Type source )
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			return source.GetTypeInfo().GenericTypeParameters;
 #else
 			return source.GetGenericArguments().Where( t => t.IsGenericParameter ).ToArray();
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 
 		public static MethodInfo GetRuntimeMethod( this Type source, string name )
@@ -192,7 +192,7 @@ namespace MsgPack
 			}
 		}
 
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 		public static MethodInfo GetRuntimeMethod( this Type source, string name, Type[] parameters )
 		{
 			return
@@ -243,15 +243,15 @@ namespace MsgPack
 				);
 		}
 
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 
 		public static ConstructorInfo GetRuntimeConstructor( this Type source, Type[] parameters )
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			return source.GetTypeInfo().DeclaredConstructors.SingleOrDefault( c => c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameters ) );
 #else
 			return source.GetConstructor( BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, parameters, null );
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 
 #if NETFX_35 || NETFX_40 || SILVERLIGHT
@@ -267,7 +267,7 @@ namespace MsgPack
 
 #endif // NETFX_35 || NETFX_40 || SILVERLIGHT
 
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 		public static MethodInfo GetMethod( this Type source, string name )
 		{
 			return source.GetRuntimeMethods().SingleOrDefault( m => m.Name == name && m.DeclaringType == source );
@@ -422,7 +422,7 @@ namespace MsgPack
 			return source.GetType();
 		}
 #endif // !SILVERLIGHT
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 
 		public static string GetCultureName( this AssemblyName source )
 		{
@@ -445,12 +445,12 @@ namespace MsgPack
 		}
 #endif // NETFX_35 || UNITY
 
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this ParameterInfo source )
 		{
 			return source.CustomAttributes;
 		}
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 
 #if SILVERLIGHT
 		public static IEnumerable<Attribute> GetCustomAttributesData( this MemberInfo source )

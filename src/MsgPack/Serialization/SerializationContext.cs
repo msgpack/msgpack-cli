@@ -37,9 +37,9 @@ using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR || UNITY
-#if UNITY || NETSTD_11 || NETSTD_13
+#if UNITY || NETSTANDARD1_1 || NETSTANDARD1_3
 using System.Linq;
-#endif // UNITY || NETSTD_11 || NETSTD_13
+#endif // UNITY || NETSTANDARD1_1 || NETSTANDARD1_3
 #if AOT
 using System.Reflection;
 #endif // AOT
@@ -926,7 +926,7 @@ namespace MsgPack.Serialization
 #endif // SILVERLIGHT || NETFX_35 || UNITY
 				if ( !this._cache.TryGetValue( targetType.TypeHandle, out func ) || func == null )
 				{
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 					func =
 						Delegate.CreateDelegate(
 							typeof( Func<SerializationContext, object, MessagePackSerializer> ),
@@ -937,7 +937,7 @@ namespace MsgPack.Serialization
 						typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" ).CreateDelegate(
 							typeof( Func<SerializationContext, object, MessagePackSerializer> )
 						) as Func<SerializationContext, object, MessagePackSerializer>;
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 					Contract.Assert( func != null, "func != null" );
 
@@ -955,7 +955,7 @@ namespace MsgPack.Serialization
 		private static class SerializerGetter<T>
 		{
 			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
-#if !NETSTD_11 && !NETSTD_13 && !WINDOWS_PHONE && !UNITY
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !WINDOWS_PHONE && !UNITY && !XAMARIN
 			Delegate.CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> ),
 					Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) )
@@ -969,7 +969,7 @@ namespace MsgPack.Serialization
 				.MakeGenericMethod( typeof( T ) ).CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> )
 				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
-#endif // !NETSTD_11 && !NETSTD_13 && !WINDOWS_PHONE && !UNITY
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !WINDOWS_PHONE && !UNITY && !XAMARIN
 
 			// ReSharper disable UnusedMember.Local
 			// This method is invoked via Reflection on SerializerGetter.Get().

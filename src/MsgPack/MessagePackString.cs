@@ -43,9 +43,9 @@ namespace MsgPack
 	/// <summary>
 	///		Encapselates <see cref="String"/> and its serialized UTF-8 bytes.
 	/// </summary>
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	[Serializable]
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 #if !NETFX_35 && !UNITY
 	[SecuritySafeCritical]
 #endif // !NETFX_35 && !UNITY
@@ -338,9 +338,9 @@ namespace MsgPack
 		}
 #endif // if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
 
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		[Serializable]
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		private enum BinaryType
 		{
 			Unknwon = 0,

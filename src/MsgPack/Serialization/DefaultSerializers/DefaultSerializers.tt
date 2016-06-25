@@ -262,7 +262,7 @@ foreach( Type type in types )
 	if ( notInNetStandard1_1.Contains( type ) )
 	{
 #>
-#if !NETSTD_11
+#if !NETSTANDARD1_1
 <#
 	}
 
@@ -536,7 +536,7 @@ foreach( var ctor in ctors )
 	if ( notInNetStandard1_1.Contains( type ) )
 	{
 #>
-#endif // !NETSTD_11
+#endif // !NETSTANDARD1_1
 <#
 	}
 

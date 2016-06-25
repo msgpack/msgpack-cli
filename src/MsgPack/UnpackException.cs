@@ -19,18 +19,18 @@
 #endregion -- License Terms --
 
 using System;
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 using System.Runtime.Serialization;
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 namespace MsgPack
 {
 	/// <summary>
 	///		Represents generic unpacking error.
 	/// </summary>
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	[Serializable]
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	public sealed class UnpackException : Exception
 	{
 		/// <summary>
@@ -53,7 +53,7 @@ namespace MsgPack
 		/// </param>
 		public UnpackException( string message, Exception inner ) : base( message ?? "Failed to unpacking.", inner ) { }
 
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		/// <summary>
 		///		Initializes a new instance of the <see cref="UnpackException"/> class with serialized data.
 		/// </summary>
@@ -69,7 +69,7 @@ namespace MsgPack
 		///		The class name is <c>null</c> or <see cref="P:HResult"/> is zero (0).
 		///	</exception>
 		private UnpackException( SerializationInfo info, StreamingContext context ) : base( info, context ) { }
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	}
 }
  

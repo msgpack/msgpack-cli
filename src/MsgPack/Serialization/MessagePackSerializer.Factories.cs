@@ -23,9 +23,9 @@
 #define AOT
 #endif
 
-#if !AOT && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !AOT && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 #define FEATURE_EMIT
-#endif // !AOT && !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !AOT && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 using System;
 using System.IO;
@@ -353,7 +353,7 @@ namespace MsgPack.Serialization
 			return CreateInternal( context, targetType, null );
 #else
 			// MPS.Create should always return new instance, and creator delegate should be cached for performance.
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			var factory =
 				_creatorCache.GetOrAdd(
 					targetType,
@@ -398,7 +398,7 @@ namespace MsgPack.Serialization
 							Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type )
 						) as Func<SerializationContext, MessagePackSerializer>
 				);
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 			return factory( context );
 #endif // AOT
 		}

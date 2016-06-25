@@ -21,15 +21,17 @@
 using System;
 using System.Runtime.Serialization;
 
+#if SILVERLIGHT || NETFX_CORE || NETSTANDARD1_1 || NETSTANDARD1_3
+using NonSerializedAttribute = MsgPack.Serialization.MessagePackIgnoreAttribute;
+#endif // SILVERLIGHT || NETFX_CORE || NETSTANDARD1_1 || NETSTANDARD1_3
+
 namespace MsgPack.Serialization
 {
 	[DataContract]
 	public class DataContractAndNonSerializedMixedTarget
 	{
 		[DataMember]
-#if !NETFX_CORE && !SILVERLIGHT
 		[NonSerialized]
-#endif
 		public int ShouldSerialized;
 	}
 }

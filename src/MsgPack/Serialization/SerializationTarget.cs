@@ -127,7 +127,7 @@ namespace MsgPack.Serialization
 			while ( type != typeof( object ) && type != null )
 			{
 				var members = 
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 					type.FindMembers( 
 						MemberTypes.Field | MemberTypes.Property, 
 						BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly,
@@ -137,7 +137,7 @@ namespace MsgPack.Serialization
 #else
 					type.GetTypeInfo().DeclaredFields.Where( f => !f.IsStatic ).OfType<MemberInfo>()
 						.Concat( type.GetTypeInfo().DeclaredProperties.Where( p => p.GetMethod != null && !p.GetMethod.IsStatic ) );
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 				foreach ( var memberInfo in members )
 				{
 					if ( returningMemberNamesSet.Add( memberInfo.Name ) ) //HashSet returns true is new key was added
@@ -361,11 +361,11 @@ namespace MsgPack.Serialization
 					return false;
 				}
 
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 				if ( asProperty.GetSetMethod( true ) != null )
 #else
 				if ( asProperty.SetMethod != null )
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 				{
 					return true;
 				}
@@ -560,11 +560,11 @@ namespace MsgPack.Serialization
 		}
 #endif // !NETFX_35
 
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13 && !AOT
+#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !AOT
 		public static bool BuiltInSerializerExists( ISerializerGeneratorConfiguration configuration, Type type, CollectionTraits traits )
 		{
 			return GenericSerializer.IsSupported( type, traits, configuration.PreferReflectionBasedSerializer ) || SerializerRepository.InternalDefault.Contains( type );
 		}
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13 && !AOT
+#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !AOT
 	}
 }

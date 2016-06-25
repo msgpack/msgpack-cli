@@ -26,9 +26,9 @@ namespace MsgPack
 	/// <summary>
 	///		Implements <see cref="EqualityComparer{T}"/> of <see cref="MessagePackObject"/>.
 	/// </summary>
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	[Serializable]
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	public sealed class MessagePackObjectEqualityComparer : IEqualityComparer<MessagePackObject>
 	{
 		private static readonly MessagePackObjectEqualityComparer _instance = new MessagePackObjectEqualityComparer();

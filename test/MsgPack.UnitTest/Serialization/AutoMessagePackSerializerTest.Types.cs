@@ -435,22 +435,22 @@ namespace MsgPack.Serialization
 			get { return this._ObjectArrayField; }
 			set { this._ObjectArrayField = value; }
 		}
-#if !SILVERLIGHT && !NETSTD_11
+#if !SILVERLIGHT && !NETSTANDARD1_1
 		private ArrayList _ArrayListField = new ArrayList();
 		
 		public ArrayList ArrayListField
 		{
 			get { return this._ArrayListField; }
 		}
-#endif // !SILVERLIGHT && !NETSTD_11
-#if !SILVERLIGHT && !NETSTD_11
+#endif // !SILVERLIGHT && !NETSTANDARD1_1
+#if !SILVERLIGHT && !NETSTANDARD1_1
 		private Hashtable _HashtableField = new Hashtable();
 		
 		public Hashtable HashtableField
 		{
 			get { return this._HashtableField; }
 		}
-#endif // !SILVERLIGHT && !NETSTD_11
+#endif // !SILVERLIGHT && !NETSTANDARD1_1
 		private List<Object> _ListObjectField = new List<Object>();
 		
 		public List<Object> ListObjectField
@@ -1062,11 +1062,7 @@ namespace MsgPack.Serialization
 				return;
 			}
 
-#if !NETFX_CORE
-			if ( expected.GetType().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( ArraySegment<> ) )
-#else
-			if ( expected.GetType().GetTypeInfo().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( ArraySegment<> ) )
-#endif
+			if ( expected.GetType().GetIsGenericType() && expected.GetType().GetGenericTypeDefinition() == typeof( ArraySegment<> ) )
 			{
 				AssertArraySegmentEquals( expected, actual );
 				return;
@@ -1151,11 +1147,7 @@ namespace MsgPack.Serialization
 				return;
 			}
 
-#if !NETFX_CORE
-			if ( expected.GetType().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
-#else
-			if ( expected.GetType().GetTypeInfo().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
-#endif
+			if ( expected.GetType().GetIsGenericType() && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
 			{
 #if !NETFX_35 && !AOT
 				Verify( ( ( dynamic )expected ).Key, ( ( dynamic )actual ).Key );
@@ -1210,7 +1202,7 @@ namespace MsgPack.Serialization
 		
 		private static void AssertArraySegmentEquals( object x, object y )
 		{
-#if !NETFX_CORE
+#if !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
 			var type = typeof( ArraySegmentEqualityComparer<> ).MakeGenericType( x.GetType().GetGenericArguments()[ 0 ] );
 			Assert.That(
 				( bool )type.InvokeMember( "Equals", BindingFlags.InvokeMethod, null, Activator.CreateInstance( type ), new[] { x, y } ),
@@ -1229,7 +1221,7 @@ namespace MsgPack.Serialization
 				x,
 				y
 			);
-#endif
+#endif // !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 	}
 	

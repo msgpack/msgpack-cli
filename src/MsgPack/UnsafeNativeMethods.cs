@@ -26,9 +26,9 @@ using System.Threading;
 namespace MsgPack
 {
 
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	[SuppressUnmanagedCodeSecurity]
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 #if !NETFX_35
 	[SecurityCritical]
 #endif // !NETFX_35

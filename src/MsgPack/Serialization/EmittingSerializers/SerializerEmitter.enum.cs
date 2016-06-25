@@ -85,11 +85,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 			);
 			var ctor = 
 				this._typeBuilder
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 				.CreateType()
 #else
 				.CreateTypeInfo().AsType()
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 				.GetRuntimeConstructor( ContextAndEnumSerializationMethodConstructorParameterTypes );
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 			var methodParameter = Expression.Parameter( typeof( EnumSerializationMethod ), "method" );

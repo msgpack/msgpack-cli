@@ -66,9 +66,9 @@ namespace MsgPack
 		private static readonly Regex NamespacePattern =
 			new Regex(
 				"^(" + UnicodeTr15Annex7Idneifier + @")(\." + UnicodeTr15Annex7Idneifier + ")*$",
-#if !SILVERLIGHT && !UNITY && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3
 				RegexOptions.Compiled |
-#endif // !SILVERLIGHT && !UNITY && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3
 				RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Singleline
 			);
 

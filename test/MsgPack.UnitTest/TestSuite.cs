@@ -37,7 +37,7 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack
 {
-#if !NETFX_CORE && !WINDOWS_PHONE
+#if !NETFX_CORE && !WINDOWS_PHONE && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	[TestFixture]
 	public class TestSuite
 	{

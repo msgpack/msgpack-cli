@@ -35,13 +35,13 @@ namespace MsgPack.Serialization
 		FieldBased,
 #endif // SILVERLIGHT
 
-#if !NETSTD_11 && !NETSTD_13 && !SILVERLIGHT
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !SILVERLIGHT
 		/// <summary>
 		///		Uses code DOM code generation to (de)serialization.
 		///		It requires a long time but prevents runtime code generation at all.
 		/// </summary>
 		CodeDomBased,
-#endif // !NETSTD_11 && !NETSTD_13 && !SILVERLIGHT
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !SILVERLIGHT
 
 		/// <summary>
 		///		Uses reflection to (de)serialization.

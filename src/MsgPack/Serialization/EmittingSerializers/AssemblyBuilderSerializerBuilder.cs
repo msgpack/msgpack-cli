@@ -189,11 +189,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			var underyingType = Enum.GetUnderlyingType( type.ResolveRuntimeType() );
 
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			switch ( Type.GetTypeCode( underyingType ) )
 #else
 			switch ( NetStandardCompatibility.GetTypeCode( underyingType ) )
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 			{
 				case TypeCode.Byte:
 				{
@@ -1110,7 +1110,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema )
 		{
@@ -1145,7 +1145,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitNewPrivateMethodDelegateExpression( AssemblyBuilderEmittingContext context, MethodDefinition method )

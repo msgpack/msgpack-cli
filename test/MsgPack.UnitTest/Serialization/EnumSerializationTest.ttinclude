@@ -98,9 +98,9 @@ using System.Threading.Tasks;
 	if ( !forIos )
 	{
 #>
-#if !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 <#+
 	}
 #>
@@ -149,7 +149,7 @@ namespace MsgPack.Serialization
 			get { return <#= canDump.ToString().ToLowerInvariant() #>; }
 		}
 
-#if !SILVERLIGHT && !AOT && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		[SetUp]
 		public void SetUp()
 		{
@@ -202,7 +202,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
-#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3
 <#+
 	} // if !forIos
 #>

@@ -24,6 +24,10 @@ using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
+#if SILVERLIGHT || NETFX_CORE || NETSTANDARD1_1 || NETSTANDARD1_3
+using NonSerializedAttribute = MsgPack.Serialization.MessagePackIgnoreAttribute;
+#endif // SILVERLIGHT || NETFX_CORE || NETSTANDARD1_1 || NETSTANDARD1_3
+
 namespace MsgPack.Serialization
 {
 	// Note: Following types use private for non-public instead of internal because internal member accessibility checks may be affected with InternalsVisibleTo attribute.
@@ -63,29 +67,16 @@ namespace MsgPack.Serialization
 		private System.Collections.IDictionary NonPublicIDictionaryReadOnlyProperty { get { return this._nonPublicIDictionaryReadOnlyProperty; } }
 		private readonly System.Collections.IDictionary NonPublicIDictionaryReadOnlyField;
 
-#if !SILVERLIGHT && !NETSTD_11
-#if !NETFX_CORE
 		[NonSerialized]
-#else
-		[MessagePackIgnore]
-#endif // !NETFX_CORE
 		public int NonSerializedPublicField;
 
-#if !NETFX_CORE
 		[NonSerialized]
-#else
-		[MessagePackIgnore]
-#endif // !NETFX_CORE
 		public readonly int NonSerializedPublicReadOnlyField;
 
-#if !NETFX_CORE
 		[NonSerialized]
-#else
-		[MessagePackIgnore]
-#endif // !NETFX_CORE
 		// ReSharper disable once InconsistentNaming
 		private int NonSerializedNonPublicField;
-#endif // !SILVERLIGHT && !NETSTD_11
+
 		private readonly List<int> _collectionReadOnlyProperty;
 		public List<int> CollectionReadOnlyProperty { get { return this._collectionReadOnlyProperty; } }
 
@@ -98,11 +89,9 @@ namespace MsgPack.Serialization
 			this.PublicReadOnlyField = 4;
 			this.NonPublicProperty = 5;
 			this.NonPublicField = 6;
-#if !NETFX_CORE && !SILVERLIGHT
 			this.NonSerializedPublicField = 7;
 			this.NonSerializedPublicReadOnlyField = 8;
 			this.NonSerializedNonPublicField = 9;
-#endif // !NETFX_CORE && !SILVERLIGHT
 			this._collectionReadOnlyProperty = new List<int>();
 			this.NonPublicCollectionProperty = new List<int>();
 			this.NonPublicCollectionField = new List<int>();
@@ -168,32 +157,25 @@ namespace MsgPack.Serialization
 		[MessagePackMember( 5 )]
 		private int NonPublicField;
 
-#if !SILVERLIGHT && !NETSTD_11
-#if !NETFX_CORE
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 // MessagePackMember and MessagePackIgnore cannot coexist.
 		[NonSerialized]
-#else
-		[MessagePackIgnore]
-#endif // !NETFX_CORE
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		[MessagePackMember( 6 )]
 		public int NonSerializedPublicField;
 
-#if !NETFX_CORE
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 // MessagePackMember and MessagePackIgnore cannot coexist.
 		[NonSerialized]
-#else
-		[MessagePackIgnore]
-#endif // !NETFX_CORE
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		[MessagePackMember( 7 )]
 		public readonly int NonSerializedPublicReadOnlyField;
 
-#if !NETFX_CORE
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 // MessagePackMember and MessagePackIgnore cannot coexist.
 		[NonSerialized]
-#else
-		[MessagePackIgnore]
-#endif // !NETFX_CORE
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		[MessagePackMember( 8 )]
 		// ReSharper disable once InconsistentNaming
 		private int NonSerializedNonPublicField;
-#endif // !SILVERLIGHT && !NETSTD_11
+
 		private readonly List<int> _collectionReadOnlyProperty;
 		[MessagePackMember( 9 )]
 		public List<int> CollectionReadOnlyProperty { get { return this._collectionReadOnlyProperty; } }
@@ -254,29 +236,15 @@ namespace MsgPack.Serialization
 		private System.Collections.IDictionary NonPublicIDictionaryReadOnlyPropertyPlain { get { return this._nonPublicIDictionaryReadOnlyPropertyPlain; } }
 		private readonly System.Collections.IDictionary NonPublicIDictionaryReadOnlyFieldPlain;
 
-#if !SILVERLIGHT && !NETSTD_11
-#if !NETFX_CORE
 		[NonSerialized]
-#else
-		[MessagePackIgnore]
-#endif // !NETFX_CORE
 		public int NonSerializedPublicFieldPlain;
 
-#if !NETFX_CORE
 		[NonSerialized]
-#else
-		[MessagePackIgnore]
-#endif // !NETFX_CORE
 		public readonly int NonSerializedPublicReadOnlyFieldPlain;
 
-#if !NETFX_CORE
 		[NonSerialized]
-#else
-		[MessagePackIgnore]
-#endif // !NETFX_CORE
 		// ReSharper disable once InconsistentNaming
 		private int NonSerializedNonPublicFieldPlain;
-#endif // !SILVERLIGHT && !NETSTD_11
 
 		public AnnotatedClass()
 		{
@@ -287,11 +255,11 @@ namespace MsgPack.Serialization
 			this.PublicReadOnlyField = 4;
 			this.NonPublicProperty = 5;
 			this.NonPublicField = 6;
-#if !NETFX_CORE && !SILVERLIGHT
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 			this.NonSerializedPublicField = 7;
 			this.NonSerializedPublicReadOnlyField = 8;
 			this.NonSerializedNonPublicField = 9;
-#endif // !NETFX_CORE && !SILVERLIGHT
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 			this._collectionReadOnlyProperty = new List<int>();
 			this.PublicPropertyPlain = 11;
 			this.PublicFieldPlain = 12;
@@ -299,11 +267,9 @@ namespace MsgPack.Serialization
 			this.PublicReadOnlyFieldPlain = 14;
 			this.NonPublicPropertyPlain = 15;
 			this.NonPublicFieldPlain = 16;
-#if !NETFX_CORE && !SILVERLIGHT
 			this.NonSerializedPublicFieldPlain = 17;
 			this.NonSerializedPublicReadOnlyFieldPlain = 18;
 			this.NonSerializedNonPublicFieldPlain = 19;
-#endif // !NETFX_CORE && !SILVERLIGHT
 			this.NonPublicCollectionProperty = new List<int>();
 			this.NonPublicCollectionField = new List<int>();
 			this._nonPublicCollectionReadOnlyProperty = new List<int>();
@@ -405,32 +371,19 @@ namespace MsgPack.Serialization
 		[DataMember( Order = 5 )]
 		private int NonPublicField;
 
-#if !SILVERLIGHT && !NETSTD_11
-#if !NETFX_CORE
 		[NonSerialized]
-#else
-		[MessagePackIgnore]
-#endif // !NETFX_CORE
 		[DataMember( Order = 6 )]
 		public int NonSerializedPublicField;
 
-#if !NETFX_CORE
 		[NonSerialized]
-#else
-		[MessagePackIgnore]
-#endif // !NETFX_CORE
 		[DataMember( Order = 7 )]
 		public readonly int NonSerializedPublicReadOnlyField;
 
-#if !NETFX_CORE
 		[NonSerialized]
-#else
-		[MessagePackIgnore]
-#endif // !NETFX_CORE
 		[DataMember( Order = 8 )]
 		// ReSharper disable once InconsistentNaming
 		private int NonSerializedNonPublicField;
-#endif // !SILVERLIGHT && !NETSTD_11
+
 		private readonly List<int> _collectionReadOnlyProperty;
 		[DataMember( Order = 9 )]
 		public List<int> CollectionReadOnlyProperty { get { return this._collectionReadOnlyProperty; } }
@@ -492,29 +445,15 @@ namespace MsgPack.Serialization
 		private System.Collections.IDictionary NonPublicIDictionaryReadOnlyPropertyPlain { get { return this._nonPublicIDictionaryReadOnlyPropertyPlain; } }
 		private readonly System.Collections.IDictionary NonPublicIDictionaryReadOnlyFieldPlain;
 
-#if !SILVERLIGHT && !NETSTD_11
-#if !NETFX_CORE
 		[NonSerialized]
-#else
-		[MessagePackIgnore]
-#endif // !NETFX_CORE
 		public int NonSerializedPublicFieldPlain;
 
-#if !NETFX_CORE
 		[NonSerialized]
-#else
-		[MessagePackIgnore]
-#endif // !NETFX_CORE
 		public readonly int NonSerializedPublicReadOnlyFieldPlain;
 
-#if !NETFX_CORE
 		[NonSerialized]
-#else
-		[MessagePackIgnore]
-#endif // !NETFX_CORE
 		// ReSharper disable once InconsistentNaming
 		private int NonSerializedNonPublicFieldPlain;
-#endif // !SILVERLIGHT && !NETSTD_11
 
 		public DataMamberClass()
 		{
@@ -525,11 +464,9 @@ namespace MsgPack.Serialization
 			this.PublicReadOnlyField = 4;
 			this.NonPublicProperty = 5;
 			this.NonPublicField = 6;
-#if !NETFX_CORE && !SILVERLIGHT
 			this.NonSerializedPublicField = 7;
 			this.NonSerializedPublicReadOnlyField = 8;
 			this.NonSerializedNonPublicField = 9;
-#endif // !NETFX_CORE && !SILVERLIGHT
 			this._collectionReadOnlyProperty = new List<int>();
 			this.PublicPropertyPlain = 11;
 			this.PublicFieldPlain = 12;
@@ -537,11 +474,9 @@ namespace MsgPack.Serialization
 			this.PublicReadOnlyFieldPlain = 14;
 			this.NonPublicPropertyPlain = 15;
 			this.NonPublicFieldPlain = 16;
-#if !NETFX_CORE && !SILVERLIGHT
 			this.NonSerializedPublicFieldPlain = 17;
 			this.NonSerializedPublicReadOnlyFieldPlain = 18;
 			this.NonSerializedNonPublicFieldPlain = 19;
-#endif // !NETFX_CORE && !SILVERLIGHT
 			this.NonPublicCollectionProperty = new List<int>();
 			this.NonPublicCollectionField = new List<int>();
 			this._nonPublicCollectionReadOnlyProperty = new List<int>();
@@ -625,10 +560,8 @@ namespace MsgPack.Serialization
 
 	public class IgnoreAttributesTester
 	{
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 		[NonSerialized]
 		public string NonSerialized;
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
 
 		[MessagePackIgnore]
 		public string MessagePackIgnore;

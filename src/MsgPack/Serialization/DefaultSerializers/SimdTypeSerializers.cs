@@ -23,6 +23,7 @@
 #define UNITY
 #endif
 
+#if !NETSTANDARD1_1
 using System;
 using System.Numerics;
 #if FEATURE_TAP
@@ -1010,3 +1011,4 @@ namespace MsgPack.Serialization.DefaultSerializers
 	// ReSharper restore RedundantNameQualifier
 	// ReSharper restore InconsistentNaming
 }
+#endif // !NETSTANDARD1_1

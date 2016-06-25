@@ -65,7 +65,7 @@ namespace MsgPack.Serialization
 			set { _traceEnabled = value; }
 		}
 
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		[ThreadStatic]
 		private static bool _dumpEnabled;
 
@@ -81,7 +81,7 @@ namespace MsgPack.Serialization
 			get { return _dumpEnabled; }
 			set { _dumpEnabled = value; }
 		}
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 #endif // !AOT
 
 		[ThreadStatic]
@@ -162,7 +162,7 @@ namespace MsgPack.Serialization
 			_ilTraceWriter.GetStringBuilder().Length = 0;
 		}
 
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		[ThreadStatic]
 		private static AssemblyBuilder _assemblyBuilder;
 
@@ -228,34 +228,34 @@ namespace MsgPack.Serialization
 			}
 		}
 #endif // !SILVERLIGHT
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "pathToAssembly", Justification = "For API compatibility" )]
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void AddRuntimeAssembly( string pathToAssembly )
 		{
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			EnsureDependentAssembliesListsInitialized();
 			_runtimeAssemblies.Add( pathToAssembly );
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "pathToAssembly", Justification = "For API compatibility" )]
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void AddCompiledCodeDomAssembly( string pathToAssembly )
 		{
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			EnsureDependentAssembliesListsInitialized();
 			_compiledCodeDomSerializerAssemblies.Add( pathToAssembly );
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void ResetDependentAssemblies()
 		{
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			EnsureDependentAssembliesListsInitialized();
 
 #if !NETFX_35
@@ -265,10 +265,10 @@ namespace MsgPack.Serialization
 #endif // !NETFX_35
 			_compiledCodeDomSerializerAssemblies.Clear();
 			ResetRuntimeAssemblies();
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		private static int _wasDeleted;
 		private const string HistoryFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";
 
@@ -332,7 +332,7 @@ namespace MsgPack.Serialization
 #endif // NETFX_35
 			_runtimeAssemblies.Add( typeof( SerializerDebugging ).Assembly.Location );
 		}
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 		[ThreadStatic]
 		private static bool _onTheFlyCodeDomEnabled;
@@ -344,7 +344,7 @@ namespace MsgPack.Serialization
 			set { _onTheFlyCodeDomEnabled = value; }
 		}
 
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		/// <summary>
 		///		Creates the new type builder for the serializer.
 		/// </summary>
@@ -377,7 +377,7 @@ namespace MsgPack.Serialization
 			}
 #endif // !NETFX_35
 		}
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 		/// <summary>
 		///		Resets debugging states.
@@ -385,11 +385,11 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void Reset()
 		{
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			_assemblyBuilder = null;
 			_moduleBuilder = null;
 			_dumpEnabled = false;
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 			if ( _ilTraceWriter != null )
 			{

@@ -314,7 +314,7 @@ foreach( Type type in structTypes )
 	if( notInNetStandard1_1.Contains( type ) )
 	{
 #>
-#if !NETSTD_11
+#if !NETSTANDARD1_1
 <#
 	}
 
@@ -335,7 +335,7 @@ foreach( Type type in structTypes )
 	if( notInNetStandard1_3.Contains( type ) )
 	{
 #>
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 <#
 	}
 
@@ -387,7 +387,7 @@ foreach( Type type in structTypes )
 	if( notInNetStandard1_3.Contains( type ) )
 	{
 #>
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 <#
 	}
 
@@ -407,7 +407,7 @@ foreach( Type type in structTypes )
 	if( notInNetStandard1_1.Contains( type ) )
 	{
 #>
-#endif // !NETSTD_11
+#endif // !NETSTANDARD1_1
 <#
 	}
 }
@@ -417,7 +417,7 @@ foreach( Type type in classTypes )
 	if( notInNetStandard1_1.Contains( type ) )
 	{
 #>
-#if !NETSTD_11
+#if !NETSTANDARD1_1
 <#
 	}
 
@@ -507,7 +507,7 @@ foreach( Type type in classTypes )
 	if( notInNetStandard1_1.Contains( type ) )
 	{
 #>
-#endif // !NETSTD_11
+#endif // !NETSTANDARD1_1
 <#
 	}
 }

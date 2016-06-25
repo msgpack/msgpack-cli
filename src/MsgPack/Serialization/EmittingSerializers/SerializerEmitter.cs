@@ -74,12 +74,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 #endif // DEBUG
 			this._isDebuggable = isDebuggable;
 
-#if !NETFX_35 && !NETSTD_11 && !NETSTD_13
+#if !NETFX_35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
 			if ( isDebuggable && SerializerDebugging.DumpEnabled )
 			{
 				SerializerDebugging.PrepareDump( host.Assembly as AssemblyBuilder );
 			}
-#endif // !NETFX_35 && !NETSTD_11 && !NETSTD_13
+#endif // !NETFX_35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
 		#region -- Field --

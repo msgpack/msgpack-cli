@@ -44,9 +44,9 @@ using System.Threading.Tasks;
 
 namespace MsgPack
 {
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	[Serializable]
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	partial struct MessagePackObject : IPackable
 #if FEATURE_TAP
 		, IAsyncPackable
@@ -922,11 +922,11 @@ namespace MsgPack
 			}
 
 			// Lifting support.
-#if ( NETSTD_11 || NETSTD_13 ) && !XAMARIN
+#if ( NETSTANDARD1_1 || NETSTANDARD1_3 ) && !XAMARIN
 			switch ( NetStandardCompatibility.GetTypeCode( type ) )
 #else
 			switch ( Type.GetTypeCode( type ) )
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 			{
 				case TypeCode.SByte:
 				{
@@ -1849,9 +1849,9 @@ namespace MsgPack
 		}
 #endif // DEBUG
 
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		[Serializable]
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		private enum MessagePackValueTypeCode
 		{
 			// ReSharper disable once UnusedMember.Local
@@ -1870,9 +1870,9 @@ namespace MsgPack
 			Object = 16
 		}
 
-#if !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		[Serializable]
-#endif // !SILVERLIGHT && !NETSTD_11 && !NETSTD_13
+#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		private sealed class ValueTypeCode
 		{
 			private readonly MessagePackValueTypeCode _typeCode;

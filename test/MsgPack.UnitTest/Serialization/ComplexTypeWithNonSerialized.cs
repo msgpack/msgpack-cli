@@ -31,6 +31,10 @@ using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
 #endif
 
+#if SILVERLIGHT || NETFX_CORE || NETSTANDARD1_1 || NETSTANDARD1_3
+using NonSerializedAttribute = MsgPack.Serialization.MessagePackIgnoreAttribute;
+#endif // SILVERLIGHT || NETFX_CORE || NETSTANDARD1_1 || NETSTANDARD1_3
+
 namespace MsgPack.Serialization
 {
 	public class ComplexTypeWithNonSerialized : IVerifiable

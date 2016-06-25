@@ -43,6 +43,7 @@ var types =
 #define UNITY
 #endif
 
+#if !NETSTANDARD1_1
 using System;
 using System.Numerics;
 #if FEATURE_TAP
@@ -176,6 +177,7 @@ foreach( var type in types )
 	// ReSharper restore RedundantNameQualifier
 	// ReSharper restore InconsistentNaming
 }
+#endif // !NETSTANDARD1_1
 <#+
 private static IEnumerable<int> GetIndexes( int rows, int columns )
 {

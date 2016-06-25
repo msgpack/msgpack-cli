@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;__MOBILE__;__ANDROID__;AOT;NETSTD_13;XAMARIN;FEATURE_TAP</DefineConstants>
+    <DefineConstants>DEBUG;__MOBILE__;__ANDROID__;AOT;XAMARIN;FEATURE_TAP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
@@ -32,7 +32,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\MonoAndroid10\</OutputPath>
-    <DefineConstants>__MOBILE__;__ANDROID__;AOT;NETSTD_13;XAMARIN;FEATURE_TAP</DefineConstants>
+    <DefineConstants>__MOBILE__;__ANDROID__;AOT;XAMARIN;FEATURE_TAP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>

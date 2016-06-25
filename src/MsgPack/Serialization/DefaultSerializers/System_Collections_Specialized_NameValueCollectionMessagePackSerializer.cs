@@ -18,6 +18,7 @@
 //
 #endregion -- License Terms --
 
+#if !NETSTANDARD1_1
 using System;
 using System.Collections.Specialized;
 using System.Runtime.Serialization;
@@ -241,3 +242,4 @@ namespace MsgPack.Serialization.DefaultSerializers
 	
 	}
 }
+#endif // !NETSTANDARD1_1

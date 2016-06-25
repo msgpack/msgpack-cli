@@ -223,7 +223,7 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 	if( asType != null && desktopOnly.Contains( asType ) )
 	{
 #>
-#if !SILVERLIGHT && !NETSTD_11
+#if !SILVERLIGHT && !NETSTANDARD1_1
 <#
 	}
 	else if( notInNet35.Contains( typeName ) )
@@ -260,7 +260,7 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 	if( asType != null && desktopOnly.Contains( asType ) )
 	{
 #>
-#endif // !SILVERLIGHT && !NETSTD_11
+#endif // !SILVERLIGHT && !NETSTANDARD1_1
 <#
 	}
 	else if( notInNet35.Contains( typeName ) )
@@ -654,11 +654,7 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 				return;
 			}
 
-#if !NETFX_CORE
-			if ( expected.GetType().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( ArraySegment<> ) )
-#else
-			if ( expected.GetType().GetTypeInfo().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( ArraySegment<> ) )
-#endif
+			if ( expected.GetType().GetIsGenericType() && expected.GetType().GetGenericTypeDefinition() == typeof( ArraySegment<> ) )
 			{
 				AssertArraySegmentEquals( expected, actual );
 				return;
@@ -743,11 +739,7 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 				return;
 			}
 
-#if !NETFX_CORE
-			if ( expected.GetType().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
-#else
-			if ( expected.GetType().GetTypeInfo().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
-#endif
+			if ( expected.GetType().GetIsGenericType() && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
 			{
 #if !NETFX_35 && !AOT
 				Verify( ( ( dynamic )expected ).Key, ( ( dynamic )actual ).Key );
@@ -802,7 +794,7 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 		
 		private static void AssertArraySegmentEquals( object x, object y )
 		{
-#if !NETFX_CORE
+#if !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
 			var type = typeof( ArraySegmentEqualityComparer<> ).MakeGenericType( x.GetType().GetGenericArguments()[ 0 ] );
 			Assert.That(
 				( bool )type.InvokeMember( "Equals", BindingFlags.InvokeMethod, null, Activator.CreateInstance( type ), new[] { x, y } ),
@@ -821,7 +813,7 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 				x,
 				y
 			);
-#endif
+#endif // !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 	}
 	

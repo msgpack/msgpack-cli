@@ -35,7 +35,7 @@ namespace MsgPack.Serialization
 	public enum SerializationMethodGeneratorOption
 	{
 #if !SILVERLIGHT
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		/// <summary>
 		///		The generated method IL can be dumped to the current directory.
 		///		It is intended for the runtime, you cannot use this option.
@@ -44,7 +44,7 @@ namespace MsgPack.Serialization
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		CanDump,
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 		/// <summary>
 		///		The entire generated method can be collected by GC when it is no longer used.

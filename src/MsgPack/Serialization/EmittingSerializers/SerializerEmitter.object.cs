@@ -99,11 +99,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		#region -- FieldInfo Cache Management --
 
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		private readonly Dictionary<RuntimeFieldHandle, CachedFieldInfo> _cachedFieldInfos = new Dictionary<RuntimeFieldHandle, CachedFieldInfo>();
 #else
 		private readonly Dictionary<FieldInfo, CachedFieldInfo> _cachedFieldInfos = new Dictionary<FieldInfo, CachedFieldInfo>();
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 		/// <summary>
 		///		Regisgters <see cref="FieldInfo"/> usage to the current emitting session.
@@ -117,11 +117,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </returns>
 		public Action<TracingILGenerator, int> RegisterFieldCache( FieldInfo field )
 		{
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			var key = field.FieldHandle;
 #else
 			var key = field;
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 			CachedFieldInfo result;
 			if ( !this._cachedFieldInfos.TryGetValue( key, out result ) )
@@ -162,11 +162,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		#region -- MethodInfo Cache Management --
 
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		private readonly Dictionary<RuntimeMethodHandle, CachedMethodBase> _cachedMethodBases = new Dictionary<RuntimeMethodHandle, CachedMethodBase>();
 #else
 		private readonly Dictionary<MethodBase, CachedMethodBase> _cachedMethodBases = new Dictionary<MethodBase, CachedMethodBase>();
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 		/// <summary>
 		///		Regisgters <see cref="MethodBase"/> usage to the current emitting session.
@@ -180,11 +180,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </returns>
 		public Action<TracingILGenerator, int> RegisterMethodCache( MethodBase method )
 		{
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			var key = method.MethodHandle;
 #else
 			var key = method;
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 			CachedMethodBase result;
 			if ( !this._cachedMethodBases.TryGetValue( key, out result ) )
@@ -267,11 +267,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 				SerializerDebugging.FlushTraceData();
 			}
 
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			type = this._unpackingContextType.CreateType();
 #else
 			type = this._unpackingContextType.CreateTypeInfo().AsType();
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 			constructor = type.GetConstructors().Single();
 		}
 
@@ -380,11 +380,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 				( _, il ) => CreateDefaultObjectConstructor( contextfulConstructor, il )
 			);
 
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			var ctor = this._typeBuilder.CreateType().GetConstructor( ConstructorParameterTypes );
 #else
 			var ctor = this._typeBuilder.CreateTypeInfo().GetConstructor( ConstructorParameterTypes );
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 			var schemaParameter = Expression.Parameter( typeof( PolymorphismSchema ), "schema" );
 #if DEBUG

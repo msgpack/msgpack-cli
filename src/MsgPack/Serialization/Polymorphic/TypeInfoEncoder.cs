@@ -354,15 +354,15 @@ namespace MsgPack.Serialization.Polymorphic
 					compressedTypeName.StartsWith( Elipsis, StringComparison.Ordinal )
 						? assemblySimpleName + compressedTypeName
 						: compressedTypeName
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 					, throwOnError: true
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 				);
 		}
 
 		private static AssemblyName BuildAssemblyName( string assemblySimpleName, byte[] version, string culture, byte[] publicKeyToken )
 		{
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			var assemblyName =
 				new AssemblyName
 				{
@@ -402,7 +402,7 @@ namespace MsgPack.Serialization.Polymorphic
 						( publicKeyToken == null || publicKeyToken.Length == 0 ) ? "null" : Binary.ToHexString( publicKeyToken, false )
 					)
 				);
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
 #if FEATURE_TAP

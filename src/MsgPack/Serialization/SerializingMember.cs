@@ -79,7 +79,7 @@ namespace MsgPack.Serialization
 
 		public EnumMemberSerializationMethod GetEnumMemberSerializationMethod()
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			var messagePackEnumMemberAttribute = 
 				this.Member.GetCustomAttribute<MessagePackEnumMemberAttribute>();
 			if ( messagePackEnumMemberAttribute != null)
@@ -93,7 +93,7 @@ namespace MsgPack.Serialization
 				return
 					// ReSharper disable once PossibleNullReferenceException
 					( messagePackEnumMemberAttributes[ 0 ] as MessagePackEnumMemberAttribute ).SerializationMethod;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 			}
 
 			return EnumMemberSerializationMethod.Default;
@@ -101,7 +101,7 @@ namespace MsgPack.Serialization
 
 		public DateTimeMemberConversionMethod GetDateTimeMemberConversionMethod()
 		{
-#if NETSTD_11 || NETSTD_13
+#if NETSTANDARD1_1 || NETSTANDARD1_3
 			var messagePackDateTimeMemberAttribute = 
 				this.Member.GetCustomAttribute<MessagePackDateTimeMemberAttribute>();
 			if ( messagePackDateTimeMemberAttribute != null)
@@ -115,7 +115,7 @@ namespace MsgPack.Serialization
 				return
 					// ReSharper disable once PossibleNullReferenceException
 					( messagePackDateTimeMemberAttribute[ 0 ] as MessagePackDateTimeMemberAttribute ).DateTimeConversionMethod;
-#endif // NETSTD_11 || NETSTD_13
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 			}
 
 			return DateTimeMemberConversionMethod.Default;

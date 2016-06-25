@@ -85,9 +85,9 @@ namespace MsgPack.Serialization
 					case SerializationMethodGeneratorOption.Fast:
 #if !SILVERLIGHT
 					case SerializationMethodGeneratorOption.CanCollect:
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 					case SerializationMethodGeneratorOption.CanDump:
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 #endif // !SILVERLIGHT
 					{
 						break;

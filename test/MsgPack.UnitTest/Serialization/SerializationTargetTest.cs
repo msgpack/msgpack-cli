@@ -64,14 +64,12 @@ namespace MsgPack.Serialization
 		private const string PublicFieldPlain = "PublicFieldPlain";
 		private const string PublicReadOnlyFieldPlain = "PublicReadOnlyFieldPlain";
 		private const string NonPublicFieldPlain = "NonPublicFieldPlain";
-#if !NETFX_CORE && !WINDOWS_PHONE
 		private const string NonSerializedPublicField = "NonSerializedPublicField";
 		private const string NonSerializedPublicReadOnlyField = "NonSerializedPublicReadOnlyField";
 		private const string NonSerializedNonPublicField = "NonSerializedNonPublicField";
 		private const string NonSerializedPublicFieldPlain = "NonSerializedPublicFieldPlain";
 		private const string NonSerializedPublicReadOnlyFieldPlain = "NonSerializedPublicReadOnlyFieldPlain";
 		private const string NonSerializedNonPublicFieldPlain = "NonSerializedNonPublicFieldPlain";
-#endif
 		// ReSharper restore UnusedMember.Local
 
 		[Test]
@@ -86,9 +84,7 @@ namespace MsgPack.Serialization
 		{
 			TestCore<AnnotatedClass>(
 				PublicProperty, NonPublicProperty, PublicField, NonPublicField,
-#if !NETFX_CORE && !WINDOWS_PHONE
 				NonSerializedPublicField, NonSerializedNonPublicField,
-#endif
 				CollectionReadOnlyProperty, 
 				NonPublicCollectionProperty, NonPublicCollectionField, NonPublicCollectionReadOnlyProperty, NonPublicCollectionReadOnlyField,
 				NonPublicDictionaryProperty, NonPublicDictionaryField, NonPublicDictionaryReadOnlyProperty, NonPublicDictionaryReadOnlyField,
@@ -102,9 +98,7 @@ namespace MsgPack.Serialization
 			// includes issue33
 			TestCore<DataMamberClass>(
 				PublicProperty, NonPublicProperty, PublicField, NonPublicField,
-#if !NETFX_CORE && !WINDOWS_PHONE
 				NonSerializedPublicField, NonSerializedNonPublicField,
-#endif
 				CollectionReadOnlyProperty,
 				NonPublicCollectionProperty, NonPublicCollectionField, NonPublicCollectionReadOnlyProperty, NonPublicCollectionReadOnlyField,
 				NonPublicDictionaryProperty, NonPublicDictionaryField, NonPublicDictionaryReadOnlyProperty, NonPublicDictionaryReadOnlyField,

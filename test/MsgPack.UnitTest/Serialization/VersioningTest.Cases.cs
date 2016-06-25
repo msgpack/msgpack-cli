@@ -86,7 +86,7 @@ namespace MsgPack.Serialization
 		{
 			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.ReflectionBased ) );
 		}
-#if !NETSTD_11 && !NETSTD_13 && !AOT && !SILVERLIGHT
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !AOT && !SILVERLIGHT
 
 		[Test]
 		public void TestExtraField_NotExtensible_Array_CodeDomBased_Classic_Fail()
@@ -111,7 +111,7 @@ namespace MsgPack.Serialization
 		{
 			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.CodeDomBased ) );
 		}
-#endif // !NETSTD_11 && !NETSTD_13 && !AOT && !SILVERLIGHT
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !AOT && !SILVERLIGHT
 #if !AOT && !SILVERLIGHT
 
 		[Test]
@@ -174,7 +174,7 @@ namespace MsgPack.Serialization
 		{
 			TestFieldSwappedCore( EmitterFlavor.ReflectionBased );
 		}
-#if !NETSTD_11 && !NETSTD_13 && !AOT && !SILVERLIGHT
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !AOT && !SILVERLIGHT
 
 		[Test]
 		public void TestExtraField_NotExtensible_Map_CodeDomBased_Classic_Fail()
@@ -205,7 +205,7 @@ namespace MsgPack.Serialization
 		{
 			TestFieldSwappedCore( EmitterFlavor.CodeDomBased );
 		}
-#endif // !NETSTD_11 && !NETSTD_13 && !AOT && !SILVERLIGHT
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !AOT && !SILVERLIGHT
 	}
 
 }

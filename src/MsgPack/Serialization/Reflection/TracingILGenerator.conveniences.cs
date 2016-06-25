@@ -90,7 +90,7 @@ namespace MsgPack.Serialization.Reflection
 		}
 
 #if DEBUG
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		private static readonly PropertyInfo _cultureInfo_CurrentCulture = typeof( CultureInfo ).GetProperty( "CurrentCulture" );
 		private static readonly PropertyInfo _cultureInfo_InvariantCulture = typeof( CultureInfo ).GetProperty( "InvariantCulture" );
 
@@ -254,7 +254,7 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitAnyLdloc( temporaryLocalArrayIndex );
 			this.EmitCall( _string_Format );
 		}
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 #endif // DEBUG
 
 		/// <summary>
@@ -547,7 +547,7 @@ namespace MsgPack.Serialization.Reflection
 		}
 
 #if DEBUG
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		/// <summary>
 		///		Emit array initialization code with initializer.
 		///		Post condition is evaluation stack will no be modified as previous state. 
@@ -623,7 +623,7 @@ namespace MsgPack.Serialization.Reflection
 				this.EmitAnyStelem( elementType, null, i, elementLoadingEmitters[ i ] );
 			}
 		}
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 #endif // DEBUG
 
 		private void EmitNewarrCore( Type elementType, long length )
@@ -689,11 +689,11 @@ namespace MsgPack.Serialization.Reflection
 				return;
 			}
 
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			switch ( Type.GetTypeCode( elementType ) )
 #else
 			switch ( NetStandardCompatibility.GetTypeCode( elementType ) )
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 			{
 				case TypeCode.Boolean:
 				case TypeCode.SByte:
@@ -822,11 +822,11 @@ namespace MsgPack.Serialization.Reflection
 				return;
 			}
 
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			switch ( Type.GetTypeCode( elementType ) )
 #else
 			switch ( NetStandardCompatibility.GetTypeCode( elementType ) )
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 			{
 				case TypeCode.Boolean:
 				case TypeCode.SByte:

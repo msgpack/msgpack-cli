@@ -850,7 +850,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	}
 
 #if !SILVERLIGHT
-#if !NETSTD_11
+#if !NETSTANDARD1_1
 #if !UNITY || MSGPACK_UNITY_FULL
 	internal sealed class System_Collections_Specialized_BitVector32MessagePackSerializer : MessagePackSerializer< System.Collections.Specialized.BitVector32 >
 	{
@@ -907,7 +907,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // FEATURE_TAP
 
 	}
-#endif // !NETSTD_11
+#endif // !NETSTANDARD1_1
 #endif // !SILVERLIGHT
 #endif // !UNITY || MSGPACK_UNITY_FULL
 

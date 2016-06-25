@@ -200,7 +200,7 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( methodBuilder != null );
 		}
 
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TracingILGenerator"/> class.
 		/// </summary>
@@ -211,7 +211,7 @@ namespace MsgPack.Serialization.Reflection
 		{
 			Contract.Assert( dynamicMethod != null );
 		}
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 #endif // DEBUG
 
 		// TODO: NLIblet
@@ -360,7 +360,7 @@ namespace MsgPack.Serialization.Reflection
 			var result = this._underlying.DeclareLocal( localType );
 			this._localDeclarations.Add( result, name );
 			// TODO: NLiblet
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			if ( !this._isInDynamicMethod && this._isDebuggable )
 			{
 				try
@@ -372,7 +372,7 @@ namespace MsgPack.Serialization.Reflection
 					this._isInDynamicMethod = true;
 				}
 			}
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 			return result;
 		}
 
@@ -382,7 +382,7 @@ namespace MsgPack.Serialization.Reflection
 			var result = this._underlying.DeclareLocal( localType, pinned );
 			this._localDeclarations.Add( result, name );
 			// TODO: NLiblet
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			if ( !this._isInDynamicMethod && this._isDebuggable )
 			{
 				try
@@ -394,7 +394,7 @@ namespace MsgPack.Serialization.Reflection
 					this._isInDynamicMethod = true;
 				}
 			}
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 			return result;
 		}
 #endif // DEBUG
@@ -479,9 +479,9 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( firstCatchBlock != null );
 			Contract.Assert( firstCatchBlock.Item1 != null && firstCatchBlock.Item2 != null );
 			Contract.Assert( remainingCatchBlockEmitters != null );
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			Contract.Assert( Contract.ForAll( remainingCatchBlockEmitters, item => item != null && item.Item1 != null && item.Item2 != null ) );
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 			this.EmitExceptionBlockCore( tryBlockEmitter, firstCatchBlock, remainingCatchBlockEmitters, null );
 		}
@@ -520,9 +520,9 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( tryBlockEmitter != null );
 			Contract.Assert( finallyBlockEmitter != null );
 			Contract.Assert( catchBlockEmitters != null );
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			Contract.Assert( Contract.ForAll( catchBlockEmitters, item => item != null && item.Item1 != null && item.Item2 != null ) );
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 			this.EmitExceptionBlockCore( tryBlockEmitter, null, catchBlockEmitters, finallyBlockEmitter );
 		}
@@ -704,7 +704,7 @@ namespace MsgPack.Serialization.Reflection
 		#region -- Calli --
 
 #if DEBUG
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		/// <summary>
 		///		Emit 'calli' instruction for indirect unmanaged function call.
 		/// </summary>
@@ -751,7 +751,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.EmitCalli( OpCodes.Calli, managedCallingConventions, returnType, requiredParameterTypes, optionalParameterTypes );
 		}
 
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 #endif // DEBUG
 		#endregion
 #endif // !SILVERLIGHT
@@ -807,7 +807,7 @@ namespace MsgPack.Serialization.Reflection
 		#region -- Tail. --
 
 #if DEBUG
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		///	<summary>
 		///		Emit 'call' instruction with specified arguments as tail call.
 		///	</summary>
@@ -909,7 +909,7 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitRet();
 		}
 #endif // SILVERLIGHT
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 #endif // DEBUG
 
 		#endregion
@@ -1068,7 +1068,7 @@ namespace MsgPack.Serialization.Reflection
 			// TODO: NLiblet
 #if !SILVERLIGHT
 			var asFieldBuilder = field as FieldBuilder;
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			if ( asFieldBuilder == null )
 			{
 				var modreqs = field.GetRequiredCustomModifiers();
@@ -1097,7 +1097,7 @@ namespace MsgPack.Serialization.Reflection
 					this._trace.Write( ") " );
 				}
 			}
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 #endif // !SILVERLIGHT
 
 #if !SILVERLIGHT
@@ -1401,37 +1401,37 @@ namespace MsgPack.Serialization.Reflection
 		private void TraceOperandToken( Type target )
 		{
 			this.TraceType( target );
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			this.TraceOperandTokenValue( target.MetadataToken );
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
 		private void TraceOperandToken( FieldInfo target )
 		{
 			this._trace.Write( "field " );
 			this.TraceField( target );
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			this.TraceOperandTokenValue( target.MetadataToken );
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
 		private void TraceOperandToken( MethodBase target )
 		{
 			this._trace.Write( "method " );
 			this.TraceMethod( target );
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			this.TraceOperandTokenValue( target.MetadataToken );
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
-#if !NETSTD_11 && !NETSTD_13
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		private void TraceOperandTokenValue( int value )
 		{
 			this._trace.Write( "<" );
 			this._trace.Write( value.ToString( "x8", CultureInfo.InvariantCulture ) );
 			this._trace.Write( ">" );
 		}
-#endif // !NETSTD_11 && !NETSTD_13
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 		private void TraceStart()
 		{
