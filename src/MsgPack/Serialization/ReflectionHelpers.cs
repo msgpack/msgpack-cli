@@ -27,6 +27,12 @@
 #endif // DEBUG && !NETFX_CORE
 
 using System;
+using System.Linq;
+#if UNITY
+using Contract = MsgPack.MPContract;
+#else
+using System.Diagnostics.Contracts;
+#endif // UNITY
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif //!UNITY || MSGPACK_UNITY_FULL
@@ -50,12 +56,55 @@ namespace MsgPack.Serialization
 		/// <param name="name">The name of the method.</param>
 		/// <param name="parameterTypes">The parameter types of the method.</param>
 		/// <returns>A <see cref="MethodInfo"/> object.</returns>
+		/// <remarks>
+		///		This method is designed for property accessor for serialization, so this never return generic methods and static methods.
+		/// </remarks>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		public static MethodInfo GetMethod( Type type, string name, Type[] parameterTypes )
 		{
-			return type.GetRuntimeMethod( name, parameterTypes );
+			while ( type != typeof( object ) && type != null )
+			{
+#if !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
+				var candidate =
+					type.GetMethod(
+						name,
+						BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly,
+						null,
+						parameterTypes,
+						null
+					);
+				if ( candidate != null )
+				{
+					return candidate;
+				}
+#else
+				var candidates =
+					type.GetTypeInfo().GetDeclaredMethods( name )
+						.Where( m => !m.IsGenericMethod && !m.IsStatic && m.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameterTypes ) )
+						.ToArray();
+				switch ( candidates.Length )
+				{
+					case 0:
+					{
+						break;
+					}
+					case 1:
+					{
+						return candidates[ 0 ];
+					}
+					default:
+					{
+						// CallingConvention, static-instance, or so -- extremely rare case.
+						throw new AmbiguousMatchException();
+					}
+				}
+#endif // !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
+				type = type.GetBaseType();
+			}
+
+			return null;
 		}
 
 		/// <summary>
@@ -64,12 +113,34 @@ namespace MsgPack.Serialization
 		/// <param name="type">The type to be introspected.</param>
 		/// <param name="name">The name of the method.</param>
 		/// <returns>A <see cref="FieldInfo"/> object.</returns>
+		/// <remarks>
+		///		This method is designed for property accessor for serialization, so this never return static fields.
+		/// </remarks>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		public static FieldInfo GetField( Type type, string name )
 		{
-			return type.GetRuntimeField( name );
+			while ( type != typeof( object ) && type != null )
+			{
+				var candidate =
+#if !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
+					type.GetField(
+						name,
+						BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly
+					);
+#else
+					type.GetTypeInfo().GetDeclaredField( name );
+#endif // !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
+				if ( candidate != null )
+				{
+					return candidate;
+				}
+
+				type = type.GetBaseType();
+			}
+
+			return null;
 		}
 	}
 }
