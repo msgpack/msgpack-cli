@@ -472,6 +472,12 @@ Release 0.7-Beta1 - 2016/06/18
   * Fix the Unpacker always returns 0 when the underlying stream has double typed value.
   * Fix MessagePackObject.PackToMessage does not look PackerCompatibilityOptions. Issue #168.
 
+Release 0.7-beta2 - 2016/06/26
+
+  BUG FIXES
+  * Fix type initializer causes InvalidOperatiionException of serializer generation on WinRT projects. #170.
+  * Fix package dependency issue prevents *-aot runtime cannot install MsgPack.Cli packages (effects 0.7.0-beta1 only).
+
 Release 0.7 (planned)
 
   This release includes 0.6.8 fixes. Here are cumulative changelogs from 0.6.8.
@@ -515,6 +521,7 @@ Release 0.7 (planned)
   * IPackable/IUnpackable is respected for collections now. Issue #153.
   * Fix the Unpacker always returns 0 when the underlying stream has double typed value.
   * Fix MessagePackObject.PackToMessage does not look PackerCompatibilityOptions. Issue #168.
+  * Fix type initializer causes InvalidOperatiionException of serializer generation on WinRT projects. #170.
 
   KNOWN ISSUES
   * Reflection based serializers in Unity build is not stable even if you specify [Preserve] and/or link.xml.

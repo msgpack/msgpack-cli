@@ -194,8 +194,13 @@ if ( $LastExitCode -ne 0 )
 
 if ( $buildConfig -eq 'Release' )
 {
-	[string]$zipVersion = $env:PackageVersion
-	& $nuget pack ../MsgPack.nuspec -Symbols -Version $env:PackageVersion -OutputDirectory ../dist
+	$packageVersion = $env:PackageVersion
+	if ($env:APPVEYOR_REPO_TAG -ne "True")
+	{
+		$packageVersion += $env:APPVEYOR_BUILD_VERSION
+	}
+	[string]$zipVersion = $packageVersion
+	& $nuget pack ../MsgPack.nuspec -Symbols -Version $packageVersion -OutputDirectory ../dist
 
 	Copy-Item ../bin/ ./MsgPack-CLI/ -Recurse -Exclude @("*.vshost.*")
 	Copy-Item ../tools/mpu/bin/ ./MsgPack-CLI/mpu/ -Recurse -Exclude @("*.vshost.*")
