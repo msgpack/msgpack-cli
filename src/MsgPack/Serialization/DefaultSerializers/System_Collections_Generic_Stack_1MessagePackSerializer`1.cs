@@ -30,6 +30,7 @@ using MsgPack.Serialization.CollectionSerializers;
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	// ReSharper disable once InconsistentNaming
+	[Preserve( AllMembers = true )]
 	internal sealed class System_Collections_Generic_Stack_1MessagePackSerializer<TItem> : MessagePackSerializer<Stack<TItem>>, ICollectionInstanceFactory
 	{
 		private readonly MessagePackSerializer<TItem> _itemSerializer;

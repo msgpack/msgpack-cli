@@ -33,6 +33,7 @@ using System.Threading.Tasks;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	[Preserve( AllMembers = true )]
 	internal sealed class ImmutableDictionarySerializer<T, TKey, TValue> : MessagePackSerializer<T>
 		where T : IEnumerable<KeyValuePair<TKey, TValue>>
 	{

@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	// ReSharper disable once InconsistentNaming
+	[Preserve( AllMembers = true )]
 	internal sealed class System_Collections_DictionaryEntryMessagePackSerializer : MessagePackSerializer<DictionaryEntry>
 	{
 		public System_Collections_DictionaryEntryMessagePackSerializer( SerializationContext ownerContext )

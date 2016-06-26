@@ -180,6 +180,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Packer.Nullable.tt</DependentUpon>
     </Compile>
+    <Compile Include="PreserveAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\AbstractSerializers\ActionType.cs" />
     <Compile Include="Serialization\AbstractSerializers\CachedDelegateInfo.cs" />

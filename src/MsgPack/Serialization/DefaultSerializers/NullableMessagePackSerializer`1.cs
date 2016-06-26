@@ -37,6 +37,7 @@ using System.Threading.Tasks;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	[Preserve( AllMembers = true )]
 #if !UNITY
 	internal class NullableMessagePackSerializer<T> : MessagePackSerializer<T?>
 		where T : struct

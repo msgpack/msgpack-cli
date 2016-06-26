@@ -35,6 +35,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 	///		Implements reflection-based enum serializer for restricted platforms.
 	/// </summary>
 #if !UNITY
+	[Preserve( AllMembers = true )]
 	internal class ReflectionEnumMessagePackSerializer<T> : EnumMessagePackSerializer<T>
 		where T : struct
 #else

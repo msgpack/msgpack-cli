@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	[Preserve( AllMembers = true )]
 	internal sealed class ImmutableStackSerializer<T, TItem> : ImmutableCollectionSerializer<T, TItem>
 		where T : IEnumerable<TItem>
 	{

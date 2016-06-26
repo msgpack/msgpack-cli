@@ -31,6 +31,7 @@ using System.Threading.Tasks;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	[Preserve( AllMembers = true )]
 	// ReSharper disable once InconsistentNaming
 	internal sealed class System_Collections_Generic_KeyValuePair_2MessagePackSerializer<TKey, TValue> : MessagePackSerializer<KeyValuePair<TKey, TValue>>
 	{

@@ -35,6 +35,7 @@ using MsgPack.Serialization.CollectionSerializers;
 
 namespace MsgPack.Serialization.ReflectionSerializers
 {
+	[Preserve( AllMembers = true )]
 #if !UNITY
 	internal sealed class ReflectionNonGenericEnumerableMessagePackSerializer<TCollection> : NonGenericEnumerableMessagePackSerializer<TCollection>
 		where TCollection : IEnumerable

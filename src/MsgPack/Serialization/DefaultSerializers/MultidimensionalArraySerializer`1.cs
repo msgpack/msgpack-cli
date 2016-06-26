@@ -32,6 +32,7 @@ using System.Threading.Tasks;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	[Preserve( AllMembers = true )]
 #if !UNITY
 	internal sealed class MultidimensionalArraySerializer<TArray, TItem> : MessagePackSerializer<TArray>
 #else

@@ -503,6 +503,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			MessagePackSerializer Create( SerializationContext context, PolymorphismSchema schema );
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class NullableInstanceFactory<T> : IGenericBuiltInSerializerFactory
 			where T : struct
 		{
@@ -514,6 +515,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class ListInstanceFactory<T> : IGenericBuiltInSerializerFactory
 		{
 			public ListInstanceFactory() { }
@@ -525,6 +527,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class DictionaryInstanceFactory<TKey, TValue> : IGenericBuiltInSerializerFactory
 		{
 			public DictionaryInstanceFactory() { }
@@ -538,6 +541,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 #if !NETFX_35 && !NETFX_40 && !SILVERLIGHT
 
+		[Preserve( AllMembers = true )]
 		private sealed class ImmutableCollectionSerializerFactory<T, TItem> : IGenericBuiltInSerializerFactory
 			where T : IEnumerable<TItem>
 		{
@@ -550,6 +554,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class ImmutableStackSerializerFactory<T, TItem> : IGenericBuiltInSerializerFactory
 			where T : IEnumerable<TItem>
 		{
@@ -562,6 +567,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class ImmutableDictionarySerializerFactory<T, TKey, TValue> : IGenericBuiltInSerializerFactory
 			where T : IDictionary<TKey, TValue>
 		{
@@ -585,6 +591,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 
 		// ReSharper disable MemberHidesStaticFromOuterClass
+		[Preserve( AllMembers = true )]
 		private sealed class NonGenericEnumerableSerializerFactory<T> : IVariantSerializerFactory
 			where T : IEnumerable
 		{
@@ -596,6 +603,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class NonGenericCollectionSerializerFactory<T> : IVariantSerializerFactory
 			where T : ICollection
 		{
@@ -607,6 +615,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class NonGenericListSerializerFactory<T> : IVariantSerializerFactory
 			where T : IList
 		{
@@ -618,6 +627,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class NonGenericDictionarySerializerFactory<T> : IVariantSerializerFactory
 			where T : IDictionary
 		{
@@ -629,6 +639,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class EnumerableSerializerFactory<TCollection, TItem> : IVariantSerializerFactory
 			where TCollection : IEnumerable<TItem>
 		{
@@ -640,6 +651,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class CollectionSerializerFactory<TCollection, TItem> : IVariantSerializerFactory
 			where TCollection : ICollection<TItem>
 		{
@@ -652,6 +664,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 
 #if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+		[Preserve( AllMembers = true )]
 		private sealed class ReadOnlyCollectionSerializerFactory<TCollection, TItem> : IVariantSerializerFactory
 			where TCollection : IReadOnlyCollection<TItem>
 		{
@@ -664,6 +677,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 #endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 
+		[Preserve( AllMembers = true )]
 		private sealed class DictionarySerializerFactory<TDictionary, TKey, TValue> : IVariantSerializerFactory
 			where TDictionary : IDictionary<TKey, TValue>
 		{
@@ -676,6 +690,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 
 #if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+		[Preserve( AllMembers = true )]
 		private sealed class ReadOnlyDictionarySerializerFactory<TDictionary, TKey, TValue> : IVariantSerializerFactory
 			where TDictionary : IReadOnlyDictionary<TKey, TValue>
 		{

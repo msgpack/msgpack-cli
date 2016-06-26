@@ -72,6 +72,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	}
 
 
+[Preserve( AllMembers = true )]
 internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 {
 	public SByteArraySerializer( SerializationContext ownerContext )
@@ -184,6 +185,7 @@ internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 {
 	public Int16ArraySerializer( SerializationContext ownerContext )
@@ -296,6 +298,7 @@ internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 {
 	public Int32ArraySerializer( SerializationContext ownerContext )
@@ -408,6 +411,7 @@ internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 {
 	public Int64ArraySerializer( SerializationContext ownerContext )
@@ -520,6 +524,7 @@ internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 {
 	public ByteArraySerializer( SerializationContext ownerContext )
@@ -632,6 +637,7 @@ internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 {
 	public UInt16ArraySerializer( SerializationContext ownerContext )
@@ -744,6 +750,7 @@ internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 {
 	public UInt32ArraySerializer( SerializationContext ownerContext )
@@ -856,6 +863,7 @@ internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 {
 	public UInt64ArraySerializer( SerializationContext ownerContext )
@@ -968,6 +976,7 @@ internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 {
 	public SingleArraySerializer( SerializationContext ownerContext )
@@ -1080,6 +1089,7 @@ internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 {
 	public DoubleArraySerializer( SerializationContext ownerContext )
@@ -1192,6 +1202,7 @@ internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 {
 	public BooleanArraySerializer( SerializationContext ownerContext )
@@ -1304,6 +1315,7 @@ internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte?[]>
 {
 	public NullableSByteArraySerializer( SerializationContext ownerContext )
@@ -1416,6 +1428,7 @@ internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16?[]>
 {
 	public NullableInt16ArraySerializer( SerializationContext ownerContext )
@@ -1528,6 +1541,7 @@ internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32?[]>
 {
 	public NullableInt32ArraySerializer( SerializationContext ownerContext )
@@ -1640,6 +1654,7 @@ internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64?[]>
 {
 	public NullableInt64ArraySerializer( SerializationContext ownerContext )
@@ -1752,6 +1767,7 @@ internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[]>
 {
 	public NullableByteArraySerializer( SerializationContext ownerContext )
@@ -1864,6 +1880,7 @@ internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt16?[]>
 {
 	public NullableUInt16ArraySerializer( SerializationContext ownerContext )
@@ -1976,6 +1993,7 @@ internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt32?[]>
 {
 	public NullableUInt32ArraySerializer( SerializationContext ownerContext )
@@ -2088,6 +2106,7 @@ internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt64?[]>
 {
 	public NullableUInt64ArraySerializer( SerializationContext ownerContext )
@@ -2200,6 +2219,7 @@ internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Single?[]>
 {
 	public NullableSingleArraySerializer( SerializationContext ownerContext )
@@ -2312,6 +2332,7 @@ internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Sing
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Double?[]>
 {
 	public NullableDoubleArraySerializer( SerializationContext ownerContext )
@@ -2424,6 +2445,7 @@ internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Doub
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boolean?[]>
 {
 	public NullableBooleanArraySerializer( SerializationContext ownerContext )
@@ -2536,6 +2558,7 @@ internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boo
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 {
 	public StringArraySerializer( SerializationContext ownerContext )
@@ -2648,6 +2671,7 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 {
 	public BinaryArraySerializer( SerializationContext ownerContext )
@@ -2760,6 +2784,7 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 
 }
 
+[Preserve( AllMembers = true )]
 internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<MessagePackObject[]>
 {
 	public MessagePackObjectArraySerializer( SerializationContext ownerContext )

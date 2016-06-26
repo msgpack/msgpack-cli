@@ -34,6 +34,7 @@ using System.Threading.Tasks;
 namespace MsgPack.Serialization.DefaultSerializers
 {
 #if !UNITY
+	[Preserve( AllMembers = true )]
 	internal sealed class ArraySerializer<T> : MessagePackSerializer<T[]>
 #else
 #warning TODO: Use generic collection if possible for maintenancibility.

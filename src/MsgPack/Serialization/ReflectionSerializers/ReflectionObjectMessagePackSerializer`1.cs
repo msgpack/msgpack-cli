@@ -42,6 +42,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 	/// <summary>
 	///		Implements reflection-based object serializer for restricted platforms.
 	/// </summary>
+	[Preserve( AllMembers = true )]
 	internal class ReflectionObjectMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
 		private readonly Func<object, object>[] _getters;

@@ -33,6 +33,7 @@ using System.Threading.Tasks;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	[Preserve( AllMembers = true )]
 	internal class ImmutableCollectionSerializer<T, TItem> : MessagePackSerializer<T>
 		where T : IEnumerable<TItem>
 	{

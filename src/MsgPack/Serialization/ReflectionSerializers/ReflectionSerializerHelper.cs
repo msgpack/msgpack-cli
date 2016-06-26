@@ -428,6 +428,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 		// ReSharper disable MemberHidesStaticFromOuterClass
 
+		[Preserve( AllMembers = true )]
 		private sealed class NonGenericEnumerableSerializerFactory<T> : IVariantReflectionSerializerFactory
 			where T : IEnumerable
 		{
@@ -439,6 +440,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class NonGenericCollectionSerializerFactory<T> : IVariantReflectionSerializerFactory
 			where T : ICollection
 		{
@@ -450,6 +452,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class NonGenericListSerializerFactory<T> : IVariantReflectionSerializerFactory
 			where T : IList
 		{
@@ -461,6 +464,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class NonGenericDictionarySerializerFactory<T> : IVariantReflectionSerializerFactory
 			where T : IDictionary
 		{
@@ -472,6 +476,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class EnumerableSerializerFactory<TCollection, TItem> : IVariantReflectionSerializerFactory
 			where TCollection : IEnumerable<TItem>
 		{
@@ -484,6 +489,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class CollectionSerializerFactory<TCollection, TItem> : IVariantReflectionSerializerFactory
 			where TCollection : ICollection<TItem>
 		{
@@ -496,6 +502,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 		}
 
+		[Preserve( AllMembers = true )]
 		private sealed class DictionarySerializerFactory<TDictionary, TKey, TValue> : IVariantReflectionSerializerFactory
 			where TDictionary : IDictionary<TKey, TValue>
 		{

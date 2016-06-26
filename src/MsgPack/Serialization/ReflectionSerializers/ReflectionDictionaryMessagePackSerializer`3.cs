@@ -35,6 +35,7 @@ using MsgPack.Serialization.CollectionSerializers;
 
 namespace MsgPack.Serialization.ReflectionSerializers
 {
+	[Preserve( AllMembers = true )]
 #if !UNITY
 	internal sealed class ReflectionDictionaryMessagePackSerializer<TDictionary, TKey, TValue> : DictionaryMessagePackSerializer<TDictionary, TKey, TValue>
 		where TDictionary : IDictionary<TKey, TValue>

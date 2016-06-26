@@ -31,6 +31,7 @@ using System.Threading.Tasks;
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	// ReSharper disable once InconsistentNaming
+	[Preserve( AllMembers = true )]
 	internal class System_ArraySegment_1MessagePackSerializer<T> : MessagePackSerializer<ArraySegment<T>>
 	{
 		private static readonly Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> _packing = InitializePacking();
