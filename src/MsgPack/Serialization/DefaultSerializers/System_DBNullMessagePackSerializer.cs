@@ -22,6 +22,8 @@
 #define UNITY
 #endif
 
+#if !NETSTANDARD1_1
+
 using System;
 #if CORE_CLR || UNITY
 using Contract = MsgPack.MPContract;
@@ -81,3 +83,4 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	}
 }
+#endif // !NETSTANDARD1_1
