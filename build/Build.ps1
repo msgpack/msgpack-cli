@@ -213,9 +213,4 @@ if ( $buildConfig -eq 'Release' )
 	}
 	[IO.Compression.ZipFile]::CreateFromDirectory( ( Convert-Path './MsgPack-CLI' ), ( Convert-Path '../dist/' ) + "MsgPack.Cli.${zipVersion}.zip" )
 	Remove-Item ./MsgPack-CLI -Recurse -Force
-
-	if ( $env:APPVEYOR -ne "True" )
-	{
-		Write-Host "Package creation finished. Ensure AssemblyInfo.cs is updated and ./SetFileVersions.ps1 was executed."
-	}
 }
