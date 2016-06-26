@@ -195,22 +195,16 @@ if ( $LastExitCode -ne 0 )
 
 if ( $buildConfig -eq 'Release' )
 {
-	$packageVersion = $env:PackageVersion
-	if ($env:APPVEYOR_REPO_TAG -ne "True")
-	{
-		$packageVersion += $env:APPVEYOR_BUILD_VERSION
-	}
-	[string]$zipVersion = $packageVersion
-	& $nuget pack ../MsgPack.nuspec -Symbols -Version $packageVersion -OutputDirectory ../dist
+	& $nuget pack ../MsgPack.nuspec -Symbols -Version $env:PackageVersion -OutputDirectory ../dist
 
 	Copy-Item ../bin/ ./MsgPack-CLI/ -Recurse -Exclude @("*.vshost.*")
 	Copy-Item ../tools/mpu/bin/ ./MsgPack-CLI/mpu/ -Recurse -Exclude @("*.vshost.*")
 	[Reflection.Assembly]::LoadWithPartialName( "System.IO.Compression.FileSystem" ) | Out-Null
 	# 'latest' should be rewritten with semver manually.
-	if ( ( Test-Path "../dist/MsgPack.Cli.${zipVersion}.zip" ) )
+	if ( ( Test-Path "../dist/MsgPack.Cli.${env:PackageVersion}.zip" ) )
 	{
-		Remove-Item ../dist/MsgPack.Cli.${zipVersion}.zip
+		Remove-Item ../dist/MsgPack.Cli.${env:PackageVersion}.zip
 	}
-	[IO.Compression.ZipFile]::CreateFromDirectory( ( Convert-Path './MsgPack-CLI' ), ( Convert-Path '../dist/' ) + "MsgPack.Cli.${zipVersion}.zip" )
+	[IO.Compression.ZipFile]::CreateFromDirectory( ( Convert-Path './MsgPack-CLI' ), ( Convert-Path '../dist/' ) + "MsgPack.Cli.${env:PackageVersion}.zip" )
 	Remove-Item ./MsgPack-CLI -Recurse -Force
 }

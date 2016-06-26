@@ -1,3 +1,20 @@
 # Set versions for AssemblyInfo.cs
-$env:PackageVersion = ( Get-Content .\Version.txt );
-$env:AssemblyBaseVersion = $env:PackageVersion | foreach{ if( $_ -match "^\d+\.\d+" ){ $matches[0] } } 
+$version = ( Get-Content .\Version.txt );
+$env:AssemblyBaseVersion = $version | foreach{ if( $_ -match "^\d+\.\d+" ){ $matches[0] } } 
+if ( $env:APPVEYOR_REPO_TAG -ne "True" )
+{
+	if ( ${env:APPVEYOR_BUILD_NUMBER} -eq $null )
+	{
+		$now = [DateTime]::UtcNow
+		$daysSpan = $now - ( New-Object DateTime( $now.Year, 1, 1 ) )
+		$env:PackageVersion = "${version}-{0:yy}{1:000}" -f @( $now, $daysSpan.Days )
+	}
+	else
+	{
+		$env:PackageVersion = "${version}-${env:APPVEYOR_BUILD_NUMBER}"
+	}
+}
+else
+{
+	$env:PackageVersion = $version
+}
