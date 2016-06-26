@@ -265,7 +265,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					var getter = property.GetGetMethod( true );
 					if ( getter == null )
 					{
-						ThrowMissingGetterException( targetType, i );
+						ThrowMissingGetterException( targetType, i, property );
 					}
 
 					getters[ i ] = target => getter.InvokePreservingExceptionType( target, null );
@@ -313,18 +313,19 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 		}
 
-		private static void ThrowMissingGetterException( Type targetType, int number )
+		private static void ThrowMissingGetterException( Type targetType, int number, PropertyInfo property )
 		{
 			throw new SerializationException(
 				String.Format(
 					CultureInfo.CurrentCulture,
-					"The {0}th getter metadata of type '{1}' is missing."
+					"The {0}th getter metadata of '{1}' ('{2}' property) is missing."
 #if UNITY
 					+ " Ensure link.xml or [Preserve] attribute for the target type, or use pre-generated serializer."
 #endif // UNITY
 					,
 					number,
-					targetType
+					targetType,
+					property
 				)
 			);
 		}
