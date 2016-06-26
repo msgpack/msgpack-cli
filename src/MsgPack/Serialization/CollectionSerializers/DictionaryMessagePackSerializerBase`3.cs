@@ -81,7 +81,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, TDictionary objectTree )
 		{
-#if ( !UNITY && !XAMIOS ) || AOT_CHECK
+#if ( !UNITY ) || AOT_CHECK
 			packer.PackMapHeader( this.GetCount( objectTree ) );
 			foreach ( var item in objectTree )
 			{
@@ -97,7 +97,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 				this._keySerializer.PackTo( packer, item.Key );
 				this._valueSerializer.PackTo( packer, item.Value );
 			}
-#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
+#endif // ( !UNITY ) || AOT_CHECK
 		}
 
 #if FEATURE_TAP
@@ -120,7 +120,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <seealso cref="P:Capabilities"/>
 		protected internal override async Task PackToAsyncCore( Packer packer, TDictionary objectTree, CancellationToken cancellationToken )
 		{
-#if ( !UNITY && !XAMIOS ) || AOT_CHECK
+#if ( !UNITY ) || AOT_CHECK
 			await packer.PackMapHeaderAsync( this.GetCount( objectTree ), cancellationToken ).ConfigureAwait( false );
 			foreach ( var item in objectTree )
 			{
@@ -136,7 +136,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 				await this._keySerializer.PackToAsync( packer, item.Key, cancellationToken ).ConfigureAwait( false );
 				await this._valueSerializer.PackToAsync( packer, item.Value, cancellationToken ).ConfigureAwait( false );
 			}
-#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
+#endif // ( !UNITY ) || AOT_CHECK
 		}
 
 #endif // FEATURE_TAP

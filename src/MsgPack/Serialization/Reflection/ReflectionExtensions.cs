@@ -240,9 +240,9 @@ namespace MsgPack.Serialization.Reflection
 			AddString( result, source, MethodImplAttributes.Synchronized, "synchronized" );
 			AddString( result, source, MethodImplAttributes.NoInlining, "noinlining" );
 			AddString( result, source, MethodImplAttributes.NoOptimization, "nooptimization" );
-#if !NETFX_35 && !NETFX_40 && !XAMIOS && !XAMDROID && !UNITY
+#if !NETFX_35 && !NETFX_40 && !UNITY
 			AddString( result, source, MethodImplAttributes.AggressiveInlining, "aggressiveinlining" );
-#endif // !NETFX_35 && !NETFX_40 && !XAMIOS && !XAMDROID && !UNITY
+#endif // !NETFX_35 && !NETFX_40 && !UNITY
 
 			return result.ToString();
 		}

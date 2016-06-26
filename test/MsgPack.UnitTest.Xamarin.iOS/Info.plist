@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>MsgPack.UnitTest.Xamios</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.your-company.MsgPack.UnitTest.Xamios</string>
+	<string>org.msgpack.msgpack-cli-xamarin-ios-test</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

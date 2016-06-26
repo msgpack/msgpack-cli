@@ -68,13 +68,13 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <returns>The count of the <paramref name="dictionary"/>.</returns>
 		protected override int GetCount( TDictionary dictionary )
 		{
-#if ( !UNITY && !XAMIOS ) || AOT_CHECK
+#if ( !UNITY ) || AOT_CHECK
 			return dictionary.Count;
 #else
 			// .constraind call for TDictionary.get_Count/TDictionary.GetEnumerator() causes AOT error.
 			// So use cast and invoke as normal call (it might cause boxing, but most collection should be reference type).
 			return ( dictionary as IDictionary<TKey, TValue> ).Count;
-#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
+#endif // ( !UNITY ) || AOT_CHECK
 		}
 
 		/// <summary>
@@ -89,13 +89,13 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// </exception>
 		protected override void AddItem( TDictionary dictionary, TKey key, TValue value )
 		{
-#if ( !UNITY && !XAMIOS ) || AOT_CHECK
+#if ( !UNITY && !XAMARIN ) || AOT_CHECK
 			dictionary.Add( key, value );
 #else
 			// .constraind call for TDictionary.Add causes AOT error.
 			// So use cast and invoke as normal call (it might cause boxing, but most collection should be reference type).
 			( dictionary as IDictionary<TKey, TValue> ).Add( key, value );
-#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
+#endif // ( !UNITY && !XAMARIN ) || AOT_CHECK
 		}
 	}
 

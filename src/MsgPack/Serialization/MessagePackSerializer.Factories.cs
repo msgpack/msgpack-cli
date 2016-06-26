@@ -287,14 +287,14 @@ namespace MsgPack.Serialization
 #endif // FEATURE_EMIT
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY
+#if !UNITY
 #if !SILVERLIGHT && !NETFX_35
 		private static readonly ConcurrentDictionary<Type, Func<SerializationContext, MessagePackSerializer>> _creatorCache = new ConcurrentDictionary<Type, Func<SerializationContext, MessagePackSerializer>>();
 #else
 		private static readonly object _syncRoot = new object();
 		private static readonly Dictionary<Type, Func<SerializationContext, MessagePackSerializer>> _creatorCache = new Dictionary<Type, Func<SerializationContext, MessagePackSerializer>>();
 #endif // !SILVERLIGHT && !NETFX_35
-#endif // !XAMIOS && !XAMDROID && !UNITY
+#endif // !UNITY
 
 		/// <summary>
 		///		Creates new <see cref="IMessagePackSerializer"/> instance with <see cref="SerializationContext.Default"/>.
@@ -728,7 +728,7 @@ namespace MsgPack.Serialization
 		///			Please note that this method do not ensure for full linkage for AOT.
 		///		</para>
 		///		<para>
-		///			Currently, this method prepares <see cref="ArraySegment{T}"/>, <see cref="Queue{T}"/>, and <see cref="Stack{T}"/>.
+		///			Currently, this method prepares <see cref="ArraySegment{T}"/>, <see cref="System.Collections.Generic.Queue{T}"/>, and <see cref="System.Collections.Generic.Stack{T}"/>.
 		///			In addition, this method also invokes <see cref="PrepareType{T}"/> implicitly.
 		///		</para>
 		/// </remarks>

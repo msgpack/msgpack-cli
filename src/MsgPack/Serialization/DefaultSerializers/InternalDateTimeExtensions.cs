@@ -23,9 +23,9 @@
 #endif
 
 using System;
-#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY
 using System.Runtime.InteropServices.ComTypes;
-#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -70,7 +70,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		// End porting
 #endif // SILVERLIGHT
 
-#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY
 		private static readonly DateTime _fileTimeEpocUtc = new DateTime( 1601, 1, 1, 0, 0, 0, DateTimeKind.Utc );
 
 		public static DateTime ToDateTime( this FILETIME source )
@@ -92,6 +92,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 					dwLowDateTime = unchecked( ( int ) ( value & 0xffffffff ) )
 				};
 		}
-#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY
 	}
 }

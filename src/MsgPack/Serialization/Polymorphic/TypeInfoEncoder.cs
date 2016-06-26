@@ -85,11 +85,7 @@ namespace MsgPack.Serialization.Polymorphic
 				.PackString( compressedTypeName )
 				.PackString( assemblyName.Name )
 				.PackBinary( version )
-#if !XAMIOS && !XAMDROID
 				.PackString( assemblyName.GetCultureName() )
-#else
-				.PackString( assemblyName.GetCultureName() == "neutral" ? null : assemblyName.GetCultureName() )
-#endif // !XAMIOS && !XAMDROID
 				.PackBinary( assemblyName.GetPublicKeyToken() );
 		}
 
@@ -118,11 +114,7 @@ namespace MsgPack.Serialization.Polymorphic
 			await packer.PackStringAsync( compressedTypeName , cancellationToken ).ConfigureAwait( false );
 			await packer.PackStringAsync( assemblyName.Name, cancellationToken ).ConfigureAwait( false );
 			await packer.PackBinaryAsync( version, cancellationToken ).ConfigureAwait( false );
-#if !XAMIOS && !XAMDROID
 			await packer.PackStringAsync( assemblyName.GetCultureName(), cancellationToken ).ConfigureAwait( false );
-#else
-			await packer.PackStringAsync( assemblyName.GetCultureName() == "neutral" ? null : assemblyName.GetCultureName(), cancellationToken ).ConfigureAwait( false );
-#endif // !XAMIOS && !XAMDROID
 			await packer.PackBinaryAsync( assemblyName.GetPublicKeyToken(), cancellationToken ).ConfigureAwait( false );
 		}
 #endif // FEATURE_TAP

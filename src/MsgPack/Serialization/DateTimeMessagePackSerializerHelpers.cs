@@ -85,10 +85,10 @@ namespace MsgPack.Serialization
 			return
 				dateTimeType == typeof( DateTime )
 				|| dateTimeType == typeof( DateTime? )
-#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY
 				|| dateTimeType == typeof( FILETIME )
 				|| dateTimeType == typeof( FILETIME? )
-#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMIOS && !XAMDROID && !UNITY
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY
 				// DateTimeOffset? is not have to be treat specially.
 				|| dateTimeType == typeof( DateTimeOffset );
 		}

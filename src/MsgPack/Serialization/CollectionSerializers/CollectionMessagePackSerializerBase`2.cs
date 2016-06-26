@@ -68,7 +68,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		protected internal override void PackToCore( Packer packer, TCollection objectTree )
 		{
 			packer.PackArrayHeader( this.GetCount( objectTree ) );
-#if ( !UNITY && !XAMIOS ) || AOT_CHECK
+#if ( !UNITY ) || AOT_CHECK
 			var itemSerializer = this.ItemSerializer;
 			foreach ( var item in objectTree )
 			{
@@ -82,7 +82,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 			{
 				itemSerializer.PackTo( packer, item );
 			}
-#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
+#endif // ( !UNITY ) || AOT_CHECK
 		}
 
 #if FEATURE_TAP
@@ -106,7 +106,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		protected internal override async Task PackToAsyncCore( Packer packer, TCollection objectTree, CancellationToken cancellationToken )
 		{
 			await packer.PackArrayHeaderAsync( this.GetCount( objectTree ), cancellationToken ).ConfigureAwait( false );
-#if ( !UNITY && !XAMIOS ) || AOT_CHECK
+#if ( !UNITY ) || AOT_CHECK
 			var itemSerializer = this.ItemSerializer;
 			foreach ( var item in objectTree )
 			{
@@ -120,7 +120,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 			{
 				await itemSerializer.PackToAsync( packer, item, cancellationToken ).ConfigureAwait( false );
 			}
-#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
+#endif // ( !UNITY ) || AOT_CHECK
 		}
 
 #endif // FEATURE_TAP

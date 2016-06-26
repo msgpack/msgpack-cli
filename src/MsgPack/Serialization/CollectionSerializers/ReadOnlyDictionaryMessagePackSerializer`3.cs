@@ -58,13 +58,13 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <returns>The count of the <paramref name="dictionary"/>.</returns>
 		protected override int GetCount( TDictionary dictionary )
 		{
-#if ( !UNITY && !XAMIOS ) || AOT_CHECK
+#if ( !UNITY ) || AOT_CHECK
 			return dictionary.Count;
 #else
 			// .constraind call for TDictionary.get_Count/TDictionary.GetEnumerator() causes AOT error.
 			// So use cast and invoke as normal call (it might cause boxing, but most collection should be reference type).
 			return ( dictionary as IDictionary<TKey, TValue> ).Count;
-#endif // ( !UNITY && !XAMIOS ) || AOT_CHECK
+#endif // ( !UNITY ) || AOT_CHECK
 		}
 	}
 }

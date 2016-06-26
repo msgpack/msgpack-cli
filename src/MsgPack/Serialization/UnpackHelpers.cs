@@ -1025,9 +1025,9 @@ namespace MsgPack.Serialization
 		[Conditional( "TRACING" )]
 		private static void TraceCore( string format, params object[] args )
 		{
-#if !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 			Tracer.Tracing.TraceEvent( Tracer.EventType.Trace, Tracer.EventId.Trace, format, args );
-#endif // !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 		}
 
 		private sealed class UnpackerTraceContext
