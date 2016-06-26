@@ -386,7 +386,7 @@ namespace MsgPack.Serialization
 				return true;
 			}
 
-			var traits = returnType.GetCollectionTraits( CollectionTraitOptions.WithAddMethod );
+			var traits = returnType.GetCollectionTraits( CollectionTraitOptions.WithAddMethod, forceCollection: true );
 			switch ( traits.CollectionType )
 			{
 				case CollectionKind.Array:

@@ -388,7 +388,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._contracts[ index ].Name );
 			}
 
-			var traits = destination.GetType().GetCollectionTraits( CollectionTraitOptions.WithAddMethod );
+			var traits = destination.GetType().GetCollectionTraits( CollectionTraitOptions.WithAddMethod, forceCollection: true );
 			if ( traits.AddMethod == null )
 			{
 				throw SerializationExceptions.NewUnpackToIsNotSupported( destination.GetType(), null );
@@ -637,7 +637,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._contracts[ index ].Name );
 			}
 
-			var traits = destination.GetType().GetCollectionTraits( CollectionTraitOptions.WithAddMethod );
+			var traits = destination.GetType().GetCollectionTraits( CollectionTraitOptions.WithAddMethod, forceCollection: true );
 			if ( traits.AddMethod == null )
 			{
 				throw SerializationExceptions.NewUnpackToIsNotSupported( destination.GetType(), null );

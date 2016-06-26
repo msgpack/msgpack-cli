@@ -309,7 +309,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					abstractType,
 					concreteType,
 					schema,
-					abstractType.GetCollectionTraits( CollectionTraitOptions.None )
+					abstractType.GetCollectionTraits( CollectionTraitOptions.None, context.CompatibilityOptions.AlwaysAssumeCollections )
 				);
 		}
 

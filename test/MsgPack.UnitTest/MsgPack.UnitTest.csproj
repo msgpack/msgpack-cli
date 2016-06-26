@@ -705,6 +705,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MapReflectionBasedAutoMessagePackSerializerTest.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\NonCollectionIEnumerableTest.cs" />
     <Compile Include="Serialization\PerformanceTest.cs" />
     <Compile Include="Serialization\AppendableReadOnlyCollections.cs" />
     <Compile Include="Serialization\ReflectionBasedNilImplicationTest.cs">

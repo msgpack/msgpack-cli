@@ -98,7 +98,7 @@ namespace MsgPack.Serialization
 		///		Gets or sets a value indicating whether serializer generator ignores packability interfaces for collections or not.
 		/// </summary>
 		/// <value>
-		///		<c>true</c> if serializer generator ignores packability interfaces for collections; otherwise, <c>false</c>. The default is <c>true</c>.
+		///		<c>true</c> if serializer generator ignores packability interfaces for collections; otherwise, <c>false</c>. The default is <c>false</c>.
 		/// </value>
 		/// <remarks>
 		///		Historically, MessagePack for CLI ignored packability interfaces (<see cref="IPackable"/>, <see cref="IUnpackable"/>, 
@@ -122,6 +122,43 @@ namespace MsgPack.Serialization
 				this._ignorePackabilityForCollection = value;
 #else
 				Volatile.Write( ref this._ignorePackabilityForCollection, value );
+#endif // NETFX_35 || UNITY || SILVERLIGHT
+			}
+		}
+
+#if NETFX_35 || UNITY || SILVERLIGHT
+		private volatile bool _alwaysAssumeCollections;
+#else
+		private bool _alwaysAssumeCollections;
+#endif // NETFX_35 || UNITY || SILVERLIGHT
+
+		/// <summary>
+		///		Gets or sets a value indicating whether serializer generator should always try to serialize a type implementing IEnumerable as a collection or not.
+		/// </summary>
+		/// <value>
+		///		<c>true</c> if serializer generator should serialize a type implementing IEnumerable as only a collection; otherwise, <c>false</c>. The default is <c>false</c>.
+		/// </value>
+		/// <remarks>
+		///		Historically, MessagePack for CLI always tried to serialize any type that implemented IEnumerable as a collection, throwing an exception
+		///		if an Add method could not be found. However, for types that implement IEnumerable but don't have an Add method the generator will now
+		///		serialize the type as a non-collection type. To restore the old behavior for backwards compatibility, set this option to <c>false</c>.
+		/// </remarks>
+		public bool AlwaysAssumeCollections
+		{
+			get
+			{
+#if NETFX_35 || UNITY || SILVERLIGHT
+				return this._alwaysAssumeCollections;
+#else
+				return Volatile.Read(ref this._alwaysAssumeCollections);
+#endif // NETFX_35 || UNITY || SILVERLIGHT
+			}
+			set
+			{
+#if NETFX_35 || UNITY || SILVERLIGHT
+				this._alwaysAssumeCollections = value;
+#else
+				Volatile.Write(ref this._alwaysAssumeCollections, value);
 #endif // NETFX_35 || UNITY || SILVERLIGHT
 			}
 		}

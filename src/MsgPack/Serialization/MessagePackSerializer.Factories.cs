@@ -224,7 +224,7 @@ namespace MsgPack.Serialization
 #if AOT
 				typeof( T ).GetCollectionTraits( CollectionTraitOptions.None );
 #else
-				typeof( T ).GetCollectionTraits( CollectionTraitOptions.Full );
+				typeof( T ).GetCollectionTraits( CollectionTraitOptions.Full, context.CompatibilityOptions.AlwaysAssumeCollections );
 #endif // AOT
 
 			if ( typeof( T ).GetIsAbstract() || typeof( T ).GetIsInterface() )
@@ -572,9 +572,9 @@ namespace MsgPack.Serialization
 			ValidateType( typeof( T ) );
 			var traits = 
 #if !UNITY
-				typeof( T ).GetCollectionTraits( CollectionTraitOptions.WithAddMethod );
+				typeof( T ).GetCollectionTraits( CollectionTraitOptions.WithAddMethod, forceCollection: true );
 #else
-				typeof( T ).GetCollectionTraits( CollectionTraitOptions.WithAddMethod | CollectionTraitOptions.WithCountPropertyGetter );
+				typeof( T ).GetCollectionTraits( CollectionTraitOptions.WithAddMethod | CollectionTraitOptions.WithCountPropertyGetter, forceCollection: true );
 #endif
 			switch ( traits.CollectionType )
 			{

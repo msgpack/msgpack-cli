@@ -161,7 +161,7 @@ namespace MsgPack.Serialization
 			return asProperty != null ? asProperty.PropertyType : asField.FieldType;
 		}
 
-		public static CollectionTraits GetCollectionTraits( this Type source, CollectionTraitOptions options )
+		public static CollectionTraits GetCollectionTraits( this Type source, CollectionTraitOptions options, bool forceCollection )
 		{
 #if DEBUG
 			Contract.Assert( !source.GetContainsGenericParameters(), "!source.GetContainsGenericParameters()" );
@@ -199,6 +199,13 @@ namespace MsgPack.Serialization
 					);
 			}
 
+			// If the type is an interface then a concrete collection has to be
+			// made for it if the interface is a collection type
+			if ( source.IsInterface || forceCollection )
+			{
+				options = options | CollectionTraitOptions.ForceCollection;
+			}
+
 			MethodInfo getEnumerator = source.GetMethod( "GetEnumerator", ReflectionAbstractions.EmptyTypes );
 			if ( getEnumerator != null && getEnumerator.ReturnType.IsAssignableTo( typeof( IEnumerator ) ) )
 			{
@@ -210,18 +217,7 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			Type ienumerableT = null;
-			Type icollectionT = null;
-#if !NETFX_35 && !UNITY
-			Type isetT = null;
-#endif // !NETFX_35 && !UNITY
-			Type ilistT = null;
-			Type idictionaryT = null;
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-			Type ireadOnlyCollectionT = null;
-			Type ireadOnlyListT = null;
-			Type ireadOnlyDictionaryT = null;
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+			GenericCollectionTypes genericTypes = new GenericCollectionTypes();
 			Type ienumerable = null;
 			Type icollection = null;
 			Type ilist = null;
@@ -251,22 +247,7 @@ namespace MsgPack.Serialization
 
 				if ( !DetermineCollectionInterfaces(
 						type,
-						ref idictionaryT,
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-						ref ireadOnlyDictionaryT,
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-						ref ilistT,
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-						ref ireadOnlyListT,
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-#if !NETFX_35 && !UNITY
-						ref isetT,
-#endif // !NETFX_35 && !UNITY
-						ref icollectionT,
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-						ref ireadOnlyCollectionT,
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-						ref ienumerableT,
+						ref genericTypes,
 						ref idictionary,
 						ref ilist,
 						ref icollection,
@@ -278,10 +259,10 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			if ( idictionaryT != null )
+			if ( genericTypes.IDictionaryT != null )
 			{
-				var elementType = typeof( KeyValuePair<,> ).MakeGenericType( idictionaryT.GetGenericArguments() );
-				var genericArguments = idictionaryT.GetGenericArguments();
+				var genericArguments = genericTypes.IDictionaryT.GetGenericArguments();
+				var elementType = typeof( KeyValuePair<,> ).MakeGenericType( genericArguments );
 
 				return 
 					new CollectionTraits(
@@ -294,9 +275,9 @@ namespace MsgPack.Serialization
 			}
 
 #if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-			if ( ireadOnlyDictionaryT != null )
+			if ( genericTypes.IReadOnlyDictionaryT != null )
 			{
-				var elementType = typeof( KeyValuePair<,> ).MakeGenericType( ireadOnlyDictionaryT.GetGenericArguments() );
+				var elementType = typeof( KeyValuePair<,> ).MakeGenericType( genericTypes.IReadOnlyDictionaryT.GetGenericArguments() );
 				return
 					new CollectionTraits(
 						CollectionDetailedKind.GenericReadOnlyDictionary,
@@ -308,34 +289,13 @@ namespace MsgPack.Serialization
 			}
 #endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 
-			if ( ienumerableT != null )
+			if ( genericTypes.IEnumerableT != null )
 			{
-				var elementType = ienumerableT.GetGenericArguments()[ 0 ];
-				return
-					new CollectionTraits(
-						( ilistT != null )
-						? CollectionDetailedKind.GenericList
-#if !NETFX_35 && !UNITY
- : ( isetT != null )
-						? CollectionDetailedKind.GenericSet
-#endif // !NETFX_35 && !UNITY
- : ( icollectionT != null )
-						? CollectionDetailedKind.GenericCollection
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
- : ( ireadOnlyListT != null )
-						? CollectionDetailedKind.GenericReadOnlyList
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
- : ( ireadOnlyCollectionT != null )
-						? CollectionDetailedKind.GenericReadOnlyCollection
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
- : CollectionDetailedKind.GenericEnumerable,
-						elementType,
-						GetGetEnumeratorMethodFromEnumerableType( source, ienumerableT, options ),
-						GetAddMethod( source, elementType, options ),
-						GetCountGetterMethod( source, elementType, options )
-					);
-
+				CollectionTraits traits;
+				if ( TryCreateCollectionTraitsForIEnumerableT( source, genericTypes, options, null, out traits ) )
+				{
+					return traits;
+				}
 			}
 
 			if ( idictionary != null )
@@ -371,6 +331,58 @@ namespace MsgPack.Serialization
 			}
 
 			return CollectionTraits.NotCollection;
+		}
+
+		private static bool TryCreateCollectionTraitsForIEnumerableT(
+			Type source,
+			GenericCollectionTypes genericTypes,
+			CollectionTraitOptions options,
+			MethodInfo getMethod,
+			out CollectionTraits result
+		)
+		{
+			var elementType = genericTypes.IEnumerableT.GetGenericArguments()[ 0 ];
+			var addMethod = GetAddMethod( source, elementType, options );
+			if ( addMethod == null && ( ( options & CollectionTraitOptions.ForceCollection ) == 0 ) )
+			{
+				result = default(CollectionTraits);
+				return false;
+			}
+
+			CollectionDetailedKind kind = CollectionDetailedKind.GenericEnumerable;
+			if ( genericTypes.IListT != null )
+			{
+				kind = CollectionDetailedKind.GenericList;
+			}
+#if !NETFX_35 && !UNITY
+			else if ( genericTypes.ISetT != null )
+			{
+				kind = CollectionDetailedKind.GenericSet;
+			}
+#endif // !NETFX_35 && !UNITY
+			else if ( genericTypes.ICollectionT != null )
+			{
+				kind = CollectionDetailedKind.GenericCollection;
+			}
+#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+			else if ( genericTypes.IReadOnlyListT != null )
+			{
+				kind = CollectionDetailedKind.GenericReadOnlyList;
+			}
+			else if ( genericTypes.IReadOnlyCollectionT != null )
+			{
+				kind = CollectionDetailedKind.GenericReadOnlyCollection;
+			}
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+				
+			result = new CollectionTraits(
+				kind,
+				elementType,
+				getMethod ?? GetGetEnumeratorMethodFromElementType( source, elementType, options ),
+				addMethod,
+				GetCountGetterMethod( source, elementType, options )
+			);
+			return true;
 		}
 
 		private static bool TryCreateCollectionTraitsForHasGetEnumeratorType(
@@ -438,35 +450,27 @@ namespace MsgPack.Serialization
 
 				if ( ienumetaorT != null )
 				{
-					var elementType = ienumetaorT.GetGenericArguments()[ 0 ];
-					{
-						result =
-							new CollectionTraits(
-								source.Implements( typeof( IList<> ) )
-								? CollectionDetailedKind.GenericList
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-								: source.Implements( typeof( IReadOnlyList<> ) )
-								? CollectionDetailedKind.GenericReadOnlyList
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-#if !NETFX_35 && !UNITY
-								: source.Implements( typeof( ISet<> ) )
-								? CollectionDetailedKind.GenericSet
-#endif // !NETFX_35 && !UNITY
-								: source.Implements( typeof( ICollection<> ) )
-								? CollectionDetailedKind.GenericCollection
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-								: source.Implements( typeof( IReadOnlyCollection<> ) )
-								? CollectionDetailedKind.GenericReadOnlyCollection
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-								: CollectionDetailedKind.GenericEnumerable,
-								elementType,
-								getEnumerator,
-								GetAddMethod( source, elementType, options ),
-								GetCountGetterMethod( source, elementType, options )
-							);
+					// Get the open generic types once
+					Type[] genericInterfaces =
+						source.GetInterfaces()
+						.Where( i => i.GetIsGenericType() )
+						.Select( i => i.GetGenericTypeDefinition() )
+						.ToArray();
 
-						return true;
-					}
+					var genericTypes = new GenericCollectionTypes();
+					genericTypes.IEnumerableT = ienumetaorT;
+					genericTypes.ICollectionT = genericInterfaces.FirstOrDefault( i => i == typeof(ICollection<>) );
+					genericTypes.IListT = genericInterfaces.FirstOrDefault( i => i == typeof(IList<>) );
+
+#if !NETFX_35 && !UNITY
+					genericTypes.ISetT = genericInterfaces.FirstOrDefault( i => i == typeof(ISet<>) );
+#endif // !NETFX_35 && !UNITY
+#if !NETFX_35 && !UNITY && !NETFX_40 && !(SILVERLIGHT && !WINDOWS_PHONE)
+					genericTypes.IReadOnlyCollectionT = genericInterfaces.FirstOrDefault( i => i == typeof(IReadOnlyCollection<>) );
+					genericTypes.IReadOnlyListT = genericInterfaces.FirstOrDefault( i => i == typeof(IReadOnlyList<>) );
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+
+					return TryCreateCollectionTraitsForIEnumerableT( source, genericTypes, options, getEnumerator, out result );
 				}
 			}
 
@@ -544,22 +548,7 @@ namespace MsgPack.Serialization
 
 		private static bool DetermineCollectionInterfaces(
 			Type type,
-			ref Type idictionaryT,
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-			ref Type ireadOnlyDictionaryT,
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-			ref Type ilistT,
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-			ref Type ireadOnlyListT,
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-#if !NETFX_35 && !UNITY
-			ref Type isetT,
-#endif // !NETFX_35 && !UNITY
-			ref Type icollectionT,
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-			ref Type ireadOnlyCollectionT,
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-			ref Type ienumerableT,
+			ref GenericCollectionTypes genericTypes,
 			ref Type idictionary,
 			ref Type ilist,
 			ref Type icollection,
@@ -571,83 +560,83 @@ namespace MsgPack.Serialization
 				var genericTypeDefinition = type.GetGenericTypeDefinition();
 				if ( genericTypeDefinition == typeof( IDictionary<,> ) )
 				{
-					if ( idictionaryT != null )
+					if ( genericTypes.IDictionaryT != null )
 					{
 						return false;
 					}
 
-					idictionaryT = type;
+					genericTypes.IDictionaryT = type;
 				}
 #if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				else if ( genericTypeDefinition == typeof( IReadOnlyDictionary<,> ) )
 				{
-					if ( ireadOnlyDictionaryT != null )
+					if ( genericTypes.IReadOnlyDictionaryT != null )
 					{
 						return false;
 					}
 
-					ireadOnlyDictionaryT = type;
+					genericTypes.IReadOnlyDictionaryT = type;
 				}
 #endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				else if ( genericTypeDefinition == typeof( IList<> ) )
 				{
-					if ( ilistT != null )
+					if ( genericTypes.IListT != null )
 					{
 						return false;
 					}
 
-					ilistT = type;
+					genericTypes.IListT = type;
 				}
 #if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				else if ( genericTypeDefinition == typeof( IReadOnlyList<> ) )
 				{
-					if ( ireadOnlyListT != null )
+					if ( genericTypes.IReadOnlyListT != null )
 					{
 						return false;
 					}
 
-					ireadOnlyListT = type;
+					genericTypes.IReadOnlyListT = type;
 				}
 #endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 #if !NETFX_35 && !UNITY
 				else if ( genericTypeDefinition == typeof( ISet<> ) )
 				{
-					if ( isetT != null )
+					if ( genericTypes.ISetT != null )
 					{
 						return false;
 					}
 
-					isetT = type;
+					genericTypes.ISetT = type;
 				}
 #endif // !NETFX_35 && !UNITY
 				else if ( genericTypeDefinition == typeof( ICollection<> ) )
 				{
-					if ( icollectionT != null )
+					if ( genericTypes.ICollectionT != null )
 					{
 						return false;
 					}
 
-					icollectionT = type;
+					genericTypes.ICollectionT = type;
 				}
 #if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				else if ( genericTypeDefinition == typeof( IReadOnlyCollection<> ) )
 				{
-					if ( ireadOnlyCollectionT != null )
+					if ( genericTypes.IReadOnlyCollectionT != null )
 					{
 						return false;
 					}
 
-					ireadOnlyCollectionT = type;
+					genericTypes.IReadOnlyCollectionT = type;
 				}
 #endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				else if ( genericTypeDefinition == typeof( IEnumerable<> ) )
 				{
-					if ( ienumerableT != null )
+					if ( genericTypes.IEnumerableT != null )
 					{
 						return false;
 					}
 
-					ienumerableT = type;
+					genericTypes.IEnumerableT = type;
 				}
 			}
 			else
@@ -931,6 +920,23 @@ namespace MsgPack.Serialization
 			{
 				throw new NotSupportedException( source.GetType() + " is not supported." );
 			}
+		}
+
+		private struct GenericCollectionTypes
+		{
+			internal Type IEnumerableT;
+			internal Type ICollectionT;
+			internal Type IListT;
+			internal Type IDictionaryT;
+
+#if !NETFX_35 && !UNITY
+			internal Type ISetT;
+#if !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+			internal Type IReadOnlyCollectionT;
+			internal Type IReadOnlyListT;
+			internal Type IReadOnlyDictionaryT;
+#endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#endif // !NETFX_35 && !UNITY
 		}
 	}
 }
