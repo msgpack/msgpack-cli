@@ -27,6 +27,7 @@
     <Exclude File="*.ttinclude" />
     <Preserve File="*.snk" />
     <Preserve File="*.plist" />
+    <Preserve Path="linker.xml" />
     <Preserve Path="Main.cs" />
     <Preserve Path="UnitTestAppDelegate.cs" />
     <Preserve Path="Serialization\AotTest.cs" />

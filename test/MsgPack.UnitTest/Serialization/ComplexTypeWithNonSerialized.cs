@@ -51,7 +51,12 @@ namespace MsgPack.Serialization
 		}
 
 #if !NETFX_CORE && !SILVERLIGHT
+#if !XAMARIN
 		[NonSerialized]
+#else
+#warning Xamarin Workaround
+		[MessagePackIgnore]
+#endif // !XAMARIN
 		public object NonSerialized;
 #endif
 

@@ -76,7 +76,12 @@ namespace MsgPack.Serialization
 		public void TestPlain()
 		{
 			// includes issue28
+#if XAMARIN
+#warning TODO: Xamain Workaround
+			TestCore<PlainClass>( PublicProperty, NonSerializedPublicField, PublicField, CollectionReadOnlyProperty );
+#else
 			TestCore<PlainClass>( PublicProperty, PublicField, CollectionReadOnlyProperty );
+#endif // XAMARIN
 		}
 
 		[Test]
@@ -143,8 +148,15 @@ namespace MsgPack.Serialization
 		public void TestIgnoreKinds()
 		{
 			var result = SerializationTarget.Prepare( new SerializationContext(), typeof( IgnoreAttributesTester ) );
+#if XAMARIN
+#warning TODO: Xamain Workaround
+			Assert.That( result.Members.Count, Is.EqualTo( 2 ), String.Join( ",", result.Members.Select( m => m.Contract.Name ).ToArray() ) ); ;
+			Assert.That( result.Members[ 0 ].Contract.Name, Is.EqualTo( "NonSerialized" ), String.Join( ",", result.Members.Select( m => m.Contract.Name ).ToArray() ) );
+			Assert.That( result.Members[ 1 ].Contract.Name, Is.EqualTo( "Vanilla" ), String.Join( ",", result.Members.Select( m => m.Contract.Name ).ToArray() ) );
+#else
 			Assert.That( result.Members.Count, Is.EqualTo( 1 ), String.Join( ",", result.Members.Select( m => m.Contract.Name ).ToArray() ) ); ;
 			Assert.That( result.Members[ 0 ].Contract.Name, Is.EqualTo( "Vanilla" ), String.Join( ",", result.Members.Select( m => m.Contract.Name ).ToArray() ) );
+#endif // XAMARIN
 		}
 	}
 }

@@ -172,7 +172,7 @@ namespace MsgPack.Serialization
 					Assert.That( getters[ i ], Is.Null, "getters[{0}]", i );
 					Assert.That( setters[ i ], Is.Null, "setters[{0}]", i );
 					Assert.That( memberInfos[ i ], Is.Null, "memberInfos[{0}]", i );
-					Assert.That( contracts[ i ], Is.Null, "contracts[{0}]", i );
+					Assert.That( contracts[ i ].Name, Is.Null, "contracts[{0}]", i );
 					Assert.That( serializers[ i ], Is.Null, "serializers[{0}]", i );
 				}
 				else
@@ -187,7 +187,7 @@ namespace MsgPack.Serialization
 						Assert.That( setters[ i ], Is.Not.Null, "setters[{0}]", i );
 					}
 					Assert.That( memberInfos[ i ], Is.Not.Null, "memberInfos[{0}]", i );
-					Assert.That( contracts[ i ], Is.Not.Null, "contracts[{0}]", i );
+					Assert.That( contracts[ i ].Name, Is.Not.Null, "contracts[{0}]", i );
 					Assert.That( serializers[ i ], Is.Not.Null, "serializers[{0}]", i );
 				}
 			}
