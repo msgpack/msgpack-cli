@@ -474,9 +474,13 @@ Release 0.7-Beta1 - 2016/06/18
 
 Release 0.7-beta2 - 2016/06/26
 
+  NEW FEATURES
+  * Add Xamarin iOS linker support.
+
   BUG FIXES
   * Fix type initializer causes InvalidOperatiionException of serializer generation on WinRT projects. #170.
   * Fix package dependency issue prevents *-aot runtime cannot install MsgPack.Cli packages (effects 0.7.0-beta1 only).
+  * Fix Xamarin iOS AOT releated bugs (effects 0.7.0-beta1 only).
 
 Release 0.7 (planned)
 
@@ -505,6 +509,7 @@ Release 0.7 (planned)
   * SerializerGenerator.GenerateSerializerCodeAssembly now supports custom namespace. Issue #138.
   * Add .NET Core support. .NET Core build requires RC2 or above.
   * Unity I+2CPP support. Unity DLLs now support IL2CPP with various AOT issue workarounds. Unity build requires 5.3.5f1 or above.
+  * Xamarin iOS linker support.
 
   IMPROVEMENTS
   * Exceptions now includes stream position for seekable stream or "offset from Unpacker construction" for non-seekable stream.

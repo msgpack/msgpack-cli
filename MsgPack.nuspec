@@ -14,6 +14,7 @@
 This package provides MessagePack serialization/deserialization APIs. This pacakge also supports Mono, Xamarin, .NET Core and Unity.</description>
     <releaseNotes><![CDATA[This release including
 * .NET Core and Unity IL2CPP support
+* Xamarin iOS linker support
 * Asynchronous serialization support
 * Multiple improvements and bug fixes reported in github issues
     ]]></releaseNotes>
