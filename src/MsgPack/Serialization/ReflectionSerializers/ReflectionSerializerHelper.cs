@@ -195,7 +195,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			if ( collectionTraits.AddMethod == null )
 			{
-				throw new NotSupportedException(
+				throw new SerializationException(
 					String.Format(
 						CultureInfo.CurrentCulture,
 						"Reflection based serializer only supports collection types which implement interface to add new item such as '{0}' and '{1}'",
