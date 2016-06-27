@@ -34,9 +34,16 @@
   },
   "dependencies": {
     "NETStandard.Library": "1.6.0",
+    "System.Reflection.Emit.Lightweight": "4.0.1",
     "MsgPack.CoreClr": "1.0.0",
+    "Microsoft.NETCore.App": "1.0.0",
+    "System.IO.FileSystem": "4.0.1",
+    "System.Runtime.Loader": "4.0.0",
+    "System.Xml.XDocument": "4.0.11",
+    "Microsoft.Extensions.Testing.Abstractions": "1.0.0-preview2-003121",
+    "Microsoft.Extensions.DependencyModel" : "1.0.0",
     "NUnit": "3.2.1",
-    "dotnet-test-nunit": "3.4.0-alpha-1"
+    "dotnet-test-nunit": "3.4.0-alpha-2"
   },
   "frameworks": {
     "netstandard1.3": {
