@@ -29,7 +29,7 @@ namespace MsgPack.Serialization
 		WithAddMethod = 0x1,
 		WithCountPropertyGetter = 0x2,
 		WithGetEnumeratorMethod = 0x4,
-		ForceCollection = 0x800,
+		AllowNonCollectionEnumerableTypes = 0x800,
 		Full = WithAddMethod | WithCountPropertyGetter | WithGetEnumeratorMethod
 	}
 }

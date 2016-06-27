@@ -7180,12 +7180,12 @@ namespace MsgPack.Serialization
 
 		// Test issue #169
 		[Test]
-		public void TestImplementsIEnumerableWithNoAdd_Success()
+		public void TestImplementsGenericIEnumerableWithNoAdd_Success()
 		{
-			var serializer = this.CreateTarget<NonCollectionType>( GetSerializationContext() );
+			var serializer = this.CreateTarget<GenericNonCollectionType>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				var value = new NonCollectionType { Property = 123 };
+				var value = new GenericNonCollectionType { Property = 123 };
 				serializer.Pack( stream, value );
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
@@ -7193,18 +7193,17 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class NonCollectionType : IEnumerable<int>
+		[Test]
+		public void TestImplementsNonGenericIEnumerableWithNoAdd_Success()
 		{
-			public int Property { get; set; }
-
-			public IEnumerator<int> GetEnumerator()
+			var serializer = this.CreateTarget<NonGenericNonCollectionType>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
 			{
-				yield break;
-			}
-
-			IEnumerator IEnumerable.GetEnumerator()
-			{
-				return this.GetEnumerator();
+				var value = new NonGenericNonCollectionType { Property = 123 };
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Property, Is.EqualTo( 123 ) );
 			}
 		}
 		#region -- Polymorphism --

@@ -222,9 +222,9 @@ namespace MsgPack.Serialization
 			Type concreteType = null;
 			CollectionTraits collectionTraits =
 #if AOT
-				typeof( T ).GetCollectionTraits( CollectionTraitOptions.None );
+				typeof( T ).GetCollectionTraits( CollectionTraitOptions.None, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes );
 #else
-				typeof( T ).GetCollectionTraits( CollectionTraitOptions.Full, context.CompatibilityOptions.AlwaysAssumeCollections );
+				typeof( T ).GetCollectionTraits( CollectionTraitOptions.Full, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes );
 #endif // AOT
 
 			if ( typeof( T ).GetIsAbstract() || typeof( T ).GetIsInterface() )
@@ -572,9 +572,9 @@ namespace MsgPack.Serialization
 			ValidateType( typeof( T ) );
 			var traits = 
 #if !UNITY
-				typeof( T ).GetCollectionTraits( CollectionTraitOptions.WithAddMethod, context.CompatibilityOptions.AlwaysAssumeCollections );
+				typeof( T ).GetCollectionTraits( CollectionTraitOptions.WithAddMethod, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes );
 #else
-				typeof( T ).GetCollectionTraits( CollectionTraitOptions.WithAddMethod | CollectionTraitOptions.WithCountPropertyGetter, context.CompatibilityOptions.AlwaysAssumeCollections );
+				typeof( T ).GetCollectionTraits( CollectionTraitOptions.WithAddMethod | CollectionTraitOptions.WithCountPropertyGetter, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes );
 #endif
 			switch ( traits.CollectionType )
 			{

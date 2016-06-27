@@ -152,7 +152,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 							typeof( NonGenericCollectionSerializerFactory<> ).MakeGenericType( typeof( T ) )
 						).Create( context, targetType, traits, schema );
 #else
-						new ReflectionNonGenericCollectionMessagePackSerializer( context, typeof( T ), targetType, targetType.GetCollectionTraits( CollectionTraitOptions.WithAddMethod ), schema );
+						new ReflectionNonGenericCollectionMessagePackSerializer( context, typeof( T ), targetType, targetType.GetCollectionTraits( CollectionTraitOptions.WithAddMethod, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ), schema );
 #endif // !UNITY
 				}
 				case CollectionDetailedKind.NonGenericEnumerable:
@@ -164,7 +164,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 							typeof( NonGenericEnumerableSerializerFactory<> ).MakeGenericType( typeof( T ) )
 						).Create( context, targetType, traits, schema );
 #else
-						new ReflectionNonGenericEnumerableMessagePackSerializer( context, typeof( T ), targetType, targetType.GetCollectionTraits( CollectionTraitOptions.WithAddMethod ), schema );
+						new ReflectionNonGenericEnumerableMessagePackSerializer( context, typeof( T ), targetType, targetType.GetCollectionTraits( CollectionTraitOptions.WithAddMethod, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ), schema );
 #endif // !UNITY
 				}
 				case CollectionDetailedKind.NonGenericDictionary:

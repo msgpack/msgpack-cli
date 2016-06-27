@@ -127,38 +127,38 @@ namespace MsgPack.Serialization
 		}
 
 #if NETFX_35 || UNITY || SILVERLIGHT
-		private volatile bool _alwaysAssumeCollections;
+		private volatile bool _allowNonCollectionEnumerableTypes;
 #else
-		private bool _alwaysAssumeCollections;
+		private bool _allowNonCollectionEnumerableTypes;
 #endif // NETFX_35 || UNITY || SILVERLIGHT
 
 		/// <summary>
-		///		Gets or sets a value indicating whether serializer generator should always try to serialize a type implementing IEnumerable as a collection or not.
+		///		Gets or sets a value indicating whether the serializer generator should serialize types that implement IEnumerable but do not have an Add method.
 		/// </summary>
 		/// <value>
-		///		<c>true</c> if serializer generator should serialize a type implementing IEnumerable as only a collection; otherwise, <c>false</c>. The default is <c>false</c>.
+		///		<c>true</c> if serializer generator should serialize a type implementing IEnumerable as a normal type if a public Add method is not found; otherwise, <c>false</c>. The default is <c>true</c>.
 		/// </value>
 		/// <remarks>
 		///		Historically, MessagePack for CLI always tried to serialize any type that implemented IEnumerable as a collection, throwing an exception
 		///		if an Add method could not be found. However, for types that implement IEnumerable but don't have an Add method the generator will now
 		///		serialize the type as a non-collection type. To restore the old behavior for backwards compatibility, set this option to <c>false</c>.
 		/// </remarks>
-		public bool AlwaysAssumeCollections
+		public bool AllowNonCollectionEnumerableTypes
 		{
 			get
 			{
 #if NETFX_35 || UNITY || SILVERLIGHT
-				return this._alwaysAssumeCollections;
+				return this._allowNonCollectionEnumerableTypes;
 #else
-				return Volatile.Read(ref this._alwaysAssumeCollections);
+				return Volatile.Read(ref this._allowNonCollectionEnumerableTypes);
 #endif // NETFX_35 || UNITY || SILVERLIGHT
 			}
 			set
 			{
 #if NETFX_35 || UNITY || SILVERLIGHT
-				this._alwaysAssumeCollections = value;
+				this._allowNonCollectionEnumerableTypes = value;
 #else
-				Volatile.Write(ref this._alwaysAssumeCollections, value);
+				Volatile.Write(ref this._allowNonCollectionEnumerableTypes, value);
 #endif // NETFX_35 || UNITY || SILVERLIGHT
 			}
 		}
@@ -169,6 +169,7 @@ namespace MsgPack.Serialization
 		{
 			this.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			this.IgnorePackabilityForCollection = false;
+			this.AllowNonCollectionEnumerableTypes = true;
 		}
 	}
 }

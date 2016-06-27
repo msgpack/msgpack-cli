@@ -161,7 +161,7 @@ namespace MsgPack.Serialization
 			return asProperty != null ? asProperty.PropertyType : asField.FieldType;
 		}
 
-		public static CollectionTraits GetCollectionTraits( this Type source, CollectionTraitOptions options, bool forceCollection )
+		public static CollectionTraits GetCollectionTraits( this Type source, CollectionTraitOptions options, bool allowNonCollectionEnumerableTypes )
 		{
 #if DEBUG
 			Contract.Assert( !source.GetContainsGenericParameters(), "!source.GetContainsGenericParameters()" );
@@ -200,10 +200,11 @@ namespace MsgPack.Serialization
 			}
 
 			// If the type is an interface then a concrete collection has to be
-			// made for it if the interface is a collection type
-			if ( source.IsInterface || forceCollection )
+			// made for it (if the interface is a collection type), therefore,
+			// ignore the check for an add method
+			if ( !source.GetIsInterface() && allowNonCollectionEnumerableTypes )
 			{
-				options = options | CollectionTraitOptions.ForceCollection;
+				options = options | CollectionTraitOptions.AllowNonCollectionEnumerableTypes;
 			}
 
 			MethodInfo getEnumerator = source.GetMethod( "GetEnumerator", ReflectionAbstractions.EmptyTypes );
@@ -343,7 +344,7 @@ namespace MsgPack.Serialization
 		{
 			var elementType = genericTypes.IEnumerableT.GetGenericArguments()[ 0 ];
 			var addMethod = GetAddMethod( source, elementType, options );
-			if ( addMethod == null && ( ( options & CollectionTraitOptions.ForceCollection ) == 0 ) )
+			if ( addMethod == null && ( ( options & CollectionTraitOptions.AllowNonCollectionEnumerableTypes ) != 0 ) )
 			{
 				result = default(CollectionTraits);
 				return false;

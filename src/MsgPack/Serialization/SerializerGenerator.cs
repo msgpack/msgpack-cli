@@ -450,11 +450,11 @@ namespace MsgPack.Serialization
 				{
 					realTargetTypes =
 						targetTypes
-						.Where( t => !SerializationTarget.BuiltInSerializerExists( configuration, t, t.GetCollectionTraits( CollectionTraitOptions.None, forceCollection: true ) ) );
+						.Where( t => !SerializationTarget.BuiltInSerializerExists( configuration, t, t.GetCollectionTraits( CollectionTraitOptions.None, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) ) );
 				}
 
 				var generationContext = this.CreateGenerationContext( context, configuration );
-				var generatorFactory = this.CreateGeneratorFactory();
+				var generatorFactory = this.CreateGeneratorFactory( context );
 
 				foreach ( var targetType in realTargetTypes.Distinct() )
 				{
@@ -476,7 +476,7 @@ namespace MsgPack.Serialization
 
 			private static IEnumerable<Type> ExtractElementTypes( SerializationContext context, ISerializerGeneratorConfiguration configuration, Type type )
 			{
-				if ( !SerializationTarget.BuiltInSerializerExists( configuration, type, type.GetCollectionTraits( CollectionTraitOptions.None, forceCollection: true ) ) )
+				if ( !SerializationTarget.BuiltInSerializerExists( configuration, type, type.GetCollectionTraits( CollectionTraitOptions.None, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) ) )
 				{
 					yield return type;
 
@@ -497,7 +497,7 @@ namespace MsgPack.Serialization
 				if ( type.IsArray )
 				{
 					var elementType = type.GetElementType();
-					if ( !SerializationTarget.BuiltInSerializerExists( configuration, elementType, elementType.GetCollectionTraits( CollectionTraitOptions.None, forceCollection: true ) ) )
+					if ( !SerializationTarget.BuiltInSerializerExists( configuration, elementType, elementType.GetCollectionTraits( CollectionTraitOptions.None, allowNonCollectionEnumerableTypes: false ) ) )
 					{
 						foreach ( var descendant in ExtractElementTypes( context, configuration, elementType ) )
 						{
@@ -528,7 +528,7 @@ namespace MsgPack.Serialization
 
 			protected abstract ISerializerCodeGenerationContext CreateGenerationContext( SerializationContext context, TConfig configuration );
 
-			protected abstract Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory();
+			protected abstract Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory( SerializationContext context );
 		}
 
 		private sealed class SerializerAssemblyGenerationLogic : SerializerGenerationLogic<SerializerAssemblyGenerationConfiguration>
@@ -555,9 +555,9 @@ namespace MsgPack.Serialization
 					);
 			}
 
-			protected override Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory()
+			protected override Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory( SerializationContext context )
 			{
-				return type => new AssemblyBuilderSerializerBuilder( type, type.GetCollectionTraits( CollectionTraitOptions.Full, forceCollection: true ) );
+				return type => new AssemblyBuilderSerializerBuilder( type, type.GetCollectionTraits( CollectionTraitOptions.Full, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) );
 			}
 		}
 
@@ -575,9 +575,9 @@ namespace MsgPack.Serialization
 				return new CodeDomContext( context, configuration );
 			}
 
-			protected override Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory()
+			protected override Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory( SerializationContext context )
 			{
-				return type => new CodeDomSerializerBuilder( type, type.GetCollectionTraits( CollectionTraitOptions.Full, forceCollection: true ) );
+				return type => new CodeDomSerializerBuilder( type, type.GetCollectionTraits( CollectionTraitOptions.Full, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) );
 			}
 		}
 	}

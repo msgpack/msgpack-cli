@@ -12072,6 +12072,32 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		
+	// Issue 169
+	public class GenericNonCollectionType : IEnumerable<int>
+	{
+		public int Property { get; set; }
+
+		public IEnumerator<int> GetEnumerator()
+		{
+			yield break;
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return this.GetEnumerator();
+		}
+	}
+
+	public class NonGenericNonCollectionType : IEnumerable
+	{
+		public int Property { get; set; }
+
+		public IEnumerator GetEnumerator()
+		{
+			yield break;
+		}
+	}
 }
 
 // Issue #108

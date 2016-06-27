@@ -187,6 +187,9 @@ namespace MsgPack.Serialization
 			result.Add( typeof( InterfaceCollectionKnownType ) ); 
 			result.Add( typeof( InterfaceCollectionRuntimeType ) ); 
 #endif // !UNITY
+
+			result.Add( typeof( GenericNonCollectionType ) );
+			result.Add( typeof( NonGenericNonCollectionType ) );
 			return result;
 		}
 	}
