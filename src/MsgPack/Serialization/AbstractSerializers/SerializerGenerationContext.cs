@@ -345,6 +345,20 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="baseClass">Type of base class of the target.</param>
 		public void Reset( Type targetType, Type baseClass )
 		{
+			this.Packer = default( TConstruct );
+			this.PackToTarget = default( TConstruct );
+			this.Unpacker = default( TConstruct );
+			this.UnpackToTarget = default( TConstruct );
+			this.CollectionToBeAdded = default( TConstruct );
+			this.ItemToAdd = default( TConstruct );
+			this.KeyToAdd = default( TConstruct );
+			this.ValueToAdd = default( TConstruct );
+			this.InitialCapacity = default( TConstruct );
+			this.UnpackingContextInUnpackValueMethods = default( TConstruct );
+			this.UnpackingContextInSetValueMethods = default( TConstruct );
+			this.UnpackingContextInCreateObjectFromContext = default( TConstruct );
+			this.IndexOfItem = default( TConstruct );
+			this.ItemsCount = default( TConstruct );
 			this.ResetCore( targetType, baseClass );
 			this._declaredMethods.Clear();
 			this._declaredFields.Clear();
