@@ -479,8 +479,18 @@ Release 0.7-beta2 - 2016/06/26
 
   BUG FIXES
   * Fix type initializer causes InvalidOperatiionException of serializer generation on WinRT projects. #170.
-  * Fix package dependency issue prevents *-aot runtime cannot install MsgPack.Cli packages (effects 0.7.0-beta1 only).
-  * Fix Xamarin iOS AOT releated bugs (effects 0.7.0-beta1 only).
+  * Fix package dependency issue prevents *-aot runtime cannot install MsgPack.Cli packages (affects 0.7.0-beta1 only).
+  * Fix Xamarin iOS AOT releated bugs (affects 0.7.0-beta1 only).
+
+  BREAKING CHANGES
+  * netstandard1.1 and 1.3 now do NOT support code generation (Reflection.Emit) based serializer (affects 0.7.0-alpha/beta only).
+
+Release 0.7-RC1 (planned)
+
+  This release supports .NET Core 1.0 final.
+
+  BREAKING CHANGES
+  * netstandard 1.1 now do NOT support System.DBNull because System.Data.Common final package supports only >=1.2 (affects 0.7.0-alpha/beta only).
 
 Release 0.7 (planned)
 

@@ -75,9 +75,9 @@ namespace MsgPack.Serialization
 #if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.FileTimeMessagePackSerializerProvider( ownerContext, true ) );
 #endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
-#if !NETFX_CORE
+#if !NETFX_CORE && !NETSTANDARD1_1
 			dictionary.Add( typeof( DBNull ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_DBNullMessagePackSerializer( ownerContext ) );
-#endif // !NETFX_CORE
+#endif // !NETFX_CORE && !NETSTANDARD1_1
 			dictionary.Add( typeof( System.Boolean ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_BooleanMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( System.Byte ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_ByteMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( System.Char ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_CharMessagePackSerializer( ownerContext ) );
