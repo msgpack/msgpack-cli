@@ -5653,6 +5653,35 @@ namespace MsgPack.Serialization
 		}
 #pragma warning restore 659
 
+		// Test issue #169
+		[Test]
+		public void TestImplementsIEnumerableWithNoAdd_Success()
+		{
+			var serializer = this.CreateTarget<NonCollectionType>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new NonCollectionType { Property = 123 };
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Property, Is.EqualTo( 123 ) );
+			}
+		}
+
+		public class NonCollectionType : IEnumerable<int>
+		{
+			public int Property { get; set; }
+
+			public IEnumerator<int> GetEnumerator()
+			{
+				yield break;
+			}
+
+			IEnumerator IEnumerable.GetEnumerator()
+			{
+				return this.GetEnumerator();
+			}
+		}
 		#region -- Polymorphism --
 		#region ---- KnownType ----
 

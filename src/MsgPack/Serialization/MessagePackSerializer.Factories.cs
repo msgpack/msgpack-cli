@@ -572,9 +572,9 @@ namespace MsgPack.Serialization
 			ValidateType( typeof( T ) );
 			var traits = 
 #if !UNITY
-				typeof( T ).GetCollectionTraits( CollectionTraitOptions.WithAddMethod, forceCollection: true );
+				typeof( T ).GetCollectionTraits( CollectionTraitOptions.WithAddMethod, context.CompatibilityOptions.AlwaysAssumeCollections );
 #else
-				typeof( T ).GetCollectionTraits( CollectionTraitOptions.WithAddMethod | CollectionTraitOptions.WithCountPropertyGetter, forceCollection: true );
+				typeof( T ).GetCollectionTraits( CollectionTraitOptions.WithAddMethod | CollectionTraitOptions.WithCountPropertyGetter, context.CompatibilityOptions.AlwaysAssumeCollections );
 #endif
 			switch ( traits.CollectionType )
 			{
