@@ -5656,7 +5656,8 @@ namespace MsgPack.Serialization
 		}
 #pragma warning restore 659
 
-		// Test issue #169
+#region issue #169
+
 		[Test]
 		public void TestImplementsGenericIEnumerableWithNoAdd_Success()
 		{
@@ -5684,6 +5685,8 @@ namespace MsgPack.Serialization
 				Assert.That( result.Property, Is.EqualTo( 123 ) );
 			}
 		}
+
+#endregion issue #169
 		#region -- Polymorphism --
 		#region ---- KnownType ----
 

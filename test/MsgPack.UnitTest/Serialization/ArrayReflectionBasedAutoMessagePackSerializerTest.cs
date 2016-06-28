@@ -7082,7 +7082,8 @@ namespace MsgPack.Serialization
 		}
 #pragma warning restore 659
 
-		// Test issue #169
+#region issue #169
+
 		[Test]
 		public void TestImplementsGenericIEnumerableWithNoAdd_Success()
 		{
@@ -7110,6 +7111,24 @@ namespace MsgPack.Serialization
 				Assert.That( result.Property, Is.EqualTo( 123 ) );
 			}
 		}
+
+		[Test]
+		public void TestImplementsGenericIEnumerableWithNoAdd_ProhibitEnumerableNonCollection_Fail()
+		{
+			var context = GetSerializationContext();
+			context.CompatibilityOptions.AllowNonCollectionEnumerableTypes = false;
+			Assert.Throws<SerializationException>( () => this.CreateTarget<GenericNonCollectionType>( context ) );
+		}
+
+		[Test]
+		public void TestImplementsNonGenericIEnumerableWithNoAdd_ProhibitEnumerableNonCollection_Fail()
+		{
+			var context = GetSerializationContext();
+			context.CompatibilityOptions.AllowNonCollectionEnumerableTypes = false;
+			Assert.Throws<SerializationException>( () => this.CreateTarget<GenericNonCollectionType>( context ) );
+		}
+
+#endregion issue #169
 		#region -- Polymorphism --
 		#region ---- KnownType ----
 
