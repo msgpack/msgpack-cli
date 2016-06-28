@@ -1895,7 +1895,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MsgPack">
-      <HintPath>..\..\src\netstandard\1.3\MsgPack\bin\Debug\netstandard1.3\MsgPack.dll</HintPath>
+      <HintPath>..\..\src\MsgPack.CoreClr\bin\Debug\netstandard1.3\MsgPack.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
