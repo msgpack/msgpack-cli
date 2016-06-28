@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2016 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke and contributors
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@
 //    Takeshi KIRIYA
 //    Odyth
 //    Roman-Blinkov
+//    Samuel Cragg
 //
 #endregion -- License Terms --
 

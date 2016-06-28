@@ -1,7 +1,7 @@
 ﻿#region -- License Terms --
 //  MessagePack for CLI
 // 
-//  Copyright (C) 2015-2015 FUJIWARA, Yusuke
+//  Copyright (C) 2015-2016 FUJIWARA, Yusuke and contributors
 // 
 //     Licensed under the Apache License, Version 2.0 (the "License");
 //     you may not use this file except in compliance with the License.
@@ -14,6 +14,10 @@
 //     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //     See the License for the specific language governing permissions and
 //     limitations under the License.
+//
+// Contributors:
+//    Samuel Cragg
+//
 #endregion -- License Terms --
 
 #if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
