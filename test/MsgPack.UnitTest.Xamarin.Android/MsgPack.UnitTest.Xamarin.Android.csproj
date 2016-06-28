@@ -250,6 +250,9 @@
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumUInt64Serializer.cs">
       <Link>gen\MsgPack_Serialization_EnumUInt64Serializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_GenericNonCollectionTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_GenericNonCollectionTypeSerializer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_HasEnumerableSerializer.cs">
       <Link>gen\MsgPack_Serialization_HasEnumerableSerializer.cs</Link>
     </Compile>
@@ -285,6 +288,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_ListValueType_1_System_Int32_Serializer.cs">
       <Link>gen\MsgPack_Serialization_ListValueType_1_System_Int32_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_NonGenericNonCollectionTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_NonGenericNonCollectionTypeSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_OuterSerializer.cs">
       <Link>gen\MsgPack_Serialization_OuterSerializer.cs</Link>
@@ -1832,6 +1838,9 @@
     </BundleResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\MsgPack.UnitTest.Xamarin.iOS\linker.xml">
+      <Link>linker.xml</Link>
+    </Content>
     <Content Include="..\MsgPack.UnitTest\gen\_ReadMe.txt">
       <Link>gen\_ReadMe.txt</Link>
     </Content>
