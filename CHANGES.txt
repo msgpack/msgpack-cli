@@ -485,12 +485,22 @@ Release 0.7-beta2 - 2016/06/26
   BREAKING CHANGES
   * netstandard1.1 and 1.3 now do NOT support code generation (Reflection.Emit) based serializer (affects 0.7.0-alpha/beta only).
 
-Release 0.7-RC1 (planned)
+Release 0.7-RC1 2016/06/29
 
   This release supports .NET Core 1.0 final.
 
   BREAKING CHANGES
   * netstandard 1.1 now do NOT support System.DBNull because System.Data.Common final package supports only >=1.2 (affects 0.7.0-alpha/beta only).
+  * mpu.exe now works on .NET 4.6.1.
+
+  IMPROVEMENTS 
+  * The type which implement IEnumerable but does not implement Add now supported. Issue #169.
+    This behavior can be disabled with setting SerializationContext.CompatibilityOptions.AllowNonCollectionEnumerableTypes to false.
+  * mpu.exe and SerializerGenerator now supports compatibility switches.
+
+  BUG FIX
+  * Fix batch serializer code generation may report invalid error message due to context reset leaking.
+  * Fix reflection based serializer possibly throws NotSupportedException instead of SerializationException.
 
 Release 0.7 (planned)
 
@@ -505,6 +515,7 @@ Release 0.7 (planned)
   * Unity without IL2CPP (a.k.a. AOT) is no longer supported.
   * IPackable/IUnpackable is respected for collections now. Issue #153.
     This behavior can be disabled by setting SerializationCompatibilityOptions.IgnorePackabilityForCollection to true.
+  * mpu.exe now works on .NET 4.6.1.
 
   TRIVIAL BREAKING CHANGES
   * Generated serializers code has different structure, it might break your custom toolset which depends generated code structure.
@@ -527,6 +538,9 @@ Release 0.7 (planned)
   * Move throw statements from hot-path to improve performance a bit.
   * Generated serializer now always check SerializationContext.SerializationMethod when they serialize objects. No longer need to re-generate serializer codes/assemblies to switch serialization method between array and map.
   * Generated code now more structured which improves debuggability, it also remove some redundant expressions.
+  * The type which implement IEnumerable but does not implement Add now supported. Issue #169.
+    This behavior can be disabled with setting SerializationContext.CompatibilityOptions.AllowNonCollectionEnumerableTypes to false.
+  * mpu.exe and SerializerGenerator now supports compatibility switches.
 
   BUG FIXES
   * Fix Unpacker.Skip failes when the stream is fragmented such as raw NetworkStream.
@@ -537,6 +551,8 @@ Release 0.7 (planned)
   * Fix the Unpacker always returns 0 when the underlying stream has double typed value.
   * Fix MessagePackObject.PackToMessage does not look PackerCompatibilityOptions. Issue #168.
   * Fix type initializer causes InvalidOperatiionException of serializer generation on WinRT projects. #170.
+  * Fix batch serializer code generation may report invalid error message due to context reset leaking.
+  * Fix reflection based serializer possibly throws NotSupportedException instead of SerializationException.
 
   KNOWN ISSUES
   * Reflection based serializers in Unity build is not stable even if you specify [Preserve] and/or link.xml.
