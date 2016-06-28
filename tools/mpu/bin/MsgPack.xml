@@ -6121,6 +6121,23 @@
             <c>true</c> if creates Nullable of T serializers for value type serializers; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="P:MsgPack.Serialization.ISerializerGeneratorConfiguration.CompatibilityOptions">
+            <summary>
+            	Gets the compatibility options.
+            </summary>
+            <value>
+            	The <see cref="T:MsgPack.Serialization.SerializationCompatibilityOptions"/> which stores compatibility options. This value will not be <c>null</c>.
+            </value>
+        </member>
+        <member name="P:MsgPack.Serialization.ISerializerGeneratorConfiguration.WithAsync">
+            <summary>
+            	Gets or sets a value indicating whether generated serializers will override async methods or not.
+            </summary>
+            <value>
+            	<c>true</c> if generated serializers will override async methods; otherwise, <c>false</c>.
+            	Default is <c>true</c>.
+            </value>
+        </member>
         <member name="M:MsgPack.Serialization.ISerializerGeneratorConfiguration.Validate">
             <summary>
             	Validates this instance state.
@@ -8717,13 +8734,26 @@
             	Gets or sets a value indicating whether serializer generator ignores packability interfaces for collections or not.
             </summary>
             <value>
-            	<c>true</c> if serializer generator ignores packability interfaces for collections; otherwise, <c>false</c>. The default is <c>true</c>.
+            	<c>true</c> if serializer generator ignores packability interfaces for collections; otherwise, <c>false</c>. The default is <c>false</c>.
             </value>
             <remarks>
             	Historically, MessagePack for CLI ignored packability interfaces (<see cref="T:MsgPack.IPackable"/>, <see cref="T:MsgPack.IUnpackable"/>, 
             	<see cref="!:IAsyncPackable"/> and <see cref="!:IAsyncUnpackable"/>) for collection which implements <see cref="T:System.IEquatable`1"/> (except <see cref="T:System.String"/> and its kinds).
             	As of 0.7, the generator respects such interfaces even if the target type is collection.
             	Although this behavior is desirable and correct, setting this property <c>true</c> turn out the new behavior for backward compatibility.
+            </remarks>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializationCompatibilityOptions.AllowNonCollectionEnumerableTypes">
+            <summary>
+            	Gets or sets a value indicating whether the serializer generator should serialize types that implement IEnumerable but do not have an Add method.
+            </summary>
+            <value>
+            	<c>true</c> if serializer generator should serialize a type implementing IEnumerable as a normal type if a public Add method is not found; otherwise, <c>false</c>. The default is <c>true</c>.
+            </value>
+            <remarks>
+            	Historically, MessagePack for CLI always tried to serialize any type that implemented IEnumerable as a collection, throwing an exception
+            	if an Add method could not be found. However, for types that implement IEnumerable but don't have an Add method the generator will now
+            	serialize the type as a non-collection type. To restore the old behavior for backwards compatibility, set this option to <c>false</c>.
             </remarks>
         </member>
         <member name="T:MsgPack.Serialization.SerializationContext">
@@ -9389,6 +9419,23 @@
             </value>
             <exception cref="T:System.ArgumentException">Specified value is not valid for namespace.</exception>
         </member>
+        <member name="P:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.CompatibilityOptions">
+            <summary>
+            	Gets the compatibility options for generating serializers.
+            </summary>
+            <value>
+            	The <see cref="T:MsgPack.Serialization.SerializationCompatibilityOptions"/> which stores compatibility options for generating serializers. This value will not be <c>null</c>.
+            </value>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.WithAsync">
+            <summary>
+            	Gets or sets a value indicating whether generated serializers will override async methods or not.
+            </summary>
+            <value>
+            	<c>true</c> if generated serializers will override async methods; otherwise, <c>false</c>.
+            	Default is <c>true</c>.
+            </value>
+        </member>
         <member name="M:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration.#ctor">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration"/> class.
@@ -9531,6 +9578,23 @@
             	It causes compilation error because some of overriding members have accessbility <c>FamilyOrAssembly</c>(<c>protected internal</c> in C#),
             	so the generated source code must have the accessibility when and only when they will be same assembly as MsgPack library itself.
             </remarks>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializerCodeGenerationConfiguration.CompatibilityOptions">
+            <summary>
+            	Gets the compatibility options for generating serializers.
+            </summary>
+            <value>
+            	The <see cref="T:MsgPack.Serialization.SerializationCompatibilityOptions"/> which stores compatibility options for generating serializers. This value will not be <c>null</c>.
+            </value>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializerCodeGenerationConfiguration.WithAsync">
+            <summary>
+            	Gets or sets a value indicating whether generated serializers will override async methods or not.
+            </summary>
+            <value>
+            	<c>true</c> if generated serializers will override async methods; otherwise, <c>false</c>.
+            	Default is <c>true</c>.
+            </value>
         </member>
         <member name="M:MsgPack.Serialization.SerializerCodeGenerationConfiguration.#ctor">
             <summary>
