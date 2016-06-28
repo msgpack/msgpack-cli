@@ -3610,6 +3610,34 @@ namespace MsgPack.Serialization
 		}
 #pragma warning restore 659
 
+		// Test issue #169
+		[Test]
+		public void TestImplementsGenericIEnumerableWithNoAdd_Success()
+		{
+			var serializer = this.CreateTarget<GenericNonCollectionType>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new GenericNonCollectionType { Property = 123 };
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Property, Is.EqualTo( 123 ) );
+			}
+		}
+
+		[Test]
+		public void TestImplementsNonGenericIEnumerableWithNoAdd_Success()
+		{
+			var serializer = this.CreateTarget<NonGenericNonCollectionType>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new NonGenericNonCollectionType { Property = 123 };
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Property, Is.EqualTo( 123 ) );
+			}
+		}
 <#+
 	GeneratePolymorphismTestParts();
 }

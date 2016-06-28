@@ -490,6 +490,7 @@
     <Compile Include="gen\MsgPack_Serialization_EnumUInt32Serializer.cs" />
     <Compile Include="gen\MsgPack_Serialization_EnumUInt64FlagsSerializer.cs" />
     <Compile Include="gen\MsgPack_Serialization_EnumUInt64Serializer.cs" />
+    <Compile Include="gen\MsgPack_Serialization_GenericNonCollectionTypeSerializer.cs" />
     <Compile Include="gen\MsgPack_Serialization_HasEnumerableSerializer.cs" />
     <Compile Include="gen\MsgPack_Serialization_InnerSerializer.cs" />
     <Compile Include="gen\MsgPack_Serialization_InterfaceCollectionKnownTypeSerializer.cs" />
@@ -502,6 +503,7 @@
     <Compile Include="gen\MsgPack_Serialization_InterfaceMemberKnownTypeSerializer.cs" />
     <Compile Include="gen\MsgPack_Serialization_InterfaceMemberRuntimeTypeSerializer.cs" />
     <Compile Include="gen\MsgPack_Serialization_ListValueType_1_System_Int32_Serializer.cs" />
+    <Compile Include="gen\MsgPack_Serialization_NonGenericNonCollectionTypeSerializer.cs" />
     <Compile Include="gen\MsgPack_Serialization_OuterSerializer.cs" />
     <Compile Include="gen\MsgPack_Serialization_PlainClassSerializer.cs" />
     <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectItselfPrivateSetterCollectionPropertySerializer.cs" />

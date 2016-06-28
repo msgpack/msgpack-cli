@@ -79,25 +79,25 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestArrayFieldBased()
 		{
-			TestCore( EmitterFlavor.FieldBased, SerializationMethod.Array, new AssemblyBuilderSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits( CollectionTraitOptions.Full ) ) );
+			TestCore( EmitterFlavor.FieldBased, SerializationMethod.Array, new AssemblyBuilderSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits( CollectionTraitOptions.Full, allowNonCollectionEnumerableTypes: false ) ) );
 		}
 
 		[Test]
 		public void TestMapFieldBased()
 		{
-			TestCore( EmitterFlavor.FieldBased, SerializationMethod.Map, new AssemblyBuilderSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits( CollectionTraitOptions.Full ) ) );
+			TestCore( EmitterFlavor.FieldBased, SerializationMethod.Map, new AssemblyBuilderSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits( CollectionTraitOptions.Full, allowNonCollectionEnumerableTypes: false ) ) );
 		}
 
 		[Test]
 		public void TestArrayCodeDomBased()
 		{
-			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Array, new CodeDomSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits( CollectionTraitOptions.Full ) ) );
+			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Array, new CodeDomSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits( CollectionTraitOptions.Full, allowNonCollectionEnumerableTypes: false ) ) );
 		}
 
 		[Test]
 		public void TestMapCodeDomBased()
 		{
-			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Map, new CodeDomSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits( CollectionTraitOptions.Full ) ) );
+			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Map, new CodeDomSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits( CollectionTraitOptions.Full, allowNonCollectionEnumerableTypes: false ) ) );
 		}
 
 		private static void TestCore( EmitterFlavor emittingFlavor, SerializationMethod serializationMethod, ISerializerBuilder generator )
