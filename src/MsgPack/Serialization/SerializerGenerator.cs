@@ -441,6 +441,13 @@ namespace MsgPack.Serialization
 						SerializationMethod = configuration.SerializationMethod
 					};
 				context.SerializerOptions.EmitterFlavor = this.EmitterFlavor;
+				context.CompatibilityOptions.AllowNonCollectionEnumerableTypes = configuration.CompatibilityOptions.AllowNonCollectionEnumerableTypes;
+				context.CompatibilityOptions.IgnorePackabilityForCollection = configuration.CompatibilityOptions.IgnorePackabilityForCollection;
+				context.CompatibilityOptions.OneBoundDataMemberOrder = configuration.CompatibilityOptions.OneBoundDataMemberOrder;
+				context.CompatibilityOptions.PackerCompatibilityOptions = configuration.CompatibilityOptions.PackerCompatibilityOptions;
+#if !NETFX_35
+				context.SerializerOptions.WithAsync = configuration.WithAsync;
+#endif // !NETFX_35
 
 				IEnumerable<Type> realTargetTypes;
 				if ( configuration.IsRecursive )

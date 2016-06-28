@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -213,6 +213,28 @@ namespace MsgPack.Serialization
 		///		so the generated source code must have the accessibility when and only when they will be same assembly as MsgPack library itself.
 		/// </remarks>
 		public bool IsInternalToMsgPackLibrary { get; set; } // This is also convinience to Unittest -- which is intern with InternalsVisibleTo
+
+		private readonly SerializationCompatibilityOptions _compatibilityOptions = new SerializationCompatibilityOptions();
+
+		/// <summary>
+		///		Gets the compatibility options for generating serializers.
+		/// </summary>
+		/// <value>
+		///		The <see cref="SerializationCompatibilityOptions"/> which stores compatibility options for generating serializers. This value will not be <c>null</c>.
+		/// </value>
+		public SerializationCompatibilityOptions CompatibilityOptions
+		{
+			get { return this._compatibilityOptions; }
+		}
+
+		/// <summary>
+		///		Gets or sets a value indicating whether generated serializers will override async methods or not.
+		/// </summary>
+		/// <value>
+		///		<c>true</c> if generated serializers will override async methods; otherwise, <c>false</c>.
+		///		Default is <c>true</c>.
+		/// </value>
+		public bool WithAsync { get; set; }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializerCodeGenerationConfiguration"/> class.

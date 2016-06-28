@@ -169,6 +169,28 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		private readonly SerializationCompatibilityOptions _compatibilityOptions = new SerializationCompatibilityOptions();
+
+		/// <summary>
+		///		Gets the compatibility options for generating serializers.
+		/// </summary>
+		/// <value>
+		///		The <see cref="SerializationCompatibilityOptions"/> which stores compatibility options for generating serializers. This value will not be <c>null</c>.
+		/// </value>
+		public SerializationCompatibilityOptions CompatibilityOptions
+		{
+			get { return this._compatibilityOptions; }
+		}
+
+		/// <summary>
+		///		Gets or sets a value indicating whether generated serializers will override async methods or not.
+		/// </summary>
+		/// <value>
+		///		<c>true</c> if generated serializers will override async methods; otherwise, <c>false</c>.
+		///		Default is <c>true</c>.
+		/// </value>
+		public bool WithAsync { get; set; }
+
 		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializerAssemblyGenerationConfiguration"/> class.
 		/// </summary>

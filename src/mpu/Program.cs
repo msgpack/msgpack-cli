@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ using System.Runtime.InteropServices;
 
 using Mono.Options;
 
+using MsgPack;
 using MsgPack.Serialization;
 
 namespace mpu
@@ -144,6 +145,26 @@ namespace mpu
 						"avoid-reflection-based", "[serializer, optional] Specify avoid built-in reflection based serializer and generates alternative serializers.",
 						_ => configuration.PreferReflectionBasedSerializer = false
 					},
+					{
+						"prohibit-non-collection-enumerable-types", "[serializer, optional] Specify prevent serializer generation for types which implemnent IEnumerable but do not have add for backward compatibility.",
+						_ => configuration.CompatibilityOptions.AllowNonCollectionEnumerableTypes = false
+					},
+					{
+						"ignore-packability-for-collection", "[serializer, optional] Specify generate normal collection serializer logic for types which implemnent IEnumerable and IPackable/IUnpackble/IAsyncPackable/IAsyncUnpackable for backward compatiblity.",
+						_ => configuration.CompatibilityOptions.IgnorePackabilityForCollection = false
+					},
+					{
+						"one-bound-data-member-order", "[serializer, optional] Specify generating serializers use 1-based DataMemberAttribute.order instead of 0-based for compatibility of some other serialization libraries.",
+						_ => configuration.CompatibilityOptions.OneBoundDataMemberOrder = false
+					},
+					{
+						"classic-packer", "[serializer, optional] Specify that packer does not emit new bin, str8, and ext types.",
+						_ => configuration.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.Classic
+					},
+					{
+						"with-async", "[serializer, optional] Specify generating async methods on serializers. This option causes compilation error for legacy environments including Unity.",
+						_ => configuration.WithAsync = true
+					}, 
 					{
 						"indent=", "[serializer, optional] Specify indent string for generated serializers. Default is a horizontal tab charactor (U+0009).",
 						value => configuration.CodeIndentString = value
@@ -287,7 +308,7 @@ namespace mpu
 							),
 						includingPattern,
 						excludingPattern
-						);
+					);
 			}
 			else
 			{
@@ -296,7 +317,7 @@ namespace mpu
 						sourceFilePathes[ 0 ],
 						includingPattern,
 						excludingPattern
-						);
+					);
 			}
 
 			foreach ( var outputFilePath in result )

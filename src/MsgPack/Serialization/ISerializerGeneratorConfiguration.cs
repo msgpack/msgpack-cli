@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -78,6 +78,23 @@ namespace MsgPack.Serialization
 		/// <c>true</c> if creates Nullable of T serializers for value type serializers; otherwise, <c>false</c>.
 		/// </value>
 		bool WithNullableSerializers { get; set; }
+
+		/// <summary>
+		///		Gets the compatibility options.
+		/// </summary>
+		/// <value>
+		///		The <see cref="SerializationCompatibilityOptions"/> which stores compatibility options. This value will not be <c>null</c>.
+		/// </value>
+		SerializationCompatibilityOptions CompatibilityOptions { get; }
+
+		/// <summary>
+		///		Gets or sets a value indicating whether generated serializers will override async methods or not.
+		/// </summary>
+		/// <value>
+		///		<c>true</c> if generated serializers will override async methods; otherwise, <c>false</c>.
+		///		Default is <c>true</c>.
+		/// </value>
+		bool WithAsync { get; set; }
 
 		/// <summary>
 		///		Validates this instance state.
