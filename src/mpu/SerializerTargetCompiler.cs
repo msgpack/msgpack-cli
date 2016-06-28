@@ -104,7 +104,7 @@ namespace mpu
 							: this.ErrorWriter == Console.Error
 								? ColorizedTextWriter.ForConsoleError()
 								: ColorizedTextWriter.ForTextWriter( this.ErrorWriter )
-					);
+				);
 
 			if ( sourceAssembly == null )
 			{
@@ -150,7 +150,7 @@ namespace mpu
 				CodeDomProvider.CreateProvider( "C#" ).CompileAssemblyFromFile(
 					compilerParameters,
 					sourceFilePathes.ToArray()
-					);
+				);
 
 			foreach ( var stdout in results.Output )
 			{
@@ -171,7 +171,7 @@ namespace mpu
 						error.Column,
 						error.ErrorNumber,
 						error.ErrorText
-						);
+					);
 
 				if ( error.IsWarning )
 				{

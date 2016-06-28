@@ -79,7 +79,7 @@ namespace mpu
 					Assembly.LoadFrom( sourceAssemblyFile ),
 					includingPattern,
 					excludingPattern
-					);
+				);
 		}
 
 		/// <summary>
@@ -135,7 +135,7 @@ namespace mpu
 								&& ( includingRegex == null || includingRegex.IsMatch( type.FullName ) )
 								&& ( excludingRegex == null || !excludingRegex.IsMatch( type.FullName ) )
 						).ToArray()
-					);
+				);
 
 		}
 	}
