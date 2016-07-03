@@ -9,7 +9,7 @@ if ( $env:APPVEYOR_REPO_TAG -ne "True" )
 		$daysSpan = $now - ( New-Object DateTime( $now.Year, 1, 1 ) )
 		$env:PackageVersion = "${version}-{0:yy}{1:000}" -f @( $now, $daysSpan.Days )
 	}
-	else if ( ${version} -match "^[\d.]+$" )
+	elseif ( ${version} -match "^[\d.]+$" )
 	{
 		$env:PackageVersion = "${version}-final-${env:APPVEYOR_BUILD_NUMBER}"
 	}
