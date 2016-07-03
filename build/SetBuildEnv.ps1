@@ -1,6 +1,6 @@
 # Set versions for AssemblyInfo.cs
 $version = ( Get-Content .\Version.txt );
-$env:AssemblyBaseVersion = $version | foreach{ if( $_ -match "^\d+\.\d+" ){ $matches[0] } } 
+$env:AssemblyBaseVersion = $version | foreach{ if( $_ -match "^\d+\.\d+" ){ $matches[0] } }
 if ( $env:APPVEYOR_REPO_TAG -ne "True" )
 {
 	if ( ${env:APPVEYOR_BUILD_NUMBER} -eq $null )
@@ -9,16 +9,18 @@ if ( $env:APPVEYOR_REPO_TAG -ne "True" )
 		$daysSpan = $now - ( New-Object DateTime( $now.Year, 1, 1 ) )
 		$env:PackageVersion = "${version}-{0:yy}{1:000}" -f @( $now, $daysSpan.Days )
 	}
-	else if ( ${env:APPVEYOR_BUILD_NUMBER} -match "^[a-zA-Z].+" )
+	else if ( ${version} -match "^[\d.]+$" )
 	{
-		$env:PackageVersion = "${version}-${env:APPVEYOR_BUILD_NUMBER}"
+		$env:PackageVersion = "${version}-final-${env:APPVEYOR_BUILD_NUMBER}"
 	}
 	else
 	{
-		$env:PackageVersion = "${version}-final-${env:APPVEYOR_BUILD_NUMBER}"
+		$env:PackageVersion = "${version}-${env:APPVEYOR_BUILD_NUMBER}"
 	}
 }
 else
 {
 	$env:PackageVersion = $version
 }
+
+Write-Information "version:'${version}', AssemblyBaseVersion:'${AssemblyBaseVersion}', PackageVersion:'${PackageVersion}'"
