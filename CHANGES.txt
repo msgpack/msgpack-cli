@@ -502,9 +502,10 @@ Release 0.7-RC1 2016/06/29
   * Fix batch serializer code generation may report invalid error message due to context reset leaking.
   * Fix reflection based serializer possibly throws NotSupportedException instead of SerializationException.
 
-Release 0.7 (planned)
+Release 0.7 2016/07/03
 
   This release includes 0.6.8 fixes. Here are cumulative changelogs from 0.6.8.
+  (There are no changes from 0.7.0-rc1)
 
   MAJOR BREAKING CHANGES
   * PackerCompatibilityOptions.None is now default. This means that msgpack bin or str8 formats are used by default.
@@ -528,8 +529,7 @@ Release 0.7 (planned)
   * Add buffering option for Packer/Unpacker which can be enabled by PackerUnpackerStreamOptions.WithBuffering = true. It should improve performance for non-buffered stream like NetworkStream.
   * Async support. Issue #49. Note that it is highly recommended to use buffering feature of Packer or Unpacker factory methods to avoid too chutty asynchronous I/O call. In addition, async API may avoid unnecessary blocking but it is not so efficienty in most cases.
   * SerializerGenerator.GenerateSerializerCodeAssembly now supports custom namespace. Issue #138.
-  * Add .NET Core support. .NET Core build requires RC2 or above.
-  * Unity I+2CPP support. Unity DLLs now support IL2CPP with various AOT issue workarounds. Unity build requires 5.3.5f1 or above.
+  * Unity IL2CPP support. Unity DLLs now support IL2CPP with various AOT issue workarounds. Unity build requires 5.3.5f1 or above.
   * Xamarin iOS linker support.
 
   IMPROVEMENTS
