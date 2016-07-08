@@ -21,8 +21,8 @@ This package provides MessagePack serialization/deserialization APIs. This pacak
     <copyright>Copyright 2010-2016 FUJIWARA, Yusuke, all rights reserved.</copyright>
     <tags>MsgPack MessagePack Serialization Formatter Serializer</tags>
     <dependencies>
-      <group targetFramework=".NETFramework4.6.1" />
-      <group targetFramework=".NETFramework4.5.2" />
+      <group targetFramework=".NETFramework4.6" />
+      <group targetFramework=".NETFramework4.5" />
       <group targetFramework=".NETFramework3.5" />
       <group targetFramework="WindowsPhone8.0" />
       <group targetFramework="MonoAndroid1.0" />
