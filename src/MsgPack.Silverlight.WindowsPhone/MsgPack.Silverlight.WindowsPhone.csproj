@@ -86,8 +86,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
     <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE;AOT;CODE_ANALYSIS</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile></DocumentationFile>
     <Optimize>true</Optimize>
     <NoStdLib>true</NoStdLib>
     <DebugType>pdbonly</DebugType>
@@ -569,6 +568,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\NilImplicationHandler`4.cs">
       <Link>Serialization\NilImplicationHandler`4.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\NullTextWriter.cs">
+      <Link>Serialization\NullTextWriter.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\PackHelpers.cs">
       <Link>Serialization\PackHelpers.cs</Link>

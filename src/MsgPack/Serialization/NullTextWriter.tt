@@ -28,6 +28,34 @@ namespace MsgPack.Serialization
 		}
 
 <#
+	var notInSLs = 
+		new List<Tuple<string, Type[]>>
+		{
+			Tuple.Create( "Write", new Type[] { typeof( string ), typeof( object ), typeof( object ), typeof( object ) }),
+			Tuple.Create( "WriteLine", new Type[] { typeof( string ), typeof( object ), typeof( object ), typeof( object ) })
+		}; 
+	var notInNetFxCores = 
+		new List<Tuple<string, Type[]>>
+		{
+			Tuple.Create("Close", new Type[ 0 ])
+		}; 
+	var notInNetStd1_1s = 
+		new List<Tuple<string, Type[]>>
+		{
+			Tuple.Create("Write", new Type[] { typeof( string ), typeof( object ) }),
+			Tuple.Create("Write", new Type[] { typeof( string ), typeof( object ), typeof( object ) }),
+			Tuple.Create("Write", new Type[] { typeof( string ), typeof( object ), typeof( object ), typeof( object ) }),
+			Tuple.Create("WriteLine", new Type[] { typeof( string ), typeof( object ) }),
+			Tuple.Create("WriteLine", new Type[] { typeof( string ), typeof( object ), typeof( object ) }),
+			Tuple.Create("WriteLine", new Type[] { typeof( string ), typeof( object ), typeof( object ), typeof( object ) }),
+			Tuple.Create("Close", new Type[ 0 ])
+		}; 
+	var notInNetStd1_3s = 
+		new List<Tuple<string, Type[]>>
+		{
+			Tuple.Create("Close", new Type[ 0 ])
+		}; 
+
 	using (var provider = new CSharpCodeProvider())
 	{
 		IEnumerable<MethodInfo> methods =
@@ -38,22 +66,52 @@ namespace MsgPack.Serialization
 
 		foreach (MethodInfo method in methods)
 		{
-			Write("\t\tpublic override void {0}(", method.Name);
-
-			foreach (ParameterInfo parameter in method.GetParameters())
+			var unsupportedPlatforms = new List<string>();
+			if (IsNotIn(method, notInSLs))
 			{
-				if (parameter.Position != 0)
-				{
-					Write(", ");
-				}
-
-				var typeRef = new CodeTypeReference(parameter.ParameterType);
-				Write("{0} {1}", provider.GetTypeOutput(typeRef), parameter.Name);
+				unsupportedPlatforms.Add("SILVERLIGHT");
+			}
+			if (IsNotIn(method, notInNetFxCores))
+			{
+				unsupportedPlatforms.Add("NETFX_CORE");
+			}
+			if (IsNotIn(method, notInNetStd1_1s))
+			{
+				unsupportedPlatforms.Add("NETSTANDARD1_1");
+			}
+			if (IsNotIn(method, notInNetStd1_3s))
+			{
+				unsupportedPlatforms.Add("NETSTANDARD1_3");
 			}
 
-			WriteLine(") { }");
+			if (unsupportedPlatforms.Count > 0 )
+			{
+#>
+#if <#= String.Join( " && ", unsupportedPlatforms.Select(s => "!" + s )) #>
+<#
+			}
+
+			var parameters =
+				method.GetParameters().Length == 0
+					? "()"
+					: "( " + String.Join(", ", method.GetParameters().Select(p => provider.GetTypeOutput(new CodeTypeReference(p.ParameterType)) + " " + p.Name) ) + " )";
+#>
+		public override void <#= method.Name #><#= parameters #> { }
+<#
+			if (unsupportedPlatforms.Count > 0 )
+			{
+#>
+#endif // <#= String.Join( " && ", unsupportedPlatforms.Select(s => "!" + s )) #>
+<#
+			}
 		}
 	}
 #>
 	}
 }
+<#+
+private static bool IsNotIn(MethodInfo method, IList<Tuple<string, Type[]>> unavailableMethodSignatures)
+{
+	return unavailableMethodSignatures.Any(sig => sig.Item1 == method.Name && sig.Item2.SequenceEqual(method.GetParameters().Select(p => p.ParameterType)));
+}
+#>

@@ -44,8 +44,7 @@
     <OutputPath>bin\CodeAnalysis\</OutputPath>
     <DefineConstants>TRACE;NETFX_35;CODE_ANALYSIS</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile></DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -732,6 +731,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\NilImplicationHandler`4.cs">
       <Link>Serialization\NilImplicationHandler`4.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\NullTextWriter.cs">
+      <Link>Serialization\NullTextWriter.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\PackHelpers.cs">
       <Link>Serialization\PackHelpers.cs</Link>

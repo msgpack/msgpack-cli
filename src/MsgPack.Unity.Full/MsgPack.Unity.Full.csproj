@@ -482,6 +482,9 @@
     <Compile Include="..\MsgPack\Serialization\NilImplicationHandler`4.cs">
       <Link>Serialization\NilImplicationHandler`4.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\NullTextWriter.cs">
+      <Link>Serialization\NullTextWriter.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\PackHelpers.cs">
       <Link>Serialization\PackHelpers.cs</Link>
     </Compile>
