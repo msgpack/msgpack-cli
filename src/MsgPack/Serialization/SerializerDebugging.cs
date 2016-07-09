@@ -118,7 +118,7 @@ namespace MsgPack.Serialization
 			{
 				if ( !_traceEnabled )
 				{
-					return TextWriter.Null;
+					return NullTextWriter.Instance;
 				}
 
 				if ( _ilTraceWriter == null )
