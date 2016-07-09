@@ -556,3 +556,9 @@ Release 0.7 2016/07/03
 
   KNOWN ISSUES
   * Reflection based serializers in Unity build is not stable even if you specify [Preserve] and/or link.xml.
+
+Release 0.7.1  2016/7/10
+
+  FIXES
+  * Relaxes .NET Framework version. .NET 4.5.0, 4.5.1, 4.6.0 are resupported. #176.
+  * Reduce memory allocation. #179.
