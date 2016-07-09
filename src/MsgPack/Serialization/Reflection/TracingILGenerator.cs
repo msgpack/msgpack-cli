@@ -41,9 +41,7 @@ namespace MsgPack.Serialization.Reflection
 	internal sealed partial class TracingILGenerator : IDisposable
 	{
 		private readonly ILGenerator _underlying;
-		private readonly TextWriter _realTrace;
 		private readonly TextWriter _trace;
-		private readonly StringBuilder _traceBuffer;
 		private readonly Dictionary<LocalBuilder, string> _localDeclarations = new Dictionary<LocalBuilder, string>();
 		private readonly Dictionary<Label, string> _labels = new Dictionary<Label, string>();
 
@@ -244,9 +242,7 @@ namespace MsgPack.Serialization.Reflection
 		private TracingILGenerator( ILGenerator underlying, bool isInDynamicMethod, TextWriter traceWriter, bool isDebuggable )
 		{
 			this._underlying = underlying;
-			this._realTrace = traceWriter ?? TextWriter.Null;
-			this._traceBuffer = traceWriter != null ? new StringBuilder() : null;
-			this._trace = traceWriter != null ? new StringWriter( this._traceBuffer, CultureInfo.InvariantCulture ) : TextWriter.Null;
+			this._trace = traceWriter ?? NullTextWriter.Instance;
 			this._isInDynamicMethod = isInDynamicMethod;
 			this._endOfMethod = underlying == null ? default( Label ) : underlying.DefineLabel();
 			this._isDebuggable = isDebuggable;
@@ -276,13 +272,7 @@ namespace MsgPack.Serialization.Reflection
 
 		public void FlushTrace()
 		{
-			if ( this._traceBuffer != null && this._traceBuffer.Length > 0 )
-			{
-				this.TraceLocals();
-				this._trace.Flush();
-				this._realTrace.Write( this._traceBuffer );
-				this._traceBuffer.Clear();
-			}
+			this._trace.Flush();
 		}
 
 		#region -- Locals --
@@ -398,39 +388,6 @@ namespace MsgPack.Serialization.Reflection
 			return result;
 		}
 #endif // DEBUG
-
-		private void TraceLocals()
-		{
-			Contract.Assert( this._realTrace != null );
-			// TOOD: without init?
-			this._realTrace.WriteLine( ".locals init (" );
-
-			foreach ( var local in this._localDeclarations )
-			{
-				this.WriteIndent( this._realTrace, 1 );
-
-				this._realTrace.Write( "[" );
-				this._realTrace.Write( local.Key.LocalIndex );
-				this._realTrace.Write( "] " );
-
-				WriteType( this._realTrace, local.Key.LocalType );
-
-				if ( local.Key.IsPinned )
-				{
-					this._realTrace.Write( "(pinned)" );
-				}
-
-				if ( local.Value != null )
-				{
-					this._realTrace.Write( " " );
-					this._realTrace.Write( local.Value );
-				}
-
-				this._realTrace.WriteLine();
-			}
-
-			this._realTrace.WriteLine( ")" );
-		}
 
 #endregion
 
@@ -1037,6 +994,10 @@ namespace MsgPack.Serialization.Reflection
 		private static void WriteType( TextWriter writer, Type type )
 		{
 			Contract.Assert( writer != null );
+			if ( writer == NullTextWriter.Instance )
+			{
+				return;
+			}
 
 			if ( type == null || type == typeof( void ) )
 			{
@@ -1281,6 +1242,10 @@ namespace MsgPack.Serialization.Reflection
 		private static void WriteCallingConventions( TextWriter writer, CallingConventions? managedCallingConverntions, CallingConvention? unamangedCallingConvention )
 		{
 			Contract.Assert( writer != null );
+			if ( writer == NullTextWriter.Instance )
+			{
+				return;
+			}
 
 			bool needsSpace = false;
 			if ( managedCallingConverntions != null )
@@ -1360,7 +1325,7 @@ namespace MsgPack.Serialization.Reflection
 		private void TraceOperand( string value )
 		{
 			// QSTRING
-			this._trace.Write( String.Format( CultureInfo.InvariantCulture, "\"{0:L}\"", value ) );
+			this._trace.Write( "\"{0:L}\"", value );
 		}
 
 		private void TraceOperand( Label value )
@@ -1427,9 +1392,7 @@ namespace MsgPack.Serialization.Reflection
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		private void TraceOperandTokenValue( int value )
 		{
-			this._trace.Write( "<" );
-			this._trace.Write( value.ToString( "x8", CultureInfo.InvariantCulture ) );
-			this._trace.Write( ">" );
+			this._trace.Write( "<{0:x8}>", value );
 		}
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 

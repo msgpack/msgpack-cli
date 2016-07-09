@@ -304,6 +304,11 @@
     <Compile Include="Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerOnUnpackedParameter.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerParameter.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\NullTextWriter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NullTextWriter.tt</DependentUpon>
+    </Compile>
     <Compile Include="Serialization\ResolveSerializerEventArgs.cs" />
     <Compile Include="Serialization\SerializationContext.ExtTypeCodes.cs" />
     <Compile Include="Serialization\SerializationTarget.cs" />
@@ -612,6 +617,10 @@
     <Content Include="PackerUnpackerExtensions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PackerUnpackerExtensions.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\NullTextWriter.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NullTextWriter.cs</LastGenOutput>
     </Content>
     <Content Include="Serialization\UnpackHelpers.facade.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
