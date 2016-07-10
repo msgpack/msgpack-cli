@@ -2,6 +2,7 @@ version: '{branch}-{build}'
 branches:
   only:
   - master
+  - 0.7
 configuration: Release
 init:
 - cmd: >-
