@@ -49,10 +49,8 @@ deploy:
 - provider: Environment
   name: msgpack-cli-nuget
   on:
-    branch: master
     APPVEYOR_REPO_TAG: true
 - provider: Environment
   name: msgpack-cli-github
   on:
-    branch: master
     APPVEYOR_REPO_TAG: true
