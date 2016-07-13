@@ -219,6 +219,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return new VariableILConstruct( name, type );
 		}
 
+		public static ILConstruct MakeRef(ILConstruct variable )
+		{
+			return new SinglelStepILConstruct( variable.ContextType, "mkref", false, il => variable.LoadValue( il, true ) );
+		}
+
 		protected static void ValidateContextTypeMatch( ILConstruct left, ILConstruct right )
 		{
 			if ( GetNormalizedType( left.ContextType.ResolveRuntimeType() ) != GetNormalizedType( right.ContextType.ResolveRuntimeType() ) )

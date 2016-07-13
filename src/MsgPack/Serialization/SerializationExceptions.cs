@@ -866,9 +866,19 @@ namespace MsgPack.Serialization
 			throw new ArgumentNullException( parameterName );
 		}
 
+		internal static void ThrowArgumentNullException( string parameterName, string fieldName )
+		{
+			throw new ArgumentNullException( parameterName, String.Format( CultureInfo.CurrentCulture, "Field '{0}' of parameter '{1}' cannot be null.", fieldName, parameterName ) );
+		}
+
 		internal static void ThrowArgumentCannotBeNegativeException( string parameterName )
 		{
 			throw new ArgumentOutOfRangeException( parameterName, "The value cannot be negative number." );
+		}
+
+		internal static void ThrowArgumentCannotBeNegativeException( string parameterName, string fieldName )
+		{
+			throw new ArgumentOutOfRangeException( parameterName, String.Format( CultureInfo.CurrentCulture, "Field '{0}' of parameter '{1}' cannot be negative number.", fieldName, parameterName ) );
 		}
 
 		internal static void ThrowArgumentException( string parameterName, string message )

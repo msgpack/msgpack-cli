@@ -3,7 +3,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -51,6 +51,7 @@ namespace MsgPack.Serialization
 
 	partial class UnpackHelpers
 	{
+
 		/// <summary>
 		///		Unpacks the complex object from specified <see cref="Unpacker"/> with specified <see cref="MessagePackSerializer{T}"/>/
 		/// </summary>
@@ -61,27 +62,36 @@ namespace MsgPack.Serialization
 		/// <returns>
 		///		A value read from current stream.
 		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or, <paramref name="serializer"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="unpacked"/> is negative number.
+		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
-		public static T UnpackComplexObject<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked )
+		public static T UnpackComplexObject<T>( 
+			Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked 
+		)
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
 			if ( serializer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "serializer" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( serializer ) );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
 			}
 
 #if ASSERT
@@ -100,7 +110,7 @@ namespace MsgPack.Serialization
 			}
 			else
 			{
-				using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
+				using ( var subtreeUnpacker = unpacker.ReadSubtree() )
 				{
 					return  serializer.UnpackFrom( subtreeUnpacker );
 				}
@@ -122,27 +132,36 @@ namespace MsgPack.Serialization
 		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
 		///		a <typeparamref name="T" /> value read from current stream.
 		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or, <paramref name="serializer"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="unpacked"/> is negative number.
+		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
-		public static async Task<T> UnpackComplexObjectAsync<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked, CancellationToken cancellationToken )
+		public static async Task<T> UnpackComplexObjectAsync<T>( 
+			Unpacker unpacker, MessagePackSerializer<T> serializer, int unpacked, CancellationToken cancellationToken 
+		)
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
 			if ( serializer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "serializer" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( serializer ) );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
 			}
 
 #if ASSERT
@@ -161,7 +180,7 @@ namespace MsgPack.Serialization
 			}
 			else
 			{
-				using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
+				using ( var subtreeUnpacker = unpacker.ReadSubtree() )
 				{
 					return  await serializer.UnpackFromAsync( subtreeUnpacker, cancellationToken ).ConfigureAwait( false );
 				}
@@ -169,6 +188,7 @@ namespace MsgPack.Serialization
 		}
 
 #endif // FEATURE_TAP
+
 
 		/// <summary>
 		///		Unpacks the value type value from MessagePack stream.
@@ -182,8 +202,22 @@ namespace MsgPack.Serialization
 		/// <param name="unpacked">The unpacked items count.</param>
 		/// <param name="targetObjectType">Type of the target object for debugging message.</param>
 		/// <param name="memberName">Name of the member for debugging message.</param>
-		/// <param name="directRead">The delegate which referes direct reading. This parameter should be <c>null</c> when <paramref name="serializer" /> is specified.</param>
+		/// <param name="directRead">The delegate which refers direct reading. This parameter should be <c>null</c> when <paramref name="serializer" /> is specified.</param>
 		/// <param name="setter">The delegate which takes <paramref name="context" /> and unpacked value, and then set the value to the context.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or, <paramref name="context"/> is <c>null</c>.
+		///		Or, <paramref name="memberName"/> is <c>null</c>.
+		///		Or, <paramref name="targetObjectType"/> is <c>null</c>.
+		///		Or, <paramref name="setter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="itemsCount"/> is negative number.
+		///		Or, <paramref name="unpacked"/> is negative number.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		Both of <paramref name="directRead"/> and <paramref name="serializer" /> are <c>null</c>.
+		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
@@ -200,43 +234,150 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "context" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
 			}
 
 			if ( targetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( targetObjectType ) );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "setter" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
 			}
 
 			if ( serializer == null && directRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
+				SerializationExceptions.ThrowArgumentException( nameof( directRead ), "directRead cannot be null if serializer argument is null." );
 			}
+
+			var parameter =
+				new UnpackValueTypeValueParameters<TContext, TValue>
+				{
+					Unpacker = unpacker,
+					UnpackingContext = context,
+					Serializer = serializer,
+					ItemsCount = itemsCount,
+					Unpacked = unpacked,
+					TargetObjectType = targetObjectType,
+					MemberName = memberName,
+					DirectRead = directRead,
+					Setter = setter,
+				};
+			UnpackValueTypeValue( ref parameter );
+		}
+
+		/// <summary>
+		///		Unpacks the value type value from MessagePack stream.
+		/// </summary>
+		/// <typeparam name="TContext">The type of the context object which will store deserialized value.</typeparam>
+		/// <typeparam name="TValue">The type of the value.</typeparam>
+		/// <param name="parameter">The reference to <see cref="UnpackValueTypeValueParameters{TContext, TValue}" /> object.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="UnpackValueTypeValueParameters{TContext, TValue}.Unpacker" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackValueTypeValueParameters{TContext, TValue}.UnpackingContext" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackValueTypeValueParameters{TContext, TValue}.MemberName" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackValueTypeValueParameters{TContext, TValue}.TargetObjectType" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackValueTypeValueParameters{TContext, TValue}.Setter" /> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<see cref="UnpackValueTypeValueParameters{TContext, TValue}.ItemsCount" /> of <paramref name="parameter"/> is negative number.
+		///		Or, <see cref="UnpackValueTypeValueParameters{TContext, TValue}.Unpacked" /> of <paramref name="parameter"/> is negative number.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		Both of <see cref="UnpackValueTypeValueParameters{TContext, TValue}.DirectRead" /> 
+		///		and <see cref="UnpackValueTypeValueParameters{TContext, TValue}.Serializer" /> of <paramref name="parameter"/> are <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static void UnpackValueTypeValue<TContext, TValue>(
+			ref UnpackValueTypeValueParameters<TContext, TValue> parameter
+		)
+			where TValue : struct
+		{
+			if ( parameter.Unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+			}
+
+			if ( parameter.UnpackingContext == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+			}
+
+			if ( parameter.ItemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+			}
+
+			if ( parameter.Unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+			}
+
+			if ( parameter.TargetObjectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.TargetObjectType ) );
+			}
+
+			if ( parameter.MemberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+			}
+
+			if ( parameter.Setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+			}
+
+			if ( parameter.Serializer == null && parameter.DirectRead == null )
+			{
+				SerializationExceptions.ThrowArgumentException( nameof( parameter ), "DirectRead cannot be null if Serializer field is null." );
+			}
+			
+			UnpackValueTypeValueCore(
+				parameter.Unpacker,
+				parameter.UnpackingContext,
+				parameter.Serializer,
+				parameter.ItemsCount,
+				parameter.Unpacked,
+				parameter.TargetObjectType,
+				parameter.MemberName,
+				parameter.DirectRead,
+				parameter.Setter
+			);
+		}
+
+		private static void UnpackValueTypeValueCore<TContext, TValue>(
+			Unpacker unpacker, TContext context, MessagePackSerializer<TValue> serializer,
+			int itemsCount, int unpacked,
+			Type targetObjectType, string memberName,
+			Func<Unpacker, Type, string, TValue> directRead, Action<TContext, TValue> setter
+		)
+			where TValue : struct
+		{
 
 #if ASSERT
 			Contract.Assert( unpacker != null );
@@ -284,17 +425,31 @@ namespace MsgPack.Serialization
 		/// <param name="unpacked">The unpacked items count.</param>
 		/// <param name="targetObjectType">Type of the target object for debugging message.</param>
 		/// <param name="memberName">Name of the member for debugging message.</param>
-		/// <param name="directRead">The delegate which referes direct reading. This parameter should be <c>null</c> when <paramref name="serializer" /> is specified.</param>
+		/// <param name="directRead">The delegate which refers direct reading. This parameter should be <c>null</c> when <paramref name="serializer" /> is specified.</param>
 		/// <param name="setter">The delegate which takes <paramref name="context" /> and unpacked value, and then set the value to the context.</param>
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
 		///	<returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or, <paramref name="context"/> is <c>null</c>.
+		///		Or, <paramref name="memberName"/> is <c>null</c>.
+		///		Or, <paramref name="targetObjectType"/> is <c>null</c>.
+		///		Or, <paramref name="setter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="itemsCount"/> is negative number.
+		///		Or, <paramref name="unpacked"/> is negative number.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		Both of <paramref name="directRead"/> and <paramref name="serializer" /> are <c>null</c>.
+		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "8", Justification = "False positive because never reached." )]
-		public static async Task UnpackValueTypeValueAsync<TContext, TValue>(
+		public static Task UnpackValueTypeValueAsync<TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<TValue> serializer,
 			int itemsCount, int unpacked,
 			Type targetObjectType, string memberName,
@@ -304,43 +459,153 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "context" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
 			}
 
 			if ( targetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( targetObjectType ) );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "setter" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
 			}
 
 			if ( serializer == null && directRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
+				SerializationExceptions.ThrowArgumentException( nameof( directRead ), "directRead cannot be null if serializer argument is null." );
 			}
+
+			var parameter =
+				new UnpackValueTypeValueAsyncParameters<TContext, TValue>
+				{
+					Unpacker = unpacker,
+					UnpackingContext = context,
+					Serializer = serializer,
+					ItemsCount = itemsCount,
+					Unpacked = unpacked,
+					TargetObjectType = targetObjectType,
+					MemberName = memberName,
+					DirectRead = directRead,
+					Setter = setter,
+					CancellationToken = cancellationToken
+				};
+			return UnpackValueTypeValueAsync( ref parameter );
+		}
+
+		/// <summary>
+		///		Unpacks the value type value from MessagePack stream asyncronously.
+		/// </summary>
+		/// <typeparam name="TContext">The type of the context object which will store deserialized value.</typeparam>
+		/// <typeparam name="TValue">The type of the value.</typeparam>
+		/// <param name="parameter">The reference to <see cref="UnpackValueTypeValueAsyncParameters{TContext, TValue}" /> object.</param>
+		///	<returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="UnpackValueTypeValueAsyncParameters{TContext, TValue}.Unpacker" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackValueTypeValueAsyncParameters{TContext, TValue}.UnpackingContext" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackValueTypeValueAsyncParameters{TContext, TValue}.MemberName" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackValueTypeValueAsyncParameters{TContext, TValue}.TargetObjectType" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackValueTypeValueAsyncParameters{TContext, TValue}.Setter" /> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<see cref="UnpackValueTypeValueAsyncParameters{TContext, TValue}.ItemsCount" /> of <paramref name="parameter"/> is negative number.
+		///		Or, <see cref="UnpackValueTypeValueAsyncParameters{TContext, TValue}.Unpacked" /> of <paramref name="parameter"/> is negative number.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		Both of <see cref="UnpackValueTypeValueAsyncParameters{TContext, TValue}.DirectRead" /> 
+		///		and <see cref="UnpackValueTypeValueAsyncParameters{TContext, TValue}.Serializer" /> of <paramref name="parameter"/> are <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static Task UnpackValueTypeValueAsync<TContext, TValue>(
+			ref UnpackValueTypeValueAsyncParameters<TContext, TValue> parameter
+		)
+			where TValue : struct
+		{
+			if ( parameter.Unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+			}
+
+			if ( parameter.UnpackingContext == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+			}
+
+			if ( parameter.ItemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+			}
+
+			if ( parameter.Unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+			}
+
+			if ( parameter.TargetObjectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.TargetObjectType ) );
+			}
+
+			if ( parameter.MemberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+			}
+
+			if ( parameter.Setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+			}
+
+			if ( parameter.Serializer == null && parameter.DirectRead == null )
+			{
+				SerializationExceptions.ThrowArgumentException( nameof( parameter ), "DirectRead cannot be null if Serializer field is null." );
+			}
+			
+			return UnpackValueTypeValueAsyncCore(
+				parameter.Unpacker,
+				parameter.UnpackingContext,
+				parameter.Serializer,
+				parameter.ItemsCount,
+				parameter.Unpacked,
+				parameter.TargetObjectType,
+				parameter.MemberName,
+				parameter.DirectRead,
+				parameter.Setter
+				, parameter.CancellationToken
+			);
+		}
+
+		private static async Task UnpackValueTypeValueAsyncCore<TContext, TValue>(
+			Unpacker unpacker, TContext context, MessagePackSerializer<TValue> serializer,
+			int itemsCount, int unpacked,
+			Type targetObjectType, string memberName,
+			Func<Unpacker, Type, string, CancellationToken, Task<TValue>> directRead, Action<TContext, TValue> setter, CancellationToken cancellationToken
+		)
+			where TValue : struct
+		{
 
 #if ASSERT
 			Contract.Assert( unpacker != null );
@@ -376,6 +641,7 @@ namespace MsgPack.Serialization
 
 #endif // FEATURE_TAP
 
+
 		/// <summary>
 		///		Unpacks the reference type value from MessagePack stream.
 		/// </summary>
@@ -389,8 +655,22 @@ namespace MsgPack.Serialization
 		/// <param name="targetObjectType">Type of the target object for debugging message.</param>
 		/// <param name="memberName">Name of the member for debugging message.</param>
 		/// <param name="nilImplication">The nil implication of current item.</param>
-		/// <param name="directRead">The delegate which referes direct reading. This parameter should be <c>null</c> when <paramref name="serializer" /> is specified.</param>
+		/// <param name="directRead">The delegate which refers direct reading. This parameter should be <c>null</c> when <paramref name="serializer" /> is specified.</param>
 		/// <param name="setter">The delegate which takes <paramref name="context" /> and unpacked value, and then set the value to the context.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or, <paramref name="context"/> is <c>null</c>.
+		///		Or, <paramref name="memberName"/> is <c>null</c>.
+		///		Or, <paramref name="targetObjectType"/> is <c>null</c>.
+		///		Or, <paramref name="setter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="itemsCount"/> is negative number.
+		///		Or, <paramref name="unpacked"/> is negative number.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		Both of <paramref name="directRead"/> and <paramref name="serializer" /> are <c>null</c>.
+		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
@@ -408,43 +688,153 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "context" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
 			}
 
 			if ( targetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( targetObjectType ) );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "setter" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
 			}
 
 			if ( serializer == null && directRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
+				SerializationExceptions.ThrowArgumentException( nameof( directRead ), "directRead cannot be null if serializer argument is null." );
 			}
+
+			var parameter =
+				new UnpackReferenceTypeValueParameters<TContext, TValue>
+				{
+					Unpacker = unpacker,
+					UnpackingContext = context,
+					Serializer = serializer,
+					ItemsCount = itemsCount,
+					Unpacked = unpacked,
+					TargetObjectType = targetObjectType,
+					MemberName = memberName,
+					NilImplication = nilImplication,
+					DirectRead = directRead,
+					Setter = setter,
+				};
+			UnpackReferenceTypeValue( ref parameter );
+		}
+
+		/// <summary>
+		///		Unpacks the reference type value from MessagePack stream.
+		/// </summary>
+		/// <typeparam name="TContext">The type of the context object which will store deserialized value.</typeparam>
+		/// <typeparam name="TValue">The type of the value.</typeparam>
+		/// <param name="parameter">The reference to <see cref="UnpackReferenceTypeValueParameters{TContext, TValue}" /> object.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="UnpackReferenceTypeValueParameters{TContext, TValue}.Unpacker" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackReferenceTypeValueParameters{TContext, TValue}.UnpackingContext" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackReferenceTypeValueParameters{TContext, TValue}.MemberName" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackReferenceTypeValueParameters{TContext, TValue}.TargetObjectType" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackReferenceTypeValueParameters{TContext, TValue}.Setter" /> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<see cref="UnpackReferenceTypeValueParameters{TContext, TValue}.ItemsCount" /> of <paramref name="parameter"/> is negative number.
+		///		Or, <see cref="UnpackReferenceTypeValueParameters{TContext, TValue}.Unpacked" /> of <paramref name="parameter"/> is negative number.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		Both of <see cref="UnpackReferenceTypeValueParameters{TContext, TValue}.DirectRead" /> 
+		///		and <see cref="UnpackReferenceTypeValueParameters{TContext, TValue}.Serializer" /> of <paramref name="parameter"/> are <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static void UnpackReferenceTypeValue<TContext, TValue>(
+			ref UnpackReferenceTypeValueParameters<TContext, TValue> parameter
+		)
+			where TValue : class
+		{
+			if ( parameter.Unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+			}
+
+			if ( parameter.UnpackingContext == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+			}
+
+			if ( parameter.ItemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+			}
+
+			if ( parameter.Unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+			}
+
+			if ( parameter.TargetObjectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.TargetObjectType ) );
+			}
+
+			if ( parameter.MemberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+			}
+
+			if ( parameter.Setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+			}
+
+			if ( parameter.Serializer == null && parameter.DirectRead == null )
+			{
+				SerializationExceptions.ThrowArgumentException( nameof( parameter ), "DirectRead cannot be null if Serializer field is null." );
+			}
+			
+			UnpackReferenceTypeValueCore(
+				parameter.Unpacker,
+				parameter.UnpackingContext,
+				parameter.Serializer,
+				parameter.ItemsCount,
+				parameter.Unpacked,
+				parameter.TargetObjectType,
+				parameter.MemberName,
+				parameter.NilImplication,
+				parameter.DirectRead,
+				parameter.Setter
+			);
+		}
+
+		private static void UnpackReferenceTypeValueCore<TContext, TValue>(
+			Unpacker unpacker, TContext context, MessagePackSerializer<TValue> serializer,
+			int itemsCount, int unpacked,
+			Type targetObjectType, string memberName,
+			NilImplication nilImplication,
+			Func<Unpacker, Type, string, TValue> directRead, Action<TContext, TValue> setter
+		)
+			where TValue : class
+		{
 
 #if ASSERT
 			Contract.Assert( unpacker != null );
@@ -504,17 +894,31 @@ namespace MsgPack.Serialization
 		/// <param name="targetObjectType">Type of the target object for debugging message.</param>
 		/// <param name="memberName">Name of the member for debugging message.</param>
 		/// <param name="nilImplication">The nil implication of current item.</param>
-		/// <param name="directRead">The delegate which referes direct reading. This parameter should be <c>null</c> when <paramref name="serializer" /> is specified.</param>
+		/// <param name="directRead">The delegate which refers direct reading. This parameter should be <c>null</c> when <paramref name="serializer" /> is specified.</param>
 		/// <param name="setter">The delegate which takes <paramref name="context" /> and unpacked value, and then set the value to the context.</param>
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
 		///	<returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or, <paramref name="context"/> is <c>null</c>.
+		///		Or, <paramref name="memberName"/> is <c>null</c>.
+		///		Or, <paramref name="targetObjectType"/> is <c>null</c>.
+		///		Or, <paramref name="setter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="itemsCount"/> is negative number.
+		///		Or, <paramref name="unpacked"/> is negative number.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		Both of <paramref name="directRead"/> and <paramref name="serializer" /> are <c>null</c>.
+		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "9", Justification = "False positive because never reached." )]
-		public static async Task UnpackReferenceTypeValueAsync<TContext, TValue>(
+		public static Task UnpackReferenceTypeValueAsync<TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<TValue> serializer,
 			int itemsCount, int unpacked,
 			Type targetObjectType, string memberName,
@@ -525,43 +929,156 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "context" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
 			}
 
 			if ( targetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( targetObjectType ) );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "setter" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
 			}
 
 			if ( serializer == null && directRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
+				SerializationExceptions.ThrowArgumentException( nameof( directRead ), "directRead cannot be null if serializer argument is null." );
 			}
+
+			var parameter =
+				new UnpackReferenceTypeValueAsyncParameters<TContext, TValue>
+				{
+					Unpacker = unpacker,
+					UnpackingContext = context,
+					Serializer = serializer,
+					ItemsCount = itemsCount,
+					Unpacked = unpacked,
+					TargetObjectType = targetObjectType,
+					MemberName = memberName,
+					NilImplication = nilImplication,
+					DirectRead = directRead,
+					Setter = setter,
+					CancellationToken = cancellationToken
+				};
+			return UnpackReferenceTypeValueAsync( ref parameter );
+		}
+
+		/// <summary>
+		///		Unpacks the reference type value from MessagePack stream asyncronously.
+		/// </summary>
+		/// <typeparam name="TContext">The type of the context object which will store deserialized value.</typeparam>
+		/// <typeparam name="TValue">The type of the value.</typeparam>
+		/// <param name="parameter">The reference to <see cref="UnpackReferenceTypeValueAsyncParameters{TContext, TValue}" /> object.</param>
+		///	<returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="UnpackReferenceTypeValueAsyncParameters{TContext, TValue}.Unpacker" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackReferenceTypeValueAsyncParameters{TContext, TValue}.UnpackingContext" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackReferenceTypeValueAsyncParameters{TContext, TValue}.MemberName" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackReferenceTypeValueAsyncParameters{TContext, TValue}.TargetObjectType" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackReferenceTypeValueAsyncParameters{TContext, TValue}.Setter" /> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<see cref="UnpackReferenceTypeValueAsyncParameters{TContext, TValue}.ItemsCount" /> of <paramref name="parameter"/> is negative number.
+		///		Or, <see cref="UnpackReferenceTypeValueAsyncParameters{TContext, TValue}.Unpacked" /> of <paramref name="parameter"/> is negative number.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		Both of <see cref="UnpackReferenceTypeValueAsyncParameters{TContext, TValue}.DirectRead" /> 
+		///		and <see cref="UnpackReferenceTypeValueAsyncParameters{TContext, TValue}.Serializer" /> of <paramref name="parameter"/> are <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static Task UnpackReferenceTypeValueAsync<TContext, TValue>(
+			ref UnpackReferenceTypeValueAsyncParameters<TContext, TValue> parameter
+		)
+			where TValue : class
+		{
+			if ( parameter.Unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+			}
+
+			if ( parameter.UnpackingContext == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+			}
+
+			if ( parameter.ItemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+			}
+
+			if ( parameter.Unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+			}
+
+			if ( parameter.TargetObjectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.TargetObjectType ) );
+			}
+
+			if ( parameter.MemberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+			}
+
+			if ( parameter.Setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+			}
+
+			if ( parameter.Serializer == null && parameter.DirectRead == null )
+			{
+				SerializationExceptions.ThrowArgumentException( nameof( parameter ), "DirectRead cannot be null if Serializer field is null." );
+			}
+			
+			return UnpackReferenceTypeValueAsyncCore(
+				parameter.Unpacker,
+				parameter.UnpackingContext,
+				parameter.Serializer,
+				parameter.ItemsCount,
+				parameter.Unpacked,
+				parameter.TargetObjectType,
+				parameter.MemberName,
+				parameter.NilImplication,
+				parameter.DirectRead,
+				parameter.Setter
+				, parameter.CancellationToken
+			);
+		}
+
+		private static async Task UnpackReferenceTypeValueAsyncCore<TContext, TValue>(
+			Unpacker unpacker, TContext context, MessagePackSerializer<TValue> serializer,
+			int itemsCount, int unpacked,
+			Type targetObjectType, string memberName,
+			NilImplication nilImplication,
+			Func<Unpacker, Type, string, CancellationToken, Task<TValue>> directRead, Action<TContext, TValue> setter, CancellationToken cancellationToken
+		)
+			where TValue : class
+		{
 
 #if ASSERT
 			Contract.Assert( unpacker != null );
@@ -608,6 +1125,7 @@ namespace MsgPack.Serialization
 
 #endif // FEATURE_TAP
 
+
 		/// <summary>
 		///		Unpacks the nullable type value from MessagePack stream.
 		/// </summary>
@@ -621,8 +1139,22 @@ namespace MsgPack.Serialization
 		/// <param name="targetObjectType">Type of the target object for debugging message.</param>
 		/// <param name="memberName">Name of the member for debugging message.</param>
 		/// <param name="nilImplication">The nil implication of current item.</param>
-		/// <param name="directRead">The delegate which referes direct reading. This parameter should be <c>null</c> when <paramref name="serializer" /> is specified.</param>
+		/// <param name="directRead">The delegate which refers direct reading. This parameter should be <c>null</c> when <paramref name="serializer" /> is specified.</param>
 		/// <param name="setter">The delegate which takes <paramref name="context" /> and unpacked value, and then set the value to the context.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or, <paramref name="context"/> is <c>null</c>.
+		///		Or, <paramref name="memberName"/> is <c>null</c>.
+		///		Or, <paramref name="targetObjectType"/> is <c>null</c>.
+		///		Or, <paramref name="setter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="itemsCount"/> is negative number.
+		///		Or, <paramref name="unpacked"/> is negative number.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		Both of <paramref name="directRead"/> and <paramref name="serializer" /> are <c>null</c>.
+		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
@@ -640,43 +1172,153 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "context" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
 			}
 
 			if ( targetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( targetObjectType ) );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "setter" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
 			}
 
 			if ( serializer == null && directRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
+				SerializationExceptions.ThrowArgumentException( nameof( directRead ), "directRead cannot be null if serializer argument is null." );
 			}
+
+			var parameter =
+				new UnpackNullableTypeValueParameters<TContext, TValue>
+				{
+					Unpacker = unpacker,
+					UnpackingContext = context,
+					Serializer = serializer,
+					ItemsCount = itemsCount,
+					Unpacked = unpacked,
+					TargetObjectType = targetObjectType,
+					MemberName = memberName,
+					NilImplication = nilImplication,
+					DirectRead = directRead,
+					Setter = setter,
+				};
+			UnpackNullableTypeValue( ref parameter );
+		}
+
+		/// <summary>
+		///		Unpacks the nullable type value from MessagePack stream.
+		/// </summary>
+		/// <typeparam name="TContext">The type of the context object which will store deserialized value.</typeparam>
+		/// <typeparam name="TValue">The type of the value.</typeparam>
+		/// <param name="parameter">The reference to <see cref="UnpackNullableTypeValueParameters{TContext, TValue}" /> object.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="UnpackNullableTypeValueParameters{TContext, TValue}.Unpacker" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackNullableTypeValueParameters{TContext, TValue}.UnpackingContext" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackNullableTypeValueParameters{TContext, TValue}.MemberName" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackNullableTypeValueParameters{TContext, TValue}.TargetObjectType" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackNullableTypeValueParameters{TContext, TValue}.Setter" /> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<see cref="UnpackNullableTypeValueParameters{TContext, TValue}.ItemsCount" /> of <paramref name="parameter"/> is negative number.
+		///		Or, <see cref="UnpackNullableTypeValueParameters{TContext, TValue}.Unpacked" /> of <paramref name="parameter"/> is negative number.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		Both of <see cref="UnpackNullableTypeValueParameters{TContext, TValue}.DirectRead" /> 
+		///		and <see cref="UnpackNullableTypeValueParameters{TContext, TValue}.Serializer" /> of <paramref name="parameter"/> are <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static void UnpackNullableTypeValue<TContext, TValue>(
+			ref UnpackNullableTypeValueParameters<TContext, TValue> parameter
+		)
+			where TValue : struct
+		{
+			if ( parameter.Unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+			}
+
+			if ( parameter.UnpackingContext == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+			}
+
+			if ( parameter.ItemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+			}
+
+			if ( parameter.Unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+			}
+
+			if ( parameter.TargetObjectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.TargetObjectType ) );
+			}
+
+			if ( parameter.MemberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+			}
+
+			if ( parameter.Setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+			}
+
+			if ( parameter.Serializer == null && parameter.DirectRead == null )
+			{
+				SerializationExceptions.ThrowArgumentException( nameof( parameter ), "DirectRead cannot be null if Serializer field is null." );
+			}
+			
+			UnpackNullableTypeValueCore(
+				parameter.Unpacker,
+				parameter.UnpackingContext,
+				parameter.Serializer,
+				parameter.ItemsCount,
+				parameter.Unpacked,
+				parameter.TargetObjectType,
+				parameter.MemberName,
+				parameter.NilImplication,
+				parameter.DirectRead,
+				parameter.Setter
+			);
+		}
+
+		private static void UnpackNullableTypeValueCore<TContext, TValue>(
+			Unpacker unpacker, TContext context, MessagePackSerializer<TValue?> serializer,
+			int itemsCount, int unpacked,
+			Type targetObjectType, string memberName,
+			NilImplication nilImplication,
+			Func<Unpacker, Type, string, TValue?> directRead, Action<TContext, TValue?> setter
+		)
+			where TValue : struct
+		{
 
 #if ASSERT
 			Contract.Assert( unpacker != null );
@@ -736,17 +1378,31 @@ namespace MsgPack.Serialization
 		/// <param name="targetObjectType">Type of the target object for debugging message.</param>
 		/// <param name="memberName">Name of the member for debugging message.</param>
 		/// <param name="nilImplication">The nil implication of current item.</param>
-		/// <param name="directRead">The delegate which referes direct reading. This parameter should be <c>null</c> when <paramref name="serializer" /> is specified.</param>
+		/// <param name="directRead">The delegate which refers direct reading. This parameter should be <c>null</c> when <paramref name="serializer" /> is specified.</param>
 		/// <param name="setter">The delegate which takes <paramref name="context" /> and unpacked value, and then set the value to the context.</param>
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
 		///	<returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or, <paramref name="context"/> is <c>null</c>.
+		///		Or, <paramref name="memberName"/> is <c>null</c>.
+		///		Or, <paramref name="targetObjectType"/> is <c>null</c>.
+		///		Or, <paramref name="setter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="itemsCount"/> is negative number.
+		///		Or, <paramref name="unpacked"/> is negative number.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		Both of <paramref name="directRead"/> and <paramref name="serializer" /> are <c>null</c>.
+		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "9", Justification = "False positive because never reached." )]
-		public static async Task UnpackNullableTypeValueAsync<TContext, TValue>(
+		public static Task UnpackNullableTypeValueAsync<TContext, TValue>(
 			Unpacker unpacker, TContext context, MessagePackSerializer<TValue?> serializer,
 			int itemsCount, int unpacked,
 			Type targetObjectType, string memberName,
@@ -757,43 +1413,156 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "context" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
 			}
 
 			if ( targetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( targetObjectType ) );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "setter" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
 			}
 
 			if ( serializer == null && directRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
+				SerializationExceptions.ThrowArgumentException( nameof( directRead ), "directRead cannot be null if serializer argument is null." );
 			}
+
+			var parameter =
+				new UnpackNullableTypeValueAsyncParameters<TContext, TValue>
+				{
+					Unpacker = unpacker,
+					UnpackingContext = context,
+					Serializer = serializer,
+					ItemsCount = itemsCount,
+					Unpacked = unpacked,
+					TargetObjectType = targetObjectType,
+					MemberName = memberName,
+					NilImplication = nilImplication,
+					DirectRead = directRead,
+					Setter = setter,
+					CancellationToken = cancellationToken
+				};
+			return UnpackNullableTypeValueAsync( ref parameter );
+		}
+
+		/// <summary>
+		///		Unpacks the nullable type value from MessagePack stream asyncronously.
+		/// </summary>
+		/// <typeparam name="TContext">The type of the context object which will store deserialized value.</typeparam>
+		/// <typeparam name="TValue">The type of the value.</typeparam>
+		/// <param name="parameter">The reference to <see cref="UnpackNullableTypeValueAsyncParameters{TContext, TValue}" /> object.</param>
+		///	<returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="UnpackNullableTypeValueAsyncParameters{TContext, TValue}.Unpacker" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackNullableTypeValueAsyncParameters{TContext, TValue}.UnpackingContext" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackNullableTypeValueAsyncParameters{TContext, TValue}.MemberName" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackNullableTypeValueAsyncParameters{TContext, TValue}.TargetObjectType" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackNullableTypeValueAsyncParameters{TContext, TValue}.Setter" /> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<see cref="UnpackNullableTypeValueAsyncParameters{TContext, TValue}.ItemsCount" /> of <paramref name="parameter"/> is negative number.
+		///		Or, <see cref="UnpackNullableTypeValueAsyncParameters{TContext, TValue}.Unpacked" /> of <paramref name="parameter"/> is negative number.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		Both of <see cref="UnpackNullableTypeValueAsyncParameters{TContext, TValue}.DirectRead" /> 
+		///		and <see cref="UnpackNullableTypeValueAsyncParameters{TContext, TValue}.Serializer" /> of <paramref name="parameter"/> are <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static Task UnpackNullableTypeValueAsync<TContext, TValue>(
+			ref UnpackNullableTypeValueAsyncParameters<TContext, TValue> parameter
+		)
+			where TValue : struct
+		{
+			if ( parameter.Unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+			}
+
+			if ( parameter.UnpackingContext == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+			}
+
+			if ( parameter.ItemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+			}
+
+			if ( parameter.Unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+			}
+
+			if ( parameter.TargetObjectType == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.TargetObjectType ) );
+			}
+
+			if ( parameter.MemberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+			}
+
+			if ( parameter.Setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+			}
+
+			if ( parameter.Serializer == null && parameter.DirectRead == null )
+			{
+				SerializationExceptions.ThrowArgumentException( nameof( parameter ), "DirectRead cannot be null if Serializer field is null." );
+			}
+			
+			return UnpackNullableTypeValueAsyncCore(
+				parameter.Unpacker,
+				parameter.UnpackingContext,
+				parameter.Serializer,
+				parameter.ItemsCount,
+				parameter.Unpacked,
+				parameter.TargetObjectType,
+				parameter.MemberName,
+				parameter.NilImplication,
+				parameter.DirectRead,
+				parameter.Setter
+				, parameter.CancellationToken
+			);
+		}
+
+		private static async Task UnpackNullableTypeValueAsyncCore<TContext, TValue>(
+			Unpacker unpacker, TContext context, MessagePackSerializer<TValue?> serializer,
+			int itemsCount, int unpacked,
+			Type targetObjectType, string memberName,
+			NilImplication nilImplication,
+			Func<Unpacker, Type, string, CancellationToken, Task<TValue?>> directRead, Action<TContext, TValue?> setter, CancellationToken cancellationToken
+		)
+			where TValue : struct
+		{
 
 #if ASSERT
 			Contract.Assert( unpacker != null );
@@ -840,6 +1609,7 @@ namespace MsgPack.Serialization
 
 #endif // FEATURE_TAP
 
+
 		/// <summary>
 		///		Unpacks the <see cref="MessagePackObject" /> value from MessagePack array.
 		/// </summary>
@@ -851,6 +1621,16 @@ namespace MsgPack.Serialization
 		/// <param name="memberName">Name of the member for debugging message.</param>
 		/// <param name="nilImplication">The nil implication of current item.</param>
 		/// <param name="setter">The delegate which takes <paramref name="context" /> and unpacked value, and then set the value to the context.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or, <paramref name="context"/> is <c>null</c>.
+		///		Or, <paramref name="memberName"/> is <c>null</c>.
+		///		Or, <paramref name="setter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="itemsCount"/> is negative number.
+		///		Or, <paramref name="unpacked"/> is negative number.
+		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
@@ -868,77 +1648,47 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "context" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "setter" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
 			}
 
-#if ASSERT
-			Contract.Assert( unpacker != null );
-			Contract.Assert( context != null );
-			Contract.Assert( itemsCount >= 0 );
-			Contract.Assert( unpacked >= 0 );
-			Contract.Assert( memberName != null );
-			Contract.Assert( setter != null );
-#endif // ASSERT
-
-			MessagePackObject nullable;
-			if ( unpacked < itemsCount )
-			{
-				if ( !unpacker.Read() )
+			var parameter =
+				new UnpackMessagePackObjectValueParameters<TContext>
 				{
-					SerializationExceptions.ThrowMissingItem( unpacked, unpacker );
-				}
-
-				nullable = unpacker.LastReadData;
-			}
-			else
-			{
-				nullable = MessagePackObject.Nil;
-			}
-
-			if ( nullable.IsNil )
-			{
-				switch ( nilImplication )
-				{
-					case NilImplication.Prohibit:
-					{
-						SerializationExceptions.ThrowNullIsProhibited( memberName );
-						break;
-					}
-					case NilImplication.MemberDefault:
-					{
-						return;
-					}
-				}
-			}
-
-			setter( context, nullable );
+					Unpacker = unpacker,
+					UnpackingContext = context,
+					ItemsCount = itemsCount,
+					Unpacked = unpacked,
+					MemberName = memberName,
+					Setter = setter,
+					NilImplication = nilImplication,
+				};
+			UnpackMessagePackObjectValue( ref parameter );
 		}
-
 #if FEATURE_TAP
 
 		/// <summary>
@@ -954,6 +1704,16 @@ namespace MsgPack.Serialization
 		/// <param name="setter">The delegate which takes <paramref name="context" /> and unpacked value, and then set the value to the context.</param>
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
 		///	<returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or, <paramref name="context"/> is <c>null</c>.
+		///		Or, <paramref name="memberName"/> is <c>null</c>.
+		///		Or, <paramref name="setter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="itemsCount"/> is negative number.
+		///		Or, <paramref name="unpacked"/> is negative number.
+		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
@@ -962,7 +1722,7 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "False positive because never reached." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "6", Justification = "False positive because never reached." )]
-		public static async Task UnpackMessagePackObjectValueFromArrayAsync<TContext>(
+		public static Task UnpackMessagePackObjectValueFromArrayAsync<TContext>(
 			Unpacker unpacker, TContext context,
 			int itemsCount, int unpacked,
 			string memberName, NilImplication nilImplication,
@@ -971,78 +1731,50 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "context" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "setter" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
 			}
 
-#if ASSERT
-			Contract.Assert( unpacker != null );
-			Contract.Assert( context != null );
-			Contract.Assert( itemsCount >= 0 );
-			Contract.Assert( unpacked >= 0 );
-			Contract.Assert( memberName != null );
-			Contract.Assert( setter != null );
-#endif // ASSERT
-
-			MessagePackObject nullable;
-			if ( unpacked < itemsCount )
-			{
-				if ( !( await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
+			var parameter =
+				new UnpackMessagePackObjectValueAsyncParameters<TContext>
 				{
-					SerializationExceptions.ThrowMissingItem( unpacked, unpacker );
-				}
-
-				nullable = unpacker.LastReadData;
-			}
-			else
-			{
-				nullable = MessagePackObject.Nil;
-			}
-
-			if ( nullable.IsNil )
-			{
-				switch ( nilImplication )
-				{
-					case NilImplication.Prohibit:
-					{
-						SerializationExceptions.ThrowNullIsProhibited( memberName );
-						break;
-					}
-					case NilImplication.MemberDefault:
-					{
-						return;
-					}
-				}
-			}
-
-			setter( context, nullable );
+					Unpacker = unpacker,
+					UnpackingContext = context,
+					ItemsCount = itemsCount,
+					Unpacked = unpacked,
+					MemberName = memberName,
+					Setter = setter,
+					NilImplication = nilImplication,
+					CancellationToken = cancellationToken
+				};
+			return UnpackMessagePackObjectValueAsync( ref parameter );
 		}
-
 #endif // FEATURE_TAP
+
 
 		/// <summary>
 		///		Unpacks the <see cref="MessagePackObject" /> value from MessagePack map.
@@ -1055,6 +1787,16 @@ namespace MsgPack.Serialization
 		/// <param name="memberName">Name of the member for debugging message.</param>
 		/// <param name="nilImplication">The nil implication of current item.</param>
 		/// <param name="setter">The delegate which takes <paramref name="context" /> and unpacked value, and then set the value to the context.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or, <paramref name="context"/> is <c>null</c>.
+		///		Or, <paramref name="memberName"/> is <c>null</c>.
+		///		Or, <paramref name="setter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="itemsCount"/> is negative number.
+		///		Or, <paramref name="unpacked"/> is negative number.
+		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
@@ -1072,37 +1814,207 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "context" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "memberName" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "setter" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
 			}
 
+			var parameter =
+				new UnpackMessagePackObjectValueParameters<TContext>
+				{
+					Unpacker = unpacker,
+					UnpackingContext = context,
+					ItemsCount = itemsCount,
+					Unpacked = unpacked,
+					MemberName = memberName,
+					Setter = setter,
+					NilImplication = nilImplication,
+				};
+			UnpackMessagePackObjectValue( ref parameter );
+		}
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Unpacks the <see cref="MessagePackObject" /> value from MessagePack map asyncronously.
+		/// </summary>
+		/// <typeparam name="TContext">The type of the context object which will store deserialized value.</typeparam>
+		/// <param name="unpacker">The unpacker.</param>
+		/// <param name="context">The context which will store deserialized value.</param>
+		/// <param name="itemsCount">The items count to be unpacked.</param>
+		/// <param name="unpacked">The unpacked items count.</param>
+		/// <param name="memberName">Name of the member for debugging message.</param>
+		/// <param name="nilImplication">The nil implication of current item.</param>
+		/// <param name="setter">The delegate which takes <paramref name="context" /> and unpacked value, and then set the value to the context.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		///	<returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or, <paramref name="context"/> is <c>null</c>.
+		///		Or, <paramref name="memberName"/> is <c>null</c>.
+		///		Or, <paramref name="setter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="itemsCount"/> is negative number.
+		///		Or, <paramref name="unpacked"/> is negative number.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "6", Justification = "False positive because never reached." )]
+		public static Task UnpackMessagePackObjectValueFromMapAsync<TContext>(
+			Unpacker unpacker, TContext context,
+			int itemsCount, int unpacked,
+			string memberName, NilImplication nilImplication,
+			Action<TContext, MessagePackObject> setter, CancellationToken cancellationToken
+		)
+		{
+			if ( unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+			}
+
+			if ( context == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
+			}
+
+			if ( itemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
+			}
+
+			if ( unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
+			}
+
+			if ( memberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
+			}
+
+			if ( setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
+			}
+
+			var parameter =
+				new UnpackMessagePackObjectValueAsyncParameters<TContext>
+				{
+					Unpacker = unpacker,
+					UnpackingContext = context,
+					ItemsCount = itemsCount,
+					Unpacked = unpacked,
+					MemberName = memberName,
+					Setter = setter,
+					NilImplication = nilImplication,
+					CancellationToken = cancellationToken
+				};
+			return UnpackMessagePackObjectValueAsync( ref parameter );
+		}
+#endif // FEATURE_TAP
+
+
+		/// <summary>
+		///		Unpacks the <see cref="MessagePackObject" /> value from MessagePack stream.
+		/// </summary>
+		/// <typeparam name="TContext">The type of the context object which will store deserialized value.</typeparam>
+		/// <param name="parameter">The reference to <see cref="UnpackMessagePackObjectValueParameters{T}" /> object.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="UnpackMessagePackObjectValueParameters{TContext}.Unpacker" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackMessagePackObjectValueParameters{TContext}.UnpackingContext" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackMessagePackObjectValueParameters{TContext}.MemberName" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackMessagePackObjectValueParameters{TContext}.Setter" /> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<see cref="UnpackMessagePackObjectValueParameters{TContext}.ItemsCount" /> of <paramref name="parameter"/> is negative number.
+		///		Or, <see cref="UnpackMessagePackObjectValueParameters{TContext}.Unpacked" /> of <paramref name="parameter"/> is negative number.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static void UnpackMessagePackObjectValue<TContext>(
+			ref UnpackMessagePackObjectValueParameters<TContext> parameter
+		)
+		{
+			if ( parameter.Unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+			}
+
+			if ( parameter.UnpackingContext == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+			}
+
+			if ( parameter.ItemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+			}
+
+			if ( parameter.Unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+			}
+
+			if ( parameter.MemberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+			}
+
+			if ( parameter.Setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+			}
+
+			UnpackMessagePackObjectValueCore(
+					parameter.Unpacker,
+					parameter.UnpackingContext,
+					parameter.ItemsCount,
+					parameter.Unpacked,
+					parameter.MemberName,
+					parameter.NilImplication,
+					parameter.Setter
+				);
+		}
+
+		private static void UnpackMessagePackObjectValueCore<TContext>(
+			Unpacker unpacker, TContext unpackingContext,
+			int itemsCount, int unpacked,
+			string memberName, NilImplication nilImplication,
+			Action<TContext, MessagePackObject> setter
+		)
+		{
 #if ASSERT
 			Contract.Assert( unpacker != null );
-			Contract.Assert( context != null );
+			Contract.Assert( unpackingContext != null );
 			Contract.Assert( itemsCount >= 0 );
 			Contract.Assert( unpacked >= 0 );
 			Contract.Assert( memberName != null );
@@ -1140,72 +2052,86 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			setter( context, nullable );
+			setter( unpackingContext, nullable );
 		}
 
 #if FEATURE_TAP
 
 		/// <summary>
-		///		Unpacks the <see cref="MessagePackObject" /> value from MessagePack map asyncronously.
+		///		Unpacks the <see cref="MessagePackObject" /> value from MessagePack stream asyncronously.
 		/// </summary>
 		/// <typeparam name="TContext">The type of the context object which will store deserialized value.</typeparam>
-		/// <param name="unpacker">The unpacker.</param>
-		/// <param name="context">The context which will store deserialized value.</param>
-		/// <param name="itemsCount">The items count to be unpacked.</param>
-		/// <param name="unpacked">The unpacked items count.</param>
-		/// <param name="memberName">Name of the member for debugging message.</param>
-		/// <param name="nilImplication">The nil implication of current item.</param>
-		/// <param name="setter">The delegate which takes <paramref name="context" /> and unpacked value, and then set the value to the context.</param>
-		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="T:CancellationToken.None"/>.</param>
+		/// <param name="parameter">The reference to <see cref="UnpackMessagePackObjectValueAsyncParameters{T}" /> object.</param>
 		///	<returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="UnpackMessagePackObjectValueAsyncParameters{TContext}.Unpacker" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackMessagePackObjectValueAsyncParameters{TContext}.UnpackingContext" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackMessagePackObjectValueAsyncParameters{TContext}.MemberName" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackMessagePackObjectValueAsyncParameters{TContext}.Setter" /> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<see cref="UnpackMessagePackObjectValueAsyncParameters{TContext}.ItemsCount" /> of <paramref name="parameter"/> is negative number.
+		///		Or, <see cref="UnpackMessagePackObjectValueAsyncParameters{TContext}.Unpacked" /> of <paramref name="parameter"/> is negative number.
+		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "False positive because never reached." )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "False positive because never reached." )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "6", Justification = "False positive because never reached." )]
-		public static async Task UnpackMessagePackObjectValueFromMapAsync<TContext>(
-			Unpacker unpacker, TContext context,
+		public static Task UnpackMessagePackObjectValueAsync<TContext>(
+			ref UnpackMessagePackObjectValueAsyncParameters<TContext> parameter
+		)
+		{
+			if ( parameter.Unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+			}
+
+			if ( parameter.UnpackingContext == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+			}
+
+			if ( parameter.ItemsCount < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+			}
+
+			if ( parameter.Unpacked < 0 )
+			{
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+			}
+
+			if ( parameter.MemberName == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+			}
+
+			if ( parameter.Setter == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+			}
+
+			return UnpackMessagePackObjectValueAsyncCore(
+					parameter.Unpacker,
+					parameter.UnpackingContext,
+					parameter.ItemsCount,
+					parameter.Unpacked,
+					parameter.MemberName,
+					parameter.NilImplication,
+					parameter.Setter
+					, parameter.CancellationToken
+				);
+		}
+
+		private static async Task UnpackMessagePackObjectValueAsyncCore<TContext>(
+			Unpacker unpacker, TContext unpackingContext,
 			int itemsCount, int unpacked,
 			string memberName, NilImplication nilImplication,
 			Action<TContext, MessagePackObject> setter, CancellationToken cancellationToken
 		)
 		{
-			if ( unpacker == null )
-			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
-			}
-
-			if ( context == null )
-			{
-				SerializationExceptions.ThrowArgumentNullException( "context" );
-			}
-
-			if ( itemsCount < 0 )
-			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
-			}
-
-			if ( unpacked < 0 )
-			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
-			}
-
-			if ( memberName == null )
-			{
-				SerializationExceptions.ThrowArgumentNullException( "memberName" );
-			}
-
-			if ( setter == null )
-			{
-				SerializationExceptions.ThrowArgumentNullException( "setter" );
-			}
-
 #if ASSERT
 			Contract.Assert( unpacker != null );
-			Contract.Assert( context != null );
+			Contract.Assert( unpackingContext != null );
 			Contract.Assert( itemsCount >= 0 );
 			Contract.Assert( unpacked >= 0 );
 			Contract.Assert( memberName != null );
@@ -1243,10 +2169,11 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			setter( context, nullable );
+			setter( unpackingContext, nullable );
 		}
 
 #endif // FEATURE_TAP
+
 
 		/// <summary>
 		///		Unpacks object from msgpack array.
@@ -1256,7 +2183,7 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker.</param>
 		/// <param name="context">The context which holds intermediate states. This value may be <c>null</c> when the caller implementation allows it.</param>
 		/// <param name="factory">A delegate to the factory method which creates the result from the context.</param>
-		/// <param name="itemNames">The names of the membesr for pretty exception.</param>
+		/// <param name="itemNames">The names of the members for pretty exception message.</param>
 		/// <param name="operations">
 		///		Delegates each ones unpack single member in order.
 		///		The 1st argument will be <paramref name="unpacker"/>, 2nd argument will be <paramref name="context"/>,
@@ -1287,18 +2214,84 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
 			if ( factory == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "factory" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( factory ) );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "operations" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
 			}
+
+			var parameter =
+				new UnpackFromArrayParameters<TContext, TResult>
+				{
+					Unpacker = unpacker,
+					UnpackingContext = context,
+					Factory = factory,
+					ItemNames = itemNames,
+					Operations = operations,
+				};
+			return UnpackFromArray( ref parameter );
+		}
+
+		/// <summary>
+		///		Unpacks object from msgpack array.
+		/// </summary>
+		/// <typeparam name="TContext">The type of the context.</typeparam>
+		/// <typeparam name="TResult">The type of the unpacked object.</typeparam>
+		/// <param name="parameter">The reference to <see cref="UnpackFromArrayParameters{TContext, TResult}" /> object.</param>
+		/// <returns>
+		///		An unpacked object.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="UnpackFromArrayParameters{TContext, TResult}.Unpacker" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackFromArrayParameters{TContext, TResult}.Factory" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackFromArrayParameters{TContext, TResult}.Operations" /> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static TResult UnpackFromArray<TContext, TResult>(
+			ref UnpackFromArrayParameters<TContext, TResult> parameter
+		)
+		{
+			if ( parameter.Unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+			}
+
+			if ( parameter.Factory == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Factory ) );
+			}
+
+			if ( parameter.Operations == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
+			}
+
+			return 
+				UnpackFromArrayCore(
+					parameter.Unpacker,
+					parameter.UnpackingContext,
+					parameter.Factory,
+					parameter.ItemNames,
+					parameter.Operations
+				);
+		}
+
+		private static TResult UnpackFromArrayCore<TContext, TResult>(
+			Unpacker unpacker, TContext unpackingContext,
+			Func<TContext, TResult> factory, 
+			IList<string> itemNames,
+			IList<Action<Unpacker, TContext, int, int>> operations
+		)
+		{
 #if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( factory != null );
@@ -1314,7 +2307,7 @@ namespace MsgPack.Serialization
 			var limit = Math.Min( count, operations.Count );
 			for ( var i = 0; i < limit; i++ )
 			{
-				operations[ i ]( unpacker, context, i, count );
+				operations[ i ]( unpacker, unpackingContext, i, count );
 				Trace( ctx, "ReadItem", unpacker, i, itemNames );
 			}
 
@@ -1326,7 +2319,7 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			return factory( context );
+			return factory( unpackingContext );
 		}
 
 #if FEATURE_TAP
@@ -1339,7 +2332,7 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker.</param>
 		/// <param name="context">The context which holds intermediate states. This value may be <c>null</c> when the caller implementation allows it.</param>
 		/// <param name="factory">A delegate to the factory method which creates the result from the context.</param>
-		/// <param name="itemNames">The names of the membesr for pretty exception.</param>
+		/// <param name="itemNames">The names of the members for pretty exception message.</param>
 		/// <param name="operations">
 		///		Delegates each ones unpack single member in order.
 		///		The 1st argument will be <paramref name="unpacker"/>, 2nd argument will be <paramref name="context"/>,
@@ -1364,7 +2357,7 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "False positive because never reached." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemNames", Justification = "For tracing." )]
-		public static async Task<TResult> UnpackFromArrayAsync<TContext, TResult>(
+		public static Task<TResult> UnpackFromArrayAsync<TContext, TResult>(
 			Unpacker unpacker, TContext context,
 			Func<TContext, TResult> factory, 
 			IList<string> itemNames,
@@ -1373,18 +2366,88 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
 			if ( factory == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "factory" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( factory ) );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "operations" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
 			}
+
+			var parameter =
+				new UnpackFromArrayAsyncParameters<TContext, TResult>
+				{
+					Unpacker = unpacker,
+					UnpackingContext = context,
+					Factory = factory,
+					ItemNames = itemNames,
+					Operations = operations,
+					CancellationToken = cancellationToken
+				};
+			return UnpackFromArrayAsync( ref parameter );
+		}
+
+		/// <summary>
+		///		Unpacks object from msgpack array asyncronously.
+		/// </summary>
+		/// <typeparam name="TContext">The type of the context.</typeparam>
+		/// <typeparam name="TResult">The type of the unpacked object.</typeparam>
+		/// <param name="parameter">The reference to <see cref="UnpackFromArrayAsyncParameters{TContext, TResult}" /> object.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked object.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="UnpackFromArrayAsyncParameters{TContext, TResult}.Unpacker" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackFromArrayAsyncParameters{TContext, TResult}.Factory" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackFromArrayAsyncParameters{TContext, TResult}.Operations" /> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static Task<TResult> UnpackFromArrayAsync<TContext, TResult>(
+			ref UnpackFromArrayAsyncParameters<TContext, TResult> parameter
+		)
+		{
+			if ( parameter.Unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+			}
+
+			if ( parameter.Factory == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Factory ) );
+			}
+
+			if ( parameter.Operations == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
+			}
+
+			return 
+				UnpackFromArrayAsyncCore(
+					parameter.Unpacker,
+					parameter.UnpackingContext,
+					parameter.Factory,
+					parameter.ItemNames,
+					parameter.Operations
+					, parameter.CancellationToken
+				);
+		}
+
+		private static async Task<TResult> UnpackFromArrayAsyncCore<TContext, TResult>(
+			Unpacker unpacker, TContext unpackingContext,
+			Func<TContext, TResult> factory, 
+			IList<string> itemNames,
+			IList<Func<Unpacker, TContext, int, int, CancellationToken, Task>> operations, CancellationToken cancellationToken
+		)
+		{
 #if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( factory != null );
@@ -1400,7 +2463,7 @@ namespace MsgPack.Serialization
 			var limit = Math.Min( count, operations.Count );
 			for ( var i = 0; i < limit; i++ )
 			{
-				await operations[ i ]( unpacker, context, i, count, cancellationToken ).ConfigureAwait( false );
+				await operations[ i ]( unpacker, unpackingContext, i, count, cancellationToken ).ConfigureAwait( false );
 				Trace( ctx, "ReadItem", unpacker, i, itemNames );
 			}
 
@@ -1412,13 +2475,14 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			return factory( context );
+			return factory( unpackingContext );
 		}
 
 #endif // FEATURE_TAP
 
+
 		/// <summary>
-		///		Unpacks object from msgpack array.
+		///		Unpacks object from msgpack map.
 		/// </summary>
 		/// <typeparam name="TContext">The type of the context.</typeparam>
 		/// <typeparam name="TResult">The type of the unpacked object.</typeparam>
@@ -1454,18 +2518,81 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
 			if ( factory == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "factory" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( factory ) );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "operations" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
 			}
+
+			var parameter =
+				new UnpackFromMapParameters<TContext, TResult>
+				{
+					Unpacker = unpacker,
+					UnpackingContext = context,
+					Factory = factory,
+					Operations = operations,
+				};
+			return UnpackFromMap( ref parameter );
+		}
+
+		/// <summary>
+		///		Unpacks object from msgpack map.
+		/// </summary>
+		/// <typeparam name="TContext">The type of the context.</typeparam>
+		/// <typeparam name="TResult">The type of the unpacked object.</typeparam>
+		/// <param name="parameter">The reference to <see cref="UnpackFromMapParameters{TContext, TResult}" /> object.</param>
+		/// <returns>
+		///		An unpacked object.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="UnpackFromMapParameters{TContext, TResult}.Unpacker" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackFromMapParameters{TContext, TResult}.Factory" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackFromMapParameters{TContext, TResult}.Operations" /> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static TResult UnpackFromMap<TContext, TResult>(
+			ref UnpackFromMapParameters<TContext, TResult> parameter
+		)
+		{
+			if ( parameter.Unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+			}
+
+			if ( parameter.Factory == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Factory ) );
+			}
+
+			if ( parameter.Operations == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
+			}
+
+			return 
+				UnpackFromMapCore(
+					parameter.Unpacker,
+					parameter.UnpackingContext,
+					parameter.Factory,
+					parameter.Operations
+				);
+		}
+
+		private static TResult UnpackFromMapCore<TContext, TResult>(
+			Unpacker unpacker, TContext unpackingContext,
+			Func<TContext, TResult> factory, 
+			IDictionary<string, Action<Unpacker, TContext, int, int>> operations
+		)
+		{
 #if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( factory != null );
@@ -1487,7 +2614,7 @@ namespace MsgPack.Serialization
 				Action<Unpacker, TContext, int, int> operation;
 				if ( key != null && operations.TryGetValue( key, out operation ) )
 				{
-					operation( unpacker, context, i, count );
+					operation( unpacker, unpackingContext, i, count );
 					Trace( ctx, "ReadValue", unpacker, i, key );
 				}
 				else
@@ -1506,13 +2633,13 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			return factory( context );
+			return factory( unpackingContext );
 		}
 
 #if FEATURE_TAP
 
 		/// <summary>
-		///		Unpacks object from msgpack array asyncronously.
+		///		Unpacks object from msgpack map asyncronously.
 		/// </summary>
 		/// <typeparam name="TContext">The type of the context.</typeparam>
 		/// <typeparam name="TResult">The type of the unpacked object.</typeparam>
@@ -1543,7 +2670,7 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "False positive because never reached." )]
-		public static async Task<TResult> UnpackFromMapAsync<TContext, TResult>(
+		public static Task<TResult> UnpackFromMapAsync<TContext, TResult>(
 			Unpacker unpacker, TContext context,
 			Func<TContext, TResult> factory, 
 			IDictionary<string, Func<Unpacker, TContext, int, int, CancellationToken, Task>> operations, CancellationToken cancellationToken
@@ -1551,18 +2678,85 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
 			if ( factory == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "factory" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( factory ) );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "operations" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
 			}
+
+			var parameter =
+				new UnpackFromMapAsyncParameters<TContext, TResult>
+				{
+					Unpacker = unpacker,
+					UnpackingContext = context,
+					Factory = factory,
+					Operations = operations,
+					CancellationToken = cancellationToken
+				};
+			return UnpackFromMapAsync( ref parameter );
+		}
+
+		/// <summary>
+		///		Unpacks object from msgpack map asyncronously.
+		/// </summary>
+		/// <typeparam name="TContext">The type of the context.</typeparam>
+		/// <typeparam name="TResult">The type of the unpacked object.</typeparam>
+		/// <param name="parameter">The reference to <see cref="UnpackFromMapAsyncParameters{TContext, TResult}" /> object.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked object.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="UnpackFromMapAsyncParameters{TContext, TResult}.Unpacker" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackFromMapAsyncParameters{TContext, TResult}.Factory" /> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="UnpackFromMapAsyncParameters{TContext, TResult}.Operations" /> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static Task<TResult> UnpackFromMapAsync<TContext, TResult>(
+			ref UnpackFromMapAsyncParameters<TContext, TResult> parameter
+		)
+		{
+			if ( parameter.Unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+			}
+
+			if ( parameter.Factory == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Factory ) );
+			}
+
+			if ( parameter.Operations == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
+			}
+
+			return 
+				UnpackFromMapAsyncCore(
+					parameter.Unpacker,
+					parameter.UnpackingContext,
+					parameter.Factory,
+					parameter.Operations
+					, parameter.CancellationToken
+				);
+		}
+
+		private static async Task<TResult> UnpackFromMapAsyncCore<TContext, TResult>(
+			Unpacker unpacker, TContext unpackingContext,
+			Func<TContext, TResult> factory, 
+			IDictionary<string, Func<Unpacker, TContext, int, int, CancellationToken, Task>> operations, CancellationToken cancellationToken
+		)
+		{
 #if ASSERT
 			Contract.Assert( unpacker != null );
 			Contract.Assert( factory != null );
@@ -1584,7 +2778,7 @@ namespace MsgPack.Serialization
 				Func<Unpacker, TContext, int, int, CancellationToken, Task> operation;
 				if ( key != null && operations.TryGetValue( key, out operation ) )
 				{
-					await operation( unpacker, context, i, count, cancellationToken ).ConfigureAwait( false );
+					await operation( unpacker, unpackingContext, i, count, cancellationToken ).ConfigureAwait( false );
 					Trace( ctx, "ReadValue", unpacker, i, key );
 				}
 				else
@@ -1603,7 +2797,7 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			return factory( context );
+			return factory( unpackingContext );
 		}
 
 #endif // FEATURE_TAP
@@ -1636,13 +2830,70 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "False positive because never reached." )]
-		public static T UnpackCollection<T>( Unpacker unpacker, int itemsCount, T collection, Action<Unpacker, T, int> bulkOperation, Action<Unpacker, T, int, int> eachOperation )
+		public static T UnpackCollection<T>(
+			Unpacker unpacker, int itemsCount, T collection, Action<Unpacker, T, int> bulkOperation, Action<Unpacker, T, int, int> eachOperation
+		)
 		{
-			if ( collection == null )
+			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "collection" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
+			if ( collection == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( collection ) );
+			}
+
+			var parameters =
+				new UnpackCollectionParameters<T>
+				{
+					Unpacker = unpacker,
+					ItemsCount = itemsCount,
+					Collection = collection,
+					BulkOperation = bulkOperation,
+					EachOperation = eachOperation,
+				};
+			return UnpackCollection( ref parameters );
+		}
+		/// <summary>
+		///		Unpacks the collection from MessagePack stream.
+		/// </summary>
+		/// <typeparam name="T">The type of the collection to be unpacked.</typeparam>
+		/// <param name="parameter">The reference to <see cref="UnpackCollectionParameters{T}" /> object.</param>
+		/// <returns>
+		///		An unpacked collection.
+		/// </returns>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static T UnpackCollection<T>(
+			ref UnpackCollectionParameters<T> parameter
+		)
+		{
+			if ( parameter.Unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+			}
+
+			if ( parameter.Collection == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Collection ) );
+			}
+
+			return 
+				UnpackCollectionCore(
+					parameter.Unpacker,
+					parameter.ItemsCount,
+					parameter.Collection,
+					parameter.BulkOperation,
+					parameter.EachOperation
+				);
+		}
+
+		private static T UnpackCollectionCore<T>(
+			Unpacker unpacker, int itemsCount, T collection, Action<Unpacker, T, int> bulkOperation, Action<Unpacker, T, int, int> eachOperation
+		)
+		{
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );
@@ -1677,7 +2928,7 @@ namespace MsgPack.Serialization
 #if FEATURE_TAP
 
 		/// <summary>
-		///		Unpacks the collection from MessagePack stream.
+		///		Unpacks the collection from MessagePack stream asyncronously.
 		/// </summary>
 		/// <typeparam name="T">The type of the collection to be unpacked.</typeparam>
 		/// <param name="unpacker">The unpacker where position is located at array or map header.</param>
@@ -1707,13 +2958,74 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "False positive because never reached." )]
-		public static async Task<T> UnpackCollectionAsync<T>( Unpacker unpacker, int itemsCount, T collection, Func<Unpacker, T, int, CancellationToken, Task> bulkOperation, Func<Unpacker, T, int, int, CancellationToken, Task> eachOperation, CancellationToken cancellationToken )
+		public static Task<T> UnpackCollectionAsync<T>(
+			Unpacker unpacker, int itemsCount, T collection, Func<Unpacker, T, int, CancellationToken, Task> bulkOperation, Func<Unpacker, T, int, int, CancellationToken, Task> eachOperation, CancellationToken cancellationToken
+		)
 		{
-			if ( collection == null )
+			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "collection" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
 			}
 
+			if ( collection == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( collection ) );
+			}
+
+			var parameters =
+				new UnpackCollectionAsyncParameters<T>
+				{
+					Unpacker = unpacker,
+					ItemsCount = itemsCount,
+					Collection = collection,
+					BulkOperation = bulkOperation,
+					EachOperation = eachOperation,
+					CancellationToken = cancellationToken
+				};
+			return UnpackCollectionAsync( ref parameters );
+		}
+		/// <summary>
+		///		Unpacks the collection from MessagePack stream asyncronously.
+		/// </summary>
+		/// <typeparam name="T">The type of the collection to be unpacked.</typeparam>
+		/// <param name="parameter">The reference to <see cref="UnpackCollectionAsyncParameters{T}" /> object.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an unpacked collection.
+		/// </returns>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static Task<T> UnpackCollectionAsync<T>(
+			ref UnpackCollectionAsyncParameters<T> parameter
+		)
+		{
+			if ( parameter.Unpacker == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+			}
+
+			if ( parameter.Collection == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Collection ) );
+			}
+
+			return 
+				UnpackCollectionAsyncCore(
+					parameter.Unpacker,
+					parameter.ItemsCount,
+					parameter.Collection,
+					parameter.BulkOperation,
+					parameter.EachOperation
+					, parameter.CancellationToken
+				);
+		}
+
+		private static async Task<T> UnpackCollectionAsyncCore<T>(
+			Unpacker unpacker, int itemsCount, T collection, Func<Unpacker, T, int, CancellationToken, Task> bulkOperation, Func<Unpacker, T, int, int, CancellationToken, Task> eachOperation, CancellationToken cancellationToken
+		)
+		{
 			// ReSharper disable once RedundantAssignment
 			var ctx = default( UnpackerTraceContext );
 			InitializeUnpackerTrace( unpacker, ref ctx );

@@ -47,7 +47,7 @@ namespace MsgPack.Serialization.Metadata
 		///		<see cref="UnpackHelpers.UnpackCollection{T}(Unpacker,Int32,T,Action{MsgPack.Unpacker,T,int},Action{MsgPack.Unpacker,T,int,int})"/> generic method.
 		/// </summary>
 		public static readonly MethodInfo UnpackCollection_1Method =
-			typeof( UnpackHelpers ).GetMethod( "UnpackCollection" );
+			typeof( UnpackHelpers ).GetMethods().Single( m => m.Name == "UnpackCollection" && m.GetParameters().Length == 1 );
 
 #if FEATURE_TAP
 
@@ -55,7 +55,7 @@ namespace MsgPack.Serialization.Metadata
 		///		<see cref="UnpackHelpers.UnpackCollectionAsync{T}(Unpacker,int,T,System.Func{Unpacker,T,int,CancellationToken,Task},Func{Unpacker,T,int,int,CancellationToken,Task},CancellationToken)"/> generic method.
 		/// </summary>
 		public static readonly MethodInfo UnpackCollectionAsync_1Method =
-			typeof( UnpackHelpers ).GetMethod( "UnpackCollectionAsync" );
+			typeof( UnpackHelpers ).GetMethods().Single( m => m.Name == "UnpackCollectionAsync" && m.GetParameters().Length == 1 );
 
 		/// <summary>
 		///		<see cref="UnpackHelpers.ToNullable{T}"/> generic method.

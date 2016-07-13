@@ -372,7 +372,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		protected override CodeDomConstruct EmitCreateNewObjectExpression( CodeDomContext context, CodeDomConstruct variable, ConstructorDefinition constructor, params CodeDomConstruct[] arguments )
 		{
 #if DEBUG
-			Contract.Assert( constructor.DeclaringType != null );
+			Contract.Assert( constructor?.DeclaringType != null );
 			Contract.Assert( arguments.All( c => c.IsExpression ), String.Join( ",", arguments.Select( c => c.ToString() ).ToArray() ) );
 #endif
 			return
@@ -383,6 +383,11 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						arguments.Select( a => a.AsExpression() ).ToArray()
 					)
 				);
+		}
+
+		protected override CodeDomConstruct EmitMakeRef( CodeDomContext context, CodeDomConstruct target )
+		{
+			return CodeDomConstruct.Expression( target.ContextType, new CodeDirectionExpression( FieldDirection.Ref, target.AsExpression() ) );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]

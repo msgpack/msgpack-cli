@@ -346,7 +346,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 								context.UnpackingContextInSetValueMethods,
 								unpackedItem
 							),
-						false, // forMap, Tuple must be array
 						isAsync
 					),
 					unpackValueArguments

@@ -68,6 +68,9 @@ namespace MsgPack.Serialization
 		///		<paramref name="packer"/> is <c>null</c>.
 		///		Or, <paramref name="operations"/> is <c>null</c>.
 		/// </exception>
+#if DEBUG
+		[Obsolete( "Use overload with PackToArrayParameters." )]
+#endif // DEBUG
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
@@ -82,30 +85,70 @@ namespace MsgPack.Serialization
 		{
 			if ( packer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "packer" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( packer ) );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "operations" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
+			}
+
+			var parameter =
+				new PackToArrayParameters<TObject>
+				{
+					Packer = packer,
+					Target = target,
+					Operations = operations
+				};
+			PackToArray( ref parameter );
+		}
+
+		/// <summary>
+		///		Packs object to msgpack array.
+		/// </summary>
+		/// <typeparam name="TObject">The type of the packing object.</typeparam>
+		/// <param name="parameter">The reference of <see cref="PackToArrayParameters{T}"/> object which represents parameters of this method.</param>
+		/// <returns>The unpacked object.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="PackToArrayParameters{T}.Packer"/> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="PackToArrayParameters{T}.Operations"/> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates essentially must be nested generic." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
+		public static void PackToArray<TObject>(
+			ref PackToArrayParameters<TObject> parameter
+		)
+		{
+			if ( parameter.Packer == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Packer ) );
+			}
+
+			if ( parameter.Operations == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
 			}
 
 #if ASSERT
-			Contract.Assert( packer != null );
-			Contract.Assert( operations != null );
+			Contract.Assert( parameter.Packer != null );
+			Contract.Assert( parameter.Operations != null );
 #endif // ASSERT
 
-			packer.PackArrayHeader( operations.Count );
-			foreach ( var operation in operations )
+			parameter.Packer.PackArrayHeader( parameter.Operations.Count );
+			foreach ( var operation in parameter.Operations )
 			{
-				operation( packer, target );
+				operation( parameter.Packer, parameter.Target );
 			}
 		}
 
 #if FEATURE_TAP
 
 		/// <summary>
-		///		Packs object to msgpack array.
+		///		Packs object to msgpack array asynchronously.
 		/// </summary>
 		/// <typeparam name="TObject">The type of the packing object.</typeparam>
 		/// <param name="packer">The packer.</param>
@@ -121,12 +164,15 @@ namespace MsgPack.Serialization
 		///		Or, <paramref name="operations"/> is <c>null</c>.
 		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
+#if DEBUG
+		[Obsolete( "Use overload with PackToArrayAsyncParameters." )]
+#endif // DEBUG
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates essentially must be nested generic." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
-		public static async Task PackToArrayAsync<TObject>(
+		public static Task PackToArrayAsync<TObject>(
 			Packer packer,
 			TObject target,
 			IList<Func<Packer, TObject, CancellationToken, Task>> operations,
@@ -135,14 +181,62 @@ namespace MsgPack.Serialization
 		{
 			if ( packer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "packer" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( packer ) );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "operations" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
 			}
 
+			var parameter =
+				new PackToArrayAsyncParameters<TObject>
+				{
+					Packer = packer,
+					Target = target,
+					Operations = operations,
+					CancellationToken = cancellationToken
+				};
+			return PackToArrayAsync( ref parameter );
+		}
+
+		/// <summary>
+		///		Packs object to msgpack array asynchronously.
+		/// </summary>
+		/// <typeparam name="TObject">The type of the packing object.</typeparam>
+		/// <param name="parameter">The reference of <see cref="PackToArrayAsyncParameters{T}"/> object which represents parameters of this method.</param>
+		/// <returns>The unpacked object.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="PackToArrayAsyncParameters{T}.Packer"/> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="PackToArrayAsyncParameters{T}.Operations"/> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static Task PackToArrayAsync<TObject>(
+			ref PackToArrayAsyncParameters<TObject> parameter
+		)
+		{
+			if ( parameter.Packer == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Packer ) );
+			}
+
+			if ( parameter.Operations == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
+			}
+
+			return PackToArrayAsyncCore( parameter.Packer, parameter.Target, parameter.Operations, parameter.CancellationToken );
+		}
+
+		private static async Task PackToArrayAsyncCore<TObject>(
+			Packer packer,
+			TObject target,
+			IList<Func<Packer, TObject, CancellationToken, Task>> operations,
+			CancellationToken cancellationToken
+		)
+		{
 #if ASSERT
 			Contract.Assert( packer != null );
 			Contract.Assert( operations != null );
@@ -171,12 +265,12 @@ namespace MsgPack.Serialization
 		///		<paramref name="packer"/> is <c>null</c>.
 		///		Or, <paramref name="operations"/> is <c>null</c>.
 		/// </exception>
+#if DEBUG
+		[Obsolete( "Use overload with keyTransformer and nullDetectors." )]
+#endif // DEBUG
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates essentially must be nested generic." )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
 		public static void PackToMap<TObject>(
 			Packer packer,
 			TObject target,
@@ -185,31 +279,67 @@ namespace MsgPack.Serialization
 		{
 			if ( packer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( packer ) );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "operations" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
+			}
+
+			var parameter =
+				new PackToMapParameters<TObject>
+				{
+					Packer = packer,
+					Target = target,
+					Operations = operations
+				};
+			PackToMap( ref parameter );
+		}
+
+		/// <summary>
+		///		Packs object to msgpack map.
+		/// </summary>
+		/// <typeparam name="TObject">The type of the packing object.</typeparam>
+		/// <param name="parameter">The reference of <see cref="PackToMapParameters{T}"/> object which represents parameters of this method.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="PackToMapParameters{T}.Packer"/> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="PackToMapParameters{T}.Operations"/> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static void PackToMap<TObject>(
+			ref PackToMapParameters<TObject> parameter
+		)
+		{
+			if ( parameter.Packer == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Packer ) );
+			}
+
+			if ( parameter.Operations == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
 			}
 
 #if ASSERT
-			Contract.Assert( packer != null );
-			Contract.Assert( operations != null );
+			Contract.Assert( parameter.Packer != null );
+			Contract.Assert( parameter.Operations != null );
 #endif // ASSERT
 
-			packer.PackMapHeader( operations.Count );
-			foreach ( var operation in operations )
+			parameter.Packer.PackMapHeader( parameter.Operations.Count );
+			foreach ( var operation in parameter.Operations )
 			{
-				packer.PackString( operation.Key );
-				operation.Value( packer, target );
+				parameter.Packer.PackString( operation.Key );
+				operation.Value( parameter.Packer, parameter.Target );
 			}
 		}
 
 #if FEATURE_TAP
 
 		/// <summary>
-		///		Packs object to msgpack map.
+		///		Packs object to msgpack map asynchronously.
 		/// </summary>
 		/// <typeparam name="TObject">The type of the packing object.</typeparam>
 		/// <param name="packer">The packer.</param>
@@ -223,13 +353,13 @@ namespace MsgPack.Serialization
 		///		<paramref name="packer"/> is <c>null</c>.
 		///		Or, <paramref name="operations"/> is <c>null</c>.
 		/// </exception>
+#if DEBUG
+		[Obsolete( "Use overload with PackToMapParameters." )]
+#endif // DEBUG
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates essentially must be nested generic." )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "False positive because never reached." )]
-		public static async Task PackToMapAsync<TObject>(
+		public static Task PackToMapAsync<TObject>(
 			Packer packer,
 			TObject target,
 			IDictionary<string, Func<Packer, TObject, CancellationToken, Task>> operations,
@@ -238,14 +368,61 @@ namespace MsgPack.Serialization
 		{
 			if ( packer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( packer ) );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( "operations" );
+				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
 			}
 
+			var parameter =
+				new PackToMapAsyncParameters<TObject>
+				{
+					Packer = packer,
+					Target = target,
+					Operations = operations,
+					CancellationToken = cancellationToken
+				};
+			return PackToMapAsync( ref parameter );
+		}
+
+		/// <summary>
+		///		Packs object to msgpack map asynchronously.
+		/// </summary>
+		/// <typeparam name="TObject">The type of the packing object.</typeparam>
+		/// <param name="parameter">The reference of <see cref="PackToMapAsyncParameters{T}"/> object which represents parameters of this method.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<see cref="PackToMapAsyncParameters{T}.Packer"/> of <paramref name="parameter"/> is <c>null</c>.
+		///		Or, <see cref="PackToMapAsyncParameters{T}.Operations"/> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+#if !UNITY || MSGPACK_UNITY_FULL
+		[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+		public static Task PackToMapAsync<TObject>(
+			ref PackToMapAsyncParameters<TObject> parameter
+		)
+		{
+			if ( parameter.Packer == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Packer ) );
+			}
+
+			if ( parameter.Operations == null )
+			{
+				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
+			}
+
+			return PackToMapAsyncCore( parameter.Packer, parameter.Target, parameter.Operations, parameter.CancellationToken );
+		}
+
+		private static async Task PackToMapAsyncCore<TObject>(
+			Packer packer,
+			TObject target,
+			IDictionary<string, Func<Packer, TObject, CancellationToken, Task>> operations,
+			CancellationToken cancellationToken
+		)
+		{
 			Contract.Assert( packer != null );
 			Contract.Assert( operations != null );
 

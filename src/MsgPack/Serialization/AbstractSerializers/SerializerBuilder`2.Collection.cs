@@ -350,7 +350,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 								appendToTargetParameter,
 								unpackedItemParameter
 							),
-							true, // forMap, this method should not be called IDictionary[<,>]
 							isAsync
 						),
 						unpackItemValueArguments
@@ -371,12 +370,36 @@ namespace MsgPack.Serialization.AbstractSerializers
 					);
 			}
 
-			var arguments =
-				new[] { context.Unpacker, itemsCount, collection, bulk, iterative }
+			var unpackHelperArguments =
+				new Dictionary<string, TConstruct>
+				{
+					{ "Unpacker", context.Unpacker },
+					{ "ItemsCount", itemsCount },
+					{ "Collection", collection },
+					{ "BulkOperation", bulk },
+					{ "EachOperation", iterative },
+				};
 #if FEATURE_TAP
-				.Concat( isAsync ? new[] { this.ReferCancellationToken( context, 2 ) } : NoConstructs ).ToArray()
+			if ( isAsync )
+			{
+				unpackHelperArguments.Add( "CancellationToken", this.ReferCancellationToken( context, 2 ) );
+			}
 #endif // FEATURE_TAP
-				;
+
+			var unpackHelperParametersType =
+				(
+#if FEATURE_TAP
+					isAsync ? typeof( UnpackCollectionAsyncParameters<> ) :
+#endif // FEATURE_TAP
+					typeof( UnpackCollectionParameters<> )
+				).MakeGenericType( this.TargetType );
+
+			var unpackHelperParameters = this.DeclareLocal( context, unpackHelperParametersType, "unpackHelperParameters" );
+			yield return unpackHelperParameters;
+			foreach ( var construct in this.CreatePackUnpackHelperArgumentInitialization( context, unpackHelperParameters, unpackHelperArguments ) )
+			{
+				yield return construct;
+			}
 
 			// Call UnpackHelpers
 			yield return
@@ -389,7 +412,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						isAsync ? Metadata._UnpackHelpers.UnpackCollectionAsync_1Method.MakeGenericMethod( this.TargetType ) :
 #endif // FEATURE_TAP
 						Metadata._UnpackHelpers.UnpackCollection_1Method.MakeGenericMethod( this.TargetType ),
-						arguments
+						this.EmitMakeRef( context, unpackHelperParameters )
 					)
 				);
 		}

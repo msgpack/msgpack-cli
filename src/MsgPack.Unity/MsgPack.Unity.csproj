@@ -494,6 +494,9 @@
     <Compile Include="..\MsgPack\Serialization\NullTextWriter.cs">
       <Link>Serialization\NullTextWriter.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\PackHelperParameters.cs">
+      <Link>Serialization\PackHelperParameters.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\PackHelpers.cs">
       <Link>Serialization\PackHelpers.cs</Link>
     </Compile>
@@ -637,6 +640,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\TypeKeyRepository.cs">
       <Link>Serialization\TypeKeyRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\UnpackHelperParameters.cs">
+      <Link>Serialization\UnpackHelperParameters.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\UnpackHelpers.cs">
       <Link>Serialization\UnpackHelpers.cs</Link>

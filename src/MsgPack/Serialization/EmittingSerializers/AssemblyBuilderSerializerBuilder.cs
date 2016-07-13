@@ -553,9 +553,15 @@ namespace MsgPack.Serialization.EmittingSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitCreateNewObjectExpression( AssemblyBuilderEmittingContext context, ILConstruct variable, ConstructorDefinition constructor, params ILConstruct[] arguments )
 		{
-			Contract.Assert( constructor != null );
-
+#if DEBUG
+			Contract.Assert( constructor?.ResolveRuntimeConstructor() != null );
+#endif // DEBUG
 			return ILConstruct.NewObject( variable, constructor.ResolveRuntimeConstructor(), arguments );
+		}
+
+		protected override ILConstruct EmitMakeRef( AssemblyBuilderEmittingContext context, ILConstruct target )
+		{
+			return ILConstruct.MakeRef( target );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]

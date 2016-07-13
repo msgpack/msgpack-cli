@@ -275,6 +275,11 @@
     <Compile Include="Serialization\Metadata\_DateTimeMessagePackSerializerHelpers.cs" />
     <Compile Include="Serialization\Metadata\_DynamicUnpackingContext.cs" />
     <Compile Include="Serialization\Metadata\_Object.cs" />
+    <Compile Include="Serialization\PackHelperParameters.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PackHelperParameters.tt</DependentUpon>
+    </Compile>
     <Compile Include="Serialization\PackHelpers.cs" />
     <Compile Include="Serialization\Polymorphic\IPolymorphicHelperAttributes.cs" />
     <Compile Include="Serialization\Polymorphic\IPolymorphicDeserializer.cs" />
@@ -472,16 +477,21 @@
     <Compile Include="Serialization\ExtTypeCodeMapping.cs" />
     <Compile Include="Serialization\TypeKeyRepository.cs" />
     <Compile Include="Serialization\MessagePackSerializer.Factories.cs" />
-    <Compile Include="Serialization\UnpackHelpers.cs" />
-    <Compile Include="Serialization\UnpackHelpers.direct.cs">
+    <Compile Include="Serialization\UnpackHelperParameters.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>UnpackHelpers.direct.tt</DependentUpon>
+      <DependentUpon>UnpackHelperParameters.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\UnpackHelpers.facade.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackHelpers.facade.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\UnpackHelpers.cs" />
+    <Compile Include="Serialization\UnpackHelpers.direct.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackHelpers.direct.tt</DependentUpon>
     </Compile>
     <Compile Include="SetOperation.cs" />
     <Compile Include="StreamPacker.cs" />
@@ -621,6 +631,14 @@
     <Content Include="Serialization\NullTextWriter.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>NullTextWriter.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\PackHelperParameters.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PackHelperParameters.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\UnpackHelperParameters.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackHelperParameters.cs</LastGenOutput>
     </Content>
     <Content Include="Serialization\UnpackHelpers.facade.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

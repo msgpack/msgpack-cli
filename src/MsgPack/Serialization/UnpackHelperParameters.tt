@@ -1,0 +1,435 @@
+﻿<#@ template  debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2016 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
+using System;
+using System.Collections.Generic;
+#if !UNITY || MSGPACK_UNITY_FULL
+using System.ComponentModel;
+#endif //!UNITY || MSGPACK_UNITY_FULL
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
+
+namespace MsgPack.Serialization
+{
+	// This file was generated from UnpackHelperParameters.tt
+	// DO NET modify this file directly.
+
+<#
+	var valueGenerics = 
+		new Dictionary<string, string>
+		{
+			{ "TContext", "The type of the context object which will store deserialized value." },
+			{ "TValue", "The type of the value." }
+		};
+
+	var mpoGenerics = 
+		new Dictionary<string, string>
+		{
+			{ "TContext", "The type of the context object which will store deserialized value." }
+		};
+
+	var objectGenerics = 
+		new Dictionary<string, string>
+		{
+			{ "TContext", "The type of the context object which will store deserialized value." },
+			{ "TResult", "The type of the unpacked object." }
+		};
+
+	var collectionGenerics =
+		new Dictionary<string, string>
+		{
+			{ "T", "The type of the collection to be unpacked." }
+		};
+#>
+
+<#
+	WriteParameters( "ValueTypeValue", false, valueGenerics, this.WriteUnpackValueTypeValueMembers );
+#>
+
+<#
+	WriteParameters( "ValueTypeValue", true, valueGenerics, this.WriteUnpackValueTypeValueMembers );
+#>
+
+<#
+	WriteParameters( "ReferenceTypeValue", false, valueGenerics, this.WriteUnpackReferenceTypeValueMembers );
+#>
+
+<#
+	WriteParameters( "ReferenceTypeValue", true, valueGenerics, this.WriteUnpackReferenceTypeValueMembers );
+#>
+
+<#
+	WriteParameters( "NullableTypeValue", false, valueGenerics, this.WriteUnpackNullableTypeValueMembers, "TValue : struct" );
+#>
+
+<#
+	WriteParameters( "NullableTypeValue", true, valueGenerics, this.WriteUnpackNullableTypeValueMembers, "TValue : struct" );
+#>
+
+<#
+	WriteParameters( "MessagePackObjectValue", false, mpoGenerics, this.WriteUnpackMessagePackObjectValueMembers );
+#>
+
+<#
+	WriteParameters( "MessagePackObjectValue", true, mpoGenerics, this.WriteUnpackMessagePackObjectValueMembers );
+#>
+
+<#
+	WriteParameters( "FromArray", false, objectGenerics, this.WriteUnpackObjectFromArrayMembers );
+#>
+
+<#
+	WriteParameters( "FromArray", true, objectGenerics, this.WriteUnpackObjectFromArrayMembers );
+#>
+
+<#
+	WriteParameters( "FromMap", false, objectGenerics, this.WriteUnpackObjectFromMapMembers );
+#>
+
+<#
+	WriteParameters( "FromMap", true, objectGenerics, this.WriteUnpackObjectFromMapMembers );
+#>
+
+
+<#
+	WriteParameters( "Collection", false, collectionGenerics, this.WriteUnpackCollectionMembers );
+#>
+
+<#
+	WriteParameters( "Collection", true, collectionGenerics, this.WriteUnpackCollectionMembers );
+#>
+}
+<#+
+void WriteParameters( string suffix, bool isAsync, IDictionary<string, string> genericParameters, Action<bool> differenceGenerator, params string[] genericConstraints )
+{
+	var methodName = "Unpack" + suffix + ( isAsync ? "Async" : String.Empty );
+	var genericParameterTokens = String.Join( ", ", genericParameters.Keys );
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+
+<#+
+	}
+#>
+	/// <summary>
+	///		Represents parameters of <see cref="UnpackHelpers.<#= methodName #>{<#= genericParameterTokens #>}(ref <#= methodName #>Parameters{<#= genericParameterTokens #>})"/> method.
+	/// </summary>
+<#+
+	foreach ( var genericParameter in genericParameters )
+	{
+#>
+	/// <typeparam name="<#= genericParameter.Key #>"><#= genericParameter.Value #></typeparam>
+<#+
+	}
+#>
+#if !UNITY || MSGPACK_UNITY_FULL
+	[EditorBrowsable( EditorBrowsableState.Never )]
+#endif // !UNITY || MSGPACK_UNITY_FULL
+	public struct <#= methodName #>Parameters<<#= genericParameterTokens #>>
+<#+
+	foreach ( var genericContraint in genericConstraints )
+	{
+#>
+		where <#= genericContraint #>
+<#+
+	}
+#>
+	{
+		/// <summary>
+		///		The unpacker.
+		/// </summary>
+		public Unpacker Unpacker;
+<#+
+	differenceGenerator( isAsync );
+
+	if( isAsync )
+	{
+#>
+
+		/// <summary>
+		///		The token to monitor for cancellation requests. The default value is <see cref="P:CancellationToken.None" />.
+		/// </summary>
+		public CancellationToken CancellationToken;
+<#+
+	}
+#>
+	}
+<#+
+	if( isAsync )
+	{
+#>
+
+#endif // FEATURE_TAP
+<#+
+	}
+}
+
+void WriteUnpackValueMembers( bool isAsync, string tvalue )
+{
+#>
+
+		/// <summary>
+		///		The context which will store deserialized value.
+		/// </summary>
+		public TContext UnpackingContext;
+
+		/// <summary>
+		///		The serializer to deserialize current item.
+		/// </summary>
+		public MessagePackSerializer<<#= tvalue #>> Serializer;
+
+		/// <summary>
+		///		The items count to be unpacked.
+		/// </summary>
+		public int ItemsCount;
+
+		/// <summary>
+		///		The current unpacked count for debugging.
+		/// </summary>
+		public int Unpacked;
+
+		/// <summary>
+		///		The current unpacked count for debugging.
+		/// </summary>
+		public string MemberName;
+
+		/// <summary>
+		///		The delegate which takes <see cref="UnpackingContext" /> and unpacked value, and then set the value to the context.
+		/// </summary>
+		public Action<TContext, <#= tvalue #>> Setter;
+<#+
+}
+
+void WriteAnyTypeValueMembers( bool isAsync, string tvalue )
+{
+#>
+
+		/// <summary>
+		///		The current unpacked count for debugging.
+		/// </summary>
+		public Type TargetObjectType;
+
+		/// <summary>
+		///		The delegate which refers direct reading. This field should be <c>null</c> when <see cref="Serializer" /> is specified.
+		/// </summary>
+<#+
+	if ( !isAsync )
+	{
+#>
+		public Func<Unpacker, Type, string, <#= tvalue #>> DirectRead;
+<#+
+	}
+	else
+	{
+#>
+		public Func<Unpacker, Type, string, CancellationToken, Task<<#= tvalue #>>> DirectRead;
+<#+
+	}
+#><#+
+}
+
+void WriteUnpackNullableValueMembers()
+{
+#>
+
+		/// <summary>
+		///		The nil implication of current item.
+		/// </summary>
+		public NilImplication NilImplication;
+<#+
+}
+
+void WriteUnpackValueTypeValueMembers( bool isAsync )
+{
+	WriteUnpackValueMembers( isAsync, "TValue" );
+	WriteAnyTypeValueMembers( isAsync, "TValue" );
+}
+
+void WriteUnpackReferenceTypeValueMembers( bool isAsync )
+{
+	WriteUnpackValueMembers( isAsync, "TValue" );
+	WriteAnyTypeValueMembers( isAsync, "TValue" );
+	WriteUnpackNullableValueMembers();
+}
+
+void WriteUnpackNullableTypeValueMembers( bool isAsync )
+{
+	WriteUnpackValueMembers( isAsync, "TValue?" );
+	WriteAnyTypeValueMembers( isAsync, "TValue?" );
+	WriteUnpackNullableValueMembers();
+}
+
+void WriteUnpackMessagePackObjectValueMembers( bool isAsync )
+{
+	WriteUnpackValueMembers( isAsync, "MessagePackObject" );
+	WriteUnpackNullableValueMembers();
+}
+
+void WriteUnpackObjectMembers()
+{
+#>
+
+		/// <summary>
+		///		The context which will store deserialized value.
+		/// </summary>
+		public TContext UnpackingContext;
+
+		/// <summary>
+		///		A delegate to the factory method which creates the result from the context.
+		/// </summary>
+		public Func<TContext, TResult> Factory;
+<#+
+}
+
+void WriteUnpackObjectFromArrayMembers( bool isAsync )
+{
+	WriteUnpackObjectMembers();
+
+#>
+		/// <summary>
+		///		The names of the members for pretty exception message.
+		/// </summary>
+		public IList<string> ItemNames;
+<#+
+	if ( !isAsync )
+	{
+#>
+
+		/// <summary>
+		///		Delegates each ones unpack single member in order.
+		///		The 1st argument will be <see cref="Unpacker"/>, 2nd argument will be <see cref="UnpackingContext"/>,
+		///		3rd argument is index of current item, and 4th argument is total items count in the array or map stream.
+		/// </summary>
+		public IList<Action<Unpacker, TContext, int, int>> Operations;
+<#+
+	}
+	else
+	{
+#>
+
+		/// <summary>
+		///		Delegates each ones unpack single member in order.
+		///		The 1st argument will be <see cref="Unpacker"/>, 2nd argument will be <see cref="UnpackingContext"/>,
+		///		3rd argument is index of current item, and 4th argument is total items count in the array or map stream.
+		/// </summary>
+		public IList<Func<Unpacker, TContext, int, int, CancellationToken, Task>> Operations;
+<#+
+	}
+}
+
+void WriteUnpackObjectFromMapMembers( bool isAsync )
+{
+	WriteUnpackObjectMembers();
+
+	if ( !isAsync )
+	{
+#>
+
+		/// <summary>
+		///		Delegates each ones unpack single member in order.
+		///		The key of this dictionary must be member name.
+		///		The 1st argument will be <see cref="Unpacker"/>, 2nd argument will be <see cref="UnpackingContext"/>,
+		///		3rd argument is index of current item, and 4th argument is total items count in the array or map stream.
+		/// </summary>
+		public IDictionary<string, Action<Unpacker, TContext, int, int>> Operations;
+<#+
+	}
+	else
+	{
+#>
+
+		/// <summary>
+		///		Delegates each ones unpack single member in order.
+		///		The key of this dictionary must be member name.
+		///		The 1st argument will be <see cref="Unpacker"/>, 2nd argument will be <see cref="UnpackingContext"/>,
+		///		3rd argument is index of current item, and 4th argument is total items count in the array or map stream.
+		/// </summary>
+		public IDictionary<string, Func<Unpacker, TContext, int, int, CancellationToken, Task>> Operations;
+<#+
+	}
+}
+
+void WriteUnpackCollectionMembers( bool isAsync )
+{
+#>
+
+		/// <summary>
+		///		The items count to be unpacked.
+		/// </summary>
+		public int ItemsCount;
+
+		/// <summary>
+		///		The collection instance to be added unpacked items.
+		/// </summary>
+		public T Collection;
+
+		/// <summary>
+		///		A delegate to the bulk operation (typically UnpackToCore call). 
+		///		The 1st argument will be <see cref="Unpacker"/>, 2nd argument will be <see cref="Collection"/>,
+		///		and 3rd argument will be <see cref="ItemsCount"/>.
+		///		If this field is <c>null</c>, <see cref="EachOperation"/> will be used.
+		/// </summary>
+<#+
+	if ( !isAsync )
+	{
+#>
+		public Action<Unpacker, T, int> BulkOperation;
+<#+
+	}
+	else
+	{
+#>
+		public Func<Unpacker, T, int, CancellationToken, Task> BulkOperation;
+<#+
+	}
+#>
+
+		/// <summary>
+		///		A delegate to the operation for each items, which typically unpack value and append it to the <see cref="Collection"/>.
+		///		The 1st argument will be <see cref="Unpacker"/>, 2nd argument will be <see cref="Collection"/>,
+		///		and 3rd argument will be index of the current item.
+		///		If <see cref="BulkOperation"/> field is not <c>null</c>, this field will be ignored.
+		/// </summary>
+<#+
+	if ( !isAsync )
+	{
+#>
+		public Action<Unpacker, T, int, int> EachOperation;
+<#+
+	}
+	else
+	{
+#>
+		public Func<Unpacker, T, int, int, CancellationToken, Task> EachOperation;
+<#+
+	}
+}
+#>

@@ -134,6 +134,11 @@ namespace MsgPack.Serialization.Reflection
 				}
 			}
 
+			if ( source.IsByRef )
+			{
+				return source.GetElementType().GetFullName() + "&";
+			}
+
 			if ( !source.GetIsGenericType() )
 			{
 				return source.FullName;

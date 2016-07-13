@@ -91,22 +91,31 @@ namespace MsgPack.Serialization.AbstractSerializers
 			{
 				var foundMethods =
 					this.DeclaringType.ResolveRuntimeType().GetMethods()
-						.Where( m => m.Name == this.MethodName )
+						// This filter is naive but works now.
+						.Where( m => m.Name == this.MethodName && m.GetParameters().Length == this.ParameterTypes.Length )
 						.ToArray();
 				if ( foundMethods.Length != 1 )
 				{
 					throw new InvalidOperationException(
 						String.Format(
 							CultureInfo.CurrentCulture,
-							"Failed to get runtime method of '{0}.{1}'.",
+							"Failed to get runtime method of '{0}.{1}({2})'.",
 							this.DeclaringType.ResolveRuntimeType(),
-							this.MethodName
+							this.MethodName,
+							String.Join( ", ", this.ParameterTypes.Select( t => t.ToString() ).ToArray() )
 						)
 					);
 				}
 
 				result = foundMethods[ 0 ];
 			}
+
+#if DEBUG
+			Contract.Assert(
+				!result.IsGenericMethodDefinition || result.GetGenericArguments().Length == this._genericArguments.Length,
+				result + " == <" + String.Join( ", ", this._genericArguments.Select( t => t.ToString() ).ToArray() ) + ">"
+			);
+#endif // DEBUG
 
 			this._resoolvedMethod =
 				result.IsGenericMethodDefinition

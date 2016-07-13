@@ -134,7 +134,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitInvokeVoidMethod(
 						context,
 						context.PackToTarget,
-						new MethodDefinition( packTo,  @interface ),
+						new MethodDefinition( packTo, @interface ),
 						context.Packer,
 						this.MakeNullLiteral( context, typeof( PackingOptions ) )
 					);
@@ -203,7 +203,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct forArray = null;
 			TConstruct forMap = null;
 
-			foreach ( var method in new [] { SerializationMethod.Array, SerializationMethod.Map } )
+			foreach ( var method in new[] { SerializationMethod.Array, SerializationMethod.Map } )
 			{
 				for ( int i = 0; i < entries.Count; i++ )
 				{
@@ -260,39 +260,73 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 
 				var packHelperArguments =
-					new[]
+					new Dictionary<string, TConstruct>
 					{
-						context.Packer,
-						context.PackToTarget,
-						this.EmitGetActionsExpression(
-							context,
-							method == SerializationMethod.Array
-								? ActionType.PackToArray
-								: ActionType.PackToMap,
-							isAsync
-						)
-					}
-#if FEATURE_TAP
-					.Concat( isAsync ? new[] { this.ReferCancellationToken( context, 3 ) } : NoConstructs ).ToArray()
-#endif // FEATURE_TAP
-					;
+						{ "Packer", context.Packer },
+						{ "Target", context.PackToTarget },
+						{
+							"Operations",
+							this.EmitGetActionsExpression(
+								context,
+								method == SerializationMethod.Array
+									? ActionType.PackToArray
+									: ActionType.PackToMap,
+								isAsync
+							)
+						}
+					};
 
-				var methodInvocation =
-					this.EmitInvokeMethodExpression(
-					context,
-					null,
+#if FEATURE_TAP
+				if ( isAsync )
+				{
+					packHelperArguments.Add( "CancellationToken", this.ReferCancellationToken( context, 3 ) );
+				}
+#endif // FEATURE_TAP
+
+				var packHelperParameterTypeDefinition =
+					( method == SerializationMethod.Array
+						? (
+#if FEATURE_TAP
+							isAsync ? typeof( PackToArrayAsyncParameters<> ) :
+#endif // FEATURE_TAP
+							typeof( PackToArrayParameters<> )
+						) : (
+#if FEATURE_TAP
+							isAsync ? typeof( PackToMapAsyncParameters<> ) :
+#endif // FEATURE_TAP
+							typeof( PackToMapParameters<> )
+						)
+					);
+
+				var packHelperMethodName = AdjustName( "PackTo" + method, isAsync );
+				var packHelperParameterType =
+					TypeDefinition.GenericValueType( packHelperParameterTypeDefinition, this.TargetType );
+				var packHelperMethod =
 					new MethodDefinition(
-						AdjustName( "PackTo" + method, isAsync ),
-						new[] { TypeDefinition.Object( this.TargetType ), },
+						packHelperMethodName,
+						new TypeDefinition[] { this.TargetType },
 						typeof( PackHelpers ),
 #if FEATURE_TAP
 						isAsync ? typeof( Task ) :
 #endif // FEATURE_TAP
 						typeof( void ),
-						packHelperArguments.Select( a => a.ContextType ).ToArray()
-					),
-					packHelperArguments
-				);
+						packHelperParameterType
+					);
+
+				var packHelperParameters = this.DeclareLocal( context, packHelperParameterType, "packHelperParameters" );
+				yield return packHelperParameters;
+				foreach ( var construct in this.CreatePackUnpackHelperArgumentInitialization( context, packHelperParameters, packHelperArguments ) )
+				{
+					yield return construct;
+				}
+
+				var methodInvocation =
+					this.EmitInvokeMethodExpression(
+						context,
+						null,
+						packHelperMethod,
+						this.EmitMakeRef( context, packHelperParameters )
+					);
 
 				if ( isAsync )
 				{
@@ -465,7 +499,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			yield return
 				this.EmitFinishFieldInitializationStatement(
 					context,
-					AdjustName( 
+					AdjustName(
 						method == SerializationMethod.Array
 							? FieldName.PackOperationList
 							: FieldName.PackOperationTable,
@@ -748,7 +782,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 								context.UnpackingContextInSetValueMethods,
 								unpackedItem
 							),
-							method == SerializationMethod.Map, // forMap
 							isAsync
 						);
 				}
@@ -757,7 +790,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context,
 					GetUnpackValueMethodName( targetInfo.Members[ i ], isAsync ),
 #if FEATURE_TAP
-					isAsync ? typeof( Task ) : 
+					isAsync ? typeof( Task ) :
 #endif // FEATURE_TAP
 					typeof( void ),
 					() => privateMethodBody,
@@ -1223,7 +1256,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			yield return
 				this.EmitFinishFieldInitializationStatement(
 					context,
-					AdjustName( 
+					AdjustName(
 						method == SerializationMethod.Array
 							? FieldName.UnpackOperationList
 							: FieldName.UnpackOperationTable,

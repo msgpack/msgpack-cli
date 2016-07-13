@@ -487,6 +487,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct EmitStoreVariableStatement( TContext context, TConstruct variable, TConstruct value );
 
+		/// <summary>
+		///		Emits the make ref instruction.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="target">The target to be made its managed reference.</param>
+		/// <returns>The managed reference of the <paramref name="target"/>.</returns>
+		protected abstract TConstruct EmitMakeRef( TContext context, TConstruct target );
+
 		#endregion -- Args/Locals --
 
 		#region -- New --
@@ -1330,145 +1338,164 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct indexOfItem,
 			TConstruct countOfItem,
 			TConstruct setterDelegate,
-			bool forMap,
 			bool isAsync
 		)
 		{
-			MethodDefinition helperMethod;
-			IEnumerable<TConstruct> helperArguments;
-			if ( memberType == typeof( MessagePackObject ) )
+			var typeKind =
+				memberType == typeof( MessagePackObject )
+				? TypeKind.MessagePackObject
+				: !memberType.GetIsValueType()
+				? TypeKind.ReferenceType
+				: Nullable.GetUnderlyingType( memberType ) == null
+				? TypeKind.ValueType
+				: TypeKind.NullableType;
+
+			var unpackHelperParameterTypeDefinition = this.DetermineUnpackHelperMethodParameterTypeDefinition( typeKind, isAsync );
+			var unpackHelperParameterType =
+				typeKind == TypeKind.MessagePackObject
+				? TypeDefinition.GenericValueType( unpackHelperParameterTypeDefinition, unpackingContext.ContextType )
+				: typeKind == TypeKind.NullableType
+				? TypeDefinition.GenericValueType( unpackHelperParameterTypeDefinition, unpackingContext.ContextType, Nullable.GetUnderlyingType( memberType ) )
+				: TypeDefinition.GenericValueType( unpackHelperParameterTypeDefinition, unpackingContext.ContextType, memberType );
+
+			var helperMethod =
+				new MethodDefinition(
+					AdjustName( "Unpack" + typeKind + "Value", isAsync ),
+					typeKind == TypeKind.MessagePackObject
+						? new [] { unpackingContext.ContextType }
+						: typeKind == TypeKind.NullableType
+						? new [] { unpackingContext.ContextType, Nullable.GetUnderlyingType( memberType ) }
+						: new [] { unpackingContext.ContextType, memberType },
+					typeof( UnpackHelpers ),// declaring type
+					unpackingContext.ContextType, // return type
+					TypeDefinition.ManagedReference( unpackHelperParameterType )
+				);
+
+			IDictionary<string, TConstruct> unpackHelperArguments;
+			if ( typeKind == TypeKind.MessagePackObject )
 			{
-				helperMethod =
-					new MethodDefinition(
-						AdjustName( "UnpackMessagePackObjectValueFrom" + ( forMap ? "Map" : "Array" ), isAsync ),
-						new[] { unpackingContext.ContextType }, // generic type argument
-						typeof( UnpackHelpers ), // declaring type
-						unpackingContext.ContextType, // return type
-						// parameter types
-						typeof( Unpacker ),
-						unpackingContext.ContextType,
-						typeof( int ),
-						typeof( int ),
-						typeof( Type ),
-						typeof( string ),
-						typeof( NilImplication ),
-						TypeDefinition.GenericReferenceType(
-							typeof( Action<,> ),
-							unpackingContext.ContextType,
-							typeof( MessagePackObject )
-						)
-					);
-				// Unpacker, TContext, int, int, Type, string, NilImplication, Action<TContext, MPO>[, CancellationToken]
-				helperArguments =
-					new [] { unpacker, unpackingContext, countOfItem, indexOfItem, memberName, this.MakeEnumLiteral( context, typeof( NilImplication ), nilImplication ), setterDelegate }
+				unpackHelperArguments =
+					new Dictionary<string, TConstruct>
+					{
+						{ "Unpacker", unpacker },
+						{ "UnpackingContext", unpackingContext },
+						{ "ItemsCount", countOfItem },
+						{ "Unpacked", indexOfItem },
+						{ "MemberName", memberName },
+						{ "NilImplication", this.MakeEnumLiteral( context, typeof( NilImplication ), nilImplication ) },
+						{ "Setter", setterDelegate }
+					};
 #if FEATURE_TAP
-					.Concat( isAsync ? new [] { this.ReferCancellationToken( context, 5 ) } : NoConstructs )
+				if ( isAsync )
+				{
+					unpackHelperArguments.Add( "CancellationToken", this.ReferCancellationToken( context, 5 ) );
+				}
 #endif // FEATURE_TAP
-					;
 			}
 			else
 			{
-				var directReadMethod =
-					Metadata._UnpackHelpers.GetDirectUnpackMethod( memberType, isAsync );
-				var directReadDelegateType =
-#if FEATURE_TAP
-					isAsync ? typeof( Func<,,,,> ).MakeGenericType( typeof( Unpacker ), typeof( Type ), typeof( String ), typeof( CancellationToken ), typeof( Task<> ).MakeGenericType( memberType ) ) :
-#endif // FEATURE_TAP
-					typeof( Func<,,,> ).MakeGenericType( typeof( Unpacker ), typeof( Type ), typeof( String ), memberType );
-
-				var helperMethodParameterTypes =
-					new[]
+				unpackHelperArguments =
+					new Dictionary<string, TConstruct>
 					{
-						typeof( Unpacker ),
-						unpackingContext.ContextType,
-						typeof( MessagePackSerializer<> ).MakeGenericType( memberType ),
-						typeof( int ),
-						typeof( int ),
-						typeof( Type ),
-						typeof( string ),
-						typeof( NilImplication )
+						{ "Unpacker", unpacker },
+						{ "UnpackingContext", unpackingContext },
+						{ "Serializer", this.EmitGetSerializerExpression( context, memberType, memberInfo, itemsSchema ) },
+						{ "ItemsCount", countOfItem },
+						{ "Unpacked", indexOfItem },
+						{ "TargetObjectType", this.EmitTypeOfExpression( context, memberType ) },
+						{ "MemberName", memberName }
 					};
 
-				var typeKind =
-					!memberType.GetIsValueType()
-						? "Reference"
-						: Nullable.GetUnderlyingType( memberType ) == null
-							? "Value"
-							: "Nullable";
-				helperMethod =
-					new MethodDefinition(
-						"Unpack" + typeKind + "TypeValue"
-#if FEATURE_TAP
-						+ ( isAsync ? "Async" : String.Empty )
-#endif // FEATURE_TAP
-						, new[] { unpackingContext.ContextType, Nullable.GetUnderlyingType( memberType ) ?? memberType }, // generic type argument
-						typeof( UnpackHelpers ), // declaring type
-						unpackingContext.ContextType, // return type
-						// parameter types
-						helperMethodParameterTypes.Concat(
-							new[]
-							{
-#if FEATURE_TAP
-								isAsync
-									? TypeDefinition.GenericReferenceType(
-										typeof( Func<,,,,> ),
-										typeof( Unpacker ),
-										typeof( Type ),
-										typeof( string ),
-										typeof( CancellationToken ),
-										typeof( Task<> ).MakeGenericType( memberType )
-									)
-									:
-#endif // FEATURE_TAP
-									TypeDefinition.GenericReferenceType(
-										typeof( Func<,,,> ),
-										typeof( Unpacker ),
-										typeof( Type ),
-										typeof( string ),
-										memberType
-									),
-								TypeDefinition.GenericReferenceType(
-									typeof( Action<,> ),
-									unpackingContext.ContextType,
-									memberType
-								)
-							}
-						)
-#if FEATURE_TAP
-						.Concat( isAsync ? new TypeDefinition[] { typeof( CancellationToken ) } : Enumerable.Empty<TypeDefinition>() )
-#endif // FEATURE_TAP
-						.ToArray()
-					);
-
-				// Unpacker, TContext, MPS<T> int, int, Type, string, NilImplication, Func<Unpacker,Type,string,[CancellationToken, Task of]TValue>, Action<TContext, MPO>[, CancellationToken]
-				helperArguments =
-					new [] { unpacker, unpackingContext, this.EmitGetSerializerExpression( context, memberType, memberInfo, itemsSchema ), 
-						countOfItem, indexOfItem, this.EmitTypeOfExpression( context, memberType ), memberName };
-				if ( typeKind != "Value" )
+				if ( typeKind != TypeKind.ValueType )
 				{
-					helperArguments = helperArguments.Concat( new[] { this.MakeEnumLiteral( context, typeof( NilImplication ), nilImplication ) } );
+					unpackHelperArguments.Add( "NilImplication", this.MakeEnumLiteral( context, typeof( NilImplication ), nilImplication ) );
 				}
 
-				helperArguments =
-					helperArguments.Concat(
-						new []
-						{
-							directReadMethod == null
-								? this.MakeNullLiteral( context, directReadDelegateType )
-								: this.EmitGetStaticDelegateExpression( context, directReadMethod ),
-							setterDelegate
-						} 
-					)
+				var directReadMethod = Metadata._UnpackHelpers.GetDirectUnpackMethod( memberType, isAsync );
+				var directReadDelegateType =
 #if FEATURE_TAP
-					.Concat( isAsync ? new [] { this.ReferCancellationToken( context, 5 ) } : NoConstructs )
+					isAsync
+						? typeof( Func<,,,,> ).MakeGenericType( typeof( Unpacker ), typeof( Type ), typeof( String ), typeof( CancellationToken ), typeof( Task<> ).MakeGenericType( memberType ) ) :
 #endif // FEATURE_TAP
-					;
+						typeof( Func<,,,> ).MakeGenericType( typeof( Unpacker ), typeof( Type ), typeof( String ), memberType );
+				unpackHelperArguments.Add(
+					"DirectRead",
+					directReadMethod == null
+						? this.MakeNullLiteral( context, directReadDelegateType )
+						: this.EmitGetStaticDelegateExpression( context, directReadMethod )
+				);
+				unpackHelperArguments.Add( "Setter", setterDelegate );
+
+#if FEATURE_TAP
+				if ( isAsync )
+				{
+					unpackHelperArguments.Add( "CancellationToken", this.ReferCancellationToken( context, 5 ) );
+				}
+#endif // FEATURE_TAP
 			}
 
+			var unpackHelperParameters = this.DeclareLocal( context, unpackHelperParameterType, "unpackHelperParameters" );
+
 			return
-				isAsync
-					? this.EmitRetrunStatement( context, this.EmitInvokeMethodExpression( context, null, helperMethod, helperArguments ) )
-					: this.EmitInvokeVoidMethod( context, null, helperMethod, helperArguments.ToArray() );
+				this.EmitSequentialStatements(
+					context,
+					typeof( void ),
+					new [] { unpackHelperParameters }
+					.Concat(
+						this.CreatePackUnpackHelperArgumentInitialization( context, unpackHelperParameters, unpackHelperArguments )
+					).Concat(
+						new []
+						{
+							isAsync
+								? this.EmitRetrunStatement( context, this.EmitInvokeMethodExpression( context, null, helperMethod, this.EmitMakeRef( context, unpackHelperParameters ) ) )
+								: this.EmitInvokeVoidMethod( context, null, helperMethod, this.EmitMakeRef( context, unpackHelperParameters ) )
+						}
+					)
+				);
+		}
+
+		private Type DetermineUnpackHelperMethodParameterTypeDefinition( TypeKind typeKind, bool isAsync )
+		{
+			switch ( typeKind )
+			{
+				case TypeKind.MessagePackObject:
+				{ 
+					return
+#if FEATURE_TAP
+						isAsync
+							? typeof( UnpackMessagePackObjectValueAsyncParameters<> ) :
+#endif // FEATURE_TAP
+							typeof( UnpackMessagePackObjectValueParameters<> );
+				}
+				case TypeKind.ReferenceType:
+				{
+					return
+#if FEATURE_TAP
+						isAsync
+							? typeof( UnpackReferenceTypeValueAsyncParameters<,> ) :
+#endif // FEATURE_TAP
+							typeof( UnpackReferenceTypeValueParameters<,> );
+				}
+				case TypeKind.ValueType:
+				{
+					return
+#if FEATURE_TAP
+						isAsync
+							? typeof( UnpackValueTypeValueAsyncParameters<,> ) :
+#endif // FEATURE_TAP
+							typeof( UnpackValueTypeValueParameters<,> );
+				}
+				default:
+				{
+					Contract.Assert( typeKind == TypeKind.NullableType, typeKind + " == TypeKind.NullableType" );
+					return
+#if FEATURE_TAP
+						isAsync
+							? typeof( UnpackNullableTypeValueAsyncParameters<,> ) :
+#endif // FEATURE_TAP
+							typeof( UnpackNullableTypeValueParameters<,> );
+				}
+			}
 		}
 
 		/// <summary>
@@ -1721,6 +1748,32 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return ctor;
 		}
 
+		private IEnumerable<TConstruct> CreatePackUnpackHelperArgumentInitialization( TContext context, TConstruct helperArguments, IDictionary<string, TConstruct> arguments )
+		{
+			var parameterType = helperArguments.ContextType;
+
+			Contract.Assert( !parameterType.IsRef, parameterType + " is not ref" );
+			Type parameterTypeDefinition;
+			if ( ( parameterType.TryGetRuntimeType()?.GetIsGenericType() ).GetValueOrDefault() )
+			{
+				parameterTypeDefinition = parameterType.TryGetRuntimeType().GetGenericTypeDefinition();
+			}
+			else
+			{
+				Contract.Assert( parameterType.ElementType.TryGetRuntimeType() != null, parameterType + ".ElementType.ElementType(" + parameterType.ElementType.ElementType + " does not have runtime type" );
+				Contract.Assert( parameterType.ElementType.TryGetRuntimeType().GetIsGenericTypeDefinition(), parameterType + ".ElementType.ElementType(" + parameterType.ElementType.ElementType + " is not generic type definition" );
+				parameterTypeDefinition = parameterType.ElementType.TryGetRuntimeType();
+
+			}
+
+			foreach ( var argument in arguments )
+			{
+				var field = parameterTypeDefinition.GetField( argument.Key );
+				Contract.Assert( field != null, parameterType + "." + argument.Key + " does not exist" );
+				yield return this.EmitSetField( context, helperArguments, new FieldDefinition( parameterType, field.Name, field.FieldType ), argument.Value );
+			}
+		}
+		
 		#endregion -- Helper Funcs --
 
 		#region -- Collection Helpers --
@@ -2336,6 +2389,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		#endregion -- Async Helpers --
 
+		private enum TypeKind
+		{
+			MessagePackObject = 0,
+			ValueType,
+			ReferenceType,
+			NullableType
+		}
 
 		private sealed class UnpackingContextInfo
 		{

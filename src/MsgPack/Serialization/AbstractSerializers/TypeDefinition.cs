@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 #if CORE_CLR
 using Contract = MsgPack.MPContract;
 #else
@@ -50,6 +51,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 			get { return ( this._runtimeType != null && this._runtimeType.GetIsValueType() ) || ( this._flags & Flags.ValueType ) != 0; }
 		}
 
+		public bool IsRef
+		{
+			get { return ( this._runtimeType != null && this._runtimeType.IsByRef ) || ( this._flags & Flags.Ref ) != 0; }
+		}
+
+
 		public readonly string TypeName;
 
 		private readonly Type _runtimeType;
@@ -74,7 +81,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private Type ResolveRuntimeType( bool throws )
 		{
-			if ( this._runtimeType == null )
+			if ( this._runtimeType == null && this.ElementType == null )
 			{
 				if ( throws )
 				{
@@ -88,7 +95,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 			}
 
-			if ( this._runtimeType.GetIsGenericTypeDefinition() )
+			var resolvingType = this._runtimeType ?? this.ElementType.TryGetRuntimeType() ?? this.ElementType.ResolveRuntimeType( false );
+			if ( resolvingType == null )
+			{
+				return null;
+			}
+
+			if ( resolvingType.GetIsGenericTypeDefinition() )
 			{
 				var arguments = this.GenericArguments.Select( t => t.ResolveRuntimeType( throws ) ).ToArray();
 				if ( arguments.Any( a => a == null ) )
@@ -109,14 +122,21 @@ namespace MsgPack.Serialization.AbstractSerializers
 					}
 				}
 
-				this._resolvedType = this._runtimeType.MakeGenericType( arguments );
-			}
-			else
-			{
-				this._resolvedType = this._runtimeType;
+				resolvingType = resolvingType.MakeGenericType( arguments );
 			}
 
-			return this._resolvedType;
+			if ( ( this._flags & Flags.Array ) != 0 )
+			{
+				resolvingType = resolvingType.MakeArrayType();
+			}
+
+			if ( ( this._flags & Flags.Ref ) != 0 )
+			{
+				resolvingType = resolvingType.MakeByRefType();
+			}
+
+			this._resolvedType = resolvingType;
+			return resolvingType;
 		}
 
 
@@ -126,6 +146,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private TypeDefinition( Type runtimeType, string name, TypeDefinition elementType, Flags flags, params TypeDefinition[] genericArguments )
 		{
+#if DEBUG
+			Contract.Assert(
+				runtimeType == null || !runtimeType.GetIsGenericTypeDefinition() || runtimeType.GetGenericTypeParameters().Length == genericArguments.Length,
+				runtimeType?.GetFullName() + " == <" + String.Join( ", ", genericArguments as IEnumerable<TypeDefinition> ) + ">"
+			);
+#endif // DEBUG
+
 			this.TypeName = name;
 			this._runtimeType = runtimeType;
 			this._flags = flags;
@@ -141,6 +168,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 		public static TypeDefinition Object( string name )
 		{
 			return new TypeDefinition( null, name, null, Flags.None );
+		}
+
+		public static TypeDefinition GenericValueType( Type definition, params TypeDefinition[] arguments )
+		{
+			return Generic( true, definition, arguments );
 		}
 
 		public static TypeDefinition GenericReferenceType( Type definition, params TypeDefinition[] arguments )
@@ -168,8 +200,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			return
 				elementType.HasRuntimeTypeFully()
-				? new TypeDefinition( elementType.ResolveRuntimeType().MakeArrayType(), elementType.ResolveRuntimeType().FullName, elementType, Flags.HasRuntimeType )
+				? new TypeDefinition( elementType.ResolveRuntimeType().MakeArrayType(), elementType.ResolveRuntimeType().FullName + "[]", elementType, Flags.HasRuntimeType )
 				: new TypeDefinition( null, elementType.TypeName, elementType, Flags.Array );
+		}
+
+		public static TypeDefinition ManagedReference( TypeDefinition elementType )
+		{
+			return
+				elementType.HasRuntimeTypeFully()
+				? new TypeDefinition( elementType.ResolveRuntimeType().MakeByRefType(), elementType.ResolveRuntimeType().FullName, elementType, Flags.HasRuntimeType )
+				: new TypeDefinition( null, elementType.TypeName, elementType, Flags.Ref );
 		}
 
 		public override string ToString()
@@ -178,8 +218,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this._runtimeType != null
 					? ( ( this.ResolveRuntimeType( false ) ?? this._runtimeType ) ).GetFullName()
 					: ( this._flags & Flags.Array ) != 0
-						? ( this.TypeName + "[]" )
-						: this.TypeName;
+					? ( this.TypeName + "[]" )
+					: ( this._flags & Flags.Ref ) != 0
+					? ( this.TypeName + "&" )
+					: this.TypeName;
 		}
 
 		public static implicit operator TypeDefinition( Type type )
@@ -193,6 +235,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			None = 0,
 			Array = 0x1,
 			ValueType = 0x2,
+			Ref = 0x4,
 			HasRuntimeType = unchecked( ( int )0x80000000 )
 		}
 	}
