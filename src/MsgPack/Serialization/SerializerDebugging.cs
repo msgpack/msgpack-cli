@@ -402,6 +402,33 @@ namespace MsgPack.Serialization
 		}
 #endif // !AOT && !SILVERLIGHT
 
+#if NETFX_35 || UNITY || SILVERLIGHT
+		private static int _useLegacyNullMapEntryHandling;
+#else
+		private static bool _useLegacyNullMapEntryHandling;
+#endif // NETFX_35 || UNITY || SILVERLIGHT
+
+		internal static bool UseLegacyNullMapEntryHandling
+		{
+			get
+			{
+#if NETFX_35 || UNITY || SILVERLIGHT
+				return Volatile.Read( ref _useLegacyNullMapEntryHandling ) == 1;
+#else
+				return Volatile.Read( ref _useLegacyNullMapEntryHandling );
+#endif
+			}
+			set
+			{
+#if NETFX_35 || UNITY || SILVERLIGHT
+				Volatile.Write( ref _useLegacyNullMapEntryHandling, value ? 1 : 0 );
+#else
+				Volatile.Write( ref _useLegacyNullMapEntryHandling, value );
+#endif
+			}
+		}
+
+
 #if DEBUG && FEATURE_TAP
 
 		private static bool _isNaiveAsyncAllowed;

@@ -76,6 +76,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 		public TConstruct PackToTarget { get; protected set; }
 
 		/// <summary>
+		///		Gets the code construct which represents the argument for the single argument for null checking.
+		/// </summary>
+		/// <returns>
+		///		The code construct which represents the argument for the single argument for null checking.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		public TConstruct NullCheckTarget { get; protected set; }
+
+		/// <summary>
 		///		Gets the code construct which represents the argument for the unpacker.
 		/// </summary>
 		/// <value>
@@ -221,8 +230,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <exception cref="InvalidOperationException">The specified method has not been declared yet.</exception>
 		public MethodDefinition GetDeclaredMethod( string name )
 		{
-			MethodDefinition method;
-			if ( !this._declaredMethods.TryGetValue( name, out method ) )
+			var method = this.TryGetDeclaredMethod( name );
+			if ( method == null )
 			{
 				throw new InvalidOperationException(
 					String.Format(
@@ -231,6 +240,24 @@ namespace MsgPack.Serialization.AbstractSerializers
 						name
 					)
 				);
+			}
+			return method;
+		}
+
+		/// <summary>
+		///		Gets the declared method.
+		/// </summary>
+		/// <param name="name">The name of the method.</param>
+		/// <returns>
+		///		The <see cref="MethodDefinition"/>. This value will be <c>null</c> when the specified method is not declared.
+		/// </returns>
+		/// <exception cref="InvalidOperationException">The specified method has not been declared yet.</exception>
+		public MethodDefinition TryGetDeclaredMethod( string name )
+		{
+			MethodDefinition method;
+			if ( !this._declaredMethods.TryGetValue( name, out method ) )
+			{
+				return null;
 			}
 			return method;
 		}
@@ -347,6 +374,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			this.Packer = default( TConstruct );
 			this.PackToTarget = default( TConstruct );
+			this.NullCheckTarget = default ( TConstruct );
 			this.Unpacker = default( TConstruct );
 			this.UnpackToTarget = default( TConstruct );
 			this.CollectionToBeAdded = default( TConstruct );

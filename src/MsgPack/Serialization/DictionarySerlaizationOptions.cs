@@ -41,6 +41,49 @@ namespace MsgPack.Serialization
 	public sealed class DictionarySerlaizationOptions
 	{
 #if NO_THREADING_VOLATILE
+		private volatile bool _omitNullEntry;
+#else
+		private bool _omitNullEntry;
+#endif
+
+		/// <summary>
+		///		Gets or sets a value indicating whether omit key-value entry itself when the value is <c>null</c>.
+		/// </summary>
+		/// <value>
+		///		<c>true</c> if key-value entry itself when the value is <c>null</c>; otherwise, <c>false</c>.
+		///		The default is <c>false</c>.
+		/// </value>
+		/// <remarks>
+		///		When the value is <c>false</c>, null value entry is emitted as following (using JSON syntax for easy visualization):
+		///		<code><pre>
+		///		{ "Foo": null }
+		///		</pre></code>
+		///		else, the value is <c>true</c>, null value entry is ommitted as following:
+		///		<code><pre>
+		///		{}
+		///		</pre></code>
+		/// </remarks>
+		public bool OmitNullEntry
+		{
+			get
+			{
+#if NO_THREADING_VOLATILE
+				return this._omitNullEntry;
+#else
+				return Volatile.Read( ref this._omitNullEntry );
+#endif
+			}
+			set
+			{
+#if NO_THREADING_VOLATILE
+				this._omitNullEntry = value;
+#else
+				Volatile.Write( ref this._omitNullEntry, value );
+#endif
+			}
+		}
+
+#if NO_THREADING_VOLATILE
 		private volatile Func<string, string> _keyNameHandler;
 #else
 		private Func<string, string> _keyNameHandler;

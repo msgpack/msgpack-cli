@@ -263,7 +263,9 @@ namespace MsgPack.Serialization
 		/// </param>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="packer"/> is <c>null</c>.
-		///		Or, <paramref name="operations"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		<paramref name="operations"/> is <c>null</c>.
 		/// </exception>
 #if DEBUG
 		[Obsolete( "Use overload with keyTransformer and nullDetectors." )]
@@ -297,6 +299,7 @@ namespace MsgPack.Serialization
 			PackToMap( ref parameter );
 		}
 
+#pragma warning disable 618
 		/// <summary>
 		///		Packs object to msgpack map.
 		/// </summary>
@@ -304,7 +307,9 @@ namespace MsgPack.Serialization
 		/// <param name="parameter">The reference of <see cref="PackToMapParameters{T}"/> object which represents parameters of this method.</param>
 		/// <exception cref="ArgumentNullException">
 		///		<see cref="PackToMapParameters{T}.Packer"/> of <paramref name="parameter"/> is <c>null</c>.
-		///		Or, <see cref="PackToMapParameters{T}.Operations"/> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		<see cref="PackToMapAsyncParameters{T}.Operations"/> of <paramref name="parameter"/> is <c>null</c>.
 		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
@@ -328,12 +333,49 @@ namespace MsgPack.Serialization
 			Contract.Assert( parameter.Operations != null );
 #endif // ASSERT
 
-			parameter.Packer.PackMapHeader( parameter.Operations.Count );
-			foreach ( var operation in parameter.Operations )
+			if ( parameter.NullCheckers != null && ( parameter.SerializationContext?.DictionarySerlaizationOptions.OmitNullEntry ).GetValueOrDefault() )
 			{
-				parameter.Packer.PackString( operation.Key );
-				operation.Value( parameter.Packer, parameter.Target );
+#if ASSERT
+				Contract.Assert( !SerializerDebugging.UseLegacyNullMapEntryHandling );
+#endif // ASSERT
+
+				// Skipping causes the entries count header reducing, so count up null entries first.
+				var nullCount = 0;
+				foreach ( var nullChecker in parameter.NullCheckers )
+				{
+					if ( nullChecker.Value( parameter.Target ) )
+					{
+						nullCount++;
+					}
+				}
+
+				parameter.Packer.PackMapHeader( parameter.Operations.Count - nullCount );
+				foreach ( var operation in parameter.Operations )
+				{
+					Func<TObject, bool> nullChecker;
+					if ( parameter.NullCheckers.TryGetValue( operation.Key, out nullChecker ) )
+					{
+						if ( nullChecker( parameter.Target ) )
+						{
+							continue;
+						}
+					}
+
+					parameter.Packer.PackString( operation.Key );
+					operation.Value( parameter.Packer, parameter.Target );
+				}
 			}
+			else
+			{
+				parameter.Packer.PackMapHeader( parameter.Operations.Count );
+				// Compatible path
+				foreach ( var operation in parameter.Operations )
+				{
+					parameter.Packer.PackString( operation.Key );
+					operation.Value( parameter.Packer, parameter.Target );
+				}
+			}
+#pragma warning restore 618
 		}
 
 #if FEATURE_TAP
@@ -351,7 +393,9 @@ namespace MsgPack.Serialization
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="packer"/> is <c>null</c>.
-		///		Or, <paramref name="operations"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		<paramref name="operations"/> is <c>null</c>.
 		/// </exception>
 #if DEBUG
 		[Obsolete( "Use overload with PackToMapParameters." )]
@@ -387,6 +431,7 @@ namespace MsgPack.Serialization
 			return PackToMapAsync( ref parameter );
 		}
 
+#pragma warning disable 618
 		/// <summary>
 		///		Packs object to msgpack map asynchronously.
 		/// </summary>
@@ -394,7 +439,9 @@ namespace MsgPack.Serialization
 		/// <param name="parameter">The reference of <see cref="PackToMapAsyncParameters{T}"/> object which represents parameters of this method.</param>
 		/// <exception cref="ArgumentNullException">
 		///		<see cref="PackToMapAsyncParameters{T}.Packer"/> of <paramref name="parameter"/> is <c>null</c>.
-		///		Or, <see cref="PackToMapAsyncParameters{T}.Operations"/> of <paramref name="parameter"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		<see cref="PackToMapAsyncParameters{T}.Operations"/> of <paramref name="parameter"/> is <c>null</c>.
 		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
@@ -413,24 +460,64 @@ namespace MsgPack.Serialization
 				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
 			}
 
-			return PackToMapAsyncCore( parameter.Packer, parameter.Target, parameter.Operations, parameter.CancellationToken );
+			return PackToMapAsyncCore( parameter.SerializationContext, parameter.Packer, parameter.Target, parameter.Operations, parameter.NullCheckers, parameter.CancellationToken );
 		}
+#pragma warning restore 618
 
 		private static async Task PackToMapAsyncCore<TObject>(
+			SerializationContext serializationContext,
 			Packer packer,
 			TObject target,
 			IDictionary<string, Func<Packer, TObject, CancellationToken, Task>> operations,
+			IDictionary<string, Func<TObject, bool>> nullCheckers,
 			CancellationToken cancellationToken
 		)
 		{
+#if ASSERT
 			Contract.Assert( packer != null );
 			Contract.Assert( operations != null );
+#endif // ASSERT
 
-			await packer.PackMapHeaderAsync( operations.Count, cancellationToken ).ConfigureAwait( false );
-			foreach ( var operation in operations )
+			if ( nullCheckers != null && ( serializationContext?.DictionarySerlaizationOptions.OmitNullEntry ).GetValueOrDefault() )
 			{
-				await packer.PackStringAsync( operation.Key, cancellationToken ).ConfigureAwait( false );
-				await operation.Value( packer, target, cancellationToken ).ConfigureAwait( false );
+#if ASSERT
+				Contract.Assert( !SerializerDebugging.UseLegacyNullMapEntryHandling );
+#endif // ASSERT
+				// Skipping causes the entries count header reducing, so count up null entries first.
+				var nullCount = 0;
+				foreach ( var nullChecker in nullCheckers )
+				{
+					if ( nullChecker.Value( target ) )
+					{
+						nullCount++;
+					}
+				}
+
+				await packer.PackMapHeaderAsync( operations.Count - nullCount, cancellationToken ).ConfigureAwait( false );
+				foreach ( var operation in operations )
+				{
+					Func<TObject, bool> nullChecker;
+					if ( nullCheckers.TryGetValue( operation.Key, out nullChecker ) )
+					{
+						if ( nullChecker( target ) )
+						{
+							continue;
+						}
+					}
+
+					await packer.PackStringAsync( operation.Key, cancellationToken ).ConfigureAwait( false );
+					await operation.Value( packer, target, cancellationToken ).ConfigureAwait( false );
+				}
+			}
+			else
+			{
+				await packer.PackMapHeaderAsync( operations.Count, cancellationToken ).ConfigureAwait( false );
+				foreach ( var operation in operations )
+				{
+					// Compat path
+					await packer.PackStringAsync( operation.Key, cancellationToken ).ConfigureAwait( false );
+					await operation.Value( packer, target, cancellationToken ).ConfigureAwait( false );
+				}
 			}
 		}
 

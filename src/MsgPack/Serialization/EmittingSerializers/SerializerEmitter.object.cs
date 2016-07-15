@@ -321,6 +321,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Func<bool, Func<ILConstruct>> packActionTableInitialization =
 				isAsync =>
 					new Func<ILConstruct>( () => builder.EmitPackOperationTableInitialization( context, targetInfo, isAsync ) );
+			Func<ILConstruct> nullCheckerTableInitializtion = () => builder.EmitPackNullCheckerTableInitialization( context, targetInfo );
 			Func<bool, Func<ILConstruct>> unpackActionsInitialization =
 				isAsync => new Func<ILConstruct>( () => builder.EmitUnpackOperationListInitialization( context, targetInfo, isAsync ) );
 			Func<bool, Func<ILConstruct>> unpackActionTableInitialization =
@@ -341,6 +342,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 								: default( Func<ILConstruct> ),
 							hasPackActions
 								? packActionTableInitialization( false )
+								: default( Func<ILConstruct> ),
+							!SerializerDebugging.UseLegacyNullMapEntryHandling
+							&& hasPackActions
+#if FEATURE_TAP
+							|| hasPackAsyncActions
+#endif // FEATURE_TAP
+								? nullCheckerTableInitializtion
 								: default( Func<ILConstruct> ),
 							hasUnpackActions
 								? unpackActionsInitialization( false )
@@ -420,6 +428,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			TracingILGenerator il,
 			Func<ILConstruct> packActionListInitializerProvider,
 			Func<ILConstruct> packActionTableInitializerProvider,
+			Func<ILConstruct> nullCheckerTableInitializerProvider,
 			Func<ILConstruct> unpackActionListInitializerProvider,
 			Func<ILConstruct> unpackActionTableInitializerProvider,
 #if FEATURE_TAP
@@ -527,6 +536,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 				packAsyncActionListInitializerProvider().Evaluate( il );
 			}
 #endif // FEATURE_TAP
+
+			if ( nullCheckerTableInitializerProvider != null )
+			{
+				nullCheckerTableInitializerProvider().Evaluate( il );
+			}
 
 			if ( packActionTableInitializerProvider != null )
 			{

@@ -140,13 +140,27 @@ void WriteArrayMembers( bool isAsync )
 
 void WriteMapMembers( bool isAsync )
 {
+#>
+
+		/// <summary>
+		///		The <see cref="SerializationContext" /> which contains dictionary based serialization related options.
+		/// </summary>
+		public SerializationContext SerializationContext;
+
+		/// <summary>
+		///		Delegates table each ones check whether a member is <c>null</c>.
+		///		The argument will be <see cref="Target"/> and returns <c>true</c> if the argument value is <c>null</c>.
+		///		This dictionary should not contain for value type members except <see cref="Nullable{T}" />.
+		/// </summary>
+		public IDictionary<string, Func<T, bool>> NullCheckers;
+<#+
 	if ( !isAsync )
 	{
 #>
 
 		/// <summary>
 		///		Delegates table each ones unpack single member and their keys correspond to unpacking membmer names.
-		///		The 1st argument will be <see cref="Packer"/>, 2nd argument will be <see cref="Target"/>, 3rd argument will be 
+		///		The 1st argument will be <see cref="Packer"/> and 2nd argument will be <see cref="Target"/>.
 		/// </summary>
 		public IDictionary<string, Action<Packer, T>> Operations;
 <#+

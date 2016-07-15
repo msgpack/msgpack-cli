@@ -601,6 +601,10 @@ namespace MsgPack.Serialization
 		public string FirstProperty { get; set; }
 
 		public string SecondProperty { get; set; }
+
+		public int? ThirdProperty { get; set; }
+
+		public int FourthProperty { get; set; }
 	}
 
 	// ReSharper restore MemberHidesStaticFromOuterClass

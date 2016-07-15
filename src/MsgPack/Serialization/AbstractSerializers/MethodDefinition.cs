@@ -128,11 +128,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 		public readonly TypeDefinition DeclaringType;
 		public readonly TypeDefinition ReturnType;
 		public readonly TypeDefinition[] ParameterTypes;
+		public readonly bool IsStatic;
 
-		public MethodDefinition( string name, TypeDefinition[] genericArguments, TypeDefinition declaringType, TypeDefinition returnType, params TypeDefinition[] parameterTypes )
+		public MethodDefinition( string name, TypeDefinition[] genericArguments, TypeDefinition declaringType, bool isStatic, TypeDefinition returnType, params TypeDefinition[] parameterTypes )
 		{
 			this.MethodName = name;
 			this.DeclaringType = declaringType;
+			this.IsStatic = isStatic;
 			this._runtimeMethod = null;
 			this._genericArguments = genericArguments;
 			this.ReturnType = returnType;
@@ -152,6 +154,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 #endif // DEBUG
 			this.MethodName = runtimeMethod.Name;
 			this.DeclaringType = runtimeMethod.DeclaringType;
+			this.IsStatic = runtimeMethod.IsStatic;
 			this._runtimeMethod = runtimeMethod;
 			this.ReturnType = runtimeMethod.ReturnType;
 			this.ParameterTypes = parameterTypes.ToArray();

@@ -757,12 +757,18 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				}
 				case ActionType.PackToMap:
 				{
-					type = 
+					type =
 #if FEATURE_TAP
 						isAsync ? typeof( IDictionary<,> ).MakeGenericType( typeof( string ), typeof( Func<,,,> ).MakeGenericType( typeof( Packer ), this.TargetType, typeof( CancellationToken ), typeof( Task ) ) ) :
 #endif // FEATURE_TAP
 						typeof( IDictionary<,> ).MakeGenericType( typeof( string ), typeof( Action<,> ).MakeGenericType( typeof( Packer ), this.TargetType ) );
 					name = FieldName.PackOperationTable;
+					break;
+				}
+				case ActionType.IsNull:
+				{
+					type = typeof( IDictionary<,> ).MakeGenericType( typeof( string ), typeof( Func<,> ).MakeGenericType( this.TargetType, typeof( bool ) ) );
+					name = FieldName.NullCheckersTable;
 					break;
 				}
 				case ActionType.UnpackFromArray:
@@ -1120,7 +1126,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					delegateType,
 					new CodeDelegateCreateExpression(
 						ToCodeTypeReference( delegateType ),
-						new CodeThisReferenceExpression(),
+						method.IsStatic ? new CodeTypeReferenceExpression( context.DeclaringType.Name ) as CodeExpression : new CodeThisReferenceExpression(),
 						method.MethodName
 					)
 				);
@@ -1503,8 +1509,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					if ( targetInfo != null )
 					{ 
 						// For object only.
-						if (
-							!typeof( IPackable ).IsAssignableFrom( this.TargetType )
+						if ( !typeof( IPackable ).IsAssignableFrom( this.TargetType )
 #if FEATURE_TAP
 							|| !typeof( IAsyncPackable ).IsAssignableFrom( this.TargetType )
 #endif // FEATURE_TAP
@@ -1541,6 +1546,18 @@ namespace MsgPack.Serialization.CodeDomSerializers
 									);
 								}
 #endif // FEATURE_TAP
+
+								if ( !SerializerDebugging.UseLegacyNullMapEntryHandling
+									&& ( !typeof( IPackable ).IsAssignableFrom( this.TargetType )
+#if FEATURE_TAP
+									|| ( !typeof( IAsyncPackable ).IsAssignableFrom( this.TargetType ) && this.WithAsync( context ) )
+#endif // FEATURE_TAP
+								) )
+								{
+									ctor.Statements.AddRange(
+										this.EmitPackNullCheckerTableInitialization( context, targetInfo ).AsStatements().ToArray()
+									);
+								}
 							}
 						}
 
@@ -1585,9 +1602,16 @@ namespace MsgPack.Serialization.CodeDomSerializers
 #endif // FEATURE_TAP
 							}
 
-							ctor.Statements.AddRange(
-								this.EmitMemberListInitialization( context, targetInfo ).AsStatements().ToArray()
-							);
+							if ( !typeof( IUnpackable ).IsAssignableFrom( this.TargetType )
+#if FEATURE_TAP
+								|| ( !typeof( IAsyncUnpackable ).IsAssignableFrom( this.TargetType ) && this.WithAsync( context ) )
+#endif // FEATURE_TAP
+							)
+							{
+								ctor.Statements.AddRange(
+									this.EmitMemberListInitialization( context, targetInfo ).AsStatements().ToArray()
+								);
+}
 						}
 					} // if( targetInfo != null )
 

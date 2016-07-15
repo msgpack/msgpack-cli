@@ -128,9 +128,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 #endif
 				var count = i;
-				this.ExtractPrivateMethod(
+				this.DefinePrivateMethod(
 					context,
 					AdjustName( MethodNamePrefix.PackValue + SerializationTarget.GetTupleItemNameFromIndex( i ), isAsync ),
+					false, // isStatic
 #if FEATURE_TAP
 					isAsync ? typeof( Task ) :
 #endif // FEATURE_TAP
@@ -174,6 +175,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						AdjustName( MethodName.PackToArray, isAsync ),
 						new [] { TypeDefinition.Object( this.TargetType ) },
 						typeof( PackHelpers ),
+						true, // isStatic
 #if FEATURE_TAP
 						isAsync ? typeof( Task ) :
 #endif // FEATURE_TAP
@@ -301,6 +303,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.ExtractPrivateMethod(
 					context,
 					AdjustName( MethodNamePrefix.UnpackValue + propertyName, isAsync ),
+					false, // isStatic
 #if FEATURE_TAP
 					isAsync ? typeof( Task ) :
 #endif // FEATURE_TAP
@@ -324,6 +327,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							: this.ExtractPrivateMethod(
 								context,
 								setUnpackValueOfMethodName,
+								false, // isStatic
 								typeof( void ),
 								() => unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
 									? this.EmitInvokeVoidMethod(
@@ -402,6 +406,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						MethodName.CreateObjectFromContext,
 						null,
 						null,
+						true, // isStatic
 						this.TargetType,
 						unpackingContext.Type
 					),
@@ -437,6 +442,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							AdjustName( MethodName.UnpackFromArray, isAsync ),
 							new [] { unpackingContext.Type, this.TargetType },
 							typeof( UnpackHelpers ),
+							true, // isStatic
 #if FEATURE_TAP
 							isAsync ? typeof( Task<> ).MakeGenericType( this.TargetType ) :
 #endif // FEATURE_TAP

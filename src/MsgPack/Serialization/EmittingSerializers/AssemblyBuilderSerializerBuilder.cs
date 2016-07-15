@@ -979,12 +979,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 				}
 				case ActionType.PackToMap:
 				{
-					type = 
+					type =
 #if FEATURE_TAP
 						isAsync ? typeof( IDictionary<,> ).MakeGenericType( typeof( string ), typeof( Func<,,,> ).MakeGenericType( typeof( Packer ), this.TargetType, typeof( CancellationToken ), typeof( Task ) ) ) :
 #endif // FEATURE_TAP
 						typeof( IDictionary<,> ).MakeGenericType( typeof( string ), typeof( Action<,> ).MakeGenericType( typeof( Packer ), this.TargetType ) );
 					name = FieldName.PackOperationTable;
+					break;
+				}
+				case ActionType.IsNull:
+				{
+					type = typeof( IDictionary<,> ).MakeGenericType( typeof( string ), typeof( Func<,> ).MakeGenericType( this.TargetType, typeof( bool ) ) );
+					name = FieldName.NullCheckersTable;
 					break;
 				}
 				case ActionType.UnpackFromArray:
@@ -1165,7 +1171,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 					false,
 					il =>
 					{
-						il.EmitLdargThis();
+						if ( method.IsStatic )
+						{
+							il.EmitLdnull();
+						}
+						else
+						{
+							il.EmitLdargThis();
+						}
 						// OK this should not be ldvirtftn because target is private.
 						il.EmitLdftn( method.ResolveRuntimeMethod() );
 						// call extern .ctor(Object, void*)

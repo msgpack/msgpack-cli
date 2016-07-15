@@ -114,14 +114,54 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 			else
 			{
-				packer.PackMapHeader( this._serializers.Length );
-				for ( int i = 0; i < this._serializers.Length; i++ )
+				if ( this.OwnerContext.DictionarySerlaizationOptions.OmitNullEntry && !SerializerDebugging.UseLegacyNullMapEntryHandling )
 				{
-					// Set key as transformed.
-					packer.PackString( this.OwnerContext.DictionarySerlaizationOptions.SafeKeyTransformer( this._contracts[ i ].Name ) );
-					this.PackMemberValue( packer, objectTree, i );
+					// Skipping causes the entries count header reducing, so count up null entries first.
+					var nullCount = 0;
+					for ( int i = 0; i < this._serializers.Length; i++ )
+					{
+						// Set key as transformed.
+						if ( this.IsNull( objectTree, i ) )
+						{
+							nullCount++;
+						}
+					}
+
+					packer.PackMapHeader( this._serializers.Length - nullCount );
+					for ( int i = 0; i < this._serializers.Length; i++ )
+					{
+						if ( this.IsNull( objectTree, i ) )
+						{
+							continue;
+						}
+
+						// Set key as transformed.
+						packer.PackString( this.OwnerContext.DictionarySerlaizationOptions.SafeKeyTransformer( this._contracts[ i ].Name ) );
+						this.PackMemberValue( packer, objectTree, i );
+					}
+				}
+				else
+				{
+					packer.PackMapHeader( this._serializers.Length );
+					for ( int i = 0; i < this._serializers.Length; i++ )
+					{
+						// Set key as transformed.
+						packer.PackString( this.OwnerContext.DictionarySerlaizationOptions.SafeKeyTransformer( this._contracts[ i ].Name ) );
+						this.PackMemberValue( packer, objectTree, i );
+					}
 				}
 			}
+		}
+
+		private bool IsNull( T objectTree, int index )
+		{
+			if ( this._getters[ index ] == null )
+			{
+				// missing member should be treated as nil.
+				return true;
+			}
+
+			return this._getters[ index ]( objectTree ) == null;
 		}
 
 		private void PackMemberValue( Packer packer, T objectTree, int index )
@@ -172,12 +212,41 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 			else
 			{
-				await packer.PackMapHeaderAsync( this._serializers.Length, cancellationToken ).ConfigureAwait( false );
-				for ( int i = 0; i < this._serializers.Length; i++ )
+				if ( this.OwnerContext.DictionarySerlaizationOptions.OmitNullEntry && !SerializerDebugging.UseLegacyNullMapEntryHandling )
 				{
-					// Set key as transformed.
-					await packer.PackStringAsync( this.OwnerContext.DictionarySerlaizationOptions.SafeKeyTransformer( this._contracts[ i ].Name ), cancellationToken ).ConfigureAwait( false );
-					await this.PackMemberValueAsync( packer, objectTree, i, cancellationToken ).ConfigureAwait( false );
+					// Skipping causes the entries count header reducing, so count up null entries first.
+					var nullCount = 0;
+					for ( int i = 0; i < this._serializers.Length; i++ )
+					{
+						// Set key as transformed.
+						if ( this.IsNull( objectTree, i ) )
+						{
+							nullCount++;
+						}
+					}
+
+					await packer.PackMapHeaderAsync( this._serializers.Length - nullCount, cancellationToken ).ConfigureAwait( false );
+					for ( int i = 0; i < this._serializers.Length; i++ )
+					{
+						if ( this.IsNull( objectTree, i ) )
+						{
+							continue;
+						}
+
+						// Set key as transformed.
+						await packer.PackStringAsync( this.OwnerContext.DictionarySerlaizationOptions.SafeKeyTransformer( this._contracts[ i ].Name ), cancellationToken ).ConfigureAwait( false );
+						await this.PackMemberValueAsync( packer, objectTree, i, cancellationToken ).ConfigureAwait( false );
+					}
+				}
+				else
+				{
+					await packer.PackMapHeaderAsync( this._serializers.Length, cancellationToken ).ConfigureAwait( false );
+					for ( int i = 0; i < this._serializers.Length; i++ )
+					{
+						// Set key as transformed.
+						await packer.PackStringAsync( this.OwnerContext.DictionarySerlaizationOptions.SafeKeyTransformer( this._contracts[ i ].Name ), cancellationToken ).ConfigureAwait( false );
+						await this.PackMemberValueAsync( packer, objectTree, i, cancellationToken ).ConfigureAwait( false );
+					}
 				}
 			}
 		}

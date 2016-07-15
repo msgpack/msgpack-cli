@@ -107,6 +107,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			// Note: baseClass is always null this class hiearchy.
 			this.Packer = ILConstruct.Argument( 1, typeof( Packer ), "packer" );
 			this.PackToTarget = ILConstruct.Argument( 2, targetType, "objectTree" );
+			this.NullCheckTarget = ILConstruct.Argument( 1, targetType, "objectTree" );
 			this.Unpacker = ILConstruct.Argument( 1, typeof( Unpacker ), "unpacker" );
 			this.IndexOfItem = ILConstruct.Argument( 3, typeof( int ), "indexOfItem" );
 			this.ItemsCount = ILConstruct.Argument( 4, typeof( int ), "itemsCount" );

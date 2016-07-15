@@ -194,6 +194,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				isAsync ? new[] { this.ReferCancellationToken( context, 3 ) } :
 #endif // FEATURE_TAP
 				NoConstructs;
+			var nullCheckParameters = new[] { context.NullCheckTarget };
 			var methodForNull =
 #if FEATURE_TAP
 				isAsync ? Metadata._Packer.PackNullAsync :
@@ -217,9 +218,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 						}
 
 						// missing member, always nil
-						this.ExtractPrivateMethod(
+						this.DefinePrivateMethod(
 							context,
 							AdjustName( MethodName.PackMemberPlaceHolder, isAsync ),
+							false, // isStatic
 #if FEATURE_TAP
 							isAsync ? typeof( Task ) :
 #endif // FEATURE_TAP
@@ -232,9 +234,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 					}
 					else
 					{
-						this.ExtractPrivateMethod(
+						var itemType = entries[ count ].Member.GetMemberValueType();
+						// PackValue
+						this.DefinePrivateMethod(
 							context,
 							GetPackValueMethodName( entries[ i ], isAsync ),
+							false, // isStatic
 #if FEATURE_TAP
 							isAsync ? typeof( Task ) :
 #endif // FEATURE_TAP
@@ -245,7 +250,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								this.EmitPackItemStatements(
 									context,
 									context.Packer,
-									entries[ count ].Member.GetMemberValueType(),
+									itemType,
 									entries[ count ].Contract.NilImplication,
 									entries[ count ].Member.ToString(),
 									this.EmitGetMemberValueExpression( context, context.PackToTarget, entries[ count ].Member ),
@@ -256,6 +261,32 @@ namespace MsgPack.Serialization.AbstractSerializers
 							),
 							parameters
 						);
+
+						if ( !SerializerDebugging.UseLegacyNullMapEntryHandling
+							&& ( !itemType.GetIsValueType() || Nullable.GetUnderlyingType( itemType ) != null ) )
+						{
+							var nullCheckTarget = this.EmitGetMemberValueExpression( context, context.NullCheckTarget, entries[ count ].Member );
+							// Trying uses nullCheckTarget.ContextType because it may be Object when using reflection.
+							var nullCheckTargetType = nullCheckTarget.ContextType.TryGetRuntimeType() ?? itemType;
+							// CheckNull
+							this.DefinePrivateMethod(
+								context,
+								GetCheckNullMethodName( entries[ i ] ),
+								false, // isStatic
+								typeof( bool ),
+								() =>
+									nullCheckTargetType.GetIsValueType() // Is Nullable<T> ?
+									? this.EmitSequentialStatements(
+										context,
+										typeof( bool ),
+										this.EmitHasValueCore( context, nullCheckTarget, nullCheckTargetType )
+									) : this.EmitRetrunStatement(
+										context,
+										this.EmitEqualsExpression( context, nullCheckTarget, this.MakeNullLiteral( context, nullCheckTargetType ) )
+									),
+								nullCheckParameters
+							);
+						}
 					}
 				}
 
@@ -275,6 +306,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 							)
 						}
 					};
+
+				if ( method == SerializationMethod.Map && !SerializerDebugging.UseLegacyNullMapEntryHandling )
+				{
+					packHelperArguments.Add(
+						"SerializationContext",
+						this.EmitGetPropertyExpression( context, this.EmitThisReferenceExpression( context ), Metadata._MessagePackSerializer.OwnerContext )
+					);
+					// isAsync is always false to prevent _nullCheckersTableAsync creation.
+					packHelperArguments.Add( "NullCheckers", this.EmitGetActionsExpression( context, ActionType.IsNull, isAsync: false ) );
+				}
 
 #if FEATURE_TAP
 				if ( isAsync )
@@ -306,6 +347,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						packHelperMethodName,
 						new TypeDefinition[] { this.TargetType },
 						typeof( PackHelpers ),
+						true, // isStatic
 #if FEATURE_TAP
 						isAsync ? typeof( Task ) :
 #endif // FEATURE_TAP
@@ -362,6 +404,22 @@ namespace MsgPack.Serialization.AbstractSerializers
 					),
 					forArray,
 					forMap
+				);
+		}
+
+		private IEnumerable<TConstruct> EmitHasValueCore( TContext context, TConstruct nullCheckTarget, Type itemType )
+		{
+			var nullable = this.DeclareLocal( context, itemType, "nullable" );
+			yield return nullable;
+			yield return this.EmitStoreVariableStatement( context, nullable, nullCheckTarget );
+			yield return
+				this.EmitRetrunStatement(
+					context,
+					this.EmitEqualsExpression(
+						context,
+						this.EmitGetPropertyExpression( context, nullable, itemType.GetProperty( "HasValue" ) ),
+						this.MakeBooleanLiteral( context, false )
+					)
 				);
 		}
 
@@ -510,6 +568,64 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 		}
 
+		protected internal TConstruct EmitPackNullCheckerTableInitialization( TContext context, SerializationTarget targetInfo )
+		{
+			var listType = typeof( Dictionary<,> ).MakeGenericType( typeof( string ), typeof( Func<,> ).MakeGenericType( this.TargetType, typeof( bool ) ) );
+			return
+				this.EmitSequentialStatements(
+					context,
+					listType,
+					this.EmitPackNullCheckerTableInitializationCore(
+						context,
+						targetInfo,
+						this.DeclareLocal( context, listType, "nullCheckerTable" )
+					)
+				);
+		}
+
+		private IEnumerable<TConstruct> EmitPackNullCheckerTableInitializationCore( TContext context, SerializationTarget targetInfo, TConstruct actionCollection )
+		{
+			yield return actionCollection;
+
+			var knownActions = GetDeclaredKnownActions( context, targetInfo, m => GetCheckNullMethodName( m ) );
+
+			yield return
+				this.EmitStoreVariableStatement(
+					context,
+					actionCollection,
+					this.EmitCreateNewObjectExpression(
+						context,
+						actionCollection,
+						new ConstructorDefinition( actionCollection.ContextType, typeof( int ) ),
+						this.MakeInt32Literal( context, knownActions.Length )
+					)
+				);
+
+			for ( int i = 0; i < knownActions.Length; i++ )
+			{
+				yield return
+					this.EmitSetIndexedProperty(
+						context,
+						actionCollection,
+						actionCollection.ContextType,
+						"Item",
+						// Set key as transformed.
+						this.MakeStringLiteral( context, context.SerializationContext.DictionarySerlaizationOptions.SafeKeyTransformer( knownActions[ i ].Key ) ),
+						this.EmitNewPrivateMethodDelegateExpression(
+							context,
+							knownActions[ i ].Value
+						)
+					);
+			}
+
+			yield return
+				this.EmitFinishFieldInitializationStatement(
+					context,
+					FieldName.NullCheckersTable,
+					actionCollection
+				);
+		}
+
 		private static string GetPackValueMethodName( SerializingMember member, bool isAsync )
 		{
 			return
@@ -519,6 +635,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 						: MethodNamePrefix.PackValue + member.MemberName,
 					isAsync
 				);
+		}
+
+		private static string GetCheckNullMethodName( SerializingMember member )
+		{
+			return "Is" + member.MemberName + "Null";
 		}
 
 		#endregion -- Pack Operation Initialization --
@@ -775,6 +896,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 									MethodNamePrefix.SetUnpackedValueOf + targetInfo.Members[ count ].Member.Name,
 									null,
 									null,
+									false, // isStatic
 									typeof( void ),
 									unpackingContext.VariableType,
 									targetInfo.Members[ count ].Member.GetMemberValueType()
@@ -787,9 +909,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 						);
 				}
 
-				this.ExtractPrivateMethod(
+				this.DefinePrivateMethod(
 					context,
 					GetUnpackValueMethodName( targetInfo.Members[ i ], isAsync ),
+					false, // isStatic
 #if FEATURE_TAP
 					isAsync ? typeof( Task ) :
 #endif // FEATURE_TAP
@@ -833,6 +956,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							AdjustName( MethodNamePrefix.UnpackFrom + method, isAsync ),
 							new[] { unpackingContext.Type, this.TargetType },
 							typeof( UnpackHelpers ),
+							true, // isStatic
 							this.TargetType,
 							unpackHelperArguments.Select( a => a.ContextType ).ToArray()
 						),
@@ -1099,6 +1223,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					MethodName.CreateObjectFromContext,
 					null,
 					null,
+					true, // isStatic
 					this.TargetType,
 					unpackingContext.Type
 				);
@@ -1414,6 +1539,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.ExtractPrivateMethod(
 					context,
 					method.MethodName,
+					false, // isStatic
 					method.ReturnType,
 					bodyFactory,
 					privateMethodParameters
@@ -1436,6 +1562,22 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		}
 
+		private static KeyValuePair<string, MethodDefinition>[] GetDeclaredKnownActions( TContext context, SerializationTarget targetInfo, Func<SerializingMember, string> nameFactory )
+		{
+			return
+				targetInfo.Members
+				.Where( m => m.MemberName != null )
+				.Select( m =>
+					new KeyValuePair<string, MethodDefinition>(
+						m.MemberName,
+						context.TryGetDeclaredMethod( nameFactory( m ) )
+					)
+				).Where( kv => kv.Value != null )
+				.ToArray();
+
+		}
+
 		#endregion -- Operation Helpers --
 	}
 }
+

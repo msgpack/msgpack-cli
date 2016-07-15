@@ -267,6 +267,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 			this.Packer = CodeDomConstruct.Parameter( typeof( Packer ), "packer" );
 			this.PackToTarget = CodeDomConstruct.Parameter( targetType, "objectTree" );
+			this.NullCheckTarget = CodeDomConstruct.Parameter( targetType, "objectTree" );
 			this.Unpacker = CodeDomConstruct.Parameter( typeof( Unpacker ), "unpacker" );
 			this.IndexOfItem = CodeDomConstruct.Parameter( typeof( int ), "indexOfItem" );
 			this.ItemsCount = CodeDomConstruct.Parameter( typeof( int ), "itemsCount" );
@@ -483,6 +484,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					context.Name,
 					null,
 					null,
+					context.IsStatic,
 					context.ReturnType,
 					context.Parameters.Select( kv => kv.Value ).ToArray()
 				);
@@ -530,6 +532,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					context.Name,
 					null,
 					null,
+					context.IsStatic,
 					context.ReturnType,
 					context.Parameters.Select( kv => kv.Value ).ToArray()
 				);

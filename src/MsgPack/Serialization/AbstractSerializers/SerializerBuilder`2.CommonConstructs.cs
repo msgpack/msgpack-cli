@@ -713,6 +713,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="name">The name of the private method.</param>
+		/// <param name="isStatic"><c>true</c> for static method.</param>
 		/// <param name="returnType">The type of return value.</param>
 		/// <param name="bodyFactory">The delegate to the factory which returns body of the private method.</param>
 		/// <param name="parameters">The parameters of the private method.</param>
@@ -720,26 +721,40 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		The generated construct which represents delegate creation instruction to call the private method.
 		///		Note that returned value remains in context.
 		/// </returns>
-		private TConstruct ExtractPrivateMethod( TContext context, string name, TypeDefinition returnType, Func<TConstruct> bodyFactory, params TConstruct[] parameters )
+		private TConstruct ExtractPrivateMethod( TContext context, string name, bool isStatic, TypeDefinition returnType, Func<TConstruct> bodyFactory, params TConstruct[] parameters )
 		{
-			MethodDefinition method;
+			return this.EmitGetPrivateMethodDelegateExpression( context, this.DefinePrivateMethod( context, name, isStatic, returnType, bodyFactory, parameters ) );
+		}
+
+		/// <summary>
+		///		Emits specified body as individual private method and returns its metadata. 
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="name">The name of the private method.</param>
+		/// <param name="isStatic"><c>true</c> for static method.</param>
+		/// <param name="returnType">The type of return value.</param>
+		/// <param name="bodyFactory">The delegate to the factory which returns body of the private method.</param>
+		/// <param name="parameters">The parameters of the private method.</param>
+		/// <returns>
+		///		The generated metadata of the private method.
+		/// </returns>
+		private MethodDefinition DefinePrivateMethod( TContext context, string name, bool isStatic, TypeDefinition returnType, Func<TConstruct> bodyFactory, params TConstruct[] parameters )
+		{
 			if ( context.IsDeclaredMethod( name ) )
 			{
-				method = context.GetDeclaredMethod( name );
+				return context.GetDeclaredMethod( name );
 			}
 			else
 			{
 				context.BeginPrivateMethod(
 					name,
-					false,
+					isStatic,
 					returnType,
 					parameters
-					);
+				);
 
-				method = context.EndPrivateMethod( name, bodyFactory() );
+				return context.EndPrivateMethod( name, bodyFactory() );
 			}
-
-			return this.EmitGetPrivateMethodDelegateExpression( context, method );
 		}
 
 		protected virtual TConstruct EmitGetPrivateMethodDelegateExpression( TContext context, MethodDefinition method )
@@ -1368,6 +1383,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						? new [] { unpackingContext.ContextType, Nullable.GetUnderlyingType( memberType ) }
 						: new [] { unpackingContext.ContextType, memberType },
 					typeof( UnpackHelpers ),// declaring type
+					true, // isStatic
 					unpackingContext.ContextType, // return type
 					TypeDefinition.ManagedReference( unpackHelperParameterType )
 				);

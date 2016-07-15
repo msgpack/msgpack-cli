@@ -26,6 +26,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 	{
 		public const string PackOperationList = "_packOperationList";
 		public const string PackOperationTable = "_packOperationTable";
+		public const string NullCheckersTable = "_nullCheckersTable";
 		public const string UnpackOperationList = "_unpackOperationList";
 		public const string UnpackOperationTable = "_unpackOperationTable";
 		public const string UnpackTo = "_unpackTo";

@@ -45,6 +45,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -7135,30 +7136,165 @@ namespace MsgPack.Serialization
 			Assert.Throws<SerializationException>( () => this.CreateTarget<GenericNonCollectionType>( context ) );
 		}
 
+		// Issue #136
+		[Test]
+		public void TestOmitNullEntryInDictionary()
+		{
+			var context = GetSerializationContext();
+			Assert.That( context.DictionarySerlaizationOptions.OmitNullEntry, Is.False, "default value" );
+			TestOmitNullEntryInDictionaryCore( context, true, false );
+			context.DictionarySerlaizationOptions.OmitNullEntry = true;
+			TestOmitNullEntryInDictionaryCore( context, false, false );
+		}
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestOmitNullEntryInDictionary_Async()
+		{
+			var context = GetSerializationContext();
+			Assert.That( context.DictionarySerlaizationOptions.OmitNullEntry, Is.False, "default value" );
+			TestOmitNullEntryInDictionaryCore( context, true, true );
+			context.DictionarySerlaizationOptions.OmitNullEntry = true;
+			TestOmitNullEntryInDictionaryCore( context, false, true );
+		}
+
+#endif // FEATURE_TAP
+
+		[Test]
+		public void TestOmitNullEntryInDictionary_BackwordCompatibility()
+		{
+			SerializerDebugging.UseLegacyNullMapEntryHandling = true;
+			try
+			{
+				var context = GetSerializationContext();
+				context.DictionarySerlaizationOptions.OmitNullEntry = true;
+				TestOmitNullEntryInDictionaryCore( context, true, false );
+			}
+			finally
+			{
+				SerializerDebugging.UseLegacyNullMapEntryHandling = false;
+			}
+		}
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestOmitNullEntryInDictionary_BackwordCompatibility_Async()
+		{
+			SerializerDebugging.UseLegacyNullMapEntryHandling = true;
+			try
+			{
+				var context = GetSerializationContext();
+				context.DictionarySerlaizationOptions.OmitNullEntry = true;
+				TestOmitNullEntryInDictionaryCore( context, true, true );
+			}
+			finally
+			{
+				SerializerDebugging.UseLegacyNullMapEntryHandling = false;
+			}
+		}
+
+#endif // FEATURE_TAP
+
+		private static void TestOmitNullEntryInDictionaryCore( SerializationContext context, bool shouldContainNulls, bool isAsync )
+		{
+			var serializer = context.GetSerializer<SimpleClass>();
+			var obj = new SimpleClass { FirstProperty = "foo", SecondProperty = null };
+			using ( var buffer = new MemoryStream() )
+			{
+#if FEATURE_TASK
+				if ( isAsync )
+				{
+					serializer.PackAsync( buffer, obj, CancellationToken.None ).Wait();
+				}
+				else
+				{
+#endif // FEATURE_TASK
+					serializer.Pack( buffer, obj );
+#if FEATURE_TASK
+				}
+#endif // FEATURE_TASK
+
+				buffer.Position = 0;
+				var map = MessagePackSerializer.UnpackMessagePackObject( buffer ).AsDictionary();
+
+				Assert.That( map.ContainsKey( "FirstProperty" ) );
+				Assert.That( map.ContainsKey( "SecondProperty" ), Is.EqualTo( shouldContainNulls ) );
+				Assert.That( map.ContainsKey( "ThirdProperty" ), Is.EqualTo( shouldContainNulls ) );
+				Assert.That( map.ContainsKey( "FourthProperty" ) );
+				
+				Assert.That( map[ "FirstProperty" ].AsString(), Is.EqualTo( "foo" ) );
+				if ( shouldContainNulls )
+				{
+					Assert.That( map[ "SecondProperty" ].IsNil );
+					Assert.That( map[ "ThirdProperty" ].IsNil );
+				}
+				Assert.That( map[ "FourthProperty" ].AsInt32(), Is.EqualTo( 0 ) );
+
+				buffer.Position = 0;
+
+				SimpleClass deserialized;
+#if FEATURE_TASK
+				if ( isAsync )
+				{
+					deserialized = serializer.UnpackAsync( buffer, CancellationToken.None ).Result;
+				}
+				else
+				{
+#endif // FEATURE_TASK
+					deserialized = serializer.Unpack( buffer );
+#if FEATURE_TASK
+				}
+#endif // FEATURE_TASK
+
+				Assert.That( deserialized.FirstProperty, Is.EqualTo( obj.FirstProperty) );
+				Assert.That( deserialized.SecondProperty, Is.EqualTo( obj.SecondProperty) );
+				Assert.That( deserialized.ThirdProperty, Is.EqualTo( obj.ThirdProperty) );
+				Assert.That( deserialized.FourthProperty, Is.EqualTo( obj.FourthProperty) );
+			}
+		}
+
 		// Issue #175
+		[Test]
+		public void TestDictionaryKeyTransformer_Default_AsIs()
+		{
+			var context = GetSerializationContext();
+			Assert.That( context.DictionarySerlaizationOptions.KeyTransformer, Is.Null, "default value" );
+			TestDictionaryKeyCore( context, "FirstProperty", "SecondProperty", "ThirdProperty", "FourthProperty", asIs: true, isAsync: false );
+		}
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestDictionaryKeyTransformer_Default_AsIs_Async()
+		{
+			var context = GetSerializationContext();
+			Assert.That( context.DictionarySerlaizationOptions.KeyTransformer, Is.Null, "default value" );
+			TestDictionaryKeyCore( context, "FirstProperty", "SecondProperty", "ThirdProperty", "FourthProperty", asIs: true, isAsync: true );
+		}
+
+#endif // FEATURE_TAP
+
 		[Test]
 		public void TestDictionaryKeyTransformer_LowerCamel()
 		{
 			var context = GetSerializationContext();
 			context.DictionarySerlaizationOptions.KeyTransformer = DictionaryKeyTransformers.LowerCamel;
-
-			var serializer = context.GetSerializer<SimpleClass>();
-			var obj = new SimpleClass { FirstProperty = "foo", SecondProperty = "bar" };
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, obj );
-				buffer.Position = 0;
-				var map = MessagePackSerializer.UnpackMessagePackObject( buffer ).AsDictionary();
-				Assert.That( map.ContainsKey( "FirstProperty" ), Is.False );
-				Assert.That( map.ContainsKey( "SecondProperty" ), Is.False );
-				Assert.That( map.ContainsKey( "firstProperty" ) );
-				Assert.That( map.ContainsKey( "secondProperty" ) );
-				buffer.Position = 0;
-				var deserialized = serializer.Unpack( buffer );
-				Assert.That( deserialized.FirstProperty, Is.EqualTo( obj.FirstProperty) );
-				Assert.That( deserialized.SecondProperty, Is.EqualTo( obj.SecondProperty) );
-			}
+			TestDictionaryKeyCore( context, "firstProperty", "secondProperty", "thirdProperty", "fourthProperty", asIs: false, isAsync: false );
 		}
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestDictionaryKeyTransformer_LowerCamel_Async()
+		{
+			var context = GetSerializationContext();
+			context.DictionarySerlaizationOptions.KeyTransformer = DictionaryKeyTransformers.LowerCamel;
+			TestDictionaryKeyCore( context, "firstProperty", "secondProperty", "thirdProperty", "fourthProperty", asIs: false, isAsync: true );
+		}
+
+#endif // FEATURE_TAP
 
 		[Test]
 		public void TestDictionaryKeyTransformer_Custom()
@@ -7166,22 +7302,73 @@ namespace MsgPack.Serialization
 			var context = GetSerializationContext();
 			context.DictionarySerlaizationOptions.KeyTransformer = 
 				key => Regex.Replace( key, "[A-Z]", match => match.Index == 0 ? match.Value.ToLower() : "-" + match.Value.ToLower() );
+			TestDictionaryKeyCore( context, "first-property", "second-property", "third-property", "fourth-property", asIs: false, isAsync: false );
+		}
 
+#if FEATURE_TAP
+
+		[Test]
+		public void TestDictionaryKeyTransformer_Custom_Async()
+		{
+			var context = GetSerializationContext();
+			context.DictionarySerlaizationOptions.KeyTransformer = 
+				key => Regex.Replace( key, "[A-Z]", match => match.Index == 0 ? match.Value.ToLower() : "-" + match.Value.ToLower() );
+			TestDictionaryKeyCore( context, "first-property", "second-property", "third-property", "fourth-property", asIs: false, isAsync: true );
+		}
+
+#endif // FEATURE_TAP
+
+		private static void TestDictionaryKeyCore( SerializationContext context, string expectedKey1, string expectedKey2, string expectedKey3, string expectedKey4, bool asIs, bool isAsync )
+		{
 			var serializer = context.GetSerializer<SimpleClass>();
-			var obj = new SimpleClass { FirstProperty = "foo", SecondProperty = "bar" };
+			var obj = new SimpleClass { FirstProperty = "foo", SecondProperty = "bar", ThirdProperty = 3, FourthProperty = 4 };
 			using ( var buffer = new MemoryStream() )
 			{
-				serializer.Pack( buffer, obj );
+#if FEATURE_TASK
+				if ( isAsync )
+				{
+					serializer.PackAsync( buffer, obj, CancellationToken.None ).Wait();
+				}
+				else
+				{
+#endif // FEATURE_TASK
+					serializer.Pack( buffer, obj );
+#if FEATURE_TASK
+				}
+#endif // FEATURE_TASK
+
 				buffer.Position = 0;
 				var map = MessagePackSerializer.UnpackMessagePackObject( buffer ).AsDictionary();
-				Assert.That( map.ContainsKey( "FirstProperty" ), Is.False );
-				Assert.That( map.ContainsKey( "SecondProperty" ), Is.False );
-				Assert.That( map.ContainsKey( "first-property" ) );
-				Assert.That( map.ContainsKey( "second-property" ) );
+
+				Assert.That( map.ContainsKey( "FirstProperty" ), Is.EqualTo( asIs ) );
+				Assert.That( map.ContainsKey( "SecondProperty" ), Is.EqualTo( asIs ) );
+				Assert.That( map.ContainsKey( "ThirdProperty" ), Is.EqualTo( asIs ) );
+				Assert.That( map.ContainsKey( "FourthProperty" ), Is.EqualTo( asIs ) );
+				Assert.That( map.ContainsKey( expectedKey1 ) );
+				Assert.That( map.ContainsKey( expectedKey2 ) );
+				Assert.That( map.ContainsKey( expectedKey3 ) );
+				Assert.That( map.ContainsKey( expectedKey4 ) );
+
 				buffer.Position = 0;
-				var deserialized = serializer.Unpack( buffer );
-				Assert.That( deserialized.FirstProperty, Is.EqualTo( obj.FirstProperty) );
-				Assert.That( deserialized.SecondProperty, Is.EqualTo( obj.SecondProperty) );
+
+				SimpleClass deserialized;
+#if FEATURE_TASK
+				if ( isAsync )
+				{
+					deserialized = serializer.UnpackAsync( buffer, CancellationToken.None ).Result;
+				}
+				else
+				{
+#endif // FEATURE_TASK
+					deserialized = serializer.Unpack( buffer );
+#if FEATURE_TASK
+				}
+#endif // FEATURE_TASK
+
+				Assert.That( deserialized.FirstProperty, Is.EqualTo( obj.FirstProperty ) );
+				Assert.That( deserialized.SecondProperty, Is.EqualTo( obj.SecondProperty ) );
+				Assert.That( deserialized.ThirdProperty, Is.EqualTo( obj.ThirdProperty ) );
+				Assert.That( deserialized.FourthProperty, Is.EqualTo( obj.FourthProperty ) );
 			}
 		}
 #endregion issue #169

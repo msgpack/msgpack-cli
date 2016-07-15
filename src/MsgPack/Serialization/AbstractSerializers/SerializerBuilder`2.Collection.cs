@@ -321,6 +321,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.ExtractPrivateMethod(
 						context,
 						AdjustName( MethodName.UnpackCollectionItem, isAsync ),
+						false, // isStatic
 #if FEATURE_TAP
 						isAsync ? typeof( Task ) :
 #endif // FEATURE_TAP
@@ -339,6 +340,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.ExtractPrivateMethod(
 								context,
 								MethodName.AppendUnpackedItem,
+								false, // isStatic
 								typeof( void ),
 								() => this.EmitAppendCollectionItem(
 									context,
