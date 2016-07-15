@@ -256,6 +256,8 @@
     <Compile Include="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\UnixEpocDateTimeMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DictionaryKeyTransformers.cs" />
+    <Compile Include="Serialization\DictionarySerlaizationOptions.cs" />
     <Compile Include="Serialization\EmittingSerializers\ILMethodConctext.cs" />
     <Compile Include="Serialization\EmittingSerializers\SerializerEmitter.cs" />
     <Compile Include="Serialization\INilImplicationHandlerOnUnpackedParameter.cs" />

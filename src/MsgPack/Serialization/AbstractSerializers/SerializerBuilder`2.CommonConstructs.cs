@@ -1255,7 +1255,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct packer,
 			Type itemType,
 			NilImplication nilImplication,
-			string memberName, TConstruct item,
+			string memberName,
+			TConstruct item,
 			SerializingMember? memberInfo,
 			PolymorphismSchema itemsSchema,
 			bool isAsync

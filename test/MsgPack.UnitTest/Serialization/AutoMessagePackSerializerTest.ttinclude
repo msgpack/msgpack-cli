@@ -76,6 +76,14 @@ using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
 using System.Text;
+<#+
+if ( serializationMethod == "Map" && !forIos )
+{
+#>
+using System.Text.RegularExpressions;
+<#+
+}
+#>
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -3663,6 +3671,61 @@ namespace MsgPack.Serialization
 			Assert.Throws<SerializationException>( () => this.CreateTarget<GenericNonCollectionType>( context ) );
 		}
 
+<#+
+	}
+
+	if ( serializationMethod == "Map" && !forIos )
+	{
+#>
+		// Issue #175
+		[Test]
+		public void TestDictionaryKeyTransformer_LowerCamel()
+		{
+			var context = GetSerializationContext();
+			context.DictionarySerlaizationOptions.KeyTransformer = DictionaryKeyTransformers.LowerCamel;
+
+			var serializer = context.GetSerializer<SimpleClass>();
+			var obj = new SimpleClass { FirstProperty = "foo", SecondProperty = "bar" };
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, obj );
+				buffer.Position = 0;
+				var map = MessagePackSerializer.UnpackMessagePackObject( buffer ).AsDictionary();
+				Assert.That( map.ContainsKey( "FirstProperty" ), Is.False );
+				Assert.That( map.ContainsKey( "SecondProperty" ), Is.False );
+				Assert.That( map.ContainsKey( "firstProperty" ) );
+				Assert.That( map.ContainsKey( "secondProperty" ) );
+				buffer.Position = 0;
+				var deserialized = serializer.Unpack( buffer );
+				Assert.That( deserialized.FirstProperty, Is.EqualTo( obj.FirstProperty) );
+				Assert.That( deserialized.SecondProperty, Is.EqualTo( obj.SecondProperty) );
+			}
+		}
+
+		[Test]
+		public void TestDictionaryKeyTransformer_Custom()
+		{
+			var context = GetSerializationContext();
+			context.DictionarySerlaizationOptions.KeyTransformer = 
+				key => Regex.Replace( key, "[A-Z]", match => match.Index == 0 ? match.Value.ToLower() : "-" + match.Value.ToLower() );
+
+			var serializer = context.GetSerializer<SimpleClass>();
+			var obj = new SimpleClass { FirstProperty = "foo", SecondProperty = "bar" };
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, obj );
+				buffer.Position = 0;
+				var map = MessagePackSerializer.UnpackMessagePackObject( buffer ).AsDictionary();
+				Assert.That( map.ContainsKey( "FirstProperty" ), Is.False );
+				Assert.That( map.ContainsKey( "SecondProperty" ), Is.False );
+				Assert.That( map.ContainsKey( "first-property" ) );
+				Assert.That( map.ContainsKey( "second-property" ) );
+				buffer.Position = 0;
+				var deserialized = serializer.Unpack( buffer );
+				Assert.That( deserialized.FirstProperty, Is.EqualTo( obj.FirstProperty) );
+				Assert.That( deserialized.SecondProperty, Is.EqualTo( obj.SecondProperty) );
+			}
+		}
 <#+
 	}
 #>

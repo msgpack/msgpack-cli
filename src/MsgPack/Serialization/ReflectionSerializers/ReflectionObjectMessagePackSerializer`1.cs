@@ -67,7 +67,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				this._contracts
 					.Select( ( contract, index ) => new KeyValuePair<string, int>( contract.Name, index ) )
 					.Where( kv => kv.Key != null )
-					.ToDictionary( kv => kv.Key, kv => kv.Value );
+					// Set key as transformed.
+					.ToDictionary( kv => context.DictionarySerlaizationOptions.SafeKeyTransformer( kv.Key ), kv => kv.Value );
 			this._constructorParameters =
 				( !typeof( IUnpackable ).IsAssignableFrom( typeof( T ) ) && target.IsConstructorDeserialization )
 					? target.DeserializationConstructor.GetParameters()
@@ -116,7 +117,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				packer.PackMapHeader( this._serializers.Length );
 				for ( int i = 0; i < this._serializers.Length; i++ )
 				{
-					packer.PackString( this._contracts[ i ].Name );
+					// Set key as transformed.
+					packer.PackString( this.OwnerContext.DictionarySerlaizationOptions.SafeKeyTransformer( this._contracts[ i ].Name ) );
 					this.PackMemberValue( packer, objectTree, i );
 				}
 			}
@@ -173,7 +175,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				await packer.PackMapHeaderAsync( this._serializers.Length, cancellationToken ).ConfigureAwait( false );
 				for ( int i = 0; i < this._serializers.Length; i++ )
 				{
-					await packer.PackStringAsync( this._contracts[ i ].Name, cancellationToken ).ConfigureAwait( false );
+					// Set key as transformed.
+					await packer.PackStringAsync( this.OwnerContext.DictionarySerlaizationOptions.SafeKeyTransformer( this._contracts[ i ].Name ), cancellationToken ).ConfigureAwait( false );
 					await this.PackMemberValueAsync( packer, objectTree, i, cancellationToken ).ConfigureAwait( false );
 				}
 			}

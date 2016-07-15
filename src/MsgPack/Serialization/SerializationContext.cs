@@ -176,6 +176,26 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		private readonly DictionarySerlaizationOptions _didtiinarySerializationOptions;
+
+		/// <summary>
+		///		Gets the dictionary(map) based serialization options.
+		/// </summary>
+		/// <value>
+		///		The <see cref="DictionarySerlaizationOptions"/> which stores dictionary(map) based serialization options. This value will not be <c>null</c>.
+		/// </value>
+		public DictionarySerlaizationOptions DictionarySerlaizationOptions
+		{
+			get
+			{
+#if DEBUG
+				Contract.Ensures( Contract.Result<SerializationCompatibilityOptions>() != null );
+#endif // DEBUG
+
+				return this._didtiinarySerializationOptions;
+			}
+		}
+
 		private int _serializationMethod;
 
 		/// <summary>
@@ -540,6 +560,7 @@ namespace MsgPack.Serialization
 			this._generationLock = new object();
 			this._defaultCollectionTypes = new DefaultConcreteTypeRepository();
 			this._serializerGeneratorOptions = new SerializerOptions();
+			this._didtiinarySerializationOptions = new DictionarySerlaizationOptions();
 		}
 
 		internal bool ContainsSerializer( Type rootType )

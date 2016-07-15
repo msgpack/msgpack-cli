@@ -490,7 +490,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 							actionCollection,
 							actionCollection.ContextType,
 							"Item",
-							this.MakeStringLiteral( context, knownActions[ i ].Key ),
+							// Set key as transformed.
+							this.MakeStringLiteral( context, context.SerializationContext.DictionarySerlaizationOptions.SafeKeyTransformer( knownActions[ i ].Key ) ),
 							packItemBody
 						);
 				}
@@ -1247,7 +1248,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 							actionCollection,
 							actionCollection.ContextType,
 							"Item",
-							this.MakeStringLiteral( context, knownActions[ i ].Key ),
+							// Set key as transformed.
+							this.MakeStringLiteral( context, context.SerializationContext.DictionarySerlaizationOptions.SafeKeyTransformer( knownActions[ i ].Key ) ),
 							unpackItemBody
 						);
 				}

@@ -149,7 +149,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if DEBUG
 			Contract.Assert(
 				runtimeType == null || !runtimeType.GetIsGenericTypeDefinition() || runtimeType.GetGenericTypeParameters().Length == genericArguments.Length,
-				runtimeType?.GetFullName() + " == <" + String.Join( ", ", genericArguments as IEnumerable<TypeDefinition> ) + ">"
+				runtimeType?.GetFullName() + " == <" + String.Join( ", ", genericArguments.Select( t => t.ToString() ).ToArray() ) + ">"
 			);
 #endif // DEBUG
 

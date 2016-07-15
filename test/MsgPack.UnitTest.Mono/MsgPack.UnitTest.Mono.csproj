@@ -1631,6 +1631,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataMemberAttributeNamedPropertyTestTarget.cs">
       <Link>Serialization\DataMemberAttributeNamedPropertyTestTarget.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\DictionaryKeyTransformersTest.cs">
+      <Link>Serialization\DictionaryKeyTransformersTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs">
       <Link>Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs</Link>
     </Compile>

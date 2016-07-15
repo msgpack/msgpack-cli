@@ -482,6 +482,12 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DictionaryKeyTransformers.cs">
+      <Link>Serialization\DictionaryKeyTransformers.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DictionarySerlaizationOptions.cs">
+      <Link>Serialization\DictionarySerlaizationOptions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\EmitterFlavor.cs">
       <Link>Serialization\EmitterFlavor.cs</Link>
     </Compile>

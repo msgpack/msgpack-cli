@@ -596,6 +596,13 @@ namespace MsgPack.Serialization
 		public int Bar { get; set; }
 	}
 
+	public class SimpleClass
+	{
+		public string FirstProperty { get; set; }
+
+		public string SecondProperty { get; set; }
+	}
+
 	// ReSharper restore MemberHidesStaticFromOuterClass
 	// ReSharper restore NotAccessedField.Local
 	// ReSharper restore UnusedMember.Local
