@@ -268,6 +268,14 @@ namespace MsgPack.Serialization
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
+		private static string _dumpDirectory;
+
+		public static string DumpDirectory
+		{
+			get { return Interlocked.CompareExchange( ref _dumpDirectory, null, null ); }
+			set { Interlocked.Exchange( ref _dumpDirectory, value ); }
+		}
+
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		private static int _wasDeleted;
 		private const string HistoryFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";

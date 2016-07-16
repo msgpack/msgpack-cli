@@ -124,6 +124,7 @@ namespace MsgPack.Serialization
 		public void SetUp()
 		{
 			SerializerDebugging.DeletePastTemporaries();
+			SerializerDebugging.DumpDirectory = TestContext.CurrentContext.WorkDirectory;
 			//SerializerDebugging.TraceEnabled = true;
 			//SerializerDebugging.DumpEnabled = true;
 			if ( SerializerDebugging.TraceEnabled )

@@ -175,6 +175,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 #else
 						: AssemblyBuilderAccess.Run
 #endif // !NETFX_35
+#if DEBUG
+						,
+						SerializerDebugging.DumpDirectory
+#endif // DEBUG
 					);
 #else
 					AssemblyBuilder.DefineDynamicAssembly(
