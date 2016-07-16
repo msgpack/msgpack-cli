@@ -41,6 +41,7 @@ namespace MsgPack.Serialization
 					OutputDirectory = "\\temp-gen35",
 #else
 					OutputDirectory = "\\temp-gen",
+					WithAsync = true,
 #endif
 					IsInternalToMsgPackLibrary = true // because of InternalsVisibleTo
 				},
